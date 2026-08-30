@@ -1,0 +1,61 @@
+# runtime_plan.yaml — the gemmini -> LLVM/RoCC lowering plan (implemented by GemminiToLLVM).
+# Shape follows merlin.targetgen.synthesize.runtime_adapter_plan. Every constant here MUST match
+# lib/Conversion/GemminiToLLVM/GemminiToLLVM.cpp AND the certified native path
+# merlin/python/merlin/runtime/backends/gemmini_codegen_mlir.py (cross-checked in P8).
+# provenance: public  = also given to the raw baseline (gemmini.h / gemmini_params.h / contract)
+#             advantage = pre-assembled by Merlin tooling (see source_manifest.yaml tooling_advantage)
+schema: runtime_plan/0.1
+target: gemmini
+
+kernel_abi:
+  symbol: gemmini_kernel
+  signature: "llvm.func @gemmini_kernel(weight*, lhs_0*..lhs_{R-1}*, out_0*..out_{R-1}*)"
+  arg_order: [weight, "lhss (matmul order)", "outs (commit order)"]   # MUST match runner harness
+  note: "single matmul (G0-G3) => exactly 3 ptr args: (weight, lhs, out)"
+
+constants:
+  DIM:        { value: 16,          provenance: public,    source: "gemmini_params.h:8" }
+  opcode:     { value: "0x7b",      provenance: public,    source: "custom-3 (XCUSTOM_ACC=3)" }
+  funct3:     { value: "0x3",       provenance: public }
+  F1:         { value: "0x3F800000", provenance: public,   source: "IEEE-754 1.0f" }
+  GARBAGE:    { value: "0xFFFFFFFF", provenance: public }
+  funct:                                       # gemmini.h:158-166 (public)
+    { CONFIG: 0, MVIN: 2, MVOUT: 3, COMPUTE_PRELOADED: 4, PRELOAD: 6, FLUSH: 7 }
+  C_ACC:      { value: "0xA0000000", provenance: advantage, note: "full-i32 readout addr" }
+  ACC_I8:     { value: "0x80000000", provenance: advantage, note: "scaled i8 readout (drops full_C)" }
+  ACC_ACCUM:  { value: "0x40000000", provenance: advantage, note: "K-accumulate-onto bit" }
+  CFG_EX_RS1: { value: "(F1<<32)|(1<<16)|(1<<2)", provenance: advantage }
+  CFG_EX_RS2: { value: "(1<<48)",                 provenance: advantage }
+  CFG_LD_RS1: { value: "(F1<<32)|(DIM<<16)|(1<<8)|1", provenance: advantage }
+  pack:       { value: "(DIM<<48)|(DIM<<32)|(addr & 0xFFFFFFFF)", provenance: advantage }
+
+emit_form: "llvm-dialect MLIR: llvm.inline_asm has_side_effects \".insn r 0x7b, 0x3, <funct>, x0, $0, $1\", \"r,r\" rs1, rs2 : (i64,i64) -> ()"
+
+sequence:
+  - "fence"
+  - "FLUSH(0,0)"
+  - "CONFIG_EX(CFG_EX_RS1, CFG_EX_RS2)            # weight-stationary, identity scales"
+  - "config_ld(stride=np_bytes)  then  MVIN each of Kt*Nt resident weight tiles once"
+  - "config_ld(stride=kp_bytes)  for activations"
+  - "per commit job:"
+  - "  i8_out   = (output_dtype == i8)"
+  - "  acc_act  = ('relu' in epilogue) ? 1 : 0"
+  - "  scale_bits = i8_out ? f32_bits(acc_scale) : F1     # f32_bits via llvm::bit_cast<uint32_t>"
+  - "  elt        = i8_out ? 1 : 4                          # output element bytes"
+  - "  read_base  = i8_out ? ACC_I8 : C_ACC"
+  - "  CONFIG_ST(RS1=(acc_act<<2)|2, RS2=(scale_bits<<32)|(np_*elt))"
+  - "  for mi in Mt, nj in Nt:"
+  - "    for kt in Kt:  MVIN(A_tile@a_slot); PRELOAD(w_tile, kt==0 ? C_ACC : C_ACC|ACC_ACCUM); COMPUTE_PRELOADED"
+  - "    MVOUT(out + ((mi*DIM)*np_ + nj*DIM)*elt, read_base)"
+  - "fence"
+
+rung_deltas:
+  G0: { i8_out: false, acc_act: 0, scale_bits: F1,             elt: 4, read_base: C_ACC }
+  G1: { i8_out: false, acc_act: 1, scale_bits: F1,             elt: 4, read_base: C_ACC }
+  G2: { i8_out: true,  acc_act: 0, scale_bits: f32_bits(scale), elt: 1, read_base: ACC_I8 }
+  G3: { i8_out: true,  acc_act: 1, scale_bits: f32_bits(scale), elt: 1, read_base: ACC_I8 }
+
+lowering_to_object:
+  - "package emits llvm-dialect MLIR (above) on stdout via --convert-gemmini-to-llvm-rocc"
+  - "runner: lower_to_llvm_ir(text) -> kernel.ll -> compile_ll(riscv) -> kernel.o"
+  - "runner-owned harness embeds deterministic leaf data by name + calls gemmini_kernel + prints OUT/METRIC/DONE"

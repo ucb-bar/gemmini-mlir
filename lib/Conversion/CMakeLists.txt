@@ -1,0 +1,3 @@
+add_subdirectory(InterfaceToGemmini)
+add_subdirectory(GemminiToCommandBuffer)
+add_subdirectory(GemminiToLLVM)

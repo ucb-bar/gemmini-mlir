@@ -1,0 +1,33 @@
+# docs_manifest.yaml — public documents/specs consulted while authoring this package.
+schema: docs_manifest/0.1
+package: agent_spec_v0_mlir_oot
+docs:
+  - path: bench_contract/interface_grammar.md
+    role: "frozen merlin_iface input grammar (v0.1)"
+  - path: bench_contract/command_buffer_abi.yaml
+    role: "command-buffer opcode semantics (RES_PACK/MATMUL_RESIDENT/COMMIT/EVICT)"
+  - path: bench_contract/mlir_oot_backend_contract.yaml
+    role: "artifact_type, the 4 entrypoints, gemmini_kernel ABI, LLVM version pin"
+  - path: bench_contract/oracle_runner_contract.yaml
+    role: "oracle ladder + OUT/METRIC/DONE harness output format"
+  - path: bench_contract/scoring.yaml
+    role: "K0-K10 ladder"
+  - path: bench_contract/integrity_policy.md
+    role: "forbidden-import rules enforced by the integrity scan"
+  - path: bench_contract/examples/{g0_matmul,g1_relu,g2_acc_scale}.interface.mlir
+    role: "public golden inputs"
+  - path: /scratch2/agustin/chipyard/generators/gemmini/software/libgemmini/gemmini.h
+    role: "public Gemmini ISA header (funct codes, preload/compute/mvin/mvout, dataflow)"
+  - path: /scratch2/agustin/chipyard/generators/gemmini/software/libgemmini/gemmini_params.h
+    role: "public Gemmini params (DIM=16, XCUSTOM_ACC=3, ACC_SCALE f32 semantics)"
+  - path: third_party/llvm-project/mlir/examples/standalone
+    role: "MLIR out-of-tree dialect template (CMake/ODS structure)"
+external_references:
+  - url: https://github.com/ucb-bar/mlirAgent/blob/main/src/mlirAgent/tools/trace_provenance.py
+    role: "provenance-capture pattern mirrored by runtime/oracle_runner.py"
+  - url: https://github.com/ucb-bar/mlirAgent/blob/main/src/mlirAgent/tools/provenance.py
+    role: "provenance pattern"
+  - url: https://github.com/ucb-bar/mlirAgent/blob/main/src/mlirAgent/tools/_provenance_common.py
+    role: "provenance pattern"
+  - url: https://github.com/ucb-bar/mlirAgent/blob/main/tests/test_mlir_bindings.py
+    role: "MLIR python-bindings usage examples (IR snapshot inspection beyond xDSL)"

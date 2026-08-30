@@ -1,0 +1,99 @@
+artifact_type: mlir_oot_target_backend
+authoring:
+  author: merlin-assisted (agent_spec_v0)
+  deterministic_generator: false
+  generated_by_agent: true
+  mode: agent_generated_from_recipe
+  mode_detail: agent_authored_with_structured_spec_provenance
+  runtime_dependency_on_merlin: false
+  spec_role: recorded_structured_recipe
+build:
+  command:
+  - cmake
+  - --build
+  - '{package}/build'
+  - --target
+  - gemmini-opt
+  configure:
+  - cmake
+  - -G
+  - Ninja
+  - -S
+  - '{package}'
+  - -B
+  - '{package}/build'
+  - -DCMAKE_BUILD_TYPE=Release
+  - -DCMAKE_C_COMPILER=/usr/bin/gcc
+  - -DCMAKE_CXX_COMPILER=/usr/bin/g++
+  - -DMLIR_DIR={mlir_dir}
+  - -DLLVM_DIR={llvm_dir}
+  tool_output: build/bin/gemmini-opt
+commands:
+  emit_command_buffer:
+    argv:
+    - '{tool}'
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+  lower_interface_to_target:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - '{input_mlir}'
+  lower_target_to_llvm:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --convert-gemmini-to-llvm-rocc
+    - '{input_mlir}'
+  parse:
+    argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+entrypoints:
+  tool: build/bin/gemmini-opt
+family: ''
+integrity_exempt: false
+language: cpp
+layout_version: '1.0'
+llvm:
+  commit: a47bddccec30
+  version: 23.0.0git
+package_id: agent_spec_v1_mlir_oot
+publication:
+  certification: pass
+  certification_tier:
+    cycle_accurate: true
+    derived_from_rtl: true
+    oracles:
+    - rtl_verilator
+  certified_at: 20260828T211954Z
+  certified_by: merlin.targetgen.oot_runner.certify
+  certified_by_run: vcert_g3_acc_scale_relu_20260828T210542Z
+  certified_rungs:
+  - cycle_accurate: true
+    cycles: 266
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: vcert_g3_acc_scale_relu_20260828T210542Z
+    rung: g3_acc_scale_relu
+    status: pass
+  - cycle_accurate: true
+    cycles: 999
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: vcert_g4_tiled_k32_20260828T210542Z
+    rung: g4_tiled_k32
+    status: pass
+  - cycle_accurate: true
+    cycles: 417
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: vcert_g5_resident_reuse_20260828T210542Z
+    rung: g5_resident_reuse
+    status: pass
+  champion: true
+  fingerprint: 3c12a6e5c824e8111139712e06156b56d12442c003f93d87e2569bf0ed5fad41
+  promoted_at: 20260828T212003Z
+  promoted_by: merlin-target-publish
+target: gemmini

@@ -1,0 +1,24 @@
+# rtl_facts.yaml — honest accounting of how RTL participated in generating this package.
+schema: rtl_facts/0.1
+package: agent_spec_v0_mlir_oot
+
+# Provenance class of the RTL relationship. One of:
+#   none | grep-or-firtool-derived | circt-derived | compiled-test-derived | verilator-oracle-only
+provenance_class: verilator-oracle-only
+
+statement: >
+  No firtool/CIRCT-derived facts and no RTL-extracted manifests were used as TARGET-GENERATION
+  INPUT for this package. The Gemmini RTL participates ONLY as the certification ORACLE: the
+  Verilator-built Gemmini SoC executes the generated kernel and its integer outputs are required to
+  be bit-exact against the Python reference and simulator (three-way equality). The target dialect,
+  conversions, and RoCC encoding are derived from the PUBLIC Gemmini ISA headers (gemmini.h /
+  gemmini_params.h) and the documented command-buffer ABI — not from reproducible RTL-derived facts.
+
+implications:
+  - "This package does NOT support a claim of general RTL-derived target generation."
+  - "Verilator runs are RTL-backed certification (derived_from_rtl=true, cycle_accurate=true)."
+  - "Spike runs are a functional bootstrap only (derived_from_rtl=false, cycle_accurate=false)."
+
+oracle:
+  spike:     { kind: spike_gemmini_functional, derived_from_rtl: false, cycle_accurate: false }
+  verilator: { kind: rtl_verilator,            derived_from_rtl: true,  cycle_accurate: true  }

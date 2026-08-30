@@ -1,0 +1,42 @@
+{
+  "schema": "agent_response/0.1",
+  "package": "agent_spec_v0_mlir_oot",
+  "summary": "Non-exempt out-of-tree MLIR Gemmini target backend authored with Merlin tooling, graded through the same oot_runner boundary as the raw baseline.",
+  "authoring_mode": "agent_generated_from_recipe",
+  "authoring_mode_detail": "agent_authored_with_structured_spec_provenance",
+  "deterministic_generator": false,
+  "spec_role": "The inputs/{target_spec,dialect_plan,runtime_plan}.yaml files are a RECORDED STRUCTURED RECIPE: they documented and stabilized the design (op/type set, interface->target->cb mapping, RoCC encoding plan) BEFORE and ALONGSIDE hand-authoring the C++. They were NOT fed to a code generator that emitted the dialect/passes; the C++ was hand-authored to match them and then validated against them. Their shape follows merlin.targetgen.synthesize.* as a template, not as an executed generator.",
+  "generation_decisions": [
+    {
+      "artifact": "inputs/{target_spec,dialect_plan,runtime_plan}.yaml",
+      "origin": "recorded_structured_recipe",
+      "detail": "Hand-authored structured spec/plan YAMLs that documented & stabilized the design; the dialect/passes were authored to match them (not generated from them). Shape templated on merlin.targetgen.synthesize.*."
+    },
+    {
+      "artifact": "xdsl/dialect.py + lowering.yaml",
+      "origin": "prototype",
+      "detail": "xDSL IRDL prototype of the gemmini ops, used to stabilize the iface->gemmini->command-buffer mapping fast (patterns from merlin/python/merlin/xdsl_dialects/interface.py). Prototype plane only; not the shipped artifact."
+    },
+    {
+      "artifact": "mlir_oot/include + lib/Dialect/Gemmini",
+      "origin": "authored_from_spec",
+      "detail": "Real ODS/TableGen gemmini dialect + C++ registration with verifiers, authored to match dialect_plan.yaml. Build wiring (CMake/find_package(MLIR CONFIG)/add_mlir_dialect) adapted from the MLIR examples/standalone template and hand_smoke_oot."
+    },
+    {
+      "artifact": "mlir_oot/lib/Conversion/{InterfaceToGemmini,GemminiToCommandBuffer,GemminiToLLVM}",
+      "origin": "authored",
+      "detail": "Three real conversion passes. InterfaceToGemmini runs verify() and exits nonzero on failure (hard target-dialect gate). GemminiToLLVM is a self-contained C++ port of the certified RoCC encoding in merlin/python/merlin/runtime/backends/gemmini_codegen_mlir.py (tooling advantage, tagged in source_manifest.yaml)."
+    },
+    {
+      "artifact": "runtime/oracle_runner.py",
+      "origin": "authored",
+      "detail": "Provenance/profiling wrapper mirroring the mlirAgent trace_provenance pattern (stage timings + IR snapshots + diagnostics). Lives outside the integrity-scanned 4-entrypoint boundary."
+    }
+  ],
+  "fairness_note": "RoCC encoding facts reused from the native path are classified PUBLIC vs TOOLING-ADVANTAGE in inputs/source_manifest.yaml; advantage facts are reported as such in REPORT.md.",
+  "rtl_provenance_class": "verilator-oracle-only",
+  "claimed_supported_rungs": ["G0", "G1", "G2", "G3", "G4", "G5"],
+  "stretch_promoted_after_certifying": ["G4", "G5"],
+  "scope_note": "Out-of-tree MLIR target-LOWERING package (emits target MLIR + command_buffer.json + LLVM-dialect MLIR), NOT a complete standalone backend: the runner owns final LLVM lowering, object compilation, linking, the run harness, and oracle invocation. RoCC encoding was ported from the certified native Merlin path + public Gemmini facts (a tooling/authoring advantage, not independent rediscovery). G4/G5 are certified INSTANCES, not arbitrary tiling/residency generality. RTL-fact provenance = verilator-oracle-only.",
+  "honest_claim": "agent_spec_v0_mlir_oot demonstrates that Merlin's structured targetgen flow can produce a non-exempt out-of-tree MLIR-level Gemmini target package satisfying Experiment ABI v0.1 and certifying the supported rungs through the shared command-buffer/reference/oracle ladder. It does not yet prove general RTL-derived target generation."
+}

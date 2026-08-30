@@ -1,0 +1,54 @@
+# dialect_plan.yaml — the gemmini target dialect + the interface->target and target->command-buffer
+# maps. Shape follows merlin.targetgen.synthesize.dialect_plan; op/type/opcode names here MUST match
+# the ODS in mlir_oot/include/Gemmini/*.td and lib/Conversion/* (cross-checked in P8).
+schema: dialect_plan/0.1
+target: gemmini
+dialect: { name: gemmini, cpp_namespace: "::gemmini" }
+
+types:
+  - { mnemonic: resident_tensor, summary: "packed/stationary weight handle (carries element type)" }
+  - { mnemonic: accumulator,     summary: "i32 accumulator handle (carries element type)" }
+
+ops:
+  - name: res_pack
+    summary: "make a weight resident (packed/stationary)"
+    operands: { src: AnyRankedTensor }
+    attributes: { layout: StrAttr }
+    results: { result: "!gemmini.resident_tensor" }
+  - name: matmul
+    summary: "matmul lhs x resident-weight -> i32 accumulator"
+    operands: { lhs: AnyRankedTensor, rhs: "!gemmini.resident_tensor" }
+    results: { result: "!gemmini.accumulator" }
+  - name: commit
+    summary: "apply epilogue, commit accumulator to an output tensor"
+    operands: { src: "!gemmini.accumulator" }
+    attributes:
+      name: StrAttr
+      epilogue: StrArrayAttr           # subset of {relu, acc_scale}, applied in order
+      output_dtype: StrAttr            # i8 | i32
+      acc_scale: "OptionalAttr<F32Attr>"   # required iff "acc_scale" in epilogue
+    results: { result: AnyRankedTensor }
+  - name: evict
+    summary: "release a resident weight"
+    operands: { handle: "!gemmini.resident_tensor" }
+
+# merlin_iface (input) -> gemmini (target) op mapping (implemented by InterfaceToGemmini).
+interface_to_target:
+  "merlin_iface.tensor":         "(tracked as SSA value; not a gemmini op)"
+  "merlin_iface.resident_pack":  "gemmini.res_pack"
+  "merlin_iface.matmul":         "gemmini.matmul"
+  "merlin_iface.commit":         "gemmini.commit (carries epilogue/output_dtype/acc_scale)"
+  "merlin_iface.evict":          "gemmini.evict"
+
+# gemmini (target) -> command-buffer opcode mapping (implemented by GemminiToCommandBuffer).
+target_to_command_buffer:
+  "gemmini.res_pack": "RES_PACK   {operands:{src,dst}, attributes:{layout}}"
+  "gemmini.matmul":   "MATMUL_RESIDENT {operands:{lhs,rhs,dst}}"
+  "gemmini.commit":   "COMMIT     {operands:{src,dst}, attributes:{epilogue,output_dtype,acc_scale?}}"
+  "gemmini.evict":    "EVICT      {operands:{handle}}"
+
+verifiers:
+  - "commit.epilogue must be a subset of {relu, acc_scale}"
+  - "commit.acc_scale present iff 'acc_scale' in epilogue"
+  - "commit.output_dtype in {i8, i32}"
+  - "matmul.rhs must be a !gemmini.resident_tensor"

@@ -1,0 +1,41 @@
+# target_spec.yaml — the structured target contract that drives this package.
+# Shape follows merlin.targetgen.synthesize.target_contract; content specialized to single-tile
+# Gemmini. This is a source-of-truth artifact: the dialect + conversions implement exactly what is
+# declared here. `supported_rungs` lists ONLY rungs actually certified (reconciled in P8).
+schema: target_spec/0.1
+target: gemmini
+title: "Gemmini single-tile i8 systolic backend (Experiment ABI v0.1)"
+
+capabilities:
+  datatype: { in: i8, weight: i8, accumulator: i32 }
+  array: { kind: systolic, dim: 16, dataflow: weight_stationary }
+  matmul: { tile: [16, 16, 16], k_accumulation: true }   # K-accum implemented; >1 tile = stretch
+  epilogues: [relu, acc_scale]                            # acc_scale = IEEE-f32 multiply + clamp
+  output_dtypes: [i32, i8]                                # i8 = scaled (acc_scale) readout
+  residency: { resident_weight: true, reuse_across_matmuls: true }
+
+memory_model: simple_dram_or_unknown
+
+compiler_obligations:
+  - "Lower merlin_iface -> gemmini dialect (real ops, real verifiers)."
+  - "Emit a schema-valid command_buffer.json (RES_PACK/MATMUL_RESIDENT/COMMIT/EVICT; no new opcodes)."
+  - "Emit llvm.func @gemmini_kernel(weight*, lhs_i*, out_i*) — arg order MUST match the runner harness."
+  - "Integer workloads => bit-exact equality with the reference; acc_scale = round-to-nearest-even."
+  - "Self-contained: no runtime import of Merlin internals (passes the integrity scan)."
+
+# Rungs ACTUALLY implemented + RTL-certified (verilator, cycle_accurate) by this package.
+# G0-G3 were required; G4/G5 were stretch and ALSO certified, so they are promoted here (P8
+# reconciliation: supported_rungs == rungs that actually passed certification).
+supported_rungs:
+  - { id: G0, desc: "single-tile i8 matmul -> i32",                         epilogue: [],                output_dtype: i32, verilator_cycles: 308 }
+  - { id: G1, desc: "single-tile i8 matmul + relu -> i32",                  epilogue: [relu],            output_dtype: i32, verilator_cycles: 308 }
+  - { id: G2, desc: "single-tile i8 matmul + float acc_scale -> i8",        epilogue: [acc_scale],       output_dtype: i8,  verilator_cycles: 250 }
+  - { id: G3, desc: "single-tile i8 matmul + acc_scale + relu -> i8",       epilogue: [acc_scale, relu], output_dtype: i8,  verilator_cycles: 250 }
+  - { id: G4, desc: "tiled 32x32x32 with K-accumulation (multi-tile)",      epilogue: [],                output_dtype: i32, verilator_cycles: 1006 }
+  - { id: G5, desc: "resident-W reuse across two matmuls/commits",          epilogue: ["[]", "[relu]"],  output_dtype: i32, verilator_cycles: 428 }
+
+limitations:
+  - "Certified shapes: single 16x16 tile (G0-G3), tiled 32x32x32 (G4), 2-matmul resident reuse (G5)."
+  - "Integer requant(shift) (round-half-up) is NOT a Gemmini readout and is rejected; use acc_scale."
+  - "No bias/accumulator-preload, no conv, no attention, no full networks."
+  - "No performance/cycle optimization is attempted or claimed."
