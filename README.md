@@ -1,48 +1,47 @@
 # gemmini-mlir
 
-The out-of-tree **target home** for **gemmini** (Berkeley systolic-array accelerator,
-`chipyard/generators/gemmini`), modeled by Merlin as a `tensor_resident` target.
+Merlin's published codegen packages for the **gemmini** target.
 
-This repo is the single per-target home under the `<target>-mlir` convention (`gemmini-mlir`,
-`rvv-mlir`, `atlas-mlir`, `radiance-mlir`, …). Merlin hooks up to it natively: it fetches this repo
-into its generated-target home (`out/build/generated/gemmini/`) and discovers the target with zero
-extra configuration — the reference backend below self-registers via the contract's `plugin.backend`.
+This repository is **generated** by Merlin's `merlin-target-publish` bridge. It uses **branch-per-version** publishing, so *this* branch is only a directory — the packages themselves live on the branches below. Check one out to get a standalone, buildable out-of-tree tree plus its provenance under `.merlin/`.
 
-## Layout
+## Published packages
 
-- `contracts/target_contract.yaml` — the Merlin capability manifest (intent + the ABI encoding
-  surface RTL facts cannot ground) and the `plugin.backend: backend` declaration.
-- `contracts/residual.yaml` — the human-authored residual the capability deriver reproduces.
-- `backend/` — the **reference backend**, a Python package evicted from Merlin core's
-  `runtime/backends/`. Importing it self-registers the `gemmini` backend in Merlin's registry:
-  - `backend/gemmini.py` — compile + run on the oracle, parse output, gate.
-  - `backend/gemmini_codegen.py` — command buffer → bare-metal C via low-level `libgemmini` intrinsics.
-  - `backend/gemmini_codegen_mlir.py` — command buffer → LLVM-dialect RoCC MLIR (`.insn` on stock LLVM).
-  - `backend/__init__.py` — registers under the package name and exposes the codegen submodules.
-- `evidence_concepts.yaml` — per-target concept vocabulary for the evidence pass.
-- `AGENT.md` — the target's agent-facing brief.
+| branch | package | dtype | status | what it is |
+|---|---|---|---|---|
+| `baseline` | `hand_v0` | `fp32` | `rtl_certified` | frozen unoptimized control (the before/after reference) |
+| `stable/agent_spec_v1_mlir_oot` | `agent_spec_v1_mlir_oot` | `fp32` | `certified (cycle-accurate RTL, 3 rungs, rtl_verilator)` | certified champion |
 
-The reference backend imports Merlin internals (`merlin.runtime.*`); it is loaded by Merlin's
-out-of-tree backend loader (`merlin.runtime.backends.base`) by file path, so it is not a standalone
-distribution — it travels with an installed Merlin.
-
-## Branch model — one branch per champion experiment
-
-- **`main`** is the target *base*: the contract + the reference backend + metadata. This is what
-  Merlin fetches by default, and what every champion experiment forks from.
-- Each **champion experiment** (a certified/hand codegen package) is its **own branch**, forked from
-  `main` so it inherits the reference backend, and adding its buildable codegen payload
-  (`payload/`, `.merlin/` provenance, CMake, `tools/<target>-opt/`). Example: `baseline` carries the
-  `hand_v0` codegen champion (tagged `v0-hand_v0`).
-
-The history of each branch is that champion's promotion trail; the tags mark promoted versions.
-
-## How Merlin fetches this repo
+## Using a package
 
 ```sh
-merlin-target-fetch gemmini                 # fetch main (base + reference backend)
-merlin-target-fetch gemmini --champion baseline   # fetch a champion-experiment branch
+git clone -b <branch> <this-repo> gemmini-mlir
+cd gemmini-mlir
 ```
 
-This clones the repo into `out/build/generated/gemmini/`, where Merlin's target registry resolves it
-with zero env and loads the `plugin.backend`.
+## Compiling a model with it
+
+This repository is the **backend**: the target's codegen payload plus its capability contract. The thing that compiles a model is Merlin, which consumes this repo. You need both, and the loop is three commands.
+
+```sh
+# 1. Merlin itself (the driver, the frontend, the runtime)
+git clone https://github.com/ucb-bar/merlin.git && cd merlin
+cp .env.example .env          # then point MERLIN_* at your toolchain / simulators
+
+# 2. Fetch THIS repo as the target's out-of-tree backend
+merlin-target-fetch gemmini --champion <branch from the table above>
+
+# 3. Compile a workload onto it
+merlin-compile --workload <workload> --target gemmini --verify
+```
+
+`merlin-target-fetch` clones the chosen branch into `out/build/generated/gemmini/`, and the target registry then resolves the capability contract and this codegen payload together — so which champion you compile against is the branch you fetched, recorded rather than implied.
+
+`merlin-compile` takes `--run {none,host,spike,verilator,zephyr,k1}` and `--verify`. Start with `--run host` to check the lowering is numerically right, then move up the oracle ladder; `--verify` gates the answer against the workload's golden rather than reporting that something merely ran.
+
+**What you need beyond this repo**: an LLVM/MLIR install matching the `llvm:` block of the package manifest (the out-of-tree C++ API moves between versions), a RISC-V toolchain, and whichever simulator your chosen `--run` needs. Merlin's `docs/guides/getting_started.md` is the base install; `docs/guides/adding_a_target.md` explains the contract this repo carries.
+
+## Provenance
+
+Each commit on a package branch is one promotion, and its message embeds the champion package id, the internal run id, the Merlin git sha and the certification summary. History is the provenance trail; the branch tip is the current champion.
+
+Generated from Merlin `9b8a684`.
