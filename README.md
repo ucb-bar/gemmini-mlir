@@ -9,7 +9,7 @@ This repository is **generated** by Merlin's `merlin-target-publish` bridge: it 
 - Champion package: `gemmini_xdsl_rtl_v0`
 - Family: `unknown`
 - Recorded status: `unknown`
-- Merlin git sha (this export): `68ae8bb`
+- Merlin git sha (this export): `7b09e5d`
 
 ## How to build
 
@@ -28,6 +28,6 @@ The codegen payload (schedule/knobs for rvv; dialect/lowering/contracts for gemm
 - Certification: `pass`
 - Certified by run: `cert_A2_verilator`
 - Certified against: cycle-accurate RTL (`rtl_verilator`)
-- Fingerprint: `78fa4933da15dde238797bc696f5a3901e047547981766aab808eabcc1b7d47a`
+- Fingerprint: `ad10fc3de9c82bd288e61d3655e579958ffece1e70146bbce22d66240afc88fc`
 
 See `.merlin/provenance.yaml` and `.merlin/certification.yaml` for the full lineage. Each commit on this repo is one promotion; the history is the provenance trail.
