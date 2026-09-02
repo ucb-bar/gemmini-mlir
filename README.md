@@ -9,7 +9,7 @@ This repository is **generated** by Merlin's `merlin-target-publish` bridge: it 
 - Champion package: `gemmini_xdsl_rtl_v0`
 - Family: `unknown`
 - Recorded status: `unknown`
-- Merlin git sha (this export): `7b09e5d`
+- Merlin git sha (this export): `5bcb5b4`
 
 ## How to build
 
