@@ -1,0 +1,99 @@
+artifact_type: mlir_oot_target_backend
+authoring:
+  author: Codex
+  generated_by_agent: true
+  mode: agent_generated_from_rtl_facts
+build:
+  command:
+  - cmake
+  - --build
+  - '{package}/build'
+  configure:
+  - cmake
+  - -S
+  - '{package}'
+  - -B
+  - '{package}/build'
+  - -DCMAKE_BUILD_TYPE=Release
+  tool_output: build/bin/gemmini-opt
+commands:
+  emit_command_buffer:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+  lower_interface_to_target:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - '{input_mlir}'
+  lower_target_to_llvm:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-target-artifact
+    - '{input_mlir}'
+  parse:
+    argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+entrypoints:
+  tool: build/bin/gemmini-opt
+family: ''
+integrity_exempt: false
+language: python
+layout_version: '1.0'
+package_id: gemmini_xdsl_rtl_v0
+publication:
+  certification: pass
+  certification_tier:
+    cycle_accurate: true
+    derived_from_rtl: true
+    oracles:
+    - rtl_verilator
+  certified_at: 20260902T215804Z
+  certified_by: merlin.targetgen.oot_runner.certify
+  certified_by_run: cert_A2_verilator
+  certified_rungs:
+  - cycle_accurate: true
+    cycles: 302
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: cert_A2_verilator
+    rung: capsule
+    status: pass
+  - cycle_accurate: true
+    cycles: 269
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: cert_A4_verilator
+    rung: capsule
+    status: pass
+  - cycle_accurate: true
+    cycles: 525
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: cert_A6_verilator
+    rung: capsule
+    status: pass
+  - cycle_accurate: true
+    cycles: 385
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: cert_B1_verilator
+    rung: capsule
+    status: pass
+  - cycle_accurate: true
+    cycles: 3863
+    derived_from_rtl: true
+    oracle: rtl_verilator
+    run_id: cert_GC0_verilator
+    rung: capsule
+    status: pass
+  champion: true
+  fingerprint: 78fa4933da15dde238797bc696f5a3901e047547981766aab808eabcc1b7d47a
+  promoted_at: 20260902T215810Z
+  promoted_by: merlin-target-publish
+target: gemmini
