@@ -10,6 +10,7 @@ This repository is **generated** by Merlin's `merlin-target-publish` bridge. It 
 |---|---|---|---|---|
 | `baseline` | `hand_v0` | `fp32` | `rtl_certified` | frozen unoptimized control (the before/after reference) |
 | `stable/agent_spec_v1_mlir_oot` | `agent_spec_v1_mlir_oot` | `fp32` | `certified (cycle-accurate RTL, 3 rungs, rtl_verilator)` | certified champion |
+| `stable/gemmini_xdsl_rtl_v0` | `gemmini_xdsl_rtl_v0` | `fp32` | `certified (cycle-accurate RTL, 5 rungs, rtl_verilator)` | certified champion |
 
 ## Using a package
 
@@ -44,4 +45,4 @@ merlin-compile --workload <workload> --target gemmini --verify
 
 Each commit on a package branch is one promotion, and its message embeds the champion package id, the internal run id, the Merlin git sha and the certification summary. History is the provenance trail; the branch tip is the current champion.
 
-Generated from Merlin `9b8a684`.
+Generated from Merlin `02454ab`.
