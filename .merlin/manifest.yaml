@@ -1,0 +1,178 @@
+artifact_type: mlir_oot_target_backend
+authoring:
+  author: capsule_bench agent (arm4 merlin_assisted_rtlchecks)
+  generated_by_agent: true
+  mode: agent_generated_from_rtl_facts
+commands:
+  emit_command_buffer:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+  lower_interface_to_target:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - '{input_mlir}'
+  lower_target_to_llvm:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-target-artifact
+    - '{input_mlir}'
+  parse:
+    argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+components:
+  emit_command_buffer:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/cmdbuf.py
+  - mlir_oot/tables/
+  - mlir_oot/ir/
+  - mlir_oot/codegen/
+  lower_interface_to_target:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/codegen/
+  lower_target_to_llvm:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/codegen/
+  parse:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+entrypoints:
+  tool: gemmini-opt
+family: tensor_resident
+grading:
+  gradeable: true
+  graded_by: merlin.targetgen.capsule_grade
+  hardware_citation: 'gemmini_rtl 8c3f9923a44a2fe2c7930587be297d6d4f8c09ca (checkout HEAD is 63f0b68a68f1) plus these bytes: src/main/scala/gemmini/LoadController.scala@780ee0a292d8653f; gemmini_isa_headers 7c540b3adf1b86ad93d07f893abe3a73489b568e (checkout HEAD is 6b477a8b43ed) plus these bytes: include/gemmini.h@007826db4fdaf357'
+  hidden:
+    functional_pass: 1
+    graded_after_freeze: true
+    highest_tier: L3
+    n_capsules: 14
+    n_passed: 14
+    rtl_backed_passes: 14
+    score: 14/14
+  integrity_status: clean
+  l3_engine: gsim
+  l3_engine_note: L3 ran on GSIM, an elaborated-RTL engine. Verilator is the citable instrument for CYCLE counts (GSIM runs a slightly different elaborated design); never mix the two engines in one cycle comparison.
+  public:
+    cheap_tier_only_passes: 7
+    declined_capsules:
+    - GN0_layernorm_host_only_bf16_pt
+    - SY_host_lane_attention_bf16
+    - SY_host_lane_contraction_bf16
+    - SY_host_lane_contraction_f32
+    - SY_host_lane_elementwise_map_bf16
+    - SY_host_lane_elementwise_map_f32
+    - SY_host_lane_reduction_bf16
+    - SY_host_lane_reduction_f32
+    - SY_host_lane_softmax_bf16
+    - SY_host_only_normalization
+    failed_capsules:
+    - M3_host_island_seam_gemmini
+    - SY_epilogue_bias_add
+    - SY_micro_model
+    first_failure_planes:
+      backend_declined: 10
+      model: 1
+      model_execution: 1
+      spike: 1
+    headline: 83/96 (no tier cleared by every capsule; RTL-backed 76/83 — the other 7 passed on cheap tiers only; 10 DECLINED by the backend (never lowered, not wrong answers))
+    n_capsules: 96
+    n_declined: 10
+    n_failed: 3
+    n_passed: 83
+    rtl_backed_passes: 76
+    score: 83/96
+    tier_reached:
+      L0: 83
+      L1: 83
+      L2: 82
+      L3: 78
+      L4: 0
+      L5: 0
+  run_id: merlincirct_g4p1_20260905
+  submission_files: 31
+  submission_sha256: 77004328583d48abea47f7c267271c6ec78dbb337ffff04dfd0b2096c3dd6bf7
+integrity_exempt: false
+language: python
+layout_version: '1.0'
+package_id: gemmini_xdsl_oot_v0
+promotion:
+  evidence:
+    detail: 83/96 passed with tier evidence
+    labels_graded:
+    - dev
+    - public
+    n_capsules: 96
+    n_passed: 83
+  from: out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/submission
+  promoted_by: merlin-target-publish materialize
+  score: out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/grading_public/score_capsule.json
+  source_package_id: gemmini_xdsl_oot_v0
+provenance:
+  all_pins_ok: null
+  hardware_pins: {}
+  installed_from_run: merlincirct_g4p1_20260905
+  merlin:
+    commit: 6ca662e5c625b3f5899334785adabbd6acf48929
+    dirty_files: 15
+  pin_citations: {}
+  source_digest: 5f070ed06b3c0685caf2bbf581c9f93a562b591a26c0f9afd71849fe3e301b6e
+  sources:
+  - out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/submission
+publication:
+  certification: not_certified
+  certification_detail: No oot_runner.certify run exists for this package. The tier block below describes the GRADING oracle that produced the capsule verdicts, not a certification.
+  certification_tier:
+    cycle_accurate: true
+    derived_from_rtl: true
+    oracles:
+    - rtl_gsim
+    scope: the L3 tier of the capsule grade, not a certification
+  certified_by_run: NOT_CERTIFIED_graded_by_merlincirct_g4p1_20260905
+  champion: false
+  graded_by_run: merlincirct_g4p1_20260905
+status: capsule_graded_l3_partial
+status_detail: Graded by merlin.targetgen.capsule_grade against the gemmini capsule corpus; it has NOT been through merlin.targetgen.oot_runner.certify and is NOT rtl_certified. It cleared L3 (elaborated RTL, engine gsim) on part of the admitted public cohort and on all of the held-out cohort -- hence 'l3_partial'. Deliberately NOT a value _STATUS_RANK knows, so the publish gate refuses it and select_champion never picks it.
+target: gemmini
+version: 0
