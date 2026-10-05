@@ -57,7 +57,7 @@ def test_real_expanded_adapter_fresh_output_and_live_input(tmp_path):
     native_case(tmp_path,2,3,4,a,b)
 
 
-def test_provider_callback_requires_source_bound_complete_write_metadata(tmp_path):
+def test_provider_callback_requires_source_bound_complete_write_metadata(tmp_path, monkeypatch):
     import hashlib,json
     from mlir_oot.expanded_writer import merlin_callbacks
     source=tmp_path/'source.mlir'
@@ -78,7 +78,7 @@ func.func private @raw(tensor<2x4xi8> {bufferization.access="read"},tensor<4x3xi
     catalog={'abi':{},'source_sha256':sha,'compilation':{'object_sha256':hashlib.sha256(obj.read_bytes()).hexdigest()},'bindings':[{'region':'region','symbol':'kernel','tensor_types':types}]}
     manifest=tmp_path/'catalog.json';manifest.write_text(json.dumps(catalog))
     sidecar=tmp_path/'routing.json';sidecar.write_text(json.dumps({'device':'fixture','catalog_manifest':str(manifest),'catalog_object':str(obj),'model_sha256':sha,'signatures':{'raw':[2,3,4]},'routed':[{'source_region':'region','symbol':'raw','tensor_types':types,'dtypes':['i8','i8','i32']}]}))
-    prepare,_=merlin_callbacks(tmp_path,lambda p,w:p,allocation_alignment=32,target_cflags=())
+    prepare,link=merlin_callbacks(tmp_path,lambda p,w:p,allocation_alignment=32,target_cflags=())
     work=tmp_path/'abi';work.mkdir()
     import pytest
     with pytest.raises(ValueError,match='explicit complete-write'):
@@ -88,6 +88,22 @@ func.func private @raw(tensor<2x4xi8> {bufferization.access="read"},tensor<4x3xi
     result=prepare(source,sidecar,work)
     assert '__fresh_tensor_result' in result.read_text()
     assert json.loads((work/'writer_contracts.json').read_text())['contracts'][0]['result_argument']==2
+    # Reuse one provider instance across two private builds before linking either.
+    other=tmp_path/'other'/'abi';other.mkdir(parents=True)
+    prepare(source,sidecar,other)
+    commands=[]
+    def compiler(command, **kwargs):
+        commands.append(command)
+        from pathlib import Path
+        Path(command[command.index('-o')+1]).write_text('; test compiler output\n')
+        return subprocess.CompletedProcess(command,0)
+    monkeypatch.setattr(subprocess,'run',compiler)
+    for parent in (tmp_path,other.parent):
+        host=parent/'host_llvm';host.mkdir()
+        (host/'model.native.ll').write_text('; native input\n')
+        link(source,host)
+    inputs=[x[x.index('-emit-llvm')+1] for x in commands if '-emit-llvm' in x]
+    assert inputs==[str(work/'borrowed.c')]*2+[str(other/'borrowed.c')]*2
     obj.write_bytes(b'changed')
     with pytest.raises(ValueError,match='identity changed'):
         prepare(source,sidecar,work)

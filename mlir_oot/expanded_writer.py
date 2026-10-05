@@ -120,16 +120,17 @@ def merlin_callbacks(llvm_bin, base_host_transform, *, allocation_alignment, tar
             'borrowed_source_sha256':digest(bridge), 'contracts':unit.writer_contracts,
             'routes':routes, 'fully_written_kernel_arguments':effects,
         },indent=2)+'\n')
-        state['bridge']=bridge
+        state[workdir.parent.resolve()]=bridge
         return output
 
     def host_transform(source, directory):
         directory = Path(directory)
+        bridge = state[directory.parent.resolve()]
         selected = Path(base_host_transform(source,directory))
         for native in (False,True):
             original=directory/'model.native.ll' if native else selected
             bridge_ir=directory/('expanded_bridge.native.ll' if native else 'expanded_bridge.ll')
-            command=[str(compiler/'clang'),'-O2','-S','-emit-llvm',str(state['bridge']),'-o',str(bridge_ir)]
+            command=[str(compiler/'clang'),'-O2','-S','-emit-llvm',str(bridge),'-o',str(bridge_ir)]
             if not native:
                 command[1:1]=list(target_cflags)
             subprocess.run(command,check=True,capture_output=True)
