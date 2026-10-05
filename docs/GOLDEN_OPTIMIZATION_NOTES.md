@@ -243,3 +243,14 @@ saves3.61% against blocked64control1789 (48,780,534),5.34% against unblocked
 f71783670baa. Full-output compact digest reduces total emulation to364,867,232
 cycles/17.6s versus1789 full-dump1,896,507,692/68.8s; these are separate from
 forward timing.22M remains unmet.
+
+## Current ResNet final-link profile gate
+
+Profile1801 reuses1795 model/runtime/weight/device objects, reproducing each
+partial-linked component before wrapping70 primitive symbols. Final ELFzeroFSM
+and full4,000-byte Spike output digest match the original native/golden. All70
+expected boundaries appear once, profile intervals conserve. Spike11,500,860
+versus unprofiled11,497,420 instructions is profiling overhead only in this
+functional execution, not hardware overhead.47,020,321 remains hardware control.
+Profile inherits1795 harnesshash; final profile ELF686f2dd3... identifies it.
+Stock queue1801 will provide current device/host attribution.
