@@ -24,3 +24,7 @@ Optional `banked_m` places A slots at scratchpad rows0/4096 and cached B at8192,
 ## Needed automatic lowering abstractions
 
 The automatic scheduler needs an explicit lifetime for each A and accumulator slot, bank-aware local allocation, and a schedule position for next-block DMA/bias initialization. Simply marking a loop double-buffered does not express when transfers must issue. Prologue/drain generation must handle odd block counts and partial row tiles. Cost modeling must weigh overlap against smaller output blocks and stationary-weight reuse. Selection must use measured kernel cycles and preserve the exact scale/bias/ReLU semantics.
+
+## Device compilation observation
+
+LLVM object disassembly has substantial stack traffic in these generated kernels. Static counts over the entire function (including setup/drain, so not dynamic performance attribution): baseline bm16 1527 instructions/108 stack accesses; prefetch bm4 1447/150; prefetch bm8 2623/199; banked bm1 458/71. The bm4 prologue reserves416 stack bytes. Device compilation currently uses clang `-O2`. These counts justify inspecting register allocation and constant-descriptor lifetimes before assuming the remaining gap is purely DMA/array latency. A future automatic scheduler should report hot-loop spill counts and instruction footprint alongside Gemmini primitive counts; static whole-function counts alone cannot establish the cause of stalls.
