@@ -1223,3 +1223,23 @@ The4-plane analytical floor remains hypothetical for an inadmissible candidate.
 pins original/candidate source, emitted LLVM, actual native object/SO/output,
 functional experiment scripts and immutable original golden. The scripts remain
 experimental; no production default or compiler pass is promoted.
+
+### Matched complete attention packing: stock1909 pending
+
+Measured1894 packing is382,115,351cycles and includes1,245,184 elementvisits:
+Q/K131,072, probabilities1,048,576 andV65,536, plusP/Vgathers and row norms.
+The emitted floating encoder executes fdiv.s and an out-of-line lrintf call per
+element; ilogbf/scalbnf perrow. Eligibility/FENV checks are perencode, so simply
+hoisting them is not supported as the principal optimization.
+
+The existing generic Merlin integer-bit encoder now has a matched complete
+packing capsule, identical timed buffers and image, A/B and reversed order,
+full reconstruction/threeplanes/steps/sevennormfields compared bitwise and
+guardschecked. Native and final strictRV64GC Spike12full digests match; finalELF
+haszeroFSM. Core rational/stride/specialvalue/FENV tests8PASS. Common-buffer
+Spike instructions350,708,464floating versus379,569,860integer are8.23%higher;
+stock1909 tests whether division/call latency reverses this ordering. Allgathers
+and norm metadata are included; copies for numeric comparison and hashing occur
+after each interval. Neither wholehead performance nor a winning policy is
+claimed. Original1894/1895 artifacts remain immutable.
+[Qualification](perf_records/attention_complete_packing_pair_spike.json).
