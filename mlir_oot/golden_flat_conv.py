@@ -32,12 +32,13 @@ def eligible(s):
 
 
 class GoldenFlatConv(GoldenGemm):
-    def __init__(self, s, *, wide_a=False):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False):
         s.validate()
         if not eligible(s):
             raise ValueError('flat spatial image requires explicit halo and accumulator capacity')
         self.conv = s
         self.wide_a = wide_a
+        self.separate_b_bank = separate_b_bank
         super().__init__(Shape(s.oh*s.ow, s.cout, s.cin,
             bm=_ceil_div(s.oh*s.ow, F.DIM), bn=s.bn,
             output_dtype=s.output_dtype, scale=s.scale, relu=s.relu,
@@ -53,7 +54,9 @@ class GoldenFlatConv(GoldenGemm):
         runs = spatial_runs(s)
         panel_tiles = 4 if self.wide_a else 1
         panel_width = panel_tiles * F.DIM
-        bbase = len(widths) * panel_width
+        bbase = F.SPAD_ROWS // 2 if self.separate_b_bank else len(widths) * panel_width
+        if len(widths)*panel_width > bbase or bbase+s.bn*F.DIM > F.SPAD_ROWS:
+            raise ValueError("A and B scratchpad ranges overlap or exceed capacity")
 
         def channel(n0, nr):
             for kh in range(3):
@@ -97,6 +100,7 @@ class GoldenFlatConv(GoldenGemm):
         module = self._finish('gemmini_golden_flat_conv')
         module.attributes['gemmini.flat_conv_shape'] = StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.flat_conv_wide_a'] = StringAttr(str(self.wide_a))
+        module.attributes['gemmini.flat_conv_separate_b_bank'] = StringAttr(str(self.separate_b_bank))
         return module
 
 

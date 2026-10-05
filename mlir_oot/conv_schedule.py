@@ -22,5 +22,5 @@ def select_kernel(shape, *, flat_spatial=False):
         if bn >= 4:
             bn = bn // 4 * 4
         shape = replace(shape, bn=bn, wide_b=True)
-        return GoldenFlatConv(shape,wide_a=True), 'spatial_flat_wide_a'
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True), 'spatial_flat_wide_a_separate_b'
     return GoldenConv(shape), 'output_row'

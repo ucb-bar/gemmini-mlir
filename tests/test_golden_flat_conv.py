@@ -41,7 +41,8 @@ class TestGoldenFlatConv(unittest.TestCase):
         from dataclasses import asdict
         s = ConvShape(7, 7, 512, 512, explicit_halo=True)
         kernel, kind = select_kernel(s, flat_spatial=True)
-        self.assertEqual(kind, 'spatial_flat_wide_a')
+        self.assertEqual(kind, 'spatial_flat_wide_a_separate_b')
+        self.assertTrue(kernel.separate_b_bank)
         self.assertTrue(kernel.wide_a)
         self.assertEqual(kernel.conv.bn, 16)
         original, selected = asdict(s), asdict(kernel.conv)
@@ -62,6 +63,18 @@ class TestGoldenFlatConv(unittest.TestCase):
             module = GoldenFlatConv(tail,wide_a=True).build()
             module.verify()
             lower(module).verify()
+
+    def test_separate_bank_ranges(self):
+        s = ConvShape(7,7,512,512,bn=16,explicit_halo=True)
+        module = GoldenFlatConv(s,wide_a=True,separate_b_bank=True).build()
+        module.verify()
+        loads = [op for op in module.walk() if op.name=='gemmini.mvin']
+        a = [op for op in loads if op.a('load_id')==0]
+        b = [op for op in loads if op.a('load_id')==1]
+        self.assertTrue(a and b)
+        self.assertTrue(all(op.a('local')+4*16 <= 8192 for op in a))
+        self.assertTrue(all(8192 <= op.a('local') < 16384 for op in b))
+        lower(module).verify()
 
     def test_numeric_probe_shapes_lower_without_host_tensor_operations(self):
         for stride in (1, 2):

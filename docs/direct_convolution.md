@@ -253,3 +253,48 @@ The complete wide-A variant also passed all 1,000 original outputs exactly on
 native scalar standins and actual Gemmini Spike, with zero descriptor mismatches
 and final ELF zero-FSM audit. The receipt is
 `docs/perf_records/resnet_flat_wide_conv_spike.json`.
+
+### Scratchpad bank placement
+
+The stock configuration has four scratchpad banks of 4,096 rows (recorded in
+our ZIP analysis). `separate_b_bank=True` places the B channel block at row
+8,192, with the A panels in bank zero. Accumulator placement and every primitive
+count remain identical. A/B footprints are checked for overlap and bounds;
+there is no assumed asynchronous completion or weakened lifetime dependency.
+
+For the late 7×7 C512 i32 fixture, this placement reduced GSIM kernel cycles
+from **939,677 to 769,976**, an additional 18.1%, with all 25,088 outputs and the
+guard exact. Strict Spike also passes. Queue job **1758** replaces the unstarted
+1757 candidate. Its ELF SHA256 is
+`8fc6572ea8551fdb04442110af1cba7459e4f61021ca3caa915ff4af33768384`.
+
+The 14×14 C256 i8 fixture uses the captured positive scale
+`0.0011732920538634062` and ReLU. Narrow/wide A schedules pass all 50,176 outputs
+and guards at **791,611 / 701,344 GSIM cycles**. These shape-specific checks
+support selecting wide A for both spatial sizes. See
+`docs/perf_records/flat_conv_bank_gsim.json`.
+
+### Requirements for automatic scheduling
+
+The automatic search needs independently modeled spatial tiling, channel block
+size, K-panel DMA width, and operand bank placement. Choosing only GEMM M/N/K
+block sizes misses both the row-fragment gather cost and repeated convolution
+weight traffic. A useful resource description includes scratchpad bank rows,
+accumulator footprint, and explicit A/B lifetime intervals. Source layout proof
+must stay separate: the gather schedule consumes an exact NHWC halo/HWIO
+contract, and store fusion consumes the separately verified rounding proof.
+
+These experiments provide a concrete cost-model correction: a larger gather
+fragment count can be profitable when the entire image fits the accumulator
+and weights are loaded once. Conversely, identical command counts can have an
+18% timing difference solely from bank placement. Do not infer max performance
+from MAC count or primitive count alone.
+
+
+The separate-B-bank version also passes the full 14×14 i8 probe at **674,159
+GSIM cycles**, versus 701,344 with collocated operands. The opt-in catalog
+selector now records `spatial_flat_wide_a_separate_b` and uses this placement.
+The resulting complete ResNet passes all 1,000 original outputs exactly on
+native scalar standins and actual Gemmini Spike, with zero descriptor
+mismatches and zero final FSM instructions. See
+`docs/perf_records/resnet_flat_banked_conv_spike.json`.

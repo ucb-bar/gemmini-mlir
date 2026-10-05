@@ -20,6 +20,7 @@ def main():
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
     ap.add_argument('--wide-a',action='store_true')
+    ap.add_argument('--separate-b-bank',action='store_true')
     ap.add_argument('--static-inputs',action='store_true',help='embed deterministic input bytes to exclude large scalar setup loops')
     ap.add_argument('--flat-spatial',action='store_true',help='flatten spatial tiles; input includes explicit nonzero halo')
     ap.add_argument('--output-dtype',choices=['i8','i32'],default='i32')
@@ -29,14 +30,14 @@ def main():
     ap.add_argument('--max-cycles',type=int,default=3000000)
     ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
-    if a.wide_a and not a.flat_spatial:
-        ap.error("--wide-a requires --flat-spatial")
+    if (a.wide_a or a.separate_b_bank) and not a.flat_spatial:
+        ap.error("wide A or separate B bank requires --flat-spatial")
     s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,bn=a.bn,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu,explicit_halo=a.flat_spatial)
     out = a.workdir.resolve()
     out.mkdir(parents=True,exist_ok=False)
     if a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
-        kernel = GoldenFlatConv(s,wide_a=a.wide_a)
+        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank)
     else:
         kernel = GoldenConv(s)
     receipt = compile_module(kernel.build(),a.llvm_bin,out)
@@ -102,7 +103,7 @@ int main(void) {
     run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
-    result = dict(shape=asdict(s),wide_a=a.wide_a,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
+    result = dict(shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
                   elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))
