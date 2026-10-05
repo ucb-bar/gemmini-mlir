@@ -1,0 +1,826 @@
+{
+  "schema": "source_bound_compact_weight_prefetch_whole_qualification_v1",
+  "timestamp_utc": "2026-10-05T23:34:04.345420+00:00",
+  "owner": "reference_parity",
+  "oot_commit": "501173b",
+  "compiler_runtime_core": "f5d2f0650a6b338b5c6c366dc46bbe57f9d6ab65",
+  "hypothesis": "Next-K B DMA uses alternating disjoint banks to overlap with current-K resident-A computes; no arithmetic or transfer count change",
+  "control_job": 1897,
+  "control_cycles": 38468933,
+  "control_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model.elf",
+    "sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802"
+  },
+  "candidate_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model.elf",
+    "sha256": "5b1d3f1641e9aab4e1b899ddea7aee7d10352daaa5d5e5fb5f6727c39fe5cc45"
+  },
+  "candidate_catalog": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/device_catalog/device_catalog.json",
+    "sha256": "5773ab108d36734a17e6796d2ce4ec32c71b7685d91b9aa714109ff1d3cd11e5"
+  },
+  "actual_prepared_source": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/device_catalog/catalog_source.mlir",
+    "sha256": "bc24c0043f13b2f4813b8ee05860a6cbbc640dca6072b2f3d699818494ae75d9"
+  },
+  "source_boundary_equal_control": true,
+  "selected_compiler_options": {
+    "prefetch_b": true,
+    "rows_per_tile": 1,
+    "loop_channels": false
+  },
+  "changed_device_regions": [
+    "matmul_29",
+    "matmul_32",
+    "matmul_35",
+    "matmul_38",
+    "matmul_41"
+  ],
+  "device_kernel_objects": [
+    {
+      "region": "matmul_1",
+      "symbol": "gemmini_exact_requant_0_kernel",
+      "changed": false,
+      "candidate_sha256": "60104b23e8f6ba19d5299f170d3cb34809c71613ba007f2877c7a5ad639ece8b",
+      "control_sha256": "60104b23e8f6ba19d5299f170d3cb34809c71613ba007f2877c7a5ad639ece8b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_2",
+      "symbol": "gemmini_exact_requant_1_kernel",
+      "changed": false,
+      "candidate_sha256": "6e46a9c34024aee44b8930c264dc7deb60e0b88d435b51a469aff4c0e8f4eed2",
+      "control_sha256": "6e46a9c34024aee44b8930c264dc7deb60e0b88d435b51a469aff4c0e8f4eed2",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_3",
+      "symbol": "gemmini_exact_requant_2_kernel",
+      "changed": false,
+      "candidate_sha256": "1eb62a0f872cb3225cd369f2f508b05ea67802fbff4dbf6484b72e0dbb086f26",
+      "control_sha256": "1eb62a0f872cb3225cd369f2f508b05ea67802fbff4dbf6484b72e0dbb086f26",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_4",
+      "symbol": "gemmini_exact_requant_3_kernel",
+      "changed": false,
+      "candidate_sha256": "b88d4aeefb9f27fb796c1890358be5bb623312b9888fcc2158f7173301b4d14e",
+      "control_sha256": "b88d4aeefb9f27fb796c1890358be5bb623312b9888fcc2158f7173301b4d14e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_5",
+      "symbol": "gemmini_exact_requant_4_kernel",
+      "changed": false,
+      "candidate_sha256": "5f69901612b22ad8d273b41c42b3f149dd14a973daf10b64561e72d77a850290",
+      "control_sha256": "5f69901612b22ad8d273b41c42b3f149dd14a973daf10b64561e72d77a850290",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_6",
+      "symbol": "gemmini_exact_requant_5_kernel",
+      "changed": false,
+      "candidate_sha256": "2140e124c8a94da9811f6400cba98d8818d78da0bc05149dcd602fd412ddd542",
+      "control_sha256": "2140e124c8a94da9811f6400cba98d8818d78da0bc05149dcd602fd412ddd542",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_7",
+      "symbol": "gemmini_exact_requant_6_kernel",
+      "changed": false,
+      "candidate_sha256": "6d33e8b5108f2bce13b91c24d6a4bbbeba59163b485a287c3dbf90a5c905fc92",
+      "control_sha256": "6d33e8b5108f2bce13b91c24d6a4bbbeba59163b485a287c3dbf90a5c905fc92",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_8",
+      "symbol": "gemmini_exact_requant_7_kernel",
+      "changed": false,
+      "candidate_sha256": "af96964326ea9c7716866907811a7f1b9ab3c3921ff8781d766630acd238119a",
+      "control_sha256": "af96964326ea9c7716866907811a7f1b9ab3c3921ff8781d766630acd238119a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_9",
+      "symbol": "gemmini_exact_requant_8_kernel",
+      "changed": false,
+      "candidate_sha256": "544baa115de7e39213e922950980dca507abd99f52f767be8da787e0d337811a",
+      "control_sha256": "544baa115de7e39213e922950980dca507abd99f52f767be8da787e0d337811a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_10",
+      "symbol": "gemmini_exact_requant_9_kernel",
+      "changed": false,
+      "candidate_sha256": "5882d72b48627fdf5a6365a66d4611631d30b78ba943ca08b4a2fb750659866f",
+      "control_sha256": "5882d72b48627fdf5a6365a66d4611631d30b78ba943ca08b4a2fb750659866f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_11",
+      "symbol": "gemmini_exact_requant_10_kernel",
+      "changed": false,
+      "candidate_sha256": "3c7cbf793d35a74b10787aaab6a0dd642a9d3bfa67e8020987a48b26d75f9af8",
+      "control_sha256": "3c7cbf793d35a74b10787aaab6a0dd642a9d3bfa67e8020987a48b26d75f9af8",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_12",
+      "symbol": "gemmini_exact_requant_11_kernel",
+      "changed": false,
+      "candidate_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "control_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_13",
+      "symbol": "gemmini_exact_requant_12_kernel",
+      "changed": false,
+      "candidate_sha256": "cb1b4785d6222f410eae09e0e44ec4ba08dedd3d1932513b344fa6a032522909",
+      "control_sha256": "cb1b4785d6222f410eae09e0e44ec4ba08dedd3d1932513b344fa6a032522909",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_14",
+      "symbol": "gemmini_exact_requant_13_kernel",
+      "changed": false,
+      "candidate_sha256": "5f14c3cc34b2e3a5b8d87620b6badbec0db95eaf9f201a974e9786375b5b7c24",
+      "control_sha256": "5f14c3cc34b2e3a5b8d87620b6badbec0db95eaf9f201a974e9786375b5b7c24",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_15",
+      "symbol": "gemmini_exact_requant_14_kernel",
+      "changed": false,
+      "candidate_sha256": "be4ef2d0740381109909bb4e48771b36e1feeb58118252a6691ea96553e7c78d",
+      "control_sha256": "be4ef2d0740381109909bb4e48771b36e1feeb58118252a6691ea96553e7c78d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_16",
+      "symbol": "gemmini_exact_requant_15_kernel",
+      "changed": false,
+      "candidate_sha256": "dd0363ac3397ec8f2e1cec2109ef10a0603853f69eb7af352d9135138e4d96bb",
+      "control_sha256": "dd0363ac3397ec8f2e1cec2109ef10a0603853f69eb7af352d9135138e4d96bb",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_17",
+      "symbol": "gemmini_exact_requant_16_kernel",
+      "changed": false,
+      "candidate_sha256": "34466c2748f3c6d5b6ebb2d4f2f19cf6a7118b1d9bc2b14b7a62a0ecf4dea568",
+      "control_sha256": "34466c2748f3c6d5b6ebb2d4f2f19cf6a7118b1d9bc2b14b7a62a0ecf4dea568",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_18",
+      "symbol": "gemmini_exact_requant_17_kernel",
+      "changed": false,
+      "candidate_sha256": "1b0ddf0850e1ccdc39ff30d80f14c729d4945900ec09d76d509e459430e5d6ef",
+      "control_sha256": "1b0ddf0850e1ccdc39ff30d80f14c729d4945900ec09d76d509e459430e5d6ef",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_19",
+      "symbol": "gemmini_exact_requant_18_kernel",
+      "changed": false,
+      "candidate_sha256": "6ef585e45c50da8afe19cfac3e1a8c8759944573a34ae85d894b83717022c92b",
+      "control_sha256": "6ef585e45c50da8afe19cfac3e1a8c8759944573a34ae85d894b83717022c92b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_20",
+      "symbol": "gemmini_exact_requant_19_kernel",
+      "changed": false,
+      "candidate_sha256": "f0bdbea931fd18645c2b801bace906b99690ff7e530dac4606dd9b6f4cfcf0c6",
+      "control_sha256": "f0bdbea931fd18645c2b801bace906b99690ff7e530dac4606dd9b6f4cfcf0c6",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_21",
+      "symbol": "gemmini_exact_requant_20_kernel",
+      "changed": false,
+      "candidate_sha256": "c5c260b36d94fa1e62df8d1bf1b2e14c0d500e6d9afd6970bde03050844beb34",
+      "control_sha256": "c5c260b36d94fa1e62df8d1bf1b2e14c0d500e6d9afd6970bde03050844beb34",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_22",
+      "symbol": "gemmini_exact_requant_21_kernel",
+      "changed": false,
+      "candidate_sha256": "9d9d23edbbf32db1ac12691d661651c1e97311e54e8167e13461b1edee967232",
+      "control_sha256": "9d9d23edbbf32db1ac12691d661651c1e97311e54e8167e13461b1edee967232",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_23",
+      "symbol": "gemmini_exact_requant_22_kernel",
+      "changed": false,
+      "candidate_sha256": "0b1d3c84d2dc8a2239a990b1348c76a66436f6d87599e09982f537090faf0e0a",
+      "control_sha256": "0b1d3c84d2dc8a2239a990b1348c76a66436f6d87599e09982f537090faf0e0a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_24",
+      "symbol": "gemmini_exact_requant_23_kernel",
+      "changed": false,
+      "candidate_sha256": "befeed51cff0839892c55ab27d4b5d76be1d9bb8cbfdb2f58ac76294fe4e74ee",
+      "control_sha256": "befeed51cff0839892c55ab27d4b5d76be1d9bb8cbfdb2f58ac76294fe4e74ee",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_25",
+      "symbol": "gemmini_exact_requant_24_kernel",
+      "changed": false,
+      "candidate_sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3",
+      "control_sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_26",
+      "symbol": "gemmini_exact_requant_25_kernel",
+      "changed": false,
+      "candidate_sha256": "dda996c9b1325da89e965dced51f8e7847c6fb91a756cc6334045c759b101f4e",
+      "control_sha256": "dda996c9b1325da89e965dced51f8e7847c6fb91a756cc6334045c759b101f4e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_27",
+      "symbol": "gemmini_exact_requant_26_kernel",
+      "changed": false,
+      "candidate_sha256": "f3c5bb6a5ffd8fedd54e98e97a19e17b67e2f0aed91581a314cf5083fe1e5036",
+      "control_sha256": "f3c5bb6a5ffd8fedd54e98e97a19e17b67e2f0aed91581a314cf5083fe1e5036",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_28",
+      "symbol": "gemmini_exact_requant_27_kernel",
+      "changed": false,
+      "candidate_sha256": "73fb5f259c3a120857ad4c5593065457c6602a3f42a1a3e3f91e28a68fd2805e",
+      "control_sha256": "73fb5f259c3a120857ad4c5593065457c6602a3f42a1a3e3f91e28a68fd2805e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_29",
+      "symbol": "gemmini_exact_requant_28_kernel",
+      "changed": true,
+      "candidate_sha256": "881a355a0cc51b273697ad3ab4ac80ab05d59473fc75355b0f761b429532d6c7",
+      "control_sha256": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_30",
+      "symbol": "gemmini_exact_requant_29_kernel",
+      "changed": false,
+      "candidate_sha256": "1b716c69e6b7e0170a0d2a07775a2e44a2273af6307f279697f38e7b63d1bacc",
+      "control_sha256": "1b716c69e6b7e0170a0d2a07775a2e44a2273af6307f279697f38e7b63d1bacc",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_31",
+      "symbol": "gemmini_exact_requant_30_kernel",
+      "changed": false,
+      "candidate_sha256": "693a28c8c4453211689e73e1ef02b7dc8654effd5dff53319e6cfe5297720adf",
+      "control_sha256": "693a28c8c4453211689e73e1ef02b7dc8654effd5dff53319e6cfe5297720adf",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_32",
+      "symbol": "gemmini_exact_requant_31_kernel",
+      "changed": true,
+      "candidate_sha256": "cdacddad2842daa4a3f2d1d699f8c54ae2849d878451de4aa6f5d4d1730552c4",
+      "control_sha256": "25e6eec00956da450e0970f98688967e85dfadea2c85a0a6ef2a81ce79a7c61f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_33",
+      "symbol": "gemmini_exact_requant_32_kernel",
+      "changed": false,
+      "candidate_sha256": "df2f38646b4e38f3d6e52223404b94dfc40b7ebbc4696f36f0c245ee676e57d1",
+      "control_sha256": "df2f38646b4e38f3d6e52223404b94dfc40b7ebbc4696f36f0c245ee676e57d1",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_34",
+      "symbol": "gemmini_exact_requant_33_kernel",
+      "changed": false,
+      "candidate_sha256": "aef439c71cebaaa93b6b5d5431d3093e8e71dddbb17d4be28da0fddb1a747a1f",
+      "control_sha256": "aef439c71cebaaa93b6b5d5431d3093e8e71dddbb17d4be28da0fddb1a747a1f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_35",
+      "symbol": "gemmini_exact_requant_34_kernel",
+      "changed": true,
+      "candidate_sha256": "dc4cea4a56775374487cc12db8ce792f1187148ebcd7514e1ec0aafe1ae4671d",
+      "control_sha256": "73908b7e644dabad829ae08a6c3bf6dc64158d37ef039874a9af647896b4b3bc",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_36",
+      "symbol": "gemmini_exact_requant_35_kernel",
+      "changed": false,
+      "candidate_sha256": "cf5415ddca9343f8f056ccf3d38c7942b926e139100ee54c248c7112cd31a919",
+      "control_sha256": "cf5415ddca9343f8f056ccf3d38c7942b926e139100ee54c248c7112cd31a919",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_37",
+      "symbol": "gemmini_exact_requant_36_kernel",
+      "changed": false,
+      "candidate_sha256": "941e7fe7964e5138d6b0040a0094495424e7535a829032398a3c02aaace41018",
+      "control_sha256": "941e7fe7964e5138d6b0040a0094495424e7535a829032398a3c02aaace41018",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_38",
+      "symbol": "gemmini_exact_requant_37_kernel",
+      "changed": true,
+      "candidate_sha256": "dd128a1948f9422c7c3f8af3a9e20011a66b8bf602bb75c2e3c1c8f83f8e1601",
+      "control_sha256": "b81144ddd6b567e1d1f15b1a177aa99eae1710b3ed684c7ae382fe06c0399deb",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_39",
+      "symbol": "gemmini_exact_requant_38_kernel",
+      "changed": false,
+      "candidate_sha256": "702ec98ed52868683c2e267af61722e89d343cc969c0057e539308d59b5c5fea",
+      "control_sha256": "702ec98ed52868683c2e267af61722e89d343cc969c0057e539308d59b5c5fea",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_40",
+      "symbol": "gemmini_exact_requant_39_kernel",
+      "changed": false,
+      "candidate_sha256": "e9a94632d6998738e18f1d10675b6216b3c980d48503169e0f60e8d42561ee1d",
+      "control_sha256": "e9a94632d6998738e18f1d10675b6216b3c980d48503169e0f60e8d42561ee1d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_41",
+      "symbol": "gemmini_exact_requant_40_kernel",
+      "changed": true,
+      "candidate_sha256": "2af2df9053bbb52ba61642b5aa832f70790e9f96987a1b6da8195f2906daa5ce",
+      "control_sha256": "5fc68d57a0de4ba4b783564f1d9f6af5111674831f66ae3e247b11183aa78327",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_42",
+      "symbol": "gemmini_exact_requant_41_kernel",
+      "changed": false,
+      "candidate_sha256": "87c70f25e56ef72cc14d9c46a520078b6d39d486e78fc8b050ce1705a20c3792",
+      "control_sha256": "87c70f25e56ef72cc14d9c46a520078b6d39d486e78fc8b050ce1705a20c3792",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_43",
+      "symbol": "gemmini_exact_requant_42_kernel",
+      "changed": false,
+      "candidate_sha256": "1ed346063145d28801d793db4b9ddf7cb41e0bf6548c42a74bf01669be4fe9f7",
+      "control_sha256": "1ed346063145d28801d793db4b9ddf7cb41e0bf6548c42a74bf01669be4fe9f7",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_44",
+      "symbol": "gemmini_exact_requant_43_kernel",
+      "changed": false,
+      "candidate_sha256": "d070b39c3a595d28505ee3902442cbea1ff3202964eee0d2cadda83179defa2b",
+      "control_sha256": "d070b39c3a595d28505ee3902442cbea1ff3202964eee0d2cadda83179defa2b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_45",
+      "symbol": "gemmini_exact_requant_44_kernel",
+      "changed": false,
+      "candidate_sha256": "d03c49cf92a731b9758f3a7876f27aa29258a1f2893fb9e95a93b36e4fa1a83b",
+      "control_sha256": "d03c49cf92a731b9758f3a7876f27aa29258a1f2893fb9e95a93b36e4fa1a83b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_46",
+      "symbol": "gemmini_exact_requant_45_kernel",
+      "changed": false,
+      "candidate_sha256": "e251fa42f8201e595017462503f371c3ad89e3de5e9af664b0782ea00c866332",
+      "control_sha256": "e251fa42f8201e595017462503f371c3ad89e3de5e9af664b0782ea00c866332",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_47",
+      "symbol": "gemmini_exact_requant_46_kernel",
+      "changed": false,
+      "candidate_sha256": "9cbdd36b51c1ca9f3c52241c9e24b933986a3e5066b039b992d8e6c080283ba6",
+      "control_sha256": "9cbdd36b51c1ca9f3c52241c9e24b933986a3e5066b039b992d8e6c080283ba6",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_48",
+      "symbol": "gemmini_exact_requant_47_kernel",
+      "changed": false,
+      "candidate_sha256": "a11e0c00c0e638b82b6d8f6bd8271e7aa9f872ff2fe01811939cd0be34ddb73d",
+      "control_sha256": "a11e0c00c0e638b82b6d8f6bd8271e7aa9f872ff2fe01811939cd0be34ddb73d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_49",
+      "symbol": "gemmini_exact_requant_48_kernel",
+      "changed": false,
+      "candidate_sha256": "16baf0688ff3445ecafd2305e1c0940f45629acec711a480dd89a20a90b9a3be",
+      "control_sha256": "16baf0688ff3445ecafd2305e1c0940f45629acec711a480dd89a20a90b9a3be",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_50",
+      "symbol": "gemmini_exact_requant_49_kernel",
+      "changed": false,
+      "candidate_sha256": "08de1fbaaeb91430c801250b088f63183ac2511723801e7080d0312bc303be7c",
+      "control_sha256": "08de1fbaaeb91430c801250b088f63183ac2511723801e7080d0312bc303be7c",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_51",
+      "symbol": "gemmini_exact_requant_50_kernel",
+      "changed": false,
+      "candidate_sha256": "2db2e3d42d8f3df2516abf8e039279852e47848bea98b7f83ff72fa27c83f494",
+      "control_sha256": "2db2e3d42d8f3df2516abf8e039279852e47848bea98b7f83ff72fa27c83f494",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_52",
+      "symbol": "gemmini_exact_requant_51_kernel",
+      "changed": false,
+      "candidate_sha256": "b84d4feecf7cee03ca6c861aa2d7638708dc1a54fce0662b1b5a88d3c4153335",
+      "control_sha256": "b84d4feecf7cee03ca6c861aa2d7638708dc1a54fce0662b1b5a88d3c4153335",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    }
+  ],
+  "unchanged_other_18_device_contracts": true,
+  "controlled_link": {
+    "schema": "controlled_compact_weight_prefetch_final_link_v1",
+    "control_job": 1897,
+    "control_cycles": 38468933,
+    "control_elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "candidate_elf_sha256": "5b1d3f1641e9aab4e1b899ddea7aee7d10352daaa5d5e5fb5f6727c39fe5cc45",
+    "original_control_relinked_byte_exact": true,
+    "baseline_relink_argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+      "-O2",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-nostdlib",
+      "-nostartfiles",
+      "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x84200000",
+      "-Wl,--defsym,MERLIN_STACK_BYTES=0x1000000",
+      "-T",
+      "/scratch/agustin/tmp/merlin-resnet-qualified-runtime-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model_call.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/merlin_model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model_main.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/mlir_rt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/crt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/console.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/libc_min.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/malloc.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/weights_blob.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/device_catalog/guarded_mean_mixed.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/device/device_catalog_shim.o",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/h14_reduction_residency/control_relink.elf"
+    ],
+    "candidate_link_argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+      "-O2",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-nostdlib",
+      "-nostartfiles",
+      "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x84200000",
+      "-Wl,--defsym,MERLIN_STACK_BYTES=0x1000000",
+      "-T",
+      "/scratch/agustin/tmp/merlin-resnet-qualified-runtime-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model_call.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/merlin_model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model_main.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/mlir_rt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/crt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/console.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/libc_min.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/malloc.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/weights_blob.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/device_catalog/guarded_mean_mixed.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/device/device_catalog_shim.o",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model.elf"
+    ],
+    "host_and_runtime_and_weights_object_pins": {
+      "model_call.o": {
+        "control_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "candidate_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "identical": true
+      },
+      "merlin_model.o": {
+        "control_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "candidate_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "identical": true
+      },
+      "model_main.o": {
+        "control_sha256": "478c17d41496743c4821450b8af13591834b49c2483dde2e4350bec89b5b2014",
+        "candidate_sha256": "478c17d41496743c4821450b8af13591834b49c2483dde2e4350bec89b5b2014",
+        "identical": true
+      },
+      "mlir_rt.o": {
+        "control_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "candidate_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "identical": true
+      },
+      "crt.o": {
+        "control_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "identical": true
+      },
+      "console.o": {
+        "control_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "identical": true
+      },
+      "libc_min.o": {
+        "control_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "candidate_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "identical": true
+      },
+      "malloc.o": {
+        "control_sha256": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+        "candidate_sha256": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+        "identical": true
+      },
+      "model.o": {
+        "control_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "candidate_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "identical": true
+      },
+      "weights_blob.o": {
+        "control_sha256": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+        "candidate_sha256": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+        "identical": true
+      },
+      "device/device_catalog_shim.o": {
+        "control_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "candidate_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "identical": true
+      },
+      "host_llvm/model.linked.ll": {
+        "control_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "candidate_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "identical": true
+      },
+      "host_llvm/model.ll": {
+        "control_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "candidate_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "identical": true
+      },
+      "host_llvm/model.native.ll": {
+        "control_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "candidate_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "identical": true
+      }
+    },
+    "normal_build_elf_sha256": "54637fe98bbb62ad87212bc04afca4d9ee01574cd80d715400f66375168e37ba",
+    "normal_build_source_catalog_sha256": "5773ab108d36734a17e6796d2ce4ec32c71b7685d91b9aa714109ff1d3cd11e5",
+    "actual_selected_device_aggregate_sha256": "8ebf8482cf3a6d1fa579e1ce310a0df3824af03933a40c445aaefec8b2e9faa8",
+    "actual_selected_device_aggregate_byte_identical_normal_build": true,
+    "host_drift_scope": "Normal build preserves capture/fresh/prepared/catalog-source bytes, but actualhostLLVM changed under presentcompilerrecipe. Preserve that fresh qualification separately; controlled final link retains exact1897host/runtime/weights/harness and uses its unchangedsourceABI with newlycompiledcatalog.",
+    "retained_control_build_marker": "8780640a6c31",
+    "marker_scope": "Baseline marker retained because harness object is exact control. Unique finalELFSHA and complete selectedobject pins identify candidate; marker alone is not candidateidentity.",
+    "nofsm_status": "pass"
+  },
+  "controlled_link_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/controlled_link_receipt.json",
+    "sha256": "90e88ba5763787b453c910225ffc5f1afd207e32551d13774954682ca455ce41"
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "native_pins": {
+    "validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/native_validation.json",
+      "sha256": "d276a3f427707714771efc43a3b29a9c38072add3022bf93df3046110e94cd3d"
+    },
+    "output": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/host/output.npy",
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+    },
+    "host_object": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/host/model.o",
+      "sha256": "05fb8d7b38c397db99fd791893b9bbd92ad56f5d17e8f1dcca93fcb55ce2eff9"
+    }
+  },
+  "strict_spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "5b1d3f1641e9aab4e1b899ddea7aee7d10352daaa5d5e5fb5f6727c39fe5cc45",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10080972",
+      "METRIC build_hash 8780640a6c31",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/spike.log",
+    "spike_console_sha256": "4a64f71023b56108d21e9ea2d3366d0e8522c582b00ca4c4abaa034a157a2c1b",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "strict_spike_pins": {
+    "validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/spike_validation.json",
+      "sha256": "2618bbecd4f30abc9552146f6cefa58fca768ab347aebb1677d3d098db57c82c"
+    },
+    "log": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/spike.log",
+      "sha256": "4a64f71023b56108d21e9ea2d3366d0e8522c582b00ca4c4abaa034a157a2c1b"
+    }
+  },
+  "original_golden": {
+    "path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+  },
+  "nofsm_audit": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch_controlled_link/build_direct/model.nofsm_audit.json",
+    "sha256": "06648bc5c5b25e2abeb65b197dc9dfd4edcf52f9d9c3bfc59ab6d081cee90a2c"
+  },
+  "source_bundle_closure": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/h14_reduction_residency/bundle_source_closure.json",
+    "sha256": "282aec799b04b3a4f9ce7260f39177a7f01007421d1a915ab38f913e099e1d78"
+  },
+  "capsule_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/docs/perf_records/compact_weight_prefetch_capsule.json",
+    "sha256": "3e41c6d4d9cf829de94d58322ecea333a317800f716848bb05b6dc52e3c04068"
+  },
+  "fresh_normal_build": {
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch/build_direct/model.elf",
+      "sha256": "54637fe98bbb62ad87212bc04afca4d9ee01574cd80d715400f66375168e37ba"
+    },
+    "native_validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch/native_validation.json",
+      "sha256": "d276a3f427707714771efc43a3b29a9c38072add3022bf93df3046110e94cd3d"
+    },
+    "spike_validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_compact_weight_prefetch/spike_validation.json",
+      "sha256": "51b0c18877402872a1e1fbac7454b1a530281ccf6c77960d6a7fe122564e044a"
+    },
+    "source_and_catalog_bytes_equal_control": true,
+    "selected_device_aggregate_identical_controlled_link": true,
+    "host_object_equal_control": false,
+    "scope": "Fresh normal build successfully compiles/executes selectedcatalog/all1000original outputs; changedhostcode under presentcompilerrecipe is preserved separately. Hardware arm uses frozen1897hostobject instead."
+  },
+  "scope": "Uninstrumented controlled final link of exact1897 host/runtime/weights/harness plus actual normal-build selectedcatalog; original output contract and all existing nonselected implementations unchanged. Retained baseline buildmarker is not candidateidentity; finalELFSHA is authoritative.",
+  "metric_scope": "Capsule gain6.87% only; strictSpikecounter10080972 is functionalretiredinstructions, no newwholehardware cycle claim.",
+  "outcome": "Qualified for ONE stockFireSim comparison against1897",
+  "hardware_status": "not yet submitted",
+  "token_usage_available": false,
+  "token_scope": "Root retains owned-thread counters separately; no exclusive peroptimization attribution"
+}

@@ -69,6 +69,47 @@ All other kernel, adapter, host, runtime and parameter objects must remain
 identical. Selection stays explicit until the full original numeric gates and
 stock hardware comparison close.
 
+The complete candidate now passes native and strict RV64GC Spike checks against
+all 1,000 original output words, with zero FSM instructions. Five existing
+compact convolution kernels change; all other 47 unary kernels, 52 adapters,
+source proofs and other device implementations retain their control bytes.
+The controlled final link preserves every host, runtime, weight and harness
+object from 1897. Its ELF SHA is
+`5b1d3f1641e9aab4e1b899ddea7aee7d10352daaa5d5e5fb5f6727c39fe5cc45`.
+Its retained baseline harness marker identifies the frozen harness only.
+
+The fresh normal compiler build also passes the complete numeric gate and emits
+the same selected device aggregate. Its host bufferization order differs despite
+identical captured, prepared and catalog source bytes. The cause is unknown;
+that fresh ELF is retained separately. The hardware comparison uses the frozen
+1897 host object to isolate the device change. Complete pins and scope are in
+[compact_weight_prefetch_whole_qualification.json](perf_records/compact_weight_prefetch_whole_qualification.json).
+
+## Current stock profile
+
+Job 1899 profiles the exact 1874 implementation. Its 70 primitive intervals and
+host gaps conserve 39,235,729 forward cycles. Instrumented whole timing is
+39,236,274 cycles, 34,995 above the uninstrumented 1874 control. These intervals
+do not describe the newer 1886 or 1897 implementations.
+
+| Interval class | Actual 1899 cycles | Reference 1876 cycles |
+| --- | ---: | ---: |
+| Pointwise | 11,344,741 | 9,907,412 |
+| Direct convolution | 11,971,291 | 8,723,089 |
+| Residual | 5,471,537 | 2,192,393 |
+| Pooled stem | 1,447,500 | 1,083,057 |
+| Classifier | 478,845 | 429,781 |
+| Host gaps and tail | 8,521,815 | 51,717 |
+
+The largest host gaps precede the stem (4,016,144 cycles), matmul 26
+(1,992,494), matmul 49 (962,283) and matmul 14 (615,348). They include every
+intervening CPU operation and timer overhead. They do not identify an individual
+packing or readout operation's cost. Reference inputs, weights, quantization and
+timing boundaries differ, so these comparisons locate work to investigate
+without asserting causal savings. All 54 geometry pairs, 70 actual calls and
+hardware/source pins are in
+[q1013_1874_current_profile_alignment.json](perf_records/q1013_1874_current_profile_alignment.json).
+
 ## Reusable optimization lessons
 
 Complete residency and fewer transfer commands can serialize useful overlap.
