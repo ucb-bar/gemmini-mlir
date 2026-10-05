@@ -24,7 +24,7 @@ Full 3136x64x64 measurements use identical i8 bias/scale/ReLU semantics:
 | Prefetch bm4 | 94,304 | Pending job 1736 |
 | Prefetch bm8 | 96,414 | Not submitted |
 | Prefetch with separate banks, bm8 | 91,250 | **92,101 (job 1733)** |
-| Prefetch with separate banks, bm1 | Full shape not run | Pending job 1734 |
+| Prefetch with separate banks, bm1 | Full shape not run | **53,624 (job 1734)** |
 
 Job 1733 is DONE with all 200,704 outputs and guard bytes passing, exact ELF and bitstream identity verified. Its 12.50% reduction (1.143x speedup) reproduces the GSIM gain on hardware. These i8 epilogue measurements do not establish the performance of the current upstream catalog's i32-output schedule; that needs its own measurement or a proven epilogue fusion.
 
@@ -37,3 +37,7 @@ The automatic scheduler needs an explicit lifetime for each A and accumulator sl
 ## Device compilation observation
 
 LLVM object disassembly has substantial stack traffic in these generated kernels. Static counts over the entire function (including setup/drain, so not dynamic performance attribution): baseline bm16 1527 instructions/108 stack accesses; prefetch bm4 1447/150; prefetch bm8 2623/199; banked bm1 458/71. The bm4 prologue reserves416 stack bytes. Device compilation currently uses clang `-O2`. These counts justify inspecting register allocation and constant-descriptor lifetimes before assuming the remaining gap is purely DMA/array latency. A future automatic scheduler should report hot-loop spill counts and instruction footprint alongside Gemmini primitive counts; static whole-function counts alone cannot establish the cause of stalls.
+
+## Bank-separated bm1 result
+
+Job 1734 completed with all 200,704 values and guard bytes passing: **53,624 kernel cycles**, a 49.05% reduction versus baseline and 6.87% above the 50,176-cycle array compute floor. The actual simulator ELF and bitstream match the committed identities. Small output blocks expose overlap effectively on this exact geometry despite less stationary-weight reuse. The final ELF has zero FSM instructions. This does not yet establish the same gain for the upstream i32-output catalog or other K values.
