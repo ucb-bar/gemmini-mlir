@@ -24,6 +24,7 @@ fixture, not a whole-model speedup.
 | --- | --- | ---: | ---: |
 | Merlin exact ResNet host quantization packets | Stock1853→1886, whole model |40,479,548→38,603,949|1,875,599;4.6334%|
 | Merlin Tiny scalar pointwise packets | Stock1846→1880, whole model |569,151,067→531,072,370|38,078,697;6.6904%|
+| Merlin exact early-saturation/eight-lane readout; OOT ABI binding | Stock1874→1900, ResNet whole model |39,201,279→37,946,541|1,254,738;3.20%|
 | OOT resident/banked transfers | Stock1849→1853, ResNet whole model |42,269,808→40,479,548|1,790,260;4.235%|
 | OOT banked residual added to transfer control | Stock1853→1874, ResNet whole model |40,479,548→39,201,279|1,278,269;3.158%|
 | OOT full-reduction convolution stripes | Stock1853→1878, ResNet whole model |40,479,548→39,754,283|725,265;1.792%|
@@ -32,6 +33,7 @@ fixture, not a whole-model speedup.
 
 Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.json),
 [Tiny host](perf_records/tiny_pointwise_packet_firesim.json),
+[exact readout](perf_records/firesim1900_resnet_sat8_readout_verified.json),
 [transfer](perf_records/resnet_transfer_command_policy_firesim.json),
 [residual composition](perf_records/resnet_transfer_residual_composed_firesim.json),
 [stripes](perf_records/resnet_resident_stripe_policy_firesim.json),
@@ -39,8 +41,10 @@ Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.js
 [Tiny device capsule](perf_records/tiny_resident_a_prefetch_gsim.json).
 
 The Tiny device alternative also passes the normal full-model original-output and zero-FSM gates.
-Its first build selects one contraction. Selection across equivalent contractions and stock
-whole-model timing are separate gates, currently being worked on.
+Its first build selects one contraction. The expanded44-binding normal and controlled builds
+also pass all original native/strict target output gates. Stock1911 measures the normal build
+with its runtime compiler change;1912 isolates the device schedule with all1880 host/runtime
+objects retained. Both hardware outcomes are pending. [Family](tiny-calibrated-family-20261005.md).
 
 Rejected optimizations remain recorded. In particular, the complete Smol attention-head gamma
 candidate takes3,077,601,494stockcycles versus2,618,580,085controlcycles(17.53% slower), despite
@@ -48,7 +52,7 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 
 ## Remaining gap and accounting
 
-Current verified whole-model champions are ResNet38,468,933cycles and Tiny531,072,370cycles.
+Current verified whole-model champions are ResNet37,946,541cycles and Tiny531,072,370cycles.
 Smol has full original target correctness; stock1906baseline cycles are pending. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.

@@ -6,7 +6,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, residual prefetch and complete-input convolution stripes | 38,468,933 (1897) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned. Single run,0.350% below prior1886 best | [1897](perf_records/firesim1897_resnet_stripe_composition_verified.json) |
+| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, residual prefetch and exact early-saturation/eight-lane readout | 37,946,541 (1900) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned. 3.20% below matched1874 control; separate from the1897 stripe arm | [1900](perf_records/firesim1900_resnet_sat8_readout_verified.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, two-lane host pointwise packets, eight ordered contraction outputs/K2, cached-A B-prefetch and fresh writer ownership | 531,072,370 (1880) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1880](perf_records/tiny_pointwise_packet_firesim.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | Qualified baseline admitted as stock1906; hardware cycles pending | Native and actual RV64GC target **all1,600 original words bitexact**, zero gate failures. Original atol=0.03125/rtol=0.02 unchanged. Normal API rebuild has an identical complete loaded image except its diagnostic marker | [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [1906 admission](perf_records/smol_first_exact_stock_baseline_admission.json) |
 
@@ -125,7 +125,7 @@ Original1,000 whole native+strictSpike words remain exact. Stock1878 verifies39,
 The independently qualified stripe+transfer+residual composition now verifies38,468,933cycles
 in stock1897,1.868% below1874 and0.350% below1886(single-run evidence);
 its host/runtime/startup/weight objects remain identical1874. No additive gain is inferred.
-[Verified new whole-model best](perf_records/firesim1897_resnet_stripe_composition_verified.json).
+[Verified stripe composition](perf_records/firesim1897_resnet_stripe_composition_verified.json).
 [Isolated hardware](perf_records/resnet_resident_stripe_policy_firesim.json).
 [Residency strategy](resident_stripe_conv.md).
 
@@ -180,7 +180,10 @@ hardware admission. Local accuracy does not establish full-model accuracy.
 The generic early-saturation/eight-lane exact integer readout candidate preserves every
 original ResNet output in native and strict target execution. Only two CPU adapters change;
 the unmodified control link reproduces verified1874 byte for byte. Whole retired instructions
-fall10,222,806→9,389,018; stock1900 is admitted with actual numeric/noFSM/ELF/hardware pins. No whole hardware-cycle gain is claimed before the measurement.
+fall10,222,806→9,389,018. Stock1900 now verifies37,946,541cycles versus the matched1874
+control39,201,279:1,254,738cycles(3.20%) saved, all1,000 original words exact with staged
+ELF/stock pins closed. This is the current whole-model best; it does not include1897 stripes.
+[Verified readout hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json).
 
 The following narrative retains the earlier experiment sequence; the table above is current.
 
