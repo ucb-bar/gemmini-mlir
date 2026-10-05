@@ -1,0 +1,19 @@
+{
+  "schema": "incomplete_firesim_observation_v1",
+  "job_id": 1861,
+  "scope": "Provisional UART counter, NOT accepted performance result; missing actual staging observation after collector lifecycle gap.",
+  "accepted": false,
+  "provisional_uart_cycles": 39201279,
+  "source_elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/build_direct/model.elf",
+  "source_elf_sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2",
+  "uart": "/scratch/firesim_queue/jobs/1861/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "1efcf3483e5e7cb4a9107509acb23f1d345282e5f66e7c45b3e77c29bee34e56",
+  "missing": [
+    "actual staged bitstream hash",
+    "actual staged ELF hash"
+  ],
+  "configured_hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "collector_error": "Traceback (most recent call last):\n  File \"/scratch/agustin/tmp/firesim-golden-recovery-20261005/collect_probe.py\", line 31, in <module>\n    elf_check=json.loads(elf_receipt.read_text())\n                         ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1029, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/scratch/agustin/tmp/firesim-golden-recovery-20261005/job1861_staged_elf_check.json'\n",
+  "remedy": "Repeat exact immutable artifact with detached identity collector before performance promotion.",
+  "retained_deploy_overlay_elf_sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2"
+}
