@@ -135,6 +135,15 @@ class ConfigStOp(_GemminiOp):
     def verify_(self) -> None:
         if self.a("acc_act") not in (0, 1):
             raise VerifyException("gemmini.config_st: `acc_act` must be NO_ACTIVATION or RELU")
+        for key,bits in (("pool_stride",2),("pool_size",2),("pool_out_dim",8),
+                         ("porows",8),("pocols",8),("orows",8),("ocols",8),
+                         ("upad",2),("lpad",6)):
+            value=int(self.a(key,0))
+            if not 0<=value<(1<<bits):
+                raise VerifyException(f"gemmini.config_st: {key} exceeds its hardware field")
+        if self.a("pool_stride",0) and any(self.a(k,0)<=0 for k in
+                ("pool_size","pool_out_dim","porows","pocols","orows","ocols")):
+            raise VerifyException("gemmini.config_st: enabled pooling requires complete geometry")
 
 
 @irdl_op_definition

@@ -29,7 +29,9 @@ def _encoded(op: G._GemminiOp) -> tuple[int, int | None, int] | None:
                              load_id=a("load_id"))
     if isinstance(op, G.ConfigStOp):
         return isa.config_st(stride=a("stride"), acc_act=a("acc_act"),
-                             acc_scale=a("acc_scale"))
+                             acc_scale=a("acc_scale"),
+                             **{key:a(key,0) for key in ("pool_stride","pool_size","pool_out_dim",
+                                 "porows","pocols","orows","ocols","upad","lpad")})
     if isinstance(op, G.MvinOp):
         return isa.mvin(local_addr=a("local"), cols=a("cols"),
                         rows=a("rows"), load_id=a("load_id"))

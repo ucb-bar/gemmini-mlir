@@ -71,10 +71,91 @@ maxpool with negative-infinity padding after ReLU. A future fused binder must
 prove that structure and each valid window before replacing padding by the
 hardware's zero contribution.
 
-Hardware pooling is **not enabled** here. Stock StoreController pooling indexes
+The i32 packed-stem path above leaves hardware pooling disabled. Stock StoreController pooling indexes
 accumulator rows as `base + row * ocols + col` and forbids block MVOUTs while
 pooling. The current accumulator tile order interleaves channel tiles and only
 retains one output row, so its layout cannot be passed directly to pool-on-store.
 An explicit spatial accumulator-layout abstraction, with checked row/channel
 strides and lifetime/bank bounds, is needed before pooling is safely composable.
 The scalar threshold census alone is not a hardware pool correctness proof.
+
+## Optional fused hardware-pooling implementation
+
+The new `golden_stem_pool.py` path implements an explicit spatial accumulator
+layout: for one 16-channel block, convolution pixel `(row,col)` occupies
+`acc_base + row * conv_width + col`. It keeps up to nine convolution rows for
+four pooled output rows. The full stem uses 1,008 of 1,024 accumulator rows and
+15,008 of 16,384 scratchpad rows. All fourteen weight K blocks remain cached;
+all A panels for a band are loaded once and shared by its channel blocks.
+
+Adjacent bands recompute their shared convolution row. This bounded tradeoff
+uses 125 convolution rows instead of 112: **49,000 computes**, **6,125 A MVINs**,
+and **14 B MVINs**. The array issue floor is 784,000 cycles. This schedule is not
+the reference's 43,904-compute schedule; no equality claim is made. It avoids
+all host stem intermediates and spills.
+
+For the full shape, the first four pooled rows use convolution rows 0 through 7
+with top padding one; the next four use rows 7 through 15 with no top padding.
+The final band uses rows 103 through 111. Pool output is exactly 56x56. Each
+hardware command emits at most two pooled rows, keeping its nine-pixel window
+visits within the 1,024-row command tracking limit. Phase proofs/tests also cover
+odd convolution extents, bottom/right padding, and channel tails.
+
+Stock Gemmini's reservation station conservatively models a pool command as
+reading from its starting accumulator address to that bank's end. Bands may
+cross banks, so an explicit fence drains stores before reusing a channel block.
+There are 56 such phase drains for the full stem. A future schedule can reduce
+these costs only after proving the relevant bank lifetimes.
+
+### Exact source binding
+
+`stem_pool_binding.py` validates the original complete flatten/reshape/transpose
+layout, ordered scalar epilogue, 3x3 stride-two affine pool maps, maximum reducer,
+negative-infinity padding/identity, and quantizer. The existing complete output
+transition proof validates both f32 multiplications, captured zero bias, ReLU,
+and final reciprocal/rounding for every possible integer accumulator value.
+All 64 channels pass for this capture. ReLU makes every valid pool input
+nonnegative; every window contains a valid pixel, so the hardware's zero pad
+has the same maximum as the source's negative-infinity pad. Monotonicity then
+permits max to exchange with the exactly proved quantizer.
+
+`stem_pool_bundle.py` pins source, manifest, parameter blob, and bias payload;
+nonzero biases, failed threshold proofs, or unmatched structures are refused.
+Use `tests/fused_whole_model_probe.py --pooled-stem` for the complete composition.
+
+### Device compilation fixes exposed by pooling
+
+The golden typed primitive lowering had discarded the pool fields of
+`gemmini.config_st`, even though those fields existed in the dialect. It now
+forwards every field exactly; verification rejects bit-field overflow and
+incomplete enabled geometry. A regression test compares the complete encoded
+command against the ISA encoder.
+
+The device compiler now uses `-mcmodel=medany`. Pool configuration constants
+introduced LLVM literal pools whose absolute `R_RISCV_HI20` relocations could not
+link at the stock 0x80000000 image base under the previous default code model.
+The PC-relative model fixes those relocations without changing the ISA.
+
+### Completed validation
+
+Small GSIM H17/W35/Cout19 with phase overlap, odd height, and channel tails:
+17,218 kernel cycles, complete numerical output and guard pass. Full-size GSIM
+uses the original sequential f32 dequantization, ReLU, floating maximum pool,
+and reciprocal/rounding as an independent oracle.
+
+The source-bound full model already passes native and actual Gemmini Spike for
+all 1,000 outputs exactly, with zero descriptor mismatches and a clean final
+no-FSM audit. It retires **777,097,851 instructions**, down from 908,532,797 for
+the packed i32 stem with host pooling. This is not a FireSim cycle measurement.
+ELF `out/whole_requant_pool/build_direct/model.elf`, SHA256
+`99267af7a1c66e6dc450fd7a21ee093c7b84d3021a11cb36a85a568d7e34dfa3`.
+
+Full-shape GSIM completed successfully: **1,333,146 kernel cycles**, all
+**200,704 outputs** and the guard pass against the original sequential-f32
+source oracle. Probe ELF SHA256
+`e62f6ea6a9ad07ab15edc8c74f2ebc2501e77efc2064bb154bceb89d956c0da6`;
+final no-FSM audit passes. An additional odd-width/height, channel-tail GSIM
+probe using the actual captured scales passes at 17,122 cycles. The full shape
+also passes strict RV64GC+Zicntr Spike (405,314 kernel retired instructions).
+The whole-model pooled variant is ready for stock FireSim measurement; no
+whole-model FireSim improvement is claimed from these functional gates.

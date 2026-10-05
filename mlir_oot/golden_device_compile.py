@@ -37,7 +37,7 @@ def compile_module(module, llvm_bin: Path, workdir: Path) -> dict:
         [str(llvm_bin / "mlir-translate"), "--mlir-to-llvmir", str(llvm_mlir),
          "-o", str(llvm_ir)],
         [str(llvm_bin / "clang"), "--target=riscv64-unknown-elf",
-         "-march=rv64gc", "-mabi=lp64d", "-O2", "-c", str(llvm_ir),
+         "-march=rv64gc", "-mabi=lp64d", "-mcmodel=medany", "-O2", "-c", str(llvm_ir),
          "-o", str(obj)],
     ]
     for command in commands:

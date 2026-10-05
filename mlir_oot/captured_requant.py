@@ -11,10 +11,10 @@ def scalar(value):
     return c.properties.get('value',c.attributes.get('value')).value.data
 
 
-def inspect_chain(op):
+def inspect_chain(op, *, allow_maxpool=False):
     dims=match_integer_gemm(op)
     if dims is None:raise ValueError('not signed integer GEMM')
-    v=op.results[0];scales=[];bias=None;relu=False;operations=[];layouts=[];converted=False
+    v=op.results[0];scales=[];bias=None;relu=False;operations=[];layouts=[];converted=False;pool_proof=None
     while True:
         uses=list(v.uses)
         if len(uses)!=1:raise ValueError('fanout before quantization')
@@ -26,7 +26,11 @@ def inspect_chain(op):
             if bias is None or len(scales)!=2:raise ValueError('expected two dequant scales and one bias')
             if scalar(u.operands[2])!=0:raise ValueError('nonzero output zero point')
             if u.properties['quant_min'].value.data!=-128 or u.properties['quant_max'].value.data!=127:raise ValueError('non-int8 quant limits')
-            return dict(dimensions=dims,scales=scales,bias=bias,reciprocal=1.0/f32(scalar(u.operands[1])),relu=relu,operations=operations,layouts=layouts,quantize=u)
+            return dict(dimensions=dims,scales=scales,bias=bias,reciprocal=1.0/f32(scalar(u.operands[1])),relu=relu,operations=operations,layouts=layouts,quantize=u,pool=pool_proof)
+        if name=='tensor.insert_slice' and allow_maxpool:
+            if not relu or bias is None or len(scales)!=2 or pool_proof is not None:raise ValueError('pool needs proven ReLU epilogue')
+            from .stem_pool_binding import inspect_pool
+            pool,pool_proof=inspect_pool(u,v);operations.append(pool);v=pool.results[0];continue
         if name in ('tensor.collapse_shape','tensor.expand_shape','linalg.transpose'):
             if name.startswith('tensor.') and len(u.operands)!=1:raise ValueError('dynamic layout is not supported')
             layouts.append(u);v=u.results[0];continue
