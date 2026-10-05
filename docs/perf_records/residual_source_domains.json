@@ -1,0 +1,903 @@
+{
+  "schema": "source_bound_residual_domain_experiment_v1",
+  "source": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/linalg.mlir",
+  "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "proof_module_sha256": "db393dcecbd029cda9d3120b8c921fe1022a7f521fb0971beb8d958c207c7f19",
+  "engine_sha256": "4502867fae35e827608239675ff75ebe0f0e2a35ea5e3b8ce2ac4addc090b357",
+  "results": [
+    {
+      "accepted": [
+        {
+          "p": 2609,
+          "q": 2180,
+          "scale": 0.00037060913746245205,
+          "verified_target_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf",
+          "chunks": 39
+        }
+      ],
+      "integer_pairs": 10895,
+      "interval_rejected": 10893,
+      "interval_survivors": 2,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        }
+      ],
+      "pairs": 65536,
+      "source": {
+        "lhs_scale": 0.011258588172495365,
+        "rhs_scale": 0.00940733402967453,
+        "output_scale": 0.011643771082162857,
+        "relu": true
+      },
+      "source_pairs_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_6",
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "issue_floor_cycles": 1956864
+    },
+    {
+      "accepted": [
+        {
+          "p": 438,
+          "q": 397,
+          "scale": 0.0017099417746067047,
+          "verified_target_sha256": "3104d70eb7a2ffc9fbe5be520a2fe544b8a7cb5f47d286460886009621c10dc6",
+          "chunks": 8
+        }
+      ],
+      "integer_pairs": 1980,
+      "interval_rejected": 1979,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_6",
+              "qparams": {
+                "lhs_scale": 0.011258588172495365,
+                "rhs_scale": 0.00940733402967453,
+                "output_scale": 0.011643771082162857,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 2.645237922668457,
+              "maximum_abs_scaled": 227.18051147460938
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.012846277095377445,
+        "rhs_scale": 0.011643771082162857,
+        "output_scale": 0.017152275890111923,
+        "relu": true
+      },
+      "source_pairs_sha256": "3104d70eb7a2ffc9fbe5be520a2fe544b8a7cb5f47d286460886009621c10dc6",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_10",
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "issue_floor_cycles": 401408
+    },
+    {
+      "accepted": [
+        {
+          "p": 135,
+          "q": 113,
+          "scale": 0.004938124679028988,
+          "verified_target_sha256": "4c19f02a7afd56eabcd2e0e5027a4aac5a18cdb33119fad9b47d52d3f10c130f",
+          "chunks": 3
+        }
+      ],
+      "integer_pairs": 560,
+      "interval_rejected": 559,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_10",
+              "qparams": {
+                "lhs_scale": 0.012846277095377445,
+                "rhs_scale": 0.011643771082162857,
+                "output_scale": 0.017152275890111923,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 3.134726047515869,
+              "maximum_abs_scaled": 182.75860595703125
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.020491356030106544,
+        "rhs_scale": 0.017152275890111923,
+        "output_scale": 0.030738085508346558,
+        "relu": true
+      },
+      "source_pairs_sha256": "4c19f02a7afd56eabcd2e0e5027a4aac5a18cdb33119fad9b47d52d3f10c130f",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_14",
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "issue_floor_cycles": 150528
+    },
+    {
+      "accepted": [
+        {
+          "p": 741,
+          "q": 841,
+          "scale": 0.0009073046967387199,
+          "verified_target_sha256": "42bc1fc4b8906928bf6e82c405fb201c20ebb7208fc8329cbdfebb8bf9585744",
+          "chunks": 13
+        }
+      ],
+      "integer_pairs": 4200,
+      "interval_rejected": 4199,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        }
+      ],
+      "pairs": 65536,
+      "source": {
+        "lhs_scale": 0.02041732147336006,
+        "rhs_scale": 0.023172693327069283,
+        "output_scale": 0.030368776991963387,
+        "relu": true
+      },
+      "source_pairs_sha256": "42bc1fc4b8906928bf6e82c405fb201c20ebb7208fc8329cbdfebb8bf9585744",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_19",
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "issue_floor_cycles": 326144
+    },
+    {
+      "accepted": [
+        {
+          "p": 497,
+          "q": 384,
+          "scale": 0.0015946165658533573,
+          "verified_target_sha256": "d2271e661d3e925e876413b092bcc95e186892f75ff29f13942690b33e12e8b3",
+          "chunks": 8
+        }
+      ],
+      "integer_pairs": 1916,
+      "interval_rejected": 1915,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_19",
+              "qparams": {
+                "lhs_scale": 0.02041732147336006,
+                "rhs_scale": 0.023172693327069283,
+                "output_scale": 0.030368776991963387,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 5.579522132873535,
+              "maximum_abs_scaled": 183.72561645507812
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.03930537775158882,
+        "rhs_scale": 0.030368776991963387,
+        "output_scale": 0.049595169723033905,
+        "relu": true
+      },
+      "source_pairs_sha256": "d2271e661d3e925e876413b092bcc95e186892f75ff29f13942690b33e12e8b3",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_23",
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "issue_floor_cycles": 200704
+    },
+    {
+      "accepted": [
+        {
+          "p": 951,
+          "q": 895,
+          "scale": 0.0006445651524700224,
+          "verified_target_sha256": "748824c22b7a5fdd85e18ad96b0f14b2730d3d813e430b576677e19ad1a8a72f",
+          "chunks": 16
+        }
+      ],
+      "integer_pairs": 4470,
+      "interval_rejected": 4469,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_23",
+              "qparams": {
+                "lhs_scale": 0.03930537775158882,
+                "rhs_scale": 0.030368776991963387,
+                "output_scale": 0.049595169723033905,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 8.918292045593262,
+              "maximum_abs_scaled": 179.82179260253906
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.05269787833094597,
+        "rhs_scale": 0.049595169723033905,
+        "output_scale": 0.0859701856970787,
+        "relu": true
+      },
+      "source_pairs_sha256": "748824c22b7a5fdd85e18ad96b0f14b2730d3d813e430b576677e19ad1a8a72f",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_27",
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "issue_floor_cycles": 401408
+    },
+    {
+      "accepted": [
+        {
+          "p": 329,
+          "q": 257,
+          "scale": 0.0026457731146365404,
+          "verified_target_sha256": "69a5bf390692ba7c564c8d0dba4c9692b4614fea7c47b48abd0ed3c91187fdb0",
+          "chunks": 6
+        }
+      ],
+      "integer_pairs": 1281,
+      "interval_rejected": 1280,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_27",
+              "qparams": {
+                "lhs_scale": 0.05269787833094597,
+                "rhs_scale": 0.049595169723033905,
+                "output_scale": 0.0859701856970787,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 13.093509674072266,
+              "maximum_abs_scaled": 152.30291748046875
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.11005555093288422,
+        "rhs_scale": 0.0859701856970787,
+        "output_scale": 0.12643329799175262,
+        "relu": true
+      },
+      "source_pairs_sha256": "69a5bf390692ba7c564c8d0dba4c9692b4614fea7c47b48abd0ed3c91187fdb0",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_31",
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "issue_floor_cycles": 150528
+    },
+    {
+      "accepted": [
+        {
+          "p": 1129,
+          "q": 1215,
+          "scale": 0.0006969813257455826,
+          "verified_target_sha256": "551352e1c3338744c970991c93a21bdacab258f76fd1aaf198d0be3df7fb9894",
+          "chunks": 19
+        }
+      ],
+      "integer_pairs": 6070,
+      "interval_rejected": 6069,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        }
+      ],
+      "pairs": 65536,
+      "source": {
+        "lhs_scale": 0.10119429230690002,
+        "rhs_scale": 0.10890256613492966,
+        "output_scale": 0.1285998672246933,
+        "relu": true
+      },
+      "source_pairs_sha256": "551352e1c3338744c970991c93a21bdacab258f76fd1aaf198d0be3df7fb9894",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_36",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 238336
+    },
+    {
+      "accepted": [
+        {
+          "p": 432,
+          "q": 419,
+          "scale": 0.0015634848969057202,
+          "verified_target_sha256": "11db0762b06417402eabf41643c9da7603dba058028f270b5ec60239c5ba5de1",
+          "chunks": 8
+        }
+      ],
+      "integer_pairs": 2090,
+      "interval_rejected": 2089,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_36",
+              "qparams": {
+                "lhs_scale": 0.10119429230690002,
+                "rhs_scale": 0.10890256613492966,
+                "output_scale": 0.1285998672246933,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 26.892398834228516,
+              "maximum_abs_scaled": 209.11685180664062
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.13258986175060272,
+        "rhs_scale": 0.1285998672246933,
+        "output_scale": 0.1963055580854416,
+        "relu": true
+      },
+      "source_pairs_sha256": "11db0762b06417402eabf41643c9da7603dba058028f270b5ec60239c5ba5de1",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_40",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 100352
+    },
+    {
+      "accepted": [
+        {
+          "p": 1010,
+          "q": 939,
+          "scale": 0.0007874654838815331,
+          "verified_target_sha256": "58b3cdd0193ffadd94867b418c8ce19272db606333eadae51dc6721ec4472f18",
+          "chunks": 16
+        }
+      ],
+      "integer_pairs": 4690,
+      "interval_rejected": 4689,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_40",
+              "qparams": {
+                "lhs_scale": 0.13258986175060272,
+                "rhs_scale": 0.1285998672246933,
+                "output_scale": 0.1963055580854416,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 33.43228530883789,
+              "maximum_abs_scaled": 170.307373046875
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.21114875376224518,
+        "rhs_scale": 0.1963055580854416,
+        "output_scale": 0.2654820382595062,
+        "relu": true
+      },
+      "source_pairs_sha256": "58b3cdd0193ffadd94867b418c8ce19272db606333eadae51dc6721ec4472f18",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_44",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 200704
+    },
+    {
+      "accepted": [
+        {
+          "p": 497,
+          "q": 310,
+          "scale": 0.0015572881093248725,
+          "verified_target_sha256": "2c664dedddc8959c0c8b0b82a4ea65f0d857bc9f3b0a807145efdcc7982be5e2",
+          "chunks": 7
+        }
+      ],
+      "integer_pairs": 1547,
+      "interval_rejected": 1546,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_44",
+              "qparams": {
+                "lhs_scale": 0.21114875376224518,
+                "rhs_scale": 0.1963055580854416,
+                "output_scale": 0.2654820382595062,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 52.154151916503906,
+              "maximum_abs_scaled": 196.45077514648438
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.4256255626678467,
+        "rhs_scale": 0.2654820382595062,
+        "output_scale": 0.5499241352081299,
+        "relu": true
+      },
+      "source_pairs_sha256": "2c664dedddc8959c0c8b0b82a4ea65f0d857bc9f3b0a807145efdcc7982be5e2",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_48",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 87808
+    },
+    {
+      "accepted": [
+        {
+          "p": 713,
+          "q": 746,
+          "scale": 0.0011189620709046721,
+          "verified_target_sha256": "a988058487db7e10d615cd1b79234f05e99aa3c2506c09b4b89599fbe6d42fb7",
+          "chunks": 12
+        }
+      ],
+      "integer_pairs": 3725,
+      "interval_rejected": 3724,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_48",
+              "qparams": {
+                "lhs_scale": 0.4256255626678467,
+                "rhs_scale": 0.2654820382595062,
+                "output_scale": 0.5499241352081299,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 88.46177673339844,
+              "maximum_abs_scaled": 160.86178588867188
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.5255962014198303,
+        "rhs_scale": 0.5499241352081299,
+        "output_scale": 0.6587926149368286,
+        "relu": true
+      },
+      "source_pairs_sha256": "a988058487db7e10d615cd1b79234f05e99aa3c2506c09b4b89599fbe6d42fb7",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_52",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 150528
+    },
+    {
+      "accepted": [
+        {
+          "p": 844,
+          "q": 883,
+          "scale": 0.0007667999598197639,
+          "verified_target_sha256": "48f27720a89b589488c609af5d68a7e74969dea4789738b585860c2f75d4925e",
+          "chunks": 14
+        }
+      ],
+      "integer_pairs": 4410,
+      "interval_rejected": 4409,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_52",
+              "qparams": {
+                "lhs_scale": 0.5255962014198303,
+                "rhs_scale": 0.5499241352081299,
+                "output_scale": 0.6587926149368286,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 137.66659545898438,
+              "maximum_abs_scaled": 208.96803283691406
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 0.629694938659668,
+        "rhs_scale": 0.6587926149368286,
+        "output_scale": 0.9729844927787781,
+        "relu": true
+      },
+      "source_pairs_sha256": "48f27720a89b589488c609af5d68a7e74969dea4789738b585860c2f75d4925e",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_56",
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "issue_floor_cycles": 175616
+    },
+    {
+      "accepted": [
+        {
+          "p": 1589,
+          "q": 1625,
+          "scale": 0.0004914455348625779,
+          "verified_target_sha256": "6f728794f50a77471d7cd70bc51181fbd86cc0d94fd60596bb2da06933e670ee",
+          "chunks": 26
+        }
+      ],
+      "integer_pairs": 8120,
+      "interval_rejected": 8119,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        }
+      ],
+      "pairs": 65536,
+      "source": {
+        "lhs_scale": 0.8350648283958435,
+        "rhs_scale": 0.8539831638336182,
+        "output_scale": 1.0693517923355103,
+        "relu": true
+      },
+      "source_pairs_sha256": "6f728794f50a77471d7cd70bc51181fbd86cc0d94fd60596bb2da06933e670ee",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_61",
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "issue_floor_cycles": 163072
+    },
+    {
+      "accepted": [
+        {
+          "p": 1149,
+          "q": 1172,
+          "scale": 0.0007054167799651623,
+          "verified_target_sha256": "14a12efd49b8565c61b0ca54b08762cc2832f9269e077d989eac94b6b23f13be",
+          "chunks": 20
+        }
+      ],
+      "integer_pairs": 5855,
+      "interval_rejected": 5854,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_61",
+              "qparams": {
+                "lhs_scale": 0.8350648283958435,
+                "rhs_scale": 0.8539831638336182,
+                "output_scale": 1.0693517923355103,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 216.19815063476562,
+              "maximum_abs_scaled": 202.1768341064453
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 1.0483675003051758,
+        "rhs_scale": 1.0693517923355103,
+        "output_scale": 1.2934430837631226,
+        "relu": true
+      },
+      "source_pairs_sha256": "14a12efd49b8565c61b0ca54b08762cc2832f9269e077d989eac94b6b23f13be",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_65",
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "issue_floor_cycles": 125440
+    },
+    {
+      "accepted": [
+        {
+          "p": 217,
+          "q": 179,
+          "scale": 0.004144782666116953,
+          "verified_target_sha256": "b2388bd5691773239fd911234bed690fa27c7593c2b249bbef1127e971806cf5",
+          "chunks": 4
+        }
+      ],
+      "integer_pairs": 890,
+      "interval_rejected": 889,
+      "interval_survivors": 1,
+      "f32_scales_tested": 1,
+      "domains": [
+        {
+          "minimum": -128,
+          "maximum": 127,
+          "reason": "complete signed-i8 type domain",
+          "path": []
+        },
+        {
+          "minimum": 0,
+          "maximum": 127,
+          "reason": "exact finite DQ+add+ReLU+positive symmetric Q source",
+          "path": [
+            {
+              "operation": "quant_ext.quantize_per_tensor",
+              "region": "quantize_65",
+              "qparams": {
+                "lhs_scale": 1.0483675003051758,
+                "rhs_scale": 1.0693517923355103,
+                "output_scale": 1.2934430837631226,
+                "relu": true
+              },
+              "maximum_abs_pre_relu": 271.06805419921875,
+              "maximum_abs_scaled": 209.5709228515625
+            }
+          ]
+        }
+      ],
+      "pairs": 32768,
+      "source": {
+        "lhs_scale": 1.568028450012207,
+        "rhs_scale": 1.2934430837631226,
+        "output_scale": 1.7433754205703735,
+        "relu": true
+      },
+      "source_pairs_sha256": "b2388bd5691773239fd911234bed690fa27c7593c2b249bbef1127e971806cf5",
+      "scope": "first exact candidate in explicit ratio neighborhood +/-2, coefficients1..32767; no optimality claim",
+      "region": "quantize_69",
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "issue_floor_cycles": 25088
+    }
+  ],
+  "issue_floor_cycles": 4854528,
+  "promotion": false
+}
