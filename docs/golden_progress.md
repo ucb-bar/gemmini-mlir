@@ -20,7 +20,8 @@ regressions, ownership and actual owned-thread counters. The current DeviceRouti
 uses shared calibrated selection for explicitly supplied, source-bound contraction alternatives; it does not invoke shared whole-program search. Five compiler export/selection/build commands now expose eight AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This remains a full-source identity admission gate. The normal build now additionally accepts `--contraction-calibrations` to run the existing shared measured selector per exact source contraction and compile its winner into the real device catalog. Independent full-model native/strict target execution closes all1,241 original i32 outputs and actual final ELF/symbol bindings. Whole-graph search and whole-model costs remain unknown. [Normal build selection](perf_records/golden_calibrated_normal_model_qualification.json). [Binding](perf_records/golden_model_plan_binding_qualification.json).
 
 The first real Tiny source calibration now closes through that normal route: resident-A/B-prefetch
-measures111,885→76,456cycles(31.67%) on a common-address original-input GSIM pair. The complete
+measures111,885→76,456cycles(31.67%) on a common-address synthetic signed-int8 GSIM pair
+with amplitude21 at the source contraction shape. The complete
 normal model retains all155 calls, selecting one source contraction and preserving154 other bindings.
 All256,000 original compiled words, the Torch gate, strict RV64GC Spike and final zero-FSM audit pass.
 A generic Merlin fix preserves different source-bound implementations when their tensor shapes agree.
@@ -28,6 +29,23 @@ This is one selected contraction, not a31.67% whole-model improvement. Expansion
 resource-legal contractions is being qualified before hardware submission.
 [Measured schedule](perf_records/tiny_resident_a_prefetch_gsim.json),
 [normal full model](perf_records/tiny_resident_a_prefetch_whole_spike.json).
+
+The expanded normal native and strict-target builds preserve all256,000 original words and the Torch gate,
+with44 selected source bindings,111 unchanged bindings and five shared implementation bodies.
+Stock1911 is admitted with hardware timing pending. Its normal build also uses the current
+runtime compiler, so its comparison with1880 includes that runtime change. A separate device-only
+comparison is being qualified with every original1880 host/runtime object retained.
+Reusing the one synthetic fixture price across those
+source-equivalent implementations is a calibration assumption; actual model operands, addresses,
+cache state and full-program timing have not been independently timed by that fixture.
+
+Bounded compact-convolution next-K weight prefetch is also now an explicit general OOT option.
+Its original-input matched capsule measures535,839→499,034GSIMcycles(6.87%), all50,176outputs
+and4,096guards exact. An independent5×5/Cin32/Cout19 i32/tail capsule also passes, and47focused
+resource/order/source-policy tests pass. Only five source-qualified device kernels change in
+the new whole arm. Whole-model hardware qualification is separate.
+[Schedule and proof](compact_weight_prefetch_schedule.md),
+[capsule](perf_records/compact_weight_prefetch_capsule.json).
 
 [Infrastructure and optimization ownership](infra_vs_dialect.md) separates correctness/integration
 fixes, portable host performance and target scheduling, with matched measurements for each gain.
@@ -153,6 +171,11 @@ stock1894 control2,618,580,085cycles versus1895 candidate3,077,601,494cycles,17.
 Both preserve all65,536 original output bits and staged identities. Reduced device/readback work
 does not pay for CPU certificate work; this candidate remains disabled.
 [Matched hardware](perf_records/firesim1895_original_attention_head_gamma_verified.json).
+
+A two-digit approximate attention path passes the first head's local tolerance but fails106/1,600
+unchanged original whole-model comparisons in native execution. It is rejected without target or
+hardware admission. Local accuracy does not establish full-model accuracy.
+[Full original gate rejection](perf_records/smol_two_digit_full_native_rejected.json).
 
 The generic early-saturation/eight-lane exact integer readout candidate preserves every
 original ResNet output in native and strict target execution. Only two CPU adapters change;

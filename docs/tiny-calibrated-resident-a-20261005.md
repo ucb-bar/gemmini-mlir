@@ -24,7 +24,7 @@ dispatch, host compilation and source/implementation binding belong in Merlin
 Both linked capsules contain both original compiled kernel objects in identical
 order. Only the call relocation changes. A, B and guarded output buffers have
 identical addresses. Inputs and every expected output are immutable and have
-equal SHA-256 hashes across the pair. The near full range int8 fixture has
+equal SHA-256 hashes across the pair. The deterministic synthetic signed-int8 fixture has
 amplitude 21; every one of 2,048 int32 outputs and 2,048 guard bytes is checked.
 
 | Scope | Control | Resident A + B prefetch | Change |

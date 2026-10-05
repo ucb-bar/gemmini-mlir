@@ -28,7 +28,7 @@ fixture, not a whole-model speedup.
 | OOT banked residual added to transfer control | Stock1853→1874, ResNet whole model |40,479,548→39,201,279|1,278,269;3.158%|
 | OOT full-reduction convolution stripes | Stock1853→1878, ResNet whole model |40,479,548→39,754,283|725,265;1.792%|
 | OOT convolution stripes added to transfer/residual control | Stock1874→1897, ResNet whole model |39,201,279→38,468,933|732,346;1.868%|
-| OOT resident-A/B-prefetch alternative | Tiny original-input common-address GSIM capsule |111,885→76,456|35,429;31.67%|
+| OOT resident-A/B-prefetch alternative | Tiny-shaped synthetic int8/amplitude21 common-address GSIM capsule |111,885→76,456|35,429;31.67%|
 
 Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.json),
 [Tiny host](perf_records/tiny_pointwise_packet_firesim.json),
