@@ -26,11 +26,17 @@ from .no_fsm_audit import audit_elf
 
 
 def _symbol(key: dict) -> str:
-    digest = hashlib.sha256(json.dumps(key, sort_keys=True).encode()).hexdigest()[:16]
+    # Adding an opt-in schedule field must not rename existing default kernels.
+    shape = dict(key["shape"])
+    if shape.get("prefetch_b") is False:
+        shape.pop("prefetch_b")
+    identity = {**key, "shape": shape}
+    digest = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()[:16]
     return "gemmini_golden_" + digest
 
 
-def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool = False) -> tuple[ModuleOp, dict]:
+def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool = False,
+                  prefetch_b: bool = False) -> tuple[ModuleOp, dict]:
     if max_kernels is not None and max_kernels <= 0:
         raise ValueError("max_kernels must be positive")
     source_module = parse_module(source)
@@ -43,7 +49,7 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
         if dims is None:
             continue
         matched_total += 1
-        shape = choose_shape(dims,large_n=large_n)
+        shape = choose_shape(dims,large_n=large_n,prefetch_b=prefetch_b)
         batched = len(op.operands[0].type.get_shape()) == 3
         key = {"batch": dims.batch if batched else 0,
                "shape": asdict(shape), "batched": batched}
@@ -78,6 +84,7 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
                             "dtypes": ["i8", "i8", "i32"]},
                     "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
                     "schedule_policy": "large_n_grouped_b_v1" if large_n else "default",
+                    "prefetch_b_kernels": sum(x["schedule"]["prefetch_b"] for x in kernels.values()),
                     "matched_contractions": matched_total,
                     "covered_contractions": len(bindings),
                     "coverage_complete": len(bindings) == matched_total,
@@ -87,11 +94,13 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
 
 
 def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
-                    *, max_kernels: int | None = None, large_n: bool = False) -> dict:
+                    *, max_kernels: int | None = None, large_n: bool = False,
+                    prefetch_b: bool = False) -> dict:
     # The model compiler may overwrite its prepared path during offload. Keep
     # the exact bytes consumed here so bindings remain independently replayable.
     source_bytes = source_path.read_bytes()
-    module, manifest = build_catalog(source_bytes.decode('utf-8'), max_kernels=max_kernels,large_n=large_n)
+    module, manifest = build_catalog(source_bytes.decode('utf-8'), max_kernels=max_kernels,
+                                     large_n=large_n,prefetch_b=prefetch_b)
     if not manifest["covered_contractions"]:
         raise ValueError("source has no exact integer GEMM contractions")
     receipt = compile_module(module, llvm_bin, workdir)
@@ -105,13 +114,13 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
     return result
 
 
-def merlin_builder(llvm_bin: Path, *, large_n: bool = False):
+def merlin_builder(llvm_bin: Path, *, large_n: bool = False, prefetch_b: bool = False):
     """Compile Merlin's final prepared IR at its pre-offload source boundary."""
     compiler = Path(llvm_bin)
 
     def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
         prepared, workdir = Path(prepared), Path(workdir)
-        compile_catalog(prepared, compiler, workdir,large_n=large_n)
+        compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b)
         return workdir / "device_catalog.json", workdir / "kernel.o"
 
     return build
@@ -156,9 +165,10 @@ def main() -> int:
     ap.add_argument("--max-kernels", type=int,
                     help="compile a partial catalog for debugging; receipt flags incomplete coverage")
     ap.add_argument("--large-n", action="store_true", help="opt in to grouped B loads and short-M A reuse")
+    ap.add_argument("--prefetch-b", action="store_true", help="prefetch K panels into disjoint banks for eligible cached-A kernels")
     args = ap.parse_args()
     report = compile_catalog(args.input, args.llvm_bin, args.workdir,
-                             max_kernels=args.max_kernels,large_n=args.large_n)
+                             max_kernels=args.max_kernels,large_n=args.large_n,prefetch_b=args.prefetch_b)
     print(json.dumps({k: report[k] for k in ("matched_contractions", "covered_contractions",
                                              "coverage_complete", "unique_kernels")}, indent=2))
     return 0

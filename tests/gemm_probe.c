@@ -54,7 +54,9 @@ static struct {
 
 static inline uint64_t cycles(void) {
     uint64_t value;
-    __asm__ volatile ("rdcycle %0" : "=r"(value) :: "memory");
+    /* The bare-metal harness runs in M mode. Read the machine counter so the
+       numeric probe also runs under strict RV64GC without Zicntr. */
+    __asm__ volatile ("csrr %0, mcycle" : "=r"(value) :: "memory");
     return value;
 }
 

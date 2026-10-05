@@ -22,7 +22,7 @@ from .golden_tuning import estimate, tune
 from .tables import rtl_facts as F
 
 
-def choose_shape(dims: IntegerGemm, *, large_n: bool = False) -> Shape:
+def choose_shape(dims: IntegerGemm, *, large_n: bool = False, prefetch_b: bool = False) -> Shape:
     """One shape-based schedule rule shared by selected and model-wide compilation."""
     shape, _ = tune(Shape(dims.m, dims.n, dims.k, output_dtype="i32"))
     shape = replace(shape, reuse_b=shape.bm > 1)
@@ -69,10 +69,17 @@ def choose_shape(dims: IntegerGemm, *, large_n: bool = False) -> Shape:
         except ValueError:
             pass
     shape.validate()
+    if prefetch_b and shape.cache_a:
+        candidate = replace(shape, prefetch_b=True)
+        try:
+            candidate.validate()
+            shape = candidate
+        except ValueError:
+            pass
     return shape
 
 
-def select(source: str, region_id: str, *, large_n=False) -> tuple[IntegerGemm, Shape, dict]:
+def select(source: str, region_id: str, *, large_n=False, prefetch_b=False) -> tuple[IntegerGemm, Shape, dict]:
     module = parse_module(source)
     selected = []
     for ordinal, op in enumerate(module.walk()):
@@ -86,7 +93,7 @@ def select(source: str, region_id: str, *, large_n=False) -> tuple[IntegerGemm, 
     if len(selected) != 1:
         raise ValueError(f"expected one integer GEMM in region {region_id!r}, found {len(selected)}")
     ordinal, op, dims = selected[0]
-    shape = choose_shape(dims,large_n=large_n)
+    shape = choose_shape(dims,large_n=large_n,prefetch_b=prefetch_b)
     binding = {
         "region_id": region_id,
         "source_operation_ordinal": ordinal,
@@ -102,9 +109,9 @@ def select(source: str, region_id: str, *, large_n=False) -> tuple[IntegerGemm, 
 
 
 def compile_selected(source_path: Path, region_id: str, llvm_bin: Path,
-                     workdir: Path, *, large_n=False) -> dict:
+                     workdir: Path, *, large_n=False, prefetch_b=False) -> dict:
     source = source_path.read_text()
-    dims, shape, binding = select(source, region_id,large_n=large_n)
+    dims, shape, binding = select(source, region_id,large_n=large_n,prefetch_b=prefetch_b)
     module = (build_batched(dims.batch, shape) if binding["abi"] == "gemmini_golden_batched_gemm"
               else GoldenGemm(shape).build())
     receipt = compile_module(module, llvm_bin, workdir)
@@ -129,8 +136,10 @@ def main() -> int:
     ap.add_argument("--llvm-bin", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, required=True)
     ap.add_argument("--large-n", action="store_true")
+    ap.add_argument("--prefetch-b", action="store_true")
     args = ap.parse_args()
-    result = compile_selected(args.input, args.region, args.llvm_bin, args.workdir,large_n=args.large_n)
+    result = compile_selected(args.input, args.region, args.llvm_bin, args.workdir,
+                              large_n=args.large_n,prefetch_b=args.prefetch_b)
     print(json.dumps({"dimensions": result["dimensions"], "binding": result["binding"],
                       "object_sha256": result["compilation"]["object_sha256"]}, indent=2))
     return 0

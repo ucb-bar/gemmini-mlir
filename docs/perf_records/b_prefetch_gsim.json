@@ -1,0 +1,434 @@
+{
+  "schema": "gemmini_prefetch_b_k_gsim_v1",
+  "scope": "Standalone source-bound representative TinyLlama projection and exact tail numeric checks. No whole-model or FireSim cycle result claimed.",
+  "source_capsule": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/m8_n2048_k2048.mlir",
+  "source_capsule_sha256": "eba40de383dbf33276fdd368e9b2564df92edb991ecc60261439176c2cecf90e",
+  "source_capsule_provenance": "Exact zero-initialized signed i8 x i8 -> i32 contraction with representative static dimensions from the sealed TinyLlama device catalog; independent synthetic operand fixture. Not the complete model.",
+  "records": {
+    "control": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        8,
+        2048,
+        2048
+      ],
+      "kernel_symbol": "gemmini_golden_gemm",
+      "block": [
+        1,
+        64
+      ],
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": false,
+      "status": "pass",
+      "kernel_cycles": 927138,
+      "engine_cycles_including_harness": 1154876,
+      "elf_sha256": "a713ae9c58da616f55adefa53f4be0651e7360e30dd319435b622306453aa745",
+      "target_ir_sha256": "cba9c1e898314903e0fadce1a162a4c14dc46268610187756d636fb60b9238bf",
+      "llvm_ir_sha256": "6f758a0d92f7c9f59d22d5d66a4c3c1ae2db4ccd35b2f963d4f0a2b8f532679b",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "a713ae9c58da616f55adefa53f4be0651e7360e30dd319435b622306453aa745",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 32,
+          "2": 128,
+          "3": 64,
+          "4": 128,
+          "6": 128,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 927138\nGOLDEN_GEMM PASS M=8 N=2048 K=2048\n",
+      "stderr_tail": "",
+      "spike_log_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/control_mcycle_spike.log",
+      "spike_log_sha256": "d3be4b17aef72dbf51feb2afd96dfb4bd21c54ea38756cef1bfe16e6b9b8f074",
+      "spike_stdout": "GOLDEN_GEMM_CYCLES 74832\nGOLDEN_GEMM PASS M=8 N=2048 K=2048\nGemmini extension configured with:\n    dim = 16\n",
+      "numeric_checks": {
+        "complete_i32_outputs": 16384,
+        "guard_bytes": 2048,
+        "input_amplitude": 21,
+        "expected_include_sha256": "a18c7e48769957e1da62d189482e83da6f31d3b472808cd93e1a6aeb291cd65b",
+        "input_bytes_sha256": {
+          "a": "3d2b8aedec13470b499e85eebbfca5472c862cb178f69028e768a59664175496",
+          "b": "82e7fa79ba600945d366ded626e0434a7fc7c88ab3cd79c98ebea008fecac738"
+        }
+      },
+      "source_binding": {
+        "schema": "golden_upstream_integer_gemm_v1",
+        "source_sha256": "eba40de383dbf33276fdd368e9b2564df92edb991ecc60261439176c2cecf90e",
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 2048,
+          "k": 2048
+        },
+        "schedule": {
+          "m": 8,
+          "n": 2048,
+          "k": 2048,
+          "output_dtype": "i32",
+          "bm": 1,
+          "bn": 64,
+          "bias": false,
+          "scale": 1.0,
+          "relu": false,
+          "wide_store": false,
+          "reuse_b": false,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "binding": {
+          "region_id": "tiny_projection",
+          "source_operation_ordinal": 6,
+          "source_operation": "linalg.generic",
+          "abi": "gemmini_golden_gemm",
+          "pointer_order": [
+            "lhs",
+            "rhs",
+            "output"
+          ],
+          "tensor_types": [
+            "tensor<8x2048xi8>",
+            "tensor<2048x2048xi8>",
+            "tensor<8x2048xi32>"
+          ],
+          "dense_row_major_required": true,
+          "zero_initialized_output_required": false
+        },
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "cba9c1e898314903e0fadce1a162a4c14dc46268610187756d636fb60b9238bf",
+          "llvm_mlir_sha256": "6f758a0d92f7c9f59d22d5d66a4c3c1ae2db4ccd35b2f963d4f0a2b8f532679b",
+          "llvm_ir_sha256": "700a2ed6bbc20920088a4bb149e1818ca9a63ae1db1614c08752a63069228eae",
+          "object_sha256": "a6def9d01151325a6336136b62ebd352b4873e18565b67fcad7912ec5cd5859b",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/control_object/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/control_object/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/control_object/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/control_object/kernel.o"
+            ]
+          ]
+        },
+        "whole_model_memory_bound": false,
+        "whole_model_correctness_verified": false
+      }
+    },
+    "candidate": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        8,
+        2048,
+        2048
+      ],
+      "kernel_symbol": "gemmini_golden_gemm",
+      "block": [
+        1,
+        64
+      ],
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": true,
+      "status": "pass",
+      "kernel_cycles": 700215,
+      "engine_cycles_including_harness": 909798,
+      "elf_sha256": "5131d842527c8d989ae0e9efbddefb0253dda5482e5e70f30d274225a0089114",
+      "target_ir_sha256": "0fdfe18ee161eb0791f3952d1865ca26facfc1d0958486a011f83c5b0d4d1d38",
+      "llvm_ir_sha256": "a0963ec454f75357ff0bdbdf7a02684162433d4f1fce5b31616d7dfdbc1fc7ea",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "5131d842527c8d989ae0e9efbddefb0253dda5482e5e70f30d274225a0089114",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 64,
+          "2": 128,
+          "3": 64,
+          "4": 256,
+          "6": 256,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 700215\nGOLDEN_GEMM PASS M=8 N=2048 K=2048\n",
+      "stderr_tail": "",
+      "spike_log_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/candidate_mcycle_spike.log",
+      "spike_log_sha256": "be5252d5bc4deb1fc5aee2a842e871c49232e510feac504763a2e8f1012ba38c",
+      "spike_stdout": "GOLDEN_GEMM_CYCLES 102003\nGOLDEN_GEMM PASS M=8 N=2048 K=2048\nGemmini extension configured with:\n    dim = 16\n",
+      "numeric_checks": {
+        "complete_i32_outputs": 16384,
+        "guard_bytes": 2048,
+        "input_amplitude": 21,
+        "expected_include_sha256": "a18c7e48769957e1da62d189482e83da6f31d3b472808cd93e1a6aeb291cd65b",
+        "input_bytes_sha256": {
+          "a": "3d2b8aedec13470b499e85eebbfca5472c862cb178f69028e768a59664175496",
+          "b": "82e7fa79ba600945d366ded626e0434a7fc7c88ab3cd79c98ebea008fecac738"
+        }
+      },
+      "source_binding": {
+        "schema": "golden_upstream_integer_gemm_v1",
+        "source_sha256": "eba40de383dbf33276fdd368e9b2564df92edb991ecc60261439176c2cecf90e",
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 2048,
+          "k": 2048
+        },
+        "schedule": {
+          "m": 8,
+          "n": 2048,
+          "k": 2048,
+          "output_dtype": "i32",
+          "bm": 1,
+          "bn": 64,
+          "bias": false,
+          "scale": 1.0,
+          "relu": false,
+          "wide_store": false,
+          "reuse_b": false,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "binding": {
+          "region_id": "tiny_projection",
+          "source_operation_ordinal": 6,
+          "source_operation": "linalg.generic",
+          "abi": "gemmini_golden_gemm",
+          "pointer_order": [
+            "lhs",
+            "rhs",
+            "output"
+          ],
+          "tensor_types": [
+            "tensor<8x2048xi8>",
+            "tensor<2048x2048xi8>",
+            "tensor<8x2048xi32>"
+          ],
+          "dense_row_major_required": true,
+          "zero_initialized_output_required": false
+        },
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "0fdfe18ee161eb0791f3952d1865ca26facfc1d0958486a011f83c5b0d4d1d38",
+          "llvm_mlir_sha256": "a0963ec454f75357ff0bdbdf7a02684162433d4f1fce5b31616d7dfdbc1fc7ea",
+          "llvm_ir_sha256": "a08ddd4923296d0bbdc636a3ddaf45e0ba257f60b192683f9bf9d8694a90400c",
+          "object_sha256": "0fe9e866951b20e6cea0a68574595fb47a6b23c289904b7c31d2f67b0f125c41",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/candidate_object/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/candidate_object/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/candidate_object/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/candidate_object/kernel.o"
+            ]
+          ]
+        },
+        "whole_model_memory_bound": false,
+        "whole_model_correctness_verified": false
+      }
+    },
+    "tails": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        8,
+        173,
+        129
+      ],
+      "kernel_symbol": "gemmini_golden_gemm",
+      "block": [
+        1,
+        4
+      ],
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": true,
+      "status": "pass",
+      "kernel_cycles": 5617,
+      "engine_cycles_including_harness": 43802,
+      "elf_sha256": "2fabbbd8f7faca825d3d5dc44874ba57c8cfbe32072f68df50ef0bc81ba7d731",
+      "target_ir_sha256": "edc1241958825c8a8007c26769223bb20c6b74e9a5fb4bd31e364d43479c939d",
+      "llvm_ir_sha256": "e8888e7a588959cacb7b7534a1839e1b6f193a9a5ddb4653453523edfba11b23",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "2fabbbd8f7faca825d3d5dc44874ba57c8cfbe32072f68df50ef0bc81ba7d731",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 10,
+          "2": 9,
+          "3": 7,
+          "4": 35,
+          "6": 35,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 5617\nGOLDEN_GEMM PASS M=8 N=173 K=129\n",
+      "stderr_tail": "",
+      "spike_log_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/tails_mcycle_spike.log",
+      "spike_log_sha256": "f8b3bfd4842550689bf249320f38543af8c77e77782bf149c80f57fd5039f287",
+      "spike_stdout": "GOLDEN_GEMM_CYCLES 770\nGOLDEN_GEMM PASS M=8 N=173 K=129\nGemmini extension configured with:\n    dim = 16\n",
+      "numeric_checks": {
+        "complete_i32_outputs": 1384,
+        "guard_bytes": 2048,
+        "input_amplitude": 21,
+        "expected_include_sha256": "e6452d54ac41fa269739eb38586b48d12945920ff98f21d1c164792734d69358",
+        "input_bytes_sha256": {
+          "a": "1481325d3c892b5c14baeb31371f420149f6bff0de7a8b54cfae052fe5e2cdec",
+          "b": "cd807596080783c958984628e36a256ae98e86b311dfb840f899da617620d71b"
+        }
+      }
+    }
+  },
+  "gsim_cycle_reduction_fraction": 0.24475644402451413,
+  "padded_array_issue_floor_cycles": 262144,
+  "primitive_counts_and_transfer_volume_unchanged": true,
+  "default_object_byte_identical": {
+    "old_source_commit": "e604d52",
+    "old_object_sha256": "a6def9d01151325a6336136b62ebd352b4873e18565b67fcad7912ec5cd5859b",
+    "new_default_object_sha256": "a6def9d01151325a6336136b62ebd352b4873e18565b67fcad7912ec5cd5859b",
+    "pass": true
+  },
+  "schedule": "Cache full A in banks0/1; B ring slots in banks2/3, next panel loaded before current preload/compute. Initial panel outside paired CPU loop; exact static tail drain. Same signed inputs/increasing-K modular i32 accumulation and stores.",
+  "resource_constraints": {
+    "cached_a_required": true,
+    "multiple_k_panels_required": true,
+    "a_reserved_rows_max": 8192,
+    "b_panel_rows_max": 4096,
+    "a_rows_for_k2048": 2048,
+    "a_rows_for_k5632": 5632,
+    "b_panel_rows_for_bn64": 1024
+  },
+  "entrypoints": [
+    "choose_shape(...,prefetch_b=True)",
+    "compile_selected(...,prefetch_b=True)",
+    "merlin_builder(...,prefetch_b=True)"
+  ],
+  "default_off": true,
+  "compiler_features": "Existing host scalar features unchanged; target-specific B prefetch remains in OOT.",
+  "counter_harness_fix": "rdcycle traps before kernel entry in strict rv64gc because Zicntr is separate. Final M-mode probe reads mcycle; GSIM cycles unchanged and strict Spike passes. No ISA extension added.",
+  "gsim_harness_provider": {
+    "python": "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+    "pythonpath": "Own OOT plus /scratch/agustin/projects/oscar-merlin/merlin/python",
+    "purpose": "Harness and pinned simulator only; actual source-bound device objects built by typed OOT lowering with migrated core imports."
+  },
+  "verification": {
+    "focused_resource_roundtrip_selection_tests": 31,
+    "skips": 0,
+    "no_fsm": "pass",
+    "strict_spike": "pass",
+    "gsim": "pass"
+  },
+  "artifact_limits": [
+    "FireSim measurement pending.",
+    "Whole-model source binding/reference gate and hardware timing pending.",
+    "Uncached-A BN16 projection retains its existing schedule.",
+    "GSIM is authoritative for this standalone overlap result; increased Spike instruction count is not a hardware-cycle prediction."
+  ]
+}

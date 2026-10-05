@@ -51,6 +51,7 @@ class Shape:
     wide_a: bool = False
     wide_b: bool = False
     separate_b_bank: bool = False
+    prefetch_b: bool = False
 
     def validate(self) -> None:
         if min(self.m, self.n, self.k, self.bm, self.bn) <= 0:
@@ -74,6 +75,13 @@ class Shape:
             raise ValueError("A block does not fit one stock scratchpad bank")
         if self.prefetch_m and not (self.pipeline_m and self.wide_a and self.cache_b):
             raise ValueError("M prefetch needs alternating slots, wide A, and cached B")
+        if self.prefetch_b:
+            if not self.cache_a or self.k <= F.DIM or self.separate_b_bank:
+                raise ValueError("B prefetch needs cached A, multiple K panels, and its own bank placement")
+            if _ceil_div(self.k, F.DIM) * F.DIM > 2 * F.SPAD_BANK_ROWS:
+                raise ValueError("prefetched B requires cached A to fit the lower two banks")
+            if self.bn * F.DIM > F.SPAD_BANK_ROWS:
+                raise ValueError("one prefetched B panel must fit one scratchpad bank")
         slots = 2 if self.pipeline_m else 1
         a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
         a_rows = slots * self.bm * a_panel_tiles
@@ -154,10 +162,25 @@ class GoldenGemm:
         return self.fb.mul_i(self.fb.add_i(index, self.fb.const(delta)),
                              self.fb.const(F.DIM))
 
+    def _load_b_panel(self, n0: SSAValue, k0: SSAValue,
+                      nr: tuple[int, ...], kr: int, b_base: int) -> None:
+        s = self.shape
+        krow = self._tile(k0, 0)
+        if s.wide_b:
+            for d in range(0, len(nr), 4):
+                ptr = self._ptr(self.b, krow, s.n, self._tile(n0, d))
+                self._rocc("mvin", {"local": (b_base + d) * F.DIM,
+                    "rows": kr, "cols": sum(nr[d:d + 4]), "load_id": 1}, ptr)
+        else:
+            for d, cols in enumerate(nr):
+                ptr = self._ptr(self.b, krow, s.n, self._tile(n0, d))
+                self._rocc("mvin", {"local": (b_base + d) * F.DIM,
+                    "rows": kr, "cols": cols, "load_id": 1}, ptr)
+
     def _k_tile(self, m0: SSAValue, n0: SSAValue, k0: SSAValue,
                 mr: tuple[int, ...], nr: tuple[int, ...], kr: int,
                 first: bool, cached_k: int | None = None, slot: int = 0,
-                wide_k: int | None = None) -> None:
+                wide_k: int | None = None, b_slot: int = 0) -> None:
         s = self.shape
         kt = _ceil_div(s.k, F.DIM)
         a_panel_tiles = kt if s.wide_a or s.cache_a else 1
@@ -168,6 +191,8 @@ class GoldenGemm:
         if s.banked_m:
             a_base = slot * (F.SPAD_BANK_ROWS // F.DIM)
             b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
+        if s.prefetch_b:
+            b_base = (2 + b_slot) * F.SPAD_BANK_ROWS // F.DIM
         acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
         krow = self._tile(k0, 0)
         if not s.wide_a and not s.cache_a:
@@ -176,18 +201,8 @@ class GoldenGemm:
                 ptr = self._ptr(self.a, mrow, s.k, krow)
                 self._rocc("mvin", {"local": (a_base + a) * F.DIM, "rows": rows,
                                       "cols": kr, "load_id": 0}, ptr)
-        if cached_k is None:
-            if s.wide_b:
-                for d in range(0, len(nr), 4):
-                    ptr = self._ptr(self.b, krow, s.n, self._tile(n0,d))
-                    self._rocc("mvin", {"local": (b_base+d) * F.DIM,
-                        "rows": kr, "cols": sum(nr[d:d+4]), "load_id": 1}, ptr)
-            else:
-                for d, cols in enumerate(nr):
-                    ncol = self._tile(n0, d)
-                    ptr = self._ptr(self.b, krow, s.n, ncol)
-                    self._rocc("mvin", {"local": (b_base + d) * F.DIM,
-                                          "rows": kr, "cols": cols, "load_id": 1}, ptr)
+        if cached_k is None and not s.prefetch_b:
+            self._load_b_panel(n0, k0, nr, kr, b_base)
         def b_addr(d: int) -> int:
             if cached_k is None:
                 return (b_base + d) * F.DIM
@@ -274,7 +289,34 @@ class GoldenGemm:
         acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
         if not prepared:
             self._prepare_output_block(m0, n0, mr, nr, slot)
-        if s.cache_b or s.wide_a:
+        if s.prefetch_b:
+            panels = _ceil_div(s.k, F.DIM)
+            bank_tiles = F.SPAD_BANK_ROWS // F.DIM
+            def load(ki, bank, kr=F.DIM):
+                self._load_b_panel(n0, ki, nr, kr, (2 + bank) * bank_tiles)
+            def compute(ki, bank, kr=F.DIM, first=False):
+                self._k_tile(m0, n0, ki, mr, nr, kr, first,
+                             slot=slot, b_slot=bank)
+            load(self.fb.const(0), 0)
+            load(self.fb.const(1), 1, min(F.DIM, s.k - F.DIM))
+            compute(self.fb.const(0), 0, first=self.bias is None)
+            # Every pair prefetches a full next panel before current mesh work.
+            # Reserve the final one to three panels for a static exact tail drain.
+            pairs = max(0, (s.k // F.DIM - 2) // 2)
+            def pair(ki):
+                next_ki = self.fb.add_i(ki, self.fb.const(1))
+                load(next_ki, 0)
+                compute(ki, 1)
+                load(self.fb.add_i(ki, self.fb.const(2)), 1)
+                compute(next_ki, 0)
+            self.fb.for_loop(1, 1 + 2 * pairs, 2, pair)
+            for ki in range(1 + 2 * pairs, panels):
+                if ki + 1 < panels:
+                    load(self.fb.const(ki + 1), (ki + 1) % 2,
+                         min(F.DIM, s.k - (ki + 1) * F.DIM))
+                compute(self.fb.const(ki), ki % 2,
+                        min(F.DIM, s.k - ki * F.DIM))
+        elif s.cache_b or s.wide_a:
             for ki in range(_ceil_div(s.k, F.DIM)):
                 self._k_tile(m0, n0, self.fb.const(ki), mr, nr,
                              min(F.DIM, s.k - ki * F.DIM),
@@ -425,6 +467,8 @@ class GoldenGemm:
             f"wide_a{int(s.wide_a)}:wide_b{int(s.wide_b)}")
         if s.separate_b_bank:
             module.attributes["gemmini.separate_b_bank"] = IntegerAttr(1, i64)
+        if s.prefetch_b:
+            module.attributes["gemmini.prefetch_b"] = IntegerAttr(1, i64)
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
