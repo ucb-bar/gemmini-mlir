@@ -550,3 +550,66 @@ The source-bound dense bank schedule passes the same whole golden. A controlled
 This is a contraction measurement; the whole-model hardware result is pending.
 Receipts preserve the capture, prepared source, compiler, linked objects and ELF
 identities for every candidate.
+
+### Verified host gains and compilation identity (2026-10-05)
+
+ResNet1781 verifies55,239,221 cycles with quantization fusion. Combined clamp/RNE
+1786 verifies49,673,153 cycles,10.08% fewer. The channel-block64 final mean keeps
+each channel's original H,W sum order and verifies48,780,534 in1789,1.80% fewer.
+All1,000 source output bits match on native, Spike and stock hardware. Its higher
+Spike instruction count confirms that instruction counts alone cannot predict
+cache behavior. These are individual hardware observations, not repeated-run
+distributions. The zero-FSM final-ELF policy remains enforced.
+
+Tiny1782's hardware profile records219,195,608 device and1,180,631,315 host
+interior cycles across155 calls. ISA-based host scheduling therefore targets
+the measured dominant cost: Merlin12b15afab disables the default RVV host schedule
+when the final ISA cannot execute floating vectors. Explicit RVV targets retain
+their prior behavior. The full Tiny scalar host preserves every output and
+verifies1,030,207,906 cycles in1788,26.53% fewer than1776 and42.77% fewer than1747.
+This changes the host schedule; the five device kernels remain identical after
+declared symbol renaming.
+
+The scalar host plus89 exact quantizer fusions retires310,716,114 Spike
+instructions. Adding89 proved combined clamp/RNE routes reaches271,019,239,
+60.08% below the original678,959,918. Full native and actual Gemmini Spike match
+all256,000 prior output bits; the original Torch gate is unchanged. Strongest
+candidate1792 is queued. These instruction counts are not hardware timing.
+
+Merlin9592b212a adds an explicit host LLVM transform between ordinary lowering
+and object compilation. Target support owns typed source recognition and target
+legalization; the generic backend verifies source immutability, output location,
+and compilation, then includes the actual selected model.o in its normal build
+identity before harness generation. OOT supplies the bounded RNE callback and
+portable native oracle. This removes the attribution limitation of historical
+late-relink candidates, whose base harness hashes are explicitly documented.
+
+Merlin0c6259bf7 also offers explicit scalar/vector f32/f64 FMA intrinsics after
+linalg lowering. Native cancellation, overflow, subnormal and signed-zero probes
+match libm bitwise. The option is default off and does not change expf or other
+math calls. It is not yet a full-model performance claim.
+
+Future full ResNet queue builds use the existing full-output SHA256 validation
+with a one-element dump cap. The complete1,000-output digest stays authoritative;
+avoiding UART printing shortens post-timing queue occupancy. Profiling1777 spent
+2.239B emulated cycles overall versus61.5M in the measured forward window.
+
+### Frontend upstream and remaining SmolVLA numerical work
+
+model2MLIR main includes050009e's six precision fixes and69c0370's explicit SDPA
+scale/causal/options semantics. The latter passes28 focused tests with actual
+native execution. Nonzero dropout, unsupported GQA and ambiguous dynamic options
+refuse instead of silently changing semantics. Both pushes were reviewed against
+their fetched main and performed without rewriting published history.
+
+SmolVLA's compatible first vision layer passes the original tolerance on trusted
+input, but full12-layer replacement plus balanced normalization still FAILS the
+unchanged full-model gate (relativeL2 .02038219, maxabs .1113653). No whole-model
+hardware candidate is admitted. Actual PyTorch profiling identifies BF16 patch
+convolution as THNN slow convolution with a four-partial CPUBlas fallback on AVX2.
+An executed C replay matches all786,432 original convolution BF16 values; serial
+accumulation explains all30 initial embedding differences. Perturbing only those
+30 values in the original Torch chain produces substantial later drift. An
+explicit backend-compatible xDSL schedule is being tested; frontend default
+f32-opmath correctness is preserved. Attention BF16-to-f32 accumulation uses a
+different dispatch and cannot inherit this convolution schedule blindly.

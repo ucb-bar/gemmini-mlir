@@ -1,0 +1,133 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "full22-layer pretrainedTiny,scalarhost+exactquantfusion+89provedcombinedclamp/RNEchains;unchangedoriginalgate",
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/model.elf",
+  "elf_sha256": "b320b2cc9a85e2c423c4ef0afc014f410eaf4acf862ecf82716a5e0fcfa29bd9",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "torch_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_allclose": true,
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "torch_relative_l2": 2.1918432935308374e-07,
+  "torch_max_abs_error": 9.5367431640625e-06,
+  "prior_compiled_output_exact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_observed": {
+    "encoding": "f32le",
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+  },
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/spike.log",
+  "spike_console_sha256": "3b03ba881c31fe339cf6ca2e81dcb27cecf4e9f0358e306dffddc3f08750ef8d",
+  "native_llvm_sha256": "60dcbc4c1670d57b21b30314388bf8a9a42ce960e3a4884f4681b317c09eab96",
+  "native_llvm_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/host_llvm/model.native.ll",
+  "capture_receipt": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/capture_receipt.json",
+  "metrics": {
+    "cycles": "271019239",
+    "build_hash": "2acafad83908",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "prior_spike_instructions": 310716114,
+  "instruction_reduction_fraction": 0.12775930571788752,
+  "kernel_code_equal_modulo_symbols": true,
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "core_commit": "12b15afab",
+    "raw_default_rvv_target_unchanged": true,
+    "preparation_printing_difference": "Merlin ReduceOp printer now retains source provenance; default separate_b_bank=False extends symbol hash. Kernel LLVM matches after declared-symbol renaming.",
+    "fuse_quantize_round_convert": true,
+    "proved_rewrites": 89,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "normal_build_identity": true,
+    "native_oracle": "same boundedRNE via llvm.roundeven plus original clamps; actualtargetchecked fullSHA; standalone107415 numericchecks all5frm"
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "b320b2cc9a85e2c423c4ef0afc014f410eaf4acf862ecf82716a5e0fcfa29bd9",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "2acafad83908",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/lower/model.ll",
+      "source_sha256": "d385a17b9b48fc0aecd8432dae3311a1e938107ed6c479d41d427a761a12e646",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/host_llvm/model.ll",
+      "selected_sha256": "f0ca78d825eeeefbdd5a6f34e7f36ba13c07a6963ddb7e12a2eed56242cd2d06"
+    },
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "target_llvm_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne/build/host_llvm/model.ll",
+  "target_llvm_sha256": "f0ca78d825eeeefbdd5a6f34e7f36ba13c07a6963ddb7e12a2eed56242cd2d06",
+  "normalized_kernel_llvm_sha256": "9b2514ccb261902cd6f91c9dec3c49f0ef5374179d57e37a92940867914c4489",
+  "kernel_equality_control": "scalar-only, quant-fused, and quant-fused/RNE LLVM equal after declared kernel symbol renaming"
+}

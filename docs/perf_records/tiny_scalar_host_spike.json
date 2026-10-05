@@ -1,0 +1,119 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "full22-layer pretrained TinyLlama,8tokens,scalar host lowering with unchanged primitive device kernels",
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host/build/model.elf",
+  "elf_sha256": "14300efe02fab3eafa2e18d78f3c10fc1881e5077d69cf1dc3efa6c2b73b724a",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "torch_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_allclose": true,
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "torch_relative_l2": 2.1918432935308374e-07,
+  "torch_max_abs_error": 9.5367431640625e-06,
+  "prior_compiled_output_exact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_observed": {
+    "encoding": "f32le",
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+  },
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host/spike.log",
+  "spike_console_sha256": "f70088663c7476aa5c0cc4b7954a4ebb95114c619e14ad1ace0c31e38f4f11b1",
+  "native_llvm_sha256": "e16c2aae979d8f3a83aa5981569f7b9862ad50ada6f7bce32acb67f8d1da3b0e",
+  "native_llvm_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host/build/lower/model.ll",
+  "capture_receipt": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/capture_receipt.json",
+  "metrics": {
+    "cycles": "377571166",
+    "build_hash": "f208a77bbeae",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "prior_spike_instructions": 678959918,
+  "instruction_reduction_fraction": 0.4438977088482563,
+  "kernel_code_equal_modulo_symbols": true,
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "core_commit": "12b15afab",
+    "raw_default_rvv_target_unchanged": true,
+    "preparation_printing_difference": "Merlin ReduceOp printer now retains source provenance; default separate_b_bank=False extends symbol hash. Kernel LLVM matches after declared-symbol renaming."
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "14300efe02fab3eafa2e18d78f3c10fc1881e5077d69cf1dc3efa6c2b73b724a",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "f208a77bbeae",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "normalized_kernel_llvm_sha256": "9b2514ccb261902cd6f91c9dec3c49f0ef5374179d57e37a92940867914c4489",
+  "kernel_equality_control": "scalar-only, quant-fused, and quant-fused/RNE LLVM equal after declared kernel symbol renaming"
+}

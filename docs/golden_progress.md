@@ -6,9 +6,9 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime | 62,441,162 (1775) | All1,000 golden output words exact | [1775](perf_records/resnet_exact52_wide_virtual_firesim1775.json) |
-| Full22-layer TinyLlama,8tokens, large-N/runtime | 1,402,210,517 (1776) | All256,000 output digest exact; unchanged Torch gate passes | [1776](perf_records/tiny_large_n_runtime_firesim1776.json) |
-| Full SmolVLA | Pending | Original numerical gate fails; normalization/quantization threshold diagnosis continues | Optimization log |
+| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, combined clamp/RNE, blocked64 mean | 48,780,534 (1789) | All 1,000 golden output words exact | [1789](perf_records/resnet_reduction_block64_firesim1789.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host schedule | 1,030,207,906 (1788) | All 256,000 output digest exact; unchanged Torch gate passes | [1788](perf_records/tiny_scalar_host_firesim1788.json) |
+| Full SmolVLA | Not admitted | Original full numerical gate still fails; source convolution/normalization/attention arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -18,18 +18,32 @@ remaining performance targets or pretrained ResNet accuracy.
 The exact uniform-zero/scale-aware quantize-round pass now applies to the two
 remaining ResNet quantizers. All1,000 outputs remain exact in native and actual
 Spike, whose retired instructions fall19,286,601 to14,254,689 (26.09% fewer).
-FireSim1781 is pending; instruction counts are not hardware cycles. The separately
+FireSim1781 verifies 55,239,221 cycles; instruction counts are not hardware cycles. The separately
 proved explicit-RNE/clamp legalization reduces the same whole model further to
 11,355,701 Spike instructions, retaining all1,000 golden words. All107,415
 boundary checks across the five rounding modes pass. FireSim1786 measures this
-candidate; it remains an opt-in host lowering. The source-
+candidate at 49,673,153 cycles. Blocked64 mean reduces this to 48,780,534 in1789;
+both remain explicit host lowering options. The source-
 bound dense group/bank schedule variants also pass complete golden gates, with
 representative GSIM367,749 versus447,124cycles (17.75% fewer); whole-model bank
-timing remains pending.
+timing with the strongest host path remains pending.
+
+Tiny's combined scalar host, quantization fusion and bounded clamp/RNE candidate
+passes the full native and actual Spike output gate, with all 256,000 outputs
+unchanged. It retires 271,019,239 instructions, 60.08% fewer than the earlier
+678,959,918 build. FireSim1792 is queued; no hardware cycle gain is claimed yet.
+Its actual legalized model object participates in the normal build identity.
+See [target gate](perf_records/tiny_scalar_host_quant_rne_spike.json).
+
+Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
+050009e and SDPA scale/causal/options semantics at 69c0370. The latter passes
+28 focused tests including actual native comparisons. Explicit backend arithmetic
+compatibility experiments remain separate from default frontend semantics.
 
 The selected ResNet schedule's mesh issue geometry totals22,805,632 cycles,
 already above22M before DMA and CPU work. A source-proven nonnegative skip-domain
 experiment reduces this to22,466,944; it has not been promoted into a graph.
+This floor describes the selected schedule, not all possible exact algorithms.
 See [mesh geometry](perf_records/resnet_exact52_mesh_geometry.json) and
 [domain evidence](perf_records/residual_source_domains.json).
 
