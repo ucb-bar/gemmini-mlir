@@ -201,3 +201,40 @@ HTIF dumps are costly for the shared hardware queue. A compact optional SHA256
 after the timing window can compare every raw output byte to the same-artifact
 validated target/native reference, while retaining the separate Torch tolerance
 gate. Its implementation/target verification is pending.
+
+### Latest complete gates and queue admissions
+
+Packed7×7 RGB stem uses14 K blocks (seven21-byte kw×Cin rows, each16+5) rather
+than49 Cin-only blocks. It preserves the original147×64 weight matrix and exact
+quantized input halo. Whole ResNet stem1/fused27/direct4/dense22 passes native and
+actual Gemmini Spike all1,000 outputs exactly; finalnoFSM ELFf3a432e5….
+Spike908,532,797retired instructions versus1,018,739,739 without packedstem.
+Hardwarepool remains disabled until contiguous spatial accumulator rows and
+pooled-store bounds are proven; all64 scalar source-scale proofs already accept.
+
+Final-link RNE on the corrected fused27 model also passes every actual Gemmini
+output:922,268,279retired instructions versus1,018,739,739. The resulting
+ELF55f4c0cc… reuses unchanged optimized model.o; no FireSim result claimed.
+
+Pointwise1734 improves further to53,624kernel cycles, all200,704outputs+guard PASS.
+This is49.05% below105,258baseline and6.87% above50,176 compute floor. Exact winner
+uses bankedprefetch bm1 and reuse_b=False. Captured-scale/no-bias pointwise A/B
+1745/1746 is queued; the earlier .125-scale/bias benchmark cannot directly establish
+performance for our current exact-fusion contract.
+
+Tiny precomputed-weight ACTUAL Gemmini gate now passes all256,000 logits, with
+same Torch error as the baseline. Spike instruction proxy falls6,838,149,469→
+881,448,291 (7.76×). Full-dump ELF932a8ab5… passes noFSM. Compact-output ELF
+419d1881… also passed actual Gemmini: all1,024,000 output bytes have canonical
+SHA256 ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3.
+The byte hash is checked against the same artifact's validated native/Spike
+outputs; the separate Torch tolerance result remains recorded. FireSim1747 is
+queued on the pinned stock bitstream. No Tiny hardware timing yet.
+
+Fresh pretrained Smol full host output fails both captured-scope (.09656 relative
+L2) and broader integer candidate (.09876). Neither is released to hardware.
+A minimal dynamic-int8 Linear capture matches exact integer host execution;
+therefore the full mismatch needs region/operator localization, currently the
+vision/prefix boundary. Atomic capture identity and preserved buffer dtypes
+exclude the previously observed mixed-bundle defect. Targetcompilation is stopped
+on failed numeric gates so queue/compiler work focuses on admissible programs.
