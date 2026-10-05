@@ -111,3 +111,24 @@ The current ResNet source now compiles with16proven direct3x3 convolutions and38
 Spike retired instructions fall1,908,630,558→1,193,349,750 compared with the preceding fused variant (37.48% fewer); still not a FireSim cycle result. The target is not met. Kernel1727 is verified at961,350FireSim cycles; Tiny attention1728 at9,592cycles. Full-model hardware A/B remains queued.
 
 model2MLIR main now includes `fc4c4a3`, an explicit optional static-W8A8 `extra_args.weight_granularity` choice: per_channel(default) or per_tensor, with fresh calibration and recorded policy. Four focused tests pass including both captured qparam forms and invalid-policy refusal. This enables target-compatible capture policies; it does not retroactively change the current captures or prove a model accuracy improvement. Current retained ResNet immediate dequant multipliers are scalar already; sequential float rounding, bias/residual handling and layout propagation remain the next exact-fusion challenges.
+
+## 2026-10-05: explicit RV64 round-to-even experiment
+
+Added optional target-owned scalar f32 rounding with explicit RNE, signed-zero
+preservation and preserved finite-input exception flags. All 24,199 probe inputs
+pass across five rounding modes; final ELF passes the zero-FSM audit. Whole
+ResNet execution on Spike matches all 1,000 captured outputs bitwise. Its retired
+instruction proxy is 1,195,079,840 versus 1,193,349,750 without this rewrite
+(+0.145%). This is not a FireSim cycle measurement. Leave the option disabled;
+calling a helper before graph fusion can alter optimization opportunities.
+No additional queue run is justified yet. Evidence: perf_records/resnet_roundeven_spike.json.
+
+Full original ResNet baseline FireSim job1730 now reports 5,680,463,426 forward
+cycles and all 1,000 outputs match exactly. This is far above the 22M target;
+compiled contraction coverage alone does not establish good model performance.
+Queued fused and direct variants will measure their full graph effects. Next
+priority is exact device epilogues and eliminating host layout materialization.
+
+Validated model2MLIR changes pushed to upstream main: 3d5acd3 (scalar square
+lowering), fc4c4a3 (explicit per-tensor weight quantization policy, default remains
+per-channel). Verified remote main at fc4c4a3 after push.
