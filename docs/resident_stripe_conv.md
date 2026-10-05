@@ -33,8 +33,22 @@ row has its own tail; this is a measured tradeoff, not a compute-count win.
 
 Two additional full-range capsules cover an odd width and partial output
 channels with i32 readout, and multiple N blocks plus a final short stripe
-with scaled/ReLU i8 readout. Fifteen resource, complete partition and dynamic
-bound tests pass. [Complete receipt](perf_records/resident_stripe_conv_gsim.json).
+with scaled/ReLU i8 readout. For H28/C128, the control630,670→509,443 kernel
+cycles saves121,227 (19.22%) with BN4; all100,352 outputs and guards pass.
+BN2 takes576,438 cycles and H56/BN1 takes539,920, so fewer real weight
+preloads alone did not select the faster output-transfer geometry.
+
+The explicit `resident_stripes` compiler policy retains the existing legal BN,
+admits wider source-proven virtual padding only, and compares padded DIM issue
+geometry plus requested DMA bytes at16 bytes/cycle. This serialized search
+estimate is not a measured timing prediction or mandatory lower bound. It
+records both costs and every refusal; narrow resident planes, unsupported
+semantics, insufficient resources or a non-improving score retain the control.
+The option is available through `captured_requant_bundle.build` and the CLI,
+with default off. Existing narrow resident experiment selections are retained.
+Forty focused tests pass, including policy decisions, numeric-field preservation,
+source-proof refusal and unchanged direct/requant paths.
+[Complete receipt](perf_records/resident_stripe_conv_gsim.json).
 
 Whole-model source binding and stock FireSim qualification are still required.
 This explicit schedule is not enabled as a universal default.

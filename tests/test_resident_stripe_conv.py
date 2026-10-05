@@ -1,4 +1,4 @@
-from dataclasses import replace
+from dataclasses import asdict, replace
 
 import pytest
 
@@ -71,3 +71,43 @@ def test_full_reduction_weights_remove_spatial_reload():
     wider = command_counts(replace(s,cout=128))
     assert wider['mvin_a'] == counts['mvin_a']
     assert wider['mvin_b'] == 2*counts['mvin_b']
+
+
+@pytest.mark.parametrize('shape,applied', [
+    (ConvShape(56,56,64,64,bn=4),True),
+    (ConvShape(28,28,128,128,bn=4),True),
+    (ConvShape(5,23,32,19,bn=2),True),
+    (ConvShape(56,56,128,128,bn=4),False),
+    (ConvShape(28,28,256,256,stride=2,bn=4),False),
+    (ConvShape(14,14,256,256,bn=4),False),
+])
+def test_shape_resource_traffic_policy_and_fallback(shape,applied):
+    from mlir_oot.conv_schedule import select_kernel
+    control,control_kind = select_kernel(shape,flat_spatial=True,virtual_padding=True)
+    selected,kind = select_kernel(shape,flat_spatial=True,virtual_padding=True,resident_stripes=True)
+    decision = selected.resident_stripe_decision
+    assert decision['applied'] == applied
+    assert decision['timing_claim'] is False
+    if applied:
+        assert decision['refusal'] is None
+        assert kind == 'resident_full_k_stripes'
+        assert decision['candidate']['score'] < decision['control']['score']
+        assert {k:v for k,v in asdict(selected.conv).items() if k not in ('bn','wide_b')} == {
+            k:v for k,v in asdict(control.conv).items() if k not in ('bn','wide_b')}
+    else:
+        assert isinstance(decision['refusal'],str) and decision['refusal']
+        assert kind == control_kind
+        assert type(selected) is type(control)
+
+
+def test_source_padding_contract_and_option_validation(tmp_path):
+    from mlir_oot.captured_requant_bundle import build
+    from mlir_oot.conv_schedule import select_kernel
+    for flags in ({'resident_stripes':True},{'resident_stripes':True,'flat_spatial':True}):
+        with pytest.raises(ValueError,match='resident stripe'):
+            select_kernel(ConvShape(5,23,32,19,bn=2),**flags)
+    for flags in ({'resident_stripes':1},{'resident_stripes':True},
+                  {'resident_stripes':True,'flat_spatial':True}):
+        with pytest.raises(ValueError,match='resident stripe'):
+            build(tmp_path/'absent',tmp_path/'absent_tools',tmp_path/'output',**flags)
+        assert not (tmp_path/'output').exists()
