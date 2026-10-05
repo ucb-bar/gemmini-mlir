@@ -1,0 +1,222 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Full 22-layer pretrained TinyLlama, 8 tokens; explicit exact scalar contraction accumulator before elementwise fusion. Existing fused activation approximation policy unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/model.elf",
+  "elf_sha256": "b947d9d766868d5f45b1973c9d349e90f78d7281f16f768336afd62723a81b0a",
+  "reference_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/spike.log",
+  "spike_console_sha256": "a85bf573bbd134f23210fcb5288f09c704e5d3d4a240c47e7e16ecf2a42983f0",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "metrics": {
+    "cycles": "177453518",
+    "build_hash": "8814ac13f435",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "prior_spike_instructions": 209494756,
+  "instruction_reduction_fraction": 0.15294529854484762,
+  "hardware_status": "Not measured for this ELF; FireSim queue handoff is qualified by the original native gate, complete target output digest, and static no-FSM audit.",
+  "native_validation": {
+    "scope": "tiny_before_fusion: native host with scalar integer device stand-ins",
+    "llvm_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion/build/host_llvm/model.native.ll",
+    "llvm_sha256": "1bc454db5dc13990f26b035e302f9788de5123711fc445045e1db3b8e5115a70",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "native_closure_reuse": {
+    "reuse_native_gate": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion/native_gate.json",
+    "reason": "All compute/model/device/weights/runtime objects and portable native oracle LLVM are byte-identical; only model_main.o build-marker bytes change. Final ELF gets its own full Spike digest.",
+    "identical_linked_objects": {
+      "model_call.o": "8e1c7216d0934c0bfa03133e233592259d98db87e7b1fe6e2384826db27ae235",
+      "merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "libc_min.o": "a827a57082b834669a9c7dada97087fa1bacb0e7b7b47028ad125c4309918b76",
+      "malloc.o": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+      "model.o": "1230e5fa88c2aba64195586f327305b62b78bee42b9999a2aee35bc2f41bcb2b",
+      "weights_blob.o": "680b3767aa34673a260d9ace870be109f8754edd0dd7d27ec16ba98787beb3fd",
+      "device/device_catalog_shim.o": "7f7d1cfc5befe77aa3e31d35113d53dc82b05ab711cd5c0e31e29cdb952432a4",
+      "device_catalog/kernel.o": "2c0ccc4eff4eba24f2f6479b466fad50a44175dfd49451ef58e1ca54ddc46dc2",
+      "host_llvm/model.native.ll": "1bc454db5dc13990f26b035e302f9788de5123711fc445045e1db3b8e5115a70"
+    },
+    "changed_model_main_sha256": "5a70b46caba61b4950d50a99eb2889843c3ec93583998454161274de5e2c1dc7",
+    "prior_model_main_sha256": "8d050fd091d4297bf2286f7269fab715613bbcc80f204de28b3ece66d9f8f979",
+    "nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "b947d9d766868d5f45b1973c9d349e90f78d7281f16f768336afd62723a81b0a",
+      "executable_sections": 1,
+      "custom_funct_counts": {
+        "0": 20,
+        "1": 160,
+        "2": 738,
+        "3": 320,
+        "4": 640,
+        "6": 640,
+        "7": 5
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "original_reference_gate": {
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+    "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "unchanged": true,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true
+  },
+  "prior_compiled_output_bitexact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "b947d9d766868d5f45b1973c9d349e90f78d7281f16f768336afd62723a81b0a",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "8814ac13f435",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/lower/model.ll",
+      "source_sha256": "16213add94d8181ee3a78c90c5f19c46d0de8c360f2f7b5b71b808c03baa6344",
+      "selected_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/host_llvm/model.ll",
+      "selected_sha256": "6452ff9394d30db7d568dbef473ee3530669809bb68be1c30bd31e18730cff1c"
+    },
+    "supplemental_objects_sha256": "283e7968050a1c1666ea075623355d66025516cdc945799a919a6d04097da415",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "core_feature_commit": "39cceac74",
+  "identity_fix_commit": "5f362809a",
+  "compiler_contract": {
+    "feature": "scalar_contraction_accumulator",
+    "default_off": true,
+    "target_independent": true,
+    "f32_arithmetic": "Original separate arith.mulf then arith.addf, with original operand order and increasing last reduction dimension; no fastmath permission introduced.",
+    "alias_contract": "Tensor value semantics; original input tensors remain immutable SSA values and destination tensors are loop-carried. Upstream one-shot bufferization chooses copies where necessary; no physical noalias assertion.",
+    "coverage": {
+      "coverage": "OK scalar_contraction_accumulator 45",
+      "full_llvm_replay_bitexact_after_normal_abi_repair": true,
+      "abi_repair": {
+        "schema": "wide_ciface_inline_v1",
+        "max_flattened_arguments": 256,
+        "inlined": [
+          {
+            "implementation": "forward",
+            "wrapper": "_mlir_ciface_forward",
+            "flattened_arguments": 3973
+          }
+        ],
+        "count": 1
+      },
+      "llvm_sha256": "16213add94d8181ee3a78c90c5f19c46d0de8c360f2f7b5b71b808c03baa6344"
+    },
+    "supported": "Static ranked f32 tensor linalg.generic, one tensor result, two inputs, last loop is the sole reduction, output map is a permutation of parallel dimensions, pure dimension input maps, exact multiply/add/yield body; named ops generalized before matching.",
+    "unsupported": "Dynamic shapes, non-dimension maps, non-f32 values, fastmath permissions, extra or different body operations remain unchanged."
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "host_clang_optimization": "O3",
+    "fuse_quantize_round_convert": true,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "fuse_activation_polynomial_fma": true,
+    "activation_policy_unchanged": true,
+    "normalization_expf_calls": 22,
+    "activation_fma_calls": 176,
+    "new_contraction_fma_permissions": false
+  },
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5,
+    "hoisted_weight_arrays": 155
+  },
+  "source_artifacts": {
+    "model_object_sha256": "1230e5fa88c2aba64195586f327305b62b78bee42b9999a2aee35bc2f41bcb2b",
+    "source_llvm_sha256": "16213add94d8181ee3a78c90c5f19c46d0de8c360f2f7b5b71b808c03baa6344",
+    "target_llvm_sha256": "6452ff9394d30db7d568dbef473ee3530669809bb68be1c30bd31e18730cff1c",
+    "native_llvm_sha256": "1bc454db5dc13990f26b035e302f9788de5123711fc445045e1db3b8e5115a70",
+    "builder_script_sha256": "da1f8f064881b0aa0f49faad380c39a16a1c553f4e4bf60eb70a619a88fe361f"
+  },
+  "rejected_initial_placement": {
+    "scope": "Post-fusion/pre-bufferization marker with strict pattern match",
+    "result": "Emission-neutral; no native, Spike, or FireSim duplicate was run. The fusion-expanded bodies no longer matched the strict contraction pattern. Move the stage before fusion to match the original source body.",
+    "control_target_llvm_sha256": "95bb9ad3e269d7fb6115d0c8d41757c2f337a0c7046f09a15e44d11e87f5a5f6",
+    "screen_target_llvm_sha256": "95bb9ad3e269d7fb6115d0c8d41757c2f337a0c7046f09a15e44d11e87f5a5f6",
+    "control_model_object_sha256": "471ba3aafd47f35799fee82ac48b7eb31f0b4e748e0672fe012e2a50797c05dc",
+    "screen_model_object_sha256": "471ba3aafd47f35799fee82ac48b7eb31f0b4e748e0672fe012e2a50797c05dc"
+  },
+  "verification": {
+    "focused_native_and_registry_tests": 61,
+    "supplemental_identity_tests": 2,
+    "skips": 0,
+    "structure": "pass",
+    "target_name_check": "pass",
+    "regex_check": "pass",
+    "docs": "pass"
+  }
+}
