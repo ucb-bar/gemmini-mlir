@@ -100,3 +100,35 @@ instructions. Its cache behavior is unmeasured; it is not promoted. A source-lev
 copy census must not be described as remaining runtime copy traffic. The3.21M
 hardware classifier gap motivates a genuinely different blocked reduction
 schedule, not another equivalent transpose elimination.
+
+## Tiny hardware device profile1782
+
+Complete digest,155 calls with exact multiplicities, source symbol order and
+interval conservation pass on stock FireSim. Harness1,399,827,329 cycles;
+interior1,399,826,923 = device219,195,608 + host1,180,631,315, tail9,503,370.
+Largest repeated pre-o_proj host gaps are26.74M cycles, covering attention and
+its surrounding transforms. These intervals are not isolated attention timings.
+The unprofiled1776 result remains1,402,210,517 cycles. Full per-call source-region
+attribution is preserved in the hardware receipt.
+
+## Explicit channel-block reduction experiment1789
+
+Core opt-in `reduction_channel_block=64` splits a divisible static trailing
+channel axis, then runs channel-block/H/W/channel-inner. The default is0.
+H,W order for each output and all original DQ scalar arithmetic stay exact.
+Ten focused tests pass. Real lowered LLVM retains fused i8-load/DQ-multiply/add;
+there is no materialized f32 DQ tensor. Whole native and actual Spike match all
+1,000 original outputs, final zero-FSM audit passes.
+
+The candidate composes current uniform quantization and combined exact clamp/RNE
+host optimizations. Runtime/weight objects and all device executable bytes match
+control1786; only host scheduling differs. Spike11,629,325 versus11,355,701 is
+2.41% more instructions. Hardware1789 measures the cache tradeoff; no speedup or
+promotion is claimed before that A/B. Generic layout transfer without blocking
+remains byte-identical to baseline, as recorded above.
+
+Historical late LLVM relinks inherit the base harness build_hash. Their final
+ELF SHA256, complete object/transform receipts and staged hardware identity are
+the variant identity; the inherited build_hash alone is insufficient. The new
+backend host-LLVM hook being developed by the parent will establish transformed
+LLVM identity before model.o, harness hash and final linking for future builds.
