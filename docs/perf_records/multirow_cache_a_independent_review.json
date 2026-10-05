@@ -1,0 +1,22 @@
+{
+  "scope": "Read-only independent review of multirow cache-A generalization; no new numerical execution by reviewer.",
+  "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/golden_gemm.py",
+  "source_sha256": "80363d3846cb2be14d61ccf05b2351830cc725b19a5038c65f2b1c28b57b26ab",
+  "reviewed_diff_sha256": "739e5877a29aba68be4eeec1f5d5ff2ddc5197c949e4dac15dd797d6f0e89780",
+  "findings": [],
+  "invariants": [
+    "ceil(M/DIM)<=bm forces exactly one M group beginning at zero; local row-tile indices equal cached global row-tile indices including partial M tails.",
+    "Cached A panel (a,ki) occupies [(a*kt+ki)*DIM, +(exact a_rows)); the maximal exclusive row is bounded by bm*kt*DIM.",
+    "Ordinary B starts at bm*kt*DIM. Separate and prefetched B starts at bank2 only after proving complete A reservation fits lower two banks. Prefetch B reserves each upper bank independently.",
+    "Both reuse_b branches pass the row-tile index into dynamic A address. Stationary B preload versus compute-accumulate opcode choices are unchanged.",
+    "K panels remain source-ascending. Bias initialization, first-accumulator overwrite/accumulate, exact M/N/K tail extents and store scale remain unchanged."
+  ],
+  "additional_recommended_gates": [
+    "Bias enabled with reuse_b=False and bm greater than actual ceil(M/DIM).",
+    "Cached A plus prefetch_b with K tail crossing the paired loop and static drain, e.g. K65."
+  ],
+  "limitations": [
+    "The existing dynamic-address dialect verifier checks declared bounds, not an independently inferred SSA range; review verified this generator constructs those bounds correctly.",
+    "Review is not a new hardware or numerical result and does not replace actual capsule gates."
+  ]
+}
