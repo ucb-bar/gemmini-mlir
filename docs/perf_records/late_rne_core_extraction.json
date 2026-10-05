@@ -1,0 +1,102 @@
+{
+  "schema": "merlin_host_bounded_rne_extraction_v1",
+  "status": "emission_neutral",
+  "core_commit": "5a4a460e2",
+  "core_source": "/scratch/agustin/tmp/merlin-scalar-contraction-20261005/src/merlin/llvmlower/late_quant_rne.py",
+  "core_source_sha256": "f5aa5693ccac0efbae4d427e471da6b3ea045c4846348db121eeca5232f38dfc",
+  "oot_adapter": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/mlir_oot/late_quant_rne.py",
+  "oot_adapter_sha256": "62caa665496d0717435dcb7417acd37f161a1e61eceaf105b3600161e7329990",
+  "ownership": "Typed SSA recognition, explicit CPU ISA emission, paired portable oracle and normal pre-object callback in Merlin. Historical printer prefix and legacy target relink/noFSM audit tool in OOT.",
+  "selection": "No host policy by default. Explicit portable/rv64gc CPU policies independent of accelerator or model identity; signed bounds derived from actual integer type.",
+  "qualification": {
+    "core_focused_tests": 24,
+    "oot_compatibility_tests": 14,
+    "skips": 0,
+    "structure": "pass",
+    "docs": "pass",
+    "no_regex": "pass",
+    "no_target_name": "pass",
+    "independent_native_domain": "i8 and i16: every integer half-step and both neighboring f32 values through clamp intervals,20K random bit patterns excluding NaNs, zeros/subnormals/infinities, compared baseline and portable selected code."
+  },
+  "immutable_model_input": {
+    "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/lower/model.ll",
+    "sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+    "routes": 89,
+    "target_llvm_sha256": "46c48410c15c26b86bebbc43cc2903b9e0d4ff147392a6c74207a9e58080615f",
+    "target_llvm_byte_identical": true,
+    "native_llvm_sha256": "5ff45995f67652191536619962e38b4a9af4369e0deadda7fb5d9385b0e040e6",
+    "native_llvm_byte_identical": true,
+    "adapter_receipt_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/late-rne-core/adapter/receipt.json",
+    "adapter_receipt_sha256": "b0a99a6ffe142379b583807746351e42c3cc8caf1549ae18368e3884b04e09b6",
+    "reference_receipt_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/spike_validation.json",
+    "reference_receipt_sha256": "bcc7b88606e5f50bd868434bf9c9346be3a4389fcbad306b09378f6a1d47450b",
+    "original_torch_gate": {
+      "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+      "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+      "unchanged": true,
+      "atol": 0.03125,
+      "rtol": 0.02,
+      "allclose": true
+    },
+    "full_f32le_digest": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "full_output_elements": 256000,
+    "existing_verified_elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/model.elf",
+    "existing_verified_elf_sha256": "95739f4518002cf7c47477350c18ada0b929c02c4d7099ad842890dc0615508e",
+    "measured_hardware_job": 1835,
+    "measured_forward_cycles": 610246484
+  },
+  "emitted_object_identity": {
+    "target_object": {
+      "actual": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/late-rne-core/tiny/model.o",
+      "actual_sha256": "5e5178431fa4c4dcd7c16c262b5b3d3b2cd6e8acaeeb71836315cdcb6a0b9818",
+      "prior": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/model.o",
+      "prior_sha256": "5e5178431fa4c4dcd7c16c262b5b3d3b2cd6e8acaeeb71836315cdcb6a0b9818",
+      "byte_identical": true
+    },
+    "native_object": {
+      "actual": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/late-rne-core/tiny/native.o",
+      "actual_sha256": "5aaef45d90b05a0be59e446be518a45d71a3d5fda7e632b5fba17d14bcf545fe",
+      "prior": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/host/model.o",
+      "prior_sha256": "5aaef45d90b05a0be59e446be518a45d71a3d5fda7e632b5fba17d14bcf545fe",
+      "byte_identical": true
+    },
+    "bounded_quant_rne_probe": {
+      "object_sha256": "6b625d54c459360eb6344ad820073712afe9d7e6c09b199d1e8bfa1fbcdd2873",
+      "prior_object_sha256": "6b625d54c459360eb6344ad820073712afe9d7e6c09b199d1e8bfa1fbcdd2873",
+      "byte_identical": true,
+      "source_llvm_byte_identical": true,
+      "prior_boundary_receipt": "/scratch/agustin/tmp/gemmini-virtual-padding-20261005/out/bounded_quant_rne_probe/receipt.json",
+      "prior_boundary_receipt_sha256": "38e2cc41b5b4e706483eff0127b3be8a25309e672b7f158ba5e9f0e5d9d873c4",
+      "full_5_frm_checks": 107415,
+      "prior_final_elf_sha256": "15497db0ba4ed0ffe3a3145446874a1fa6bce56a37ac4965ddba845b3236a9f7",
+      "nan_executions": 0,
+      "boundary_stdout_path": "/scratch/agustin/tmp/gemmini-virtual-padding-20261005/out/bounded_quant_rne_probe/spike.log",
+      "boundary_stdout_sha256": "e682413ea3db4083db738f06a120a8c60396fc72c9be1b0ec1f5b7e20571d894"
+    },
+    "bounded_quant_clamp_rne_probe": {
+      "object_sha256": "96aeca8081ce0237d193dad287b60afc1bc58822f6be13f32cab38835e94bd55",
+      "prior_object_sha256": "96aeca8081ce0237d193dad287b60afc1bc58822f6be13f32cab38835e94bd55",
+      "byte_identical": true,
+      "source_llvm_byte_identical": true,
+      "prior_boundary_receipt": "/scratch/agustin/tmp/gemmini-virtual-padding-20261005/out/bounded_quant_clamp_rne_probe/receipt.json",
+      "prior_boundary_receipt_sha256": "cbe444a15c2eadc200d3393a9dc8ef95aca75bc8fc390dc9c451a2c8e033c7d6",
+      "full_5_frm_checks": 107415,
+      "prior_final_elf_sha256": "1ab9d952ca4e5ed18ff6ea8860a71ff16af2c966313e840f4cbdcaf580b48c66",
+      "nan_executions": 20,
+      "boundary_stdout_path": "/scratch/agustin/tmp/gemmini-virtual-padding-20261005/out/bounded_quant_clamp_rne_probe/spike.log",
+      "boundary_stdout_sha256": "e682413ea3db4083db738f06a120a8c60396fc72c9be1b0ec1f5b7e20571d894"
+    }
+  },
+  "numeric_contract": {
+    "all_source_defined_results": "preserved",
+    "rounding": "nearest_ties_even independent of dynamic frm",
+    "infinities": "clamp to finite signed bounds",
+    "nan": "Source fptosi poison; target may refine this result. No finite-input assumption or NaN output contract.",
+    "fflags": "Unconstrained source has no flag contract; strict/constrained modules refuse."
+  },
+  "limitations": [
+    "Strict typed supported LLVM productions only; unknown metadata/flags/instruction forms remain unchanged. Callback refuses if no chain is proven.",
+    "No new whole-model ELF or hardware arm is built for this emission-neutral ownership extraction. Final existing full-output/stock qualification applies to unchanged emitted bytes.",
+    "Printer prefix is explicitly supplied only for historical byte compatibility, with no semantic/model selection. New generic callers use the neutral default."
+  ]
+}

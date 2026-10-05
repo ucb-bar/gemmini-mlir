@@ -1,9 +1,11 @@
 # Late bounded integer rounding for RV64GC
 
-`python -m mlir_oot.late_quant_rne` is an explicit, target-owned opt-in. It
-recompiles the final model LLVM with an exact primitive RNE conversion after
-upstream tensor fusion and lowering. No core compiler target branch or early
-opaque helper call is added.
+Reusable recognition, CPU instruction emission, portable native oracle and the
+normal pre-object callback now live in `merlin.llvmlower.late_quant_rne`. Its
+default policy leaves source bytes unchanged; explicit `host_isa="rv64gc"`
+selects CPU legalization independently of the accelerator. The OOT API delegates
+to this owner and retains historical SSA printer identity. The legacy
+`python -m mlir_oot.late_quant_rne` relink/audit tool remains target-owned.
 
 The matcher requires this complete binary32/i8 SSA contract:
 
@@ -92,7 +94,8 @@ source, selected target LLVM and portable native oracle modules with LLVM's
 assembler, then records the proven routes and tool/content identities. It
 refuses if no chain is proven and never edits the original lowered source.
 
-Merlin owns normal compiler flags, object generation, harness construction and
+Merlin owns typed lexical/SSA recognition, explicit CPU ISA legalization,
+normal compiler flags, object generation, harness construction and
 final linking. The selected object's bytes enter the existing build hash before
 the harness is generated. Historical CLI late-relink builds retain their base
 harness hash; their final ELF/object/transform receipts identify those variants.
@@ -101,3 +104,14 @@ The complete 22-layer Tiny build proves89 chains, passes its original Torch
 tolerance and reproduces all256,000 prior output bits in native and actual
 Gemmini Spike. It retires271,019,239 Spike instructions. Hardware timing is
 pending in1792. Receipt: `perf_records/tiny_scalar_host_quant_rne_spike.json`.
+
+## Emission-neutral core extraction
+
+The structural core matcher reaches all 89 routes on immutable eight-output/K2
+TinyLlama source. The OOT adapter preserves the selected target and portable
+LLVM bytes exactly. Fresh RV64GC O3 and native O0 objects match the qualified
+objects exactly. Both standalone RNE and clamp/RNE objects also match their
+original 107,415-check, five-rounding-mode boundary capsules; no new hardware
+arm is needed for this extraction. Independent i8/i16 native boundary tests,
+quoted/multiline SSA forms, comments and precise refusal tests qualify the
+generic recognizer. Strict/constrained or unproved forms remain unchanged.
