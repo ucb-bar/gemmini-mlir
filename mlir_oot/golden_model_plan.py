@@ -185,6 +185,10 @@ class GoldenModelPlanBinding:
                          binary_symbol_closure_complete=True),
             catalog_numeric_equivalence='Existing independent source/numeric and original-model gates remain required')
         self.catalog=manifest_path;self.object=obj;self.required_symbols=required
+        if catalog.get('calibrated_contraction_selections'):
+            self.state['catalog']['calibrated_contraction_selections'] = catalog['calibrated_contraction_selections']
+            self.state['catalog']['selection_controls_emitted_device_code'] = True
+            self.state['catalog']['whole_model_shared_solver_selected'] = False
         self._write()
         return manifest_path,obj
 

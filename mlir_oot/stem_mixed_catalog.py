@@ -6,8 +6,8 @@ from .stem_bundle import build as build_stem
 from .no_fsm_audit import audit_elf
 
 
-def merlin_callbacks(llvm_bin,requant_bundle):
-    llvm_bin=Path(llvm_bin);prepare_fused,build_fused=fused_callbacks(llvm_bin,requant_bundle);state={}
+def merlin_callbacks(llvm_bin,requant_bundle,*,contraction_calibrations=None):
+    llvm_bin=Path(llvm_bin);prepare_fused,build_fused=fused_callbacks(llvm_bin,requant_bundle,contraction_calibrations=contraction_calibrations);state={}
     def prepare(source,work):
         directory=Path(work)/'packed_stem';manifest=build_stem(source,llvm_bin,directory)
         state.update(directory=directory,manifest=manifest)

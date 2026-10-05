@@ -154,6 +154,48 @@ cached A/wide B/next-K prefetch measured2,357 (27.1% lower). The manifest comman
 selected and emitted the latter actual object, and strict RV64GC Spike with the
 explicit Gemmini extension and final no-FSM audit passed.
 [Measured source-selection qualification](perf_records/golden_calibrated_source_selection_qualification.json).
-This is a working scoped selection/emission foundation; the normal whole-model
-binding remains an identity admission gate until its complete legal alternatives,
-host transitions, costs and downstream instruction accounting are supplied.
+### Opt-in measured selection on the ordinary model path
+
+`golden_device_catalog.compile_catalog` and `merlin_builder` accept
+`contraction_calibrations=Path(...)`. The ordinary manifest command
+`gemmini-model-build --contraction-calibrations FILE ...` passes that packet
+through the fused, stem, pool and residual callback composition to the catalog
+for the **actual final prepared source**. An omitted packet retains the original
+catalog policy and object bytes.
+
+```json
+{
+  "schema": "golden_model_contraction_calibrations_v1",
+  "source_sha256": "sha256 of the exact final prepared source",
+  "regions": [
+    {"region": "source provenance identifier",
+     "calibration": {"path": "contraction_calibration.json", "sha256": "..."}}
+  ]
+}
+```
+
+Each named region must bind exactly one remaining unbatched i8×i8→i32
+contraction. Provenance identifies the operation; it does not choose its strategy.
+Every candidate is re-derived and priced by the existing scoped shared selector.
+The catalog replaces that operation's binding with the selected actual object,
+retains a shared default kernel when an unselected use still needs it, and links
+the selected objects into its ordinary library. Partial coverage, duplicate or
+missing regions, changed source/calibration pins and incompatible implementations
+refuse. Already fused external calls are outside this opt-in route.
+
+The normal model plan receipt records these actual device selections under its
+catalog. Its full-source identity admission check remains a separate preservation
+gate: it does not run a whole-model solver, replace the prepared source, or price
+host tasks/transitions. Whole-model timing, alias and roofline status remain
+unknown. Passing fixture checks does not establish production-model correctness
+or hardware performance.
+
+A fresh ordinary `DeviceRouting` build used an independent complete
+M17/N73/K65 capture. Fresh alternatives were exported from its exact prepared
+source and measured at 3,234/2,357 GSIM kernel cycles with every output and guard
+checked. The shared selector chose the faster object; the actual catalog binding,
+shim and final ELF changed while the host model object stayed byte identical.
+Both complete models passed all 1,241 original i32 outputs under native execution
+and strict RV64GC Gemmini Spike, with final symbol closure and zero FSM
+instructions. These fixture costs are not production-model costs.
+[Ordinary model selection qualification](perf_records/golden_calibrated_normal_model_qualification.json).

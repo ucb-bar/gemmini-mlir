@@ -119,11 +119,13 @@ def main():
     p.add_argument('--host-feature', action='append', choices=('fuse_quantize_round_convert','lower_roundeven_to_intrinsic'), default=[], help='explicit exact host arithmetic lowering; defaults remain unchanged')
     p.add_argument('--reuse-tensor-destination',action='store_true')
     p.add_argument('--large-n-dense',action='store_true')
+    p.add_argument('--contraction-calibrations',type=Path,help='source-pinned measured alternatives for remaining exact integer contractions')
     p.add_argument('--host-vectorize',choices=('true','false'),default=None)
     p.add_argument('--host-llvm-transform',choices=('clamp-rne',),default=None)
     p.add_argument('--output-sha256',action='store_true')
     p.add_argument('--output-dump-cap',type=int,default=4096)
     a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    if a.contraction_calibrations is not None and a.validate_existing:p.error('contraction calibrations require a fresh catalog build')
     if a.large_n_dense and a.packed_stem and not a.pooled_stem:p.error('large-N dense policy is supported with pooled stem or ordinary fused catalog')
     if len(set(a.host_feature))>1:p.error('host rounding lowerings are alternatives; select one')
     if a.residual_shared_permutation and (not a.residual_add or a.residual_implementation not in ('cpu_lut','wide_integer')):p.error('shared permutation requires exact residual implementation')
@@ -136,6 +138,8 @@ def main():
         policy['reuse_tensor_destination']=a.reuse_tensor_destination
         policy['host_features']=sorted(set(a.host_feature))
         policy['large_n_dense']=a.large_n_dense
+        if a.contraction_calibrations is not None:
+            policy['contraction_calibrations']={'path':str(a.contraction_calibrations.resolve()),'sha256':hashlib.sha256(a.contraction_calibrations.read_bytes()).hexdigest()}
         policy.update(host_vectorize=a.host_vectorize,host_llvm_transform=a.host_llvm_transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap)
         (a.work/'host_compilation_policy.json').write_text(json.dumps(policy,indent=2)+'\n')
     if not a.validate_existing:
@@ -148,10 +152,10 @@ def main():
             from mlir_oot.stem_pool_bundle import build as build_pool,apply_capture
             from mlir_oot.stem_pool_mixed_catalog import merlin_callbacks as pool_callbacks
             pool=a.work/'stem_pool_bundle';build_pool(capture,a.llvm_bin,pool);apply_capture(capture,pool)
-            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial,propagate_layout=a.propagate_layouts,large_n=a.large_n_dense)
+            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial,propagate_layout=a.propagate_layouts,large_n=a.large_n_dense,contraction_calibrations=a.contraction_calibrations)
         else:
             if (a.flat_spatial or a.propagate_layouts) and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
-            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':a.flat_spatial,'propagate_layout':a.propagate_layouts,'large_n':a.large_n_dense} if not a.packed_stem else {}))
+            prepare,compile=callbacks(a.llvm_bin,a.bundle,contraction_calibrations=a.contraction_calibrations,**({'flat_spatial':a.flat_spatial,'propagate_layout':a.propagate_layouts,'large_n':a.large_n_dense} if not a.packed_stem else {}))
         if a.residual_add:
             from mlir_oot.captured_residual_bundle import build as build_residual
             from mlir_oot.residual_mixed_catalog import apply_capture as apply_residual,merlin_callbacks as residual_callbacks

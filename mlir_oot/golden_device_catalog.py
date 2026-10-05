@@ -95,7 +95,7 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
 
 def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
                     *, max_kernels: int | None = None, large_n: bool = False,
-                    prefetch_b: bool = False) -> dict:
+                    prefetch_b: bool = False, contraction_calibrations: Path | None = None) -> dict:
     # The model compiler may overwrite its prepared path during offload. Keep
     # the exact bytes consumed here so bindings remain independently replayable.
     source_bytes = source_path.read_bytes()
@@ -103,7 +103,16 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
                                      large_n=large_n,prefetch_b=prefetch_b)
     if not manifest["covered_contractions"]:
         raise ValueError("source has no exact integer GEMM contractions")
-    receipt = compile_module(module, llvm_bin, workdir)
+    if contraction_calibrations is None:
+        receipt = compile_module(module, llvm_bin, workdir)
+    else:
+        from .golden_calibrated_catalog import compile_calibrated_catalog
+        workdir.mkdir(parents=True, exist_ok=True)
+        snapshot = workdir / 'catalog_source.mlir'
+        snapshot.write_bytes(source_bytes)
+        manifest = compile_calibrated_catalog(snapshot, module, manifest, llvm_bin, workdir,
+                                              contraction_calibrations)
+        receipt = manifest.pop('compilation')
     source_snapshot = workdir / 'catalog_source.mlir'
     source_snapshot.write_bytes(source_bytes)
     result = {**manifest, "compilation": receipt,
@@ -115,13 +124,14 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
 
 
 def merlin_builder(llvm_bin: Path, *, large_n: bool = False, prefetch_b: bool = False,
-                   declare_full_writes: bool = False):
+                   declare_full_writes: bool = False, contraction_calibrations: Path | None = None):
     """Compile Merlin's final prepared IR at its pre-offload source boundary."""
     compiler = Path(llvm_bin)
 
     def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
         prepared, workdir = Path(prepared), Path(workdir)
-        result = compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b)
+        result = compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b,
+                                 contraction_calibrations=contraction_calibrations)
         if declare_full_writes:
             # This owner emits kernels that completely store their output and
             # neither retain nor release any input/output pointer.
@@ -175,9 +185,12 @@ def main() -> int:
                     help="compile a partial catalog for debugging; receipt flags incomplete coverage")
     ap.add_argument("--large-n", action="store_true", help="opt in to grouped B loads and short-M A reuse")
     ap.add_argument("--prefetch-b", action="store_true", help="prefetch K panels into disjoint banks for eligible cached-A kernels")
+    ap.add_argument("--contraction-calibrations", type=Path,
+                    help="select explicit source-pinned measured alternatives in the emitted catalog")
     args = ap.parse_args()
     report = compile_catalog(args.input, args.llvm_bin, args.workdir,
-                             max_kernels=args.max_kernels,large_n=args.large_n,prefetch_b=args.prefetch_b)
+                             max_kernels=args.max_kernels,large_n=args.large_n,prefetch_b=args.prefetch_b,
+                             contraction_calibrations=args.contraction_calibrations)
     print(json.dumps({k: report[k] for k in ("matched_contractions", "covered_contractions",
                                              "coverage_complete", "unique_kernels")}, indent=2))
     return 0

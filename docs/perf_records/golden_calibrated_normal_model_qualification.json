@@ -1,0 +1,281 @@
+{
+  "schema": "golden_calibrated_normal_model_qualification_v1",
+  "status": "pass",
+  "source_scope": "Independent complete M17/N73/K65 i8*i8->i32 fixture through ordinary DeviceRouting, preparation, offload, host lowering, runtime and final ELF. Not a production-model timing calibration.",
+  "capture_pins": {
+    "weights.safetensors": "0dd944bac7fef828ec99f485f5c24ec05c299d6a2d8e9815b0a4caaf82e933d2",
+    "golden.npy": "4d082bb1a327e38bcf51054874494969ff0ed66e95b779b731666ab1af1286d5",
+    "inputs.npz": "31eac708152a98fe9a8d0315c826b167aa729caf806841541999a0e9463d02a9",
+    "model.mlir": "39697629a35c939067db06d855da73afbbb67d0210cc099e1f2135c25b6332de",
+    "weights.safetensors.manifest.json": "f903271e5a6aa8c0c87b50fde7c7c5c6cfd7e31d37e3a62545573f66317255f0"
+  },
+  "calibration_packet": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/model_calibrations.json",
+    "sha256": "41d5556818e806abd50d05faedcde19289a2439c1a563e42d065045190c5514e"
+  },
+  "contraction_calibration": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/contraction_calibration.json",
+    "sha256": "5e3b1b8a90f61909fcdabaa203a65bac8aa90d1ae4560072c0f5330efec533f6"
+  },
+  "fixture_gsim_cycles": {
+    "control": 3234,
+    "resident": 2357
+  },
+  "arms": {
+    "control": {
+      "elf": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/control/model.elf",
+      "elf_sha256": "a0288c2db93f8a04d6d014b52b0323fc7c2f075e19093ce95166c32f45dc9500",
+      "catalog_sha256": "c90e7791ec0e7f9fc1db70f0e163e64c0500b6beec4c7c5fed39bce8a87cd375",
+      "catalog_object_sha256": "4b65d04e1f8f5287a43df3bd0e779f3afbc97ccf2db38ff7bfd777217055e8ea",
+      "normal_catalog_binding": {
+        "schema": "external_device_catalog_binding_v1",
+        "source_sha256": "c87f94d9e88ef0e3318e3f3c725660d913b4176c743f54c92f5d04023bf0bc6e",
+        "manifest_sha256": "c90e7791ec0e7f9fc1db70f0e163e64c0500b6beec4c7c5fed39bce8a87cd375",
+        "catalog_object_sha256": "4b65d04e1f8f5287a43df3bd0e779f3afbc97ccf2db38ff7bfd777217055e8ea",
+        "shim_object_sha256": "36f9bd82c3df008ed51f23b488c2f537155552d6944bec0cbc02de06fd247870",
+        "routed_operations": 1,
+        "entry_to_kernel": {
+          "merlin_dev_gemmini_0": "gemmini_golden_4d7b16d1dcb15ee7"
+        },
+        "compiler_flags": [
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin"
+        ]
+      },
+      "global_plan_receipt_sha256": "6a4bde37f95d8a966b3e626a73394a9f2262aa9e420d7fd3bc42888cdc4f3b6c",
+      "kernel_symbol": "gemmini_golden_4d7b16d1dcb15ee7",
+      "prepared_source_sha256": "c87f94d9e88ef0e3318e3f3c725660d913b4176c743f54c92f5d04023bf0bc6e",
+      "all_original_i32_outputs_exact": true,
+      "elements": 1241,
+      "canonical_i32le_output_sha256": "6a9849857c6998ee5305cf9aed381563c4350f85acd6783ec60162886e1fab9f",
+      "native_output_sha256": "4d082bb1a327e38bcf51054874494969ff0ed66e95b779b731666ab1af1286d5",
+      "native_library_sha256": "b7312f95f78323be2387c8c1c400ba06fb0676dbff46d64c43e9c1a69d713810",
+      "spike_log_sha256": "8277f9df0502b6d3c4f82c151250545597ca3b4f27b8f876f0d7c887d4c19be5",
+      "spike_functional_metric": [
+        "5943"
+      ],
+      "nofsm_status": "pass",
+      "host_model_object_sha256": "753c8f60ef1b6591a8205c0cb178ab2afefeb95a3a1e0fb028f577b2685266cc"
+    },
+    "selected": {
+      "elf": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/selected/model.elf",
+      "elf_sha256": "ef2e15b63ad0fca0ce1fda99b444d2cce4c36f09d2fb624a6bba647f2f6857f7",
+      "catalog_sha256": "508d6ab1fa9df0f39a1f33e4544d88af81ab91278fa4bcc3b52f933e5a3e2887",
+      "catalog_object_sha256": "282f1d9856546835d72f351ee37ccf4456157518d5b3c9932534004633cf63f2",
+      "normal_catalog_binding": {
+        "schema": "external_device_catalog_binding_v1",
+        "source_sha256": "c87f94d9e88ef0e3318e3f3c725660d913b4176c743f54c92f5d04023bf0bc6e",
+        "manifest_sha256": "508d6ab1fa9df0f39a1f33e4544d88af81ab91278fa4bcc3b52f933e5a3e2887",
+        "catalog_object_sha256": "282f1d9856546835d72f351ee37ccf4456157518d5b3c9932534004633cf63f2",
+        "shim_object_sha256": "d1d9eb9a4f8d2b5a91c3e8710bc4ed498a9e933d661246aba15f9d2a9e81024c",
+        "routed_operations": 1,
+        "entry_to_kernel": {
+          "merlin_dev_gemmini_0": "gemmini_export_d20ec64fb1a28047"
+        },
+        "compiler_flags": [
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin"
+        ]
+      },
+      "global_plan_receipt_sha256": "46abb86cdf5f68f2b413dd35db368dc585ef3f55a14d2dfc0304713ad7be12ad",
+      "kernel_symbol": "gemmini_export_d20ec64fb1a28047",
+      "prepared_source_sha256": "c87f94d9e88ef0e3318e3f3c725660d913b4176c743f54c92f5d04023bf0bc6e",
+      "all_original_i32_outputs_exact": true,
+      "elements": 1241,
+      "canonical_i32le_output_sha256": "6a9849857c6998ee5305cf9aed381563c4350f85acd6783ec60162886e1fab9f",
+      "native_output_sha256": "4d082bb1a327e38bcf51054874494969ff0ed66e95b779b731666ab1af1286d5",
+      "native_library_sha256": "de8a0058f372f84c076a2e0a604945a173e53a81a61ba8c21b9e9b8f5da1f673",
+      "spike_log_sha256": "b9021724816373b47134e8e2ee30c1e015f34aff693d9ce28932c22a8a641487",
+      "spike_functional_metric": [
+        "5926"
+      ],
+      "nofsm_status": "pass",
+      "host_model_object_sha256": "753c8f60ef1b6591a8205c0cb178ab2afefeb95a3a1e0fb028f577b2685266cc"
+    }
+  },
+  "selection_controls_normal_emitted_device_code": true,
+  "default_policy_changed": false,
+  "whole_model_shared_solver_selected": false,
+  "whole_model_hardware_cycles_status": "UNKNOWN",
+  "whole_model_roofline_status": "UNKNOWN",
+  "production_model_correctness_established": false,
+  "metric_scope": "GSIM prices are one exact contraction fixture; Spike counters are retired instructions, not hardware cycles. OUT record is interpreted as original i32 raw bits, not f32.",
+  "reproduction_script_sha256": "8ad9ab4ad64aeb77667f01e4b3b20f22616a53a7ec1ff7875d34838c538e96da",
+  "qualification_script_sha256": "1566e78fd11811750a1621bc110692aa0acc31ca49fbe63ca53abbaaf80103a7",
+  "created_at_utc": "2026-10-05T22:10:22Z",
+  "owner": "/root/reference_parity",
+  "hypothesis": "A measured shared singleton plan must select the actual object linked by the ordinary model builder; keep default catalog bytes and refuse incompatible calibration.",
+  "actual_emitted_delta": "Control catalog/shim uses gemmini_golden_4d7b16d1dcb15ee7; opt-in catalog/shim and final ELF use shared-selected gemmini_export_d20ec64fb1a28047. Host model object identical. Selected leaf object equals the freshly measured export.",
+  "outcome": "accepted as opt-in source-bound compiler wiring; no production-model performance promotion",
+  "limitations": [
+    "Only remaining unbatched i8*i8->i32 contractions are admitted; already fused external routes are unchanged.",
+    "Costs are exact full-output contraction-fixture prices; whole-model host/alias/occupancy/roofline costs UNKNOWN.",
+    "The existing whole-source structural route is an identity admission gate; it does not select replacement whole-model IR.",
+    "Spike counters are retired instructions, not FireSim hardware cycles.",
+    "Independent test fixture is not the immutable production ResNet/SmolVLA/TinyLlama capture."
+  ],
+  "verification": {
+    "focused_tests": "32 passed, including final post-link integrity guards",
+    "default_object_bytes_preserved": true,
+    "full_fixture_native_and_strict_spike": true,
+    "all_output_and_guard_gsim": true,
+    "source_calibration_object_and_final_elf_closure": true
+  },
+  "token_usage_available": false,
+  "token_usage_note": "Root records owned-thread counters and checkpoint snapshots; no exclusive child billing attribution.",
+  "raw_directory": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model",
+  "raw_qualification_sha256": "e6b3d59231116f63dcd9fc01d70e69a45c26f6ac250f88c146b5cfa101327d5c",
+  "measurements": {
+    "control": {
+      "result": {
+        "schema": "gemmini_golden_gemm_gsim_probe_v1",
+        "shape": [
+          17,
+          73,
+          65
+        ],
+        "kernel_symbol": "gemmini_export_a39ff0026a06efc7",
+        "block": [
+          2,
+          5
+        ],
+        "output_dtype": "i32",
+        "bias": false,
+        "input_amplitude": 21,
+        "scale": 1.0,
+        "relu": false,
+        "embedded_expected": true,
+        "static_inputs": true,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": false,
+        "separate_b_bank": false,
+        "prefetch_b": false,
+        "prefetch_b_rows": null,
+        "status": "pass",
+        "kernel_cycles": 3234,
+        "engine_cycles_including_harness": 48036,
+        "elf_sha256": "d56a05573538706f732234c6e359fecc2666e85e070cf4d057e2fa0479feef9d",
+        "target_ir_sha256": "1d5dfa98437cc459acc93c73cd33f85c0f298f0fb058d332acb74c60dde934ac",
+        "llvm_ir_sha256": "09c7e262358a2c5a9ee2cc3371ea1831390ad34b531debf6962b151a57293cbe",
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "nofsm_audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "d56a05573538706f732234c6e359fecc2666e85e070cf4d057e2fa0479feef9d",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 4,
+            "1": 15,
+            "2": 6,
+            "3": 10,
+            "4": 15,
+            "5": 15,
+            "6": 30,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "stdout_tail": "GOLDEN_GEMM_CYCLES 3234\nGOLDEN_GEMM PASS M=17 N=73 K=65\n",
+        "stderr_tail": ""
+      },
+      "result_sha256": "f4addd4f779b370685eb771a49c1ca2326506f52d0c8f1fccf6a26d1c745e68f",
+      "uart_sha256": "de2d85195c97fc84af2f4b84ac4ac85884af6abc4896b759e2d18977c7562d90"
+    },
+    "resident": {
+      "result": {
+        "schema": "gemmini_golden_gemm_gsim_probe_v1",
+        "shape": [
+          17,
+          73,
+          65
+        ],
+        "kernel_symbol": "gemmini_export_d20ec64fb1a28047",
+        "block": [
+          2,
+          5
+        ],
+        "output_dtype": "i32",
+        "bias": false,
+        "input_amplitude": 21,
+        "scale": 1.0,
+        "relu": false,
+        "embedded_expected": true,
+        "static_inputs": true,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true,
+        "prefetch_b_rows": null,
+        "status": "pass",
+        "kernel_cycles": 2357,
+        "engine_cycles_including_harness": 47188,
+        "elf_sha256": "48c81e459d1c61b17bd78289976e8665a12d0b27412613292076dea71505defe",
+        "target_ir_sha256": "cfd64f7c9555cc72ef3792f057aabaf2e0191d7efc8387a7f6b9efcb2c139c3f",
+        "llvm_ir_sha256": "de51061f8ff8de80592d3cdeb25e3f819727cc17fd749868127fb2b7fc2aae9a",
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "nofsm_audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "48c81e459d1c61b17bd78289976e8665a12d0b27412613292076dea71505defe",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 4,
+            "1": 10,
+            "2": 10,
+            "3": 10,
+            "4": 25,
+            "5": 25,
+            "6": 50,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "stdout_tail": "GOLDEN_GEMM_CYCLES 2357\nGOLDEN_GEMM PASS M=17 N=73 K=65\n",
+        "stderr_tail": ""
+      },
+      "result_sha256": "5cf3ee4e3eec3377690030798652464991e961f1340abeceb203536d8b2a1364",
+      "uart_sha256": "f2b965a346fbdf78a651734ea830a9b8fea9929f375cb263ca0378c4c72caa19"
+    }
+  },
+  "selected_catalog_compilation": {
+    "schema": "gemmini_calibrated_catalog_compile_v1",
+    "object_sha256": "282f1d9856546835d72f351ee37ccf4456157518d5b3c9932534004633cf63f2",
+    "object_nofsm_status": "pass",
+    "uncalibrated_compilation": null,
+    "linker_argv": [
+      "/usr/bin/ld.lld",
+      "-r",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/selected/device_catalog/calibrated_6/kernel.o",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_normal_model/selected/device_catalog/kernel.o"
+    ],
+    "linker_sha256": "7ad9a0e8fe6d0e79b71172d731e33872c0274e49fceb7b516d774876d5a58ade"
+  },
+  "selected_contraction_receipt_sha256": "117883865ccb9ea307fcee9eb5beed2a3da8ede1e7bf26903113703b5b126642"
+}

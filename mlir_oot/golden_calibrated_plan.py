@@ -154,6 +154,8 @@ def optimize_contraction(source_path, region_id, llvm_bin, workdir, calibration_
         raise ValueError('calibration changed during selection/emission')
     receipt = dict(schema='golden_calibrated_contraction_plan_v1', source_sha256=selection['source_sha256'],
         dimensions=selection['dimensions'], binding=selection['binding'],
+        schedule=asdict(selection['generator'].shape), schedule_kind=selection['schedule_kind'],
+        prefetch_b_rows=selection['generator'].prefetch_b_rows,
         calibration_path=str(calibration_path.resolve()), calibration_sha256=calibration_sha,
         gsim_engine_sha256=_sha(engine), alternatives=evidence,
         shared_solver_selected=True, selected_plan_controls_emitted_code=True,
