@@ -392,3 +392,39 @@ FireSim prediction. Entire exact original ResNet with banded/flat kernels passes
 native and actual Spike all1000 outputs, noFSM. These reusable physical-layout,
 capacity and bank-placement rules are the device schedules to compare with
 later automatic search, while host-region closure remains separate work.
+
+
+### Upstream attention precision and new exact closures
+
+model2MLIR main `050009e` retains f32 intermediates throughout half SDPA in
+both direct xDSL and Torch-export decomposition, including QK scaling, mask,
+softmax and PV reduction. Executed bf16/f16 models exactly match Torch's math
+attention backend; its fused CPU backend has different rounding. All 108
+focused and related tests pass. The unchanged full Smol golden still fails its
+quality gate, and no full Smol hardware candidate is admitted.
+
+The exact unary readout solver searches every positive finite f32 scale by
+intersecting monotone integer-output constraints, then independently rechecks
+all transitions. Four formerly refused regions accept adjacent store scales:
+matmul4 (-1 ULP), matmul29 (+1), matmul43 (-1), matmul51 (-1). The exact closed
+recipe bundle covers 50 readouts, 14 direct convolutions. Regions matmul25 and
+matmul48 have contradictory bit intervals, proving that no zero-bias positive
+f32 store scale alone represents their original arithmetic. The stem and final
+FC are distinct boundaries. Source qparams and original golden remain unchanged.
+
+The whole-model harness now binds the same trailing hoisted weight arguments
+as the bare-metal runtime. The original ResNet removes 54 inference-time weight
+transposes /25,502,912 i8 elements and passes native plus actual Gemmini Spike
+all1,000 original output bits, rank0, final zero-FSM ELF audit. Spike retires
+771,156,560 instructions; this is not a FireSim cycle measurement. A separate
+closed-recipe 50-readout + exact residual CPU LUT + hoisted-weight candidate
+passes native all1,000 original golden bits; target validation is still running.
+Each residual lookup table contains all65,536 signed-i8 pairs and preserves the
+source's ordered f32 QDQ semantics. Sixteen tables consume1MiB; this exact CPU
+fallback is a measured optimization candidate, not a Gemmini residual add.
+
+Large-N FireSim1763/1764 confirms wide B groups and cached A improve the
+representative M8,N2048,K2048 GEMM from1,445,879 to925,141 cycles (36.02% fewer).
+All16,384 outputs and guards pass, with staged ELF and stock bitstream identities
+checked. The model-level impact remains to be measured. The late C512
+convolution FireSim1758 passes at793,557 cycles for all25,088 outputs and guard.
