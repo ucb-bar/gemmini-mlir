@@ -15,7 +15,18 @@ from merlin.llvmlower.abi import HostModel
 from merlin.llvmlower.codegen import mlir_runtime_c
 
 
-def native_validate(capture,build,host,llvm_bin):
+def quality(actual, reference, *, allow_bounded=False, atol=0., rtol=0.):
+    if actual.shape != reference.shape:raise ValueError('whole output shape differs')
+    if atol<0 or rtol<0:raise ValueError('quality tolerances must be nonnegative')
+    exact=bool(np.array_equal(actual.view(np.uint32),reference.astype(np.float32).view(np.uint32)))
+    delta=actual.astype(np.float64)-reference.astype(np.float64)
+    rel=float(np.linalg.norm(delta.reshape(-1))/max(np.linalg.norm(reference.astype(np.float64).reshape(-1)),np.finfo(np.float64).tiny))
+    close=bool(np.allclose(actual,reference,atol=atol,rtol=rtol))
+    return dict(elements=actual.size,exact_equal=exact,max_abs_error=float(np.max(np.abs(delta))),relative_l2=rel,atol=atol,rtol=rtol,allclose=close,
+                quality_pass=close if allow_bounded else exact,numeric_policy='explicit_bounded_experiment' if allow_bounded else 'exact_source')
+
+
+def native_validate(capture,build,host,llvm_bin,*,allow_bounded=False,atol=0.,rtol=0.,enforce_quality=True):
     host.mkdir(parents=True,exist_ok=True);catalog=json.loads((build/'device_catalog/device_catalog.json').read_text())
     source=['#include <stdint.h>','#include <string.h>']
     for row in catalog['kernels']:
@@ -29,26 +40,32 @@ def native_validate(capture,build,host,llvm_bin):
     subprocess.run(['cc','-O3','-march=native','-fPIC','-shared',str(host/'model.o'),str(host/'reference.c'),*catalog['native_oracle_sources'],str(build/'device/device_catalog_shim.c'),str(mlir_runtime_c()),'-lm','-o',str(host/'model.so')],check=True)
     args=resolve_forward_args(capture);reference=np.load(capture/'golden.npy');actual=np.zeros_like(reference)
     model=HostModel.load(str(host/'model.so'));model([(a.ctypes.data,a.shape) for a in args]+[(actual.ctypes.data,actual.shape)])
-    report={'scope':'native whole model with scalar device standins','elements':actual.size,'exact_equal':bool(np.array_equal(actual,reference)),'max_abs_error':float(np.max(np.abs(actual-reference)))}
+    report={'scope':'native whole model with scalar device standins','original_golden':str((capture/'golden.npy').resolve()),'original_golden_sha256':hashlib.sha256((capture/'golden.npy').read_bytes()).hexdigest(),**quality(actual,reference,allow_bounded=allow_bounded,atol=atol,rtol=rtol)}
     (host/'validation.json').write_text(json.dumps(report,indent=2)+'\n');np.save(host/'output.npy',actual)
-    if not report['exact_equal']:raise ValueError('native whole model differs')
+    if enforce_quality and not report['quality_pass']:raise ValueError('native whole-model quality gate failed')
     return report
 
 
-def spike_validate(capture,build,spike,work):
+def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0.):
     command=[str(spike),'--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(build/'model.elf')]
     result=subprocess.run(command,capture_output=True,timeout=3600);console=(result.stdout+result.stderr).decode(errors='replace');(work/'spike.log').write_text(console)
     if result.returncode or 'DONE' not in console:raise ValueError('Spike did not finish correctly')
     line=next(x for x in console.splitlines() if x.startswith('OUT '));parts=line.split();count=int(parts[1]);bits=[int(x)&0xffffffff for x in parts[2:2+count]]
     actual=np.array([struct.unpack('<f',struct.pack('<I',x))[0] for x in bits],np.float32);reference=np.load(capture/'golden.npy').reshape(-1)
-    report={'scope':'actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles','elf_sha256':hashlib.sha256((build/'model.elf').read_bytes()).hexdigest(),'elements':actual.size,'exact_equal':bool(np.array_equal(actual,reference)),'metrics':[x for x in console.splitlines() if x.startswith('METRIC ')]}
+    native=np.load(work/'host/output.npy').reshape(-1)
+    if count!=native.size or actual.size!=count:raise ValueError('Spike full output count differs')
+    target_native_exact=bool(np.array_equal(actual.view(np.uint32),native.view(np.uint32)))
+    report={'scope':'actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles','elf_sha256':hashlib.sha256((build/'model.elf').read_bytes()).hexdigest(),'target_native_exact':target_native_exact,'native_reference_sha256':hashlib.sha256((work/'host/output.npy').read_bytes()).hexdigest(),'original_golden_sha256':hashlib.sha256((capture/'golden.npy').read_bytes()).hexdigest(),**quality(actual,reference,allow_bounded=allow_bounded,atol=atol,rtol=rtol),'metrics':[x for x in console.splitlines() if x.startswith('METRIC ')]}
+    if 'METRIC memref_rank_mismatch 0' not in console:raise ValueError('target descriptor rank mismatch')
     (work/'spike_validation.json').write_text(json.dumps(report,indent=2)+'\n')
-    if not report['exact_equal']:raise ValueError('Spike whole model differs')
+    if not target_native_exact:raise ValueError('Spike differs from same-candidate native output')
     return report
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    if a.residual_max_output_lsb and (not a.residual_add or not a.allow_bounded_output):p.error('bounded residuals require --residual-add and explicit --allow-bounded-output')
+    if a.atol<0 or a.rtol<0:p.error('quality tolerances must be nonnegative')
     capture=a.work/'capture';builddir=a.work/'build_direct'
     if not a.validate_existing:
         (a.work/'host_compilation_policy.json').write_text(json.dumps({key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']},indent=2)+'\n')
@@ -66,9 +83,17 @@ def main():
         else:
             if a.flat_spatial and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
             prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':True} if a.flat_spatial else {}))
+        if a.residual_add:
+            from mlir_oot.captured_residual_bundle import build as build_residual
+            from mlir_oot.residual_mixed_catalog import apply_capture as apply_residual,merlin_callbacks as residual_callbacks
+            residual=a.work/'residual_bundle';build_residual(capture,a.llvm_bin,residual,max_output_lsb=a.residual_max_output_lsb)
+            apply_residual(capture,residual)
+            prepare,compile=residual_callbacks(a.llvm_bin,residual,(prepare,compile))
+        (a.work/'whole_quality_policy.json').write_text(json.dumps({'allow_bounded_output':a.allow_bounded_output,'atol':a.atol,'rtol':a.rtol,'original_golden_sha256':hashlib.sha256((a.capture/'golden.npy').read_bytes()).hexdigest()},indent=2)+'\n')
         result=build(capture,builddir,int8_compute=True,features=frozenset({'named_int8_contraction'}),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
-    print(native_validate(capture,builddir,a.work/'host',a.llvm_bin),flush=True)
-    print(spike_validate(capture,builddir,a.spike,a.work),flush=True)
+    native=native_validate(capture,builddir,a.work/'host',a.llvm_bin,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol,enforce_quality=False);print(native,flush=True)
+    target=spike_validate(capture,builddir,a.spike,a.work,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol);print(target,flush=True)
+    if not native['quality_pass'] or not target['quality_pass']:raise ValueError('explicit whole-model quality gate failed; original-golden metrics retained')
 
 if __name__=='__main__':main()

@@ -1,0 +1,1491 @@
+{
+  "schema": "gemmini_captured_residual_bundle_v1",
+  "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "capture_receipt_sha256": "d3ee692bcab0ed11d30e9bd6e9e406b9ed267c9b1285a58ac6d541d9d327e4e7",
+  "weights_sha256": "08f83e75fc8b9526a43e4fb0905628e72048571dc8921b723bd48b77a42c31ee",
+  "manifest_sha256": "58fc94de3b70567687c71aab98176f452f19aea14a1cf6340a16085d7e7090ca",
+  "rewritten_sha256": "3ff609b9faa9583f69d51e7e6096ae0c815940eeed5ea0a04ab2aa20c5c02b06",
+  "object_sha256": "81a1008214c741f33714b5344eb66b39e9e32b06d55b19f51a9cd1c65ef1c820",
+  "native_oracle_sha256": "5f1c4b2457bcfd87084e3e5cd3f2cdb8cd2ed55ee40f0bd7c0a8af37f696af3b",
+  "numeric_policy": {
+    "kind": "bounded_residual_output_lsb",
+    "max_output_lsb": 1,
+    "domain": "all 65536 signed-i8 operand pairs",
+    "scope": "per residual output; not a whole-model quality guarantee"
+  },
+  "routes": [
+    {
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "m": 12544,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 6419,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.011258588172495365,
+          "rhs_scale": 0.00940733402967453,
+          "output_scale": 0.011643771082162857,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.9669194221496582,
+          "rhs_load": 0.8079284429550171,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -106,
+          "rhs": 127,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_6",
+      "symbol": "gemmini_residual_0",
+      "kernel": "gemmini_residual_0_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "9167014f9654e12b1b3887ab3b8fc06266417a96b95bca296de20bf02e2fbbe4",
+        "llvm_mlir_sha256": "ecfe651d3851df48c7789ec98d88d85be0e072647c5a580cfa689a6bb3a5f120",
+        "llvm_ir_sha256": "263da46d948dfa17bd94a803d20ec3acb53064771f0415adfe471a7184e80943",
+        "object_sha256": "42a2d45f2bace3be8856fbb5d59835377afa12c3260d362781e4f290d638a7d3",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_0/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_0/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_0/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_0/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "340a65140b203b0e1fbb5e3e43f5116fce6ab3d787605e39c931003f0d11dede"
+    },
+    {
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "m": 12544,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7396,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.012846277095377445,
+          "rhs_scale": 0.011643771082162857,
+          "output_scale": 0.017152275890111923,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7489546537399292,
+          "rhs_load": 0.6788470149040222,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -114,
+          "rhs": 126,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_10",
+      "symbol": "gemmini_residual_1",
+      "kernel": "gemmini_residual_1_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "d7fea73759fa17023ecd50054b534f591e167466a7a5748da08a8673bc904e6b",
+        "llvm_mlir_sha256": "2f3e26745a9b7a9b1b33c277d1d6112ae1e5d0c700606671b5ba282d4d61f6b5",
+        "llvm_ir_sha256": "bf1d757a6f2516d95844d1ce5fd05d3de0b3027f9dbece46f21e440f36db49f5",
+        "object_sha256": "2a837715babeec81cf6529d7acf23cd172a46e24a580e6d179d09ebccfb356ce",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_1/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_1/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_1/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_1/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "f9c984f68e18ce972d6414a9ada83d02034cb3b0fca6fafd752baf2c8dd8a916"
+    },
+    {
+      "shape": [
+        1,
+        256,
+        56,
+        56
+      ],
+      "m": 12544,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7010,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.020491356030106544,
+          "rhs_scale": 0.017152275890111923,
+          "output_scale": 0.030738085508346558,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.6666438579559326,
+          "rhs_load": 0.5580137968063354,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -104,
+          "rhs": 125,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_14",
+      "symbol": "gemmini_residual_2",
+      "kernel": "gemmini_residual_2_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "5e912f460ad3ee3d55e7c256921a2407a8eef2f45211b579cf85a016883ccd78",
+        "llvm_mlir_sha256": "5e5b2c27c62728f6d8e5447c5c29a885fa01bef2ec1bbc202970d15f2981c692",
+        "llvm_ir_sha256": "bc1b53e1e7d1422927135b8e4fa5249e33b4a6ed4b88fb56ba1582c99f175633",
+        "object_sha256": "03968f6a2aae5a3b036087d37f3012a244475546457742d3080a3101885865ad",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_2/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_2/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_2/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_2/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "5e8acd763860fc7cdeb8d783d9f1ee6bd33ef668f76ae01095035a93a4d53749"
+    },
+    {
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "m": 6272,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7330,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.02041732147336006,
+          "rhs_scale": 0.023172693327069283,
+          "output_scale": 0.030368776991963387,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.6723129153251648,
+          "rhs_load": 0.7630433440208435,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -128,
+          "rhs": 116,
+          "source": 2,
+          "target": 3
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_19",
+      "symbol": "gemmini_residual_3",
+      "kernel": "gemmini_residual_3_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "98f294c2faebc56d0d0501979802a00ed60ded52bd38ca0a419d982d0fd1b89c",
+        "llvm_mlir_sha256": "9948bb565e3b75f0abf29ad0223a56fb3d70f697caef739c41eb1e89fbc89ede",
+        "llvm_ir_sha256": "f9ea3c390d7669571745268e19ed006fce87f15ccb5b7b4e11107a610778ab7e",
+        "object_sha256": "122eafa4f67ac0e18212940c6433f586c062e392d0fd1def86ae6bc0914e1876",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_3/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_3/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_3/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_3/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "fe34c23e009b71d00e30c19635fe0687df8dcd2729024f720048ea0a826e69db"
+    },
+    {
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "m": 6272,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7432,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.03930537775158882,
+          "rhs_scale": 0.030368776991963387,
+          "output_scale": 0.049595169723033905,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7925243377685547,
+          "rhs_load": 0.612333357334137,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -96,
+          "rhs": 125,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_23",
+      "symbol": "gemmini_residual_4",
+      "kernel": "gemmini_residual_4_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "1c41ec3987e327a5892c2b6943b40c58eb1cd12b2b160040597b5de95dde4e60",
+        "llvm_mlir_sha256": "864b97c4d032b6b0175d94545acf42b3186db7544e2a7f8514a5fd274f1ef7fc",
+        "llvm_ir_sha256": "d959690c9fffda184492075a22a794557bcb754be6d57575cead3ea47a2ccefd",
+        "object_sha256": "4fc5c6edfc8347a94f6a3edfcb5c35e6fd334db86bdca535efd6d756fb678f0b",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_4/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_4/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_4/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_4/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "afebcfad2b3c78c13479377e9845ffeb853cd71fcc0d8283c072a8d677357a0a"
+    },
+    {
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "m": 6272,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7877,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.05269787833094597,
+          "rhs_scale": 0.049595169723033905,
+          "output_scale": 0.0859701856970787,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.6129785180091858,
+          "rhs_load": 0.5768880248069763,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -118,
+          "rhs": 126,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_27",
+      "symbol": "gemmini_residual_5",
+      "kernel": "gemmini_residual_5_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "31083c0a99dc9a7e4b7ae386216bee8b71d8caad4ec151bec78ed5fa5e42f04f",
+        "llvm_mlir_sha256": "991f87a7a4c17ec42ec716c815e32d43cd0caead3c3ab451d416372cfb4c9bbc",
+        "llvm_ir_sha256": "2af303e9233f210bd6050dae04caf1cc3f3521bf3edbcb88bcdff378334a8f4e",
+        "object_sha256": "2580974410652339c271dada3e273e31899228d4667c5f1be89d74940d3da72b",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_5/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_5/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_5/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_5/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "54ff97923c88b9c627a65cf39635242e8d7328972dfacf38be90cdf76e73b4ea"
+    },
+    {
+      "shape": [
+        1,
+        512,
+        28,
+        28
+      ],
+      "m": 6272,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7080,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.11005555093288422,
+          "rhs_scale": 0.0859701856970787,
+          "output_scale": 0.12643329799175262,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.8704633116722107,
+          "rhs_load": 0.6799647212028503,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -98,
+          "rhs": 126,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_31",
+      "symbol": "gemmini_residual_6",
+      "kernel": "gemmini_residual_6_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "166b9c7890a552fa5952ea6ae1d4882089a409cf2a8adcb2ef55019b55bd81db",
+        "llvm_mlir_sha256": "f4c2fc2deec6265defe4626c021fdb3a2a3ce3fed4d23897018c88e3b5fee118",
+        "llvm_ir_sha256": "a0ad3d6015962e0379c67089bb30875e8283d55d81152d481aa51fb14b086677",
+        "object_sha256": "842d2a62b5d5d0ed3ca986be86b69ee33d2c64d0056e8165b13900939981090c",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_6/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_6/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_6/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_6/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "7294175a98e073bb75d61188bffe3a667f8c418dc59431aec1d363911d98275a"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 6880,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.10119429230690002,
+          "rhs_scale": 0.10890256613492966,
+          "output_scale": 0.1285998672246933,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7868926525115967,
+          "rhs_load": 0.8468326330184937,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -128,
+          "rhs": 121,
+          "source": 2,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_36",
+      "symbol": "gemmini_residual_7",
+      "kernel": "gemmini_residual_7_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "c5d2f0c7e1417720f71a9f4c17dc42fcaad329506b77f764b9c2673e90191fae",
+        "llvm_mlir_sha256": "5ad5e06c8eb23e5796ffaf1aa7f9570bfeb24cd4bdf91a2f1aff1b23fa1ed0e0",
+        "llvm_ir_sha256": "6593f895b507c00f27ee060627d9630d8059077a8d6fedc39a8df0c07b2f9c5b",
+        "object_sha256": "01876ce9a54fd6bf86960f97d57b60c2dc7bd18d0d84e52cf716c9f3dc20d365",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_7/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_7/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_7/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_7/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "d3d4b18e603ff55116fe56669f5ab7e7834c6c9db7e9993b205276d57b38c5c8"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7562,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.13258986175060272,
+          "rhs_scale": 0.1285998672246933,
+          "output_scale": 0.1963055580854416,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.6754259467124939,
+          "rhs_load": 0.6551004648208618,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -122,
+          "rhs": 126,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_40",
+      "symbol": "gemmini_residual_8",
+      "kernel": "gemmini_residual_8_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "924a091159a6f48ae7e47e7a356473d3c2dff3da29f05d653237f8829d7ec83d",
+        "llvm_mlir_sha256": "10dcc9468c90dc83a277bf221641bb1fbc58f9466f0198ce4e75159e33f85217",
+        "llvm_ir_sha256": "d721ab46c4ecddc73de0983ca6a87b643956da5905d3602fbf693ae580f81f2e",
+        "object_sha256": "3f5da788dc2581ce890eb2218df7e2711683a7876643cbc5ddf3f20d230093ea",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_8/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_8/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_8/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_8/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "b20501f325bb5de9add40dbfb57163bbefb3ca7a17e16ac5659455195ab9e3ab"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7091,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.21114875376224518,
+          "rhs_scale": 0.1963055580854416,
+          "output_scale": 0.2654820382595062,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7953410148620605,
+          "rhs_load": 0.7394306659698486,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -115,
+          "rhs": 124,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_44",
+      "symbol": "gemmini_residual_9",
+      "kernel": "gemmini_residual_9_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "ca748488eb8f12aad57461f170736b3c2e8513b8a6dbf03f644b691cf5331d23",
+        "llvm_mlir_sha256": "e4ac49c2582aeada03be882c76cb172f56dfbcf8e86b7edee6ce08f3de3558b2",
+        "llvm_ir_sha256": "b6bb5f95a0e184b7d56a5182ee164664d339d0c58585889cb5747fe51c64d641",
+        "object_sha256": "49a77fc70d703fd0c7f489f7e105dfe4be27eb8e8b7650f2bfe94bf228e8b7e7",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_9/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_9/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_9/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_9/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "c63c191c19ec0d996e572b4553c98d2231c596fb19937f70792094e06e194232"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7836,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.4256255626678467,
+          "rhs_scale": 0.2654820382595062,
+          "output_scale": 0.5499241352081299,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.773971438407898,
+          "rhs_load": 0.4827612042427063,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -78,
+          "rhs": 126,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_48",
+      "symbol": "gemmini_residual_10",
+      "kernel": "gemmini_residual_10_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "3c32f787d4b59d6c0794113d5ec958b6132022c799770b5a93a4808f468c7acf",
+        "llvm_mlir_sha256": "e503a39948177b50d264e8b46f13b8887e07f1b83cb6d31b6a547d9bffdee4e1",
+        "llvm_ir_sha256": "33668839419c8118f2e8734ed6d9848d8c4f348ce7c9f1ed4d5f3898f0d96881",
+        "object_sha256": "83335f7bf032fb8087ce693ab36a05f3ebb20dd9440e10ae3b4eb621449346ba",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_10/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_10/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_10/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_10/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "6a7f09a26e7f0a57afc591aedc14c438d799e3e54d27542e2157d50ec6fc8365"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 6906,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.5255962014198303,
+          "rhs_scale": 0.5499241352081299,
+          "output_scale": 0.6587926149368286,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7978174090385437,
+          "rhs_load": 0.834745466709137,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -128,
+          "rhs": 124,
+          "source": 1,
+          "target": 2
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_52",
+      "symbol": "gemmini_residual_11",
+      "kernel": "gemmini_residual_11_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "1bb452119f91e7287710c07dee9a30e1ee4a848861042e773ed5c1e1ae6be10a",
+        "llvm_mlir_sha256": "a1e19c202d62386dc9e7499faa803b2e101f20ff5999e27da5aff002b00de9d5",
+        "llvm_ir_sha256": "55e43887fb667d99d072064c4e044fd2cf32efb4659f397236454b6d6c7d5af2",
+        "object_sha256": "2f50ebff4dd2d463334967c921ea0a8cc8146842ea86016b94931fa289db3f64",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_11/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_11/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_11/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_11/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "d6e56b8558e9bad7ff395912ef0ea0b52b2a41b04faf60db4b9051db80d76da7"
+    },
+    {
+      "shape": [
+        1,
+        1024,
+        14,
+        14
+      ],
+      "m": 3136,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7603,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.629694938659668,
+          "rhs_scale": 0.6587926149368286,
+          "output_scale": 0.9729844927787781,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.6471788287162781,
+          "rhs_load": 0.6770843863487244,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -127,
+          "rhs": 122,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_56",
+      "symbol": "gemmini_residual_12",
+      "kernel": "gemmini_residual_12_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "86c0716121e1734cbc4f21a64ece5abe9e713249d8fa852fcbde2aeca49bdf8a",
+        "llvm_mlir_sha256": "3e9f059db6b22e6c7c56a6e2f6c50d5e4a585cf2c9914ccaefa24179994f9807",
+        "llvm_ir_sha256": "359b6faf1e557e9b88a8bd318875fac0d1e725dad011d006ad4c7ae498198b83",
+        "object_sha256": "abbb13326ee5be1225139d5f86a5806fe57659f04f55ecd57dd4795d100e4ef3",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_12/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_12/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_12/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_12/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "5aa35c84c4fbf3afeafb064afc6c32aa381d81de824331c0220dec1ee2cb6f1e"
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "m": 1568,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 7083,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 0.8350648283958435,
+          "rhs_scale": 0.8539831638336182,
+          "output_scale": 1.0693517923355103,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.7809075117111206,
+          "rhs_load": 0.7985988855361938,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -127,
+          "rhs": 126,
+          "source": 1,
+          "target": 2
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_61",
+      "symbol": "gemmini_residual_13",
+      "kernel": "gemmini_residual_13_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "b709892e9206dee0972e1a331d1302f47c499171f89ef5a0f751fe4dda808725",
+        "llvm_mlir_sha256": "6d309b7baacbc1c94397deff6719be9d78b5ebf14b4c9c3c2fc0baf98da0a957",
+        "llvm_ir_sha256": "3931c4eb54f8639d39b01ea34f3ea375bd1cf9d4ec1390c3900e337cac5eb9bd",
+        "object_sha256": "51a2aaf777a3f90936add695fc0f22b5a7e84bee22ee1e7d6cbaa7447e087568",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_13/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_13/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_13/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_13/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "e0b29d9bfab8a634138295dfae2fde4235fdf99b714cf716baed6d05990d4c72"
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "m": 1568,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 6841,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 1.0483675003051758,
+          "rhs_scale": 1.0693517923355103,
+          "output_scale": 1.2934430837631226,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.8105246424674988,
+          "rhs_load": 0.826748251914978,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -126,
+          "rhs": 124,
+          "source": 0,
+          "target": 1
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_65",
+      "symbol": "gemmini_residual_14",
+      "kernel": "gemmini_residual_14_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "192a1f065f0867e49003a5f918017697001ecd2b8daf00851ecf7c1a9d4da463",
+        "llvm_mlir_sha256": "e5a33288327493500f16f71c64b8ede55a8613e3f9c2f01d6536ff3e618f626b",
+        "llvm_ir_sha256": "bbccac715600ba5dec78831b3c9fe4ee13937d758255bda0f9de805a1de5c099",
+        "object_sha256": "832e87eb71f9034338d63a1512f7d0297889e06a608ac9193360ed4b14d39ed1",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_14/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_14/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_14/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_14/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "a95163e30ccd79779cd3af49e25d921d87f68b9460f7c07eedc945b11f78ddb1"
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "m": 1568,
+      "n": 64,
+      "proof": {
+        "proof": "exhaustive signed-int8 operand pair comparison with original f32 ordering",
+        "pairs": 65536,
+        "exact": false,
+        "mismatched_pairs": 6902,
+        "max_output_lsb_error": 1,
+        "source": {
+          "lhs_scale": 1.568028450012207,
+          "rhs_scale": 1.2934430837631226,
+          "output_scale": 1.7433754205703735,
+          "relu": true
+        },
+        "primitive": {
+          "lhs_load": 0.899420976638794,
+          "rhs_load": 0.7419188618659973,
+          "readout": 1.0
+        },
+        "witness": {
+          "lhs": -104,
+          "rhs": 127,
+          "source": 1,
+          "target": 0
+        }
+      },
+      "numeric_policy": {
+        "kind": "bounded_residual_output_lsb",
+        "max_output_lsb": 1,
+        "domain": "all 65536 signed-i8 operand pairs",
+        "scope": "per residual output; not a whole-model quality guarantee"
+      },
+      "region": "quantize_69",
+      "symbol": "gemmini_residual_15",
+      "kernel": "gemmini_residual_15_kernel",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "886f35b11c4c090b523f269c321554dbfe6f8a7e0158f2f0a6135e11477aea7c",
+        "llvm_mlir_sha256": "639af845605c480a7c41fb52b6784272149efa446caa347a382b9e29e40f953d",
+        "llvm_ir_sha256": "3caf9e656ad70e81bd1227e510db5a0f3b79e2ea7d08dc5244c2db74b6c1e107",
+        "object_sha256": "6d1685fa7d8d52bce0b759b4ed537dd269524493749755362a647e8ba049c45d",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "out/closed_residual_bound1/gemmini_residual_15/kernel.llvm.mlir",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_15/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "out/closed_residual_bound1/gemmini_residual_15/kernel.ll",
+            "-o",
+            "out/closed_residual_bound1/gemmini_residual_15/kernel.o"
+          ]
+        ]
+      },
+      "proof_sha256": "1ddfc5d0c7f0533659a7684ca29a1507794a910a1cc9965614dec36c17701416"
+    }
+  ],
+  "refused": [
+    {
+      "region": "quantize_0",
+      "reason": "expected pointwise region"
+    },
+    {
+      "region": "quantize_1",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_2",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_3",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_4",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_5",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_7",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_8",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_9",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_11",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_12",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_13",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_15",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_16",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_17",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_18",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_20",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_21",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_22",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_24",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_25",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_26",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_28",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_29",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_30",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_32",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_33",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_34",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_35",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_37",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_38",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_39",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_41",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_42",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_43",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_45",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_46",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_47",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_49",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_50",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_51",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_53",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_54",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_55",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_57",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_58",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_59",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_60",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_62",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_63",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_64",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_66",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_67",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_68",
+      "reason": "nonidentity pointwise maps"
+    },
+    {
+      "region": "quantize_70",
+      "reason": "expected pointwise region"
+    }
+  ],
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "81a1008214c741f33714b5344eb66b39e9e32b06d55b19f51a9cd1c65ef1c820",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 80,
+      "1": 64,
+      "2": 64,
+      "3": 16,
+      "4": 64,
+      "6": 64,
+      "7": 16,
+      "14": 16
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "scope": "Explicit local arithmetic experiment; unchanged original golden and whole-model quality gate still required; no default promotion."
+}
