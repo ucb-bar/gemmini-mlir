@@ -8,12 +8,16 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 |---|---:|---|---|
 | ResNet exact52/wide16, virtual padding/layout, general resident/banked transfer command-cost policy, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 40,479,548 (1853) | All 1,000 original output words exact | [1853](perf_records/resnet_transfer_command_policy_firesim.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch and fresh writer ownership | 569,151,067 (1846) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1846](perf_records/tiny_expanded_writer_prefetch_firesim1846.json) |
-| Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC qualification uncovered a shared BF16 runtime ABI mismatch; correction and full target replay are in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
+| Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Older ABI-corrected actualRV64GC model still fails89/1,600 original elements(maxabs.115166); newer upstream ordered-FMA outlined model is running actual target replay. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
 Tiny uses the full pretrained checkpoint. These results do not establish the
 remaining performance targets or pretrained ResNet accuracy.
+
+[Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
+regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
+does not invoke shared whole-program search. Real export/edit-surface wiring is in progress.
 
 ## Current compiler work and ownership
 
@@ -66,34 +70,44 @@ output bits in native and actual Spike, changing24 dense kernel objects.
 Stock FireSim1853 verifies40,479,548 cycles,1,790,260 (4.235%) below1849.
 It is now the best ResNet arm. The independent residual arm1854 verifies
 40,981,079 cycles,3.049% below1849. Both strategies compose in a candidate
-with all1,000 original native and actual Spike words exact; stock1861 is queued.
+with all1,000 original native and actual Spike words exact. The1861 UART counter39,201,279
+lacks complete actual staging proof and is **unverified**; strict immutable rerun1874 is queued.
 No additive whole-model gain is inferred.
 [Schedule](multirow_resident_a.md),
 [whole gate](perf_records/resnet_transfer_command_policy_spike.json).
 
 The additional reference-parity worker identified a missing complete-input,
 full-reduction weight-resident convolution schedule for wider feature maps.
-A general resource-checked stripe generator passes15 partition/bounds tests
-and three independent actual GSIM capsules. The paired H56/C64 capsule saves
-15.89% fenced kernel cycles with all200,704 original outputs and guards exact;
-whole-model source binding and FireSim qualification remain pending.
+The general stripe policy passes40 focused tests and independent/tail capsules.
+H56/C64 saves15.89% fencedGSIM; H28/C128 saves19.22%, full outputs/guards exact.
+All52 source numeric proofs are retained; only six device objects change versus1853.
+Original1,000 whole native+strictSpike words remain exact; stock1878 is queued.
 [Residency strategy](resident_stripe_conv.md).
 
 Stock QK64 exact source replay measures1,137,275→910,407 cycles for one versus
 four independent outputs (1856/1857),19.95% lower, all1,024 original words exact.
 Generic Merlin selected BF16 widening includes allocation and conversion in
-each replay capsule. LHS-only widening lowers retired instructions13.02% for
-QK64 and8.42% for PV192; widening both operands atM1 is slower and rejected.
-Eight/sixteen independent outputs lower instructions further; native, strict
-Spike and final zeroFSM gates pass. These are replay capsules, not a5B full
+each replay capsule. QK4 LHS-only stock1872 measures828,986cycles,8.94% below1857.
+PV4 stock1873 verifies168,142cycles; strict control1875 is pending, so no paired
+percentage is accepted. Both-operand M1 widening is rejected. QK16 passed original
+native/strictSpike/zeroFSM and is queued1883. These are replay capsules, not a5B full
 SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
 [complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
 
-Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
+Smol's full native gate is exact; **whole target accuracy remains unresolved**. The first optimized RV64GC host compile timed out
+at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; the old ABI-corrected target fails89/1,600 and minimized target diagnosis is active. A separately labeledO0 correctness ELF also builds,
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
+
+General remaining-row B-slot prefetch selects seven pointwise kernels from shape/resource facts.
+Its matched full-range capsule saves5.36%GSIM; all1,000 whole native/Spike words are exact with
+unchanged1853 host/runtime/weights/shim. Stock1888 is queued. Generic Merlin bounded RNE packets
+save42.49% warm cycles on a complete quantization/packing capsule; the whole arm preserves original
+1,000 words and all13 checked nonhost objects, queued1886. The first redundant dead-branch arm was
+rejected before hardware. Tiny two-lane scalar pointwise packets save22.09% warmGSIM on the full
+capsule; original256,000 whole words andTorch gate pass with unchanged1846 device/runtime, queued1880.
+These are independently qualified pending arms, with no whole-cycle composition claim.
 
 The following narrative retains the earlier experiment sequence; the table above is current.
 

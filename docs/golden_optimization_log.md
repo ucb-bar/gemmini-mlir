@@ -1140,3 +1140,25 @@ shim and weights bytes. The general resident/banked transfer family policy is
 now the measured best, still above Jack's22,387,449. Independent residual arm
 1854 retains1849 as its control; composition awaits its hardware result.
 [Hardware](perf_records/resnet_transfer_command_policy_firesim.json).
+
+
+### Compiler integration, negative evidence and accounting
+
+The [optimization journey](golden_optimization_journey.md) now indexes hypotheses, matched cycle
+scopes, original-output gates, rejected candidates and pending stock submissions. It also links
+actual token counters from eight explicitly owned agent sessions, keeping cache input and reasoning
+output as subsets and marking mixed-work attribution unavailable. The separate goal counter is
+retained without claiming equal accounting semantics.
+
+Merlin's complete CCA artifact now round-trips all10 facets, full fields, scope and provenance;
+legacy-view contradictions refuse. Existing schedule/planner/timeline APIs still need real
+selection-to-emitted-code binding on the golden catalog route. The package lacks declared
+optimization surfaces for those owners; a real source-export edge is being implemented without
+claiming shared solver selection for whole-model schedules.
+
+The ABI-corrected older Smol actual target finished and fails89 of1,600 original elements,
+maxabs.115166, despite exact native outputs. This failed qualification prevents full Smol hardware
+admission. The new typed ordered-FMA outlined model passes the original full native gate and
+normalRV64GC/noFSM compile, with its independent actual target replay still running.
+[Failure](perf_records/smol_corrected_runtime_spike_failed.json),
+[new qualification](perf_records/smol_upstream_ordered_fma_native.json).
