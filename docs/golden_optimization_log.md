@@ -1207,3 +1207,19 @@ First pre-stem gap is4,016,144cycles. Gaps include all intervening host operatio
 not an isolated named operation. All1,000 original outputs and stock/staged
 identity pass. This is1874, not the newer1886or1897recipe.
 [Profile](perf_records/firesim1899_resnet1874_profile_verified.json).
+
+### Two-digit attention: full original model rejected
+
+The complete functional native experiment fails106/1,600 outputs under the
+unchanged original atol0.03125/rtol0.02 gate; maxabs0.14355785, relativeL2
+0.02077864, all outputs finite and all1,600 words changed. No target or hardware
+admission follows. All384 source-proved BF16 attention dots receive explicit
+row-scaled two-digit approximation; source online softmax, denominator order,
+PV partial grouping and nonattention source arithmetic remain preserved.
+The accepted native runtime/integer stand-ins and original inputs, weights and
+golden are retained. First-head local tolerance did not establish whole quality.
+The4-plane analytical floor remains hypothetical for an inadmissible candidate.
+[Full negative receipt](perf_records/smol_two_digit_full_native_rejected.json)
+pins original/candidate source, emitted LLVM, actual native object/SO/output,
+functional experiment scripts and immutable original golden. The scripts remain
+experimental; no production default or compiler pass is promoted.
