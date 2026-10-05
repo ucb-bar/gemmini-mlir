@@ -1,0 +1,150 @@
+diff --git a/merlin/tests/ir/test_late_quant_rne.py b/merlin/tests/ir/test_late_quant_rne.py
+index 862b81d71..a94fa6470 100644
+--- a/merlin/tests/ir/test_late_quant_rne.py
++++ b/merlin/tests/ir/test_late_quant_rne.py
+@@ -161,3 +161,47 @@ def test_portable_native_boundary_oracle(tmp_path: Path, bits: int):
+     for fn in functions:
+         actual = np.fromiter((fn(float(x)) for x in values), dtype=np.int64)
+         np.testing.assert_array_equal(actual, expected)
++
++@pytest.mark.parametrize('policy,combined', [(None, False), ('portable', True), ('rv64gc', False)])
++def test_integer_clamp_requires_explicit_legal_host_contract(policy, combined):
++    with pytest.raises(ValueError, match='integer clamp'):
++        rewrite(SOURCE, host_isa=policy, combine_clamp=combined, integer_clamp=True)
++
++
++def test_integer_clamp_preserves_default_emission_and_unique_locals(tmp_path):
++    control, _ = rewrite(SOURCE, host_isa='rv64gc', combine_clamp=True)
++    assert control == rewrite(SOURCE, host_isa='rv64gc', combine_clamp=True, integer_clamp=False)[0]
++    source = SOURCE.replace('define i8 @quant(float %x)', 'define i8 @quant(float %x, i32 %merlin.rne.0.bounded)')
++    target, receipt = rewrite(source, host_isa='rv64gc', combine_clamp=True, integer_clamp=True)
++    assert receipt['integer_clamp'] is True
++    assert len(receipt['routes']) == 1
++    assert 'fmax.s' not in target and 'fmin.s' not in target
++    assert 'fcvt.w.s' in target and '%merlin.rne.1.bounded = select' in target
++    path = tmp_path / 'integer.ll'; path.write_text(target)
++    subprocess.run([clang(), '--target=riscv64-unknown-elf', '-march=rv64gc', '-O2', '-c', str(path), '-o', str(tmp_path/'integer.o')], check=True, capture_output=True)
++
++
++def test_integer_clamp_portable_oracle_is_byte_identical(tmp_path):
++    source=tmp_path/'input.ll';source.write_text(SOURCE)
++    llvm=Path(clang()).resolve().parent
++    merlin_host_llvm_transform(llvm, host_isa='rv64gc', combine_clamp=True)(source,tmp_path/'control')
++    merlin_host_llvm_transform(llvm, host_isa='rv64gc', combine_clamp=True,integer_clamp=True)(source,tmp_path/'integer')
++    assert (tmp_path/'control/model.native.ll').read_bytes()==(tmp_path/'integer/model.native.ll').read_bytes()
++
++@pytest.mark.parametrize('bits', [1, 8, 16, 24])
++def test_integer_range_guard_matches_saturation_at_extreme_and_transition_values(bits):
++    lower, upper = -(1 << (bits-1)), (1 << (bits-1))-1
++    values = np.unique(np.concatenate([
++        np.arange(-32770,32771,dtype=np.int64),
++        np.array([-2**31,-2**31+1,2**31-2,2**31-1,lower-1,lower,lower+1,upper-1,upper,upper+1],dtype=np.int64),
++    ]))
++    # LLVM add deliberately has no overflow flags: unsigned range is modulo32.
++    biased=(values-lower)&0xffffffff
++    edge=(values>>31)^upper
++    actual=np.where(biased<upper-lower+1,values,edge)
++    np.testing.assert_array_equal(actual,np.clip(values,lower,upper))
++
++
++def test_integer_clamp_rejects_non_boolean_policy():
++    with pytest.raises(TypeError, match='integer_clamp'):
++        rewrite(SOURCE, host_isa='rv64gc', combine_clamp=True, integer_clamp=1)
+diff --git a/src/merlin/llvmlower/AGENT.md b/src/merlin/llvmlower/AGENT.md
+index 830ccc352..1727f82ee 100644
+--- a/src/merlin/llvmlower/AGENT.md
++++ b/src/merlin/llvmlower/AGENT.md
+@@ -21,6 +21,8 @@ Whole-model lowering: linalg-on-tensors MLIR (model2MLIR artifacts) → upstream
+   emitted LLVM, an explicit typed SSA tokenizer, portable native emission and
+   explicitly selected CPU ISA legalization. The empty host policy leaves source
+   bytes unchanged. Its verified callback runs before normal object identity;
++  Its explicit integer-clamp option preserves the proven source interval while
++  allowing CPU saturating RNE conversion followed by integer bounds.
+   accelerator instructions, resource facts, ABI glue and legacy relink/audit
+   tools remain in the selected OOT provider.
+ - `scalar_pointwise_unroll.py` owns a default-off upstream LLVM partial-unroll
+diff --git a/src/merlin/llvmlower/late_quant_rne.py b/src/merlin/llvmlower/late_quant_rne.py
+index a8269c679..df7ca5141 100644
+--- a/src/merlin/llvmlower/late_quant_rne.py
++++ b/src/merlin/llvmlower/late_quant_rne.py
+@@ -252,15 +252,21 @@ def _match(result: _Instruction, definitions: dict[str, _Instruction]) -> dict |
+ 
+ 
+ def rewrite(text: str, *, host_isa: str | None = None, combine_clamp: bool = False,
+-            temporary_prefix: str = 'merlin.rne') -> tuple[str, dict]:
++            integer_clamp: bool = False, temporary_prefix: str = 'merlin.rne') -> tuple[str, dict]:
+     """Legalize only with explicit ``portable`` or ``rv64gc`` host ISA policy.
+ 
+     Portable emission is the paired native oracle. RV64GC uses an explicit RNE
+     conversion, optionally combining the proved clamp. NaN source poison may
+     be refined; no output contract or FP exception-flag promise is introduced.
++    ``integer_clamp`` optionally saturates after CPU RNE conversion instead of
++    before it; both operations commute for the proved integral bounds.
+     ``temporary_prefix`` is printer identity only, for adapter compatibility.
+     """
+     receipt = dict(schema='merlin_late_bounded_rne_v1', source_sha256=hashlib.sha256(text.encode()).hexdigest(), routes=[], host_isa=host_isa)
++    if type(integer_clamp) is not bool:
++        raise TypeError('integer_clamp must be a bool')
++    if integer_clamp and (host_isa != 'rv64gc' or not combine_clamp):
++        raise ValueError('integer clamp requires combined clamp and rv64gc host ISA')
+     if type(combine_clamp) is not bool:
+         raise TypeError('combine_clamp must be a bool')
+     if host_isa is None:
+@@ -305,7 +311,8 @@ def rewrite(text: str, *, host_isa: str | None = None, combine_clamp: bool = Fal
+             indent = text[text.rfind('\n', 0, op.start) + 1:op.start]
+             if indent.strip():
+                 continue
+-            while f'{temporary_prefix}.{serial}' in used:
++            suffixes = ('', '.biased', '.inrange', '.sign', '.edge', '.bounded') if integer_clamp else ('',)
++            while any(f'{temporary_prefix}.{serial}{suffix}' in used for suffix in suffixes):
+                 serial += 1
+             temporary = f'%{temporary_prefix}.{serial}'
+             used.add(_identity(temporary))
+@@ -313,6 +320,21 @@ def rewrite(text: str, *, host_isa: str | None = None, combine_clamp: bool = Fal
+             dtype = proof['integer_dtype']
+             if host_isa == 'portable':
+                 replacement = f'{temporary} = call float @llvm.roundeven.f32(float {proof["clamped_input"]})\n{indent}{op.result} = fptosi float {temporary} to {dtype}'
++            elif integer_clamp:
++                # FCVT.W.S saturates signed32 overflow, including infinities.
++                # Every admitted signed1..signed24 bound fits signed32 exactly;
++                # integer clamp therefore commutes with clamp-before-RNE.
++                # Source NaN already reaches poison through its FP-to-int cast.
++                lower, upper = proof['bounds']
++                used.update(_identity(temporary + suffix) for suffix in ('.biased', '.inrange', '.sign', '.edge', '.bounded'))
++                replacement = (
++                    f'{temporary} = call i32 asm "fcvt.w.s $0, $1, rne", "=r,f"(float {proof["raw_input"]})\n{indent}'
++                    f'{temporary}.biased = add i32 {temporary}, {-lower}\n{indent}'
++                    f'{temporary}.inrange = icmp ult i32 {temporary}.biased, {upper - lower + 1}\n{indent}'
++                    f'{temporary}.sign = ashr i32 {temporary}, 31\n{indent}'
++                    f'{temporary}.edge = xor i32 {temporary}.sign, {upper}\n{indent}'
++                    f'{temporary}.bounded = select i1 {temporary}.inrange, i32 {temporary}, i32 {temporary}.edge\n{indent}'
++                    f'{op.result} = trunc i32 {temporary}.bounded to {dtype}')
+             elif combine_clamp:
+                 lower, upper = (f'{bound:.6e}' for bound in proof['bounds'])
+                 replacement = f'{temporary} = call i32 asm "fmax.s ft0, $1, $2\\0Afmin.s ft0, ft0, $3\\0Afcvt.w.s $0, ft0, rne", "=r,f,f,f,~{{ft0}}"(float {proof["raw_input"]}, float {lower}, float {upper})\n{indent}{op.result} = trunc i32 {temporary} to {dtype}'
+@@ -320,6 +342,8 @@ def rewrite(text: str, *, host_isa: str | None = None, combine_clamp: bool = Fal
+                 replacement = f'{temporary} = call i32 asm "fcvt.w.s $0, $1, rne", "=r,f"(float {proof["clamped_input"]})\n{indent}{op.result} = trunc i32 {temporary} to {dtype}'
+             edits.append((op.start, op.end, replacement))
+             receipt['routes'].append(proof)
++    if integer_clamp:
++        receipt['integer_clamp'] = True
+     rewritten = text
+     for start, end, replacement in reversed(edits):
+         rewritten = rewritten[:start] + replacement + rewritten[end:]
+@@ -339,6 +363,7 @@ def rewrite(text: str, *, host_isa: str | None = None, combine_clamp: bool = Fal
+ 
+ def merlin_host_llvm_transform(llvm_bin: str | Path, *, host_isa: str,
+                               combine_clamp: bool = False,
++                              integer_clamp: bool = False,
+                               temporary_prefix: str = 'merlin.rne'):
+     """Verified pre-object callback; normal builder owns objects/link identity."""
+     llvm_bin = Path(llvm_bin)
+@@ -349,7 +374,7 @@ def merlin_host_llvm_transform(llvm_bin: str | Path, *, host_isa: str,
+         assembler = llvm_bin / 'llvm-as'
+         subprocess.run([str(assembler), str(source), '-o', str(work / 'source.bc')], check=True)
+         original = source.read_text()
+-        target, proof = rewrite(original, host_isa=host_isa, combine_clamp=combine_clamp, temporary_prefix=temporary_prefix)
++        target, proof = rewrite(original, host_isa=host_isa, combine_clamp=combine_clamp, integer_clamp=integer_clamp, temporary_prefix=temporary_prefix)
+         if not proof['routes']:
+             raise ValueError('no proven bounded RNE chain: ' + str(proof.get('refusal', 'unrecognized source')))
+         selected = work / 'model.ll'
