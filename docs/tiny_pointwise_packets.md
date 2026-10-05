@@ -41,3 +41,9 @@ and console objects are byte-identical to1846; only the host model and
 marker-bearing harness object differ. Whole FireSim timing is pending; the
 stock best remains569,151,067 cycles. See
 `perf_records/tiny_pointwise_packet_spike.json`.
+
+Stock FireSim job1880 is admitted with the qualified ELF, independent
+qualification/reference checks and detached collector2863471. The original
+qualification receipt remains immutable. Actual whole-model cycles are pending.
+Admission is recorded separately in
+`perf_records/tiny_pointwise_packet_firesim1880_admission.json`.
