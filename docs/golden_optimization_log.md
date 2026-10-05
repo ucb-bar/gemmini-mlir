@@ -1162,3 +1162,13 @@ admission. The new typed ordered-FMA outlined model passes the original full nat
 normalRV64GC/noFSM compile, with its independent actual target replay still running.
 [Failure](perf_records/smol_corrected_runtime_spike_failed.json),
 [new qualification](perf_records/smol_upstream_ordered_fma_native.json).
+
+### Stock1897: stripe composition
+
+The qualified stripe + transfer + residual composition measures **38,468,933**
+whole-model cycles versus39,201,279 for1874 (1.868% lower), and0.350% below
+the prior38,603,949 best1886. This is a single-run result, not an additive
+prediction. All1,000 original output words, actual staged ELF and stock bitstream
+are independently pinned. Generic target scheduling remains OOT owned.
+Token usage is unavailable to this agent.
+[Receipt](perf_records/firesim1897_resnet_stripe_composition_verified.json).
