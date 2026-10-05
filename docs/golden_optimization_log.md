@@ -356,3 +356,39 @@ quality or hardware release yet. Its next gate composes the explicit residual
 candidate and compares to the unchanged golden; actual target outputs must
 match the candidate's native implementation independently. Evidence:
 `perf_records/resnet_bounded_unary_candidate.json`.
+
+### Scalar precision and measured model results
+
+model2MLIR mainba77e6e preserves Python scalar precision for half mul/div.
+Smol language embeddings multiply bysqrt(960); rounding this coefficient tobf16
+before multiplication caused relativeL2.00182. The executed corrected probe
+matches Torch exactly. Expanded testing rejected an initially broader opmath
+change: Torch add/sub first narrow their scalar, whereas mul/div retain a f32
+coefficient. The published change is limited accordingly. Actual compiled
+left/right add/sub/mul/div forms match all8192 outputs for each ofbf16 andfp16.
+Ninety-six related frontend tests pass; rejected all-operator promotion was not
+pushed. The full Smol gate still needs correction of fused attention precision.
+
+Tiny FireSim1747 now measures1,800,267,524 forward cycles for the full22-layer
+prepacked model. Its complete1,024,000-byte output digest matches independently
+validated native and actual Spike output, and Torch comparison retains relative
+L2 2.1918433e-7/maxabs9.536743e-6. Identity and timing are recorded in
+`perf_records/tiny_prepacked_firesim1747.json`. This is an absolute whole-model
+hardware result, not a speedup versus an unmeasured baseline or a maximum claim.
+
+Pooled-stem ResNet FireSim1750 measures2,663,212,150 forward cycles, all1000
+outputs bit-exact the earlier original reference;15.35% below fused27 job1743,
+53.12% below initial job1730. Record:
+`perf_records/resnet_pooled_stem_firesim1750.json`. The corrected closed-recipe
+and explicit bounded candidates have separate source/golden identities and are
+not conflated with this result.
+
+Complete-row convolution bands derive retained pixel blocks from accumulator
+capacity. H56 holds4 rows/band;H28 holds8. All16 ResNet3×3 convolutions now need
+487,872 mesh compute commands/7,805,952 padded issue-floor cycles. Measured
+GSIM full-range kernel gates617,005(C64),628,112(C128),674,159(C256) and
+769,976(C512) include every output and guard; their sum is not a whole-model
+FireSim prediction. Entire exact original ResNet with banded/flat kernels passes
+native and actual Spike all1000 outputs, noFSM. These reusable physical-layout,
+capacity and bank-placement rules are the device schedules to compare with
+later automatic search, while host-region closure remains separate work.

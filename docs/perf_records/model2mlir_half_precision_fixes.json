@@ -6,9 +6,9 @@
   "softmax_commit": "d82f4aa9d07b7c0b1c18c50461bdcfa7f1db39a0",
   "change": "Use Torch f32 opmath for half LayerNorm, softmax, GELU and convolution; retain GELU approximate=none/tanh and round convolution after bias.",
   "tests": {
-    "command": "PYTHONPATH=. /scratch/agustin/projects/model2MLIR/.venv/bin/python -m pytest tests/test_convolution_precision.py tests/test_direct_conv_padding.py tests/test_gelu_precision.py tests/test_softmax_precision.py tests/test_layer_norm_precision.py tests/test_transforms.py tests/test_capture_receipt.py tests/test_scalar_square.py tests/test_pt2e_channel.py -q --disable-warnings",
-    "passed": 74,
-    "coverage": "bf16/f16; LayerNorm affine absent, input dtype and f32; one/two normalized axes; softmax final/nonfinal axis and named expansion; bf16/f16/f32 GELU none/tanh and actual capture mode; bf16/f16 convolution direct/im2col with/without bias"
+    "command": "PYTHONPATH=. /scratch/agustin/projects/model2MLIR/.venv/bin/python -m pytest tests/test_half_scalar_precision.py tests/test_convolution_precision.py tests/test_direct_conv_padding.py tests/test_gelu_precision.py tests/test_softmax_precision.py tests/test_layer_norm_precision.py tests/test_transforms.py tests/test_capture_receipt.py tests/test_scalar_square.py tests/test_pt2e_channel.py -q --disable-warnings",
+    "passed": 96,
+    "coverage": "bf16/f16; LayerNorm affine absent, input dtype and f32; one/two normalized axes; softmax final/nonfinal axis and named expansion; bf16/f16/f32 GELU none/tanh and actual capture mode; bf16/f16 convolution direct/im2col with/without bias; left/right half scalar mul/div f32 coefficients and add/sub early-round behavior"
   },
   "executed_mlir": {
     "engine": "native LLVM compiled model2MLIR bundle",
@@ -126,9 +126,31 @@
           "max_abs_error": 0.0
         }
       }
+    },
+    "half_scalar": {
+      "scalar_ops_bf16_fixed": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/scalar_ops_bf16_fixed",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "scalar_ops_f16_fixed": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/scalar_ops_f16_fixed",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      }
     }
   },
   "scope": "Operator correctness. Fresh full SmolVLA capture and numerical gate remain separate. No FireSim performance claim.",
   "gelu_commit": "e9aa9085ddc40b6d0364c579df23a14f18af3c63",
-  "convolution_commit": "b0979bbb76f49138b15129b11eb3ea66cb851e57"
+  "convolution_commit": "b0979bbb76f49138b15129b11eb3ea66cb851e57",
+  "half_scalar_commit": "ba77e6ecef8f8d28c168adf1111a9673ab89d609",
+  "half_scalar_note": "Executed all8 left/right add/sub/mul/div forms on1024 deterministic finite inputs perbf16/fp16. Only mul/div keep the Python scalar in f32; add/sub preserve framework early-half-rounding semantics. Rejected all-operator promotion was never pushed."
 }
