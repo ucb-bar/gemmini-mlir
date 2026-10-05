@@ -48,9 +48,12 @@ approximation with capture-specific accuracy evidence.
 [Gate](perf_records/tiny_fused_activation_poly_o3_spike.json),
 [hardware](perf_records/tiny_fused_activation_poly_o3_firesim1806.json).
 The fresh profile for this compiled model preserves all existing objects and
-passes full output/count/conservation checks in Spike; job1809 is collecting
-hardware attribution. Its191,247,666 host instructions and18,254,522 device
-instructions are not hardware cycle estimates.
+passes full output/count/conservation checks in Spike and FireSim1809. Hardware
+interior765,151,605 cycles divides into219,056,004 device and546,095,601 host;
+all155 calls are conserved. Its765,152,026 whole-forward timing adds658,156
+observed cycles (0.0861%) to the unprofiled1806 control. Host intervals before
+attention output projections and down projections include all intervening CPU
+operations. See [fresh profile](perf_records/tiny_fused_current_profile_firesim1809.json).
 
 Fresh ResNet profile1801 attributes47,057,935 interior cycles to35,450,518 device
 and11,607,417 host cycles, with all70 primitive calls conserved. Instrumentation
@@ -59,6 +62,15 @@ the unprofiled control. The captured classifier tail's wide-B/cached-A GSIM scre
 is23.26% faster with exact outputs; it has not been promoted into the model.
 See [current profile](perf_records/resnet_current_leaf_profile_firesim1801.json)
 and [selected geometry](perf_records/resnet_current_issue_geometry.json).
+Exact pointwise destination reuse for the padded pre-stem passes complete native
+and Spike gates, reducing retired instructions4.32%; it has not yet been measured
+in FireSim. A proposed external result-alias wrapper failed a live-alias regression
+and was removed. A branchless readout correction also remains rejected: four
+completed GSIM passes on50,176 captured values are24.47% slower by median; the
+600-second probe timed out before its full pass marker and smaller readout.
+See [pre-stem gate](perf_records/resnet_prestem_destination_spike.json),
+[alias diagnosis](perf_records/prestem_destination_alias_diagnosis.md) and
+[rejected screen](perf_records/resnet_branchless_readout_rejected_gsim.json).
 
 Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
 050009e, SDPA scale/causal/options semantics at69c0370, and half-precision

@@ -706,9 +706,15 @@ return-noalias under the pinned monotonic arena contract. It produces byte-ident
 model.o and final ELF to1806; no duplicate native, Spike or FireSim run is needed.
 No permanent compiler option is promoted from this emission-neutral experiment.
 The fresh1806 profile passes full Spike output/count/conservation checks and is
-queued as1809; its191,247,666 host instructions are not hardware cycles.
+verified by FireSim1809:765,151,605 interior cycles =219,056,004 device +546,095,601
+host. All155 calls, complete output digest and conservation pass. Observed
+whole-forward profile overhead is658,156 cycles (0.0861%);1806 remains the
+unprofiled control. Large host gaps precede attention output projections and
+down projections and include all intervening CPU operations. Spike instructions
+are not hardware cycles.
 See `perf_records/tiny_malloc_noalias_emission_neutral.json` and
-`perf_records/tiny_fused_poly_current_profile_spike.json`.
+`perf_records/tiny_fused_poly_current_profile_spike.json` and
+`perf_records/tiny_fused_current_profile_firesim1809.json`.
 
 Captured ResNet classifier M1/N1000/K2048 GSIM execution measures594,580 to456,259
 cycles (23.26% fewer) forwideB/cacheA. All1,000 i32outputs and2,048 guard bytes
@@ -741,3 +747,28 @@ independently verified. The fresh whole SmolVLA source has zero opaque operation
 original checkpoint weights, extras, six inputs,1,600 reference outputs,
 manifest and input-order hashes remain unchanged. Its full gate is pending.
 Backend-compatible arithmetic policies remain explicit and independent.
+
+### Exact destination reuse and rejected readout correction
+
+Default-off `reuse_tensor_destination` clones a pure pointwise body unchanged
+into a proved static interior slice of a fresh filled pad. Complete ResNet native
+and actual Spike outputs remain exact; retired instructions fall11,497,420 to
+11,001,021 (4.32%). A second full pad allocation/copy remains because upstream
+bodyless tensor results conservatively alias all tensor arguments. A wrapper
+returning original C after writable to_buffer is incorrect when bufferization
+copies C; a live-input regression and the whole original gate both exposed stale
+results. It was removed and never queued. The needed result-alias abstraction
+must model copy-on-write and descriptor identity correctly. See
+`perf_records/prestem_destination_alias_diagnosis.md`.
+
+The branchless fixed-point readout correction prototype adds padded low/high
+sentinels and loads both adjacent thresholds. Twelve arithmetic/adapter tests
+pass. Actual50176-value ResNet scratch comes from an otherwise unchanged1795
+native replay with all1000 original output bits exact. Four completed alternating
+GSIM calls check every50176 value and2048 guard bytes: conditional1546507/1519331
+cycles versusbranchless1912991/1902986. Median increases24.47%. The600-second
+probe timed out before the smaller25088-value readout and full pass marker;
+that incomplete run is not a successful hardware qualification. The prototype
+was removed from active source, retained as a reproducible rejected patch, and
+neither promoted nor queued. See
+`perf_records/resnet_branchless_readout_rejected_gsim.json`.
