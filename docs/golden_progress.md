@@ -6,7 +6,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer plus banked residual prefetch, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 39,201,279 (1874) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned | [1874](perf_records/resnet_transfer_residual_composed_firesim.json) |
+| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, five static resident convolutions, fresh output ownership, packed guarded mean, clamp/RNE and exact host quantization packets | 38,603,949 (1886) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned | [1886](perf_records/firesim1886_resnet_quant_packet_verified.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, two-lane host pointwise packets, eight ordered contraction outputs/K2, cached-A B-prefetch and fresh writer ownership | 531,072,370 (1880) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1880](perf_records/tiny_pointwise_packet_firesim.json) |
 | Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Both older ABI-corrected and newer ordered-FMA outlined actualRV64GC models fail89/1,600 original elements(maxabs.115166), with identical target output bytes. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
 
@@ -17,7 +17,7 @@ remaining performance targets or pretrained ResNet accuracy.
 
 [Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
 regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
-does not invoke shared whole-program search. Four compiler export/selection commands now expose seven AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This is an admission gate; it does not select a new schedule or invoke shared global optimization. [Binding](perf_records/golden_model_plan_binding_qualification.json).
+uses shared calibrated selection for explicitly supplied, source-bound contraction alternatives; it does not invoke shared whole-program search. Four compiler export/selection commands now expose seven AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This remains a full-source identity admission gate. The normal build now additionally accepts `--contraction-calibrations` to run the existing shared measured selector per exact source contraction and compile its winner into the real device catalog. Independent full-model native/strict target execution closes all1,241 original i32 outputs and actual final ELF/symbol bindings. Whole-graph search and whole-model costs remain unknown. [Normal build selection](perf_records/golden_calibrated_normal_model_qualification.json). [Binding](perf_records/golden_model_plan_binding_qualification.json).
 
 Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
 with all1,000 reference logits passing its self-check and54 buffered layer timings.
@@ -52,7 +52,7 @@ operations after fusion, not one source operation. [Profile](perf_records/tiny_c
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1874 in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. That target composition remains qualified; newer host-packet arm1886 is now best in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 The1849 profile control has22,989,952 calculated padded mesh geometry cycles:
 8,893,440 pointwise,7,990,272 direct,5,193,216 residual,784,000 pooled stem
@@ -78,7 +78,7 @@ This qualified the transfer arm. The independent residual arm1854 verifies
 with all1,000 original native and actual Spike words exact. The1861 UART counter39,201,279
 lacks complete actual staging proof and remains historically **unverified**. Its strict immutable
 rerun1874 now verifies39,201,279 with all1,000 original words exact and staged ELF/bitstream
-closed:1,278,269cycles(3.158%) below1853. This is the current best.
+closed:1,278,269cycles(3.158%) below1853. This was the best before1886 host packets.
 [Verified composition](perf_records/resnet_transfer_residual_composed_firesim.json).
 No additive whole-model gain is inferred.
 [Schedule](multirow_resident_a.md),
@@ -90,7 +90,7 @@ The general stripe policy passes40 focused tests and independent/tail capsules.
 H56/C64 saves15.89% fencedGSIM; H28/C128 saves19.22%, full outputs/guards exact.
 All52 source numeric proofs are retained; only six device objects change versus1853.
 Original1,000 whole native+strictSpike words remain exact. Stock1878 now verifies39,754,283cycles,
-725,265(1.792%) below1853 with actual staging closed. Best1874 remains39,201,279.
+725,265(1.792%) below1853 with actual staging closed. Target composition control1874 is39,201,279; the newer1886 host-packet arm is38,603,949.
 The independently qualified stripe+transfer+residual composition is queued1897 against1874;
 its host/runtime/startup/weight objects remain identical. No additive gain is inferred.
 [Isolated hardware](perf_records/resnet_resident_stripe_policy_firesim.json).
@@ -111,16 +111,15 @@ at900seconds on a large monolithic function. Generic loop extraction retains the
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work. A source-derived post-vision
 suffix now passes all1,600 original final bits on actual target execution with the old failing runtime
-objects frozen; this localizes the remaining discrepancy to the vision prefix. First-block diagnosis
-is running. [Frozen-runtime suffix](perf_records/smol_postvision_suffix_frozen_runtime.json).
+objects frozen; this localizes the remaining discrepancy to the vision prefix. The later fifth-block expf diagnosis is documented below. [Frozen-runtime suffix](perf_records/smol_postvision_suffix_frozen_runtime.json).
 The diagnostic supplies a captured intermediate and is separate from whole-model qualification; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
 
 General remaining-row B-slot prefetch selects seven pointwise kernels from shape/resource facts.
 Its matched full-range capsule saves5.36%GSIM; all1,000 whole native/Spike words are exact with
-unchanged1853 host/runtime/weights/shim. Stock1888 is queued. Generic Merlin bounded RNE packets
+unchanged1853 host/runtime/weights/shim. Stock1888 verifies40,148,896cycles,330,652(0.817%) below its1853 control, but slower than current1886 best; composition is unmeasured. Generic Merlin bounded RNE packets
 save42.49% warm cycles on a complete quantization/packing capsule; the whole arm preserves original
-1,000 words and all13 checked nonhost objects, queued1886. The first redundant dead-branch arm was
+1,000 words and all13 checked nonhost objects; stock1886 verifies38,603,949cycles. The first redundant dead-branch arm was
 rejected before hardware. Tiny two-lane scalar pointwise packets save22.09% warmGSIM on the full
 capsule; stock1880 now verifies531,072,370wholecycles,38,078,697(6.6904%) below1846, all256,000 original words/Torch gate exact and actual staging closed. [Hardware](perf_records/tiny_pointwise_packet_firesim.json). Other queued arms remain pending experiments.
 
@@ -129,15 +128,14 @@ Current Smol diagnosis has closed the first four isolated vision blocks, post-la
 the language/action suffix against original captured states with the original failing runtime
 frozen. The fifth vision block (index4) passes natively and diverges on the target; the next
 isolated block passes. This localizes a reproducible failure without certifying the whole model.
-Native and target expf can differ on some actual inputs even in a block whose complete output
-is exact; libm differences alone do not prove causality.
+Replacing only expf with diagnostic native results restores all786,432 original fifth-block bits, with zero lookup misses. The generic optional `(float)exp((double)x)` policy also restores this entire block and full native all1,600 final bits. Actual full-model target validation is still running; lookup stays diagnostic-only. [Causality](perf_records/smol_block4_expf_causality.json).
 [Localization](perf_records/smol_later_vision_block_localization.json),
 [corrected block2 and rejected diagnostic input](perf_records/smol_vision_block2_corrected_target.json).
 
 The generic early-saturation/eight-lane exact integer readout candidate preserves every
 original ResNet output in native and strict target execution. Only two CPU adapters change;
 the unmodified control link reproduces verified1874 byte for byte. Whole retired instructions
-fall10,222,806→9,389,018; no hardware-cycle gain is claimed before the stock measurement.
+fall10,222,806→9,389,018; stock1900 is admitted with actual numeric/noFSM/ELF/hardware pins. No whole hardware-cycle gain is claimed before the measurement.
 
 The following narrative retains the earlier experiment sequence; the table above is current.
 
@@ -375,3 +373,17 @@ cycles; all70 calls and original1,000 output words pass. The pre-stem host gap
 is4,017,289; gaps before matmul26/49 are1,955,979/962,942 and include the two
 integer-readout epilogues plus any other intervening CPU work. These are host
 intervals, not isolated operation costs.
+
+The qualified composition now combines1886 generic host quantization packets,1874 banked
+residual schedules and1900 exact eight-lane readouts. The1886 control and1900 readout ELFs
+are reproduced byte for byte; all semantic catalog proofs/bindings and unchanged host/runtime/weights
+objects are pinned. Native and actual strict target execution preserve all1,000 original words.
+Stock1903 is admitted versus1886; hardware cycles remain pending.
+[Composition qualification](perf_records/resnet_qualified_packet_composition_spike.json).
+
+Tiny adjacent independently proved RNE results now use separate CPU floating temporaries under an
+explicit CPU policy. The general Merlin pass preserves strict source chains/aliases and refuses
+unsafe motion. Actual full capsuleGSIM256,637→247,568cycles(3.53%) with identical instruction count;
+whole native/target256,000 words and original Torch gate pass. Stock1902 is admitted versus1880.
+The fresh155-boundary profile1901 targets1880; older1837 attribution above remains historical.
+[Qualified next Tiny arm](tiny_adjacent_rne_packets.md).
