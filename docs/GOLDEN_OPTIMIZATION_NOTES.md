@@ -339,3 +339,25 @@ deallocation. Seven existing OOT live-input/native gates also pass. Allocation a
 an IR allocation request: later output-parameter forwarding can use caller-owned storage, whose
 alignment remains a separate caller obligation. The test does not assume stronger final-pointer
 alignment. The previously rejected return-original-C wrapper remains absent.
+
+### Expanded-memref ownership prototype
+
+The ordinary catalog records dense pointer shape/source bindings but does not yet
+publish a full-write/returned-argument ownership contract. The provider prototype
+`expanded_writer.py` requires those facts explicitly, together with borrowed symbol
+and alignment; no catalog entry is automatically selected. Its C bridge invokes
+and discards the result of the existing expanded adapter, preserving adapter guards.
+
+A distinct tensor-wrapper symbol is necessary: MLIR private visibility alone still
+emits an LLVM function with the original raw symbol, which collided with the existing
+C adapter in the first native link. The generic opt-in contract now supports explicit
+expanded ABI and wrapper naming; all selected call sites are retargeted only after
+complete validation. Default ranked routes remain byte-identical across all70
+qualified ResNet adapters.
+
+The source-bound classifier prototype reuses the actual current adapter C, pinned
+catalog/source/binding hashes, and captured activation/weight bytes. Native execution
+matches all1000 i32 outputs and32 guards, preserving both live inputs over3 calls.
+This is an ABI experiment with a scalar kernel oracle, not a new whole-model or
+hardware result. Production routing still needs provider-emitted ownership facts
+and full original-model native/target gates before selection.
