@@ -63,3 +63,7 @@ source-proven0.0038317402359098196.
 The source-compatible candidate cuts kernel cycles42.52% (1.740x speedup),
 ending3.48% above the50,176 compute floor. This supports selection for this
 exact source-bound epilogue/shape, not unrestricted promotion to other shapes.
+
+## Late convolution hardware gate
+
+Job 1758 measured **793,557 kernel cycles** for the H7/W7/C512 3x3 direct convolution with spatial flattening, four M tiles, bn16, 64-wide A loads, and B at scratchpad row 8192 on a separate bank. All 25,088 i32 outputs and guard bytes passed; staged ELF/bitstream identities and final zero-FSM audit passed. GSIM measured 769,976 cycles for this artifact. This is a standalone kernel measurement; no same-hardware baseline or whole-model speedup is inferred. Receipt: `docs/perf_records/late_conv_banked_firesim1758.json`.
