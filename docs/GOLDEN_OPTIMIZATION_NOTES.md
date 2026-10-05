@@ -54,3 +54,20 @@ observed symbol also matches source catalog binding order, permitting an ordinal
 to source-region map in the separate Spike attribution artifact. Repeated largest
 host gaps are approximately17.98M instructions before M8N2048K2048 calls.
 Hardware attribution remains pending;1776 remains the controlled unprofiled time.
+
+## ResNet exact primitive-boundary hardware attribution1777
+
+Stock FireSim completed with staged ELF/bitstream identity, all1,000 original
+outputs exact, zero-FSM,70 calls and conserved intervals. Harness forward metric
+61,467,502; interior profiled forward61,466,934 = device37,187,546 + host24,279,388.
+The separate unprofiled1775 result62,441,162 remains the controlled time: profile
+code placement and instrumentation can change timing, not merely add overhead.
+
+Device categories: dense16,635,093; direct convolution12,330,645; wide residual
+6,779,734; pooled stem1,442,074 cycles. Largest host gaps: prestem16,825,464;
+preclassifier3,210,641; after integer readout matmul25 before26=1,990,199;
+after48 before49=962,268; beforematmul14=614,548. The exact CPU readout work is
+intentionally charged to host gaps because wrappers surround primitive device
+calls. Per-call shapes, source regions, categories and intervals are retained in
+the receipt. This provides measured priorities for host cleanup and device
+schedule work; the analytical selected issue floor is not a measured runtime.
