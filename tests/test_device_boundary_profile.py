@@ -45,3 +45,13 @@ def test_leaf_profile_reconstructs_and_checks_original_object_bytes(tmp_path):
     assert rows[0]['symbol']=='kernel' and receipts[0]['sha256']==sha(component)
     (bundle/'kernel.o').write_bytes((bundle/'kernel.o').read_bytes()+b'changed')
     with pytest.raises(ValueError,match='identity mismatch'):leaf_kernel_profile(catalog,tmp_path,work,Path(linker).parent)
+
+
+def test_repeated_symbol_counts_are_required_when_manifest_declares_them():
+    import pytest
+    manifest=dict(BoundaryProfileTest.manifest,expected_symbol_calls={'0':2,'1':1})
+    parse_profile(BoundaryProfileTest.valid,manifest)
+    # Same total count, all symbols present, conserved intervals, wrong multiplicity.
+    wrong=BoundaryProfileTest.valid.replace('PROFILE_CALL 2 0','PROFILE_CALL 2 1')
+    with pytest.raises(ValueError,match='per-symbol'):
+        parse_profile(wrong,manifest)

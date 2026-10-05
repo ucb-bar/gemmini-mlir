@@ -37,3 +37,20 @@ Torch tolerances and reference-quality checks remain unchanged. The full output
 hash is outside the timed interval. ELF/staged ELF, bitstream, job-owned UART,
 and strict native/Spike reference receipt hashes are in the hardware receipt.
 This is a combined schedule/runtime result; it does not isolate either change.
+
+## TinyLlama final-link device profile (queued1782)
+
+Profile ELF0af1b3851cc69332af54a074625aeb4b3096c9a2cf8da4a0d1d2ef50729b33c5
+reuses every optimized model, dense kernel, and runtime object from1776. Five
+public three-pointer dense symbols are wrapped, preserving their whole-batch ABI
+and private cores. The model linker constants are retained. No tensor-operation
+instrumentation is inserted before compiler fusion.
+
+Actual Gemmini Spike passes the complete256,000-value digest, zero-FSM audit,
+155 calls, five symbols, exact per-symbol multiplicities22/1/44/44/44, and interval
+conservation. Proxy forward678,967,350 = device18,254,522 + host660,712,828;
+tail4,496,084. These are retired-instruction counters, not hardware cycles. Every
+observed symbol also matches source catalog binding order, permitting an ordinal
+to source-region map in the separate Spike attribution artifact. Repeated largest
+host gaps are approximately17.98M instructions before M8N2048K2048 calls.
+Hardware attribution remains pending;1776 remains the controlled unprofiled time.

@@ -1,6 +1,7 @@
 """Opt-in final-link device attribution, preserving the optimized model object."""
 from __future__ import annotations
 import argparse
+from collections import Counter
 import hashlib
 import json
 import re
@@ -78,6 +79,9 @@ def parse_profile(text: str, manifest: dict) -> dict:
             len(events) != count or [x[0] for x in events] != list(range(count)) or
             {x[1] for x in events} != expected_ids):
         raise ValueError("profile does not cover every expected device boundary")
+    expected_counts=manifest.get("expected_symbol_calls")
+    if expected_counts is not None and Counter(x[1] for x in events) != Counter({int(k):v for k,v in expected_counts.items()}):
+        raise ValueError("profile does not cover expected per-symbol call counts")
     if (sum(x[3] for x in events) != device or
             sum(x[2] for x in events) + tail != host or total != device + host):
         raise ValueError("profile intervals do not conserve forward cycles")
@@ -196,6 +200,9 @@ def build(build_dir: Path, runtime_dir: Path, gcc: Path, llvm_bin: Path, work: P
     audit=audit_elf(elf.read_bytes());(work/'model.nofsm_audit.json').write_text(json.dumps(audit,indent=2)+'\n')
     if audit['status']!='pass':raise ValueError('profile ELF failed zero-FSM audit')
     record={'schema':'golden_device_boundary_profile_build_v1','base_elf':str(base),'base_elf_sha256':digest(base),'elf_sha256':digest(elf),'model_object_sha256':digest(build_dir/'model.o'),'source_sha256':digest(source),'objects':{str(x):digest(x) for x in objects},'linker_argv':argv,'boundaries':[{'id':i,'symbol':name,'pointer_arity':arity} for i,(name,arity) in enumerate(symbols)],'expected_device_calls':catalog.get('total_device_contractions',catalog['covered_contractions']),'semantics':'PROFILE_SUM forward/device/host-gap cycles; each PROFILE_CALL ordinal/symbol-id/preceding-host-gap/device-cycles; instrumentation overhead belongs mostly to host gaps'}
+    binding_counts=Counter(row['symbol'] for row in catalog.get('bindings',[]))
+    if details is None and sum(binding_counts.values())==record['expected_device_calls'] and set(binding_counts)=={s for s,_ in symbols}:
+        record['expected_symbol_calls']={str(i):binding_counts[symbol] for i,(symbol,_) in enumerate(symbols)}
     if details is not None:
         record['boundaries']=[dict(row,id=i) for i,row in enumerate(details)]
         record['leaf_component_reproduction']=leaf_receipts
