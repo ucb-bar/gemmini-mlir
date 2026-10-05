@@ -26,3 +26,14 @@ outputs bit-exact to the unchanged closed-recipe golden. ELF, staged ELF,
 bitstream, and job-owned UART hashes are pinned in the receipt. This is 8.69%
 below the corresponding padded candidate1774 (68,385,997); the unprofiled result
 is retained independently of the separate boundary profiling job1777.
+
+## Stock FireSim TinyLlama 1776
+
+The large-N GEMM plus optimized-runtime candidate completed in 1,402,210,517
+forward cycles versus 1,800,267,524 for baseline1747: 22.11% fewer cycles.
+All 256,000 float32 outputs (1,024,000 little-endian bytes) match the validated
+native/Spike reference SHA256 and the older baseline output bytes. Original
+Torch tolerances and reference-quality checks remain unchanged. The full output
+hash is outside the timed interval. ELF/staged ELF, bitstream, job-owned UART,
+and strict native/Spike reference receipt hashes are in the hardware receipt.
+This is a combined schedule/runtime result; it does not isolate either change.
