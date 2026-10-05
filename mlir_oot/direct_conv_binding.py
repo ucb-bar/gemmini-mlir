@@ -163,12 +163,14 @@ def emit_c_adapter(s, symbol='gemmini_direct_conv_boundary', kernel_symbol='gemm
         return ' || '.join(conditions)
     text = '''#include <stdint.h>
 #include <stddef.h>
-extern void exit(int);
+#ifndef GEMMINI_DIRECT_CONV_ABI
+#define GEMMINI_DIRECT_CONV_ABI
 typedef struct {void *allocated,*aligned; intptr_t offset,sizes[2],strides[2];} memref2;
 typedef struct {void *allocated,*aligned; intptr_t offset,sizes[4],strides[4];} memref4;
+#endif
 extern void gemmini_golden_conv(int8_t*,int8_t*,int32_t*);
 ''' + f'''void _mlir_ciface_{symbol}(memref2 *r,memref4 *a,memref4 *b,memref2 *c) {{
- if ({checks('a',[1,s.h+2,s.w+2,s.cin])} || {checks('b',[3,3,s.cin,s.cout])} || {checks('c',[s.oh*s.ow,s.cout])}) exit(3);
+ if ({checks('a',[1,s.h+2,s.w+2,s.cin])} || {checks('b',[3,3,s.cin,s.cout])} || {checks('c',[s.oh*s.ow,s.cout])}) __builtin_trap();
  gemmini_golden_conv((int8_t*)a->aligned+a->offset,(int8_t*)b->aligned+b->offset,(int32_t*)c->aligned+c->offset);
  *r=*c;
 }}
@@ -176,14 +178,19 @@ extern void gemmini_golden_conv(int8_t*,int8_t*,int32_t*);
     return text.replace("gemmini_golden_conv",kernel_symbol)
 
 
-def serialize(module, declaration):
-    """Keep external argument access through xDSL's bodyless declaration printer."""
-    text=str(module);old=str(declaration)
-    if text.count(old)!=1: raise ValueError('expected one exact generated declaration')
-    ft=declaration.function_type
-    args=', '.join(f'{ty} {{bufferization.access = "{access}"}}' for ty,access in zip(ft.inputs,['read','read','write'],strict=True))
-    replacement=f'func.func private @{declaration.sym_name.data}({args}) -> {ft.outputs.data[0]} attributes {{llvm.emit_c_interface}}'
-    return text.replace(old,replacement,1)
+def serialize(module, declarations):
+    """Keep external argument properties through the bodyless function parser."""
+    import io
+    from xdsl.printer import Printer
+    if isinstance(declarations,Operation): declarations=[declarations]
+    text=str(module)
+    for declaration in declarations:
+        old=str(declaration)
+        if text.count(old)!=1: raise ValueError('expected one exact generated declaration')
+        stream=io.StringIO()
+        Printer(stream=stream,print_generic_format=True).print_op(declaration)
+        text=text.replace(old,stream.getvalue(),1)
+    return text
 
 
 def _slice_coordinates(value):
@@ -238,3 +245,19 @@ def match(op):
     except ValueError as first:
         try:return _match_concat(op)
         except ValueError as second:raise ValueError(f'{first}; {second}') from second
+
+
+def emit_scalar_oracle(s, kernel_symbol):
+    """Native functional stand-in for whole-graph checks; never device performance."""
+    if not s.explicit_halo or s.output_dtype!='i32':
+        raise ValueError('native boundary oracle requires explicit halo and i32 output')
+    return f'''
+void {kernel_symbol}(int8_t *a,int8_t *b,int32_t *c) {{
+ for(int y=0;y<{s.oh};y++) for(int x=0;x<{s.ow};x++) for(int n=0;n<{s.cout};n++) {{
+   uint32_t acc=0;
+   for(int ky=0;ky<3;ky++) for(int kx=0;kx<3;kx++) for(int ci=0;ci<{s.cin};ci++)
+     acc+=(uint32_t)((int32_t)a[(((y*{s.stride}+ky)*{s.w+2}+x*{s.stride}+kx)*{s.cin})+ci]*(int32_t)b[((ky*3+kx)*{s.cin}+ci)*{s.cout}+n]);
+   ((uint32_t*)c)[(y*{s.ow}+x)*{s.cout}+n]=acc;
+ }}
+}}
+'''

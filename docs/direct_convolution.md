@@ -140,10 +140,12 @@ Then run the existing model preparation/lowering and dense catalog on the
 rewritten source and link both device objects. Final whole-model ELF auditing
 still applies. Model-wide correctness and performance require subsequent runs.
 
-The xDSL bodyless function printer/parser loses argument access attributes.
-`serialize` restores the direct-call read/read/write annotations in final text;
-any later parser/printer must restore them again before one-shot bufferization.
-Otherwise bufferization defensively copies already converted input/weights.
+The xDSL custom bodyless function printer/parser loses argument access
+attributes. `serialize` emits only the external declarations in generic syntax,
+retaining their `arg_attrs` property structurally across parsing; the model
+function retains its usual syntax. Later printers must also preserve these
+properties before one-shot bufferization, or bufferization defensively copies
+already converted input/weights. Merlin's shared portable printer handles this.
 The `llvm.emit_c_interface` attribute must also reach LLVM lowering.
 
 Persistent NHWC propagation is the next performance step: carry layout facts
@@ -156,3 +158,23 @@ insufficient. Both upstream families should converge to that shared layout
 representation, with the explicit conversions in this bridge as the reference
 semantics. Its current conversion cost is intentionally visible and must not be
 advertised as a maximum-performance default.
+
+## First real FireSim layer result
+
+Job **1727** completed with **961,350 kernel cycles** and `GOLDEN_CONV PASS` for
+56×56×64→64 3×3 stride1, wide-B loads, int8 scale0.03125/ReLU output. The actual
+simulator-loaded ELF hash matched the submitted artifact. Hardware was stock
+`FireSimGemminiRocketConfig`, using the same bitstream archive as the reference
+(`a9a190b9…eca1`). Identity and UART hashes are recorded in
+`perf_records/direct_conv_firesim1727.json`. The measured kernel is 1.89× its
+509,952-cycle padded array issue floor; substantial scheduling improvement is
+still required. The reference ZIP has no per-layer timing, so no exact
+same-layer speedup against Jack can be claimed. This measures the direct kernel;
+the upstream boundary transposes are outside this probe's timing window.
+
+The bundle now also emits `native_oracle.c`, defining all selected MLIR adapters
+and scalar convolution stand-ins for native whole-graph correctness tests.
+The stride1/stride2 native stand-ins were checked against independent NumPy
+oracles (200,704 and 100,352 values). These stand-ins are correctness tooling;
+the RV64 bundle continues to use the xDSL primitive kernels. ABI shape/stride
+violations trap directly, so the device bundle has no runtime `exit` dependency.

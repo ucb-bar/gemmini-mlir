@@ -14,7 +14,7 @@ import shutil
 from xdsl.dialects.builtin import StringAttr
 from .frontend.parse import parse_module
 from .contraction_patterns import match_integer_gemm
-from .direct_conv_binding import match,rewrite,serialize,emit_c_adapter
+from .direct_conv_binding import match,rewrite,serialize,emit_c_adapter,emit_scalar_oracle
 from .golden_conv import GoldenConv
 from .golden_device_compile import compile_module
 from .no_fsm_audit import audit_elf
@@ -29,7 +29,7 @@ def build(source: Path, llvm_bin: Path, output: Path):
         try:selected.append(match(op))
         except ValueError:pass
     if not selected:raise ValueError('no structurally proven direct convolution')
-    objects=[];declarations=[];routes=[]
+    objects=[];declarations=[];routes=[];native=[]
     for i,b in enumerate(selected):
         # One unique symbol per source operation avoids assuming shared graph lifetimes.
         symbol=f'gemmini_direct_conv_{i}';kernel=f'{symbol}_kernel';work=output/symbol
@@ -41,16 +41,10 @@ def build(source: Path, llvm_bin: Path, output: Path):
         obj=work/'adapter.o'
         subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-ffreestanding','-fno-builtin','-c',str(adapter),'-o',str(obj)],check=True,capture_output=True)
         objects += [work/'kernel.o',obj]
+        native.append(emit_c_adapter(b.shape,symbol,kernel)+emit_scalar_oracle(b.shape,kernel))
         routes.append(dict(region=source_region,symbol=symbol,kernel=kernel,shape=asdict(b.shape),orientation=b.orientation,compilation=receipt))
-    printed=str(module)
-    for declaration in declarations:
-        annotated=serialize(module,declaration)
-        # serialize changes one exact declaration; reuse its replacement in the accumulated text.
-        old=str(declaration)
-        head=f'func.func private @{declaration.sym_name.data}('
-        replacement=next(line.strip() for line in annotated.splitlines() if line.strip().startswith(head))
-        if printed.count(old)!=1:raise ValueError('declaration identity changed')
-        printed=printed.replace(old,replacement,1)
+    (output/'native_oracle.c').write_text('\n'.join(native))
+    printed=serialize(module,declarations)
     rewritten=output/'rewritten.mlir';rewritten.write_text(printed)
     parse_module(printed).verify()
     linked=output/'direct_conv.o'

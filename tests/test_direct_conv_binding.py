@@ -21,6 +21,7 @@ class TestDirectConvBinding(unittest.TestCase):
         printed=serialize(m,declaration)
         parsed=parse_module(printed)
         decl=next(x for x in parsed.body.block.ops if x.name=='func.func' and x.sym_name.data==declaration.sym_name.data)
+        self.assertEqual([x.data["bufferization.access"].data for x in decl.arg_attrs.data],["read","read","write"])
         self.assertEqual(printed.count('bufferization.access = "read"'),2)
         self.assertEqual(printed.count('bufferization.access = "write"'),1)
         ret=next(x for x in m.walk() if x.name=='func.return')

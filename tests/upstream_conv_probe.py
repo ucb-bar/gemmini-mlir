@@ -50,6 +50,7 @@ def main():
     adapter=emit_c_adapter(s)
     main='''
 #include <stdio.h>
+#include <stdlib.h>
 extern void _mlir_ciface_captured_conv(memref2*,memref2*,memref4*);
 static unsigned char heap[16*1024*1024] __attribute__((aligned(64)));
 static uintptr_t used;
