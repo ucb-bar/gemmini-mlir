@@ -56,3 +56,10 @@ class TestCapturedRequant(unittest.TestCase):
         for policy in (-1,2,True,0.5):
             with self.assertRaisesRegex(ValueError,'local output error policy'):
                 build(Path('absent'),Path('absent'),Path('absent'),max_output_lsb=policy)
+
+    def test_invalid_dense_policy_refused_before_io(self):
+        from mlir_oot.captured_requant_bundle import build
+        with self.assertRaisesRegex(ValueError,'unknown dense compiler policy'):
+            build(Path('absent'),Path('absent'),Path('absent'),dense_input_policy='model_name')
+        with self.assertRaisesRegex(ValueError,'cannot mix with source selections'):
+            build(Path('absent'),Path('absent'),Path('absent'),dense_input_policy='banked_command_cost',full_k_banked_regions=('capture_id',))

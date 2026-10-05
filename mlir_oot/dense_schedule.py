@@ -11,7 +11,43 @@ from .golden_tuning import estimate
 from .tables import rtl_facts as F
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False):
+def _full_k_banked_candidate(shape):
+    if (shape.output_dtype != 'i8' or shape.bias or shape.cache_a
+            or shape.m <= F.DIM or shape.k <= F.DIM or shape.k % F.DIM
+            or shape.n % F.DIM):
+        raise ValueError('full-K banked schedule requires aligned unbiased i8 GEMM')
+    candidate=replace(shape,bm=1,bn=_ceil_div(shape.n,F.DIM),
+        cache_b=True,cache_a=False,pipeline_m=True,prefetch_m=True,
+        banked_m=True,separate_b_bank=False,wide_a=True,wide_b=True,
+        wide_store=True,reuse_b=False)
+    candidate.validate()
+    return candidate
+
+
+def choose_banked_by_command_cost(shape):
+    """Consider a resource-legal full-K panel without workload selectors.
+
+    This explicit policy minimizes primitive command count, not predicted
+    cycles. Equal/worse counts and resource refusals retain the legal input
+    schedule. Numeric epilogue fields and source dimensions stay unchanged.
+    """
+    shape.validate()
+    try:
+        candidate=_full_k_banked_candidate(shape)
+    except ValueError as failure:
+        return shape,dict(applied=False,refusal=str(failure))
+    control_cost=estimate(shape)
+    candidate_cost=estimate(candidate)
+    applied=candidate_cost['primitive_command_count'] < control_cost['primitive_command_count']
+    return (candidate if applied else shape),dict(
+        applied=applied,refusal=None if applied else 'primitive command count does not decrease',
+        cost_unit='primitive_commands_not_cycles',
+        control=control_cost,candidate=candidate_cost)
+
+
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False):
+    if full_k_banked and banked_command_policy:
+        raise ValueError('banked compiler policy cannot mix with explicit full-K selection')
     shape.validate();selected=shape;policies=[]
     if grouped_b and not shape.wide_b:
         candidate=replace(shape,wide_b=True)
@@ -37,16 +73,12 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
     if full_k_banked:
         # Explicit per-source selection only: legality is general, performance
         # must be qualified separately. Scalar readout fields are unchanged.
-        if (selected.output_dtype != 'i8' or selected.bias or selected.cache_a
-                or selected.m <= F.DIM or selected.k % F.DIM
-                or selected.n % F.DIM):
-            raise ValueError('full-K banked schedule requires aligned unbiased i8 GEMM')
-        candidate=replace(selected,bm=1,bn=_ceil_div(selected.n,F.DIM),
-            cache_b=True,cache_a=False,pipeline_m=True,prefetch_m=True,
-            banked_m=True,separate_b_bank=False,wide_a=True,wide_b=True,
-            wide_store=True,reuse_b=False)
-        candidate.validate()  # Entire A/B panels and both accumulator banks.
-        selected=candidate;policies.append('full_k_banked_prefetch')
+        selected=_full_k_banked_candidate(selected)
+        policies.append('full_k_banked_prefetch')
+    if banked_command_policy:
+        selected,decision=choose_banked_by_command_cost(selected)
+        if decision['applied']:
+            policies.append('full_k_banked_command_cost')
     if separate_b_bank and not selected.banked_m and not selected.separate_b_bank:
         candidate=replace(selected,separate_b_bank=True)
         try:
