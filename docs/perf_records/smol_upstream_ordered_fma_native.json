@@ -28,17 +28,84 @@
     "rewritten_sha256": "11e69a0ee2caae0b958fa0305f5a1a952671aa92ece4fca42932e1b2536d036f",
     "output_tile": 8,
     "pre_widen_operands": "both",
-    "scope": "Exact source-positive-zero increasing-K f32 FMA scheduling and BF16 widening; no numeric relaxation; full original1600 gate pending"
+    "scope": "Exact source-positive-zero increasing-K f32 FMA scheduling and BF16 widening; no numeric relaxation; full original1600 bitexact native in outlined and unoutlined LLVM"
   },
   "core_commit": "efc2ca151",
-  "actual_rv64gc_status": "pending",
+  "actual_rv64gc_status": "running",
   "hardware_cycles_measured": false,
   "schema": "upstream_ordered_fma_full_smol_native_v1",
   "implementation_commit": "efc2ca151",
   "source_implementation_sha256": "57f6b200fb5ba02101cfada9a6cb1667e550f11521632b2b5171ed6d872032d9",
-  "qualification": "General upstream typed-FMA rewrite; source maps, innermost K, positive-zero and scalar wiring proofs. Selected packing conversion/allocation remains in emitted graph. Full1600 original bits exact native; actual optimizedRV64GC compilation and gate pending. No5B hardware claim.",
+  "qualification": "General upstream typed-FMA rewrite; complete native original1600 bits exact from the same outlined LLVM and original integer standins; normal O2RV64GC/noFSM compilation completed; actual target Spike running, no verdict. No5B hardware claim.",
   "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005",
   "routed_integer_calls": 297,
   "routed_integer_signatures": 19,
-  "focused_tests": "9 upstream source rewrite native/initialization/provenance/wiring/order tests PASS; no skips"
+  "focused_tests": "9 upstream source rewrite native/initialization/provenance/wiring/order tests PASS; no skips",
+  "actual_rv64gc_qualification": {
+    "schema": "smol_upstream_ordered_fma_actual_spike_v1",
+    "native_gate_sha256": "5a409ed3436b43595e612db3c074f914385207b5a50ff6dce2f9a2d77ef694ea",
+    "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+    "scope": "Upstream typed ordered-FMA output tile8, both BF16 operands widened, outlined ABI-correct O2 model, actual Gemmini Spike; cycle metric is retired instructions, not hardware cycles",
+    "status": "running",
+    "started_utc": "2026-10-05T20:08:17.826289+00:00",
+    "watcher_pid": 2683655,
+    "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+    "golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x400000000",
+      "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/build_outlined/model.elf"
+    ],
+    "spike_pid": 2683916
+  },
+  "outlined_native": {
+    "validation": {
+      "scope": "smol-ordered-fma-schedule-20261005: native host with scalar integer device stand-ins",
+      "host_cflags": [
+        "-O0",
+        "-march=native"
+      ],
+      "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+      "finite": true,
+      "bitexact": true,
+      "bitwise_mismatches": 0,
+      "allclose": true,
+      "relative_l2": 0.0,
+      "cosine": 1.0,
+      "max_abs_error": 0.0
+    },
+    "validation_sha256": "5a409ed3436b43595e612db3c074f914385207b5a50ff6dce2f9a2d77ef694ea",
+    "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+    "original_elements": 1600,
+    "all_original_bits_exact": true
+  },
+  "outlined_target": {
+    "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+    "build_hash": "2507f377df79",
+    "final_nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+      "executable_sections": 1,
+      "custom_funct_counts": {
+        "0": 76,
+        "1": 756,
+        "2": 329,
+        "3": 1656,
+        "4": 758,
+        "5": 2554,
+        "6": 3312,
+        "7": 19
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "normal_build": true,
+    "runtime_abi": "matching LLVM Clang with declared GCC sysroot",
+    "actual_status": "running"
+  }
 }
