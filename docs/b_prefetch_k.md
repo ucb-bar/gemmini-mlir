@@ -49,6 +49,27 @@ refactor. Default catalog kernel symbols retain their previous identities.
 
 Receipt: [b_prefetch_gsim.json](perf_records/b_prefetch_gsim.json).
 
+## Full-model qualification
+
+The full 22-layer, eight-token TinyLlama candidate enables prefetch on 111 of
+155 contractions, across four of five device kernels. The N256/BN16 kernel
+retains its existing schedule. The four-output/K4 host object and all selected
+host LLVM bytes match the measured job 1832 control exactly. Fresh native
+execution passes the original Torch gate (atol 0.03125, rtol 0.02); final strict
+Spike matches all 256,000 f32 output words and reports 172,684,059 retired
+instructions. The final ELF has no FSM instructions. These checks qualify a
+device-only hardware comparison against job 1832's 612,076,811 forward cycles;
+they do not establish a whole-model cycle improvement.
+
+A further M8/N2048/K5632 capsule exercises resident A across both lower banks.
+It passes all 16,384 outputs and 2,048 guard bytes on strict Spike and GSIM.
+GSIM reports 1,987,584 kernel cycles. The original 180-second GSIM attempt
+finished the kernel but timed out during harness verification; its failed
+receipt is retained. Retrying the identical ELF with a 300-second wall limit
+completes verification. The full-model receipt pins both records.
+
+Receipt: [tiny_four_outputs_unroll4_b_prefetch_spike.json](perf_records/tiny_four_outputs_unroll4_b_prefetch_spike.json).
+
 ## Compiler and infrastructure follow-up
 
 The tuning abstraction is an operand residency decision plus a two-slot K
