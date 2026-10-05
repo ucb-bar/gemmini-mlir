@@ -1,0 +1,425 @@
+{
+  "schema": "original_attention_strict_spike_qualification_v1",
+  "qualified": true,
+  "scope": "1 complete heads of original first vision attention; no whole-model or other-layer qualification",
+  "strategy": "holder_metadata_signed_prefix_gamma_source_parts",
+  "strategy_selection": "Experiment flag only; no production attention transform or model/provenance selector",
+  "process_exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/build/model.elf",
+  "elf_sha256": "f0350a5364892e4fb07fc1d1bd100ddb9ccf94a022a55534940bd769922fa053",
+  "build_hash_marker": "5e76f202fe0c",
+  "spike_log": "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/spike.log",
+  "spike_log_sha256": "464968d2ebcc2455ed6d1628567ec567a135fe9a462bc23609a1d200af655c18",
+  "build_qualification": "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/build_qualification.json",
+  "build_qualification_sha256": "7f19b4aa768d9392442df4d4737a384621da3c0cc6c82485665f69ce7daffb45",
+  "metric_kind": "strict Spike retired instructions; not hardware cycles",
+  "complete_capsule_retired_instructions": 1430369073,
+  "stage_retired_instructions": {
+    "packing_and_operand_metadata": 173693036,
+    "qk_device_readback_recombination_norms": 198926592,
+    "qk_certificate_softmax_and_replay": 520637434,
+    "pv_device_readback_recombination_norms": 74874646,
+    "pv_certificate_ordered_partial_adds": 103399801,
+    "final_pv_replay_denominator_output": 358640654
+  },
+  "timed_interval": "Original input packing, metadata, actual primitive GEMMs/readbacks, recombination, certificates, softmax, replay, denominator refinement and output stores; digest/original audit/UART excluded",
+  "physical_output_dtype": "bf16",
+  "digest_encoding": "lossless BF16 widening to f32le",
+  "output_element_count": 65536,
+  "output_bytes": 262144,
+  "output_sha256": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+  "independent_reference": "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/output.npy",
+  "independent_reference_sha256": "5627d10f44d12c08f69a5a38376972fa1882b5078e4a7d5adf671e5b61be27f5",
+  "original_fixture_sha256": {
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input0.npy": "2f7867055879b39b78587a853aaa2c48e79c13f096e3e894e6223b1761284904",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input1.npy": "ca682117226ee876b385cc84945945069c10a9f1bc08c1d5bad8d9f50f16222d",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input2.npy": "e552f559a3c17f54f3b5ffb5646659dd83de8aaea3b2acb062a9a8fa31405938",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/output.npy": "001f88713135f4bca4bebf8bbc24b5df5121b3c5dd6bf90dff1d68513396e241"
+  },
+  "original_gate": {
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "failures": 0,
+    "bit_mismatches": 0
+  },
+  "memref_rank_mismatch": 0,
+  "done": true,
+  "qk_unique_source_replays": 60703,
+  "pv_source_outputs_replayed": 10608,
+  "int32_plane_readback_bytes": 51904512,
+  "actual_plane_kernel_invocations": 63,
+  "executable_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "f0350a5364892e4fb07fc1d1bd100ddb9ccf94a022a55534940bd769922fa053",
+    "executable_sections": 60,
+    "custom_funct_counts": {
+      "0": 16,
+      "1": 14,
+      "2": 104,
+      "3": 256,
+      "4": 56,
+      "5": 456,
+      "6": 512,
+      "7": 4
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "numeric_source_closure_sha256": {
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/driver.c": "f0c564c1435a28b906164acab8d50ac701a8cd9afca0b95f6e88e3cd03406096",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/ordered_fma_bounds.h": "8545eac9c07fed5b45f2e56d3b613a110eea6b9821fbcdabeedaa19c216db8b1",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/fma_product_norms.h": "d397c08c8bbceafd965bb243f2effdc8335f379e99860fe13e66bc2139b3dccf",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/output_sha256.h": "67c2e67a1c3b82f4619542a747bae359fc73abbaad4ec6cf94c2e69776ced251"
+  },
+  "historical_builder_record": {
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/build_capsule.py": {
+      "recorded_sha256": "2f839b909a0fb0d90764cc781e086c867cacf6eced9b93ea686447072b977bee",
+      "current_sha256": "2f839b909a0fb0d90764cc781e086c867cacf6eced9b93ea686447072b977bee",
+      "frozen_build_time_copy_available": false
+    }
+  },
+  "device_records": {
+    "qk_plane": {
+      "shape": {
+        "m": 1024,
+        "n": 1024,
+        "k": 64,
+        "output_dtype": "i32",
+        "bm": 4,
+        "bn": 16,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "analytical_command_cost_not_cycles": {
+        "m": 1024,
+        "n": 1024,
+        "k": 64,
+        "bm": 4,
+        "bn": 16,
+        "macs": 67108864,
+        "array_floor_cycles": 262144,
+        "mesh_compute_commands": 16384,
+        "padded_array_floor_cycles": 262144,
+        "dma_request_bytes_upper": 5505024,
+        "dma_request_transfer_cycles_at_16B_upper": 344064,
+        "unique_tensor_bytes": 4325376,
+        "unique_dram_floor_cycles_at_16B": 270336,
+        "primitive_command_count": 38912,
+        "output_blocks": 64,
+        "mvout_commands": 4096,
+        "a_panel_loads": 1024,
+        "b_panel_loads": 4096,
+        "a_mvin_commands": 1024,
+        "b_mvin_commands": 1024
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "b62209bf6855d58049b3f976b62469eb8c86cb22bbab033a5dc7b2af1314deb1",
+        "llvm_mlir_sha256": "1896c4e59be5cdcf33136ba1310248bb62724a47b0867b9e775fd00566b35ed5",
+        "llvm_ir_sha256": "c4829281abee4da5805c4cf6deb090ccc2cf1a4015bec9e93dd9cced5a8d2e95",
+        "object_sha256": "6c26c728f44d9170b7a8f8d453674ce01f2c3918ced9fa077df8f2325b9fbbe8",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/qk_plane/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/qk_plane/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/qk_plane/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/qk_plane/kernel.o"
+          ]
+        ]
+      }
+    },
+    "pv512_plane": {
+      "shape": {
+        "m": 1024,
+        "n": 64,
+        "k": 512,
+        "output_dtype": "i32",
+        "bm": 16,
+        "bn": 4,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "analytical_command_cost_not_cycles": {
+        "m": 1024,
+        "n": 64,
+        "k": 512,
+        "bm": 16,
+        "bn": 4,
+        "macs": 33554432,
+        "array_floor_cycles": 131072,
+        "mesh_compute_commands": 8192,
+        "padded_array_floor_cycles": 131072,
+        "dma_request_bytes_upper": 917504,
+        "dma_request_transfer_cycles_at_16B_upper": 57344,
+        "unique_tensor_bytes": 819200,
+        "unique_dram_floor_cycles_at_16B": 51200,
+        "primitive_command_count": 18816,
+        "output_blocks": 4,
+        "mvout_commands": 256,
+        "a_panel_loads": 2048,
+        "b_panel_loads": 512,
+        "a_mvin_commands": 2048,
+        "b_mvin_commands": 128
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "90d6610aa140346d3f113e6d18360e66d84122b67606e5956c4cf7b925e654fc",
+        "llvm_mlir_sha256": "e6d8b8c704359e1c239d4fc90cce0a60c081ef569d0430b3a89d7c6b0e527bb1",
+        "llvm_ir_sha256": "05a062f4d4ab231149a5bb863616997f5b5b6f52e9274e93f738621641bf477e",
+        "object_sha256": "cb46d8a17eaab655671ca334b81a29e1a1522089a64c7cb0ba744bc2e86db1bf",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv512_plane/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv512_plane/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv512_plane/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv512_plane/kernel.o"
+          ]
+        ]
+      }
+    },
+    "pv192_plane": {
+      "shape": {
+        "m": 1024,
+        "n": 64,
+        "k": 192,
+        "output_dtype": "i32",
+        "bm": 16,
+        "bn": 4,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "analytical_command_cost_not_cycles": {
+        "m": 1024,
+        "n": 64,
+        "k": 192,
+        "bm": 16,
+        "bn": 4,
+        "macs": 12582912,
+        "array_floor_cycles": 49152,
+        "mesh_compute_commands": 3072,
+        "padded_array_floor_cycles": 49152,
+        "dma_request_bytes_upper": 507904,
+        "dma_request_transfer_cycles_at_16B_upper": 31744,
+        "unique_tensor_bytes": 471040,
+        "unique_dram_floor_cycles_at_16B": 29440,
+        "primitive_command_count": 7216,
+        "output_blocks": 4,
+        "mvout_commands": 256,
+        "a_panel_loads": 768,
+        "b_panel_loads": 192,
+        "a_mvin_commands": 768,
+        "b_mvin_commands": 48
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "aa795fe9e31095550f17a796c2f5a5dbc2e72dd39c3f897f18d81b7e774c2cf1",
+        "llvm_mlir_sha256": "bc8c6bbd82fcca670797d09f2015390e33f00bf3926b34ee746a0d9721727076",
+        "llvm_ir_sha256": "ffa090b47bd1777fb4d5ec78bbbded7f0db7a0eda28f3f19d1e018c50294a52d",
+        "object_sha256": "234e914dd75be516b966ace1e23a9de4dbac95dcd2ca555de19c7cc870456ccc",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv192_plane/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv192_plane/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv192_plane/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv192_plane/kernel.o"
+          ]
+        ]
+      }
+    },
+    "pv128_plane": {
+      "shape": {
+        "m": 1024,
+        "n": 64,
+        "k": 128,
+        "output_dtype": "i32",
+        "bm": 16,
+        "bn": 4,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "analytical_command_cost_not_cycles": {
+        "m": 1024,
+        "n": 64,
+        "k": 128,
+        "bm": 16,
+        "bn": 4,
+        "macs": 8388608,
+        "array_floor_cycles": 32768,
+        "mesh_compute_commands": 2048,
+        "padded_array_floor_cycles": 32768,
+        "dma_request_bytes_upper": 425984,
+        "dma_request_transfer_cycles_at_16B_upper": 26624,
+        "unique_tensor_bytes": 401408,
+        "unique_dram_floor_cycles_at_16B": 25088,
+        "primitive_command_count": 4896,
+        "output_blocks": 4,
+        "mvout_commands": 256,
+        "a_panel_loads": 512,
+        "b_panel_loads": 128,
+        "a_mvin_commands": 512,
+        "b_mvin_commands": 32
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "a48852ca5e6e9d10cec942e39e72b2d2993e4e42f5e7c80e4f561bdecdeb12a1",
+        "llvm_mlir_sha256": "8842deab03e091e3e1f23a46ef3c88aa7c7b2823b3b695034e7209f5a8995ecf",
+        "llvm_ir_sha256": "102c3e1c3317046278e5bd899520b10bff916a425a0ca88cdc8f574aeb39805d",
+        "object_sha256": "f40968c81e862f872516f8e217cf6e3808c7f0ffc4affad8e70ed5a743189c78",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv128_plane/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv128_plane/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv128_plane/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/pv128_plane/kernel.o"
+          ]
+        ]
+      }
+    }
+  },
+  "compiler_argv": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+    "-DINLINE_OUTWARD=1",
+    "-std=gnu11",
+    "-O2",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-mcmodel=medany",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-fno-common",
+    "-fno-builtin-printf",
+    "-DHEADS=1",
+    "-DVARIANT=2",
+    "-DBUILD_HASH=\"5e76f202fe0c\"",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/driver.c",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h1_gamma/main.o"
+  ],
+  "compiler_sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4",
+  "token_usage_available": false,
+  "token_attribution": "Root owns shared campaign snapshots; exact per-agent/optimization billing unavailable",
+  "promotion": "Accuracy qualified diagnostic only; await actual stock FireSim before selecting strategy"
+}
