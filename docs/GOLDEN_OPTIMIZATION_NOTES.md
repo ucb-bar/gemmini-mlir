@@ -294,3 +294,29 @@ All1,000 i32 outputs and2,048 guard bytes pass, and both final ELFs have zeroFSM
 Source/prepared/operand/fixture hashes are recorded. This validates the partial
 N1000 tail for the tested shape, but requires full-model integration and exact
 gating before hardware; no queue or default promotion yet.
+
+### Current device geometry and remaining abstractions
+
+Selected padded issue occupancy remains22,805,632 cycles: dense9,022,464,
+direct7,805,952, wide residual5,193,216 and pooled stem784,000. Actual device
+counters total35,450,518 before11,607,417 host cycles. These are selected
+algorithm/geometry floors, not an achievable total runtime prediction.
+
+Largest call quantize6 residual spends2,198,800 against1,956,864 issue floor:
+39 coefficient chunks,122,304 computes and equal preloads. Its geometry is
+already close to occupancy; substantial improvement requires another proven
+exact arithmetic representation rather than merely changing DMA placement.
+Stem costs1,441,675 against784,000 floor,49,000 computes,56 phase fences and
+125 convolution rows for112 required rows. Highest direct matmul44 costs907,951
+against589,824,36,864 computes/preloads and1,760 A plus2,304 B DMA commands.
+The rejected alternating-B-bank screen does not support that particular hazard
+as a dominant limit. Full per-call counts accompany the profile receipt.
+
+Exact integer readout is currently an opaque C adapter-local loop with an
+explicit caller-owned i32 scratch and source-threshold proof. A typed, proven
+integer-readout host operation would expose its bounds and effects to generic
+loop/code-generation passes, instead of relying on opaque external C. This is
+a candidate compiler abstraction, not evidence that it alone removes the2.92M
+measured readout-containing host intervals. Likewise prestem remains a5.24M
+interval containing input layout/quantization; any packed-input host lowering
+needs actual LLVM loop and memory evidence before claiming an isolated gain.
