@@ -55,3 +55,39 @@ def test_real_expanded_adapter_fresh_output_and_live_input(tmp_path):
     a=np.array([[-128,127,2,3],[9,-8,5,6]],dtype=np.int8)
     b=np.arange(12,dtype=np.int8).reshape(4,3)-6
     native_case(tmp_path,2,3,4,a,b)
+
+
+def test_provider_callback_requires_source_bound_complete_write_metadata(tmp_path):
+    import hashlib,json
+    from mlir_oot.expanded_writer import merlin_callbacks
+    source=tmp_path/'source.mlir'
+    source.write_text('''module {
+func.func @forward(%a:tensor<2x4xi8>,%b:tensor<4x3xi8>)->tensor<2x3xi32> {
+ %e=tensor.empty():tensor<2x3xi32>
+ %r=func.call @raw(%a,%b,%e):(tensor<2x4xi8>,tensor<4x3xi8>,tensor<2x3xi32>)->tensor<2x3xi32>
+ return %r:tensor<2x3xi32>
+}
+func.func private @raw(tensor<2x4xi8> {bufferization.access="read"},tensor<4x3xi8> {bufferization.access="read"},tensor<2x3xi32> {bufferization.access="write"})->tensor<2x3xi32>
+}''')
+    from merlin.xdsl_dialects._common import text
+    module=parse_module(source.read_text())
+    module.body.block.last_op.properties['arg_attrs']=ArrayAttr([DictionaryAttr({'bufferization.access':StringAttr(v)}) for v in ('read','read','write')])
+    source.write_text(text(module,generic=True))
+    sha=hashlib.sha256(source.read_bytes()).hexdigest();obj=tmp_path/'kernel.o';obj.write_bytes(b'owned object')
+    types=['tensor<2x4xi8>','tensor<4x3xi8>','tensor<2x3xi32>']
+    catalog={'abi':{},'source_sha256':sha,'compilation':{'object_sha256':hashlib.sha256(obj.read_bytes()).hexdigest()},'bindings':[{'region':'region','symbol':'kernel','tensor_types':types}]}
+    manifest=tmp_path/'catalog.json';manifest.write_text(json.dumps(catalog))
+    sidecar=tmp_path/'routing.json';sidecar.write_text(json.dumps({'device':'fixture','catalog_manifest':str(manifest),'catalog_object':str(obj),'model_sha256':sha,'signatures':{'raw':[2,3,4]},'routed':[{'source_region':'region','symbol':'raw','tensor_types':types,'dtypes':['i8','i8','i32']}]}))
+    prepare,_=merlin_callbacks(tmp_path,lambda p,w:p,allocation_alignment=32,target_cflags=())
+    work=tmp_path/'abi';work.mkdir()
+    import pytest
+    with pytest.raises(ValueError,match='explicit complete-write'):
+        prepare(source,sidecar,work)
+    assert not (work/'model.mlir').exists()
+    catalog['abi']['writer_effects']={'schema':'complete_output_writer_v1','fully_written_arguments':[2],'retains_arguments':False,'frees_arguments':False};manifest.write_text(json.dumps(catalog))
+    result=prepare(source,sidecar,work)
+    assert '__fresh_tensor_result' in result.read_text()
+    assert json.loads((work/'writer_contracts.json').read_text())['contracts'][0]['result_argument']==2
+    obj.write_bytes(b'changed')
+    with pytest.raises(ValueError,match='identity changed'):
+        prepare(source,sidecar,work)

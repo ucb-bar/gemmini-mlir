@@ -361,3 +361,30 @@ matches all1000 i32 outputs and32 guards, preserving both live inputs over3 call
 This is an ABI experiment with a scalar kernel oracle, not a new whole-model or
 hardware result. Production routing still needs provider-emitted ownership facts
 and full original-model native/target gates before selection.
+
+### Opt-in production writer handoff
+
+`DeviceRouting.post_offload_transform` now provides a generic post-routing seam:
+exact routed IR and immutable sidecar enter a provider callback, selected source
+hashes enter the normal build identity, and absent callbacks leave defaults alone.
+The catalog owner can explicitly declare complete output writes with no retained or
+freed pointers. The generic dense-adapter emitter combines that supplied fact with
+its own returned-argument identity and emits typed contracts without changing C bytes.
+OOT owns bridge generation/linking and receives target compiler flags explicitly.
+
+Tiny's155 raw calls use sole-use initialized `linalg.fill` destinations. An explicit
+initialized-writer permission, together with write-only access and complete-write
+proof, allows fresh result allocation while preserving live original destination
+SSA values. Native O0/O2 tests exercise both ranked and expanded declarations,
+multiple independent writers, live original destinations and default deallocation.
+Default empty-tensor restrictions remain unchanged. Native tests use distinct .so
+paths per ABI variant: pytest's successful-tempdir cleanup otherwise let dlopen
+reuse an older handle under a reused pathname, which falsely mixed three- and
+four-argument test entry points.
+
+The first full Tiny retry exposed missing public C-interface attributes after generic
+IR serialization; the provider now invokes Merlin's existing `add_c_interface`
+helper before serialization. The second corrected build passes original native
+Torch tolerance and all256000 prior compiled bits, with identical device objects
+and byte-identical raw adapter C. Actual final-ELF Spike also passes the full digest at161,950,901 retired instructions versus163,999,471 for the isolated control; these are not hardware cycles.
+No model-name dispatch or numerical tolerance changes are part of these callbacks.

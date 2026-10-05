@@ -114,13 +114,22 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
     return result
 
 
-def merlin_builder(llvm_bin: Path, *, large_n: bool = False, prefetch_b: bool = False):
+def merlin_builder(llvm_bin: Path, *, large_n: bool = False, prefetch_b: bool = False,
+                   declare_full_writes: bool = False):
     """Compile Merlin's final prepared IR at its pre-offload source boundary."""
     compiler = Path(llvm_bin)
 
     def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
         prepared, workdir = Path(prepared), Path(workdir)
-        compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b)
+        result = compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b)
+        if declare_full_writes:
+            # This owner emits kernels that completely store their output and
+            # neither retain nor release any input/output pointer.
+            result['abi']['writer_effects'] = {
+                'schema': 'complete_output_writer_v1', 'fully_written_arguments': [2],
+                'retains_arguments': False, 'frees_arguments': False,
+            }
+            (workdir / 'device_catalog.json').write_text(json.dumps(result, indent=2) + '\n')
         return workdir / "device_catalog.json", workdir / "kernel.o"
 
     return build
