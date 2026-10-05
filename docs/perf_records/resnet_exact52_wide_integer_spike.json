@@ -1,0 +1,87 @@
+{
+  "scope": "Whole source-exact ResNet: 50 hardware-scale unary readouts, two exact integer CPU readouts, 16 wide-integer accelerator residuals, propagated/shared layouts, pooled stem, banked/banded convolutions, nested hoisting and optimized runtime; Spike metric is retired instructions, not hardware cycles",
+  "elf_sha256": "02d029dc0dd749f16ed3ec0615698349ca027f0aee4595438b208dd34c54700c",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 21144570",
+    "METRIC build_hash f087e744d761",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "work_directory": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_wide_residual_layout",
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "02d029dc0dd749f16ed3ec0615698349ca027f0aee4595438b208dd34c54700c",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3452,
+      "2": 8131,
+      "3": 1210,
+      "4": 9918,
+      "5": 74624,
+      "6": 84542,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hoist": {
+    "args": 54,
+    "raw_bytes": 25502912
+  },
+  "residual_count": 16,
+  "shared_permutations": 16,
+  "runtime_commits": [
+    "c16584354",
+    "5586d188d",
+    "96b9b8440"
+  ],
+  "runtime_sources": {
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/abi/mlir_runtime.c": {
+      "sha256": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+      "mtime": 1791197295.3369417
+    },
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/baremetal/spike/libc_min.c": {
+      "sha256": "a4fbb36b9e2814a6c8787c3ef7e9c36740ecfbabfea7dc18e7fde8009e0cf67b",
+      "mtime": 1791197403.3691268
+    }
+  },
+  "runtime_objects": {
+    "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_wide_residual_layout/build_direct/mlir_rt.o": {
+      "sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "mtime": 1791197570.9485135
+    },
+    "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_wide_residual_layout/build_direct/libc_min.o": {
+      "sha256": "a827a57082b834669a9c7dada97087fa1bacb0e7b7b47028ad125c4309918b76",
+      "mtime": 1791197571.0265152
+    }
+  },
+  "residual_bundle_sha256": "c7f5c842e8ef00d8134c9df77f0afa65a17f924a0cb827cd4a027a9e86266518"
+}
