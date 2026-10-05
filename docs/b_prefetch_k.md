@@ -70,6 +70,14 @@ completes verification. The full-model receipt pins both records.
 
 Receipt: [tiny_four_outputs_unroll4_b_prefetch_spike.json](perf_records/tiny_four_outputs_unroll4_b_prefetch_spike.json).
 
+The eight-output/K2 composition also passes the original native gate and all
+256,000 Spike output words. Its host object matches measured job 1835 exactly,
+and its device object matches the isolated four/K4 prefetch variant exactly.
+Final strict Spike reports 171,353,332 retired instructions. Hardware submission
+is held until the isolated comparison establishes a device cycle improvement.
+
+Receipt: [tiny_eight_outputs_unroll2_b_prefetch_spike.json](perf_records/tiny_eight_outputs_unroll2_b_prefetch_spike.json).
+
 ## Compiler and infrastructure follow-up
 
 The tuning abstraction is an operand residency decision plus a two-slot K
