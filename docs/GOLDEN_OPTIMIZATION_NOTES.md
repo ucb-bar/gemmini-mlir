@@ -152,3 +152,13 @@ pre-layout model, before/after emitted MLIR is byte-identical, preserving queued
 artifact file is later rewritten in-place by device binding; compare stage
 snapshots or canonical stage emission, not that final file against an earlier
 report hash. Immutable per-stage IR artifacts are an infrastructure improvement.
+
+## Tiny scalar host scheduling hardware1788
+
+Verified1,030,207,906 stock FireSim forward cycles with the complete256,000-value,
+1,024,000-byte output SHA unchanged from original baseline. Staged ELF/bitstream,
+UART and native/Spike/Torch reference receipts are pinned. Compared with1776's
+1,402,210,517 cycles this is26.53% fewer; compared with1747's1,800,267,524 it is
+42.77% fewer. Device arithmetic remains unchanged; the explicit scalar RV64GC
+host schedule avoids target-inappropriate vectorized host IR. Stronger exact
+scalar+quantization/RNE candidate1792 is queued separately, not yet measured.
