@@ -86,6 +86,12 @@ reference aggregate; **no individual reference residual timing is invented**.
 Its324,576 versus22,208 executed computes reflect different source scale work.
 The39-chunk first residual bound is specific to its existing arithmetic family.
 
+**Schedule-version limit:**1850 timed1849's older spatial-flat H14 convolution
+family. The later1853 transfer bundle already uses resident input channel planes
+there. Its current per-layer times are unknown. The old3.25M direct-category
+difference must not be treated as the remaining gap of that newer recipe. Profile
+the best measured composition before choosing further deep-convolution work.
+
 ## Next general compiler changes
 
 1. **Merlin host readout/layout fusion and ownership propagation.** Instrument
@@ -100,16 +106,19 @@ The39-chunk first residual bound is specific to its existing arithmetic family.
    stripes address the H56/H28 repeated transfers, with isolated stock1878
    complete at39,754,283 cycles,1.792% below1853. The composed stripe/transfer/
    residual candidate is released to hardware; gains remain unassumed.
-   H14/C256 full weights exceed scratchpad capacity: investigate
-   source-K-ordered bounded channel stripes and exact readout/next-transfer
-   overlap rather than assuming all weights can be resident.
+   H14/C256 full weights exceed scratchpad capacity; the enabled channel-plane
+   schedule already keeps bounded weight panels resident. A fresh best-recipe
+   profile must justify any further channel stripes or exact readout/next-transfer
+   overlap work.
 4. **Shared selection reaching emitted code.** The real whole-model identity
    gate now exports graph/catalog/final-binary closure and compiler owners.
    It does not select a replacement IR or invoke the solver. The next narrow
-   route must enumerate actual legal same-source alternatives, accept only
-   source/object-bound measured prices, invoke existing `optimize_program`,
-   and emit its selected implementation. Unmeasured full-model alternatives
-   and accelerator occupancy remain unknown.
+   route now enumerates legal same-source contraction alternatives, accepts only
+   source/object-bound measured prices, invokes existing `optimize_program`,
+   and emits its selected implementation.
+   [Actual selected-object qualification](perf_records/golden_calibrated_source_selection_qualification.json).
+   Extending this to whole-model alternatives requires their complete explicit
+   cost/transition coverage. Accelerator occupancy remains unknown.
 
 The rejected complete-A dense stripes remain negative evidence: fewer real-B
 reloads and fewer host instructions were50.6% slower in the paired full-output
