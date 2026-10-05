@@ -248,3 +248,8 @@ Gemmini Spike. Its 777,760,389 retired instructions mostly reflect unchanged
 host work and are not a hardware cycle estimate. Final ELF audit passed. See
 `docs/perf_records/resnet_flat_conv_spike.json`. The same integration with wide
 A is validated separately before whole-model hardware promotion.
+
+The complete wide-A variant also passed all 1,000 original outputs exactly on
+native scalar standins and actual Gemmini Spike, with zero descriptor mismatches
+and final ELF zero-FSM audit. The receipt is
+`docs/perf_records/resnet_flat_wide_conv_spike.json`.
