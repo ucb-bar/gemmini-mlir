@@ -1,54 +1,22 @@
-"""Batched dense GEMM with ordinary CPU batch repetition and primitive Gemmini ops.
+"""Batched dense GEMM with one configuration and primitive Gemmini tile loops.
 
 ABI: void gemmini_golden_batched_gemm(i8 *A, i8 *B, <i8|i32> *C).
-The tensors are dense [batch,M,K], [batch,K,N], [batch,M,N].  Every batch calls
-the same xDSL-generated Gemmini kernel; no hardware LOOP instruction is used.
+Tensors are dense [batch,M,K], [batch,K,N], [batch,M,N].  The repeated batch
+body uses ordinary CPU branches, with no Gemmini hardware LOOP instruction.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-from dataclasses import asdict
 from pathlib import Path
 
-from xdsl.dialects import llvm
-from xdsl.dialects.builtin import IntegerAttr, StringAttr, i8, i64
-
-from .codegen.builder import FnBuilder, PTR
 from .golden_device_compile import compile_module
 from .golden_gemm import GoldenGemm, Shape
 
 
 def build(batch: int, shape: Shape):
-    if batch <= 0 or shape.bias:
-        raise ValueError("batch must be positive and batched bias is not supported")
-    module = GoldenGemm(shape).build()
-    fb = FnBuilder([PTR] * 3)
-    a, b, c = fb.entry.args
-
-    def offset(base, iv, elements: int, element_bytes: int = 1):
-        off = fb.mul_i(iv, fb.const(elements * element_bytes))
-        return fb.add(llvm.GEPOp(base, [llvm.GEP_USE_SSA_VAL], i8,
-                                 ssa_indices=[off])).results[0]
-
-    def body(iv):
-        ap = offset(a, iv, shape.m * shape.k)
-        bp = offset(b, iv, shape.k * shape.n)
-        cp = offset(c, iv, shape.m * shape.n,
-                    4 if shape.output_dtype == "i32" else 1)
-        fb.add(llvm.CallOp("gemmini_golden_gemm", ap, bp, cp))
-
-    fb.for_loop(0, batch, 1, body)
-    fn = llvm.FuncOp("gemmini_golden_batched_gemm",
-                     llvm.LLVMFunctionType([PTR] * 3),
-                     linkage=llvm.LinkageAttr("external"), body=fb.finish())
-    module.body.blocks[0].add_op(fn)
-    module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
-    module.attributes["gemmini.golden_batch_shape"] = StringAttr(
-        json.dumps(asdict(shape), sort_keys=True))
-    module.verify()
-    return module
+    return GoldenGemm(shape).build_batched(batch)
 
 
 def main() -> int:

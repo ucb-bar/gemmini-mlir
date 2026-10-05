@@ -265,7 +265,7 @@ class GoldenGemm:
                 self.fb.for_loop(start, stop, step,
                                  lambda iv, w=widths: body(iv, w))
 
-    def build(self) -> ModuleOp:
+    def _emit_config(self) -> None:
         s = self.shape
         self._rocc("fence", {})
         self._rocc("flush", {})
@@ -277,6 +277,9 @@ class GoldenGemm:
         self._rocc("config_st", {"stride": s.n * (4 if s.output_dtype == "i32" else 1),
                                   "acc_act": isa.RELU if s.relu else isa.NO_ACTIVATION,
                                   "acc_scale": s.scale})
+
+    def _emit_work(self) -> None:
+        s = self.shape
         if s.cache_b:
             nt = _ceil_div(s.n, F.DIM)
             a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a else 1
@@ -310,8 +313,11 @@ class GoldenGemm:
                     m_body(self.fb.const(start + pairs * 2 * step), widths, 0)
         else:
             self._for_groups(_groups(s.m, s.bm), m_body)
+
+    def _finish(self, symbol: str, batch: int = 1) -> ModuleOp:
+        s = self.shape
         self._rocc("fence", {})
-        fn = llvm.FuncOp("gemmini_golden_gemm", llvm.LLVMFunctionType([PTR] * (4 if s.bias else 3)),
+        fn = llvm.FuncOp(symbol, llvm.LLVMFunctionType([PTR] * (4 if s.bias else 3)),
                          linkage=llvm.LinkageAttr("external"), body=self.fb.finish())
         module = ModuleOp([fn])
         module.attributes["gemmini.dim"] = IntegerAttr(F.DIM, i64)
@@ -321,8 +327,37 @@ class GoldenGemm:
             f"wide_store{int(s.wide_store)}:reuse_b{int(s.reuse_b)}:"
             f"cache_b{int(s.cache_b)}:pipeline_m{int(s.pipeline_m)}:"
             f"wide_a{int(s.wide_a)}:wide_b{int(s.wide_b)}")
+        module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
+
+    def build(self) -> ModuleOp:
+        self._emit_config()
+        self._emit_work()
+        return self._finish("gemmini_golden_gemm")
+
+    def build_batched(self, batch: int) -> ModuleOp:
+        """Configure once, then repeat the primitive tile schedule per batch."""
+        if batch <= 0 or self.shape.bias:
+            raise ValueError("batch must be positive and batched bias is not supported")
+        s = self.shape
+        base_a, base_b, base_c = self.a, self.b, self.c
+        self._emit_config()
+
+        def offset(base: SSAValue, iv: SSAValue, elements: int, elem_bytes: int = 1) -> SSAValue:
+            delta = self.fb.mul_i(iv, self.fb.const(elements * elem_bytes))
+            return self.fb.add(llvm.GEPOp(base, [llvm.GEP_USE_SSA_VAL], i8,
+                                          ssa_indices=[delta])).results[0]
+
+        def body(iv: SSAValue) -> None:
+            self.a = offset(base_a, iv, s.m * s.k)
+            self.b = offset(base_b, iv, s.k * s.n)
+            self.c = offset(base_c, iv, s.m * s.n,
+                            4 if s.output_dtype == "i32" else 1)
+            self._emit_work()
+
+        self.fb.for_loop(0, batch, 1, body)
+        return self._finish("gemmini_golden_batched_gemm", batch)
 
 
 def main() -> int:

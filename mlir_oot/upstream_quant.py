@@ -20,7 +20,8 @@ from .contraction_patterns import match_integer_gemm
 from .lowering.model_lane import mesh_eligible
 
 
-def prepare(source: Path, output: Path, *, prequant_gather: bool = False) -> dict:
+def prepare(source: Path, output: Path, *, prequant_gather: bool = False,
+            integer_nonlinears: bool = False) -> dict:
     try:
         from merlin.frontends.quant_ext import parse_quant_mlir
         from merlin.llvmlower.quant_passes import apply_quant
@@ -28,7 +29,10 @@ def prepare(source: Path, output: Path, *, prequant_gather: bool = False) -> dic
         raise RuntimeError("Merlin Python package is required for upstream QDQ rewriting") from exc
     module = parse_quant_mlir(source)
     details: dict = {}
-    counts = apply_quant(module, passes=["contraction_int8"],
+    selected_passes = ["contraction_int8"]
+    if integer_nonlinears:
+        selected_passes += ["softmax_int", "gelu_int", "silu_int", "rsqrt_int"]
+    counts = apply_quant(module, passes=selected_passes,
                          named_contraction=True, prequant_gather=prequant_gather,
                          report_out=details)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -46,8 +50,10 @@ def prepare(source: Path, output: Path, *, prequant_gather: bool = False) -> dic
         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "output_sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
         "passes": {"contraction_int8": True, "named_contraction": True,
-                   "prequant_gather": prequant_gather},
+                   "prequant_gather": prequant_gather,
+                   "integer_nonlinears": integer_nonlinears},
         "prequant_changes_integer_arithmetic": prequant_gather,
+        "nonlinear_approximations_change_arithmetic": integer_nonlinears,
         "model_accuracy_check_required": True,
         "rewrite_counts": counts,
         "rewrite_report": details,
@@ -64,9 +70,12 @@ def main() -> int:
     ap.add_argument("input", type=Path)
     ap.add_argument("-o", "--output", type=Path, required=True)
     ap.add_argument("--prequant-gather", action="store_true")
+    ap.add_argument("--integer-nonlinears", action="store_true",
+                    help="try scoped integer exp/GELU/SiLU/rsqrt rewrites; requires accuracy check")
     args = ap.parse_args()
     print(json.dumps(prepare(args.input, args.output,
-                             prequant_gather=args.prequant_gather), indent=2))
+                             prequant_gather=args.prequant_gather,
+                             integer_nonlinears=args.integer_nonlinears), indent=2))
     return 0
 
 

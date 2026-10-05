@@ -36,6 +36,13 @@ def inventory(source: Path) -> dict:
         rows.append({"region": getattr(op.attributes.get("prov.region_id"), "data", ""),
                      "batch": shape.batch, "m": shape.m, "n": shape.n, "k": shape.k,
                      "macs": work, "compute_commands": ncompute})
+    functions = [op for op in module.walk() if op.name == "func.func"]
+    if len(functions) != 1:
+        raise ValueError("model inventory expects one entry function")
+    graph_ops = [op for op in functions[0].regions[0].blocks[0].ops
+                 if op.name != "func.return"]
+    uncompiled = Counter(op.name for op in graph_ops
+                         if match_integer_gemm(op) is None)
     return {
         "schema": "golden_integer_model_inventory_v1",
         "source_sha256": hashlib.sha256(raw).hexdigest(),
@@ -46,6 +53,12 @@ def inventory(source: Path) -> dict:
         "compute_commands": computes,
         "padded_array_issue_floor_cycles": padded_array_cycles,
         "largest_contractions": sorted(rows, key=lambda x: x["macs"], reverse=True)[:10],
+        "top_level_graph_ops": len(graph_ops),
+        "device_contraction_ops": sum(1 for op in graph_ops
+                                      if match_integer_gemm(op) is not None),
+        "uncompiled_top_level_ops": sum(uncompiled.values()),
+        "uncompiled_op_kinds": dict(uncompiled.most_common()),
+        "whole_model_compiled": False,
     }
 
 

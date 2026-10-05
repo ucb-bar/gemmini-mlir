@@ -1,0 +1,70 @@
+# Golden Gemmini optimization log
+
+This log records changes that the later automatic lowering must reproduce. A result is called **measured** only when a numeric probe or model run completed on the named engine. GSIM kernel cycles, FireSim full-model cycles, analytical floors and inferred class gains are different quantities. The device target is `FireSimGemminiRocketConfig`; every final linked ELF must contain zero Gemmini hardware `LOOP_*` instructions, including unused linked code.
+
+## Reference and comparison contract
+
+Jack's supplied `resnet50_nofsm_q1013.zip` records **22,387,449 FireSim whole-forward cycles** for ResNet-50. We read the ZIP, never Jack's folders. Its executing path uses 53 handwritten Exo convolution kernels with no host im2col and no dynamic hardware LOOP commands. The linked vendor library does contain six unused `LOOP_WS*` instructions, so that ELF fails our stricter static zero-FSM rule. The reference bitstream matches our pinned stock `FireSimGemminiRocketConfig` tar byte for byte. The archive has no source or per-layer FireSim UART log; its disassembly, Spike dynamic instruction histogram and whole-model cycle number are the available comparison evidence. The [reference analysis](/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-studies/exo-comparison/q1013_analysis.md) separates direct counts from per-class cycle estimates.
+
+For each optimization, collect: source and compiler SHA, source operation or capsule identity, tensor layout, schedule flags, final ELF hash and no-FSM audit, numerical oracle, engine hash, timing window, run status, cycle count, and analytic command/byte counts. Compare only like for like. For FireSim group measurements, use the same stock bitstream and the same input, quantization semantics, cold/warm policy and `rdcycle` window as the reference or record the difference.
+
+The reference's measured dynamic compute-command ledger is the section-level target for the handwritten schedule. The ZIP has no section-level FireSim cycle log, so only the whole-model 22.387M cycles and these Spike command counts are direct reference observations:
+
+| ResNet section | Jack dynamic computes | Current xDSL golden status |
+| --- | ---: | --- |
+| Stem convolution and pool | 43,904 | Packed stem and pool-on-store not yet generated |
+| 1×1 ReLU | 241,984 | Dense kernel numerically tested; whole graph layout/binding pending |
+| 1×1 no ReLU | 216,832 | Dense kernel available; whole graph pending |
+| 1×1 downsample | 97,024 | Dense kernel available; stride/layout binding pending |
+| 3×3 stride one | 423,360 | Whole-output-row direct gather not yet generated |
+| 3×3 stride two | 101,376 | Whole-output-row direct gather not yet generated |
+| Residual identity matmul | 22,208 | Isolated primitive kernel numerically tested |
+| Global average pool | 512 | No model-bound golden kernel yet |
+| FC | 8,064 | Source matmul has a compiled device specialization |
+| **Total** | **1,155,264** | No whole-model golden run yet |
+
+## Measured device changes
+
+| Change | Shape and engine | Before → after | Evidence and automatic-lowering lesson |
+| --- | --- | ---: | --- |
+| Keep B stationary across output-row tiles | 512×64×64 i8, pinned GSIM | 25,360 → 17,727 kernel cycles | Numeric and linked-ELF audit pass. The schedule must represent reuse scope, not infer it from a generic matmul opcode. |
+| Cache a small whole B in scratchpad | 512×64×64 i8, pinned GSIM | 17,727 → 16,575 | Numeric pass. Scratchpad capacity and output-channel block count are legality constraints. On 17×19×20 it regressed 776 → 802, so select by shape and measurement. |
+| Widen A/B MVIN panel commands to 16×64 | 512×64×64 i8, pinned GSIM | 16,575 → 15,607 | Same panel payload, fewer RoCC load commands. Typed Gemmini MVIN verifier now admits up to 64 scratchpad columns; accumulator MVIN remains DIM-wide. |
+| Widen MVOUT to 16×64 for full i8 tiles | 144×64×64 i8, pinned GSIM | 8,414 → 8,142 | The 16×64 accumulator store is bit exact. At 16×64×16 it regressed 613 → 658, so it is a schedule choice, not a global rule. |
+| Stock real-D residual identity matmul | 16×16, 17×19, 17×64 i8, pinned GSIM | 431, 3,192, 1,837 kernel cycles | Full numeric/guard/audit pass. The stock config admits real D; lean forces D garbage. Handle edge staging and output pitch explicitly. |
+| Hoist Gemmini configuration outside batch loop | TinyLlama `matmul_194`, B32 M8 N64 K8 i32, pinned GSIM | 11,736 → **9,282** kernel cycles | Full numeric/guard/audit pass; [machine-readable record](perf_records/tinyllama_b32_config_once.json) gives both ELF/object/engine hashes. One config, flush and final fence for all 32 batches; ordinary CPU loop repeats primitive tile commands. The B2 M17 N19 K20 case changed 1,492 → 1,506, so small batches can regress. |
+| Hoist Gemmini configuration outside batch loop | SmolVLA `matmul_384`, B15 M50 N64 K113 i32, pinned GSIM | 83,398 → **81,607** kernel cycles | Exact upstream object passed full numeric/guard/audit before and after; [machine-readable record](perf_records/smolvla_b15_config_once.json). The 2.2% gain is smaller because GEMM work dominates setup. |
+| Alternate two accumulator/A slots per M block | 512×64×64 i8, pinned GSIM | 16,674 → 16,732 | Numeric pass but a regression. This simple alternation does not reproduce Jack's interleaving of next MVIN and previous MVOUT inside the current compute burst; leave the flag off by default. |
+
+The `M=3136,N=64,K=64` biased/scaled/ReLU 1×1 probe passes at 104,931 GSIM kernel cycles with 3,136 compute commands and a 50,176-cycle peak-array floor. The source-bound synthetic upstream 1×1 capsule at 512×64×64 passes at 17,822 cycles. These are isolated kernels. Neither is a FireSim ResNet layer result.
+
+## Device compilation and model coverage
+
+The golden xDSL `gemmini.*` module is the sole source of device commands. `golden_device_lower.py` translates verified primitive operations to RV64 RoCC inline asm and rejects unsupported ones. `golden_device_compile.py` records target IR, LLVM dialect IR, LLVM IR, object and compiler hashes. `no_fsm_audit.py` scans all executable RISC-V ELF sections after the final link because a library can add forbidden instructions. This division is essential for automatically generated code: legality belongs at typed IR, command encoding at one lowering boundary, and the zero-FSM claim at the final binary.
+
+`contraction_patterns.py` recognizes exact 2D or batched 3D i8×i8→i32 contraction semantics from maps, iterators, integer body, dimensions and zero accumulator. `golden_device_catalog.py` compiles one specialization per distinct legal schedule with stable symbols and source operation bindings. Current prepared models yield **54/54 ResNet → 21 unique kernels**, **367/367 SmolVLA → 26**, and **200/200 TinyLlama → 8**. All three objects pass the no-FSM audit. A selected TinyLlama symbol from the full catalog was linked into an ELF and passed the complete numeric oracle, output guard and ELF audit at 11,683 GSIM cycles with the original per-batch setup path. Catalog coverage means recognized contractions have code; it does **not** mean the graph's memory, layouts, epilogues and host operations are compiled.
+
+The old whole-model emitter still expands host tensor operations into straight-line SSA and declines the prepared ResNet at about 470M hypothetical scalar element evaluations versus a 400K code-size budget. Tensor views and allocations account for a large share of that estimate but have little or no runtime cost. Automatic lowering needs looped/fused host code and view/alias propagation rather than increasing the unroll budget. It also needs model memory planning, weight binding, quantized epilogue validation and a whole-model correctness oracle before any device catalog can be called a full model.
+
+## Generalizable performance abstractions to add
+
+1. **Physical tensor layout and alias analysis.** Record logical axes, DRAM strides, packing, padding and view aliases separately. Prepared ResNet `conv_0` is currently represented as `64×147 · 147×12544` from OIHW weights and a materialized NCHW im2col tensor. Jack's fast path uses spatial output rows and channel columns with direct resident-input gather. A generic matmul matcher alone preserves the wrong memory flow. The first automatic transform should prove and propagate 1×1 aliases, then choose the spatial-row layout and generate 3×3 direct gathers.
+2. **Convolution window schedule.** Represent stem K packing, whole-output-row 3×3 tiling, shifted full-row MVIN, input residency, pool-on-store, B stationarity, accumulator ownership, and overlapped next-load/previous-store as typed schedule choices. The reference uses 43,904 stem computes versus a 31,360 ideal and 423,360 3×3 stride-one computes versus a 392,832 ideal. Those dynamic counts are stronger targets for our own command stream than an uncalibrated cycle formula.
+3. **Multi-lane graph compiler.** Keep exact integer contractions on Gemmini and generate scalable CPU/RVV loops for QDQ, softmax, normalization, indexing and casts. Fuse adjacent layout-only or elementwise operations and avoid materializing tensors that are aliases. Preserve quantization and model accuracy; the optional ResNet pre-gather quantization changes integer arithmetic and has not passed a whole-model oracle.
+4. **Device schedule selection with measured feedback.** The current tuner enforces scratchpad/accumulator legality and counts compute, RoCC and DMA requests. Its byte floors are geometric; they are not calibrated FireSim predictions. Store per-shape, per-layout FireSim or GSIM measurements in capsules keyed by object/bitstream/engine hash, and choose among legal schedules using actual observations. Include negative results such as small-shape cache and wide-store regressions.
+5. **Model-wide AOT compilation and link audit.** Deduplicate specializations, assign stable symbols, compile once per target/config/toolchain, bind all pointer arguments through the model allocator, then audit the linked ELF. A device object audit alone is insufficient. The current catalog implements the first half of this abstraction.
+6. **Section performance ledger.** Report exact dynamic compute/RoCC counts and comparable FireSim cycles for stem, 1×1 ReLU, 1×1 no-ReLU, downsample, 3×3 stride-one, 3×3 stride-two, residual, GAP, FC, attention GEMM, and scalar nonlinearities. The ZIP lacks per-layer FireSim cycles, so ResNet class cycle targets in the analysis are estimates; do not present them as measured reference numbers.
+
+## Infrastructure observations
+
+FireSim queue job 1670 failed before simulation because its requested Chipyard hardware key was absent. Job 1673 used our own stock worktree and the existing stock hardware key but timed out in `INFRASETUP` after its leading kill exceeded 90 seconds; the ELF never booted. A nearby unrelated job 1674 also failed during setup. The useful infrastructure change is an explicit queue preflight that validates the stock bitstream/hwdb key and simulator slot readiness before accepting a performance job, and records setup failures separately from model timeouts. Until an ELF boots, these jobs provide no cycle evidence. We should retry the pinned stock queue once setup is healthy, first with a small auditable probe, then per-group and whole-model payloads.
+
+The queue later showed successful jobs 1692–1708. We submitted low-priority job **1709** with the audited configuration-once TinyLlama attention ELF on our own stock Chipyard worktree; it was queued when this log entry was written. `golden_firesim_preflight.py` now verifies the linked ELF's no-FSM audit, workload/bootbinary, HWDB key and exact stock bitstream SHA, then emits a one-entry HWDB artifact for future queue jobs. The test preflight reproduced the archived stock bitstream SHA `a9a190b9…d4eca1` and the TinyLlama ELF SHA `eaf8d350…648d3d`. A queue admission still needs slot readiness; this tool cannot repair a hung FireSim setup process.
+
+After preflight, we submitted stock-config low-priority **job 1710** for the numerically checked ResNet-like 1×1 M3136 N64 K64 ELF and **job 1711** for the exact upstream SmolVLA `matmul_384` B15 M50 N64 K113 ELF. Both submissions use the immutable one-entry HWDB artifact (`sha256 5946d30d…7c126`) and remain probes, not full-model measurements. Queue status and UART output must be checked before recording cycles.
+
+## Nonlinear host pass experiment
+
+The existing Merlin registry's `softmax_int`, `gelu_int`, `silu_int`, and `rsqrt_int` passes can now be requested through `upstream_quant.py --integer-nonlinears`. On the raw SmolVLA capsule, a complete parse/verify produced 44 softmax, 12 GELU, 33 SiLU and 91 reciprocal-square-root rewrites, with the same 367 exact mesh contractions. The transformed IR contains zero `math.exp` and zero `math.erf` operations versus 77 and 12 before. It still contains 169 textual `f64` occurrences in separate small scalar/time-encoding regions. The pass changes arithmetic and has **no full-policy accuracy or FireSim result**. Treat it as a candidate for host-lane optimization, not as a golden schedule choice. The automatic lowering needs a per-op semantic/accuracy gate and must measure total policy cycles, since removing libm calls alone does not prove a net model speedup.
+
+The same optional path on TinyLlama parsed/verified 22 softmax, 22 SiLU and 45 reciprocal-square-root rewrites while retaining all 200 exact contractions. `math.exp` fell from 44 textual occurrences to zero; neither IR had f64. Accuracy and model-cycle effects remain unmeasured.
