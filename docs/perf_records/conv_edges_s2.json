@@ -1,0 +1,110 @@
+{
+  "shape": {
+    "h": 7,
+    "w": 19,
+    "cin": 20,
+    "cout": 19,
+    "stride": 2,
+    "bn": 4,
+    "output_dtype": "i32",
+    "scale": 1.0,
+    "relu": false
+  },
+  "status": "pass",
+  "kernel_cycles": 9641,
+  "elf_sha256": "402dfff903a00aa8ed88856a5b8ea42855d96fd8d08a5355b7e745935e8e8044",
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "c61a1ce649480cf9c742820e7f5208acd30013e75ad42d6231204d51c40212d0",
+    "llvm_mlir_sha256": "7a18a36657d3ab0f31275e5728bbf29549e4228f259d890895b8281dfa90b709",
+    "llvm_ir_sha256": "675837d0f936ce003beffcd46605aaf4662cbbe0261424029d4255cb7c11a7ee",
+    "object_sha256": "60fa7204860063bada31e31ea46eb23331c022ec4857d5a32db4cb9af044a0eb",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/conv_edges_s2/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/conv_edges_s2/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/conv_edges_s2/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/conv_edges_s2/kernel.o"
+      ]
+    ]
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "402dfff903a00aa8ed88856a5b8ea42855d96fd8d08a5355b7e745935e8e8044",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 84,
+      "2": 70,
+      "3": 6,
+      "4": 84,
+      "6": 84,
+      "7": 1
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "gsim_engine": {
+    "target": "gemmini",
+    "engine": "gsim",
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "source": "derived",
+    "available": true,
+    "refused": false,
+    "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+    "flavour": "binary",
+    "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "receipt_status": "bound",
+    "receipt": {
+      "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+      "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+      "schema_version": "merlin.gsim-model-build.v2",
+      "status": "complete",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+      "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+      "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+      "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+      "provenance": null,
+      "tools": {
+        "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+        "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+      }
+    }
+  },
+  "stdout": "GOLDEN_CONV_CYCLES 9641\nGOLDEN_CONV PASS\n",
+  "schema": "gemmini_direct_conv_gsim_probe_v1",
+  "interpretation": "Synthetic padding/tail correctness probe; not full-model or FireSim performance.",
+  "command_counts": {
+    "config": 5,
+    "fence": 2,
+    "flush": 1,
+    "mvin_a": 100,
+    "mvin_b": 120,
+    "preload": 120,
+    "compute": 120,
+    "mvout": 8,
+    "host_im2col_bytes": 0,
+    "padded_array_issue_cycles": 1920
+  }
+}
