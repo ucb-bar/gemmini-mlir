@@ -105,6 +105,9 @@ def binding_attributes(route, source_sha, receipt_sha):
             'gemmini.numeric_policy':DictionaryAttr({'kind':StringAttr(numeric['kind']),
                 'max_output_lsb':IntegerAttr(numeric['max_output_lsb'],i64),
                 'domain_pairs':IntegerAttr(65536,i64)})}
+    if 'coefficients' in route['proof']:
+        coeff=route['proof']['coefficients']
+        attrs['gemmini.wide_integer_coefficients']=DictionaryAttr({'p':IntegerAttr(coeff['p'],i64),'q':IntegerAttr(coeff['q'],i64),'scale':FloatAttr(coeff['scale'],F32)})
     if 'physical_layout' in route:attrs['gemmini.residual_layout']=StringAttr(canonical(route['physical_layout']))
     return attrs
 
@@ -223,6 +226,33 @@ void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*identity,int8_
 '''
 
 
+def wide_adapter(route,symbol,kernel):
+    from .golden_wide_resadd import tables
+    coeff=route['proof']['coefficients']
+    c=adapter(route,symbol,kernel)
+    import re
+    c=re.sub(r'static const int8_t '+symbol+r'_identity\[256\][^;]+;',
+             'static const int8_t '+symbol+'_identity[768] __attribute__((aligned(64)))={'+','.join(map(str,tables(coeff['p'],coeff['q'])))+'};',c)
+    c=re.sub(r'static int8_t '+symbol+r'_scratch\[1024\][^;]+;','',c)
+    c=c.replace('int8_t*,const int8_t*,int8_t*);','int8_t*,const int8_t*);')
+    c=c.replace(','+symbol+'_scratch);',');')
+    return c
+
+
+def wide_oracle(route,kernel):
+    coeff=route['proof']['coefficients'];low=0 if route['proof']['source']['relu'] else -128
+    return f'''#include <math.h>
+void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*coefficients){{
+ (void)coefficients;
+ for(int i=0;i<{route['m']*64};i++){{
+  int32_t acc=(int32_t)a[i]*{coeff['p']}+(int32_t)b[i]*{coeff['q']};
+  float value=nearbyintf((float)acc*{float(coeff['scale']).hex()}f);
+  if(value<{low})value={low};if(value>127)value=127;c[i]=(int8_t)value;
+ }}
+}}
+'''
+
+
 def compile_adapter(source, output, llvm_bin):
     source,output,llvm_bin=map(Path,(source,output,llvm_bin))
     command=[str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin','-c',str(source),'-o',str(output)]
@@ -231,12 +261,12 @@ def compile_adapter(source, output, llvm_bin):
 
 
 def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar",shared_permutation=False):
-    if shared_permutation and implementation!="cpu_lut":raise ValueError("shared permutation requires exact CPU lookup implementation")
+    if shared_permutation and implementation not in ("cpu_lut","wide_integer"):raise ValueError("shared permutation requires exact residual implementation")
     if cpu_lut_schedule not in ("scalar","raw_u8_x4"):raise ValueError("unknown CPU lookup schedule")
     if cpu_lut_schedule!="scalar" and implementation!="cpu_lut":raise ValueError("CPU lookup schedule requires cpu_lut implementation")
-    if implementation not in ("gemmini", "cpu_lut"):
+    if implementation not in ("gemmini", "cpu_lut", "wide_integer"):
         raise ValueError("unknown residual implementation")
-    if implementation == "cpu_lut" and max_output_lsb != 0:
+    if implementation in ("cpu_lut","wide_integer") and max_output_lsb != 0:
         raise ValueError("CPU lookup residual requires exact policy")
     capture,llvm_bin,output=map(Path,(capture,llvm_bin,output));numeric=policy(max_output_lsb)
     output.mkdir(parents=True,exist_ok=False)
@@ -245,19 +275,42 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
     for name in ('model.mlir','weights.safetensors','weights.safetensors.manifest.json'):
         if sha(capture/name)!=pins[name]['sha256']:raise ValueError('capture artifact changed: '+name)
     module=parse_module(source);objects=[];native=[];routes=[];refused=[];declarations=[]
+    if implementation=='wide_integer':
+        from .golden_resadd_diagonal_search import CPP,search
+        search_source=output/'coefficient_search.cc';search_source.write_text(CPP);engine=output/'coefficient_search'
+        subprocess.run(['c++','-O3','-std=c++17','-ffp-contract=off',str(search_source),'-o',str(engine)],check=True)
     for op in list(module.walk()):
         if op_name(op)!='quant_ext.quantize_per_tensor':continue
         region=getattr(op.attributes.get('prov.region_id'),'data','')
-        try:route=inspect(op,max_output_lsb,implementation=implementation)
+        try:route=inspect(op,max_output_lsb,implementation="cpu_lut" if implementation=="wide_integer" else implementation)
         except ValueError as error:
             refused.append(dict(region=region,reason=str(error)));continue
+        if implementation=='wide_integer':
+            if route['m']%16:
+                refused.append(dict(region=region,reason='wide integer residual requires M divisible by16'));continue
+            search_dir=output/f'coefficient_search_{len(routes)}';search_dir.mkdir()
+            found=search(route['proof']['source'],engine,search_dir,max_coefficient=32767,ratio_neighborhood=2)
+            if not found['accepted']:
+                refused.append(dict(region=region,reason='no exact wide integer candidate in selected search neighborhood',proof=found));continue
+            coeff=found['accepted'][0]
+            route['proof']=dict(proof='independent exhaustive 65536 signed-i8 pair comparison of source f32 chain and integer diagonal accumulation plus one readout',source=found['source'],primitive={'readout':coeff['scale']},coefficients=coeff,pairs=65536,exact=True,max_output_lsb_error=0,search=found,search_engine_sha256=sha(engine),search_source_sha256=sha(search_source))
         if shared_permutation:
             from .residual_layout import shared_transpose
             try:route['physical_layout']=shared_transpose(route['inputs'],route['shape'])
             except ValueError as error:route['layout_refusal']=str(error)
         symbol=f'gemmini_residual_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         declarations.append(rewrite(op,route,symbol,source_sha,receipt_sha))
-        if implementation == 'cpu_lut':
+        if implementation=='wide_integer':
+            from .golden_wide_resadd import build as build_wide,tables
+            coeff=route['proof']['coefficients']
+            device=build_wide(route['m'],coeff['p'],coeff['q'],coeff['scale'],relu=route['proof']['source']['relu'])
+            device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
+            compilation=compile_module(device,llvm_bin,work)
+            c=wide_adapter(route,symbol,kernel);(work/'adapter.c').write_text(c)
+            adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
+            objects.extend([work/'kernel.o',work/'adapter.o']);native.append(c+wide_oracle(route,kernel))
+            route['coefficient_table_sha256']=hashlib.sha256(tables(coeff['p'],coeff['q'])).hexdigest()
+        elif implementation == 'cpu_lut':
             work.mkdir(parents=True)
             c=adapter(route,symbol,kernel)+lookup_kernel(route,kernel,schedule=cpu_lut_schedule)
             (work/'adapter.c').write_text(c)
@@ -287,7 +340,7 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--shared-permutation',action='store_true');p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--shared-permutation',action='store_true');p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');a=p.parse_args()
     result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule,shared_permutation=a.shared_permutation)
     print(json.dumps(dict(routes=len(result['routes']),refused=len(result['refused']),numeric_policy=result['numeric_policy']),indent=2))
 
