@@ -103,3 +103,11 @@ Uniform-input scalarization initially crashed native `linalg-specialize-generic-
 ### Exact whole-model fusion candidate
 
 With corrected rank-zero uniform tensors plus existing `MERLIN_GENERALIZE_BEFORE_FUSE=1` and `MERLIN_FUSE_POST=1`, the full ResNet host reference and actual Gemmini Spike execution both remain bit-exact on all1000 outputs. Final ELF no-FSM audit passes (SHAa83f52ec…). Spike's retired-instruction counter falls2,401,323,546→1,908,630,558 (20.52% lower), with rank mismatches0. This is not a FireSim cycle result. The remaining host work is still orders above the desired full-model overhead; persistent layouts and device epilogue fusion remain essential. The separate uniform-only candidate also passes full native-host output equality; fused candidate queued for hardware A/B through queue agent.
+
+### Mixed whole-model direct convolution
+
+The current ResNet source now compiles with16proven direct3x3 convolutions and38dense GEMMs. Native scalar-reference execution through the identical ABI and actual Gemmini Spike execution both reproduce all1000outputs bit-exactly; final ELF SHA4ab852cd… passes static zero-FSM audit. Mixedcatalog callbacks compile the direct bundle before exact-source dense binding, relocatably link both objects, and bind component/object hashes. Generic external function declarations preserve bufferization access attributes across parser/printer boundaries, avoiding accidental defensive copies.
+
+Spike retired instructions fall1,908,630,558→1,193,349,750 compared with the preceding fused variant (37.48% fewer); still not a FireSim cycle result. The target is not met. Kernel1727 is verified at961,350FireSim cycles; Tiny attention1728 at9,592cycles. Full-model hardware A/B remains queued.
+
+model2MLIR main now includes `fc4c4a3`, an explicit optional static-W8A8 `extra_args.weight_granularity` choice: per_channel(default) or per_tensor, with fresh calibration and recorded policy. Four focused tests pass including both captured qparam forms and invalid-policy refusal. This enables target-compatible capture policies; it does not retroactively change the current captures or prove a model accuracy improvement. Current retained ResNet immediate dequant multipliers are scalar already; sequential float rounding, bias/residual handling and layout propagation remain the next exact-fusion challenges.
