@@ -20,6 +20,7 @@ def main():
     ap.add_argument('--virtual-padding',action='store_true',help='use unpadded input and primitive zero DMA at borders')
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
+    ap.add_argument('--pingpong-b',action='store_true')
     ap.add_argument('--wide-a',action='store_true')
     ap.add_argument('--separate-b-bank',action='store_true')
     ap.add_argument('--band-rows',type=int)
@@ -40,7 +41,7 @@ def main():
     out.mkdir(parents=True,exist_ok=False)
     if a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
-        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding)
+        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding,pingpong_b=a.pingpong_b)
     else:
         kernel = GoldenConv(s)
     receipt = compile_module(kernel.build(),a.llvm_bin,out)
@@ -107,7 +108,7 @@ int main(void) {
     run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
-    result = dict(shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,input_value_rules=[am,ao,bm,bo],status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
+    result = dict(pingpong_b=a.pingpong_b,shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,input_value_rules=[am,ao,bm,bo],status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
                   elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))

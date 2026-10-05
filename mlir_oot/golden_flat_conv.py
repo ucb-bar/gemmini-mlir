@@ -71,11 +71,14 @@ def virtual_band_groups(s, rows):
 
 
 class GoldenFlatConv(GoldenGemm):
-    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False):
         s.validate()
         if virtual_padding and s.explicit_halo:raise ValueError("virtual padding requires unpadded input shape")
         if not eligible(s, band_rows,virtual_padding=virtual_padding):
             raise ValueError('spatial band requires explicit halo and accumulator capacity')
+        if pingpong_b and (not separate_b_bank or not wide_a or s.bn*F.DIM>F.SPAD_BANK_ROWS):
+            raise ValueError("B pingpong requires wide A and separate B bank capacity")
+        self.pingpong_b = pingpong_b
         self.conv = s
         self.virtual_padding=virtual_padding
         self.band_rows = s.oh if band_rows is None else band_rows
@@ -118,16 +121,17 @@ class GoldenFlatConv(GoldenGemm):
                                     self._rocc('mvin', {'local':tile*panel_width+lane+offset,
                                         'rows':count, 'cols':channels, 'load_id':0}, ptr)
                             for ki in range(_ceil_div(channels, F.DIM)):
+                                current_bbase=bbase+(ki%2)*F.SPAD_BANK_ROWS if self.pingpong_b else bbase
                                 kr = min(F.DIM, channels-ki*F.DIM)
                                 krow = self.fb.add_i(ci, self.fb.const((kh*3+kw)*s.cin+ki*F.DIM))
                                 for d in range(0, len(nr), 4):
                                     ptr = self._ptr(self.b, krow, s.cout, self._tile(n0,d))
-                                    self._rocc('mvin', {'local':bbase+d*F.DIM,
+                                    self._rocc('mvin', {'local':current_bbase+d*F.DIM,
                                         'rows':kr, 'cols':sum(nr[d:d+4]), 'load_id':1}, ptr)
                                 for d, cols in enumerate(nr):
                                     for a, rows in enumerate(widths):
                                         self._rocc('preload', {
-                                            'bd':bbase+d*F.DIM if a==0 else isa.GARBAGE_ADDR,
+                                            'bd':current_bbase+d*F.DIM if a==0 else isa.GARBAGE_ADDR,
                                             'c':isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=not (first and ki==0)),
                                             'bd_cols':cols, 'bd_rows':kr, 'c_cols':cols, 'c_rows':rows})
                                         self._rocc('compute', {'a':a*panel_width+ki*F.DIM,
@@ -166,6 +170,7 @@ class GoldenFlatConv(GoldenGemm):
         module.attributes['gemmini.flat_conv_band_rows'] = StringAttr(str(self.band_rows))
         module.attributes['gemmini.flat_conv_shape'] = StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.flat_conv_wide_a'] = StringAttr(str(self.wide_a))
+        if self.pingpong_b:module.attributes['gemmini.flat_conv_pingpong_b']=StringAttr('two-independent-banks')
         module.attributes['gemmini.flat_conv_separate_b_bank'] = StringAttr(str(self.separate_b_bank))
         return module
 

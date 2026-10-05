@@ -216,3 +216,20 @@ screen. All4,096 outputs and2,048 guard bytes pass for both, with final zero-FSM
 ELFs and identical original fixture/output oracle. This specific arm loses even
 without layout costs and stops here; no whole-model rewrite or FireSim queue.
 It does not establish impossibility of every alternative transposed schedule.
+
+## Direct convolution B DMA overlap screen: no gain
+
+Highest measured direct route matmul44 H14/W14/C512/stride2, output7x7x512,
+uses4 spatial array tiles and16 output-channel tiles per block, wideA64, wideB64
+and separate B bank. Every K16 iteration loads its B range then issues64
+preload/compute pairs. A two-bank B ping-pong candidate alternates banks2/3 so
+later loads can avoid overwriting the preceding B read range. Exact same source
+scale0.0006653686286881566/ReLU and full signed-i8 fixture were retained.
+
+Actual GSIM baseline775,788 versus candidate777,710 kernelcycles (0.25% slower).
+Both all25,088 i8 outputs and2,048 guard bytes pass; final ELF zero-FSM,22 existing
+flat/virtual-padding tests pass. Selected padded issue floor589,824 remains lower
+than either result, but this screen does not support same-B-buffer dependency
+as the main remaining limit. The candidate remains opt-in and is not selected
+by source binders or queued on hardware. No claim that every DMA schedule is
+exhausted follows from this single hypothesis.
