@@ -1,0 +1,65 @@
+{
+  "schema": "large_n_dense_hardware_ab_v1",
+  "shape": {
+    "M": 8,
+    "N": 2048,
+    "K": 2048
+  },
+  "dtype": "i32",
+  "bias": false,
+  "tile": {
+    "bm": 1,
+    "bn": 64
+  },
+  "candidate_changes": [
+    "wide B load groups of 64 columns",
+    "cache A"
+  ],
+  "baseline_gsim_cycles": 1336714,
+  "candidate_gsim_cycles": 927138,
+  "hardware_cycle_reduction_fraction": 0.36015323550587564,
+  "hardware_speedup": 1.5628741997165838,
+  "checked_output_elements": 16384,
+  "guard_checked": true,
+  "scope": "Standalone representative dense kernel; no wholemodel performance or other-shape promotion claim",
+  "jobs": [
+    {
+      "schema": "golden_firesim_verified_probe_v1",
+      "job_id": 1763,
+      "state": "DONE",
+      "phase": "DONE",
+      "exit_code": 0,
+      "elf": "/scratch/agustin/tmp/gemmini-large-n-dense-20261005/out/m8n2048k2048_baseline/layer.elf",
+      "elf_sha256": "8f7aa289f993dc6f15ae16004a0bde414bf9d887abff8e330e3732cadee45d8d",
+      "actual_simulated_elf": "/scratch/firesim_queue/jobs/1763/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+      "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+      "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+      "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+      "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+      "uart": "/scratch/firesim_queue/jobs/1763/simulation/sim_slot_0/uartlog",
+      "uart_sha256": "0cc747c90a8ed69b6bd8365f9d0ad8900dff08f78311597fa0c4fb5ae53accf1",
+      "marker_kind": "GEMM",
+      "kernel_cycles": 1445879,
+      "numeric_pass": "GOLDEN_GEMM PASS M=8 N=2048 K=2048"
+    },
+    {
+      "schema": "golden_firesim_verified_probe_v1",
+      "job_id": 1764,
+      "state": "DONE",
+      "phase": "DONE",
+      "exit_code": 0,
+      "elf": "/scratch/agustin/tmp/gemmini-large-n-dense-20261005/out/m8n2048k2048_wide_cached/layer.elf",
+      "elf_sha256": "dbdf78d4ae17756b0f51e4900a4da701001d0a8763da8a52ff321485486c5397",
+      "actual_simulated_elf": "/scratch/firesim_queue/jobs/1764/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+      "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+      "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+      "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+      "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+      "uart": "/scratch/firesim_queue/jobs/1764/simulation/sim_slot_0/uartlog",
+      "uart_sha256": "f0a95e9a9b302f268f9f83ad9726ff37e1d91f51085e40a108fcf04733e18dfb",
+      "marker_kind": "GEMM",
+      "kernel_cycles": 925141,
+      "numeric_pass": "GOLDEN_GEMM PASS M=8 N=2048 K=2048"
+    }
+  ]
+}

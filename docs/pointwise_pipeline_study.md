@@ -67,3 +67,7 @@ exact source-bound epilogue/shape, not unrestricted promotion to other shapes.
 ## Late convolution hardware gate
 
 Job 1758 measured **793,557 kernel cycles** for the H7/W7/C512 3x3 direct convolution with spatial flattening, four M tiles, bn16, 64-wide A loads, and B at scratchpad row 8192 on a separate bank. All 25,088 i32 outputs and guard bytes passed; staged ELF/bitstream identities and final zero-FSM audit passed. GSIM measured 769,976 cycles for this artifact. This is a standalone kernel measurement; no same-hardware baseline or whole-model speedup is inferred. Receipt: `docs/perf_records/late_conv_banked_firesim1758.json`.
+
+## Large-N dense hardware gate
+
+Stock FireSim jobs 1763/1764 compared M8/N2048/K2048 i32 GEMM with bm1/bn64 and no bias. Wide B loads (64 columns per group) plus cached A reduced kernel cycles from **1,445,879** to **925,141**: **36.02% fewer cycles**, **1.563x** speedup. All 16,384 outputs and guards passed in both, with final zero-FSM ELFs and staged ELF/bitstream identities verified. Candidate GSIM measured 927,138 cycles. This is a representative kernel gate for Tiny/Smol dense scheduling; whole-model speedups and other shapes still require independent validation. Receipt: `docs/perf_records/large_n_dense_firesim1763_1764.json`.
