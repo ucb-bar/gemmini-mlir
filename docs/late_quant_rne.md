@@ -79,5 +79,25 @@ Fourteen structural/refusal tests pass.
 
 Whole native + actual Spike remain bitexact on all1000 outputs, rank mismatch0,
 final no-FSM. Spike instructions12,271,325 →11,355,701 (7.46% additional savings;
-20.34% below the14,254,689 base). Hardware timing remains unmeasured. Receipt:
+20.34% below the14,254,689 base). Stock FireSim1786 verifies49,673,153 cycles,
+10.08% fewer than1781's55,239,221. Receipt:
 `docs/perf_records/late_combined_clamp_quant_rne.json`.
+
+## Normal model compilation
+
+Use `merlin_host_llvm_transform(LLVM_BIN, combine_clamp=True)` as the explicit
+`host_llvm_transform` argument to Merlin's Spike model build. The callback runs
+after ordinary lowering and before compiling `model.o`. It verifies complete
+source, selected target LLVM and portable native oracle modules with LLVM's
+assembler, then records the proven routes and tool/content identities. It
+refuses if no chain is proven and never edits the original lowered source.
+
+Merlin owns normal compiler flags, object generation, harness construction and
+final linking. The selected object's bytes enter the existing build hash before
+the harness is generated. Historical CLI late-relink builds retain their base
+harness hash; their final ELF/object/transform receipts identify those variants.
+
+The complete 22-layer Tiny build proves89 chains, passes its original Torch
+tolerance and reproduces all256,000 prior output bits in native and actual
+Gemmini Spike. It retires271,019,239 Spike instructions. Hardware timing is
+pending in1792. Receipt: `perf_records/tiny_scalar_host_quant_rne_spike.json`.

@@ -77,6 +77,42 @@ def rewrite(text: str, *, native_oracle=False, combine_clamp=False):
     return rewritten,dict(schema='gemmini_late_bounded_rne_v1',source_sha256=hashlib.sha256(text.encode()).hexdigest(),rewritten_sha256=hashlib.sha256(rewritten.encode()).hexdigest(),routes=proofs)
 
 
+def merlin_host_llvm_transform(llvm_bin, *, combine_clamp=False):
+    """Select proved legalization before Merlin hashes and links the model object.
+
+    The normal backend owns the compiler flags, object build, harness identity
+    and final linking. This package owns recognition, exact RNE instructions,
+    boundary proofs and the paired portable native oracle.
+    """
+    from pathlib import Path
+    import json, subprocess
+
+    llvm_bin = Path(llvm_bin)
+
+    def transform(source, work):
+        source, work = Path(source), Path(work)
+        work.mkdir(parents=True, exist_ok=True)
+        subprocess.run([str(llvm_bin/'llvm-as'),str(source),'-o',str(work/'source.bc')],check=True)
+        original = source.read_text()
+        target, proof = rewrite(original, combine_clamp=combine_clamp)
+        if not proof['routes']:
+            raise ValueError('no proven bounded RNE chain: '+str(proof.get('refusal', 'unrecognized source')))
+        selected = work/'model.ll'
+        selected.write_text(target)
+        subprocess.run([str(llvm_bin/'llvm-as'),str(selected),'-o',str(work/'model.bc')],check=True)
+        native, _ = rewrite(original, native_oracle=True)
+        (work/'model.native.ll').write_text(native)
+        subprocess.run([str(llvm_bin/'llvm-as'),str(work/'model.native.ll'),'-o',str(work/'model.native.bc')],check=True)
+        proof.update(combine_clamp=combine_clamp,
+                     llvm_as_sha256=hashlib.sha256((llvm_bin/'llvm-as').read_bytes()).hexdigest(),
+                     native_oracle_sha256=hashlib.sha256(native.encode()).hexdigest(),
+                     scope='pre-object host legalization; normal Merlin compilation and build identity')
+        (work/'receipt.json').write_text(json.dumps(proof,indent=2)+'\n')
+        return selected
+
+    return transform
+
+
 def build(build_dir, work, llvm_bin, gcc, runtime_dir, *, combine_clamp=False):
     """Opt-in late model-object replacement; all other linked objects are pinned."""
     from pathlib import Path
