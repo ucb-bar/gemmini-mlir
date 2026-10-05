@@ -30,7 +30,7 @@ def _symbol(key: dict) -> str:
     return "gemmini_golden_" + digest
 
 
-def build_catalog(source: str, *, max_kernels: int | None = None) -> tuple[ModuleOp, dict]:
+def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool = False) -> tuple[ModuleOp, dict]:
     if max_kernels is not None and max_kernels <= 0:
         raise ValueError("max_kernels must be positive")
     source_module = parse_module(source)
@@ -43,7 +43,7 @@ def build_catalog(source: str, *, max_kernels: int | None = None) -> tuple[Modul
         if dims is None:
             continue
         matched_total += 1
-        shape = choose_shape(dims)
+        shape = choose_shape(dims,large_n=large_n)
         batched = len(op.operands[0].type.get_shape()) == 3
         key = {"batch": dims.batch if batched else 0,
                "shape": asdict(shape), "batched": batched}
@@ -77,6 +77,7 @@ def build_catalog(source: str, *, max_kernels: int | None = None) -> tuple[Modul
                             "batch_call": "whole_batch",
                             "dtypes": ["i8", "i8", "i32"]},
                     "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
+                    "schedule_policy": "large_n_grouped_b_v1" if large_n else "default",
                     "matched_contractions": matched_total,
                     "covered_contractions": len(bindings),
                     "coverage_complete": len(bindings) == matched_total,
@@ -86,8 +87,8 @@ def build_catalog(source: str, *, max_kernels: int | None = None) -> tuple[Modul
 
 
 def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
-                    *, max_kernels: int | None = None) -> dict:
-    module, manifest = build_catalog(source_path.read_text(), max_kernels=max_kernels)
+                    *, max_kernels: int | None = None, large_n: bool = False) -> dict:
+    module, manifest = build_catalog(source_path.read_text(), max_kernels=max_kernels,large_n=large_n)
     if not manifest["covered_contractions"]:
         raise ValueError("source has no exact integer GEMM contractions")
     receipt = compile_module(module, llvm_bin, workdir)
@@ -98,13 +99,13 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
     return result
 
 
-def merlin_builder(llvm_bin: Path):
+def merlin_builder(llvm_bin: Path, *, large_n: bool = False):
     """Compile Merlin's final prepared IR at its pre-offload source boundary."""
     compiler = Path(llvm_bin)
 
     def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
         prepared, workdir = Path(prepared), Path(workdir)
-        compile_catalog(prepared, compiler, workdir)
+        compile_catalog(prepared, compiler, workdir,large_n=large_n)
         return workdir / "device_catalog.json", workdir / "kernel.o"
 
     return build
@@ -148,9 +149,10 @@ def main() -> int:
     ap.add_argument("--workdir", type=Path, required=True)
     ap.add_argument("--max-kernels", type=int,
                     help="compile a partial catalog for debugging; receipt flags incomplete coverage")
+    ap.add_argument("--large-n", action="store_true", help="opt in to grouped B loads and short-M A reuse")
     args = ap.parse_args()
     report = compile_catalog(args.input, args.llvm_bin, args.workdir,
-                             max_kernels=args.max_kernels)
+                             max_kernels=args.max_kernels,large_n=args.large_n)
     print(json.dumps({k: report[k] for k in ("matched_contractions", "covered_contractions",
                                              "coverage_complete", "unique_kernels")}, indent=2))
     return 0

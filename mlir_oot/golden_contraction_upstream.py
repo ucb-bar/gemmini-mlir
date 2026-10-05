@@ -22,7 +22,7 @@ from .golden_tuning import estimate, tune
 from .tables import rtl_facts as F
 
 
-def choose_shape(dims: IntegerGemm) -> Shape:
+def choose_shape(dims: IntegerGemm, *, large_n: bool = False) -> Shape:
     """One shape-based schedule rule shared by selected and model-wide compilation."""
     shape, _ = tune(Shape(dims.m, dims.n, dims.k, output_dtype="i32"))
     shape = replace(shape, reuse_b=shape.bm > 1)
@@ -42,10 +42,17 @@ def choose_shape(dims: IntegerGemm) -> Shape:
                 shape = candidate
             except ValueError:
                 pass
-    # A short M tile reused across at least four N blocks is worth keeping in
+    # The existing policy caches A across four N blocks. The opt-in large-N
+    # policy also considers two blocks, gated by exact resource/command counts.
+    # A short M tile reused across multiple N blocks is worth keeping in
     # scratchpad. A single-block case would pay the preload without saving any
     # A traffic; the GSIM-checked M8 multi-block case reduced kernel cycles.
-    if dims.m <= F.DIM and _ceil_div(dims.n, F.DIM) >= 4 * shape.bn:
+    if large_n and dims.m <= F.DIM and dims.n > 4*F.DIM:
+        shape = replace(shape, wide_b=True)
+    ntiles = _ceil_div(dims.n,F.DIM)
+    repeated_n = (_ceil_div(ntiles,shape.bn) >= 2 if large_n
+                  else ntiles >= 4*shape.bn)
+    if dims.m <= F.DIM and repeated_n:
         try:
             candidate = replace(shape, cache_a=True)
             if estimate(candidate)["primitive_command_count"] < estimate(shape)["primitive_command_count"]:
@@ -56,7 +63,7 @@ def choose_shape(dims: IntegerGemm) -> Shape:
     return shape
 
 
-def select(source: str, region_id: str) -> tuple[IntegerGemm, Shape, dict]:
+def select(source: str, region_id: str, *, large_n=False) -> tuple[IntegerGemm, Shape, dict]:
     module = parse_module(source)
     selected = []
     for ordinal, op in enumerate(module.walk()):
@@ -70,7 +77,7 @@ def select(source: str, region_id: str) -> tuple[IntegerGemm, Shape, dict]:
     if len(selected) != 1:
         raise ValueError(f"expected one integer GEMM in region {region_id!r}, found {len(selected)}")
     ordinal, op, dims = selected[0]
-    shape = choose_shape(dims)
+    shape = choose_shape(dims,large_n=large_n)
     binding = {
         "region_id": region_id,
         "source_operation_ordinal": ordinal,
@@ -86,9 +93,9 @@ def select(source: str, region_id: str) -> tuple[IntegerGemm, Shape, dict]:
 
 
 def compile_selected(source_path: Path, region_id: str, llvm_bin: Path,
-                     workdir: Path) -> dict:
+                     workdir: Path, *, large_n=False) -> dict:
     source = source_path.read_text()
-    dims, shape, binding = select(source, region_id)
+    dims, shape, binding = select(source, region_id,large_n=large_n)
     module = (build_batched(dims.batch, shape) if binding["abi"] == "gemmini_golden_batched_gemm"
               else GoldenGemm(shape).build())
     receipt = compile_module(module, llvm_bin, workdir)
@@ -112,8 +119,9 @@ def main() -> int:
     ap.add_argument("--region", required=True)
     ap.add_argument("--llvm-bin", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, required=True)
+    ap.add_argument("--large-n", action="store_true")
     args = ap.parse_args()
-    result = compile_selected(args.input, args.region, args.llvm_bin, args.workdir)
+    result = compile_selected(args.input, args.region, args.llvm_bin, args.workdir,large_n=args.large_n)
     print(json.dumps({"dimensions": result["dimensions"], "binding": result["binding"],
                       "object_sha256": result["compilation"]["object_sha256"]}, indent=2))
     return 0

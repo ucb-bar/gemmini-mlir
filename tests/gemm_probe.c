@@ -37,8 +37,13 @@ static int32_t bias[N] __attribute__((aligned(64)));
 extern void KERNEL_SYMBOL(int8_t *a, int8_t *b, output_t *c);
 #endif
 
+#ifdef STATIC_INPUTS
+extern int8_t a[M][K];
+extern int8_t b[K][N];
+#else
 static int8_t a[M][K] __attribute__((aligned(64)));
 static int8_t b[K][N] __attribute__((aligned(64)));
+#endif
 static struct {
     output_t values[M][N];
     uint8_t guard[2048];
@@ -54,12 +59,14 @@ static inline uint64_t cycles(void) {
 }
 
 int main(void) {
+#ifndef STATIC_INPUTS
     for (int i = 0; i < M; ++i)
         for (int k = 0; k < K; ++k)
             a[i][k] = (int8_t)(INPUT_AMPLITUDE * (((i * 7 + k * 3) % 11) - 5));
     for (int k = 0; k < K; ++k)
         for (int j = 0; j < N; ++j)
             b[k][j] = (int8_t)(INPUT_AMPLITUDE * (((k * 5 + j * 2) % 13) - 6));
+#endif
     for (int i = 0; i < 2048; ++i) cbox.guard[i] = 0x5a;
 #ifdef USE_BIAS
     for (int j = 0; j < N; ++j) bias[j] = j % 5 - 2;

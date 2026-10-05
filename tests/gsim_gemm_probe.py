@@ -13,6 +13,7 @@ import hashlib
 import json
 import re
 import struct
+import subprocess
 from pathlib import Path
 from dataclasses import asdict
 
@@ -25,26 +26,33 @@ from merlin.perf.layer_bench import build_program, run_on_gsim
 
 def _write_expected(path: Path, shape: Shape, amplitude: int = 1) -> None:
     """Move the expensive O(MNK) oracle off the cycle-accurate simulated CPU."""
-    scale32 = struct.unpack("<f", struct.pack("<f", shape.scale))[0]
-    lines = ["static const int32_t expected_values[M][N] = {"]
-    for i in range(shape.m):
-        row = []
-        for j in range(shape.n):
-            acc = sum((((i * 7 + k * 3) % 11) - 5) *
-                      (((k * 5 + j * 2) % 13) - 6) for k in range(shape.k))
-            acc *= amplitude * amplitude
-            if shape.bias:
-                acc += j % 5 - 2
-            if shape.output_dtype == "i8":
-                scaled = struct.unpack("<f", struct.pack("<f", float(acc) * scale32))[0]
-                acc = round(scaled)
-                if shape.relu:
-                    acc = max(0, acc)
-                acc = min(127, max(-128, acc))
-            row.append(str(acc))
-        lines.append("    {" + ", ".join(row) + "},")
-    lines.append("};")
-    path.write_text("\n".join(lines) + "\n")
+    import numpy as np
+    a = amplitude * ((np.arange(shape.m,dtype=np.int64)[:,None]*7 + np.arange(shape.k)*3)%11-5)
+    b = amplitude * ((np.arange(shape.k,dtype=np.int64)[:,None]*5 + np.arange(shape.n)*2)%13-6)
+    expected = a @ b
+    if shape.bias:
+        expected += np.arange(shape.n)%5-2
+    if shape.output_dtype == 'i8':
+        expected = np.rint(expected.astype(np.float32)*np.float32(shape.scale))
+        expected = np.clip(expected,0 if shape.relu else -128,127).astype(np.int64)
+    lines = ['static const int32_t expected_values[M][N] = {']
+    lines.extend('    {' + ', '.join(str(x) for x in row) + '},' for row in expected)
+    lines.append('};')
+    path.write_text('\n'.join(lines)+'\n')
+
+
+def _static_inputs(workdir, llvm_bin, shape, amplitude):
+    """Embed fixture bytes using data-only assembly; no simulated setup loops."""
+    import numpy as np
+    a = amplitude * ((np.arange(shape.m,dtype=np.int64)[:,None]*7 + np.arange(shape.k)*3)%11-5)
+    b = amplitude * ((np.arange(shape.k,dtype=np.int64)[:,None]*5 + np.arange(shape.n)*2)%13-6)
+    text=[]
+    for name,values in [('a',a),('b',b)]:
+        path=workdir/(name+'.bin');values.astype(np.int8).tofile(path)
+        text.append(f'.section .data\n.balign 64\n.global {name}\n{name}:\n.incbin "{path}"\n')
+    asm=workdir/'input_data.S';asm.write_text(''.join(text));obj=workdir/'input_data.o'
+    subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-c',str(asm),'-o',str(obj)],check=True,capture_output=True)
+    return obj
 
 
 def main() -> int:
@@ -64,6 +72,7 @@ def main() -> int:
                     help="build and audit for a separate hardware numeric run")
     ap.add_argument("--embed-expected", action="store_true",
                     help="compute oracle on the host and link expected values into the probe")
+    ap.add_argument("--static-inputs", action="store_true")
     ap.add_argument("--wide-store", action="store_true")
     ap.add_argument("--reuse-b", action="store_true")
     ap.add_argument("--cache-b", action="store_true")
@@ -130,7 +139,12 @@ def main() -> int:
         _write_expected(workdir / "gemm_expected.inc", shape, args.input_amplitude)
         cflags.extend(["-DEMBED_EXPECTED", f"-I{workdir}"])
     cflags.append(f"-DSCALE={args.scale}f")
-    built = build_program([source, obj], workdir, target="gemmini",
+    inputs=[]
+    if args.static_inputs:
+        inputs.append(_static_inputs(workdir,args.llvm_bin,shape,args.input_amplitude))
+        cflags.append('-DSTATIC_INPUTS')
+    cflags.append('-march=rv64gc')
+    built = build_program([source, obj, *inputs], workdir, target="gemmini",
                           extra_cflags=cflags,
                           max_loaded_bytes=None)
     audit = audit_elf(built.elf.read_bytes())
@@ -163,6 +177,7 @@ def main() -> int:
         "scale": args.scale,
         "relu": args.relu,
         "embedded_expected": args.embed_expected,
+        "static_inputs": args.static_inputs,
         "wide_store": args.wide_store,
         "reuse_b": args.reuse_b,
         "cache_b": args.cache_b,

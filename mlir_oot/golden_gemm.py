@@ -63,9 +63,8 @@ class Shape:
         if self.wide_a and (self.k <= F.DIM or self.k > F.DIM * 4 or
                             self.k % F.DIM):
             raise ValueError("wide A load needs K in {32,48,64}")
-        if self.wide_b and (self.n <= F.DIM or self.n > F.DIM * 4 or
-                            self.n % F.DIM or _ceil_div(self.n, F.DIM) > self.bn):
-            raise ValueError("wide B load needs one N block of 32, 48 or 64")
+        # Wide B groups up to four adjacent tiles within each output block.
+        # Partial channel groups and multiple N blocks use their exact extents.
         if self.cache_a and (self.m > F.DIM or self.bm != 1 or
                              self.wide_a or self.pipeline_m or self.cache_b):
             raise ValueError("cached A needs one output-row tile and no competing A schedule")
@@ -168,9 +167,10 @@ class GoldenGemm:
                                       "cols": kr, "load_id": 0}, ptr)
         if cached_k is None:
             if s.wide_b:
-                ptr = self._ptr(self.b, krow, s.n, self.fb.const(0))
-                self._rocc("mvin", {"local": b_base * F.DIM,
-                                      "rows": kr, "cols": s.n, "load_id": 1}, ptr)
+                for d in range(0, len(nr), 4):
+                    ptr = self._ptr(self.b, krow, s.n, self._tile(n0,d))
+                    self._rocc("mvin", {"local": (b_base+d) * F.DIM,
+                        "rows": kr, "cols": sum(nr[d:d+4]), "load_id": 1}, ptr)
             else:
                 for d, cols in enumerate(nr):
                     ncol = self._tile(n0, d)
@@ -337,8 +337,8 @@ class GoldenGemm:
             b_base = 2 * F.SPAD_BANK_ROWS // F.DIM if s.banked_m else (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
             for ki in range(_ceil_div(s.k, F.DIM)):
                 kr = min(F.DIM, s.k - ki * F.DIM)
-                for d in range(1 if s.wide_b else nt):
-                    cols = s.n if s.wide_b else min(F.DIM, s.n - d * F.DIM)
+                for d in range(0, nt, 4 if s.wide_b else 1):
+                    cols = min(4*F.DIM if s.wide_b else F.DIM, s.n-d*F.DIM)
                     ptr = self._ptr(self.b, self.fb.const(ki * F.DIM),
                                     s.n, self.fb.const(d * F.DIM))
                     self._rocc("mvin", {

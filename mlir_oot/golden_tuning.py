@@ -32,7 +32,7 @@ def estimate(shape: Shape) -> dict:
                 a_commands += am if shape.wide_a else am * kt
             if not shape.cache_b:
                 b_loads += bn * kt
-                b_commands += kt if shape.wide_b else bn * kt
+                b_commands += _ceil_div(bn,4) * kt if shape.wide_b else bn * kt
             if shape.wide_store and shape.output_dtype == "i8":
                 full_cols = min(bn, max(0, shape.n // F.DIM - n0))
                 mvout_commands += am * (_ceil_div(full_cols, 4) + bn - full_cols)
@@ -40,7 +40,7 @@ def estimate(shape: Shape) -> dict:
                 mvout_commands += am * bn
     if shape.cache_b:
         b_loads = nt * kt
-        b_commands = kt if shape.wide_b else nt * kt
+        b_commands = _ceil_div(nt,4) * kt if shape.wide_b else nt * kt
     if shape.cache_a:
         a_loads = mt * kt
         a_commands = mt * kt
