@@ -18,7 +18,7 @@ class TestCapturedRequant(unittest.TestCase):
         self.assertEqual(len(chain['scales']),2)
         self.assertEqual(chain['bias'].index,2)
         declaration=rewrite_path(op,chain,'proven_requant',None)
-        module.verify();parsed=parse_module(serialize(module,[declaration]));parsed.verify()
+        module.verify();parsed=parse_module(serialize(module,[]));parsed.verify()
         self.assertFalse(any(match_integer_gemm(x) for x in parsed.walk()))
         decl=next(x for x in parsed.walk() if x.name=='func.func' and x.sym_name.data=='proven_requant')
         self.assertEqual(len(decl.arg_attrs),3)

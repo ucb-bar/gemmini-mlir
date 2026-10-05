@@ -40,6 +40,13 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path):
         direct=Path(work)/'direct_conv';manifest=build_direct(Path(source),llvm_bin,direct)
         rewritten=direct/'rewritten.mlir'
         if sha(rewritten)!=manifest['rewritten_sha256']:raise ValueError('direct rewrite identity mismatch')
+        reparsed=parse_module(rewritten.read_text())
+        for declaration in reparsed.walk():
+            if declaration.name=='func.func' and declaration.sym_name.data in symbols:
+                attrs=declaration.properties.get('arg_attrs')
+                access=[] if attrs is None else [x.data.get('bufferization.access') for x in attrs]
+                if [getattr(x,'data',None) for x in access]!=['read','read','write']:
+                    raise ValueError('fused declaration lost its bufferization access contract')
         from merlin.llvmlower.im2col_identity_view import rewrite_prepared_file
         identity=Path(work)/'identity_views';identity.mkdir(parents=True,exist_ok=True)
         prepared,report=rewrite_prepared_file(rewritten,identity)

@@ -140,3 +140,23 @@ The first executable above also passed actual Gemmini Spike execution for all
 generalize-before-fuse and post-fusion environment flags used in the earlier
 1.193B baseline; these counters are not a controlled performance comparison.
 An explicitly flagged build is required before evaluating the optimization.
+
+### Controlled build and composition fix
+
+The controlled build with both host fusion flags passed all 1,000 outputs but
+still copied each fused call's activation unnecessarily. The direct-convolution
+serializer had preserved only its newly introduced declarations, dropping the
+27 existing fused declarations' `bufferization.access` properties. It now
+preserves all attributed external functions; the mixed callback verifies the
+fused contracts after serialization and refuses any loss. This reduced static
+LLVM memcpy sites from 47 to 20.
+
+The corrected complete model at `out/whole_requant_access/build_direct/model.elf`
+has SHA256 `4369741869f4313957aeb6678cc4b971c9822dd03683d01949ce65b9dde3a63c`.
+Native and actual Gemmini Spike execution both match all 1,000 outputs exactly;
+final no-FSM audit passes, and the descriptor mismatch count is zero. Spike
+retired **1,018,739,739 instructions**, versus 1,065,877,761 with the unnecessary
+copies and about 1.193B for the earlier mixed direct16/dense38 baseline. This
+is a functional simulator proxy improvement; FireSim measurement remains
+necessary. Layout propagation is disabled in all these controlled builds.
+Receipt: `docs/perf_records/resnet_fused27_spike.json`.

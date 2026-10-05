@@ -186,6 +186,12 @@ def serialize(module, declarations):
     import io
     from xdsl.printer import Printer
     if isinstance(declarations,Operation): declarations=[declarations]
+    declarations=list(declarations)
+    # Composition may already contain external calls from an earlier binder.
+    # Preserve their properties as well as the newly introduced declarations.
+    for op in module.walk():
+        if op.name=='func.func' and not op.body.blocks and op.properties.get('arg_attrs') is not None and op not in declarations:
+            declarations.append(op)
     text=str(module)
     for declaration in declarations:
         old=str(declaration)
