@@ -61,6 +61,7 @@ The stronger bound also passes all786,432 original first-block
 output bits across all12 heads in strict target execution at17,319,092,950 retired instructions.
 [Archived target costs and qualification](../out/artifacts/probes/attention-prefix-guard-20261005/README.md)
 retain every losing variant, actual kernel calls, input/ELF pins and source snapshots.
+[Hardware decision](attention_certificate_hardware.md) pins the completed fair pair.
 A whole-model gate remains separate;12 heads in one block are not12 model layers. Full original first-vision
 head audits do not imply all model layers have equal fallback rates. Account for digit uploads,
 partial readback, guard evaluation and replay, and preserve the original Smol elementwise criterion.
