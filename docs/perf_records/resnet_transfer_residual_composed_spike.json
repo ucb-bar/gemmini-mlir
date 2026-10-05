@@ -1,0 +1,179 @@
+{
+  "schema": "resnet_transfer_residual_composition_full_gate_v1",
+  "scope": "General transfer-family policy1853 plus exact banked residual policy1854. Frozen qualified coref5d2f0650 retains accepted f32 host/runtime byte identity for an attributable device composition; newer sharedBF16 runtime fix remains in integration and will be qualified separately. Full native and actual Gemmini Spike original1000 bits exact. No additive hardware claim.",
+  "core_commit": "f5d2f0650a6b338b5c6c366dc46bbe57f9d6ab65",
+  "workdir": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed",
+  "requant_bundle": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle",
+  "requant_manifest_sha256": "c76ab2f6b118eb4b3bb6aba3241bb378df99f9dec596d2196f3d323961a726bc",
+  "residual_manifest": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/residual.json",
+  "residual_manifest_sha256": "9fecd068c12e17ef453c58894d42216a38307cdc542b87123b2dbb4aff800765",
+  "fresh_writer_calls": 70,
+  "byte_identical_files": [
+    {
+      "relative_path": "model.o",
+      "sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "host_llvm/model.linked.ll",
+      "sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "host_llvm/model.native.ll",
+      "sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "device/device_catalog_shim.o",
+      "sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "cgen/weights.bin",
+      "sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "cgen/model_io.h",
+      "sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "crt.o",
+      "sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "mlir_rt.o",
+      "sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "merlin_model.o",
+      "sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "byte_identical_to1853": true
+    },
+    {
+      "relative_path": "malloc.o",
+      "sha256": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+      "byte_identical_to1853": true
+    }
+  ],
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10222806",
+      "METRIC build_hash 9c4ff5258d52",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/spike.log",
+    "spike_console_sha256": "b4f1efcb02a0af104c166ac60f1f3e07c07447d78885696e08e120aca529ecd3",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "9c4ff5258d52",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/build_direct/lower/model.ll",
+      "source_sha256": "85b38bfc4b0c1887043cc9a02ba0105b6278c08f9fb78164e49c9fcb755794e0",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/build_direct/host_llvm/model.linked.ll",
+      "selected_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c"
+    },
+    "supplemental_objects_sha256": "98e963e940dc0a61f14bac93b9e49b57e98d98204c299348027ce5fcd468662c",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "final_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3272,
+      "2": 19887,
+      "3": 1293,
+      "4": 14672,
+      "5": 117672,
+      "6": 132344,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hardware_status": "not yet queued"
+}
