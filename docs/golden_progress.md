@@ -6,8 +6,8 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, clamp/RNE, blocked64 mean, pre-stem destination reuse and classifier wide-B/resident-A | 46,316,907 (1812) | All 1,000 golden output words exact | [1812](perf_records/resnet_prestem_classifier_firesim1812.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + exact scalar contraction accumulators | 648,210,569 (1816) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1816](perf_records/tiny_scalar_accumulator_firesim1816.json) |
+| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, clamp/RNE, packed guarded mean, pre-stem destination reuse and classifier wide-B/resident-A | 44,507,889 (1824) | All 1,000 golden output words exact | [1824](perf_records/resnet_packed_mean_firesim1824.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + four independent exact scalar accumulators | 615,651,105 (1821) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1821](perf_records/tiny_four_output_firesim1821.json) |
 | Full SmolVLA | Not admitted | Original full elementwise gate remains atol=0.03125, rtol=0.02; source RoPE arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -187,7 +187,7 @@ The complete ResNet capture now compiles to an RV64GC ELF with all54 contraction
 
 ## Current exact candidates and compilation contract
 
-Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. All155 device contractions and the previously selected activation approximation remain unchanged. The next strict four-output schedule is under qualification. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
+Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. Four independent output accumulators improve this to615,651,105 in1821,5.02% fewer than1816; every output bit is unchanged. All155 device contractions and the previously selected activation approximation remain unchanged. Two-output1825 and four-output with partial K-unroll2 in1828 are pending hardware comparison. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
 
 The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes. FireSim1819 measured46,680,853cycles,0.79% above1812; this arm is not the best recipe and its driver omitted explicit host scheduling. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
 
@@ -199,7 +199,20 @@ The packed NHWC mean variant proves the existing transpose and consumes the
 physical layout directly. Exact unsigned16-lane sums process eight channels per
 word with no interlane carry, keeping source f32 fallback for ambiguous sums.
 Full native and actualSpike preserve all1,000 original words at10,214,792
-instructions,7.02% below1812.23 focused tests pass. Stock1824 is queued; this
-is not yet a hardware gain. The bankedmatmul11 arm1823 independently retains
-a host object byte-identical1812 and all52 source/numeric proofs. Tiny's exact
-four-output arm1821 is under hardware collection.
+instructions,7.02% below1812.23 focused tests pass. Stock1824 verifies44,507,889
+cycles,3.91% below1812. The bankedmatmul11 arm1823 independently retains
+a host object byte-identical1812 and all52 source/numeric proofs, measuring
+46,127,051cycles. The combined packed-mean plus bankedmatmul5/8/11 candidate
+passes all original native and actualSpike outputs and zeroFSM; its host object
+is byte-identical1824. Stock1829 is pending. See
+[combined gate](perf_records/resnet_three_banked_packed_spike.json).
+
+SmolVLA source-compatible softmax initially returned NaNs in full preparation:
+the pinned xDSL parser numerically interprets unquoted dense float hex literals,
+turning the maximum initializer's negative infinity into4286578688.0. Merlin's
+portable printer now emits quoted raw bytes for dense floating attributes and
+recognizes splats by byte equality. Repeated xDSL/upstream parsing and native
+tests retain infinities, signed zeros, NaN payloads and subnormals;44 related
+tests pass. The trusted191,535-value softmax fixture is exact through full
+preparation. The fresh whole-model gate remains pending; this does not admit
+SmolVLA to hardware or relax its original elementwise criterion.

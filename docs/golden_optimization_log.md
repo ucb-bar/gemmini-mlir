@@ -809,7 +809,9 @@ packed/unpacked exhaustive small arrays and reachable49-value sums, both
 orders, unaligned input, count128, multiple batches and guards. Its explicit
 host scheduling true/false model objects and finalELFs are byte-identical, so
 no duplicate simulation follows that option-only comparison. All other control
-options are explicit.1824 is queued, without a hardware speedup claim yet.
+options are explicit. Stock1824 verifies44,507,889cycles,1,809,018 (3.906%)
+fewer than1812 with all1,000 original words exact. See
+`perf_records/resnet_packed_mean_firesim1824.json`.
 
 Performance trials need declared compile-policy deltas as well as object and
 ELF identity. For a device-only trial, retain a host model object byte-identical
@@ -818,3 +820,40 @@ scheduling, fusion environment options, host LLVM transform and actual C flags,
 then explain each changed object. Normal markers bind device bytes; a marker
 alone does not certify that a comparison changed only its intended policy.
 The source-selected banked1823 arm now meets the stronger unchanged-host check.
+
+### Independent accumulators and measured dense composition
+
+Tiny's four-output scalar schedule shares operand loads while preserving four
+independent increasing-K multiply/add chains. Stock1821 verifies615,651,105
+cycles,5.02% below1816, with all256,000 captured bits unchanged and the original
+Torch gate passing. Two outputs avoid product spills in the inspected PV loop;
+four outputs with LLVM partial-unroll2 hold eight products without spills and
+reduce actualSpike instructions to166,184,456. Those comparators are queued as
+1825 and1828; instruction counts and object liveness do not establish hardware
+speed. The generic default-off unroll hint must survive SCF/CF/LLVM translation:
+the final `loop_annotation` branch property emits LLVM unroll-count metadata,
+whereas the retained namespaced `llvm.loop_annotation` attribute was ignored.
+
+The matmul11 banked-M schedule verifies46,127,051 whole ResNet cycles in1823,
+189,856 below1812 with the host object byte-identical. Captured matmul5
+M3136/N64/K256 improves360,061 to205,881 GSIM cycles while preserving all200,704
+outputs and guards. Matmul8 has the same geometry but retains its own scale and
+source proof. The composed matmul5/8/11 plus packed-mean candidate passes all
+original native and actualSpike outputs, has a host object byte-identical1824,
+and passes the final zeroFSM audit. Stock1829 is pending. See
+`perf_records/resnet_three_banked_packed_spike.json`.
+
+### Dense-float serialization correctness
+
+The first full source-compatible softmax candidate produced1,600 NaNs although
+its trusted standalone fixture was exact. Minimization found the pinned xDSL
+dense literal parser converted unquoted `0xff800000` into a numeric positive
+float instead of negative infinity. Full preparation then underflowed every
+exponential and divided by zero. Failed artifacts are retained. Merlin's
+portable printer now writes dense floating constants as quoted raw bytes;
+byte equality detects splats without conflating signed zeros. f16/BF16/f32/f64
+roundtrip tests preserve infinities, NaN payloads, signed zeros and subnormals
+through three xDSL parses and upstream verification; actual native returned
+bits also pass.44 focused/related tests pass. Full preparation of the trusted
+191,535-value softmax is exact. The replacement whole-model accuracy gate is
+pending under the unchanged atol=.03125/rtol=.02 criterion.
