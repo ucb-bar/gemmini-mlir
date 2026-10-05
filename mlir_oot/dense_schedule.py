@@ -11,7 +11,7 @@ from .golden_tuning import estimate
 from .tables import rtl_facts as F
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False):
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False):
     shape.validate();selected=shape;policies=[]
     if grouped_b and not shape.wide_b:
         candidate=replace(shape,wide_b=True)
@@ -34,6 +34,19 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
             candidate.validate()
             if estimate(candidate)['primitive_command_count']<=estimate(selected)['primitive_command_count']:
                 selected=candidate;policies.append('banked_prefetch_single_store')
+    if full_k_banked:
+        # Explicit per-source selection only: legality is general, performance
+        # must be qualified separately. Scalar readout fields are unchanged.
+        if (selected.output_dtype != 'i8' or selected.bias or selected.cache_a
+                or selected.m <= F.DIM or selected.k % F.DIM
+                or selected.n % F.DIM):
+            raise ValueError('full-K banked schedule requires aligned unbiased i8 GEMM')
+        candidate=replace(selected,bm=1,bn=_ceil_div(selected.n,F.DIM),
+            cache_b=True,cache_a=False,pipeline_m=True,prefetch_m=True,
+            banked_m=True,separate_b_bank=False,wide_a=True,wide_b=True,
+            wide_store=True,reuse_b=False)
+        candidate.validate()  # Entire A/B panels and both accumulator banks.
+        selected=candidate;policies.append('full_k_banked_prefetch')
     if separate_b_bank and not selected.banked_m and not selected.separate_b_bank:
         candidate=replace(selected,separate_b_bank=True)
         try:

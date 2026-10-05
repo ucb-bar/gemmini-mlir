@@ -34,3 +34,16 @@ def test_grouped_b_is_independent_explicit_and_reduces_commands():
  g,k=select_kernel(s,grouped_b=True)
  assert g.shape.wide_b and not g.shape.banked_m
  assert estimate(g.shape)['primitive_command_count']<estimate(s)['primitive_command_count']
+
+
+def test_full_k_banked_explicit_resources_and_epilogue():
+ import pytest
+ s=Shape(3136,128,256,bm=8,bn=8,output_dtype='i8',scale=.003538144286721945,relu=True,cache_b=True,wide_b=True,reuse_b=True,separate_b_bank=True)
+ g,_=select_kernel(s);assert g.shape is s
+ g,k=select_kernel(s,full_k_banked=True);c=g.shape
+ assert (c.m,c.n,c.k,c.scale,c.relu,c.bias)==(s.m,s.n,s.k,s.scale,s.relu,s.bias)
+ assert c.bm==1 and c.bn==8 and c.banked_m and c.prefetch_m and c.wide_a
+ assert not c.separate_b_bank and not c.reuse_b
+ # Cached B and entire A must fit their reserved physical banks.
+ for bad in [replace(s,k=8192),replace(s,n=1024),replace(s,k=255),replace(s,bias=True)]:
+  with pytest.raises(ValueError):select_kernel(bad,full_k_banked=True)

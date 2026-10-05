@@ -138,7 +138,7 @@ def integer_adapter(schedule,symbol,kernel,direct,proof):
     return emit_readout(proof,readout,fixedpoint=True)+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=()):
     if virtual_padding and not flat_spatial:raise ValueError('virtual padding requires flat spatial scheduling')
     from merlin.runtime.captured_constants import verify_capture_constant
     if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
@@ -199,7 +199,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial,virtual_padding=virtual_input is not None);schedule=generator.conv
         else:
             from .dense_schedule import select_kernel as select_dense
-            generator,schedule_kind=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank);schedule=generator.shape
+            generator,schedule_kind=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank,full_k_banked=rid in full_k_banked_regions);schedule=generator.shape
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
@@ -207,6 +207,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
         routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+    selected_regions={r['region'] for r in routes if 'full_k_banked_prefetch' in r['schedule_kind']}
+    if selected_regions != set(full_k_banked_regions):raise ValueError('requested full-K banked source regions not all selected')
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -220,7 +222,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()
