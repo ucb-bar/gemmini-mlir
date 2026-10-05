@@ -1,0 +1,130 @@
+{
+  "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+  "elf_sha256": "44cf65e1470ef406cd27304b0870086f2100b49e62ba113b4a285175956aa1a3",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 10227644",
+    "METRIC build_hash 1b1fa7c2f7ff",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/spike.log",
+  "spike_console_sha256": "2a787ec8e62b33d2a14106e3cf381b13fe457d54d6717ca012a7b67db55cccad",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "schema": "resnet_five_resident_conv_spike_v1",
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "build": {
+    "elf": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "1b1fa7c2f7ff",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/build_direct/lower/model.ll",
+      "source_sha256": "03af2390aed919debd9e647c5d94c18e7ae84f2fc0ceed007714a06d7ea362c1",
+      "selected_path": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/whole_resident_five/build_direct/host_llvm/model.ll",
+      "selected_sha256": "bafe267320fa821808c56e471efd88498e297232dd21fc96db5f995e485833b6"
+    },
+    "supplemental_objects_sha256": "39c77b00a194e4b5f9840f0f1e2d0efb33001abaaa856a0bfbd01e80da302fcf",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "44cf65e1470ef406cd27304b0870086f2100b49e62ba113b4a285175956aa1a3",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3262,
+      "2": 9675,
+      "3": 1291,
+      "4": 13918,
+      "5": 117120,
+      "6": 131038,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "source_bundle": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/exact52_three_banked_resident_bundle/requant.json",
+  "source_bundle_sha256": "0394708033915f3c3861ca683b4d2a765c7d4bd6165470ebf85a50c69b57a85b",
+  "changed_regions": [
+    "matmul_29",
+    "matmul_32",
+    "matmul_35",
+    "matmul_38",
+    "matmul_41"
+  ],
+  "all52_numerical_proofs_unchanged": true,
+  "host_model_byte_identical1829": true,
+  "host_model_sha256": "69ec03293f7c69233ab7411be86cbe9255e1c7ef017b59ffd65d19b763a1891b",
+  "controls": "1829 three banked pointwise + packed NHWC exact mean; hostvectorizeTrue/both fusionflagsTrue. Resident schedule only changes five direct convolutions.",
+  "hardware_result": null
+}
