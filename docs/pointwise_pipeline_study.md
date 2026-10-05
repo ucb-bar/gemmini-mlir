@@ -14,12 +14,21 @@ Optional `banked_m` places A slots at scratchpad rows0/4096 and cached B at8192,
 
 ## Validation
 
-- Existing28 unit tests pass after schedule changes.
-- GSIM144x64x64, bm4, prefetch without bank separation: PASS5449cycles, every output+guard, final ELF noFSMpass.
-- GSIM208x64x64 bank-separated bm4 edge/drain: PASS6720cycles, all outputs+guard.
-- GSIM48x64x64 bank-separated bm1 odd-block drain: PASS2353cycles, all outputs+guard.
-- Full3136 shape unbanked bm4: GSIM PASS94304cycles (10.1% below104931baseline); unbanked bm8: PASS96414cycles (8.1% below baseline). Both validate all200704 outputs+guard and final noFSM. Bank-separated bm8: GSIM PASS91250cycles (13.0% below baseline, 5.4% below same bm8 without bank separation), every output+guard and final noFSM. FireSim1733 measures bank-separated bm8;1734 measures bank-separated bm1;1736 measures measured-GSIM-winner unbanked bm4 after full-model jobs. Final ELF audits pass for compiled candidates. Do not promote a candidate before numeric validation and a hardware A/B win.
-- Old toolchain Spike rejected the generic layer probe CRT at tohost1337, with and without explicit memory range. This is not used as a kernel correctness result; GSIM and FireSim perform the actual numerical checks.
+Existing 28 unit tests pass. GSIM edge tests validate odd block counts and drains: 144x64x64 unbanked bm4 passes at 5,449 cycles; 208x64x64 banked bm4 passes at 6,720; 48x64x64 banked bm1 passes at 2,353. Every probe checks all outputs and guard bytes, and every final ELF passes the zero-FSM audit.
+
+Full 3136x64x64 measurements use identical i8 bias/scale/ReLU semantics:
+
+| Schedule | GSIM kernel cycles | Stock FireSim kernel cycles |
+|---|---:|---:|
+| Baseline bm16 | 104,931 | 105,258 (job 1725) |
+| Prefetch bm4 | 94,304 | Pending job 1736 |
+| Prefetch bm8 | 96,414 | Not submitted |
+| Prefetch with separate banks, bm8 | 91,250 | **92,101 (job 1733)** |
+| Prefetch with separate banks, bm1 | Full shape not run | Pending job 1734 |
+
+Job 1733 is DONE with all 200,704 outputs and guard bytes passing, exact ELF and bitstream identity verified. Its 12.50% reduction (1.143x speedup) reproduces the GSIM gain on hardware. These i8 epilogue measurements do not establish the performance of the current upstream catalog's i32-output schedule; that needs its own measurement or a proven epilogue fusion.
+
+The old toolchain Spike rejected the generic layer probe CRT at tohost 1337, with and without explicit memory range. This is not used as a kernel correctness result; GSIM and FireSim perform the numerical checks.
 
 ## Needed automatic lowering abstractions
 
