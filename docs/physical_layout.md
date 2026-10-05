@@ -95,3 +95,11 @@ On exact50, all 16 residuals are admitted. The live transpose census falls
 from 36 copies / 13,045,760 output bytes to 2 copies / 702,464 bytes. Remaining
 copies are the input float layout and the final i8 layout before mean reduction.
 The full native model matches all 1,000 fresh-capture golden bits exactly.
+
+Actual Gemmini Spike also passes all 1,000 golden bits, rank mismatch 0, final
+ELF no-FSM. With otherwise identical raw-byte lookup scheduling, the shared
+permutation reduces retired instructions from 316,587,699 to 254,701,066
+(19.55%). Combined with complete weight hoisting and lookup scheduling this
+is 45.10% below the earlier exact50 463,973,868-instruction baseline. These
+are Spike functional counters; the new combination awaits FireSim measurement.
+Receipt: `docs/perf_records/resnet_exact_shared_residual_layout.json`.
