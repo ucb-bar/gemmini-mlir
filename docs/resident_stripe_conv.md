@@ -50,5 +50,24 @@ Forty focused tests pass, including policy decisions, numeric-field preservation
 source-proof refusal and unchanged direct/requant paths.
 [Complete receipt](perf_records/resident_stripe_conv_gsim.json).
 
-Whole-model source binding and stock FireSim qualification are still required.
-This explicit schedule is not enabled as a universal default.
+## Full source and device qualification
+
+The52-route immutable source bundle retains every numeric proof, exact integer
+readout contract and rewritten IR byte. Six wider convolution device objects
+change, selected by the general policy. Existing dense, stem, residual and five
+narrow resident experiment controls remain the1853 strategy. The normal full
+builder covers all70 fresh writers, and native plus actual strict RV64GC Spike
+verify all1000 original output bits. The final linked ELF passes zeroFSM.
+
+The first build used the current generic BF16 runtime ABI correction, changing
+`mlir_rt.o` from1853. Its correctness evidence is retained as a separate arm.
+The hardware candidate was then rebuilt through the pinned normalf5d2f0650
+builder used by1853/1861, since this ResNet has no BF16 helpers. Hostmodel.o,
+selected/native LLVM, shim, weights, IO header, runtime, startup, console and
+call wrapper are byte-identical1853. This preserves clean device-schedule
+comparison without reverting the current Merlin ABI fix. The candidate
+ELF1bcf4e3c...cdeb21, marker140ac4cafa7c retires10,056,866 Spike instructions;
+hardware cycles remain pending. [Full gate](perf_records/resnet_resident_stripe_policy_spike.json).
+
+This explicit schedule is not enabled as a universal default. Stock FireSim
+decides whether it joins the best whole-model recipe.

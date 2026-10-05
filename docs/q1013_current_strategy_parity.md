@@ -80,10 +80,16 @@ weights, input/output interfaces or goldens would not qualify this source model.
    are general schedule improvements; alternative numeric derivations need their
    own full-domain proofs and measured DMA/readout costs.
 4. **Recover actual reference per-layer hardware costs.** The archive ELF prints
-   them, but their UART is absent. A diagnostic replay needs an explicit changed
-   artifact ledger: six dynamically dead library LOOP words are present, and
-   `.diag` mixes code and a table under an executable section flag. The original
-   strict audit fails. This work must not be conflated with our source qualification.
+   them, but their UART is absent. A modified reference diagnostic replaces six
+   dynamically dead LOOP words with NOP and correctly splits `.diag` code/data
+   section metadata. Program headers, entry point, addresses and all other
+   loaded bytes are unchanged. Fresh actual original/diagnostic Spike stdout
+   and every200,087-PC histogram entry agree exactly; all six changed words
+   execute zero times. The complete final audit passes. Stock reference-only
+   replay1876 is queued, retaining the reference's own1000-logit self-check,
+   argmax258 and54 layer records. The resulting cycles will describe this
+   modified diagnostic, not certify our source model or replace the archive
+   manifest's original22,387,449. [Complete ledger and equivalence](perf_records/q1013_diagnostic_reference_spike.json).
 
 Whole-source native, actual target and stock FireSim gates decide whether the
 locally faster resident convolution should join the best recipe. Capsule gains
