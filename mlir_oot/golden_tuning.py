@@ -29,7 +29,7 @@ def estimate(shape: Shape) -> dict:
             output_blocks += 1
             if not shape.cache_a:
                 a_loads += am * kt
-                a_commands += am if shape.wide_a else am * kt
+                a_commands += am * _ceil_div(kt,4) if shape.wide_a else am * kt
             if not shape.cache_b:
                 b_loads += bn * kt
                 b_commands += _ceil_div(bn,4) * kt if shape.wide_b else bn * kt

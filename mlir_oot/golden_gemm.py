@@ -61,9 +61,8 @@ class Shape:
             raise ValueError("store scale must be finite and positive")
         if self.output_dtype == "i32" and (self.scale != 1.0 or self.relu):
             raise ValueError("i32 readout does not apply scale or ReLU")
-        if self.wide_a and (self.k <= F.DIM or self.k > F.DIM * 4 or
-                            self.k % F.DIM):
-            raise ValueError("wide A load needs K in {32,48,64}")
+        if self.wide_a and (self.k <= F.DIM or self.k % F.DIM):
+            raise ValueError("wide A panels require K to be a positive tile multiple larger than one tile")
         # Wide B groups up to four adjacent tiles within each output block.
         # Partial channel groups and multiple N blocks use their exact extents.
         if self.cache_a and (self.m > F.DIM or self.bm != 1 or
@@ -250,10 +249,14 @@ class GoldenGemm:
             a_base = slot * (F.SPAD_BANK_ROWS // F.DIM if s.banked_m else s.bm * kt) if s.pipeline_m else 0
             for a, rows in enumerate(mr):
                 mrow = self._tile(m0, a)
-                ptr = self._ptr(self.a, mrow, s.k, self.fb.const(0))
-                self._rocc("mvin", {"local": (a_base + a * kt) * F.DIM,
-                                      "rows": rows, "cols": s.k,
-                                      "load_id": 0}, ptr)
+                # Retain the full K panel, issuing only the already supported
+                # at-most-four-tile MVIN width. Each group occupies disjoint
+                # local K tiles; resource validation covers the complete panel.
+                for ki in range(0, kt, 4):
+                    ptr = self._ptr(self.a, mrow, s.k, self.fb.const(ki * F.DIM))
+                    self._rocc("mvin", {"local": (a_base + a * kt + ki) * F.DIM,
+                                          "rows": rows, "cols": min(4 * F.DIM, s.k-ki * F.DIM),
+                                          "load_id": 0}, ptr)
         if self.bias is not None:
             for a, rows in enumerate(mr):
                 for d, cols in enumerate(nr):
