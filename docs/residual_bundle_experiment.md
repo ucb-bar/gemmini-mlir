@@ -39,3 +39,11 @@ Composition also supports an explicitly empty remaining-direct component after
 earlier fusions consume every direct convolution. Standalone no-match refusal
 is unchanged; composed empty artifacts contain an uncalled ordinary CPU anchor
 so strict executable-section auditing is preserved.
+
+Adapters with owned constant/data tables must use `-mcmodel=medany` on this
+bare-metal target: default medlow produced an R_RISCV_HI20 overflow for an
+identity table above0x80000000, caught at final link. The adapter compiler now
+records its exact command and compiler/source/object hashes. A regression
+compiles a table-owning adapter and links its text/data at0x80000000; the
+resulting ELF passes the ordinary no-FSM audit. Object audit alone cannot
+establish that the complete device/host memory model links correctly.

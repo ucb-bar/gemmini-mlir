@@ -158,6 +158,13 @@ void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*identity,int8_
 '''
 
 
+def compile_adapter(source, output, llvm_bin):
+    source,output,llvm_bin=map(Path,(source,output,llvm_bin))
+    command=[str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin','-c',str(source),'-o',str(output)]
+    subprocess.run(command,check=True,capture_output=True)
+    return dict(compiler_argv=command,compiler_sha256=sha(llvm_bin/'clang'),source_sha256=sha(source),object_sha256=sha(output))
+
+
 def build(capture,llvm_bin,output,*,max_output_lsb=0):
     capture,llvm_bin,output=map(Path,(capture,llvm_bin,output));numeric=policy(max_output_lsb)
     output.mkdir(parents=True,exist_ok=False)
@@ -179,9 +186,9 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0):
         device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         c=adapter(route,symbol,kernel);(work/'adapter.c').write_text(c)
-        subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-ffreestanding','-fno-builtin','-c',str(work/'adapter.c'),'-o',str(work/'adapter.o')],check=True,capture_output=True)
+        adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(c+native_oracle(route,kernel))
-        routes.append({k:v for k,v in route.items() if k not in ('inputs','cleanup_ops')}|dict(region=region,symbol=symbol,kernel=kernel,compilation=compilation,proof_sha256=hashlib.sha256(canonical(route['proof']).encode()).hexdigest()))
+        routes.append({k:v for k,v in route.items() if k not in ('inputs','cleanup_ops')}|dict(region=region,symbol=symbol,kernel=kernel,compilation=compilation,adapter_compilation=adapter_compilation,proof_sha256=hashlib.sha256(canonical(route['proof']).encode()).hexdigest()))
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
     linked=output/'residual.o';audit=None

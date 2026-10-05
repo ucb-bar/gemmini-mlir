@@ -81,3 +81,19 @@ def test_one_lsb_route_requires_opt_in():
     parsed=parse_module(serialize(module,[declaration]));parsed.verify()
     declaration=next(x for x in parsed.walk() if x.name=='func.func' and x.sym_name.data=='residual_bound')
     assert declaration.attributes['gemmini.numeric_policy'].data['max_output_lsb'].value.data==1
+
+
+def test_adapter_owned_table_links_at_baremetal_address(tmp_path):
+    import shutil
+    from mlir_oot.captured_residual_bundle import compile_adapter
+    from mlir_oot.no_fsm_audit import audit_elf
+    llvm=Path('/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin')
+    linker=llvm/'ld.lld'
+    if not linker.is_file():linker=Path(shutil.which('ld.lld') or '/nonexistent')
+    if not (llvm/'clang').is_file() or not linker.is_file():pytest.skip('target toolchain unavailable')
+    source=tmp_path/'adapter.c';source.write_text('static const char table[256]={1}; const char *identity(void){return table;}')
+    compilation=compile_adapter(source,tmp_path/'adapter.o',llvm)
+    script=tmp_path/'link.ld';script.write_text('SECTIONS { . = 0x80000000; .text : { *(.text*) } .rodata : { *(.rodata*) } }')
+    subprocess.run([str(linker),'-T',str(script),'-e','identity',str(tmp_path/'adapter.o'),'-o',str(tmp_path/'adapter.elf')],check=True,capture_output=True)
+    assert audit_elf((tmp_path/'adapter.elf').read_bytes())['status']=='pass'
+    assert compilation['object_sha256'] and compilation['source_sha256']
