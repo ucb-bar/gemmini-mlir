@@ -194,3 +194,13 @@ receipts confirm the distinct requested booleans. No duplicate hardware job is
 submitted because this ResNet lowering contains no effective vectorization
 change under these features. Tiny's scalar-host improvement does not transfer
 to this already transformed ResNet instance.
+
+## Tiny scalar quant/RNE hardware1792
+
+Verified stock866,822,103 forward cycles, full256,000f32/1,024,000-byte digest
+unchanged versus original native and Spike reference. Final staged ELF,bitstream
+and UART pinned. This is15.86% fewer cycles than scalar-only1788 at1,030,207,906
+and51.85% fewer than original1747 at1,800,267,524. The normal backend now hashes
+selected host LLVM, so build_hash2acafad83908 identifies the composition.
+Original Torch quality policy remains unchanged; this is exact to prior compiled
+outputs. ResNet1795 remains queued separately.
