@@ -1,0 +1,90 @@
+{
+  "schema": "resnet_exact50_nested_hoist_layout_v1",
+  "layout": {
+    "schema": "exact_physical_layout_v1",
+    "before": {
+      "copies": 106,
+      "output_bytes": 20642028,
+      "producer_boundaries": {
+        "tensor.expand_shape": 53,
+        "tensor.extract_slice": 36,
+        "tensor.insert_slice": 17
+      }
+    },
+    "after": {
+      "copies": 36,
+      "output_bytes": 13045760,
+      "producer_boundaries": {
+        "argument": 1,
+        "tensor.expand_shape": 35
+      }
+    },
+    "rewrite": {
+      "requested": 299,
+      "canceled": 33,
+      "unit_views": 2,
+      "scalar_regions": 7,
+      "static_slices": 475,
+      "boundary_transposes": 69
+    },
+    "call_abi_changed": false,
+    "scalar_arithmetic_changed": false,
+    "source_sha256": "f00e64b25e906e8932b8b8891916c2c6c18f88f14d50f9e1d526c99618ca4d0b",
+    "rewritten_sha256": "5d637d3a39e377a835be5697010827a60e0e46a7b22a9608ddec14a533f50479"
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "41a5b73d4c6d19351e1da8e8e471e3513f47eacf058df16214e0e15acd75f422",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 341424822",
+      "METRIC build_hash 0399d5547c25",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "41a5b73d4c6d19351e1da8e8e471e3513f47eacf058df16214e0e15acd75f422",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 249,
+      "1": 3436,
+      "2": 8115,
+      "3": 1194,
+      "4": 9854,
+      "5": 74184,
+      "6": 84038,
+      "7": 54
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "comparison_note": "prior463973868hadfirst-only weight hoist and no layout; this combined gain is not isolated layout benefit",
+  "firesim_measured": false
+}

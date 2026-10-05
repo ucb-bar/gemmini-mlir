@@ -59,3 +59,17 @@ optimization is implemented by the layout pass.
 Full weighted source census: `docs/perf_records/resnet_exact50_host_census.json`.
 Per-operation cardinalities are output-element counts; reduction work requires
 its reduction dimension and is not included in those simple scalar counts.
+
+The complete upstream static weight-hoist implementation (`c16584354`) plus
+layout propagation passes exact50 +CPU LUT +pooled stem whole-model native and
+actual Spike validation: all1,000 fresh-capture golden bits exact, descriptor
+ranks correct, final ELF no-FSM. Spike records341,424,822instructions vs the
+prior463,973,868 with first-only hoisting and no propagation. This26.41% gain
+combines both changes and must not be attributed solely to layout propagation.
+
+After full weight hoisting, the prepared activation census is106copies /
+20,642,028bytes before propagation and36copies /13,045,760bytes after. Remaining
+35tensor copies are16residual outputs and19contraction outputs feeding residual
+calls; the other copy is the input conversion. Moving a **shared proven
+permutation** across the flat elementwise residual ABI can address this seam.
+Receipt: `docs/perf_records/resnet_exact50_nested_hoist_layout.json`.
