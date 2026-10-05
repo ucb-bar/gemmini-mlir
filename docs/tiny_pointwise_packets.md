@@ -34,5 +34,10 @@ are in `perf_records/tiny_pointwise_packet_gsim.json`.
 
 The two-lane whole Tiny candidate preserves all original 256,000 compiled
 output words and the unchanged Torch gate in native execution. Device kernel and
-shim bytes are identical to qualified stock job1846. Whole target qualification
-and FireSim timing are pending; the stock best remains569,151,067 cycles.
+shim bytes are identical to qualified stock job1846. Full strict Gemmini Spike
+qualification also retains every original bit, with166,605,674 functional
+instructions versus1846's168,567,482. Runtime, device, shim, weights, startup
+and console objects are byte-identical to1846; only the host model and
+marker-bearing harness object differ. Whole FireSim timing is pending; the
+stock best remains569,151,067 cycles. See
+`perf_records/tiny_pointwise_packet_spike.json`.

@@ -1,0 +1,204 @@
+{
+  "schema": "tiny_pointwise_packet_whole_v1",
+  "status": "pass",
+  "started_utc": "2026-10-05T20:20:15.661937+00:00",
+  "hypothesis": "Independent two-lane tensor arithmetic packets reduce host FMA/divide serialization.",
+  "owner": "Merlin generic host scheduling; OOT hardware qualification.",
+  "emitted_change": "Two scalar lanes cloned breadth first, exact bounded tails and unchanged source operations; all device choices unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/model.elf",
+  "elf_sha256": "d0a2aaa939fdbe1ffd7d2931901cb49b37c6cbf0f00250d9ea7cc38c8c54de70",
+  "marker": "37bdf9be0856",
+  "core_frozen_base": "9c962f8e28b2160f8d54b58264c1156336bc5f63",
+  "core_packet_commit": "dc0efa251",
+  "core_strict_scope_followup": "dada2c07d",
+  "frozen_source_commits": [
+    "0accb4962",
+    "ed81233af"
+  ],
+  "build": {
+    "elf": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "37bdf9be0856",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/lower/model.ll",
+      "source_sha256": "0749b01c8f2d4cada25fd1a42fba8070e958b455e6f5d4afb4ae23a268274fcb",
+      "selected_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/host_llvm/expanded.ll",
+      "selected_sha256": "f4cce5abe900f28d10b7d8a8a2abea33bc4ccda52a3abe3599a2e4a15a200d07"
+    },
+    "supplemental_objects_sha256": "c0f5b070384db6c90d234aac51ab47fe52f9310b0a1401dc7cfd86bdc35b446a",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "d0a2aaa939fdbe1ffd7d2931901cb49b37c6cbf0f00250d9ea7cc38c8c54de70",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 312,
+      "2": 738,
+      "3": 320,
+      "4": 1248,
+      "6": 1248,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "object_comparison1846": {
+    "model.o": {
+      "candidate_sha256": "842037c4920947565207612e9eb02c51f3f08f9cba9835868180af1385a71279",
+      "control_sha256": "46b341a521e9b2265023c6189b8636686c770762e2f76c319b770b19fe27184b",
+      "byte_identical": false
+    },
+    "merlin_model.o": {
+      "candidate_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "control_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "byte_identical": true
+    },
+    "mlir_rt.o": {
+      "candidate_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "control_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "byte_identical": true
+    },
+    "malloc.o": {
+      "candidate_sha256": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+      "control_sha256": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+      "byte_identical": true
+    },
+    "device/device_catalog_shim.o": {
+      "candidate_sha256": "1ae900e987d1d0c29b0abc583f3d07289e501fb8ebfc15c9617ee3b214e06a81",
+      "control_sha256": "1ae900e987d1d0c29b0abc583f3d07289e501fb8ebfc15c9617ee3b214e06a81",
+      "byte_identical": true
+    },
+    "device_catalog/kernel.o": {
+      "candidate_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+      "control_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+      "byte_identical": true
+    },
+    "weights_blob.o": {
+      "candidate_sha256": "680b3767aa34673a260d9ace870be109f8754edd0dd7d27ec16ba98787beb3fd",
+      "control_sha256": "680b3767aa34673a260d9ace870be109f8754edd0dd7d27ec16ba98787beb3fd",
+      "byte_identical": true
+    },
+    "crt.o": {
+      "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "control_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "byte_identical": true
+    },
+    "console.o": {
+      "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "control_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "byte_identical": true
+    },
+    "model_main.o": {
+      "candidate_sha256": "4753f3cda97c78c3ae79f9659e37fe7e44629f8a2b53162cefedc51d1bef5e56",
+      "control_sha256": "e4be2dca76e5864b33f63cd2e88f2baba15e2402e5c9576487c8f29483df0e73",
+      "byte_identical": false
+    }
+  },
+  "token_checkpoint": {
+    "token_usage_available": false,
+    "exclusive_attribution": "unknown; child get_goal has no goal accounting",
+    "scope": "Parent records campaign-wide snapshots"
+  },
+  "native_evidence": {
+    "llvm_byte_identical_to_validated_modern_candidate": true,
+    "receipt": {
+      "scope": "whole_2: native host with scalar integer device stand-ins",
+      "llvm_sha256": "368ada7c2223b6d2975ddcd89f947f23290b9d681e6631873cdf6f364597efb0",
+      "finite": true,
+      "allclose": true,
+      "relative_l2": 2.1918432935308374e-07,
+      "cosine": 1.0,
+      "max_abs_error": 9.5367431640625e-06,
+      "original_compiled_bits_exact": true,
+      "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+    },
+    "source_sha256": "368ada7c2223b6d2975ddcd89f947f23290b9d681e6631873cdf6f364597efb0",
+    "receipt_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/validation.json",
+    "receipt_sha256": "fd22361b3faed480f8d41bf03881fe96939e0297e4104e564b85a6c4b3f0a901",
+    "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb"
+  },
+  "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "original_atol": 0.03125,
+  "original_rtol": 0.02,
+  "original_outputs": 256000,
+  "original_compiled_raw_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "argv": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/model.elf"
+  ],
+  "watcher_pid": 2761095,
+  "spike_pid": 2765088,
+  "finished_utc": "2026-10-05T20:21:54.781537+00:00",
+  "exit_code": 0,
+  "spike_console_sha256": "3057c4cf698c515b7210798c5c7153c3f783dfa9058c310025cb7bb9e8b86323",
+  "metrics": {
+    "cycles": "166605674",
+    "build_hash": "37bdf9be0856",
+    "memref_rank_mismatch": "0"
+  },
+  "functional_instructions_not_hardware_cycles": 166605674,
+  "all_original_target_bits_exact": true,
+  "hardware_status": "not submitted",
+  "decision": "Qualified for stock FireSim comparison with1846",
+  "functional_counter_control1846": 168567482,
+  "functional_instruction_change_fraction": 0.01163811653780289,
+  "optimization_journey_checkpoint": {
+    "hypothesis": "Independent two-lane tensor arithmetic packets reduce host FMA/divide serialization.",
+    "owner": "Merlin generic host scheduling; OOT hardware qualification.",
+    "actual_emission": "Two scalar lanes cloned breadth first, exact bounded tails and unchanged source operations; all device choices unchanged.",
+    "before_after_metric": "Original all-output target gate is exact; 168,567,482 to 166,605,674 functional instructions. Actual stock whole cycles pending.",
+    "gates": [
+      "17 generic native/tail/alias/refusal/default tests",
+      "all 256,000 original native and target words exact",
+      "original Torch gate unchanged",
+      "final ELF zero FSM",
+      "runtime/device/shim/weights/startup/console byte-identical1846"
+    ],
+    "decision": "Qualified two-lane candidate for exact stock FireSim comparison; retain1846 best until complete hardware result.",
+    "token_usage_available": false,
+    "token_attribution": "Root records campaign snapshots; no child or exact optimization billing counter exposed."
+  }
+}
