@@ -1056,3 +1056,33 @@ attributes and was insufficient evidence. The early77.4-second prototype also
 removed an original forward attribute; retain that timing as diagnostic only.
 Corrected normal-build compilation/device gates remain pending; numeric receipts
 retain their exact executed artifacts and original full gate.
+
+
+### ResNet general-policy hardware win and fresh profile
+
+1849 verifies42,269,808 cycles with every original output bit unchanged,
+567,280 (1.324%) below1836. The shape/resource/command-cost policy now supplies
+the measured best, with an identical host object and four changed device kernels.
+[Hardware](perf_records/resnet_banked_command_policy_firesim.json).
+
+Fresh1850 instrumentation uses the exact1849 objects and verifies70 source-bound
+calls, order/counts/conservation and all1,000 original outputs. Its42,303,592
+whole-forward cycles are33,784 (0.080%) above the unprofiled control. Interior
+42,303,164=33,814,043 device+8,489,121 host. The pre-stem4,017,289-cycle host
+interval is the largest; intervals before26/49 include the two exact integer
+readouts and all intervening work (1,955,979/962,942). Pointwise13,150,309,
+direct11,969,037, residual6,769,409, pooledstem1,446,279 andclassifier479,009
+conserve the device total. Source counts alone do not isolate each CPU operation.
+
+Corrected normal Smol helper-only outlining compiles O2 in111.254seconds, directly
+verifies all7,617 helper noinline attributes and preserves original forward
+alwaysinline. Full native original1,600 outputs remain bitexact; final noFSM
+ELF869eca7b...f68e898 is in actual Gemmini Spike qualification. Earlier77s and
+565s prototype labels remain explicitly corrected historical evidence.
+
+Exact full-pair residual analysis proves39 chunks minimal for the existing
+positive-coefficient/one-positive-binary32-scaled-store family, including arbitrary
+integer accumulator bias. A four-chunk projection plusCPUthreshold readout is
+exact but loses its mesh saving to scalar readout/DMA cost. This identifies a
+numeric/datapath constraint, not a missed lower-coefficient choice in that family.
+[Certificate](residual_coefficient_minimality.md).

@@ -6,7 +6,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, three banked dense schedules, five resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 42,837,088 (1836) | All 1,000 original output words exact | [1836](perf_records/resnet_fresh_resident_firesim1836.json) |
+| ResNet exact52/wide16, virtual padding/layout, general banked dense command-cost policy, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 42,269,808 (1849) | All 1,000 original output words exact | [1849](perf_records/resnet_banked_command_policy_firesim.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch and fresh writer ownership | 569,151,067 (1846) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1846](perf_records/tiny_expanded_writer_prefetch_firesim1846.json) |
 | Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output now **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC target qualification in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
 
@@ -46,7 +46,7 @@ and actual final-ELF Spike, with an identical1836 host object and only seven dev
 objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836;42,837,088 remains the best. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes and is rebuilding through the normal pipeline; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
+at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
@@ -279,3 +279,11 @@ An explicit OOT support provider now exposes the curated harness/GSIM command to
 current Merlin orchestration, removing the legacy Python registration dependency.
 A real numeric/guard capsule retains byte-identical final ELF and1,919 GSIM kernel
 cycles. [Infrastructure evidence](perf_records/current_core_gsim_provider.json).
+
+
+Fresh1849 profile1850 verifies42,303,592 forward cycles (33,784 above unprofiled
+1849). Conserved interior42,303,164 comprises33,814,043 device and8,489,121 host
+cycles; all70 calls and original1,000 output words pass. The pre-stem host gap
+is4,017,289; gaps before matmul26/49 are1,955,979/962,942 and include the two
+integer-readout epilogues plus any other intervening CPU work. These are host
+intervals, not isolated operation costs.
