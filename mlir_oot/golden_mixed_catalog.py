@@ -16,7 +16,8 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def merlin_callbacks(llvm_bin: Path, *, host_roundeven: bool = False):
+def merlin_callbacks(llvm_bin: Path, *, host_roundeven: bool = False,
+                     propagate_layout: bool = False):
     """Return preparation/catalog callbacks sharing an exact, checked bundle.
 
     Instantiate per model build. The direct rewrite owns its source-bound
@@ -33,6 +34,16 @@ def merlin_callbacks(llvm_bin: Path, *, host_roundeven: bool = False):
         if _sha(rewritten) != manifest['rewritten_sha256']:
             raise ValueError('direct convolution rewrite changed after compilation')
         prepared = merlin_identity_view_transform(rewritten, Path(work) / 'identity_views')
+        if propagate_layout:
+            from .frontend.parse import parse_module
+            from merlin.llvmlower.layout_propagation import rewrite_module
+            from merlin.xdsl_dialects._common import text
+
+            module = parse_module(prepared.read_text())
+            report = rewrite_module(module)
+            prepared = Path(work) / 'persistent_layout.mlir'
+            prepared.write_text(text(module))
+            bundle['layout_propagation'] = report.to_dict()
         if host_roundeven:
             from .frontend.parse import parse_module
             from .golden_host_math import rewrite_roundeven
@@ -86,6 +97,7 @@ def merlin_callbacks(llvm_bin: Path, *, host_roundeven: bool = False):
             'direct_object_sha256': _sha(direct),
             'linker_sha256': _sha(linker), 'linker_argv': command,
             'host_roundeven': host_receipt,
+            'layout_propagation': bundle.get('layout_propagation'),
         }
         manifest['direct_convolutions'] = bundle['manifest']['routes']
         manifest['total_device_contractions'] = len(manifest['direct_convolutions']) + manifest['covered_contractions']

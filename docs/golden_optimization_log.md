@@ -132,3 +132,72 @@ priority is exact device epilogues and eliminating host layout materialization.
 Validated model2MLIR changes pushed to upstream main: 3d5acd3 (scalar square
 lowering), fc4c4a3 (explicit per-tensor weight quantization policy, default remains
 per-channel). Verified remote main at fc4c4a3 after push.
+
+## 2026-10-05: verified hardware and complete language capture gates
+
+FireSim baseline1730 measures5,680,463,426 whole-forward cycles. Rank-zero uniform
+inputs plus native elementwise fusion1731 measures4,516,405,461cycles (-20.49%);
+both reproduce all1,000 ResNet outputs exactly. Hardware config, bitstream,
+staged/source ELF hashes and job-private UART are sealed in the corresponding
+`perf_records/resnet_{baseline,fused}_firesim.json`. These remain far above22M.
+
+Exact27-layer epilogue fusion plus4remaining direct convolutions and23dense
+GEMMs preserves every ResNet output in native and actual Gemmini Spike. Reusing
+all external buffer-access declarations is essential: dropping their arg_attrs
+introduced27 defensive activation copies. Corrected ELF43697418… has20 LLVM
+memcpy sites versus47 in the defective composition. Actual Spike1,018,739,739
+retired instructions (-14.6% against1,193,349,750); FireSim1743 queued. This
+instruction counter is not a hardware timing. Source-bound proof refuses the
+five unrepresentable unary chains and retains residual/pool/float-return paths.
+
+Pointwise banked prefetch bm8 hardware1733 now measures92,101kernel cycles versus
+105,258baseline (-12.50%), sameM3136N64K64 i8 bias/scale/ReLU program and stock
+bitstream. The evidence applies to this fused int8 store contract; current i32
+catalog timings cannot inherit it without measurement. Promote schedule choices
+only after source applicability, full numerical validation and hardware A/B.
+
+The optional permutation-propagation pass preserves scalar instruction order,
+broadcast affine maps, static slices and padding. Current full-model candidate
+passes native and actual Gemmini output equality but regresses Spike retired
+instructions1,193,349,750→1,340,175,241 (+12.3%). It remains disabled. Permutation
+cancellation alone is not a sufficient cost rule when producer fanout, reduction
+layout and native fusion interact. Default-on promotion needs model-level timing.
+
+Explicit RV64 roundeven selected AFTER model optimization by final-link wrapping
+retains identical model.o and passes every ResNet output on actual Gemmini Spike.
+It lowers retired instructions1,193,349,750→1,059,531,659 (-11.21%), unlike the
+earlier before-fusion rewrite. `golden_host_math.relink_roundeven` reproduces exact
+ELF b945ed41… from bound base objects and records compiler/linker commands plus
+final no-FSM audit. Hardware effect remains unmeasured. Device compilation should
+expose target-owned host runtime support at linking or after optimization, so it
+does not insert opaque calls before linalg fusion.
+
+Fresh atomic TinyLlama capture (full22-layer cached checkpoint, exact retained
+8input IDs, same-instance static-int8 reference) now passes all256,000 logits
+through native integer stand-ins and ACTUAL Gemmini Spike. Target and native
+outputs are bit-identical; Torch golden relativeL2 is2.1918433e-7, maxabs9.536743e-6.
+No-FSM ELFdb16fcb3…; Spike6,838,149,469retired instructions is not FireSim timing.
+Older mixed bundles and floating-dequantized contraction substitutes failed and
+are excluded. Fresh pretrained Smol capture with6retained inputs and same-instance
+1,600-output reference is compiling; no full-policy numeric pass yet.
+
+Merlin6c181eb39 precomputes exact stored-weight transposes after integer lowering:
+155 Tiny permutations /1,034,420,224int8 elements disappear from inference, all
+256,000 outputs remain bit-identical to the native baseline. Static constant
+malloc-site sum drops1,080,659,050→48,261,314bytes; this is static accounting, not
+an allocation trace. The existing weight-hoist ABI records packed tensors; source
+weight identity, axes, static shape and dtype prove each substitution. Optimized
+Tiny target is compiling. Dead weight argument pruning and activation lifetime
+reuse remain useful to reduce image/arena sizes further.
+
+model2MLIR8893a37 is now on upstream main: registered-buffer exports retain int64,
+int8, bool and float64 values/dtypes instead of casting everything tofloat32.
+Eight capture-receipt tests pass, including large integer/float64 precision and
+bf16 fallback. This addresses correctness and inflated extra.npz artifacts.
+
+Large language output validation must cover every logit. Merlin output_dump_cap
+is now configurable (default4096); Tiny full-output Spike uses256000. Full decimal
+HTIF dumps are costly for the shared hardware queue. A compact optional SHA256
+after the timing window can compare every raw output byte to the same-artifact
+validated target/native reference, while retaining the separate Torch tolerance
+gate. Its implementation/target verification is pending.
