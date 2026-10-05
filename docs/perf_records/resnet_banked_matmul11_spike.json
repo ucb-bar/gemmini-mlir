@@ -1,0 +1,142 @@
+{
+  "scope": "Native and actual Gemmini Spike functional gate. Spike metric is retired instructions, not hardware cycles.",
+  "elf_sha256": "8c1becb4f93f021d496166a501e74b832de62fac0673b1a2eee0f1ca545dbc6b",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 11008009",
+    "METRIC build_hash 93f5edf53a21",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/spike.log",
+  "spike_console_sha256": "96952f711e6f359e20c1469595a62d97734137462aa1a7bfa189335c4344d525",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "schema": "resnet_source_banked_whole_spike_v1",
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "build": {
+    "elf": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "93f5edf53a21",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/build_direct/lower/model.ll",
+      "source_sha256": "94d333a4f240b9e77ebd755b0f862eec2587d5cefcf381f0314dedbabbeda8dc",
+      "selected_path": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/whole_banked_controlled/build_direct/host_llvm/model.ll",
+      "selected_sha256": "018832306d62bd71547495cd28ce76cc50dc4b3dbdc73dde645b56ea70d85d73"
+    },
+    "supplemental_objects_sha256": "d22806e416b082228f429475798abe88769aaeecfe5a7eae7debae6b572be743",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "8c1becb4f93f021d496166a501e74b832de62fac0673b1a2eee0f1ca545dbc6b",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2902,
+      "2": 12453,
+      "3": 1318,
+      "4": 12222,
+      "5": 99264,
+      "6": 111486,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "source_bundle": "/scratch/agustin/tmp/gemmini-banked-mean-20261005/out/exact52_banked_bundle/requant.json",
+  "source_bundle_sha256": "7974a0ded60b065a9a5942c2ad4949f46381d73b6b7f6fbf3ffdf68fb4c92365",
+  "original_control_elf": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/build_direct/model.elf",
+  "original_control_elf_sha256": "63b8b6e563ce137d0d9149d25395a17b87a17020e4cad95dd34cb7470ddf2d09",
+  "host_model_object_sha256": "6f8aaa254b6aaae10916b3615197fe9cc90eb43733dd978445c1cb2f8b90fb2f",
+  "host_model_byte_identical_control": true,
+  "selected_changed_source_regions": [
+    "matmul_11"
+  ],
+  "all52_source_transition_proofs_unchanged": true,
+  "host_policy": {
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "host_vectorize": true,
+    "mean": "original block64; guarded1819 not selected",
+    "late_transform": "clamp+RNE",
+    "features": [
+      "named_int8_contraction",
+      "hoist_weight_invariant_quantize",
+      "fuse_quantize_round_convert",
+      "reuse_tensor_destination"
+    ]
+  },
+  "core_commit": "ad75f26922ce88ea8b77947e7403ff49e8671e9c",
+  "queue_job_id": 1823,
+  "hardware_result": null
+}
