@@ -101,3 +101,42 @@ selected dense and direct kernels match the original ordered f32 epilogue for
 checks scalar kernels and source semantics; whole graph device execution must
 still be verified by the integration build. Existing primitive i8 GEMM GSIM and
 direct-convolution FireSim evidence cover their underlying instruction schedules.
+
+### Complete mixed catalog integration
+
+`mlir_oot.fused_mixed_catalog.stage_capture` produces a derived capture after
+checking the original model, weights, weight manifest, rewritten model, and
+compiled fused object hashes. The original artifacts remain unchanged; the new
+receipt records its source and fusion manifest. `merlin_callbacks` then composes
+remaining direct convolutions and dense contractions with the precompiled fused
+object, recording all 54 routes and native reference source paths.
+
+Reproducible full build and correctness gates:
+
+```
+MERLIN_GENERALIZE_BEFORE_FUSE=1 MERLIN_FUSE_POST=1 \
+MERLIN_CLANG=/path/to/llvm/bin/clang \
+PYTHONPATH=.:/path/to/merlin/src python tests/fused_whole_model_probe.py \
+  /path/to/original-capture /path/to/requant-bundle \
+  --work /path/to/fresh-work --llvm-bin /path/to/llvm/bin \
+  --spike /path/to/gemmini-spike
+```
+
+Use `--validate-existing` to validate an already built work directory. The native
+gate checks the full host graph with scalar device stand-ins; the subsequent
+Spike gate executes actual Gemmini instructions and requires bitexact complete
+output equality. The reported Spike counter is retired instructions and must
+not be described as measured FireSim cycles.
+
+Current full executable: `out/whole_requant/build_direct/model.elf`, SHA256
+`2f8f4d0341791b5278dbc66d91e4cc6787e9361ad6ab40193acedfee69da0ac7`.
+All 54 contractions are bound: fused27/direct4/dense23, with 10 remaining dense
+signatures. Final executable no-FSM scan passes. Whole-model native execution
+matches all 1,000 reference outputs exactly (maximum absolute error zero).
+This variant leaves the experimental layout propagation pass disabled.
+
+The first executable above also passed actual Gemmini Spike execution for all
+1,000 outputs. It retired 1,534,794,066 instructions, but omitted the host
+generalize-before-fuse and post-fusion environment flags used in the earlier
+1.193B baseline; these counters are not a controlled performance comparison.
+An explicitly flagged build is required before evaluating the optimization.
