@@ -80,7 +80,7 @@ int main(void) {
     run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
-    result = dict(shape=asdict(s),status='pass' if passed else 'fail',kernel_cycles=int(match[1]) if match else None,
+    result = dict(shape=asdict(s),status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
                   elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))

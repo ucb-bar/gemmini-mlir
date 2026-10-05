@@ -78,3 +78,11 @@ computes, 9,296 A loads, 1,992 B loads, and 224 output stores. The functional
 receipt is `perf_records/conv_resnet56_c64_wide_i8_spike.json`. Spike's printed
 rdcycle count is retired instructions and must not be reported as FireSim
 performance. The matching ELF is ready for the stock FireSim queue.
+
+The separate 56×56×64→64 i32 baseline GSIM run ended without any kernel/output
+marker under its 600-second/3M-engine-cycle budget. It supplies no layer timing
+or numeric verdict; the large initialization/check harness is part of that
+engine budget. Future probe failures record completion/return-code/stderr as
+well as stdout, and both budgets are CLI options. The optimized int8 candidate
+has full functional evidence above and is submitted as FireSim queue job 1722;
+accept timing only after queue confirms simulator-loaded ELF identity.
