@@ -18,7 +18,7 @@ Optional `banked_m` places A slots at scratchpad rows0/4096 and cached B at8192,
 - GSIM144x64x64, bm4, prefetch without bank separation: PASS5449cycles, every output+guard, final ELF noFSMpass.
 - GSIM208x64x64 bank-separated bm4 edge/drain: PASS6720cycles, all outputs+guard.
 - GSIM48x64x64 bank-separated bm1 odd-block drain: PASS2353cycles, all outputs+guard.
-- Full3136 shape unbanked bm4: GSIM PASS94304cycles (10.1% below104931baseline); unbanked bm8: PASS96414cycles (8.1% below baseline). Both validate all200704 outputs+guard and final noFSM. Bank-separated bm8 GSIM still running. FireSim1733 measures bank-separated bm8;1734 measures bank-separated bm1;1736 measures measured-GSIM-winner unbanked bm4 after full-model jobs. Final ELF audits pass for compiled candidates. Do not promote a candidate before numeric validation and a hardware A/B win.
+- Full3136 shape unbanked bm4: GSIM PASS94304cycles (10.1% below104931baseline); unbanked bm8: PASS96414cycles (8.1% below baseline). Both validate all200704 outputs+guard and final noFSM. Bank-separated bm8: GSIM PASS91250cycles (13.0% below baseline, 5.4% below same bm8 without bank separation), every output+guard and final noFSM. FireSim1733 measures bank-separated bm8;1734 measures bank-separated bm1;1736 measures measured-GSIM-winner unbanked bm4 after full-model jobs. Final ELF audits pass for compiled candidates. Do not promote a candidate before numeric validation and a hardware A/B win.
 - Old toolchain Spike rejected the generic layer probe CRT at tohost1337, with and without explicit memory range. This is not used as a kernel correctness result; GSIM and FireSim perform the actual numerical checks.
 
 ## Needed automatic lowering abstractions
