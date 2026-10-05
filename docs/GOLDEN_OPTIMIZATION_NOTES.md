@@ -233,3 +233,13 @@ than either result, but this screen does not support same-B-buffer dependency
 as the main remaining limit. The candidate remains opt-in and is not selected
 by source binders or queued on hardware. No claim that every DMA schedule is
 exhausted follows from this single hypothesis.
+
+## Exact composed ResNet hardware1795
+
+Strict collector verifies47,020,321 stock forwardcycles, all1,000 original output
+bits through full4,000-byte digest, staged ELF/bitstream and UART pinned. This
+saves3.61% against blocked64control1789 (48,780,534),5.34% against unblocked
+1786 (49,673,153). The selected host LLVM participates in normal build identity
+f71783670baa. Full-output compact digest reduces total emulation to364,867,232
+cycles/17.6s versus1789 full-dump1,896,507,692/68.8s; these are separate from
+forward timing.22M remains unmet.
