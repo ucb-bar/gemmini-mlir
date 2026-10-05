@@ -1,0 +1,36 @@
+{
+  "schema": "golden_firesim_verified_probe_v1",
+  "job_id": 1839,
+  "state": "DONE",
+  "phase": "DONE",
+  "exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4_b_prefetch/build/model.elf",
+  "elf_sha256": "512fa07eead96452ffb2ecc612cfe35a0a29a4242f489a6eb2f7ef721a551994",
+  "actual_simulated_elf": "/scratch/firesim_queue/jobs/1839/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+  "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "uart": "/scratch/firesim_queue/jobs/1839/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "cb453c6742392eb311257631b3e3409c8e65008839349a43c4f23a6fac43c4b9",
+  "marker_kind": "WHOLE_MODEL",
+  "kernel_cycles": 572814021,
+  "numeric_pass": "full f32le SHA256 match: 256000 outputs versus /scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4_b_prefetch/host/output.npy",
+  "output_digest_evidence": {
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "reference": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4_b_prefetch/host/output.npy",
+    "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+    "validation": "/scratch/agustin/tmp/firesim-golden-recovery-20261005/tiny_k4_b_prefetch_strict_validation.json",
+    "validation_sha256": "bbcaa0510681d853ac69ff8dfd7acb6ce89b4db6a60f0734ca611fafd700b271"
+  },
+  "build_hash": "409320da6a8d",
+  "comparison": {
+    "job1832_cycles": 612076811,
+    "saved_cycles": 39262790,
+    "fraction_reduction": 0.06414683466908862
+  },
+  "scope": "Isolated device B-prefetch on measured four-output/K4 host. Actual host model.o and LLVM bytes identical1832. Full256000 output digest and originalTorch tolerance unchanged; zeroFSM and stock closure verified.",
+  "source_receipt": "docs/perf_records/tiny_four_outputs_unroll4_b_prefetch_spike.json"
+}
