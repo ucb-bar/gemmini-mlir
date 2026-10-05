@@ -28,6 +28,7 @@ def main() -> int:
     ap.add_argument("--bn", type=int, default=4)
     ap.add_argument("--reuse-b", action="store_true")
     ap.add_argument("--cache-b", action="store_true")
+    ap.add_argument("--cache-a", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
     ap.add_argument("--llvm-bin", type=Path, required=True)
@@ -35,7 +36,8 @@ def main() -> int:
     args = ap.parse_args()
     shape = Shape(args.m, args.n, args.k, output_dtype=args.output_dtype,
                   bm=args.bm, bn=args.bn, reuse_b=args.reuse_b,
-                  cache_b=args.cache_b, wide_a=args.wide_a,
+                  cache_b=args.cache_b, cache_a=args.cache_a,
+                  wide_a=args.wide_a,
                   wide_b=args.wide_b)
     print(json.dumps(compile_module(build(args.batch, shape),
                                     args.llvm_bin, args.workdir), indent=2))

@@ -64,6 +64,7 @@ def main() -> int:
     ap.add_argument("--wide-store", action="store_true")
     ap.add_argument("--reuse-b", action="store_true")
     ap.add_argument("--cache-b", action="store_true")
+    ap.add_argument("--cache-a", action="store_true")
     ap.add_argument("--pipeline-m", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
@@ -80,6 +81,7 @@ def main() -> int:
                   bm=args.bm, bn=args.bn, bias=args.bias, scale=args.scale,
                   relu=args.relu, wide_store=args.wide_store,
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
+                  cache_a=args.cache_a,
                   pipeline_m=args.pipeline_m, wide_a=args.wide_a,
                   wide_b=args.wide_b)
     if args.tune:
@@ -150,6 +152,7 @@ def main() -> int:
         "wide_store": args.wide_store,
         "reuse_b": args.reuse_b,
         "cache_b": args.cache_b,
+        "cache_a": args.cache_a,
         "pipeline_m": args.pipeline_m,
         "wide_a": args.wide_a,
         "wide_b": args.wide_b,

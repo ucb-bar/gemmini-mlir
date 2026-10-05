@@ -22,6 +22,7 @@ from .golden_batched_gemm import build as build_batched
 from .golden_contraction_upstream import choose_shape
 from .golden_device_compile import compile_module
 from .golden_gemm import GoldenGemm
+from .no_fsm_audit import audit_elf
 
 
 def _symbol(key: dict) -> str:
@@ -71,6 +72,10 @@ def build_catalog(source: str, *, max_kernels: int | None = None) -> tuple[Modul
         json.dumps({"kernels": len(kernels), "bindings": len(bindings)}, sort_keys=True))
     module.verify()
     return module, {"schema": "gemmini_golden_device_catalog_v1",
+                    "abi": {"argument_order": ["lhs", "rhs", "out"],
+                            "pointee_layout": "dense_row_major",
+                            "batch_call": "whole_batch",
+                            "dtypes": ["i8", "i8", "i32"]},
                     "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
                     "matched_contractions": matched_total,
                     "covered_contractions": len(bindings),
@@ -91,6 +96,27 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
               "whole_model_correctness_verified": False}
     (workdir / "device_catalog.json").write_text(json.dumps(result, indent=2) + "\n")
     return result
+
+
+def merlin_builder(llvm_bin: Path):
+    """Compile Merlin's final prepared IR at its pre-offload source boundary."""
+    compiler = Path(llvm_bin)
+
+    def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
+        prepared, workdir = Path(prepared), Path(workdir)
+        compile_catalog(prepared, compiler, workdir)
+        return workdir / "device_catalog.json", workdir / "kernel.o"
+
+    return build
+
+
+def final_elf_audit(elf: Path) -> None:
+    """Refuse a linked model that gained any forbidden hardware-loop instruction."""
+    elf = Path(elf)
+    report = audit_elf(elf.read_bytes())
+    elf.with_suffix(".nofsm_audit.json").write_text(json.dumps(report, indent=2) + "\n")
+    if report["status"] != "pass":
+        raise ValueError(f"linked model has forbidden device instructions: {elf}")
 
 
 def main() -> int:

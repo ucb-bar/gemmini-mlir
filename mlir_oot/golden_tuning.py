@@ -27,8 +27,9 @@ def estimate(shape: Shape) -> dict:
         for n0 in range(0, nt, shape.bn):
             bn = min(shape.bn, nt - n0)
             output_blocks += 1
-            a_loads += am * kt
-            a_commands += am if shape.wide_a else am * kt
+            if not shape.cache_a:
+                a_loads += am * kt
+                a_commands += am if shape.wide_a else am * kt
             if not shape.cache_b:
                 b_loads += bn * kt
                 b_commands += kt if shape.wide_b else bn * kt
@@ -40,6 +41,9 @@ def estimate(shape: Shape) -> dict:
     if shape.cache_b:
         b_loads = nt * kt
         b_commands = kt if shape.wide_b else nt * kt
+    if shape.cache_a:
+        a_loads = mt * kt
+        a_commands = mt * kt
     c_tiles = mt * nt
     computes = c_tiles * kt
     macs = shape.m * shape.n * shape.k
@@ -107,6 +111,7 @@ def main() -> int:
     ap.add_argument("--bias", action="store_true")
     ap.add_argument("--wide-store", action="store_true")
     ap.add_argument("--cache-b", action="store_true")
+    ap.add_argument("--cache-a", action="store_true")
     ap.add_argument("--reuse-b", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
@@ -116,6 +121,7 @@ def main() -> int:
         m, n, k = (int(x) for x in spelling.lower().split("x"))
         base = Shape(m, n, k, args.output_dtype, bias=args.bias,
                      wide_store=args.wide_store, cache_b=args.cache_b,
+                     cache_a=args.cache_a,
                      reuse_b=args.reuse_b, wide_a=args.wide_a,
                      wide_b=args.wide_b)
         chosen, row = tune(base)

@@ -43,6 +43,7 @@ class Shape:
     wide_store: bool = False
     reuse_b: bool = False
     cache_b: bool = False
+    cache_a: bool = False
     pipeline_m: bool = False
     wide_a: bool = False
     wide_b: bool = False
@@ -62,8 +63,11 @@ class Shape:
         if self.wide_b and (self.n <= F.DIM or self.n > F.DIM * 4 or
                             self.n % F.DIM or _ceil_div(self.n, F.DIM) > self.bn):
             raise ValueError("wide B load needs one N block of 32, 48 or 64")
+        if self.cache_a and (self.m > F.DIM or self.bm != 1 or
+                             self.wide_a or self.pipeline_m):
+            raise ValueError("cached A needs one output-row tile and no competing A schedule")
         slots = 2 if self.pipeline_m else 1
-        a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a else 1
+        a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
         a_rows = slots * self.bm * a_panel_tiles
         if slots * self.bm * self.bn * F.DIM > F.ACC_ROWS:
             raise ValueError("output block exceeds the accumulator")
@@ -139,12 +143,12 @@ class GoldenGemm:
                 wide_k: int | None = None) -> None:
         s = self.shape
         kt = _ceil_div(s.k, F.DIM)
-        a_panel_tiles = kt if s.wide_a else 1
+        a_panel_tiles = kt if s.wide_a or s.cache_a else 1
         a_base = slot * s.bm * a_panel_tiles if s.pipeline_m else 0
         b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
         acc_base = slot * s.bm * s.bn if s.pipeline_m else 0
         krow = self._tile(k0, 0)
-        if not s.wide_a:
+        if not s.wide_a and not s.cache_a:
             for a, rows in enumerate(mr):
                 mrow = self._tile(m0, a)
                 ptr = self._ptr(self.a, mrow, s.k, krow)
@@ -217,13 +221,13 @@ class GoldenGemm:
                     self._rocc("mvin", {"local": isa.acc_addr((acc_base + a * s.bn + d) * F.DIM),
                                           "rows": rows, "cols": cols,
                                           "load_id": 2}, ptr)
-        if s.cache_b or s.wide_a:
+        if s.cache_b or s.wide_a or s.cache_a:
             for ki in range(_ceil_div(s.k, F.DIM)):
                 self._k_tile(m0, n0, self.fb.const(ki), mr, nr,
                              min(F.DIM, s.k - ki * F.DIM),
                              self.bias is None and ki == 0,
                              ki if s.cache_b else None, slot,
-                             ki if s.wide_a else None)
+                             ki if s.wide_a or s.cache_a else None)
         else:
             first_kr = min(F.DIM, s.k)
             self._k_tile(m0, n0, self.fb.const(0), mr, nr, first_kr,
@@ -280,9 +284,16 @@ class GoldenGemm:
 
     def _emit_work(self) -> None:
         s = self.shape
+        if s.cache_a:
+            for ki in range(_ceil_div(s.k, F.DIM)):
+                kr = min(F.DIM, s.k - ki * F.DIM)
+                ptr = self._ptr(self.a, self.fb.const(0), s.k,
+                                self.fb.const(ki * F.DIM))
+                self._rocc("mvin", {"local": ki * F.DIM,
+                                      "rows": s.m, "cols": kr, "load_id": 0}, ptr)
         if s.cache_b:
             nt = _ceil_div(s.n, F.DIM)
-            a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a else 1
+            a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a or s.cache_a else 1
             b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
             for ki in range(_ceil_div(s.k, F.DIM)):
                 kr = min(F.DIM, s.k - ki * F.DIM)
@@ -326,6 +337,7 @@ class GoldenGemm:
             f"bias{int(s.bias)}:scale{s.scale}:relu{int(s.relu)}:"
             f"wide_store{int(s.wide_store)}:reuse_b{int(s.reuse_b)}:"
             f"cache_b{int(s.cache_b)}:pipeline_m{int(s.pipeline_m)}:"
+            f"cache_a{int(s.cache_a)}:"
             f"wide_a{int(s.wide_a)}:wide_b{int(s.wide_b)}")
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
@@ -378,6 +390,8 @@ def main() -> int:
                     help="reuse stationary B across output-row tiles")
     ap.add_argument("--cache-b", action="store_true",
                     help="preload a small whole B matrix once into scratchpad")
+    ap.add_argument("--cache-a", action="store_true",
+                    help="preload one short output-row A tile across N blocks")
     ap.add_argument("--pipeline-m", action="store_true",
                     help="alternate A and accumulator slots across output blocks")
     ap.add_argument("--wide-a", action="store_true")
@@ -389,6 +403,7 @@ def main() -> int:
                   bm=args.bm, bn=args.bn, bias=args.bias, scale=args.scale,
                   relu=args.relu, wide_store=args.wide_store,
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
+                  cache_a=args.cache_a,
                   pipeline_m=args.pipeline_m, wide_a=args.wide_a,
                   wide_b=args.wide_b)
     if args.tune:

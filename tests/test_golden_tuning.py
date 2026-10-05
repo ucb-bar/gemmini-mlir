@@ -4,6 +4,8 @@ import unittest
 from dataclasses import replace
 
 from mlir_oot.golden_gemm import Shape
+from mlir_oot.contraction_patterns import IntegerGemm
+from mlir_oot.golden_contraction_upstream import choose_shape
 from mlir_oot.golden_tuning import estimate
 
 
@@ -19,6 +21,21 @@ class TestGoldenTuning(unittest.TestCase):
     def test_cache_requires_one_channel_block(self):
         with self.assertRaisesRegex(ValueError, "one output-channel block"):
             Shape(512, 80, 64, bm=16, bn=4, cache_b=True).validate()
+
+    def test_cached_short_row_a_is_loaded_once_across_n_blocks(self):
+        ordinary = Shape(8, 512, 256, "i32", bm=1, bn=4)
+        cached = replace(ordinary, cache_a=True)
+        self.assertEqual(estimate(ordinary)["a_mvin_commands"], 128)
+        self.assertEqual(estimate(cached)["a_mvin_commands"], 16)
+        self.assertEqual(estimate(ordinary)["mesh_compute_commands"],
+                         estimate(cached)["mesh_compute_commands"])
+        with self.assertRaisesRegex(ValueError, "one output-row tile"):
+            replace(cached, m=32).validate()
+
+    def test_model_rule_selects_cached_a_only_for_repeated_n_blocks(self):
+        self.assertTrue(choose_shape(IntegerGemm(1, 8, 5632, 2048)).cache_a)
+        self.assertTrue(choose_shape(IntegerGemm(1, 8, 32000, 2048)).cache_a)
+        self.assertFalse(choose_shape(IntegerGemm(1, 8, 2048, 2048)).cache_a)
 
     def test_wide_loads_reduce_commands_but_not_payload(self):
         base = Shape(512, 64, 64, bm=16, bn=4, cache_b=True)

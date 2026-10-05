@@ -18,7 +18,7 @@ from .frontend.parse import parse_module
 from .golden_batched_gemm import build as build_batched
 from .golden_device_compile import compile_module
 from .golden_gemm import GoldenGemm, Shape, _ceil_div
-from .golden_tuning import tune
+from .golden_tuning import estimate, tune
 from .tables import rtl_facts as F
 
 
@@ -42,6 +42,16 @@ def choose_shape(dims: IntegerGemm) -> Shape:
                 shape = candidate
             except ValueError:
                 pass
+    # A short M tile reused across at least four N blocks is worth keeping in
+    # scratchpad. A single-block case would pay the preload without saving any
+    # A traffic; the GSIM-checked M8 multi-block case reduced kernel cycles.
+    if dims.m <= F.DIM and _ceil_div(dims.n, F.DIM) >= 4 * shape.bn:
+        try:
+            candidate = replace(shape, cache_a=True)
+            if estimate(candidate)["primitive_command_count"] < estimate(shape)["primitive_command_count"]:
+                shape = candidate
+        except ValueError:
+            pass
     shape.validate()
     return shape
 
