@@ -3,7 +3,7 @@
 Requires MERLIN integration src on PYTHONPATH and its standard compiler environment.
 Uses the supplied precompiled, pinned requant bundle; no fresh proof is inferred.
 """
-import argparse,hashlib,json,os,subprocess,struct
+import argparse,hashlib,json,os,subprocess,struct,re
 from pathlib import Path
 import numpy as np
 from mlir_oot.fused_mixed_catalog import stage_capture,merlin_callbacks
@@ -61,7 +61,9 @@ def native_validate(capture,build,host,llvm_bin,*,allow_bounded=False,atol=0.,rt
  for(int batch=0;batch<{b};++batch)for(int i=0;i<{m};++i)for(int q=0;q<{k};++q){{
  int32_t v=a[(batch*{m}+i)*{k}+q];for(int j=0;j<{n};++j)c[(batch*{m}+i)*{n}+j]+=v*(int32_t)b[(batch*{k}+q)*{n}+j];}} }}''')
     (host/'reference.c').write_text('\n'.join(source))
-    subprocess.run([str(llvm_bin/'clang'),'-O0','-fPIC','-c',str(build/'lower/model.ll'),'-o',str(host/'model.o')],check=True)
+    native_ir=build/'host_llvm/model.native.ll'
+    if not native_ir.exists():native_ir=build/'lower/model.ll'
+    subprocess.run([str(llvm_bin/'clang'),'-O0','-fPIC','-c',str(native_ir),'-o',str(host/'model.o')],check=True)
     subprocess.run(['cc','-O3','-march=native','-fPIC','-shared',str(host/'model.o'),str(host/'reference.c'),*catalog['native_oracle_sources'],str(build/'device/device_catalog_shim.c'),str(mlir_runtime_c()),'-lm','-o',str(host/'model.so')],check=True)
     args=forward_args(capture,build);reference=np.load(capture/'golden.npy');actual=np.zeros_like(reference)
     model=HostModel.load(str(host/'model.so'));model([(a.ctypes.data,a.shape) for a in args]+[(actual.ctypes.data,actual.shape)])
@@ -69,6 +71,20 @@ def native_validate(capture,build,host,llvm_bin,*,allow_bounded=False,atol=0.,rt
     (host/'validation.json').write_text(json.dumps(report,indent=2)+'\n');np.save(host/'output.npy',actual)
     if enforce_quality and not report['quality_pass']:raise ValueError('native whole-model quality gate failed')
     return report
+
+
+def verify_output_digest(console, native):
+    """Check every canonical f32 output byte when a compact target record exists."""
+    lines=[line for line in console.splitlines() if line.startswith('OUT_SHA256')]
+    if not lines:return None
+    if len(lines)!=1:raise ValueError('expected exactly one output digest')
+    match=re.fullmatch(r'OUT_SHA256 f32le ([0-9]+) ([0-9]+) ([0-9a-f]{64})',lines[0])
+    if match is None:raise ValueError('malformed output digest')
+    canonical=np.asarray(native,dtype='<f4').tobytes(order='C')
+    count,size,digest=match.groups()
+    expected=hashlib.sha256(canonical).hexdigest()
+    if (int(count),int(size),digest)!=(native.size,len(canonical),expected):raise ValueError('complete target output digest differs')
+    return dict(spike_output_sha256=digest,output_elements=native.size,output_bytes=len(canonical))
 
 
 def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0.):
@@ -82,9 +98,15 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
     bits=[int(x)&0xffffffff for x in parts[2:]]
     actual=np.array([struct.unpack('<f',struct.pack('<I',x))[0] for x in bits],np.float32);reference=np.load(capture/'golden.npy').reshape(-1)
     native=np.load(work/'host/output.npy').reshape(-1)
+    digest_evidence=verify_output_digest(console,native)
+    if digest_evidence is not None:
+        if count>native.size or not np.array_equal(actual.view(np.uint32),native[:count].view(np.uint32)):raise ValueError('Spike output prefix differs')
+        actual=native.copy();count=actual.size
     if count!=native.size or count!=reference.size or actual.size!=count:raise ValueError('Spike full output count differs')
     target_native_exact=bool(np.array_equal(actual.view(np.uint32),native.view(np.uint32)))
     report={'scope':'actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles','elf_sha256':hashlib.sha256((build/'model.elf').read_bytes()).hexdigest(),'target_native_exact':target_native_exact,'native_reference_sha256':hashlib.sha256((work/'host/output.npy').read_bytes()).hexdigest(),'original_golden_sha256':hashlib.sha256((capture/'golden.npy').read_bytes()).hexdigest(),**quality(actual,reference,allow_bounded=allow_bounded,atol=atol,rtol=rtol),'metrics':[x for x in console.splitlines() if x.startswith('METRIC ')]}
+    if digest_evidence is not None:
+        report.update(digest_evidence,reference_sha256=report['native_reference_sha256'],reference_path=str(work/'host/output.npy'),spike_full_output_match=target_native_exact,spike_console_path=str(work/'spike.log'),spike_console_sha256=hashlib.sha256((work/'spike.log').read_bytes()).hexdigest(),torch_golden_path=str(capture/'golden.npy'),torch_golden_sha256=report['original_golden_sha256'],torch_atol=atol,torch_rtol=rtol,torch_allclose=report['allclose'])
     if 'METRIC memref_rank_mismatch 0' not in console:raise ValueError('target descriptor rank mismatch')
     (work/'spike_validation.json').write_text(json.dumps(report,indent=2)+'\n')
     if not target_native_exact:raise ValueError('Spike differs from same-candidate native output')
@@ -94,6 +116,10 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--residual-shared-permutation',action='store_true');p.add_argument('--residual-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.)
     p.add_argument('--host-feature', action='append', choices=('fuse_quantize_round_convert','lower_roundeven_to_intrinsic'), default=[], help='explicit exact host arithmetic lowering; defaults remain unchanged')
+    p.add_argument('--host-vectorize',choices=('true','false'),default=None)
+    p.add_argument('--host-llvm-transform',choices=('clamp-rne',),default=None)
+    p.add_argument('--output-sha256',action='store_true')
+    p.add_argument('--output-dump-cap',type=int,default=4096)
     a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
     if len(set(a.host_feature))>1:p.error('host rounding lowerings are alternatives; select one')
     if a.residual_shared_permutation and (not a.residual_add or a.residual_implementation not in ('cpu_lut','wide_integer')):p.error('shared permutation requires exact residual implementation')
@@ -104,6 +130,7 @@ def main():
     if not a.validate_existing:
         policy={key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']}
         policy['host_features']=sorted(set(a.host_feature))
+        policy.update(host_vectorize=a.host_vectorize,host_llvm_transform=a.host_llvm_transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap)
         (a.work/'host_compilation_policy.json').write_text(json.dumps(policy,indent=2)+'\n')
     if not a.validate_existing:
         stage_capture(a.capture,a.bundle,capture)
@@ -128,7 +155,11 @@ def main():
         (a.work/'whole_quality_policy.json').write_text(json.dumps({'allow_bounded_output':a.allow_bounded_output,'atol':a.atol,'rtol':a.rtol,'original_golden_sha256':hashlib.sha256((a.capture/'golden.npy').read_bytes()).hexdigest()},indent=2)+'\n')
         features={'named_int8_contraction',*a.host_feature}
         if a.hoist_weights:features.add('hoist_weight_invariant_quantize')
-        result=build(capture,builddir,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
+        transform=None
+        if a.host_llvm_transform:
+            from mlir_oot.late_quant_rne import merlin_host_llvm_transform
+            transform=merlin_host_llvm_transform(a.llvm_bin,combine_clamp=True)
+        result=build(capture,builddir,host_vectorize=None if a.host_vectorize is None else a.host_vectorize=='true',host_llvm_transform=transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
     native=native_validate(capture,builddir,a.work/'host',a.llvm_bin,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol,enforce_quality=False);print(native,flush=True)
     target=spike_validate(capture,builddir,a.spike,a.work,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol);print(target,flush=True)
