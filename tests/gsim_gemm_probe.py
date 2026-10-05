@@ -82,6 +82,7 @@ def main() -> int:
     ap.add_argument("--banked-m", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
+    ap.add_argument("--separate-b-bank", action="store_true")
     ap.add_argument("--bias", action="store_true")
     ap.add_argument("--input-amplitude", type=int, default=1, choices=range(1,22))
     ap.add_argument("--scale", type=float, default=1.0)
@@ -98,7 +99,7 @@ def main() -> int:
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
                   cache_a=args.cache_a,
                   pipeline_m=args.pipeline_m, prefetch_m=args.prefetch_m, banked_m=args.banked_m, wide_a=args.wide_a,
-                  wide_b=args.wide_b)
+                  wide_b=args.wide_b, separate_b_bank=args.separate_b_bank)
     if args.tune:
         if (args.bm, args.bn) != (4, 4):
             ap.error("--tune cannot be combined with manual --bm/--bn")
@@ -187,6 +188,7 @@ def main() -> int:
         "banked_m": args.banked_m,
         "wide_a": args.wide_a,
         "wide_b": args.wide_b,
+        "separate_b_bank": args.separate_b_bank,
         "status": "pass" if passed else "fail",
         "kernel_cycles": int(match.group(1)) if match else None,
         "engine_cycles_including_harness": run.finish.cycles if run.finish else None,

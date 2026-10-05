@@ -1,6 +1,6 @@
 # Source-bound dense schedule options
 
-Captured requant bundles expose two independent, default-off options:
+Captured requant bundles expose independent, default-off options:
 
 - `--banked-prefetch`: i8 output, no bias/competing A cache, at least two M tiles,
   full K in one 32/48/64-column A transfer, and N fitting one full-tile wide store.
@@ -11,7 +11,7 @@ Captured requant bundles expose two independent, default-off options:
   and the exact primitive count decreases. This reuses the already validated
   arbitrary-N grouped-load implementation; compute order/readout are unchanged.
 
-Neither option inspects model names, region names, or a particular scale.
+These options do not inspect model names, region names, or a particular scale.
 The banked family's measured anchor is M3136/N64/K64, exact captured scale
 0.0038317402359098196, no bias, ReLU: FireSim jobs1752/1753 measured
 90,323 → 51,922 cycles. A distinct M47/N48/K32 signed-output tail probe passes
@@ -32,8 +32,20 @@ wide-residual cycles brings the current padded-compute floor near22.73M,
 before host, DMA and configuration overhead. A strict22M target therefore
 requires algorithmic or padding-work reduction as well as scheduling.
 
-Next controlled experiment: independent A/B scratchpad bank placement for
-large K. The existing streaming schedule puts both operands in bank0; the
-current `banked_m` capability requires K≤64 and cannot address those families.
+The independent `--separate-b-bank` option places B at scratch row8192
+(banks2/3), while A retains its existing lower-bank address scheme. It proves
+that all reserved A slots/panels fit below that boundary and all B panels fit
+above it; competing banked-M placement refuses. The source selector retains
+its original legal schedule when this additional capacity proof fails, and
+skips the redundant option when banked-M has already been selected. Cached-B
+initial loads and all compute references use the same proven placement.
+No compute ordering, command count, scale, activation or external ABI changes.
+
+For M49/N2048/K512, grouped-B GSIM447,124 → separate-bank367,749cycles
+(17.75% reduction), versus493,598 before either improvement. All100,352
+outputs plus guards, strict RV64GC Spike and final zero-FSM audit pass.
+The new result is1.403× the262,144 padded-compute floor. Mixed M/N/K-tail
+i32 and cached-A signed-i8 probes also pass. This is simulator evidence;
+other shapes and hardware require their own performance gates.
 
 Evidence: `docs/perf_records/source_bound_dense_schedules.json`.

@@ -50,6 +50,7 @@ class Shape:
     banked_m: bool = False
     wide_a: bool = False
     wide_b: bool = False
+    separate_b_bank: bool = False
 
     def validate(self) -> None:
         if min(self.m, self.n, self.k, self.bm, self.bn) <= 0:
@@ -87,6 +88,15 @@ class Shape:
                 raise ValueError("cached B needs one output-channel block")
             if kt * nt > 128 or (a_rows + kt * nt) * F.DIM > F.SPAD_ROWS:
                 raise ValueError("cached B panels exceed the static or scratchpad budget")
+        if self.separate_b_bank:
+            if self.banked_m:
+                raise ValueError("separate B placement is redundant with banked M")
+            b_tiles = (_ceil_div(self.k, F.DIM) * _ceil_div(self.n, F.DIM)
+                       if self.cache_b else self.bn)
+            if a_rows * F.DIM > 2 * F.SPAD_BANK_ROWS:
+                raise ValueError("A panels exceed the lower two scratchpad banks")
+            if b_tiles * F.DIM > F.SPAD_ROWS - 2 * F.SPAD_BANK_ROWS:
+                raise ValueError("B panels exceed the upper two scratchpad banks")
         if self.k > 0xFFFFFFFF or self.n > 0xFFFFFFFF:
             raise ValueError("row strides exceed the Gemmini configuration field")
 
@@ -154,6 +164,8 @@ class GoldenGemm:
         a_panel_tiles = kt if s.wide_a or s.cache_a else 1
         a_base = slot * s.bm * a_panel_tiles if s.pipeline_m else 0
         b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
+        if s.separate_b_bank:
+            b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
         if s.banked_m:
             a_base = slot * (F.SPAD_BANK_ROWS // F.DIM)
             b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
@@ -334,7 +346,7 @@ class GoldenGemm:
         if s.cache_b:
             nt = _ceil_div(s.n, F.DIM)
             a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a or s.cache_a else 1
-            b_base = 2 * F.SPAD_BANK_ROWS // F.DIM if s.banked_m else (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
+            b_base = 2 * F.SPAD_BANK_ROWS // F.DIM if s.banked_m or s.separate_b_bank else (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
             for ki in range(_ceil_div(s.k, F.DIM)):
                 kr = min(F.DIM, s.k - ki * F.DIM)
                 for d in range(0, nt, 4 if s.wide_b else 1):
@@ -408,6 +420,8 @@ class GoldenGemm:
             f"cache_b{int(s.cache_b)}:pipeline_m{int(s.pipeline_m)}:"
             f"cache_a{int(s.cache_a)}:prefetch_m{int(s.prefetch_m)}:banked_m{int(s.banked_m)}:"
             f"wide_a{int(s.wide_a)}:wide_b{int(s.wide_b)}")
+        if s.separate_b_bank:
+            module.attributes["gemmini.separate_b_bank"] = IntegerAttr(1, i64)
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
@@ -467,6 +481,7 @@ def main() -> int:
     ap.add_argument("--banked-m", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
+    ap.add_argument("--separate-b-bank", action="store_true")
     ap.add_argument("--emit", choices=("target", "llvm"), required=True)
     ap.add_argument("-o", "--output")
     args = ap.parse_args()
@@ -476,7 +491,7 @@ def main() -> int:
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
                   cache_a=args.cache_a,
                   pipeline_m=args.pipeline_m, prefetch_m=args.prefetch_m, banked_m=args.banked_m, wide_a=args.wide_a,
-                  wide_b=args.wide_b)
+                  wide_b=args.wide_b, separate_b_bank=args.separate_b_bank)
     if args.tune:
         if (args.bm, args.bn) != (4, 4):
             ap.error("--tune cannot be combined with manual --bm/--bn")

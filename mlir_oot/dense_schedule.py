@@ -11,7 +11,7 @@ from .golden_tuning import estimate
 from .tables import rtl_facts as F
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False):
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False):
     shape.validate();selected=shape;policies=[]
     if grouped_b and not shape.wide_b:
         candidate=replace(shape,wide_b=True)
@@ -34,4 +34,12 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False):
             candidate.validate()
             if estimate(candidate)['primitive_command_count']<=estimate(selected)['primitive_command_count']:
                 selected=candidate;policies.append('banked_prefetch_single_store')
+    if separate_b_bank and not selected.banked_m and not selected.separate_b_bank:
+        candidate=replace(selected,separate_b_bank=True)
+        try:
+            candidate.validate()
+        except ValueError:
+            pass  # A legal original schedule remains the fallback.
+        else:
+            selected=candidate;policies.append('separate_b_bank')
     return GoldenGemm(selected),'dense_gemm'+(':'+','.join(policies) if policies else '')
