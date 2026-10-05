@@ -1,0 +1,41 @@
+{
+  "schema": "gemmini-compiler-flag-screen-v1",
+  "scope": "Actual full TinyLlama positive exact-SSA contraction control, unchanged selected LLVM; model-object-only -funroll-loops screen. Existing fused activation policy unchanged.",
+  "result": "EMISSION_NEUTRAL",
+  "control_elf_sha256": "b947d9d766868d5f45b1973c9d349e90f78d7281f16f768336afd62723a81b0a",
+  "control_spike_instructions": 177453518,
+  "control_model_object": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/model.o",
+  "control_model_object_sha256": "1230e5fa88c2aba64195586f327305b62b78bee42b9999a2aee35bc2f41bcb2b",
+  "candidate_model_object": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/unroll_flag/model.o",
+  "candidate_model_object_sha256": "1230e5fa88c2aba64195586f327305b62b78bee42b9999a2aee35bc2f41bcb2b",
+  "source_llvm": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_before_fusion_identity/build/host_llvm/model.ll",
+  "source_llvm_sha256": "6452ff9394d30db7d568dbef473ee3530669809bb68be1c30bd31e18730cff1c",
+  "compiler": {
+    "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+    "base_flags": [
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin"
+    ],
+    "screen_flags": [
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-funroll-loops"
+    ],
+    "compile_stdout_sha256": "2e2eb1dc80162438e2c38167de34456f0bb449201aaa4554d3d1448586257139"
+  },
+  "no_duplicate_native_spike_or_hardware_run": true,
+  "final_elf_rebuilt": false,
+  "permanent_core_option_added": false,
+  "conclusion": "This flag adds no target model-object optimization to the existing O3 arm. It is not supported as a performance improvement. No claim about a separately rebuilt harness ELF is made."
+}
