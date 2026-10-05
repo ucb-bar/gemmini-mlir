@@ -1197,3 +1197,13 @@ outputs across144heads before reconstruction and softmax. Packing, more than
 these are arithmetic/traffic estimates, not a5B-cycle prediction. Production
 packing/numeric contracts belong in Merlin; target planes and scheduling in OOT.
 [Local receipt](perf_records/smol_two_digit_first_head_native.json).
+
+### Conserved stock profile1899 (1874 recipe)
+
+The source/object-pinned70-call profile closes39,235,729 forward cycles as
+30,713,914 device +8,521,815 host-gap cycles. Outer METRIC39,236,274 is34,995
+above the unprofiled1874 control; this diagnostic overhead is not a speedup.
+First pre-stem gap is4,016,144cycles. Gaps include all intervening host operations,
+not an isolated named operation. All1,000 original outputs and stock/staged
+identity pass. This is1874, not the newer1886or1897recipe.
+[Profile](perf_records/firesim1899_resnet1874_profile_verified.json).
