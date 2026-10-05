@@ -96,10 +96,25 @@
       "outcome": "Submitted to stock FireSim; hardware result pending",
       "why": "Source and final target correctness gates close with isolated device-schedule changes. Capsule gains are not assumed additive or extrapolated into whole-model cycles.",
       "firesim_job": 1878
+    },
+    {
+      "candidate": "Full immutable ResNet, transfer+residual+resident stripes composition",
+      "checkpoint_utc": "2026-10-05 20:22:52 UTC",
+      "metric_scope": "Original whole-model hardware cycles; measurement held pending isolated stock results",
+      "before_cycles": null,
+      "after_cycles": null,
+      "control": "Source-qualified transfer+residual composition, existing stock job1861",
+      "emitted_delta": "Immutable full model and runtime are preserved. Only the six generically admitted convolution kernels differ from the existing source-bound transfer+residual composition.",
+      "correctness": "All1000 original f32 output bits exact in native and actual strict RV64GC Gemmini Spike; 70 writer contracts and final linked zero-FSM audit pass.",
+      "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+      "model_marker": "8780640a6c31",
+      "outcome": "Qualified composition; stock submission held at parent direction",
+      "why": "Await isolated stock measurements before root decides composition admission. All required original-model correctness gates have passed."
     }
   ],
   "evidence": [
     "resident_stripe_conv_gsim.json",
-    "resnet_resident_stripe_policy_spike.json"
+    "resnet_resident_stripe_policy_spike.json",
+    "resnet_resident_stripe_transfer_residual_composition.json"
   ]
 }

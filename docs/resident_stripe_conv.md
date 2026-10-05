@@ -71,3 +71,20 @@ stock FireSim job1878 is submitted and hardware cycles remain pending. [Full gat
 
 This explicit schedule is not enabled as a universal default. Stock FireSim
 decides whether it joins the best whole-model recipe.
+
+## Composition with residual prefetch
+
+The source-bound transfer + residual M prefetch + resident convolution
+composition also passes native and strict RV64GC Spike with all 1,000 original
+f32 output bits exact, all 70 writer contracts and final linked zero FSM.
+Its host/runtime/weights/shim bytes match both 1853 and the existing transfer +
+residual composition; atomic stem, residual, mean and classifier providers are
+unchanged. Only the six admitted convolution kernels change. Later merged
+objects incorporate those kernels and therefore differ as aggregates.
+
+ELF `97c858d7...160802`, marker `8780640a6c31` is qualified. Hardware release
+is held until the isolated stock measurements decide admission. No additive
+gain is claimed. [Composition gate](perf_records/resnet_resident_stripe_transfer_residual_composition.json).
+The [optimization journey](perf_records/resident_stripe_optimization_journey.json)
+records accepted and rejected choices, metric scopes, emitted changes and
+the token-accounting limit for this subagent.
