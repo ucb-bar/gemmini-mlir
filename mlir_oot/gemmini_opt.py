@@ -143,7 +143,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--banked-prefetch", action="store_true")
     ap.add_argument("--grouped-b", action="store_true")
     ap.add_argument("--separate-b-bank", action="store_true")
-    ap.add_argument("--resident-input-policy", choices=("compact_channel_planes",))
+    ap.add_argument("--resident-input-policy", choices=("compact_channel_planes","compact_channel_planes_prefetch_b"))
     ap.add_argument("--resident-stripes", action="store_true")
     ap.add_argument("-o", "--output", default=None)
     ap.add_argument("input", nargs="?", default="-")

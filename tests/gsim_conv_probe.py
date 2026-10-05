@@ -21,6 +21,7 @@ def main():
     ap.add_argument('--resident-stripes',action='store_true')
     ap.add_argument('--resident-rows-per-tile',type=int,default=1)
     ap.add_argument('--resident-loop-channels',action='store_true')
+    ap.add_argument('--resident-prefetch-b',action='store_true')
     ap.add_argument('--virtual-padding',action='store_true',help='use unpadded input and primitive zero DMA at borders')
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
@@ -38,7 +39,7 @@ def main():
     ap.add_argument('--max-cycles',type=int,default=3000000)
     ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
-    if (a.resident_rows_per_tile != 1 or a.resident_loop_channels) and not a.resident_input:
+    if (a.resident_rows_per_tile != 1 or a.resident_loop_channels or a.resident_prefetch_b) and not a.resident_input:
         ap.error('resident row groups require --resident-input')
     if (a.wide_a or a.separate_b_bank or a.band_rows is not None) and not a.flat_spatial:
         ap.error("wide A or separate B bank requires --flat-spatial")
@@ -50,7 +51,7 @@ def main():
         kernel = GoldenResidentStripeConv(s)
     elif a.resident_input:
         from mlir_oot.golden_resident_conv import GoldenResidentConv
-        kernel = GoldenResidentConv(s, rows_per_tile=a.resident_rows_per_tile,loop_channels=a.resident_loop_channels)
+        kernel = GoldenResidentConv(s, rows_per_tile=a.resident_rows_per_tile,loop_channels=a.resident_loop_channels,prefetch_b=a.resident_prefetch_b)
     elif a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
         kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding,pingpong_b=a.pingpong_b)
@@ -120,7 +121,7 @@ int main(void) {
     run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
-    result = dict(resident_input=a.resident_input,resident_stripes=a.resident_stripes,pingpong_b=a.pingpong_b,shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,input_value_rules=[am,ao,bm,bo],status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
+    result = dict(resident_input=a.resident_input,resident_prefetch_b=a.resident_prefetch_b,resident_stripes=a.resident_stripes,pingpong_b=a.pingpong_b,shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,input_value_rules=[am,ao,bm,bo],status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
                   elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))

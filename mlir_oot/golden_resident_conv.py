@@ -17,9 +17,10 @@ from .tables import rtl_facts as F, isa
 class ResidentConvOptions:
     rows_per_tile: int = 1
     loop_channels: bool = False
+    prefetch_b: bool = False
 
 
-def choose_compact_resident(conv):
+def choose_compact_resident(conv, *, prefetch_b=False):
     """Derive an opt-in schedule from spatial span and declared resources.
 
     This is a target compiler policy, independent of source provenance or model
@@ -31,16 +32,24 @@ def choose_compact_resident(conv):
     if conv.w + 2 > F.DIM:
         raise ValueError('resident width plus halo exceeds DIM')
     rows = min(conv.h, 1 + (F.DIM - conv.w) // (conv.w + 2))
-    options = ResidentConvOptions(rows_per_tile=rows, loop_channels=True)
+    if type(prefetch_b) is not bool:
+        raise ValueError('resident weight prefetch selection must be boolean')
+    options = ResidentConvOptions(rows_per_tile=rows, loop_channels=not prefetch_b,
+        prefetch_b=prefetch_b)
     return GoldenResidentConv(conv, **asdict(options)), options
 
 
 class GoldenResidentConv(GoldenGemm):
-    def __init__(self, s, *, rows_per_tile=1, loop_channels=False):
+    def __init__(self, s, *, rows_per_tile=1, loop_channels=False, prefetch_b=False):
         s.validate()
         if type(loop_channels) is not bool:
             raise ValueError('resident channel-loop selection must be boolean')
         self.loop_channels = loop_channels
+        if type(prefetch_b) is not bool:
+            raise ValueError('resident weight prefetch selection must be boolean')
+        if prefetch_b and loop_channels:
+            raise ValueError('resident weight prefetch needs static reduction commands')
+        self.prefetch_b = prefetch_b
         if s.explicit_halo or s.stride != 1 or s.w + 2 > F.DIM or s.cin % F.DIM:
             raise ValueError('resident convolution needs unpadded stride1, width+halo<=DIM and aligned Cin')
         self.plane = (s.h+2)*(s.w+2)
@@ -52,10 +61,14 @@ class GoldenResidentConv(GoldenGemm):
             (min(rows_per_tile, s.h-y)-1)*(s.w+2)+s.w)
             for y in range(0, s.h, rows_per_tile))
         self.bbase = 2*F.SPAD_BANK_ROWS
+        self.bases = (self.bbase, 3*F.SPAD_BANK_ROWS) if prefetch_b else (self.bbase,)
         if _ceil_div(s.cin,F.DIM)*self.plane > self.bbase:
             raise ValueError('resident input overlaps weight banks')
         if self.bbase+s.bn*F.DIM > F.SPAD_ROWS or len(self.row_tiles)*s.bn*F.DIM > F.ACC_ROWS:
             raise ValueError('resident convolution output/weight panel exceeds resources')
+        if prefetch_b and (s.bn*F.DIM > F.SPAD_BANK_ROWS or
+                self.bases[-1]+s.bn*F.DIM > F.SPAD_ROWS):
+            raise ValueError('resident weight slots overlap or exceed scratchpad')
         self.conv=s
         super().__init__(Shape(s.h*s.w,s.cout,s.cin,bm=len(self.row_tiles),bn=s.bn,
             output_dtype=s.output_dtype,scale=s.scale,relu=s.relu,wide_store=True,reuse_b=True))
@@ -120,7 +133,36 @@ class GoldenResidentConv(GoldenGemm):
                         ptr=self._ptr(self.c,self.fb.const((y+row)*s.w),s.cout,self._tile(n0,d),4 if s.output_dtype=='i32' else 1)
                         self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*pw,full_row=s.output_dtype=='i32'),
                             'rows':s.w,'cols':sum(nr[d:d+step])},ptr)
-        self._for_groups(_groups(s.cout,s.bn),channel)
+        def prefetched_channel(n0,nr):
+            kt=s.cin//F.DIM
+            def load(index):
+                base=self.bases[index%2]
+                for d in range(0,len(nr),4):
+                    ptr=self._ptr(self.b,self.fb.const(index*F.DIM),s.cout,self._tile(n0,d))
+                    self._rocc('mvin',{'local':base+d*F.DIM,'rows':F.DIM,
+                        'cols':sum(nr[d:d+4]),'load_id':1},ptr)
+            load(0)
+            for index in range(9*kt):
+                # The next panel writes a disjoint bank while the current one
+                # remains live. Source HWIO reduction order is unchanged.
+                if index+1 < 9*kt:
+                    load(index+1)
+                kh,kw=divmod(index//kt,3);ki=index%kt
+                for d,cols in enumerate(nr):
+                    for tile,(y,count,span) in enumerate(self.row_tiles):
+                        self._rocc('preload',{'bd':self.bases[index%2]+d*F.DIM if tile==0 else isa.GARBAGE_ADDR,
+                            'c':isa.acc_addr((tile*s.bn+d)*F.DIM,accumulate=index!=0),
+                            'bd_cols':cols,'bd_rows':F.DIM,'c_cols':cols,'c_rows':span})
+                        self._rocc('compute',{'a':ki*self.plane+(y+kh)*pw+kw,
+                            'a_cols':F.DIM,'a_rows':span,'accumulate':tile!=0})
+            for tile,(y,count,span) in enumerate(self.row_tiles):
+                for row in range(count):
+                    for d in range(0,len(nr),4 if s.output_dtype=='i8' else 1):
+                        step=4 if s.output_dtype=='i8' else 1
+                        ptr=self._ptr(self.c,self.fb.const((y+row)*s.w),s.cout,self._tile(n0,d),4 if s.output_dtype=='i32' else 1)
+                        self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*pw,full_row=s.output_dtype=='i32'),
+                            'rows':s.w,'cols':sum(nr[d:d+step])},ptr)
+        self._for_groups(_groups(s.cout,s.bn),prefetched_channel if self.prefetch_b else channel)
         module=self._finish('gemmini_golden_resident_conv')
         module.attributes['gemmini.resident_conv_shape']=StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.resident_conv_layout']=StringAttr('channel-tile-major padded spatial planes; disjoint input DMA partitions')
@@ -128,6 +170,8 @@ class GoldenResidentConv(GoldenGemm):
             module.attributes['gemmini.resident_conv_rows_per_tile']=StringAttr(str(self.rows_per_tile))
         if self.loop_channels:
             module.attributes['gemmini.resident_conv_loop_channels']=StringAttr('bounded ordinary CPU channel loop')
+        if self.prefetch_b:
+            module.attributes['gemmini.resident_conv_prefetch_b']=StringAttr('one panel lookahead; disjoint bank2/bank3 weight lifetimes')
         return module
 
 
