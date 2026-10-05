@@ -41,3 +41,9 @@ LLVM object disassembly has substantial stack traffic in these generated kernels
 ## Bank-separated bm1 result
 
 Job 1734 completed with all 200,704 values and guard bytes passing: **53,624 kernel cycles**, a 49.05% reduction versus baseline and 6.87% above the 50,176-cycle array compute floor. The actual simulator ELF and bitstream match the committed identities. Small output blocks expose overlap effectively on this exact geometry despite less stationary-weight reuse. The final ELF has zero FSM instructions. This does not yet establish the same gain for the upstream i32-output catalog or other K values.
+
+## Captured-scale A/B numeric fixture correction
+
+The first captured-scale probes (jobs1745/1746) used the original small integer operand fixture. At the exact captured scale0.0038317402359098196 with no bias and ReLU, all200,704 expected outputs rounded to zero. Both jobs were canceled while still queued; no measurement is claimed.
+
+Replacement jobs1752 (bm16 baseline) and1753 (banked prefetch bm1) use amplitude13 deterministic signed-i8 operands. Expected outputs now contain28 distinct values in0..58, with102,625 nonzero entries. All200,704 values and guard bytes are checked. Device object hashes remain identical to the original captured-scale kernels; only harness inputs/oracle changed. Final ELF no-FSM audits pass. Added `--input-amplitude` is bounded1..21 so both deterministic input patterns remain signed-i8 representable; default1 preserves existing fixtures.

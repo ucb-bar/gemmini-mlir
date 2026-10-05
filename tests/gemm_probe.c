@@ -14,6 +14,10 @@
 #define SCALE 1.0f
 #endif
 
+#ifndef INPUT_AMPLITUDE
+#define INPUT_AMPLITUDE 1
+#endif
+
 #ifdef OUT_I8
 typedef int8_t output_t;
 #else
@@ -52,10 +56,10 @@ static inline uint64_t cycles(void) {
 int main(void) {
     for (int i = 0; i < M; ++i)
         for (int k = 0; k < K; ++k)
-            a[i][k] = (int8_t)(((i * 7 + k * 3) % 11) - 5);
+            a[i][k] = (int8_t)(INPUT_AMPLITUDE * (((i * 7 + k * 3) % 11) - 5));
     for (int k = 0; k < K; ++k)
         for (int j = 0; j < N; ++j)
-            b[k][j] = (int8_t)(((k * 5 + j * 2) % 13) - 6);
+            b[k][j] = (int8_t)(INPUT_AMPLITUDE * (((k * 5 + j * 2) % 13) - 6));
     for (int i = 0; i < 2048; ++i) cbox.guard[i] = 0x5a;
 #ifdef USE_BIAS
     for (int j = 0; j < N; ++j) bias[j] = j % 5 - 2;

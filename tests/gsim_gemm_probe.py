@@ -23,7 +23,7 @@ from mlir_oot.no_fsm_audit import audit_elf
 from merlin.perf.layer_bench import build_program, run_on_gsim
 
 
-def _write_expected(path: Path, shape: Shape) -> None:
+def _write_expected(path: Path, shape: Shape, amplitude: int = 1) -> None:
     """Move the expensive O(MNK) oracle off the cycle-accurate simulated CPU."""
     scale32 = struct.unpack("<f", struct.pack("<f", shape.scale))[0]
     lines = ["static const int32_t expected_values[M][N] = {"]
@@ -32,6 +32,7 @@ def _write_expected(path: Path, shape: Shape) -> None:
         for j in range(shape.n):
             acc = sum((((i * 7 + k * 3) % 11) - 5) *
                       (((k * 5 + j * 2) % 13) - 6) for k in range(shape.k))
+            acc *= amplitude * amplitude
             if shape.bias:
                 acc += j % 5 - 2
             if shape.output_dtype == "i8":
@@ -73,6 +74,7 @@ def main() -> int:
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
     ap.add_argument("--bias", action="store_true")
+    ap.add_argument("--input-amplitude", type=int, default=1, choices=range(1,22))
     ap.add_argument("--scale", type=float, default=1.0)
     ap.add_argument("--relu", action="store_true")
     ap.add_argument("--timeout-s", type=int, default=180)
@@ -117,7 +119,7 @@ def main() -> int:
 
     source = Path(__file__).with_name("gemm_probe.c")
     cflags = [f"-DM={args.m}", f"-DN={args.n}", f"-DK={args.k}",
-              f"-DKERNEL_SYMBOL={args.kernel_symbol}"]
+              f"-DKERNEL_SYMBOL={args.kernel_symbol}", f"-DINPUT_AMPLITUDE={args.input_amplitude}"]
     if args.output_dtype == "i8":
         cflags.append("-DOUT_I8")
     if args.bias:
@@ -125,7 +127,7 @@ def main() -> int:
     if args.relu:
         cflags.append("-DUSE_RELU")
     if args.embed_expected:
-        _write_expected(workdir / "gemm_expected.inc", shape)
+        _write_expected(workdir / "gemm_expected.inc", shape, args.input_amplitude)
         cflags.extend(["-DEMBED_EXPECTED", f"-I{workdir}"])
     cflags.append(f"-DSCALE={args.scale}f")
     built = build_program([source, obj], workdir, target="gemmini",
@@ -137,7 +139,7 @@ def main() -> int:
         raise RuntimeError("final linked ELF contains a forbidden Gemmini instruction")
 
     if args.build_only:
-        receipt = {"status": "built_not_executed", "shape": asdict(shape),
+        receipt = {"status": "built_not_executed", "shape": asdict(shape), "input_amplitude": args.input_amplitude,
                    "elf_sha256": built.elf_sha256, "nofsm_audit": audit}
         (workdir / "build_only.json").write_text(json.dumps(receipt, indent=2) + "\n")
         print(json.dumps(receipt, indent=2))
@@ -157,6 +159,7 @@ def main() -> int:
         "block": [shape.bm, shape.bn],
         "output_dtype": args.output_dtype,
         "bias": args.bias,
+        "input_amplitude": args.input_amplitude,
         "scale": args.scale,
         "relu": args.relu,
         "embedded_expected": args.embed_expected,
