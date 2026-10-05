@@ -32,5 +32,6 @@
     "added_cycles": 363946,
     "fraction_increase": 0.007857735405345512
   },
-  "disposition": "Functionally qualified, but hardware regression in this comparison. Retain1812 as fastest control; lower Spike instruction count was not a hardware speedup."
+  "disposition": "Functionally qualified, but hardware regression in this comparison. Retain1812 as fastest control; lower Spike instruction count was not a hardware speedup.",
+  "causal_scope": "Measured whole-artifact comparison only. host_vectorize metadata differs from1812, but metadata alone does not establish different code: the later packed-mean True/False builds produce byte-identical model.o and final ELF. The opaque1819 mean also retains a layout transpose. Do not assign the whole regression to either mechanism without an isolated object/profile comparison."
 }
