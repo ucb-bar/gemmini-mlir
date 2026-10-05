@@ -1,0 +1,72 @@
+{
+  "scope": "Exact source whole ResNet with uniform-zero/scale-aware existing inline quantize round conversion; Spike retired instructions, not hardware timing",
+  "elf_sha256": "88968fed571621c9edbeaf03e35fbd77d7c3f2471858cada5e13aba657375247",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 14254689",
+    "METRIC build_hash 054475055d02",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "work_directory": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_wide_virtual_splat_round",
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "host_policy": {
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "host_features": [
+      "fuse_quantize_round_convert"
+    ]
+  },
+  "merlin_commit": "36d43b7ba",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "88968fed571621c9edbeaf03e35fbd77d7c3f2471858cada5e13aba657375247",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3956,
+      "2": 12519,
+      "3": 1350,
+      "4": 11934,
+      "5": 100832,
+      "6": 112766,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "baseline_spike_instructions": 19286601,
+  "candidate_spike_instructions": 14254689,
+  "relative_instruction_reduction": 0.2609019598632232,
+  "source_pass_sha256": "252103dc580e43069f1a183de029e80c616c2304530cc4fc4b4d415877bf2527",
+  "rewrites": 2,
+  "focused_tests": 19,
+  "all_structure_gates_pass": true,
+  "hardware_status": "pending submission"
+}

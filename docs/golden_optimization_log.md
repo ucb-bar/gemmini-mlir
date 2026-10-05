@@ -510,3 +510,43 @@ Torch tolerance remainsatol0.03125/rtol0.02, relativeL22.1918433e-7 and
 maximumabsoluteerror9.536743e-6. Evidence, host/compiler/runtime identities and
 scope: `perf_records/tiny_large_n_runtime_spike.json`. Stock FireSim submission
 is authorized after these gates.
+
+### Verified virtual padding, Tiny hardware gain, and ResNet attribution
+
+FireSim1775 verifies62,441,162 ResNet forward cycles,8.69% fewer than1774.
+Every1,000 closed-recipe output words remains exact. FireSim1776 verifies the
+full22-layer Tiny at1,402,210,517 forward cycles,22.11% fewer than1747's
+1,800,267,524. Its full256,000-output digest matches the independently
+Torch-gated native output and the prior compiled baseline. These are pinned
+stock FireSimGemminiRocketConfig runs with final-ELF zeroFSM, not Spike timing.
+
+ResNet final-link leaf profile1777 conserves all70 calls and its61,466,934
+interior cycles:37,187,546 device and24,279,388 host. The largest host intervals
+are16,825,464 before the stem and3,210,641 before the classifier. The profiled
+61,467,502 harness cycles differ from unprofiled1775;1775 remains the baseline.
+The selected mesh issue geometry is22,805,632 cycles before CPU/DMA work.
+A source-proven restricted skip-domain experiment would lower this to
+22,466,944, but has not been promoted. Matching22M requires additional schedule
+and exact arithmetic improvements beyond removing host overhead.
+
+### Exact host quantization and explicit scalar rounding
+
+Merlin36d43b7ba follows proven uniform zero points and reciprocal scales through
+captured quantizers. The existing default-off fusion now reaches the remaining
+two ResNet quantizers.19 focused tests and the full native/actualSpike golden
+gate pass; Spike retires14,254,689 instructions versus19,286,601 before fusion.
+FireSim1781 is queued for an independent hardware comparison.
+
+Target-owned late LLVM legalization recognizes the complete typed SSA chain,
+refuses strict/constrained floating arithmetic, and replaces bounded RNE with
+explicit RISC-V rounding. RNE-only retires12,271,325 instructions; combined
+clamp+RNE retires11,355,701. Each matches all1,000 outputs natively and on Spike,
+passes107,415 boundary/random comparisons across all five frm modes, and passes
+final-ELF zeroFSM. NaNs have no invented output contract: the original fptosi
+is poison for NaNs. FireSim1786 is queued for the combined candidate.
+
+The source-bound dense bank schedule passes the same whole golden. A controlled
+49x2048x512 GSIM comparison improves447,124 to367,749 cycles (17.75% fewer).
+This is a contraction measurement; the whole-model hardware result is pending.
+Receipts preserve the capture, prepared source, compiler, linked objects and ELF
+identities for every candidate.

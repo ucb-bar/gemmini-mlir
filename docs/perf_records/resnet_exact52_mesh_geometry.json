@@ -1,0 +1,927 @@
+{
+  "schema": "golden_whole_mesh_geometry_v1",
+  "scope": "Issue occupancy under the selected schedule. These mesh-only geometric minima exclude loads, stores, RoCC issue, fences and CPU work; they are not predicted FireSim cycles. Residual ideal MAC floor is deliberately omitted because diagonal multiplication implements elementwise arithmetic.",
+  "source_catalog": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_wide_virtual_layout/build_direct/device_catalog/device_catalog.json",
+  "source_catalog_sha256": "8711c8838dc4159f4fcf2fda9c1fdbd16971224ebe548f3ff3d933f920a10de6",
+  "elf_sha256": "288af46a7a86102957b99ab5d9bc064d39120b19a9277a26aa6b5bc6bac17a09",
+  "summary": {
+    "dense": {
+      "calls": 37,
+      "ideal_mesh_cycles": 8287040,
+      "scheduled_mesh_cycles": 9022464
+    },
+    "direct_conv": {
+      "calls": 16,
+      "ideal_mesh_cycles": 7225344,
+      "scheduled_mesh_cycles": 7805952
+    },
+    "pooled_stem": {
+      "calls": 1,
+      "ideal_mesh_cycles": 460992,
+      "scheduled_mesh_cycles": 784000
+    },
+    "wide_residual": {
+      "calls": 16,
+      "ideal_mesh_cycles": 0,
+      "scheduled_mesh_cycles": 5193216
+    }
+  },
+  "scheduled_mesh_cycles_total": 22805632,
+  "contraction_ideal_mesh_cycles_total": 15973376,
+  "hardware_target_cycles": 22000000,
+  "rows": [
+    {
+      "region": "matmul_1",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 64
+      },
+      "macs": 12845056,
+      "ideal_mesh_cycles": 50176,
+      "scheduled_mesh_cycles": 50176,
+      "primitive_commands_estimate": 6668
+    },
+    {
+      "region": "matmul_2",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 576
+      },
+      "band_rows": 4,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_3",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 256,
+        "k": 64
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 27864
+    },
+    {
+      "region": "matmul_4",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 256,
+        "k": 64
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 27864
+    },
+    {
+      "region": "matmul_5",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28436
+    },
+    {
+      "region": "matmul_6",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 576
+      },
+      "band_rows": 4,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_7",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 256,
+        "k": 64
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 27864
+    },
+    {
+      "region": "matmul_8",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28436
+    },
+    {
+      "region": "matmul_9",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 3136,
+        "n": 64,
+        "k": 576
+      },
+      "band_rows": 4,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_10",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 256,
+        "k": 64
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 27864
+    },
+    {
+      "region": "matmul_11",
+      "kind": "dense",
+      "dimensions": {
+        "m": 3136,
+        "n": 128,
+        "k": 256
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 401408,
+      "primitive_commands_estimate": 53832
+    },
+    {
+      "region": "matmul_12",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 1152
+      },
+      "band_rows": 8,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_13",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 512,
+        "k": 128
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28840
+    },
+    {
+      "region": "matmul_14",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 512,
+        "k": 256
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 401408,
+      "primitive_commands_estimate": 57288
+    },
+    {
+      "region": "matmul_15",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28546
+    },
+    {
+      "region": "matmul_16",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 1152
+      },
+      "band_rows": 8,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_17",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 512,
+        "k": 128
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28840
+    },
+    {
+      "region": "matmul_18",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28546
+    },
+    {
+      "region": "matmul_19",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 1152
+      },
+      "band_rows": 8,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_20",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 512,
+        "k": 128
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28840
+    },
+    {
+      "region": "matmul_21",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28546
+    },
+    {
+      "region": "matmul_22",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 784,
+        "n": 128,
+        "k": 1152
+      },
+      "band_rows": 8,
+      "schedule": "spatial_banded_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "matmul_23",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 512,
+        "k": 128
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 200704,
+      "primitive_commands_estimate": 28840
+    },
+    {
+      "region": "matmul_24",
+      "kind": "dense",
+      "dimensions": {
+        "m": 784,
+        "n": 256,
+        "k": 512
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 401408,
+      "primitive_commands_estimate": 57092
+    },
+    {
+      "region": "matmul_25",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_26",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_27",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 512
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 425984,
+      "primitive_commands_estimate": 60880
+    },
+    {
+      "region": "matmul_28",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 1024
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30388
+    },
+    {
+      "region": "matmul_29",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_30",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_31",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 1024
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30388
+    },
+    {
+      "region": "matmul_32",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_33",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_34",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 1024
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30388
+    },
+    {
+      "region": "matmul_35",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_36",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_37",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 1024
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30388
+    },
+    {
+      "region": "matmul_38",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_39",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_40",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 1024
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30388
+    },
+    {
+      "region": "matmul_41",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 196,
+        "n": 256,
+        "k": 2304
+      },
+      "band_rows": 14,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 479232
+    },
+    {
+      "region": "matmul_42",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 1024,
+        "k": 256
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 212992,
+      "primitive_commands_estimate": 30544
+    },
+    {
+      "region": "matmul_43",
+      "kind": "dense",
+      "dimensions": {
+        "m": 196,
+        "n": 512,
+        "k": 1024
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 425984,
+      "primitive_commands_estimate": 60776
+    },
+    {
+      "region": "matmul_44",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 49,
+        "n": 512,
+        "k": 4608
+      },
+      "band_rows": 7,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 589824
+    },
+    {
+      "region": "matmul_45",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 2048,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 262144,
+      "primitive_commands_estimate": 38016
+    },
+    {
+      "region": "matmul_46",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 2048,
+        "k": 1024
+      },
+      "macs": 102760448,
+      "ideal_mesh_cycles": 401408,
+      "scheduled_mesh_cycles": 524288,
+      "primitive_commands_estimate": 75904
+    },
+    {
+      "region": "matmul_47",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 512,
+        "k": 2048
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 262144,
+      "primitive_commands_estimate": 37920
+    },
+    {
+      "region": "matmul_48",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 49,
+        "n": 512,
+        "k": 4608
+      },
+      "band_rows": 7,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 589824
+    },
+    {
+      "region": "matmul_49",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 2048,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 262144,
+      "primitive_commands_estimate": 38016
+    },
+    {
+      "region": "matmul_50",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 512,
+        "k": 2048
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 262144,
+      "primitive_commands_estimate": 37920
+    },
+    {
+      "region": "matmul_51",
+      "kind": "direct_conv",
+      "dimensions": {
+        "m": 49,
+        "n": 512,
+        "k": 4608
+      },
+      "band_rows": 7,
+      "schedule": "spatial_flat_wide_a_separate_b",
+      "macs": 115605504,
+      "ideal_mesh_cycles": 451584,
+      "scheduled_mesh_cycles": 589824
+    },
+    {
+      "region": "matmul_52",
+      "kind": "dense",
+      "dimensions": {
+        "m": 49,
+        "n": 2048,
+        "k": 512
+      },
+      "macs": 51380224,
+      "ideal_mesh_cycles": 200704,
+      "scheduled_mesh_cycles": 262144,
+      "primitive_commands_estimate": 38016
+    },
+    {
+      "region": "matmul_53",
+      "kind": "dense",
+      "dimensions": {
+        "m": 1,
+        "n": 1000,
+        "k": 2048
+      },
+      "macs": 2048000,
+      "ideal_mesh_cycles": 8000,
+      "scheduled_mesh_cycles": 129024,
+      "primitive_commands_estimate": 24383
+    },
+    {
+      "region": "matmul_0",
+      "kind": "pooled_stem",
+      "dimensions": {
+        "m": 12544,
+        "n": 64,
+        "k": 147
+      },
+      "macs": 118013952,
+      "ideal_mesh_cycles": 460992,
+      "scheduled_mesh_cycles": 784000
+    },
+    {
+      "region": "quantize_6",
+      "kind": "wide_residual",
+      "elements": 802816,
+      "coefficients": [
+        2609,
+        2180
+      ],
+      "chunks": 39,
+      "scheduled_mesh_cycles": 1956864
+    },
+    {
+      "region": "quantize_10",
+      "kind": "wide_residual",
+      "elements": 802816,
+      "coefficients": [
+        438,
+        397
+      ],
+      "chunks": 8,
+      "scheduled_mesh_cycles": 401408
+    },
+    {
+      "region": "quantize_14",
+      "kind": "wide_residual",
+      "elements": 802816,
+      "coefficients": [
+        583,
+        488
+      ],
+      "chunks": 9,
+      "scheduled_mesh_cycles": 451584
+    },
+    {
+      "region": "quantize_19",
+      "kind": "wide_residual",
+      "elements": 401408,
+      "coefficients": [
+        741,
+        841
+      ],
+      "chunks": 13,
+      "scheduled_mesh_cycles": 326144
+    },
+    {
+      "region": "quantize_23",
+      "kind": "wide_residual",
+      "elements": 401408,
+      "coefficients": [
+        497,
+        384
+      ],
+      "chunks": 8,
+      "scheduled_mesh_cycles": 200704
+    },
+    {
+      "region": "quantize_27",
+      "kind": "wide_residual",
+      "elements": 401408,
+      "coefficients": [
+        1053,
+        991
+      ],
+      "chunks": 17,
+      "scheduled_mesh_cycles": 426496
+    },
+    {
+      "region": "quantize_31",
+      "kind": "wide_residual",
+      "elements": 401408,
+      "coefficients": [
+        329,
+        257
+      ],
+      "chunks": 6,
+      "scheduled_mesh_cycles": 150528
+    },
+    {
+      "region": "quantize_36",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        1129,
+        1215
+      ],
+      "chunks": 19,
+      "scheduled_mesh_cycles": 238336
+    },
+    {
+      "region": "quantize_40",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        432,
+        419
+      ],
+      "chunks": 8,
+      "scheduled_mesh_cycles": 100352
+    },
+    {
+      "region": "quantize_44",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        1010,
+        939
+      ],
+      "chunks": 16,
+      "scheduled_mesh_cycles": 200704
+    },
+    {
+      "region": "quantize_48",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        598,
+        373
+      ],
+      "chunks": 8,
+      "scheduled_mesh_cycles": 100352
+    },
+    {
+      "region": "quantize_52",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        713,
+        746
+      ],
+      "chunks": 12,
+      "scheduled_mesh_cycles": 150528
+    },
+    {
+      "region": "quantize_56",
+      "kind": "wide_residual",
+      "elements": 200704,
+      "coefficients": [
+        844,
+        883
+      ],
+      "chunks": 14,
+      "scheduled_mesh_cycles": 175616
+    },
+    {
+      "region": "quantize_61",
+      "kind": "wide_residual",
+      "elements": 100352,
+      "coefficients": [
+        1589,
+        1625
+      ],
+      "chunks": 26,
+      "scheduled_mesh_cycles": 163072
+    },
+    {
+      "region": "quantize_65",
+      "kind": "wide_residual",
+      "elements": 100352,
+      "coefficients": [
+        1199,
+        1223
+      ],
+      "chunks": 20,
+      "scheduled_mesh_cycles": 125440
+    },
+    {
+      "region": "quantize_69",
+      "kind": "wide_residual",
+      "elements": 100352,
+      "coefficients": [
+        217,
+        179
+      ],
+      "chunks": 4,
+      "scheduled_mesh_cycles": 25088
+    }
+  ]
+}

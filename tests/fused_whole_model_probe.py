@@ -92,14 +92,19 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--residual-shared-permutation',action='store_true');p.add_argument('--residual-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--residual-shared-permutation',action='store_true');p.add_argument('--residual-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.)
+    p.add_argument('--host-feature', action='append', choices=('fuse_quantize_round_convert','lower_roundeven_to_intrinsic'), default=[], help='explicit exact host arithmetic lowering; defaults remain unchanged')
+    a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    if len(set(a.host_feature))>1:p.error('host rounding lowerings are alternatives; select one')
     if a.residual_shared_permutation and (not a.residual_add or a.residual_implementation not in ('cpu_lut','wide_integer')):p.error('shared permutation requires exact residual implementation')
     if a.residual_lut_schedule!='scalar' and (not a.residual_add or a.residual_implementation!='cpu_lut'):p.error('CPU lookup schedule requires --residual-add --residual-implementation cpu_lut')
     if a.residual_max_output_lsb and (not a.residual_add or not a.allow_bounded_output):p.error('bounded residuals require --residual-add and explicit --allow-bounded-output')
     if not np.isfinite(a.atol) or not np.isfinite(a.rtol) or a.atol<0 or a.rtol<0:p.error('quality tolerances must be finite and nonnegative')
     capture=a.work/'capture';builddir=a.work/'build_direct'
     if not a.validate_existing:
-        (a.work/'host_compilation_policy.json').write_text(json.dumps({key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']},indent=2)+'\n')
+        policy={key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']}
+        policy['host_features']=sorted(set(a.host_feature))
+        (a.work/'host_compilation_policy.json').write_text(json.dumps(policy,indent=2)+'\n')
     if not a.validate_existing:
         stage_capture(a.capture,a.bundle,capture)
         callbacks=merlin_callbacks
@@ -121,7 +126,7 @@ def main():
             apply_residual(capture,residual)
             prepare,compile=residual_callbacks(a.llvm_bin,residual,(prepare,compile))
         (a.work/'whole_quality_policy.json').write_text(json.dumps({'allow_bounded_output':a.allow_bounded_output,'atol':a.atol,'rtol':a.rtol,'original_golden_sha256':hashlib.sha256((a.capture/'golden.npy').read_bytes()).hexdigest()},indent=2)+'\n')
-        features={'named_int8_contraction'}
+        features={'named_int8_contraction',*a.host_feature}
         if a.hoist_weights:features.add('hoist_weight_invariant_quantize')
         result=build(capture,builddir,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
