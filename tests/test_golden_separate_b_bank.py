@@ -45,3 +45,10 @@ def test_selection_is_explicit_and_preserves_semantics():
     assert policy=='dense_gemm:separate_b_bank'
     too_large=Shape(8,32,8208,bm=1,bn=2,cache_a=True)
     assert select_kernel(too_large,separate_b_bank=True)[0].shape is too_large
+
+
+def test_banked_prefetch_owns_its_existing_bank_placement():
+    from mlir_oot.dense_schedule import select_kernel
+    s=Shape(47,48,32,bm=2,bn=3,separate_b_bank=True)
+    g,_=select_kernel(s,banked_prefetch=True,separate_b_bank=True)
+    assert g.shape.banked_m and not g.shape.separate_b_bank

@@ -24,7 +24,7 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
             and 0<shape.n<=4*F.DIM and shape.n%F.DIM==0):
         nt,kt=_ceil_div(shape.n,F.DIM),_ceil_div(shape.k,F.DIM)
         candidate=replace(selected,bm=1,bn=nt,cache_b=True,cache_a=False,
-            pipeline_m=True,prefetch_m=True,banked_m=True,
+            pipeline_m=True,prefetch_m=True,banked_m=True,separate_b_bank=False,
             wide_a=True,wide_b=True,wide_store=True,reuse_b=False)
         # Banked placement reserves scratch banks0/1 for alternating A,
         # banks2/3 for B, and one accumulator bank for each result slot.
