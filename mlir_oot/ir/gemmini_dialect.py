@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from xdsl.dialects.builtin import ArrayAttr, FloatAttr, IntegerAttr, StringAttr
+from xdsl.dialects.builtin import ArrayAttr, FloatAttr, IntegerAttr, StringAttr, i64
 from xdsl.ir import Dialect
 from xdsl.irdl import IRDLOperation, irdl_op_definition, opt_result_def, var_operand_def
 from xdsl.parser import Parser
@@ -204,7 +204,18 @@ class ComputeOp(_GemminiOp):
     def verify_(self) -> None:
         self._extent("a_cols")
         self._extent("a_rows")
-        self._local("a")
+        if len(self.operands_) == 0:
+            self._local("a")
+        elif len(self.operands_) == 1:
+            if self.operands_[0].type != i64 or "a" in self.attributes:
+                raise VerifyException("gemmini.compute: dynamic A address must be one i64 operand")
+            maximum, reserved = self.a("a_max"), self.a("a_reserved_rows")
+            if (not isinstance(maximum, int) or not isinstance(reserved, int)
+                    or maximum < 0 or maximum + DIM > reserved
+                    or reserved > F.SPAD_ROWS):
+                raise VerifyException("gemmini.compute: dynamic A range exceeds reserved scratchpad rows")
+        else:
+            raise VerifyException("gemmini.compute: at most one dynamic A address is supported")
         if "bd" in self.attributes:
             self._local("bd")
 

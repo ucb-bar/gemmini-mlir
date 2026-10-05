@@ -53,6 +53,22 @@ def lower(module):
     for op in list(module.walk()):
         if not isinstance(op, G._GemminiOp):
             continue
+        if isinstance(op, G.ComputeOp) and len(op.operands_) == 1:
+            funct, rs1_base, rs2 = isa.compute(
+                a_addr=0, bd_addr=op.a("bd", isa.GARBAGE_ADDR),
+                a_cols=op.a("a_cols"), a_rows=op.a("a_rows"),
+                bd_cols=op.a("bd_cols", F.DIM), bd_rows=op.a("bd_rows", F.DIM),
+                accumulate=bool(op.a("accumulate", False)),
+            )
+            isa.assert_legal(funct)
+            high = iconst(rs1_base)
+            packed = llvm.OrOp(op.operands_[0], high.results[0])
+            other = iconst(rs2)
+            Rewriter.replace_op(op, [high, packed, other, llvm.InlineAsmOp(
+                isa.asm_string(funct), "r,r", [packed.results[0], other.results[0]], [],
+                has_side_effects=True,
+            )])
+            continue
         encoded = _encoded(op)
         if encoded is None:
             Rewriter.replace_op(op, llvm.InlineAsmOp(

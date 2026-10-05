@@ -10,6 +10,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 
@@ -24,6 +26,31 @@ def _sha(path: Path) -> str:
         for chunk in iter(lambda: stream.read(4 * 1024 * 1024), b""):
             hasher.update(chunk)
     return hasher.hexdigest()
+
+
+def check_queue_daemon_identity() -> dict:
+    """Refuse the current queue's cross-UID FireSim SSH setup before submission.
+
+    The daemon launches FireSim with its own effective UID but forwards the
+    submitter's HOME. FireSim reads HOME/firesim.pem for Fabric connections.
+    A different daemon UID cannot read a normal private (0400) user key.
+    """
+    listing = subprocess.run(["ps", "-eo", "uid=,args="], check=True,
+                             capture_output=True, text=True).stdout
+    marker = "/opt/firesim-queue/bin/firesim_queue.py daemon"
+    daemon_uids = [int(line.strip().split(None, 1)[0]) for line in listing.splitlines()
+                   if line.rstrip().endswith(marker)]
+    if len(daemon_uids) != 1:
+        raise ValueError(f"expected one active firesim-queue daemon, found {len(daemon_uids)}")
+    submitter_uid = os.geteuid()
+    daemon_uid = daemon_uids[0]
+    if daemon_uid != submitter_uid:
+        raise ValueError(
+            f"queue daemon UID {daemon_uid} differs from submitter UID {submitter_uid}; "
+            "current runworkload-full forwards the submitter HOME without changing "
+            "process UID, so Fabric cannot read the submitter's private SSH key")
+    return {"daemon_uid": daemon_uid, "submitter_uid": submitter_uid,
+            "identity_match": True}
 
 
 def preflight(chipyard: Path, workload: str, elf: Path, hardware_key: str,
@@ -79,9 +106,15 @@ def main() -> int:
     ap.add_argument("--hardware-key", required=True)
     ap.add_argument("--expected-bitstream-sha256", required=True)
     ap.add_argument("--output", type=Path, required=True)
+    ap.add_argument("--check-queue-daemon", action="store_true",
+                    help="refuse a daemon running under a different UID")
     args = ap.parse_args()
+    admission = check_queue_daemon_identity() if args.check_queue_daemon else None
     result = preflight(args.chipyard, args.workload, args.elf, args.hardware_key,
                        args.expected_bitstream_sha256, args.output)
+    if admission is not None:
+        result["queue_admission"] = admission
+        (args.output / "firesim_preflight.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({k: result[k] for k in ("bitstream_sha256", "elf_sha256",
                                              "hwdb_artifact", "hwdb_artifact_sha256")}, indent=2))
     return 0

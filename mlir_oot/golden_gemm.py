@@ -64,7 +64,7 @@ class Shape:
                             self.n % F.DIM or _ceil_div(self.n, F.DIM) > self.bn):
             raise ValueError("wide B load needs one N block of 32, 48 or 64")
         if self.cache_a and (self.m > F.DIM or self.bm != 1 or
-                             self.wide_a or self.pipeline_m):
+                             self.wide_a or self.pipeline_m or self.cache_b):
             raise ValueError("cached A needs one output-row tile and no competing A schedule")
         slots = 2 if self.pipeline_m else 1
         a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
@@ -171,6 +171,18 @@ class GoldenGemm:
             return (b_base + cached_k * _ceil_div(s.n, F.DIM) + d) * F.DIM
         def a_addr(a: int) -> int:
             return (a_base + a * a_panel_tiles + (wide_k or 0)) * F.DIM
+        dynamic_a = self.fb.mul_i(k0, self.fb.const(F.DIM)) if s.cache_a else None
+
+        def compute(rows: int, accumulate: bool) -> None:
+            attrs = {"a_cols": kr, "a_rows": rows, "accumulate": accumulate}
+            if dynamic_a is None:
+                attrs["a"] = a_addr(0)
+                self._rocc("compute", attrs)
+            else:
+                attrs["a_max"] = (kt - 1) * F.DIM
+                attrs["a_reserved_rows"] = kt * F.DIM
+                self._rocc("compute", attrs, dynamic_a)
+
         if s.reuse_b:
             # Keep a weight tile in the array while varying the A row tile.
             # A garbage BD address on subsequent PRELOADs preserves the
@@ -183,9 +195,12 @@ class GoldenGemm:
                         "c": isa.acc_addr(acc_row, accumulate=not first),
                         "bd_cols": cols, "bd_rows": kr,
                         "c_cols": cols, "c_rows": rows})
-                    self._rocc("compute", {"a": a_addr(a),
-                                            "a_cols": kr, "a_rows": rows,
-                                            "accumulate": a != 0})
+                    if dynamic_a is None:
+                        self._rocc("compute", {"a": a_addr(a),
+                                                "a_cols": kr, "a_rows": rows,
+                                                "accumulate": a != 0})
+                    else:
+                        compute(rows, a != 0)
         else:
             for a, rows in enumerate(mr):
                 for d, cols in enumerate(nr):
@@ -195,8 +210,11 @@ class GoldenGemm:
                         "c": isa.acc_addr(acc_row, accumulate=not first),
                         "bd_cols": cols, "bd_rows": kr,
                         "c_cols": cols, "c_rows": rows})
-                    self._rocc("compute", {"a": a_addr(a),
-                                            "a_cols": kr, "a_rows": rows})
+                    if dynamic_a is None:
+                        self._rocc("compute", {"a": a_addr(a),
+                                                "a_cols": kr, "a_rows": rows})
+                    else:
+                        compute(rows, False)
 
     def _output_block(self, m0: SSAValue, n0: SSAValue,
                       mr: tuple[int, ...], nr: tuple[int, ...],
@@ -221,7 +239,7 @@ class GoldenGemm:
                     self._rocc("mvin", {"local": isa.acc_addr((acc_base + a * s.bn + d) * F.DIM),
                                           "rows": rows, "cols": cols,
                                           "load_id": 2}, ptr)
-        if s.cache_b or s.wide_a or s.cache_a:
+        if s.cache_b or s.wide_a:
             for ki in range(_ceil_div(s.k, F.DIM)):
                 self._k_tile(m0, n0, self.fb.const(ki), mr, nr,
                              min(F.DIM, s.k - ki * F.DIM),
