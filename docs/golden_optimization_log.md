@@ -1172,3 +1172,28 @@ prediction. All1,000 original output words, actual staged ELF and stock bitstrea
 are independently pinned. Generic target scheduling remains OOT owned.
 Token usage is unavailable to this agent.
 [Receipt](perf_records/firesim1897_resnet_stripe_composition_verified.json).
+
+### Smol low-digit feasibility screen
+
+Exact ordered CPU attention requires19,327,352,832 scalar FMAs before memory,
+softmax or other model work, exceeding5B even at one FMA per cycle. The complete
+head gamma certificate lost17.53% on stock hardware, so lowering certificate
+instruction counts alone is not a release criterion.
+
+A functional-only original head0 screen preserves online512 softmax, original
+polynomial exponentiation,8-lane denominator reduction,192/192/128 PV partials,
+and final BF16 rounding. Its independent ordered control reproduces all65,536
+original words. One signed7-bit digit fails955 local tolerance comparisons;
+two14-bit radix128 digits pass that diagnostic local tolerance, with12,803
+changed words, maxabs0.0009765625 and relativeL2.001062. This does not certify
+whole-model quality. Full original native two-digit screening is required next,
+with original1,600-output tolerances unchanged. Prior unquantized wide-dot
+reassociation failed144/1,600, so whole failure remains plausible.
+
+A four-plane DIM16 implementation has an ideal302M compute-cycle floor for
+attention only, versus19.33B scalar FMAs. It also reads3.094GiB of i32 plane
+outputs across144heads before reconstruction and softmax. Packing, more than
+207M partial output reconstructions, source softmax and nonattention work remain;
+these are arithmetic/traffic estimates, not a5B-cycle prediction. Production
+packing/numeric contracts belong in Merlin; target planes and scheduling in OOT.
+[Local receipt](perf_records/smol_two_digit_first_head_native.json).

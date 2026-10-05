@@ -1,0 +1,45 @@
+{
+  "scope": "complete original first attention head; local gate is diagnostic, not whole-model admission",
+  "reference": {
+    "bit_mismatches": 0,
+    "failed_local_gate": 0,
+    "max_abs": 0.0,
+    "relative_l2": 0.0,
+    "raw_sha256": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e"
+  },
+  "sources": {
+    "q": "c403b7de4be3888dfd38ed10f14023484c57c6e7c20b3a8c259a7f1420b5d427",
+    "k": "cc4c618ec6a696aa7709cb2cb8cf907294b2e0e7104b2e6f8ea28e40336a826b",
+    "v": "5cdcbfe27b8a5617d233c7bec3469c01c9c3ee339c2403b39e9202f8b0696e7a",
+    "gold": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e"
+  },
+  "1": {
+    "bit_mismatches": 63585,
+    "failed_local_gate": 955,
+    "max_abs": 0.1025390625,
+    "relative_l2": 0.1762463648282316,
+    "raw_sha256": "4bc1a4c372d8b87cf5b65f009ce8ea9b217d5c90989c54855f3e7192e8293804"
+  },
+  "2": {
+    "bit_mismatches": 12803,
+    "failed_local_gate": 0,
+    "max_abs": 0.0009765625,
+    "relative_l2": 0.0010617076236228195,
+    "raw_sha256": "a339fab0b33fb9df74d0098c20d2cf426799a9c1008c937be158f9378dc76fc7"
+  },
+  "emulator_source_sha256": "39891ed83141c54a61cd3f481e2a7603dd8a8066dd6ab519aa0cc1db89feaffd",
+  "scalar_source_sha256": "7b5a2a06c089f92c5ffcb72f2b2daa8633b33ff0524def93e6d7175f5323c995",
+  "decision": {
+    "one_digit": "reject local output tolerance",
+    "two_digits": "local diagnostic passes; full original model gate required",
+    "target_admission": false
+  },
+  "analytical_scope": {
+    "full_source_macs": 19327352832,
+    "one_scalar_fma_per_cycle_floor": 19327352832,
+    "four_plane_dim16_compute_floor": 301989888,
+    "per_head_four_plane_i32_readback_bytes": 23068672,
+    "heads": 144,
+    "excludes": "packing, softmax, readback processing, all nonattention work; not cycle prediction"
+  }
+}
