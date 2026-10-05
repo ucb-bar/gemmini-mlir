@@ -1,0 +1,985 @@
+{
+  "source_sha256": "42ef3d6c2fc4be96528f936995c746c82309a0917dc823b64f56ebb155b9d3d0",
+  "weights_sha256": "08f83e75fc8b9526a43e4fb0905628e72048571dc8921b723bd48b77a42c31ee",
+  "scope": "Captured unary epilogue candidate census only; no graph rewrite or runtime freezing performed. Residuals and fanout refused. Proof retains original sequential f32 multiplication, bias, ReLU, reciprocal, nearest-even and clamp.",
+  "rows": [
+    {
+      "region": "matmul_0",
+      "status": "structure_refused",
+      "reason": "boundary tensor.insert_slice"
+    },
+    {
+      "region": "matmul_1",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0038317402359098196,
+        "source_scales": [
+          0.010870203375816345,
+          0.0059822131879627705
+        ],
+        "output_reciprocal": 58.92457962036133,
+        "accumulator_min": -1048576,
+        "accumulator_max": 1048576,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 1,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_2",
+      "status": "proved",
+      "proof": {
+        "scale": 0.00206922204233706,
+        "source_scales": [
+          0.01697084680199623,
+          0.0020091449841856956
+        ],
+        "output_reciprocal": 60.6865348815918,
+        "accumulator_min": -9437184,
+        "accumulator_max": 9437184,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 2,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_3",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_4",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_5",
+      "status": "proved",
+      "proof": {
+        "scale": 0.003234761767089367,
+        "source_scales": [
+          0.011643771082162857,
+          0.0055156671442091465
+        ],
+        "output_reciprocal": 50.36751937866211,
+        "accumulator_min": -4194304,
+        "accumulator_max": 4194304,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 5,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_6",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0018834574148058891,
+        "source_scales": [
+          0.019854065030813217,
+          0.0019665563013404608
+        ],
+        "output_reciprocal": 48.23918533325195,
+        "accumulator_min": -9437184,
+        "accumulator_max": 9437184,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 6,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_7",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_8",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0028179886285215616,
+        "source_scales": [
+          0.017152275890111923,
+          0.005877621937543154
+        ],
+        "output_reciprocal": 27.952190399169922,
+        "accumulator_min": -4194304,
+        "accumulator_max": 4194304,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 8,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_9",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0019949860870838165,
+        "source_scales": [
+          0.03577537089586258,
+          0.0019179827068001032
+        ],
+        "output_reciprocal": 29.074417114257812,
+        "accumulator_min": -9437184,
+        "accumulator_max": 9437184,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 64,
+        "accepted_channels": 64,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 9,
+      "bias_payload_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_10",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_11",
+      "status": "proved",
+      "proof": {
+        "scale": 0.003538144286721945,
+        "source_scales": [
+          0.030738085508346558,
+          0.004077263176441193
+        ],
+        "output_reciprocal": 28.23124122619629,
+        "accumulator_min": -4194304,
+        "accumulator_max": 4194304,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 11,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_12",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0015212674625217915,
+        "source_scales": [
+          0.03542175143957138,
+          0.001676637795753777
+        ],
+        "output_reciprocal": 25.615114212036133,
+        "accumulator_min": -18874368,
+        "accumulator_max": 18874368,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 12,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_13",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_14",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_15",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0020125294104218483,
+        "source_scales": [
+          0.030368776991963387,
+          0.00412567937746644
+        ],
+        "output_reciprocal": 16.062734603881836,
+        "accumulator_min": -8388608,
+        "accumulator_max": 8388608,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 15,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_16",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0013393994886428118,
+        "source_scales": [
+          0.06225590035319328,
+          0.0014106978196650743
+        ],
+        "output_reciprocal": 15.250904083251953,
+        "accumulator_min": -18874368,
+        "accumulator_max": 18874368,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 16,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_17",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_18",
+      "status": "proved",
+      "proof": {
+        "scale": 0.002155158668756485,
+        "source_scales": [
+          0.049595169723033905,
+          0.004393685609102249
+        ],
+        "output_reciprocal": 9.890332221984863,
+        "accumulator_min": -8388608,
+        "accumulator_max": 8388608,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 18,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_19",
+      "status": "proved",
+      "proof": {
+        "scale": 0.001817011390812695,
+        "source_scales": [
+          0.10110883414745331,
+          0.0015376221854239702
+        ],
+        "output_reciprocal": 11.687426567077637,
+        "accumulator_min": -18874368,
+        "accumulator_max": 18874368,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 19,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_20",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_21",
+      "status": "proved",
+      "proof": {
+        "scale": 0.002431085566058755,
+        "source_scales": [
+          0.0859701856970787,
+          0.004378984682261944
+        ],
+        "output_reciprocal": 6.45771598815918,
+        "accumulator_min": -8388608,
+        "accumulator_max": 8388608,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 21,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_22",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0013200863031670451,
+        "source_scales": [
+          0.15485350787639618,
+          0.0015545700443908572
+        ],
+        "output_reciprocal": 5.483665466308594,
+        "accumulator_min": -18874368,
+        "accumulator_max": 18874368,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 128,
+        "accepted_channels": 128,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 22,
+      "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_23",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_24",
+      "status": "proved",
+      "proof": {
+        "scale": 0.002614574274048209,
+        "source_scales": [
+          0.12643329799175262,
+          0.0031536587048321962
+        ],
+        "output_reciprocal": 6.557296276092529,
+        "accumulator_min": -8388608,
+        "accumulator_max": 8388608,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 24,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_25",
+      "status": "bias_refused",
+      "proof": {
+        "scale": 0.0007357994909398258,
+        "source_scales": [
+          0.1525018811225891,
+          0.0011392629239708185
+        ],
+        "output_reciprocal": 4.235067367553711,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 0,
+        "refused_channels": [
+          {
+            "channel": 0,
+            "conflicting_transition": 99,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 1,
+            "conflicting_transition": 99,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 2,
+            "conflicting_transition": 99,
+            "bias_lower": 0,
+            "bias_upper": -1
+          }
+        ],
+        "integer_bias_encoding": "no_all_channel_solution",
+        "refused_channel_count": 256
+      },
+      "bias_argument": 25,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_26",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_27",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_28",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0018832574132829905,
+        "source_scales": [
+          0.1285998672246933,
+          0.00328842899762094
+        ],
+        "output_reciprocal": 4.453287124633789,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 28,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_29",
+      "status": "bias_refused",
+      "proof": {
+        "scale": 0.001209600130096078,
+        "source_scales": [
+          0.22455322742462158,
+          0.0010653239442035556
+        ],
+        "output_reciprocal": 5.056393146514893,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 0,
+        "refused_channels": [
+          {
+            "channel": 0,
+            "conflicting_transition": 70,
+            "bias_lower": 1,
+            "bias_upper": 0
+          },
+          {
+            "channel": 1,
+            "conflicting_transition": 70,
+            "bias_lower": 1,
+            "bias_upper": 0
+          },
+          {
+            "channel": 2,
+            "conflicting_transition": 70,
+            "bias_lower": 1,
+            "bias_upper": 0
+          }
+        ],
+        "integer_bias_encoding": "no_all_channel_solution",
+        "refused_channel_count": 256
+      },
+      "bias_argument": 29,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_30",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_31",
+      "status": "proved",
+      "proof": {
+        "scale": 0.001596182002685964,
+        "source_scales": [
+          0.1963055580854416,
+          0.003125005168840289
+        ],
+        "output_reciprocal": 2.6019506454467773,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 31,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_32",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0011732920538634062,
+        "source_scales": [
+          0.3843270540237427,
+          0.0011391533771529794
+        ],
+        "output_reciprocal": 2.679927110671997,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 32,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_33",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_34",
+      "status": "proved",
+      "proof": {
+        "scale": 0.00168619304895401,
+        "source_scales": [
+          0.2654820382595062,
+          0.0032179951667785645
+        ],
+        "output_reciprocal": 1.9737255573272705,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 34,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_35",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0009134782012552023,
+        "source_scales": [
+          0.5066560506820679,
+          0.0011403181124478579
+        ],
+        "output_reciprocal": 1.5810985565185547,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 35,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_36",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_37",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0025493360590189695,
+        "source_scales": [
+          0.5499241352081299,
+          0.0035354786086827517
+        ],
+        "output_reciprocal": 1.3112215995788574,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 37,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_38",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0012214076705276966,
+        "source_scales": [
+          0.7626475691795349,
+          0.0012217516778036952
+        ],
+        "output_reciprocal": 1.3108524084091187,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 38,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_39",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_40",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0012121140025556087,
+        "source_scales": [
+          0.6587926149368286,
+          0.003085350152105093
+        ],
+        "output_reciprocal": 0.5963349938392639,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 40,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_41",
+      "status": "proved",
+      "proof": {
+        "scale": 0.001881117350421846,
+        "source_scales": [
+          1.6769098043441772,
+          0.0011671368265524507
+        ],
+        "output_reciprocal": 0.9611350297927856,
+        "accumulator_min": -37748736,
+        "accumulator_max": 37748736,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 256,
+        "accepted_channels": 256,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 41,
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_42",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_43",
+      "status": "bias_refused",
+      "proof": {
+        "scale": 0.0018682165537029505,
+        "source_scales": [
+          0.9729844927787781,
+          0.0023017309140414
+        ],
+        "output_reciprocal": 0.8341933488845825,
+        "accumulator_min": -16777216,
+        "accumulator_max": 16777216,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 0,
+        "refused_channels": [
+          {
+            "channel": 0,
+            "conflicting_transition": 32,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 1,
+            "conflicting_transition": 32,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 2,
+            "conflicting_transition": 32,
+            "bias_lower": 0,
+            "bias_upper": -1
+          }
+        ],
+        "integer_bias_encoding": "no_all_channel_solution",
+        "refused_channel_count": 512
+      },
+      "bias_argument": 43,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_44",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0006653686286881566,
+        "source_scales": [
+          1.1987628936767578,
+          0.0008889547898434103
+        ],
+        "output_reciprocal": 0.6243805289268494,
+        "accumulator_min": -75497472,
+        "accumulator_max": 75497472,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 512,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 44,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_45",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_46",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_47",
+      "status": "proved",
+      "proof": {
+        "scale": 0.001403828035108745,
+        "source_scales": [
+          1.0693517923355103,
+          0.0023577134124934673
+        ],
+        "output_reciprocal": 0.5568039417266846,
+        "accumulator_min": -33554432,
+        "accumulator_max": 33554432,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 512,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 47,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_48",
+      "status": "bias_refused",
+      "proof": {
+        "scale": 0.0006835493259131908,
+        "source_scales": [
+          1.7959643602371216,
+          0.00084189377957955
+        ],
+        "output_reciprocal": 0.45207950472831726,
+        "accumulator_min": -75497472,
+        "accumulator_max": 75497472,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 0,
+        "refused_channels": [
+          {
+            "channel": 0,
+            "conflicting_transition": 11,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 1,
+            "conflicting_transition": 11,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 2,
+            "conflicting_transition": 11,
+            "bias_lower": 0,
+            "bias_upper": -1
+          }
+        ],
+        "integer_bias_encoding": "no_all_channel_solution",
+        "refused_channel_count": 512
+      },
+      "bias_argument": 48,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_49",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_50",
+      "status": "proved",
+      "proof": {
+        "scale": 0.0008620530716143548,
+        "source_scales": [
+          1.2934430837631226,
+          0.0025896832812577486
+        ],
+        "output_reciprocal": 0.2573593854904175,
+        "accumulator_min": -33554432,
+        "accumulator_max": 33554432,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 512,
+        "refused_channels": [],
+        "integer_bias_encoding": "all_zero",
+        "refused_channel_count": 0
+      },
+      "bias_argument": 50,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_51",
+      "status": "bias_refused",
+      "proof": {
+        "scale": 0.0015428083715960383,
+        "source_scales": [
+          3.8856170177459717,
+          0.0008509629988111556
+        ],
+        "output_reciprocal": 0.4665963351726532,
+        "accumulator_min": -75497472,
+        "accumulator_max": 75497472,
+        "relu": true,
+        "proof": "all monotone output transition constraints, including original f32 bias ordering",
+        "channels": 512,
+        "accepted_channels": 0,
+        "refused_channels": [
+          {
+            "channel": 0,
+            "conflicting_transition": 125,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 1,
+            "conflicting_transition": 125,
+            "bias_lower": 0,
+            "bias_upper": -1
+          },
+          {
+            "channel": 2,
+            "conflicting_transition": 125,
+            "bias_lower": 0,
+            "bias_upper": -1
+          }
+        ],
+        "integer_bias_encoding": "no_all_channel_solution",
+        "refused_channel_count": 512
+      },
+      "bias_argument": 51,
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "source_bias_nonzero": 0
+    },
+    {
+      "region": "matmul_52",
+      "status": "structure_refused",
+      "reason": "residual addition before quantization"
+    },
+    {
+      "region": "matmul_53",
+      "status": "structure_refused",
+      "reason": "boundary func.return"
+    }
+  ],
+  "summary": {
+    "structure_refused": 22,
+    "proved": 27,
+    "bias_refused": 5
+  }
+}
