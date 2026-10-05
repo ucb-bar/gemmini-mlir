@@ -1,0 +1,560 @@
+{
+  "schema": "residual_affine_cpu_correction_rejected_v1",
+  "created_utc": "2026-10-05T22:58:50.026609+00:00",
+  "status": "REJECTED_FOR_DEFAULT_OR_MODEL_PROMOTION",
+  "owner": "/root/reference_parity",
+  "hypothesis": "A two-chunk integer predictor with 53 complete-domain errors plus sparse ordered-source CPU replay might replace an exact 39-chunk residual; complete packed scan and traffic must win",
+  "source": {
+    "lhs_scale": 0.011258588172495365,
+    "rhs_scale": 0.00940733402967453,
+    "output_scale": 0.011643771082162857,
+    "relu": true
+  },
+  "predictor": {
+    "p": 73,
+    "q": 61,
+    "scale": 0.013245166279375553
+  },
+  "control": {
+    "p": 2609,
+    "q": 2180,
+    "scale": 0.00037060913746245205
+  },
+  "proof": {
+    "pairs": 65536,
+    "mismatched_pairs": 53,
+    "max_error": 1,
+    "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+    "predictor_table_sha256": "c39501080f551d079f1a9ec17ac5461cebf1c4dc687560df54b5c8a72c60c4c9",
+    "certificate_sha256": "fd04872265e69c353a9c76a9064a9a0cede9e8195cf58853e1a28dc69e9ddf8c",
+    "target_provider_domain_outputs": "domain_predictor checks all 65,536 actualdevice predictor results plus 2,048 guards",
+    "CPU_source_replay": "16 native checks include three independent contracts (signed/ReLU/noexception), aligned/unaligned, all 65,536pairs,1,013 tails andguards",
+    "packed_independent_checks": "72 radius pairs \u00d7 8 lanes \u00d7 256 bytes;256 flag mask gather;adjacent zero-byte borrow cases",
+    "generic_core_commit": "54ad7773f",
+    "generic_core_path": "/scratch/agustin/tmp/merlin-residual-affine-proof-20261005/src/merlin/llvmlower/quantized_affine_pair.py",
+    "generic_core_sha256": "8d5e3c926112478428dd69e537a8a9980223ee8c63ae54c8ea8003ad27663aa9"
+  },
+  "original_operand_capture": {
+    "receipt_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/capture/receipt.json",
+    "receipt_sha256": "57dc53e33c3c030954782fb07aaab3f724ff1b0ff31e928eef68fc7bbcc20671",
+    "scope": "Native source ABI diagnostic, original 1,000 f32 output gate exact; runtime distribution only, no bound inferred",
+    "elements": 802816,
+    "exact_corrections_needed": 45,
+    "unary_outside_elements": 156039,
+    "unary_outside_words": 79945,
+    "combined_unary_and_prediction_odd_elements": 14532,
+    "combined_active_words": 13893,
+    "total_words": 100352
+  },
+  "records": [
+    {
+      "id": "domain_predictor",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:30:23.957392+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": true,
+      "cycles": 19817,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "115e096e49831a87d23dde3595e58d0668a127f635f4e53c631793a9f4dbdcd4",
+      "object_sha256": "46d784b8b4a312764a1b2a853fc65bc226f8531c9252b4a4bb9afbffc3569787",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_predictor/result.json",
+        "sha256": "858fa8821a165a428215863b64fdfd301f85e162af179df1fa54540a63201ed1"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_predictor/probe.c",
+        "sha256": "f869c3db80acc868120ccea9ff7e517fc54a15e436a80106327369c3e67f4c33"
+      },
+      "certificate_sha256": "55887f60e711985de4f361276ae0f0b2cb39b86b1b020d105f01097a11415397",
+      "fixture_pins": {
+        "lhs.bin": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "rhs.bin": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+        "expected.bin": "c39501080f551d079f1a9ec17ac5461cebf1c4dc687560df54b5c8a72c60c4c9"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "ARITHMETIC_PROVIDER_PROOF_ONLY",
+      "actual_emitted_commands": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_predictor/actual_static_commands.json",
+        "sha256": "b58cf0892f1689b4201549b4c69776879a28e7165c29e0565f2670180d25886d",
+        "receipt": {
+          "schema": "actual_affine_pair_static_commands_v1",
+          "scope": "Complete exact target-module LLVM CFG traversal; command counts are not cycle estimates",
+          "module_sha256": "1f5716a675d686e0d8fdf37c9ce3f889426947c227f6c88cfb30522677d3d506",
+          "pointer_index_bits": 64,
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 131,
+            "gemmini.preload": 512,
+            "gemmini.compute": 512,
+            "gemmini.mvout": 64
+          }
+        }
+      },
+      "strict_counter_diagnostic": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_predictor/strict_counter_diagnostic.json",
+        "sha256": "9f74a5b5bdece1b30d202a468ae0c614b4f16f4995b9052bfbb3b258060b5f2d",
+        "receipt": {
+          "schema": "gemmini_affine_pair_strict_counter_diagnostic_v1",
+          "created_utc": "2026-10-05T22:52:58.951695+00:00",
+          "status": "pass",
+          "original_elf_sha256": "115e096e49831a87d23dde3595e58d0668a127f635f4e53c631793a9f4dbdcd4",
+          "diagnostic_elf_sha256": "33e8fd7a08ac2856a273fab37fd1d5db9de79d352be2afdf99eef4020f0d5513",
+          "changes": [
+            {
+              "file_offset": 15206,
+              "pc": 2147494758,
+              "original_word": "c0002973",
+              "diagnostic_word": "b0002973",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            },
+            {
+              "file_offset": 15238,
+              "pc": 2147494790,
+              "original_word": "c00025f3",
+              "diagnostic_word": "b00025f3",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            }
+          ],
+          "changes_complete": true,
+          "returncode": 0,
+          "expected_marker": "AFFINE_PAIR_PASS N=65536 MODE=predictor",
+          "original_ELF_strict_spike_status": "refused:cycle CSR absent in strict RV64GC; trapped before target invocation",
+          "scope": "Modified counter-only diagnostic: same arithmetic/kernel objects and outputs, not an original-ELF or hardware timing claim",
+          "stdout_sha256": "1612e38df3894421b1705142ba28c792c798e0e1e055222acb2d9481feeeaa88",
+          "nofsm_status": "pass"
+        }
+      }
+    },
+    {
+      "id": "domain_control",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:30:34.979591+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": true,
+      "cycles": 164566,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "ff314384ef961c7682923c0d23590828fbedf378845d46f79c4feb55c7899c85",
+      "object_sha256": "8a945435aa61b495afe42ffe6a74031e0b6a9d61f3974d656826f4d8c8e5d4eb",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_control/result.json",
+        "sha256": "eed5cd5df210e4f75b0dabd1982fd3960c3e6bcc4fe8a450fd8bdc2f937995eb"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_control/probe.c",
+        "sha256": "91877423865def99d3a0f6b8bf0ad00470dfc68b4a1c7ce0e920985b89306729"
+      },
+      "certificate_sha256": "1680fc136ddadc8d62844a2c6765db78a42d06cb669b4574a22be1c7e37ba56b",
+      "fixture_pins": {
+        "lhs.bin": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "rhs.bin": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+        "expected.bin": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "CONTROL",
+      "actual_emitted_commands": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_control/actual_static_commands.json",
+        "sha256": "3cf394957cb0a17e339278fa8130f382cbb6f758eab404cb21e7d612600ff0f6",
+        "receipt": {
+          "schema": "actual_affine_pair_static_commands_v1",
+          "scope": "Complete exact target-module LLVM CFG traversal; command counts are not cycle estimates",
+          "module_sha256": "262a9a00cd17b09f439078aa8374727e7cc49fca8d15828049b7bfd6ecb9c03b",
+          "pointer_index_bits": 64,
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 131,
+            "gemmini.preload": 9984,
+            "gemmini.compute": 9984,
+            "gemmini.mvout": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "domain_corrected",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:31:49.579943+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": true,
+      "cycles": 1319205,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "3d7488df404cf6fbb64a78cb1a00c80974e9c919f04276cccf7413635466ae83",
+      "object_sha256": "46d784b8b4a312764a1b2a853fc65bc226f8531c9252b4a4bb9afbffc3569787",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_corrected/result.json",
+        "sha256": "253809802490a0f9e36f3d76ab8cd32bb93d7a992d035dbbbe3ea5a75293d930"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_corrected/probe.c",
+        "sha256": "adcd9c710629b827f195263c14e290cf9acb6c3fa66045109451ee3c0a491524"
+      },
+      "certificate_sha256": "55887f60e711985de4f361276ae0f0b2cb39b86b1b020d105f01097a11415397",
+      "fixture_pins": {
+        "lhs.bin": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "rhs.bin": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+        "expected.bin": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "REJECTED_PERFORMANCE"
+    },
+    {
+      "id": "domain_corrected_v2",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:35:30.330003+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": true,
+      "cycles": 687416,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "55faebea231b9023adc2ac8ea04ca8d851ef38e05cbc411d65c9cbf1cb817619",
+      "object_sha256": "46d784b8b4a312764a1b2a853fc65bc226f8531c9252b4a4bb9afbffc3569787",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_corrected_v2/result.json",
+        "sha256": "1f9e3ba8ce17af591b463e56fa886efb7b46bdf5a76d06b0700eea565cd67dc4"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_corrected_v2/probe.c",
+        "sha256": "cd4a99aa10dfaaa6e1de80d722acfd3dfd6c1e89fb9a7acd385c9a35834115fe"
+      },
+      "certificate_sha256": "fd04872265e69c353a9c76a9064a9a0cede9e8195cf58853e1a28dc69e9ddf8c",
+      "fixture_pins": {
+        "lhs.bin": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "rhs.bin": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+        "expected.bin": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "REJECTED_PERFORMANCE",
+      "strict_counter_diagnostic": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/domain_corrected_v2/strict_counter_diagnostic.json",
+        "sha256": "275e74b7a904de3dd53bcbf04d9a7c5bdd2f6aaa346f9047ddeda15b3dbec09e",
+        "receipt": {
+          "schema": "gemmini_affine_pair_strict_counter_diagnostic_v1",
+          "created_utc": "2026-10-05T22:52:58.981276+00:00",
+          "status": "pass",
+          "original_elf_sha256": "55faebea231b9023adc2ac8ea04ca8d851ef38e05cbc411d65c9cbf1cb817619",
+          "diagnostic_elf_sha256": "a08f763e2f09c9e3f23af8e3fed6bf00c1b0d7a09f4c751d87274fafb17c942a",
+          "changes": [
+            {
+              "file_offset": 15748,
+              "pc": 2147495300,
+              "original_word": "c0002973",
+              "diagnostic_word": "b0002973",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            },
+            {
+              "file_offset": 15814,
+              "pc": 2147495366,
+              "original_word": "c00025f3",
+              "diagnostic_word": "b00025f3",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            }
+          ],
+          "changes_complete": true,
+          "returncode": 0,
+          "expected_marker": "AFFINE_PAIR_PASS N=65536 MODE=corrected",
+          "original_ELF_strict_spike_status": "refused:cycle CSR absent in strict RV64GC; trapped before target invocation",
+          "scope": "Modified counter-only diagnostic: same arithmetic/kernel objects and outputs, not an original-ELF or hardware timing claim",
+          "stdout_sha256": "bfbe27c1c550607885498648ab0971dce0f2759a7da6f86760b1d20c03f718a4",
+          "nofsm_status": "pass"
+        }
+      }
+    },
+    {
+      "id": "prefix_control_v2",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:38:57.379871+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": false,
+      "cycles": 164566,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "5f0836fc899f2495d0381b437d2f83b2ac95b3fe477992fd2dc6ae6b8243f10b",
+      "object_sha256": "8a945435aa61b495afe42ffe6a74031e0b6a9d61f3974d656826f4d8c8e5d4eb",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_control_v2/result.json",
+        "sha256": "b06e31d0072d2a0c7e98363af3ef0e927c133612ddf26c30397ab2dba16aeb21"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_control_v2/probe.c",
+        "sha256": "91877423865def99d3a0f6b8bf0ad00470dfc68b4a1c7ce0e920985b89306729"
+      },
+      "certificate_sha256": "5a29d94f115f5b00883159b87ec96943160cb2b3679e4f3d06593a5d2de578bf",
+      "fixture_pins": {
+        "lhs.bin": "54264ae068c95e27d3238415baa45a45829eeb5f503d76c358f5e9cfdb2d8efd",
+        "rhs.bin": "18c7139c4756c215e66d117062003b91c4cb2e743f2acca70da63316621899f1",
+        "expected.bin": "ca1a464c2a8351c44e3e358df7933e8274a4308251da8cca5f4db993a8b172c0"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "CONTROL"
+    },
+    {
+      "id": "prefix_corrected_v2",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:39:03.646989+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": false,
+      "cycles": 303082,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "d54f5439a244ae70389f5b65b284cd35fa0729bc1ef7f013639d14a5a30c3245",
+      "object_sha256": "46d784b8b4a312764a1b2a853fc65bc226f8531c9252b4a4bb9afbffc3569787",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_corrected_v2/result.json",
+        "sha256": "89a733642517f3f4207d19c917c9c06ea25193e5c804a7db45c30f9d4546504d"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_corrected_v2/probe.c",
+        "sha256": "cd4a99aa10dfaaa6e1de80d722acfd3dfd6c1e89fb9a7acd385c9a35834115fe"
+      },
+      "certificate_sha256": "fd04872265e69c353a9c76a9064a9a0cede9e8195cf58853e1a28dc69e9ddf8c",
+      "fixture_pins": {
+        "lhs.bin": "54264ae068c95e27d3238415baa45a45829eeb5f503d76c358f5e9cfdb2d8efd",
+        "rhs.bin": "18c7139c4756c215e66d117062003b91c4cb2e743f2acca70da63316621899f1",
+        "expected.bin": "ca1a464c2a8351c44e3e358df7933e8274a4308251da8cca5f4db993a8b172c0"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "REJECTED_PERFORMANCE"
+    },
+    {
+      "id": "prefix_corrected_v3",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:43:20.448838+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 65536,
+      "full_pair_domain": false,
+      "cycles": 293843,
+      "timing_qualified": true,
+      "correctness": "full output and 2048 guard checks PASS",
+      "guards_checked": 2048,
+      "nofsm": "pass",
+      "elf_sha256": "6bbf7403a630e6c766da379dd89845287d4de9ae5e87f865b7d2701707fafa4c",
+      "object_sha256": "46d784b8b4a312764a1b2a853fc65bc226f8531c9252b4a4bb9afbffc3569787",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_corrected_v3/result.json",
+        "sha256": "7efde49727ee809f4e0adbe1391b84e75e770377a326adc19cfad5ba313dc859"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_corrected_v3/probe.c",
+        "sha256": "9918b63cddc40bc60b9f1b63997631a6e18c8cd6c16bdc522252bff3e3745754"
+      },
+      "certificate_sha256": "fd04872265e69c353a9c76a9064a9a0cede9e8195cf58853e1a28dc69e9ddf8c",
+      "fixture_pins": {
+        "lhs.bin": "54264ae068c95e27d3238415baa45a45829eeb5f503d76c358f5e9cfdb2d8efd",
+        "rhs.bin": "18c7139c4756c215e66d117062003b91c4cb2e743f2acca70da63316621899f1",
+        "expected.bin": "ca1a464c2a8351c44e3e358df7933e8274a4308251da8cca5f4db993a8b172c0"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "REJECTED_PERFORMANCE",
+      "strict_counter_diagnostic": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/prefix_corrected_v3/strict_counter_diagnostic.json",
+        "sha256": "a9b170deb165e238cf44a4093c2af5c130a41f04ace7f54a56cdbc6dacdb4416",
+        "receipt": {
+          "schema": "gemmini_affine_pair_strict_counter_diagnostic_v1",
+          "created_utc": "2026-10-05T22:52:59.011251+00:00",
+          "status": "pass",
+          "original_elf_sha256": "6bbf7403a630e6c766da379dd89845287d4de9ae5e87f865b7d2701707fafa4c",
+          "diagnostic_elf_sha256": "8b320b2ee2178e69c7b1a897a8d62423a0eeb2b59289f6c172444ccd239554b2",
+          "changes": [
+            {
+              "file_offset": 15834,
+              "pc": 2147495386,
+              "original_word": "c0002973",
+              "diagnostic_word": "b0002973",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            },
+            {
+              "file_offset": 15900,
+              "pc": 2147495452,
+              "original_word": "c00025f3",
+              "diagnostic_word": "b00025f3",
+              "operation": "CSRRS cycle\u2192mcycle, same destination/rs1=0"
+            }
+          ],
+          "changes_complete": true,
+          "returncode": 0,
+          "expected_marker": "AFFINE_PAIR_PASS N=65536 MODE=corrected",
+          "original_ELF_strict_spike_status": "refused:cycle CSR absent in strict RV64GC; trapped before target invocation",
+          "scope": "Modified counter-only diagnostic: same arithmetic/kernel objects and outputs, not an original-ELF or hardware timing claim",
+          "stdout_sha256": "eb7d00ecf450ad24898f877f25c7b12cfdb90d2ca537387bb5bbed5c65898ec1",
+          "nofsm_status": "pass"
+        }
+      }
+    },
+    {
+      "id": "actual_control_v2",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:44:04.710678+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 802816,
+      "full_pair_domain": false,
+      "cycles": 1997715,
+      "timing_qualified": false,
+      "correctness": "UNKNOWN:600 s budget ended during output verification; no final PASS",
+      "guards_checked": null,
+      "nofsm": "pass",
+      "elf_sha256": "694106e1e06337e83d85660577f0faa828123dcdbe124a21147fbee7f4368510",
+      "object_sha256": "2e7766d3767d88b11a142e3249ba8bd5a287b39c8a9c9a78ec756b602332510e",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_control_v2/result.json",
+        "sha256": "e078cffe5bb250708f3e98614624d4516627d530c489a30f649fe2c65ef46f4d"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_control_v2/probe.c",
+        "sha256": "1c23259d3777c7c53191afdfd8463d920b5ba28b71d247688ba9c61a536e5628"
+      },
+      "certificate_sha256": "5a29d94f115f5b00883159b87ec96943160cb2b3679e4f3d06593a5d2de578bf",
+      "fixture_pins": {
+        "lhs.bin": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+        "rhs.bin": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+        "expected.bin": "9ca77e898ed5ea2f95881084f76fef859feb835e82abd6988565efc213e651f9"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "CONTROL",
+      "actual_emitted_commands": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_control_v2/actual_static_commands.json",
+        "sha256": "922133c26ad4c3bfdd5d9750ecf0ade4cc68eafba571c87807ca7c6c9ba60ab8",
+        "receipt": {
+          "schema": "actual_affine_pair_static_commands_v1",
+          "scope": "Complete exact target-module LLVM CFG traversal; command counts are not cycle estimates",
+          "module_sha256": "0d5257b59cbaaf9aedaa59e60175814b82fd0e553a155b47eace7cf9b3006bd9",
+          "pointer_index_bits": 64,
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 1571,
+            "gemmini.preload": 122304,
+            "gemmini.compute": 122304,
+            "gemmini.mvout": 784
+          }
+        }
+      }
+    },
+    {
+      "id": "actual_corrected_v2",
+      "owner": "/root/reference_parity",
+      "completed_at_utc": "2026-10-05T22:44:04.681677+00:00",
+      "metric": "GSIM whole primitive predictor plus correction when enabled, cycle CSR delta",
+      "elements": 802816,
+      "full_pair_domain": false,
+      "cycles": 4375579,
+      "timing_qualified": false,
+      "correctness": "UNKNOWN:600 s budget ended during output verification; no final PASS",
+      "guards_checked": null,
+      "nofsm": "pass",
+      "elf_sha256": "e12485a45b4e61d55291eb609de13e9b5983765a95aee120bab689530bb5c212",
+      "object_sha256": "e1d5898e095ac03d4911aa1662ad526512c30d9692cc33e74cde0f06697e939b",
+      "raw_result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_corrected_v2/result.json",
+        "sha256": "00987647a9445551dda21eb9a9d0cb7fcb23ae918606d6bb3d4b0c478f0c774e"
+      },
+      "source_c": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_corrected_v2/probe.c",
+        "sha256": "e6d1dffa8bc3a672437e372e01010456703a76fa74f28d089294454d30257b3e"
+      },
+      "certificate_sha256": "fd04872265e69c353a9c76a9064a9a0cede9e8195cf58853e1a28dc69e9ddf8c",
+      "fixture_pins": {
+        "lhs.bin": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+        "rhs.bin": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+        "expected.bin": "9ca77e898ed5ea2f95881084f76fef859feb835e82abd6988565efc213e651f9"
+      },
+      "cycle_scope": "capsule only; no whole-model cost transfer",
+      "decision": "REJECTED_PERFORMANCE",
+      "actual_emitted_commands": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/actual_corrected_v2/actual_static_commands.json",
+        "sha256": "dca9683ade10a17a42da4f32964e452ca89fc6ce8cf70241be19ea6c94ce204d",
+        "receipt": {
+          "schema": "actual_affine_pair_static_commands_v1",
+          "scope": "Complete exact target-module LLVM CFG traversal; command counts are not cycle estimates",
+          "module_sha256": "8cbe17110ab10990c29bf8a9fcbaf3785ac6b1019cf48742dc6e554083619b0e",
+          "pointer_index_bits": 64,
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 1571,
+            "gemmini.preload": 6272,
+            "gemmini.compute": 6272,
+            "gemmini.mvout": 784
+          }
+        }
+      }
+    }
+  ],
+  "revisions": [
+    {
+      "id": "v1",
+      "change": "Unary guard skips only wholly safe8-byte words; visits all eight lanes in active words",
+      "domain_cycles": 1319205,
+      "outcome": "REJECTED, CPU scan dominates"
+    },
+    {
+      "id": "v2",
+      "change": "Add certificate-derived prediction-output bit filter and flag gather; visit only flagged lanes",
+      "domain_cycles": 687416,
+      "prefix_cycles": 303082,
+      "outcome": "REJECTED, complete prefix 84.17% slower than control"
+    },
+    {
+      "id": "v3",
+      "change": "Inline bitmap lookup; noinline rare originalfloating replay; targetobject unchanged",
+      "prefix_cycles": 293843,
+      "outcome": "REJECTED, complete prefix 78.56% slower than control; only 3.05% faster than v2"
+    }
+  ],
+  "metric_limits": [
+    "GSIM capsule cycles are not stock FireSim whole-model measurements",
+    "Full 802,816 v2 arms report counters but no terminal numerical and guard pass; timing observations unqualified",
+    "Original GSIM ELFs use cycleCSR and refuse strictRV64GC Spike before target invocation; separately audited exactly two CSR word diagnostics use mcycle and check output and kernel arithmetic; no original ELF gate claim",
+    "Old capsule builder prepends explicit FP flags before provider -ffast-math; no strict FP flag or generic gradual underflow claim inferred from those artifacts. Volatile replay actual first-source all-pair GSIM outputs pass. Parent owns generic flag-order fix",
+    "No narrowed input domain or input distribution inferred from captured values",
+    "No production model policy, numeric tolerance, source, weights or golden modified",
+    "Legacy raw failed result guards_checked field records 2,048 expected; this summary records actual checked UNKNOWN until final PASS"
+  ],
+  "caller_obligations": [
+    "Original A/B must survive prediction unchanged",
+    "Output cannot alias either input",
+    "Packed guard little-endian staticassert",
+    "CPU source floating operations retain RN-even gradual underflow/separate order",
+    "Target predictor numeric contract independently qualified"
+  ],
+  "existing_domain_study": "docs/perf_records/residual_source_domains.json (parent prior study already proves twelve nonnegative shortcuts; no repeated search or production domain pass here)",
+  "token_accounting": {
+    "per_agent_goal_counter_available": false,
+    "exclusive_tokens_per_candidate": "UNKNOWN; root owns actualthread accounting",
+    "scope": "Thisreceipt does not assign shared token usage to individual experiments"
+  },
+  "next_mechanism": "Parent exact coefficient/seed/scale synthesis with source-proven domains; CPU correction only reconsidered when fused into an already required host operation and complete cost beats control"
+}
