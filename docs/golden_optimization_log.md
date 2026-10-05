@@ -843,6 +843,58 @@ original native and actualSpike outputs, has a host object byte-identical1824,
 and passes the final zeroFSM audit. Stock1829 is pending. See
 `perf_records/resnet_three_banked_packed_spike.json`.
 
+Stock1829 verifies43,969,384cycles,538,505 (1.210%) fewer than packed1824,
+with its host object byte-identical and all1,000 original output words exact.
+This becomes the control for the five source-selected resident convolutions.
+Their full native and actualSpike gates pass, host object remains byte-identical
+1829, and stock1833 is pending. The source-selected H14/W14/C256 capsule gains
+20.98% in GSIM; that is not a whole-model FireSim gain. See
+`perf_records/resnet_five_resident_conv_spike.json`.
+
+### Compiler choices, output ownership and source retention
+
+Core4bb11a1db introduces generic `alternative_group` and
+`requires_exactly_one_of` metadata. Normalization validates constraints after
+implication closure; it does not invent a prerequisite. The actual automatic
+proposer replaces a parent's same-group choice while retaining unrelated
+features, and rejects implied conflicts.95 related registry/proposer/default
+tests pass. Runtime lowering guards remain. This lets the later automatic loop
+select independent accumulator counts and unroll counts explicitly.
+
+The explicit descriptor-writer contract fully qualifies69 current ResNet
+adapters with fresh writer allocations and a borrowed void bridge. Default
+upstream deallocation remains active. Seven focused tests cover live-input
+preservation, repeated native calls atO0/O2 and invalid contracts. Full native
+and actualSpike retain all1,000 original bits, finalzeroFSM passes, and retired
+instructions are10,703,997 (2.56% below1812). The permanent explicit-contract
+helper emits byte-identical hostMLIR and compiled bridge objects to the qualified
+prototype. Stock1831 is pending. See `descriptor_writer_contract.md`.
+
+Preparing a current Tiny profile exposed another concrete compilation-evidence
+gap: the standard device catalog hashed its preoffload source but did not retain
+it, and offload overwrote the shared prepared path. `compile_catalog` now
+captures exact UTF8 bytes before compilation and writes `catalog_source.mlir`
+plus its snapshot path. A source-overwrite/CRLF regression passes; no generated
+instruction changes. Historical hashes remain unchanged and historical missing
+snapshots are reported explicitly. The current1828 profile preserves all source
+objects, passes all256,000 output bytes, all155 calls/per-symbol counts and
+counter conservation in Spike. Prepared-call ABI types and actual dynamic
+kernel order also match every catalog binding. Hardware profiling is pending;
+older1809 host attribution predates the scalar accumulator improvements.
+
+### Upstream half SiLU precision
+
+model2MLIR mainf6c4545c181338af52d0324b4ca486d311d1222c now widens BF16/f16
+SiLU intermediates to f32, uses direct division and narrows once. A concrete
+FP16 witness also distinguishes direct division from reciprocal/multiply
+rounding.136 related tests pass, zero skips, including6 actual nativeO0/O2
+cases and3 export cases. The frontend's native kernel reproduces all289,280
+original BF16 SiLU values. Remote main was independently confirmed. Merlin
+already widened this body, and full-source module taps show the first remaining
+SmolVLA discrepancy at layer1 RMSNorm (six BF16 values), rather than this SiLU
+site. The source-compatible softmax/PV policies still fail the unchanged full
+elementwise gate and remain unadmitted to hardware.
+
 ### Dense-float serialization correctness
 
 The first full source-compatible softmax candidate produced1,600 NaNs although
