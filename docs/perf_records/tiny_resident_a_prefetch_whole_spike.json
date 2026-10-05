@@ -1,0 +1,85 @@
+{
+  "schema": "tiny_calibrated_schedule_whole_qualification_v1",
+  "status": "pass",
+  "started_utc": "2026-10-05T22:57:58.021041+00:00",
+  "elf_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/build/model.elf",
+  "elf_sha256": "9112dde7f14cd191c2bf1a5861025f08618d78c5d5a1172242b14f9b4469968e",
+  "marker": "ae1d2385b858",
+  "reference_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "torch_allclose": true,
+  "outputs": 256000,
+  "original_compiled_raw_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "9112dde7f14cd191c2bf1a5861025f08618d78c5d5a1172242b14f9b4469968e",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 24,
+      "1": 328,
+      "2": 866,
+      "3": 336,
+      "4": 1312,
+      "6": 1312,
+      "7": 6
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "normal_model_binding": {
+    "schema": "calibrated_normal_whole_model_binding_v1",
+    "source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+    "catalog_manifest_sha256": "8ddbfc95cc57e781482a9a83d7b6fc7964a4a82e2c3f572c2ed8fa74036a2ade",
+    "routing_sidecar_sha256": "a5374558e93b4775d2301dcfb96f9e67e90a9e16caeb95ff611771e42aee29cd",
+    "routed_calls": 155,
+    "unique_call_entries": 6,
+    "unique_device_implementations": 6,
+    "calibrated_regions": [
+      "matmul_2"
+    ],
+    "all154_unselected_bindings_unchanged": true,
+    "entry_to_implementation": {
+      "merlin_dev_gemmini_0": "gemmini_golden_ef297329ec9dee28",
+      "merlin_dev_gemmini_1": "gemmini_export_bbaceae9e50f951b",
+      "merlin_dev_gemmini_2": "gemmini_golden_7b4380121ce5c4f3",
+      "merlin_dev_gemmini_3": "gemmini_golden_a5705ab56e324ba1",
+      "merlin_dev_gemmini_4": "gemmini_golden_29c4e0a80e5abd97",
+      "merlin_dev_gemmini_5": "gemmini_golden_e738f13ad92e3128"
+    },
+    "selected_plan_controls_normal_host_dispatch": true,
+    "original_output_qualification": "pending",
+    "token_usage_available": false
+  },
+  "token_usage_available": false,
+  "exclusive_token_attribution": "unknown; root records shared campaign checkpoints",
+  "before_verified_stock_job": 1880,
+  "before_verified_stock_cycles": 531072370,
+  "actual_candidate_hardware_cycles": null,
+  "hardware_status": "not submitted",
+  "timing_scope": "Paired GSIM capsule only; whole-model functional instructions are not hardware cycles",
+  "argv": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/build/model.elf"
+  ],
+  "spike_pid": 4147153,
+  "finished_utc": "2026-10-05T22:58:56.671595+00:00",
+  "exit_code": 0,
+  "metrics": {
+    "cycles": "166648514",
+    "build_hash": "ae1d2385b858",
+    "memref_rank_mismatch": "0"
+  },
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/spike.log",
+  "spike_console_sha256": "8d9c65a423bb473bb98beb1755b6e96323a70baf30e800a36bab9cbae3a23585",
+  "functional_instructions_not_hardware_cycles": 166648514,
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+}

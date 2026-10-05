@@ -1,0 +1,459 @@
+{
+  "schema": "tiny_source_calibrated_resident_a_study_v1",
+  "updated_utc": "2026-10-05T23:00:46.622983+00:00",
+  "hypothesis": "Full resident A plus increasing-K B prefetch overlaps issue/DMA for one row tile even when primitive command count and DMA bytes equal the one-N-panel control.",
+  "owner": "OOT target schedules; Merlin shared planner, dispatch identity and normal device build",
+  "emitted_change": "Existing GoldenGemm cache_a=True and prefetch_b=True; bm=1,bn=16,wide_b=True,source dimensions/numeric policy unchanged.",
+  "production_selector": "Explicit source-bound calibrated legal alternative; no model, provenance or golden selector.",
+  "source_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/model.mlir",
+  "source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+  "source_region_trace_only": "matmul_2",
+  "source_shape": [
+    8,
+    256,
+    2048
+  ],
+  "recurring_shape_calls": 44,
+  "calibrated_normal_calls": 1,
+  "fixture": {
+    "a.bin": "3d2b8aedec13470b499e85eebbfca5472c862cb178f69028e768a59664175496",
+    "b.bin": "871c9d0a4683053473146bc08006bd2dd14affd27efe189c526a7524eb88d14c",
+    "gemm_expected.inc": "0e1bfc8b948f4c3c14c6b85fa8a4fa213e0db4634de11878b459a2dd8f1a7034"
+  },
+  "common_buffer_addresses": {
+    "a": "0000000080003900",
+    "b": "0000000080007900",
+    "cbox": "0000000080089b80"
+  },
+  "measurements": {
+    "scope": "Actual GSIM kernel ROI, includes primitive device mvin/compute/mvout/fence; host fixture preparation and full-model costs excluded.",
+    "control_cycles": 111885,
+    "candidate_cycles": 76456,
+    "saved_cycles": 35429,
+    "improvement_percent": 31.665549448094026,
+    "stock_config": false,
+    "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "instructions_not_cycles": {
+      "control": 7706,
+      "candidate": 11228,
+      "scope": "Initial separate-address strict functional probes, not GSIM or stock cycles"
+    }
+  },
+  "arms": {
+    "control": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        8,
+        256,
+        2048
+      ],
+      "kernel_symbol": "gemmini_export_7ded392df5b6d7ef",
+      "block": [
+        1,
+        16
+      ],
+      "selected_schedule": {
+        "m": 8,
+        "n": 256,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 16,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": false,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": false,
+      "prefetch_b_rows": null,
+      "status": "pass",
+      "kernel_cycles": 111885,
+      "engine_cycles_including_harness": 155036,
+      "elf_sha256": "b3c905e14d6e02e6ec302a1ddcd022e88484b46cd1ca220a9d7298081a9a476b",
+      "target_ir_sha256": "9c3429d2a2d37ef065c5a72aa29c655a26674568431fb92798a9e30e4a7f95b0",
+      "llvm_ir_sha256": "1c2b314f3b09cfbee97d4bb0147d3eeb7a29417c996de3d95ee08768b2b14b8f",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "b3c905e14d6e02e6ec302a1ddcd022e88484b46cd1ca220a9d7298081a9a476b",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 8,
+          "1": 24,
+          "2": 130,
+          "3": 32,
+          "4": 96,
+          "6": 96,
+          "7": 2
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 111885\nGOLDEN_GEMM PASS M=8 N=256 K=2048\n",
+      "stderr_tail": "",
+      "common_layout": {
+        "objects": {
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/control_probe/gemm_probe.o": "1950638cbb2a69eabb052f0a39a618da0dce4f162c346d9e55d2fc4d4813cb1c",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/control/kernel.o": "72bdb8421288cc8829256a782610440fb98b3b8b69040c16eb1638c42c8b666b",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/resident/kernel.o": "56f1684da4b689f7d2ea767856ba0103985b4b8072c711b44b5a874540587b2f",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/control_probe/input_data.o": "d31a131b370bd154d1641fd332792d437d693fbeadcb236b8a168567e04c7318"
+        },
+        "buffer_addresses": {
+          "a": "0000000080003900",
+          "b": "0000000080007900",
+          "cbox": "0000000080089b80"
+        },
+        "elf_sha256": "b3c905e14d6e02e6ec302a1ddcd022e88484b46cd1ca220a9d7298081a9a476b",
+        "audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "b3c905e14d6e02e6ec302a1ddcd022e88484b46cd1ca220a9d7298081a9a476b",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 8,
+            "1": 24,
+            "2": 130,
+            "3": 32,
+            "4": 96,
+            "6": 96,
+            "7": 2
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "spike_log_sha256": "2e1102d00356dba5096d45eb0d0039f33c62813ba1c70142f4782e54637f3a42",
+        "all2048_i32_outputs_plus2048_guard_bytes": true,
+        "token_usage_available": false
+      }
+    },
+    "candidate": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        8,
+        256,
+        2048
+      ],
+      "kernel_symbol": "gemmini_export_bbaceae9e50f951b",
+      "block": [
+        1,
+        16
+      ],
+      "selected_schedule": {
+        "m": 8,
+        "n": 256,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 16,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": true,
+      "prefetch_b_rows": null,
+      "status": "pass",
+      "kernel_cycles": 76456,
+      "engine_cycles_including_harness": 119553,
+      "elf_sha256": "0398d738d4f29cc8198b61a311d15c4d39bfb012a7ce35d2a59be78dba84ac41",
+      "target_ir_sha256": "1e40f73c7301369549028312a469b7608b71c88a5926bc56f719d3c897636eaf",
+      "llvm_ir_sha256": "250babe36192f43960e2f248785a74d9f6252626ffa305dc132e2415bab6ba60",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "0398d738d4f29cc8198b61a311d15c4d39bfb012a7ce35d2a59be78dba84ac41",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 8,
+          "1": 24,
+          "2": 130,
+          "3": 32,
+          "4": 96,
+          "6": 96,
+          "7": 2
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 76456\nGOLDEN_GEMM PASS M=8 N=256 K=2048\n",
+      "stderr_tail": "",
+      "common_layout": {
+        "objects": {
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/resident_probe/gemm_probe.o": "5a5242603b851477b1856432e6e430111fe90f55cb62e232bb4c03a787f25611",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/control/kernel.o": "72bdb8421288cc8829256a782610440fb98b3b8b69040c16eb1638c42c8b666b",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/resident/kernel.o": "56f1684da4b689f7d2ea767856ba0103985b4b8072c711b44b5a874540587b2f",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/resident_probe/input_data.o": "d31a131b370bd154d1641fd332792d437d693fbeadcb236b8a168567e04c7318"
+        },
+        "buffer_addresses": {
+          "a": "0000000080003900",
+          "b": "0000000080007900",
+          "cbox": "0000000080089b80"
+        },
+        "elf_sha256": "0398d738d4f29cc8198b61a311d15c4d39bfb012a7ce35d2a59be78dba84ac41",
+        "audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "0398d738d4f29cc8198b61a311d15c4d39bfb012a7ce35d2a59be78dba84ac41",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 8,
+            "1": 24,
+            "2": 130,
+            "3": 32,
+            "4": 96,
+            "6": 96,
+            "7": 2
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "spike_log_sha256": "440ff80b6ce306f6ef2d723194e58fd590c1f5717b0b92479f99c7455590a21d",
+        "all2048_i32_outputs_plus2048_guard_bytes": true,
+        "token_usage_available": false
+      }
+    }
+  },
+  "gate": {
+    "all2048_i32_outputs_plus2048_guard_bytes": true,
+    "strict_spike": true,
+    "zero_fsm_all_executable_sections": true,
+    "independent_tail": {
+      "shape": [
+        7,
+        35,
+        69
+      ],
+      "all245_outputs_plus2048_guard_bytes": true,
+      "spike_log_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/independent_tail_probe/spike.log",
+      "spike_log_sha256": "eb40c75f683de053c589eb2ab089942a2426c2f21c34b969cd78040a5282eaed"
+    }
+  },
+  "planner": {
+    "calibration_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/calibration_common.json",
+    "calibration_sha256": "318377842cd752059138f4a901397a41b4eeaf1827f462a2dc36bc080157eea0",
+    "model_packet_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/model_calibrations_common.json",
+    "model_packet_sha256": "7a197c79897c802785eca28edc4e340e60cf1da85e73978f67643f8c7cd667b8",
+    "selected_plan_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/selected_common/golden_optimized_plan.json",
+    "selected_plan_sha256": "4f706983571ab5a4f355ce0753892b17ed05d319259766180d1201834e650533",
+    "scope": "Singleton exact contraction and pinned fixture; full model uses selected object with all other catalog bindings retained.",
+    "physical_floor": "UNKNOWN",
+    "engine_occupancy": "UNKNOWN",
+    "no_projection_across44_calls": true
+  },
+  "normal_binding": {
+    "schema": "calibrated_normal_whole_model_binding_v1",
+    "source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+    "catalog_manifest_sha256": "8ddbfc95cc57e781482a9a83d7b6fc7964a4a82e2c3f572c2ed8fa74036a2ade",
+    "routing_sidecar_sha256": "a5374558e93b4775d2301dcfb96f9e67e90a9e16caeb95ff611771e42aee29cd",
+    "routed_calls": 155,
+    "unique_call_entries": 6,
+    "unique_device_implementations": 6,
+    "calibrated_regions": [
+      "matmul_2"
+    ],
+    "all154_unselected_bindings_unchanged": true,
+    "entry_to_implementation": {
+      "merlin_dev_gemmini_0": "gemmini_golden_ef297329ec9dee28",
+      "merlin_dev_gemmini_1": "gemmini_export_bbaceae9e50f951b",
+      "merlin_dev_gemmini_2": "gemmini_golden_7b4380121ce5c4f3",
+      "merlin_dev_gemmini_3": "gemmini_golden_a5705ab56e324ba1",
+      "merlin_dev_gemmini_4": "gemmini_golden_29c4e0a80e5abd97",
+      "merlin_dev_gemmini_5": "gemmini_golden_e738f13ad92e3128"
+    },
+    "selected_plan_controls_normal_host_dispatch": true,
+    "original_output_qualification": "pending",
+    "token_usage_available": false
+  },
+  "code_commits": {
+    "oot": "5eb6f9d",
+    "merlin": "2221ce9ad"
+  },
+  "tests": {
+    "oot": "46 passed/1 skipped",
+    "merlin_focused": "5 passed",
+    "merlin_combined": "9 passed/15 capability-skipped",
+    "no_target_name": "pass",
+    "no_regex": "pass"
+  },
+  "qualification": {
+    "full_native": {
+      "scope": "whole_single_selected: native host with scalar integer device stand-ins",
+      "llvm_sha256": "eb6662f505afd573e572e03ba40b4f70f89709645ab21e89a087b0ec23a1fe2e",
+      "finite": true,
+      "allclose": true,
+      "relative_l2": 2.1918432935308374e-07,
+      "cosine": 1.0,
+      "max_abs_error": 9.5367431640625e-06,
+      "original_compiled_bits_exact": true,
+      "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+    },
+    "full_strict_spike": {
+      "schema": "tiny_calibrated_schedule_whole_qualification_v1",
+      "status": "pass",
+      "started_utc": "2026-10-05T22:57:58.021041+00:00",
+      "elf_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/build/model.elf",
+      "elf_sha256": "9112dde7f14cd191c2bf1a5861025f08618d78c5d5a1172242b14f9b4469968e",
+      "marker": "ae1d2385b858",
+      "reference_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/host/output.npy",
+      "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+      "torch_golden_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/bundle/golden.npy",
+      "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+      "torch_atol": 0.03125,
+      "torch_rtol": 0.02,
+      "torch_allclose": true,
+      "outputs": 256000,
+      "original_compiled_raw_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "9112dde7f14cd191c2bf1a5861025f08618d78c5d5a1172242b14f9b4469968e",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 24,
+          "1": 328,
+          "2": 866,
+          "3": 336,
+          "4": 1312,
+          "6": 1312,
+          "7": 6
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "normal_model_binding": {
+        "schema": "calibrated_normal_whole_model_binding_v1",
+        "source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+        "catalog_manifest_sha256": "8ddbfc95cc57e781482a9a83d7b6fc7964a4a82e2c3f572c2ed8fa74036a2ade",
+        "routing_sidecar_sha256": "a5374558e93b4775d2301dcfb96f9e67e90a9e16caeb95ff611771e42aee29cd",
+        "routed_calls": 155,
+        "unique_call_entries": 6,
+        "unique_device_implementations": 6,
+        "calibrated_regions": [
+          "matmul_2"
+        ],
+        "all154_unselected_bindings_unchanged": true,
+        "entry_to_implementation": {
+          "merlin_dev_gemmini_0": "gemmini_golden_ef297329ec9dee28",
+          "merlin_dev_gemmini_1": "gemmini_export_bbaceae9e50f951b",
+          "merlin_dev_gemmini_2": "gemmini_golden_7b4380121ce5c4f3",
+          "merlin_dev_gemmini_3": "gemmini_golden_a5705ab56e324ba1",
+          "merlin_dev_gemmini_4": "gemmini_golden_29c4e0a80e5abd97",
+          "merlin_dev_gemmini_5": "gemmini_golden_e738f13ad92e3128"
+        },
+        "selected_plan_controls_normal_host_dispatch": true,
+        "original_output_qualification": "pending",
+        "token_usage_available": false
+      },
+      "token_usage_available": false,
+      "exclusive_token_attribution": "unknown; root records shared campaign checkpoints",
+      "before_verified_stock_job": 1880,
+      "before_verified_stock_cycles": 531072370,
+      "actual_candidate_hardware_cycles": null,
+      "hardware_status": "not submitted",
+      "timing_scope": "Paired GSIM capsule only; whole-model functional instructions are not hardware cycles",
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+        "--extension=gemmini",
+        "--isa=rv64gc",
+        "-m0x80000000:0x400000000",
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/build/model.elf"
+      ],
+      "spike_pid": 4147153,
+      "finished_utc": "2026-10-05T22:58:56.671595+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "cycles": "166648514",
+        "build_hash": "ae1d2385b858",
+        "memref_rank_mismatch": "0"
+      },
+      "spike_console_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/spike.log",
+      "spike_console_sha256": "8d9c65a423bb473bb98beb1755b6e96323a70baf30e800a36bab9cbae3a23585",
+      "functional_instructions_not_hardware_cycles": 166648514,
+      "spike_full_output_match": true,
+      "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+    },
+    "stock_hardware": "qualified but held/not submitted",
+    "stock_decision": "Only one exact source contraction is calibrated. No whole-model gain claim or cross-call timing projection. Await root review and current hardware profile."
+  },
+  "decisions": {
+    "separate_address_first_pair": "retained positive screening, superseded by common-address pair",
+    "frontend072_source_pin_failure": "correctly refused; explicitly pinned original xDSL0.65 import, no relaxed source checks",
+    "same_shape_dispatch_failure": "correctly refused; generic implementation-aware binding fix, no numeric fallback",
+    "positive_capsule": "retain explicit calibration; full-model qualification required before stock submission"
+  },
+  "token_checkpoint": {
+    "token_usage_available": false,
+    "shared_campaign_snapshot": "root-owned",
+    "exclusive_optimization_usage": "unknown",
+    "billing_input_cached_output_allocation": "unknown"
+  },
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/build_whole.py": "eb866035fba8ca463c9ee26ef47c77ed84d49c8c41420664086e93deeb5c96d6",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/validate_whole_native.py": "12c265513d5f577da468f3cfffbcf3a115004227767f648c75a7d730e2fd0b10",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/qualify_whole.py": "cf6fb72f241838cdb0da2754105724d72502e8353e38c62ab1916b7e0af2b255",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/run_common_layout.py": "5d1b2226784b28dce29c5c68ad717972bcc9ff520df972a64add60b0d6ad9ba7",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/run_probe.py": "02f9297847b6d38b006c3eea51ccf8499d2a48e47094572c19391c330d4d0b3c",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/build_whole.log": "f3f7cc41eac6a303475faded8818bfb5ec168c9d4dd9574fddbb3f7f5f87607d",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/build_whole_pinned_frontend.log": "fe57ef0a03597ec4dbcd0472d22c0784c6d252db37ccc957f08f14b9ab20d19a",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/build_whole_catalog_identity.log": "a2c7d7ca0922fb14e67da4c1a527d9bb842e2277210b6d8f943627f9fb425064",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/planner_tests_qualified_env.log": "d96d3695e29adc8f33d74b65915953e472b8e2e1246c593493f8d002ba90c755",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/spike_validation.json": "96cf5f541a336de207719db8dc09fef4d6a206f249c955d364cff30437846413",
+    "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-20261005/whole_single_selected/host/validation.json": "909aadfa9110bf1229b650b03722d9baed8cd3d52a4109d294a74e3ecf698f65"
+  }
+}
