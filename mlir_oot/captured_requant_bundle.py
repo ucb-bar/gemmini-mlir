@@ -19,7 +19,7 @@ from .captured_requant import inspect_chain
 from .golden_requant import synthesize_bias
 from .golden_contraction_upstream import choose_shape
 from .golden_gemm import GoldenGemm
-from .golden_conv import GoldenConv
+from .conv_schedule import select_kernel
 from .golden_device_compile import compile_module
 from .direct_conv_binding import match as match_conv,_transpose,serialize,emit_c_adapter
 from .no_fsm_audit import audit_elf
@@ -105,7 +105,7 @@ def rewrite_path(op,chain,symbol,direct):
     return declaration
 
 
-def build(capture:Path,llvm_bin:Path,output:Path):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
     from merlin.runtime.captured_constants import verify_capture_constant
     output.mkdir(parents=True,exist_ok=False)
     source=(capture/'model.mlir').read_text();module=parse_module(source)
@@ -133,13 +133,17 @@ def build(capture:Path,llvm_bin:Path,output:Path):
         symbol=f'gemmini_exact_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         bias_index=chain['bias'].index
         declaration=rewrite_path(op,chain,symbol,direct);declarations.append(declaration)
-        device=(GoldenConv(schedule) if direct else GoldenGemm(schedule)).build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
+        if direct:
+            generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial);schedule=generator.conv
+        else:
+            generator,schedule_kind=GoldenGemm(schedule),'dense_gemm'
+        device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         adapter=emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel)
         (work/'adapter.c').write_text(adapter)
         subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-ffreestanding','-fno-builtin','-c',str(work/'adapter.c'),'-o',str(work/'adapter.o')],check=True,capture_output=True)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
-        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,proof=proof,compilation=compilation))
+        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,proof=proof,compilation=compilation))
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -153,7 +157,7 @@ def build(capture:Path,llvm_bin:Path,output:Path):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

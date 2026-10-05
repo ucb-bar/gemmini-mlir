@@ -26,7 +26,7 @@ def stage_capture(capture:Path,bundle:Path,destination:Path):
     return destination
 
 
-def merlin_callbacks(llvm_bin:Path,requant_bundle:Path):
+def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
     """Callbacks for the derived capture; verify fused symbol set before compilation."""
     llvm_bin,requant_bundle=map(Path,(llvm_bin,requant_bundle));state={}
     requant=json.loads((requant_bundle/'requant.json').read_text());requant_sha=sha(requant_bundle/'requant.json')
@@ -37,7 +37,7 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path):
         check_requant();module=parse_module(Path(source).read_text())
         symbols={x['symbol'] for x in requant['routes']};calls=[x.callee.root_reference.data for x in module.walk() if x.name=='func.call' and x.callee.root_reference.data in symbols]
         if len(calls)!=len(symbols) or set(calls)!=symbols:raise ValueError('prepared source does not contain exact fused call set')
-        direct=Path(work)/'direct_conv';manifest=build_direct(Path(source),llvm_bin,direct)
+        direct=Path(work)/'direct_conv';manifest=build_direct(Path(source),llvm_bin,direct,flat_spatial=flat_spatial)
         rewritten=direct/'rewritten.mlir'
         if sha(rewritten)!=manifest['rewritten_sha256']:raise ValueError('direct rewrite identity mismatch')
         reparsed=parse_module(rewritten.read_text())

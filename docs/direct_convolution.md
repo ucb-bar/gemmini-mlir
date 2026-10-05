@@ -178,3 +178,73 @@ The stride1/stride2 native stand-ins were checked against independent NumPy
 oracles (200,704 and 100,352 values). These stand-ins are correctness tooling;
 the RV64 bundle continues to use the xDSL primitive kernels. ABI shape/stride
 violations trap directly, so the device bundle has no runtime `exit` dependency.
+
+## Spatial flattening for small feature maps
+
+`golden_flat_conv.py` retains the entire spatial output for one channel block.
+It fills array M tiles across output-row boundaries. Each A DMA run is split at
+both a source row and an array-tile boundary, so the input remains the exact
+NHWC tensor including its explicit halo. HWIO reduction order and accumulator
+semantics are unchanged. This is a kernel schedule change after structural
+source binding, with no materialized host im2col.
+
+`conv_schedule.select_kernel(..., flat_spatial=True)` enables the option only
+when the complete output fits the accumulator. It derives the channel block
+from capacity. There is no model-name/region-name dispatch. Both direct and
+exact-requant bundles record `schedule_kind` and the selected shape. Ordinary
+row schedules remain the default and the fallback for larger feature maps.
+
+For 7×7 output, 512 input/output channels, stride1 or stride2, the schedule uses
+four spatial tiles and 16 channel tiles per block (all 1024 accumulator rows).
+The prior row schedule used seven partially occupied spatial tiles and four
+channel tiles per block:
+
+| Dynamic primitive count | Row schedule | Flat | Flat with wide A |
+|---|---:|---:|---:|
+| Compute/preload (each) |64,512|36,864|36,864|
+| A DMA |16,128|5,760|1,440|
+| B DMA |16,128|2,304|2,304|
+| i32 store |224|128|128|
+| Padded array issue floor |1,032,192|589,824|589,824|
+
+Weights are read once (2,359,296 bytes), rather than once per output row.
+Optional wide A loads use up to 64 contiguous input channels, distributed into
+four scratchpad tiles by the ordinary load controller. No new opcode or host
+packing is needed. Each spatial tile reserves four adjacent K tiles; source
+row fragments write identical lane ranges within those tiles. This preserves
+partial K tiles and does not read beyond the declared channels.
+
+For 14×14 output with 256 input/output channels, there are 13 spatial tiles,
+29,952 computes (479,232 issue floor), and 576 B DMA commands instead of 8,064.
+Wide A reduces the 25 gather fragments per input-channel panel to 3,600 A DMA
+commands rather than 14,400 for narrow flat loads.
+
+### Verification and measurement
+
+`tests/gsim_conv_probe.py --flat-spatial` supplies **nonzero halo values** and
+compares every output to an independent dense integer convolution. Tests cover
+both strides, signed-i32 and scaled/ReLU-i8, partial spatial/channel/feature
+tiles, and output guards. `--static-inputs` embeds deterministic data bytes in
+the ELF so multi-megabyte scalar initialization loops do not consume the GSIM
+cycle budget. Embedded assembly contains data directives only.
+
+The complete 7×7C512 i32 flat/bn16 probe passed all 25,088 outputs+guard at
+**1,012,868 GSIM kernel cycles**. Strict RV64GC+Zicntr Spike independently passed.
+Final linked ELF audit has no FSM instructions. See
+`docs/perf_records/flat_conv_gsim.json` for hashes and additional tail probes.
+FireSim performance and complete-model validation are separate gates; the
+~6.12M-cycle old hardware profile cannot be compared as a same-simulator result
+to this GSIM measurement.
+
+
+The wide-A version passed the same full-shape GSIM oracle at **939,677 cycles**
+(7.2% below narrow flat) and strict Spike. It is queued as FireSim **1757**;
+ELF SHA256 `0b999e20f2e20fead72edd139fdb83b28401ee496471a3fad2ac36bc384df794`.
+The opt-in selector now chooses `spatial_flat_wide_a` after capacity checks.
+
+The initial complete-model integration with narrow flat schedules passed all
+1,000 original captured outputs exactly on native scalar standins and actual
+Gemmini Spike. Its 777,760,389 retired instructions mostly reflect unchanged
+host work and are not a hardware cycle estimate. Final ELF audit passed. See
+`docs/perf_records/resnet_flat_conv_spike.json`. The same integration with wide
+A is validated separately before whole-model hardware promotion.

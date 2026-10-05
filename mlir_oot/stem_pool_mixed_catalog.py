@@ -5,8 +5,8 @@ from .fused_mixed_catalog import merlin_callbacks as fused_callbacks,sha
 from .no_fsm_audit import audit_elf
 
 
-def merlin_callbacks(llvm_bin,requant_bundle,pool_bundle):
-    llvm_bin,pool_bundle=map(Path,(llvm_bin,pool_bundle));prepare_base,build_base=fused_callbacks(llvm_bin,requant_bundle);pool=json.loads((pool_bundle/'stem_pool.json').read_text());pin=sha(pool_bundle/'stem_pool.json')
+def merlin_callbacks(llvm_bin,requant_bundle,pool_bundle,*,flat_spatial=False):
+    llvm_bin,pool_bundle=map(Path,(llvm_bin,pool_bundle));prepare_base,build_base=fused_callbacks(llvm_bin,requant_bundle,flat_spatial=flat_spatial);pool=json.loads((pool_bundle/'stem_pool.json').read_text());pin=sha(pool_bundle/'stem_pool.json')
     def prepare(source,work):
         from .frontend.parse import parse_module
         m=parse_module(Path(source).read_text());calls=[o for o in m.walk() if o.name=='func.call' and o.callee.root_reference.data==pool['symbol']]

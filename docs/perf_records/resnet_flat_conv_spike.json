@@ -1,0 +1,26 @@
+{
+  "schema": "gemmini_spatial_flat_whole_validation_v1",
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "ca78ce4d011a42271c3b1948a3f3ae0cee3c8ceca527fe6a11c3a95fecd28fd4",
+    "elements": 1000,
+    "exact_equal": true,
+    "metrics": [
+      "METRIC cycles 777760389",
+      "METRIC build_hash 5a2906d63af7",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "compilation_policy": {
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang"
+  },
+  "scope": "Original captured zero-bias epilogue policy; pooled stem plus narrow spatial-flat small convs; no whole-model FireSim claim."
+}

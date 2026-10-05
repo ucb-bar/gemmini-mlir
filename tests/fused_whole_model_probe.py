@@ -48,7 +48,7 @@ def spike_validate(capture,build,spike,work):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
     capture=a.work/'capture';builddir=a.work/'build_direct'
     if not a.validate_existing:
         (a.work/'host_compilation_policy.json').write_text(json.dumps({key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']},indent=2)+'\n')
@@ -62,9 +62,10 @@ def main():
             from mlir_oot.stem_pool_bundle import build as build_pool,apply_capture
             from mlir_oot.stem_pool_mixed_catalog import merlin_callbacks as pool_callbacks
             pool=a.work/'stem_pool_bundle';build_pool(capture,a.llvm_bin,pool);apply_capture(capture,pool)
-            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool)
+            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial)
         else:
-            prepare,compile=callbacks(a.llvm_bin,a.bundle)
+            if a.flat_spatial and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
+            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':True} if a.flat_spatial else {}))
         result=build(capture,builddir,int8_compute=True,features=frozenset({'named_int8_contraction'}),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
     print(native_validate(capture,builddir,a.work/'host',a.llvm_bin),flush=True)
