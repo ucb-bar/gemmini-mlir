@@ -141,3 +141,14 @@ outputs exact. Final/staged ELF and bitstream identities are pinned. This is
 This becomes the controlled unblocked reference for queued blocked-reduction1789.
 Its inherited base harness build_hash is not unique to the late transform;
 final ELF/object/transform hashes supply that identity. No22M claim is made.
+
+### Reduction rewrite SSA-use hygiene
+
+Follow-up core f943a6664 constructs only the selected replacement, avoiding
+orphan use-list entries from an uninserted unblocked alternative. A regression
+test fails before and passes after;11 focused tests pass. On the actual full
+pre-layout model, before/after emitted MLIR is byte-identical, preserving queued
+1789's compiled correctness/performance identity. The earlier-stage layout
+artifact file is later rewritten in-place by device binding; compare stage
+snapshots or canonical stage emission, not that final file against an earlier
+report hash. Immutable per-stage IR artifacts are an infrastructure improvement.
