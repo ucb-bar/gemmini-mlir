@@ -49,3 +49,13 @@ i32 and cached-A signed-i8 probes also pass. This is simulator evidence;
 other shapes and hardware require their own performance gates.
 
 Evidence: `docs/perf_records/source_bound_dense_schedules.json`.
+
+Full source-bound exact52 + virtual padding + wide16 residuals + NHWC layouts
++ static weight hoist passes all1000 fresh-golden outputs bitexact in native
+and actual Gemmini Spike, with rank mismatches0 and final zero-FSM. There are
+35dense separate-bank routes; the existing banked-prefetch route keeps its
+own placement. Spike retired instructions19,141,081 →19,154,836 reflect
+address-generation overhead, not memory-bank latency. Both full-model ELFs
+remain hardware-unmeasured in these receipts. Evidence:
+`docs/perf_records/whole_dense_virtual_wide16.json` and
+`docs/perf_records/whole_dense_split_virtual_wide16.json`.
