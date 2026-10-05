@@ -27,7 +27,7 @@ def stage_capture(capture:Path,bundle:Path,destination:Path):
     return destination
 
 
-def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,propagate_layout=False):
+def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,propagate_layout=False,large_n=False):
     """Callbacks for the derived capture; verify fused symbol set before compilation."""
     llvm_bin,requant_bundle=map(Path,(llvm_bin,requant_bundle));state={}
     requant=json.loads((requant_bundle/'requant.json').read_text());requant_sha=sha(requant_bundle/'requant.json')
@@ -92,7 +92,7 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,prop
         work.mkdir(parents=True,exist_ok=True)
         # Merlin offload rewrites its input in place. Preserve the exact bound bytes.
         shutil.copyfile(source,work/'catalog_source.mlir')
-        manifest=compile_catalog(source,llvm_bin,work);linker=llvm_bin/'ld.lld'
+        manifest=compile_catalog(source,llvm_bin,work,large_n=large_n);linker=llvm_bin/'ld.lld'
         if not linker.is_file():
             found=shutil.which('ld.lld')
             if found is None:raise ValueError('ld.lld required')

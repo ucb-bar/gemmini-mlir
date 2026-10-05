@@ -117,11 +117,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--residual-shared-permutation',action='store_true');p.add_argument('--residual-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.)
     p.add_argument('--host-feature', action='append', choices=('fuse_quantize_round_convert','lower_roundeven_to_intrinsic'), default=[], help='explicit exact host arithmetic lowering; defaults remain unchanged')
     p.add_argument('--reuse-tensor-destination',action='store_true')
+    p.add_argument('--large-n-dense',action='store_true')
     p.add_argument('--host-vectorize',choices=('true','false'),default=None)
     p.add_argument('--host-llvm-transform',choices=('clamp-rne',),default=None)
     p.add_argument('--output-sha256',action='store_true')
     p.add_argument('--output-dump-cap',type=int,default=4096)
     a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    if a.large_n_dense and a.packed_stem and not a.pooled_stem:p.error('large-N dense policy is supported with pooled stem or ordinary fused catalog')
     if len(set(a.host_feature))>1:p.error('host rounding lowerings are alternatives; select one')
     if a.residual_shared_permutation and (not a.residual_add or a.residual_implementation not in ('cpu_lut','wide_integer')):p.error('shared permutation requires exact residual implementation')
     if a.residual_lut_schedule!='scalar' and (not a.residual_add or a.residual_implementation!='cpu_lut'):p.error('CPU lookup schedule requires --residual-add --residual-implementation cpu_lut')
@@ -132,6 +134,7 @@ def main():
         policy={key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']}
         policy['reuse_tensor_destination']=a.reuse_tensor_destination
         policy['host_features']=sorted(set(a.host_feature))
+        policy['large_n_dense']=a.large_n_dense
         policy.update(host_vectorize=a.host_vectorize,host_llvm_transform=a.host_llvm_transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap)
         (a.work/'host_compilation_policy.json').write_text(json.dumps(policy,indent=2)+'\n')
     if not a.validate_existing:
@@ -144,10 +147,10 @@ def main():
             from mlir_oot.stem_pool_bundle import build as build_pool,apply_capture
             from mlir_oot.stem_pool_mixed_catalog import merlin_callbacks as pool_callbacks
             pool=a.work/'stem_pool_bundle';build_pool(capture,a.llvm_bin,pool);apply_capture(capture,pool)
-            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial,propagate_layout=a.propagate_layouts)
+            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial,propagate_layout=a.propagate_layouts,large_n=a.large_n_dense)
         else:
             if (a.flat_spatial or a.propagate_layouts) and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
-            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':a.flat_spatial,'propagate_layout':a.propagate_layouts} if not a.packed_stem else {}))
+            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':a.flat_spatial,'propagate_layout':a.propagate_layouts,'large_n':a.large_n_dense} if not a.packed_stem else {}))
         if a.residual_add:
             from mlir_oot.captured_residual_bundle import build as build_residual
             from mlir_oot.residual_mixed_catalog import apply_capture as apply_residual,merlin_callbacks as residual_callbacks

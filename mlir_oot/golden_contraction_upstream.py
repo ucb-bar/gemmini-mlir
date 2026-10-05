@@ -52,10 +52,19 @@ def choose_shape(dims: IntegerGemm, *, large_n: bool = False) -> Shape:
     ntiles = _ceil_div(dims.n,F.DIM)
     repeated_n = (_ceil_div(ntiles,shape.bn) >= 2 if large_n
                   else ntiles >= 4*shape.bn)
-    if dims.m <= F.DIM and repeated_n:
+    # A single-row panel can also benefit from moving all A loads before the
+    # contraction, even if N fits one panel and the command count ties. This
+    # opt-in case is hardware-screened at the captured classifier tail; other
+    # shapes still require full model validation before performance promotion.
+    single_row_resident = large_n and dims.m == 1 and dims.n > 4*F.DIM
+    if dims.m <= F.DIM and (repeated_n or single_row_resident):
         try:
             candidate = replace(shape, cache_a=True)
-            if estimate(candidate)["primitive_command_count"] < estimate(shape)["primitive_command_count"]:
+            candidate_commands = estimate(candidate)["primitive_command_count"]
+            previous_commands = estimate(shape)["primitive_command_count"]
+            if candidate_commands < previous_commands or (
+                single_row_resident and candidate_commands == previous_commands
+            ):
                 shape = candidate
         except ValueError:
             pass
