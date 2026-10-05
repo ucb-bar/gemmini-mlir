@@ -6,7 +6,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, clamp/RNE, packed guarded mean, pre-stem destination reuse and classifier wide-B/resident-A | 44,507,889 (1824) | All 1,000 golden output words exact | [1824](perf_records/resnet_packed_mean_firesim1824.json) |
+| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, three banked dense schedules, clamp/RNE, packed guarded mean, pre-stem destination reuse and classifier wide-B/resident-A | 43,969,384 (1829) | All 1,000 golden output words exact | [1829](perf_records/resnet_three_banked_packed_firesim1829.json) |
 | Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + four independent exact scalar accumulators and partial K-unroll2 | 612,282,210 (1828) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1828](perf_records/tiny_four_output_unroll2_firesim1828.json) |
 | Full SmolVLA | Not admitted | Original full elementwise gate remains atol=0.03125, rtol=0.02; source RoPE arithmetic diagnosis continues | Optimization log |
 
@@ -204,7 +204,7 @@ cycles,3.91% below1812. The bankedmatmul11 arm1823 independently retains
 a host object byte-identical1812 and all52 source/numeric proofs, measuring
 46,127,051cycles. The combined packed-mean plus bankedmatmul5/8/11 candidate
 passes all original native and actualSpike outputs and zeroFSM; its host object
-is byte-identical1824. Stock1829 is pending. See
+is byte-identical1824. Stock1829 verifies43,969,384cycles,1.21% below1824. See
 [combined gate](perf_records/resnet_three_banked_packed_spike.json).
 
 SmolVLA source-compatible softmax initially returned NaNs in full preparation:
