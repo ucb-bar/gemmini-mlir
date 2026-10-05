@@ -114,9 +114,18 @@ its strategy; the strict collector derives/correctly labels it from executed
   Actual hardware cycles can trade compute/traffic differently; qualified fair
   control/candidate pair was sent to queue owner for measurement. **No actual
   FireSim result or winning strategy is claimed here.**
-* All12head strong target run is independently active; native all786432bits and
-  finalELF build gates pass. Its terminal target receipt will be appended after
-  completion. A partial running log is not qualification.
+* All twelve heads of the original first block passed native and strict target
+  qualification: all 786,432 BF16 bits, original gate0, rank0, DONE and process
+  rc0. Exact ELF3fd1427f…3132, marker7d440bea5b6e; complete target
+  17,319,092,950 instructions. Stage costs:2.085B packing/metadata,2.387B QK
+  device/readback/recombination/norms,7.277B QK certificate/softmax/replay,
+  .898B PV device/readback/recombination/norms,1.606B PV certificates,3.064B
+  final replay/denominator/output. Actual756 calls and622,854,144 readback
+  bytes. This establishes target source accuracy and total cost; it is not a
+  fair all-head baseline comparison or hardware cycle result.
+* Recovery independently bound exact original output and submitted the fair
+  one-head pair to stock FireSim:1894 control /1895 cheaper gamma candidate.
+  Durable collectors3383623/3383935, currently queued; no winner claimed.
 
 ## Tokens and continuation
 
