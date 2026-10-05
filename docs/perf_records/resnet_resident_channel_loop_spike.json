@@ -1,0 +1,184 @@
+{
+  "schema": "resnet_source_bound_resident_channel_loop_gate_v1",
+  "scope": "Experimental source-bound selection: ordinary CPU K loops on five14x14 resident convolutions plus narrow-row grouping on two7x7 convolutions. General target schedule parameters and resource proofs, no workload identity in kernel generation; no default schedule changes.",
+  "capture_source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "route_count": 52,
+  "fresh_writer_calls": 70,
+  "all_numeric_proofs_unchanged": true,
+  "changed_device_regions": [
+    "matmul_29",
+    "matmul_32",
+    "matmul_35",
+    "matmul_38",
+    "matmul_41",
+    "matmul_48",
+    "matmul_51"
+  ],
+  "options": {
+    "matmul_29": {
+      "rows_per_tile": 1,
+      "loop_channels": true
+    },
+    "matmul_32": {
+      "rows_per_tile": 1,
+      "loop_channels": true
+    },
+    "matmul_35": {
+      "rows_per_tile": 1,
+      "loop_channels": true
+    },
+    "matmul_38": {
+      "rows_per_tile": 1,
+      "loop_channels": true
+    },
+    "matmul_41": {
+      "rows_per_tile": 1,
+      "loop_channels": true
+    },
+    "matmul_48": {
+      "rows_per_tile": 2,
+      "loop_channels": true
+    },
+    "matmul_51": {
+      "rows_per_tile": 2,
+      "loop_channels": true
+    }
+  },
+  "new_requant_bundle": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_resident_channel_loop_bundle_v2",
+  "new_requant_object_sha256": "59bb56376bffaead8cb68f0f164672e434c87f893813b4ca9db9070c46fcd7d7",
+  "control_requant_manifest_sha256": "0394708033915f3c3861ca683b4d2a765c7d4bd6165470ebf85a50c69b57a85b",
+  "control_job": 1836,
+  "control_hardware_cycles": 42837088,
+  "host_object_byte_identical_to_control": true,
+  "host_object_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+  "original_full_native_gate": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "actual_final_elf_spike_gate": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "42b8f0e37aaeab31af16ff32c13018daa4959420d80c6de36c4cd6cacdadd8c7",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 9467083",
+      "METRIC build_hash 394aad82e4b2",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/spike.log",
+    "spike_console_sha256": "a7df860dc37541152fbd4370e98e6dc6274fd35b7670a1c7381b5d1e66015ffc",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "final_elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/build_direct/model.elf",
+  "final_elf_sha256": "42b8f0e37aaeab31af16ff32c13018daa4959420d80c6de36c4cd6cacdadd8c7",
+  "normal_build": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "394aad82e4b2",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/build_direct/lower/model.ll",
+      "source_sha256": "85b38bfc4b0c1887043cc9a02ba0105b6278c08f9fb78164e49c9fcb755794e0",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_resident_channel_loops/build_direct/host_llvm/model.linked.ll",
+      "selected_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c"
+    },
+    "supplemental_objects_sha256": "77a34fa3a2b8e5801081b1265535f61246146fc1ef867a313510fd24d33e1664",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "final_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "42b8f0e37aaeab31af16ff32c13018daa4959420d80c6de36c4cd6cacdadd8c7",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2036,
+      "2": 9539,
+      "3": 1246,
+      "4": 9014,
+      "5": 75608,
+      "6": 84622,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "control_spike_retired_instructions": 9946365,
+  "candidate_spike_retired_instructions": 9467083,
+  "hardware_claim": "None until independently verified stock FireSim run",
+  "failure_history": [
+    {
+      "log": "out/resident_channel_loop_bundle.log",
+      "reason": "Already-prepared mutable model input lacked requested source regions; rebuilt from exact immutable linalg snapshot"
+    },
+    {
+      "log": "out/resident_channel_loop_bundle_v2.log",
+      "reason": "Summary JSON printing used flush in wrong call; compilation,52 proof comparisons and target audit had already passed"
+    }
+  ]
+}
