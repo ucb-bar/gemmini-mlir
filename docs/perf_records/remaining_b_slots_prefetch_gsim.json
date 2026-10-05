@@ -1,0 +1,494 @@
+{
+  "schema": "remaining_b_slots_prefetch_gsim_v1",
+  "owner": "/root/reference_parity",
+  "checkpoint_utc": "2026-10-05 20:39:47 UTC",
+  "token_checkpoint": {
+    "child_goal_counter_available": false,
+    "root_owned_thread_raw_counters": "Root records these independently; null child goal does not imply unavailable global usage."
+  },
+  "hypothesis": "Remaining scratchpad rows can hold two disjoint next-K B slots after complete cached A. Exact resource and lifetime proofs admit legal sharing of a bank; hardware arbitration/transfer overlap decides performance.",
+  "metric_scope": "Fenced GSIM kernel cycles on static identical amplitude21 fixtures; production whole-model accuracy and stock timing are separate gates.",
+  "control_cycles": 540046,
+  "candidate_cycles": 511096,
+  "saved_cycles": 28950,
+  "fraction_lower": 0.053606544627679886,
+  "resources": {
+    "reserved_a_rows": 13312,
+    "B_slot_rows": [
+      13312,
+      13376
+    ],
+    "reserved_rows_per_B_slot": 64,
+    "SPAD_rows": 16384,
+    "B_banks": [
+      3,
+      3
+    ]
+  },
+  "emitted_delta": {
+    "schema": "b_slot_exact_static_cfg_trace_v1",
+    "scope": "Complete traversal of verified capsule target LLVM CFG; symbolic pointer layout width64; actual source A/B read operands and accumulator update order equal. This is a static command trace, not hardware timing.",
+    "control": {
+      "counts": {
+        "fence": 2,
+        "flush": 1,
+        "config_ex": 1,
+        "config_ld": 2,
+        "config_st": 1,
+        "mvin": 1344,
+        "mvin_id0": 832,
+        "mvin_id1": 512,
+        "preload": 26624,
+        "compute": 26624,
+        "mvout": 104
+      },
+      "ordered_source_contractions_sha256": "8892da2c1a9b8ced9cca5611544d49acf2f5ec602f9526d3995e035989974ebe",
+      "compute_updates": 26624,
+      "ir_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/kernel.gemmini.mlir",
+      "ir_sha256": "e34b99b00023de7b4c4b2d0ee48bf47a5072828616a1d535e06177822fd6be57",
+      "trace_completed": true
+    },
+    "candidate": {
+      "counts": {
+        "fence": 2,
+        "flush": 1,
+        "config_ex": 1,
+        "config_ld": 2,
+        "config_st": 1,
+        "mvin": 1344,
+        "mvin_id0": 832,
+        "mvin_id1": 512,
+        "preload": 26624,
+        "compute": 26624,
+        "mvout": 104
+      },
+      "ordered_source_contractions_sha256": "8892da2c1a9b8ced9cca5611544d49acf2f5ec602f9526d3995e035989974ebe",
+      "compute_updates": 26624,
+      "ir_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/kernel.gemmini.mlir",
+      "ir_sha256": "029e899b4a023ea7fc8f61925fd663d01a737bc1e4486ca906274c2349e44b61",
+      "trace_completed": true
+    },
+    "counts_equal": true,
+    "ordered_source_contractions_equal": true,
+    "core_tracer_path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/src/merlin/llvmlower/static_llvm_cfg.py",
+    "core_tracer_sha256": "bb67e47b15e5c7e862ba07d2244abbe0815378aede1ed204f1db56ae6ff9cb01"
+  },
+  "default_compatibility": "Shape fields unchanged; default B bank2/3 IR is byte identical to equivalent explicit placement after removing the new placement-record attribute. Existing default constructor and policy choices remain unchanged.",
+  "general_selector": "mlir_oot.b_slot_placement.select_remaining_b_slots; source shape and complete SPAD extents only; explicit remaining_rows policy is default off. All fallbacks and row placements are recorded.",
+  "tests": {
+    "passed": 55,
+    "log_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_focused_tests.log",
+    "log_sha256": "7a9aeb4b44747c7f0913b93ee3df20f81e44104fd3a9333dc9e6dea775d0bda5",
+    "scope": "B prefetch, explicit placements, full reserved extents, source field preservation, general fallback, upstream LLVM lowering and existing dense/requant contracts"
+  },
+  "capsules": [
+    {
+      "name": "b_slots_deep_control",
+      "elements": 100352,
+      "checked_guard_bytes": 2048,
+      "result": {
+        "schema": "gemmini_golden_gemm_gsim_probe_v1",
+        "shape": [
+          196,
+          512,
+          1024
+        ],
+        "kernel_symbol": "gemmini_golden_gemm",
+        "block": [
+          13,
+          4
+        ],
+        "output_dtype": "i8",
+        "bias": false,
+        "input_amplitude": 21,
+        "scale": 0.0018682164372876287,
+        "relu": true,
+        "embedded_expected": true,
+        "static_inputs": true,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false,
+        "prefetch_b_rows": null,
+        "status": "pass",
+        "kernel_cycles": 540046,
+        "engine_cycles_including_harness": 1450058,
+        "elf_sha256": "ef3563566beaa953b40c25a27edee2008a22dde479d8eec0edf6af09e87eb99e",
+        "target_ir_sha256": "e34b99b00023de7b4c4b2d0ee48bf47a5072828616a1d535e06177822fd6be57",
+        "llvm_ir_sha256": "e6e30d794c42ff86da1590c6ae7c530e56c5f6e4c2b853d9a01d6cc52c97c23b",
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "nofsm_audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "ef3563566beaa953b40c25a27edee2008a22dde479d8eec0edf6af09e87eb99e",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 4,
+            "1": 2,
+            "2": 832,
+            "3": 13,
+            "4": 8,
+            "5": 96,
+            "6": 104,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "stdout_tail": "GOLDEN_GEMM_CYCLES 540046\nGOLDEN_GEMM PASS M=196 N=512 K=1024\n",
+        "stderr_tail": ""
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "e34b99b00023de7b4c4b2d0ee48bf47a5072828616a1d535e06177822fd6be57",
+        "llvm_mlir_sha256": "e6e30d794c42ff86da1590c6ae7c530e56c5f6e4c2b853d9a01d6cc52c97c23b",
+        "llvm_ir_sha256": "3525be08b8c75bb737c4e797223c490b2726d6c8c3e59a1de0d0b778c2a7c4ba",
+        "object_sha256": "c35943e870a5bbbb0f018bfae18e3d858cae206e4778156ab7fe3585f15745bd",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/kernel.o"
+          ]
+        ]
+      },
+      "audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "ef3563566beaa953b40c25a27edee2008a22dde479d8eec0edf6af09e87eb99e",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 2,
+          "2": 832,
+          "3": 13,
+          "4": 8,
+          "5": 96,
+          "6": 104,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "actual_strict_spike": {
+        "argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/layer.elf"
+        ],
+        "status": "pass",
+        "log_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_control/spike.log",
+        "log_sha256": "61737eb0f6fac32a83f63b8926581f49ec81ff1356158513ae41206c4394bcfb",
+        "retired_kernel_instructions_not_hardware_cycles": 101468
+      },
+      "fixture_pins": {
+        "a.bin": "ac59eb76c484008e22b8d34d1e226ffbcee84776b00fb5d6353a9f257b4fd97f",
+        "b.bin": "c0e23aea38ae9e0df19299aa91fd84046447e9047716a184dd0130b6b41afa71",
+        "gemm_expected.inc": "dfd7afab99a05c77e3e908ed354f3fa2c32017a05d9d7f554784980c21a97a13"
+      }
+    },
+    {
+      "name": "b_slots_deep_prefetch",
+      "elements": 100352,
+      "checked_guard_bytes": 2048,
+      "result": {
+        "schema": "gemmini_golden_gemm_gsim_probe_v1",
+        "shape": [
+          196,
+          512,
+          1024
+        ],
+        "kernel_symbol": "gemmini_golden_gemm",
+        "block": [
+          13,
+          4
+        ],
+        "output_dtype": "i8",
+        "bias": false,
+        "input_amplitude": 21,
+        "scale": 0.0018682164372876287,
+        "relu": true,
+        "embedded_expected": true,
+        "static_inputs": true,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true,
+        "prefetch_b_rows": [
+          13312,
+          13376
+        ],
+        "status": "pass",
+        "kernel_cycles": 511096,
+        "engine_cycles_including_harness": 1421078,
+        "elf_sha256": "80c277ad81e55a71869b487ce98dd79d5f3b67f5507987cb2d49f907176ef406",
+        "target_ir_sha256": "029e899b4a023ea7fc8f61925fd663d01a737bc1e4486ca906274c2349e44b61",
+        "llvm_ir_sha256": "ac1d46ee52d6b1c0d83670289ede27eb3b919c51dbbb4259d56923de94a79944",
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "nofsm_audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "80c277ad81e55a71869b487ce98dd79d5f3b67f5507987cb2d49f907176ef406",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 4,
+            "1": 4,
+            "2": 832,
+            "3": 13,
+            "4": 16,
+            "5": 192,
+            "6": 208,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "stdout_tail": "GOLDEN_GEMM_CYCLES 511096\nGOLDEN_GEMM PASS M=196 N=512 K=1024\n",
+        "stderr_tail": ""
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "029e899b4a023ea7fc8f61925fd663d01a737bc1e4486ca906274c2349e44b61",
+        "llvm_mlir_sha256": "ac1d46ee52d6b1c0d83670289ede27eb3b919c51dbbb4259d56923de94a79944",
+        "llvm_ir_sha256": "300eda502538bea19e6a9c008c8d20160c177de46df1262bd543a398958eed2c",
+        "object_sha256": "3911df190df95ced0b435d87f030f69f00ab48120da18df49c94de5c7947a069",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/kernel.o"
+          ]
+        ]
+      },
+      "audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "80c277ad81e55a71869b487ce98dd79d5f3b67f5507987cb2d49f907176ef406",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 4,
+          "2": 832,
+          "3": 13,
+          "4": 16,
+          "5": 192,
+          "6": 208,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "actual_strict_spike": {
+        "argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/layer.elf"
+        ],
+        "status": "pass",
+        "log_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_deep_prefetch/spike.log",
+        "log_sha256": "b4e2f06debc4663c42644ea84f34df17fd4ef92c7c16f3be457e286c237b2e90",
+        "retired_kernel_instructions_not_hardware_cycles": 100644
+      },
+      "fixture_pins": {
+        "a.bin": "ac59eb76c484008e22b8d34d1e226ffbcee84776b00fb5d6353a9f257b4fd97f",
+        "b.bin": "c0e23aea38ae9e0df19299aa91fd84046447e9047716a184dd0130b6b41afa71",
+        "gemm_expected.inc": "dfd7afab99a05c77e3e908ed354f3fa2c32017a05d9d7f554784980c21a97a13"
+      }
+    },
+    {
+      "name": "b_slots_independent_tails",
+      "elements": 8979,
+      "checked_guard_bytes": 2048,
+      "result": {
+        "schema": "gemmini_golden_gemm_gsim_probe_v1",
+        "shape": [
+          123,
+          73,
+          1041
+        ],
+        "kernel_symbol": "gemmini_golden_gemm",
+        "block": [
+          8,
+          4
+        ],
+        "output_dtype": "i32",
+        "bias": false,
+        "input_amplitude": 21,
+        "scale": 1.0,
+        "relu": false,
+        "embedded_expected": true,
+        "static_inputs": true,
+        "wide_store": false,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true,
+        "prefetch_b_rows": [
+          8448,
+          8512
+        ],
+        "status": "pass",
+        "kernel_cycles": 77222,
+        "engine_cycles_including_harness": 194636,
+        "elf_sha256": "a2789421fe47ec799bb20c59196aabd8235f82d94d5e127ac785ffac80f4848b",
+        "target_ir_sha256": "f0d9580ad6c0814d77dd3d64bcd7cbc180b1df047d7683ffea93b22f197e5882",
+        "llvm_ir_sha256": "eb598b7a186e3ebe366ef3fc3b8ccbc7010e69dfb74b4fadb7c0c34d8bacb25d",
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "nofsm_audit": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "a2789421fe47ec799bb20c59196aabd8235f82d94d5e127ac785ffac80f4848b",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 4,
+            "1": 12,
+            "2": 528,
+            "3": 40,
+            "4": 30,
+            "5": 210,
+            "6": 240,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "stdout_tail": "GOLDEN_GEMM_CYCLES 77222\nGOLDEN_GEMM PASS M=123 N=73 K=1041\n",
+        "stderr_tail": ""
+      },
+      "compile": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "f0d9580ad6c0814d77dd3d64bcd7cbc180b1df047d7683ffea93b22f197e5882",
+        "llvm_mlir_sha256": "eb598b7a186e3ebe366ef3fc3b8ccbc7010e69dfb74b4fadb7c0c34d8bacb25d",
+        "llvm_ir_sha256": "c645f67d76b2c4d43eb025be6d1f61e745cac8e14b480fa33f4df8cc622c4288",
+        "object_sha256": "8d7df996743505644c1b4f7930176a00a65d00011d205dbdc9124f9da3edf42b",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/kernel.o"
+          ]
+        ]
+      },
+      "audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "a2789421fe47ec799bb20c59196aabd8235f82d94d5e127ac785ffac80f4848b",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 12,
+          "2": 528,
+          "3": 40,
+          "4": 30,
+          "5": 210,
+          "6": 240,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "actual_strict_spike": {
+        "argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/layer.elf"
+        ],
+        "status": "pass",
+        "log_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/b_slots_independent_tails/spike.log",
+        "log_sha256": "f792b856f3cf8d2ecf529efad1ee792514dd83568fdeda5fc575206e36bf1db5",
+        "retired_kernel_instructions_not_hardware_cycles": 12882
+      },
+      "fixture_pins": {
+        "a.bin": "1162f1cd5feca6210e99753565a0f2d68d93ee8345cefa73ea4a0436f6de3e45",
+        "b.bin": "09ea6b42e37fa188c89df793cfd7678edc430b03acfcc7fa5103ddc56d9b9e46",
+        "gemm_expected.inc": "902ac25f9d4f222497c7f27c1b5fa5be9fe361f87e5ad854f76a8c86f7b11b72"
+      }
+    }
+  ],
+  "outcome": "Accept local slot/lifetime optimization for full-source qualification; no hardware cycle claim yet",
+  "why": "Measured5.36 percent improvement with exact full outputs/guards and unchanged static primitive counts and ordered source contraction updates. Bank3 sharing is safe in actual GSIM and strict Spike, and independent i32 M/N/K tails qualify.",
+  "infrastructure_lesson": "Separate resource/SSA-equivalence proof, actual bank/command ordering and measured performance. Fewer retired instructions or weight reloads are insufficient to select a winner. Future phase1/2 tooling should expose complete operand lifetimes and placements; target-specific bank facts remain OOT."
+}

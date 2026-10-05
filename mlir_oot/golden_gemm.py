@@ -53,7 +53,7 @@ class Shape:
     separate_b_bank: bool = False
     prefetch_b: bool = False
 
-    def validate(self) -> None:
+    def validate(self, *, prefetch_b_rows: tuple[int, int] | None = None) -> None:
         if min(self.m, self.n, self.k, self.bm, self.bn) <= 0:
             raise ValueError("all extents and block sizes must be positive")
         if self.output_dtype not in ("i8", "i32"):
@@ -75,13 +75,31 @@ class Shape:
             raise ValueError("A block does not fit one stock scratchpad bank")
         if self.prefetch_m and not (self.pipeline_m and self.wide_a and self.cache_b):
             raise ValueError("M prefetch needs alternating slots, wide A, and cached B")
+        if prefetch_b_rows is not None and not self.prefetch_b:
+            raise ValueError("explicit B slots require B prefetch")
         if self.prefetch_b:
             if not self.cache_a or self.k <= F.DIM or self.separate_b_bank:
                 raise ValueError("B prefetch needs cached A, multiple K panels, and its own bank placement")
-            if self.bm * _ceil_div(self.k, F.DIM) * F.DIM > 2 * F.SPAD_BANK_ROWS:
-                raise ValueError("prefetched B requires cached A to fit the lower two banks")
             if self.bn * F.DIM > F.SPAD_BANK_ROWS:
                 raise ValueError("one prefetched B panel must fit one scratchpad bank")
+            a_end = self.bm * _ceil_div(self.k, F.DIM) * F.DIM
+            if prefetch_b_rows is None:
+                if a_end > 2 * F.SPAD_BANK_ROWS:
+                    raise ValueError("prefetched B requires cached A to fit the lower two banks")
+            else:
+                if (type(prefetch_b_rows) is not tuple or len(prefetch_b_rows) != 2
+                        or any(type(row) is not int or row < 0 or row % F.DIM
+                               for row in prefetch_b_rows)):
+                    raise ValueError("B slots require two nonnegative DIM-aligned row bases")
+                span = self.bn * F.DIM
+                for row in prefetch_b_rows:
+                    if row < a_end or row + span > F.SPAD_ROWS:
+                        raise ValueError("B slot overlaps reserved A or exceeds the scratchpad")
+                    if row // F.SPAD_BANK_ROWS != (row + span - 1) // F.SPAD_BANK_ROWS:
+                        raise ValueError("each B slot must fit within one scratchpad bank")
+                first, second = sorted(prefetch_b_rows)
+                if first + span > second:
+                    raise ValueError("prefetched B slots overlap")
         slots = 2 if self.pipeline_m else 1
         a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
         a_rows = slots * self.bm * a_panel_tiles
@@ -129,9 +147,12 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
 
 
 class GoldenGemm:
-    def __init__(self, shape: Shape):
-        shape.validate()
+    def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None):
+        shape.validate(prefetch_b_rows=prefetch_b_rows)
         self.shape = shape
+        # Placement is a target schedule fact, separate from source dimensions
+        # and numeric semantics. The default retains the established banks2/3.
+        self.prefetch_b_rows = prefetch_b_rows
         self.fb = FnBuilder([PTR] * (4 if shape.bias else 3))
         self.a, self.b, self.c = self.fb.entry.args[:3]
         self.bias = self.fb.entry.args[3] if shape.bias else None
@@ -192,7 +213,7 @@ class GoldenGemm:
             a_base = slot * (F.SPAD_BANK_ROWS // F.DIM)
             b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
         if s.prefetch_b:
-            b_base = (2 + b_slot) * F.SPAD_BANK_ROWS // F.DIM
+            b_base = self._prefetched_b_base(b_slot)
         acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
         krow = self._tile(k0, 0)
         if not s.wide_a and not s.cache_a:
@@ -282,6 +303,12 @@ class GoldenGemm:
                     self._rocc("mvin", {"local": isa.acc_addr((acc_base + a * s.bn + d) * F.DIM),
                                           "rows": rows, "cols": cols,
                                           "load_id": 2}, ptr)
+
+    def _prefetched_b_base(self, slot: int) -> int:
+        """Return a proved scratchpad row base in DIM-tile units."""
+        if self.prefetch_b_rows is not None:
+            return self.prefetch_b_rows[slot] // F.DIM
+        return (2 + slot) * F.SPAD_BANK_ROWS // F.DIM
     def _output_block(self, m0: SSAValue, n0: SSAValue,
                       mr: tuple[int, ...], nr: tuple[int, ...],
                       slot: int = 0, *, prepared: bool = False,
@@ -292,9 +319,8 @@ class GoldenGemm:
             self._prepare_output_block(m0, n0, mr, nr, slot)
         if s.prefetch_b:
             panels = _ceil_div(s.k, F.DIM)
-            bank_tiles = F.SPAD_BANK_ROWS // F.DIM
             def load(ki, bank, kr=F.DIM):
-                self._load_b_panel(n0, ki, nr, kr, (2 + bank) * bank_tiles)
+                self._load_b_panel(n0, ki, nr, kr, self._prefetched_b_base(bank))
             def compute(ki, bank, kr=F.DIM, first=False):
                 self._k_tile(m0, n0, ki, mr, nr, kr, first,
                              slot=slot, b_slot=bank)
@@ -473,6 +499,9 @@ class GoldenGemm:
             module.attributes["gemmini.separate_b_bank"] = IntegerAttr(1, i64)
         if s.prefetch_b:
             module.attributes["gemmini.prefetch_b"] = IntegerAttr(1, i64)
+        if self.prefetch_b_rows is not None:
+            module.attributes["gemmini.prefetch_b_rows"] = StringAttr(
+                ",".join(str(row) for row in self.prefetch_b_rows))
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module

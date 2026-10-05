@@ -138,7 +138,7 @@ def integer_adapter(schedule,symbol,kernel,direct,proof):
     return emit_readout(proof,readout,fixedpoint=True)+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None):
     from .golden_resident_conv import ResidentConvOptions
     resident_input_options=dict(resident_input_options or {})
     if set(resident_input_options)-set(resident_input_regions):
@@ -149,6 +149,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         raise ValueError('unknown resident compiler policy')
     if dense_input_policy not in (None, 'banked_command_cost', 'resident_a_command_cost', 'transfer_command_cost'):
         raise ValueError('unknown dense compiler policy')
+    if dense_b_slot_policy not in (None,'remaining_rows'):
+        raise ValueError('unknown B slot compiler policy')
     if dense_input_policy is not None and full_k_banked_regions:
         raise ValueError('dense compiler policy cannot mix with source selections')
     if resident_input_policy is not None:
@@ -243,7 +245,13 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                 control,_=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank)
                 choose={'banked_command_cost':choose_banked_by_command_cost,'resident_a_command_cost':choose_resident_a_by_command_cost,'transfer_command_cost':choose_transfer_by_command_cost}[dense_input_policy]
                 _,dense_decision=choose(control.shape)
-            generator,schedule_kind=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank,full_k_banked=rid in full_k_banked_regions,banked_command_policy=dense_input_policy=='banked_command_cost',resident_a_command_policy=dense_input_policy=='resident_a_command_cost',transfer_command_policy=dense_input_policy=='transfer_command_cost');schedule=generator.shape
+            generator,schedule_kind=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank,full_k_banked=rid in full_k_banked_regions,banked_command_policy=dense_input_policy=='banked_command_cost',resident_a_command_policy=dense_input_policy=='resident_a_command_cost',transfer_command_policy=dense_input_policy=='transfer_command_cost')
+            if dense_b_slot_policy is not None:
+                from .b_slot_placement import select_remaining_b_slots
+                generator,b_slot_decision=select_remaining_b_slots(generator)
+                if b_slot_decision['applied']:
+                    schedule_kind+=',remaining_rows_b_prefetch'
+            schedule=generator.shape
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
@@ -264,6 +272,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         if not direct and dense_input_policy is not None:
             routes[-1]['dense_policy']=dense_input_policy
             routes[-1]['dense_policy_decision']=dense_decision
+        if not direct and dense_b_slot_policy is not None:
+            routes[-1]['dense_b_slot_policy_decision']=b_slot_decision
     selected_regions={r['region'] for r in routes if 'full_k_banked_prefetch' in r['schedule_kind']}
     if selected_regions != set(full_k_banked_regions):raise ValueError('requested full-K banked source regions not all selected')
     selected_resident={r['region'] for r in routes if r['schedule_kind']=='resident_input_channel_planes'}
@@ -281,7 +291,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes',));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes',));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

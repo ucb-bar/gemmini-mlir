@@ -84,6 +84,8 @@ def main() -> int:
     ap.add_argument("--wide-b", action="store_true")
     ap.add_argument("--separate-b-bank", action="store_true")
     ap.add_argument("--prefetch-b", action="store_true")
+    ap.add_argument("--prefetch-b-rows", type=int, nargs=2,
+                    help="explicit proved scratchpad row bases for alternating B panels")
     ap.add_argument("--bias", action="store_true")
     ap.add_argument("--input-amplitude", type=int, default=1, choices=range(1,22))
     ap.add_argument("--scale", type=float, default=1.0)
@@ -103,12 +105,16 @@ def main() -> int:
                   wide_b=args.wide_b, separate_b_bank=args.separate_b_bank,
                   prefetch_b=args.prefetch_b)
     if args.tune:
+        if args.prefetch_b_rows is not None:
+            ap.error("explicit B row placement cannot be combined with tuning")
         if (args.bm, args.bn) != (4, 4):
             ap.error("--tune cannot be combined with manual --bm/--bn")
         shape, _ = tune(shape)
     workdir = args.workdir.resolve()
     workdir.mkdir(parents=True, exist_ok=False)
     if args.prebuilt_object:
+        if args.prefetch_b_rows is not None:
+            ap.error("explicit B row placement requires a freshly compiled object")
         obj = args.prebuilt_object.resolve(strict=True)
         compilation = json.loads((obj.parent / "device_compile.json").read_text())
         if hashlib.sha256(obj.read_bytes()).hexdigest() != compilation["object_sha256"]:
@@ -127,7 +133,8 @@ def main() -> int:
                 raise ValueError("probe symbol or geometry disagrees with device catalog")
     else:
         obj = workdir / "kernel.o"
-        compilation = compile_module(GoldenGemm(shape).build(), args.llvm_bin, workdir)
+        placement = tuple(args.prefetch_b_rows) if args.prefetch_b_rows is not None else None
+        compilation = compile_module(GoldenGemm(shape,prefetch_b_rows=placement).build(), args.llvm_bin, workdir)
 
     source = Path(__file__).with_name("gemm_probe.c")
     cflags = [f"-DM={args.m}", f"-DN={args.n}", f"-DK={args.k}",
@@ -193,6 +200,7 @@ def main() -> int:
         "wide_b": args.wide_b,
         "separate_b_bank": args.separate_b_bank,
         "prefetch_b": args.prefetch_b,
+        "prefetch_b_rows": args.prefetch_b_rows,
         "status": "pass" if passed else "fail",
         "kernel_cycles": int(match.group(1)) if match else None,
         "engine_cycles_including_harness": run.finish.cycles if run.finish else None,
