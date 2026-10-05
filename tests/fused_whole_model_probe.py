@@ -17,7 +17,8 @@ from merlin.llvmlower.codegen import mlir_runtime_c
 
 def quality(actual, reference, *, allow_bounded=False, atol=0., rtol=0.):
     if actual.shape != reference.shape:raise ValueError('whole output shape differs')
-    if atol<0 or rtol<0:raise ValueError('quality tolerances must be nonnegative')
+    if not np.isfinite(atol) or not np.isfinite(rtol) or atol<0 or rtol<0:raise ValueError('quality tolerances must be finite and nonnegative')
+    if not np.isfinite(actual).all() or not np.isfinite(reference).all():raise ValueError('whole outputs and original golden must be finite')
     exact=bool(np.array_equal(actual.view(np.uint32),reference.astype(np.float32).view(np.uint32)))
     delta=actual.astype(np.float64)-reference.astype(np.float64)
     rel=float(np.linalg.norm(delta.reshape(-1))/max(np.linalg.norm(reference.astype(np.float64).reshape(-1)),np.finfo(np.float64).tiny))
@@ -50,10 +51,14 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
     command=[str(spike),'--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(build/'model.elf')]
     result=subprocess.run(command,capture_output=True,timeout=3600);console=(result.stdout+result.stderr).decode(errors='replace');(work/'spike.log').write_text(console)
     if result.returncode or 'DONE' not in console:raise ValueError('Spike did not finish correctly')
-    line=next(x for x in console.splitlines() if x.startswith('OUT '));parts=line.split();count=int(parts[1]);bits=[int(x)&0xffffffff for x in parts[2:2+count]]
+    lines=[x for x in console.splitlines() if x.startswith('OUT ')]
+    if len(lines)!=1:raise ValueError('expected exactly one full OUT record')
+    parts=lines[0].split();count=int(parts[1])
+    if count<0 or len(parts)!=count+2:raise ValueError('Spike output record count differs')
+    bits=[int(x)&0xffffffff for x in parts[2:]]
     actual=np.array([struct.unpack('<f',struct.pack('<I',x))[0] for x in bits],np.float32);reference=np.load(capture/'golden.npy').reshape(-1)
     native=np.load(work/'host/output.npy').reshape(-1)
-    if count!=native.size or actual.size!=count:raise ValueError('Spike full output count differs')
+    if count!=native.size or count!=reference.size or actual.size!=count:raise ValueError('Spike full output count differs')
     target_native_exact=bool(np.array_equal(actual.view(np.uint32),native.view(np.uint32)))
     report={'scope':'actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles','elf_sha256':hashlib.sha256((build/'model.elf').read_bytes()).hexdigest(),'target_native_exact':target_native_exact,'native_reference_sha256':hashlib.sha256((work/'host/output.npy').read_bytes()).hexdigest(),'original_golden_sha256':hashlib.sha256((capture/'golden.npy').read_bytes()).hexdigest(),**quality(actual,reference,allow_bounded=allow_bounded,atol=atol,rtol=rtol),'metrics':[x for x in console.splitlines() if x.startswith('METRIC ')]}
     if 'METRIC memref_rank_mismatch 0' not in console:raise ValueError('target descriptor rank mismatch')
@@ -65,7 +70,7 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
     if a.residual_max_output_lsb and (not a.residual_add or not a.allow_bounded_output):p.error('bounded residuals require --residual-add and explicit --allow-bounded-output')
-    if a.atol<0 or a.rtol<0:p.error('quality tolerances must be nonnegative')
+    if not np.isfinite(a.atol) or not np.isfinite(a.rtol) or a.atol<0 or a.rtol<0:p.error('quality tolerances must be finite and nonnegative')
     capture=a.work/'capture';builddir=a.work/'build_direct'
     if not a.validate_existing:
         (a.work/'host_compilation_policy.json').write_text(json.dumps({key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']},indent=2)+'\n')
