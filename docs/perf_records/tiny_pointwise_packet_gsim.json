@@ -19,7 +19,7 @@
     "input3.bin": "d7573977c7acdbb8c3c82bf5ef40d1184bc566174f637f191baeb208190c1e4e"
   },
   "core_commit": "dc0efa251",
-  "core_native_tests": 16,
+  "core_native_tests": 17,
   "generic_gates": [
     "check_no_regex",
     "check_no_target_name",
@@ -125,5 +125,25 @@
     "stdout_tail": "BASELINE_CYCLES 0 334650\nPACKET2_CYCLES 0 258440\nPACKET4_CYCLES 0 269976\nBASELINE_CYCLES 1 328373\nPACKET2_CYCLES 1 255845\nPACKET4_CYCLES 1 268247\nPOINTWISE_PACKET PASS\n",
     "stderr_tail": "-ar] #20 addr=0x80003b80\n[gsim-ar] #21 addr=0x80003bc0\n[gsim-ar] #22 addr=0x8002f300\n[gsim-ar] #23 addr=0x8002f2c0\n[gsim-ar] #24 addr=0x80003080\n[gsim-ar] #25 addr=0x80003c00\n[gsim-ar] #26 addr=0x8002f280\n[gsim-ar] #27 addr=0x8000f380\n[gsim-ar] #28 addr=0x800030c0\n[gsim-ar] #29 addr=0x8000f3c0\n[gsim-ar] #30 addr=0x8000f400\n[gsim-ar] #31 addr=0x8000c780\n[gsim-ar] #32 addr=0x80002180\n[gsim-ar] #33 addr=0x800021c0\n[gsim-ar] #34 addr=0x80002200\n[gsim-ar] #35 addr=0x80002240\n[gsim-ar] #36 addr=0x800022c0\n[gsim-ar] #37 addr=0x80003e80\n[gsim-ar] #38 addr=0x80007f00\n[gsim-ar] #39 addr=0x80002280\n[link-probe] ticks=200000 in_fires=16856 out_fires=6738 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33731 out_fires=13493 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=50676 out_fires=20271 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=67557 out_fires=27029 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1000000 in_reset=14 done=0\n[gsim-emu] 1000000 cycles, 113.2s, 8833 cyc/s\n[link-probe] ticks=1000000 in_fires=84443 out_fires=33789 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1200000 in_fires=101393 out_fires=40569 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1400000 in_fires=118278 out_fires=47328 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1500000 in_reset=14 done=0\n[link-probe] ticks=1600000 in_fires=135159 out_fires=54087 in_valid=0 in_ready=0 out_valid=1 out_ready=1\n[link-probe] ticks=1800000 in_fires=152109 out_fires=60866 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=1867615 wall=205.28s (9098 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=3 dram_w=24 dram_ar=736 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8002f1c0 last_ar=0x800037c0 max_ar=0x8002f400 r_fires=5888 b_fires=3 cvfpu_accepts=0 uart_chars=0\n",
     "load_path": "backdoor"
+  },
+  "optimization_journey": {
+    "hypothesis": "Independent pointwise FMA and divide lanes reduce serialized Rocket latency while retaining original scalar arithmetic. LLVM unroll2 metadata is a distinct previously negative experiment.",
+    "owner": "Merlin generic tensor scheduling; OOT execution and ISA audit.",
+    "emitted_change": "SCF output packets of 2 or 4 lanes. Scalar operations cloned breadth first, with independent bounded tails. Original FMA/clamp/RNE retained; upstream emits a defensive result copy.",
+    "measured_before_after": "Warm full helper 328,373 GSIM cycles to 255,845 for 2 lanes and 268,247 for 4 lanes. All 2,049 outputs plus 128 guard bytes; excludes model-wide effects.",
+    "gate": "17 generic focused tests pass. Original 256,000 Tiny words/native Torch gate, capsule native/actual Spike/no-FSM/actual GSIM complete. Qualified runtime whole target gate pending.",
+    "decision": "Promote default-off reusable choice. Select 2 lanes for whole target and stock FireSim qualification. Four lanes are slower than two, with no whole-model promotion.",
+    "token_checkpoint": {
+      "timestamp_utc": "2026-10-05T20:17:57.444266+00:00",
+      "token_usage_available": false,
+      "child_get_goal": {
+        "goal": null,
+        "remainingTokens": null,
+        "completionBudgetReport": null
+      },
+      "root_reported_shared_goal_tokens": 19047829,
+      "root_snapshot_source": "Parent task update; shared campaign counter. Snapshot time unavailable to child.",
+      "exclusive_per_optimization_attribution": "Unknown. API does not expose per-agent/input/cache/output allocation."
+    }
   }
 }
