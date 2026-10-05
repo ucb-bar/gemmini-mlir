@@ -97,7 +97,9 @@ class Emitter:
         elif ins.kind == "config_ld":
             f, rs1, rs2 = isa.config_ld(stride=a["stride"], scale=a.get("scale", 1.0),
                                         shrunk=a.get("shrunk", False),
-                                        load_id=a.get("load_id", 0))
+                                        load_id=a.get("load_id", 0),
+                                        block_stride=a.get("block_stride", isa.DIM),
+                                        pixel_repeats=a.get("pixel_repeats", 1))
         elif ins.kind == "config_st":
             f, rs1, rs2 = isa.config_st(stride=a["stride"], acc_act=a["acc_act"],
                                         acc_scale=a["acc_scale"],

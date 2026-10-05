@@ -122,6 +122,10 @@ class ConfigLdOp(_GemminiOp):
     def verify_(self) -> None:
         if self.a("load_id") not in (0, 1, 2):
             raise VerifyException("gemmini.config_ld: `load_id` must be 0, 1 or 2")
+        if not 1 <= int(self.a("block_stride", DIM)) <= 65535:
+            raise VerifyException("gemmini.config_ld: block_stride must fit positive16bits")
+        if not 1 <= int(self.a("pixel_repeats", 1)) <= 255:
+            raise VerifyException("gemmini.config_ld: pixel_repeats must fit positive8bits")
         if int(self.a("stride", 0)) < 0:
             raise VerifyException("gemmini.config_ld: `stride` must be non-negative")
 

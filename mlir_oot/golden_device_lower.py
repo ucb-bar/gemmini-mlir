@@ -26,7 +26,8 @@ def _encoded(op: G._GemminiOp) -> tuple[int, int | None, int] | None:
         return isa.config_ex(dataflow=a("dataflow"))
     if isinstance(op, G.ConfigLdOp):
         return isa.config_ld(stride=a("stride"), scale=a("scale", 1.0),
-                             load_id=a("load_id"))
+                             load_id=a("load_id"), block_stride=a("block_stride",isa.DIM),
+                             pixel_repeats=a("pixel_repeats",1), shrunk=bool(a("shrunk",0)))
     if isinstance(op, G.ConfigStOp):
         return isa.config_st(stride=a("stride"), acc_act=a("acc_act"),
                              acc_scale=a("acc_scale"),
