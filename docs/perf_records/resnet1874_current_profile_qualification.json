@@ -1,0 +1,125 @@
+{
+  "schema": "resnet_current_best_conserved_profile_qualification_v1",
+  "timestamp_utc": "2026-10-05T21:54:29.503506+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Measure currentbest host/device intervals without changing its model/runtime/kernel objects or policies",
+  "scope": "Final-link diagnostic of exact1874 control; timer/code placement cost retained, not uninstrumented performance claim",
+  "control": {
+    "job": 1874,
+    "cycles": 39201279,
+    "hardware_receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/resnet_transfer_residual_composed_firesim.json",
+      "sha256": "85cd80fb772853746af1b1acb68e0f9568899b5f08ed07793b86268b84528b2d"
+    },
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/build_direct/model.elf",
+      "sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2"
+    }
+  },
+  "profile_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/model.elf",
+    "sha256": "3e3012808ae66b966147243f518d21a8536a49498fbff2ca6cd1d0fcf9f1bbdb"
+  },
+  "profile_build": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/profile_build.json",
+    "sha256": "274d61678e51b9f1dd68e0ea58df88bc73650febb39c4eabe6f0ed6d650cb476"
+  },
+  "spike_validation": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/spike_validation.json",
+    "sha256": "90a11453b4b73c19b07e13b75e9b4c2c8fb18b1d875a5bd7c6e588e5511aa0aa"
+  },
+  "spike_log": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/spike.log",
+    "sha256": "fd5f5f8d17b0839d132973382fb23cfc2ec01a995d73d3ea3b3dd0c33e5749c6"
+  },
+  "native": {
+    "scope": "Fresh native execution of unchanged control library and same original/hoisted input tensors; profiling changes target final link only",
+    "library": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_transfer_residual_composed/host/model.so",
+      "sha256": "bd9b15ab2f0a5f3ae1af398566a01e519e022d3c85752a8a56e45720824cf5f4"
+    },
+    "original_golden": {
+      "path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+    },
+    "output": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/native_output.npy",
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+    },
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "all152_reused_object_pins_verified": true,
+  "reused_object_count": 152,
+  "partial_link_components": [
+    {
+      "component": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle/requant.o",
+      "sha256": "848862d4201089d4ee79755547fc819d51df81f968d03cd069d87433f06c7c56",
+      "leaves": 104,
+      "reproduced_byte_identical": true
+    },
+    {
+      "component": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/residual.o",
+      "sha256": "32623b399093cae7f24d132abf40506035990af88ea70bbd27bb22bf4c93b3f3",
+      "leaves": 32,
+      "reproduced_byte_identical": true
+    },
+    {
+      "component": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/stem_pool_bundle/stem_pool.o",
+      "sha256": "6faf6d22505966b1a476622b93f2badd829cbfafa6617c8928db0212f0d123f5",
+      "leaves": 2,
+      "reproduced_byte_identical": true
+    }
+  ],
+  "wrapper_source": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/device_profile.c",
+    "sha256": "c51b9cc54a6164314abc6f50153c6393837afd4f11a2da9ad853b9c8e85910c8"
+  },
+  "wrapper_byte_identical1850": {
+    "path": "/scratch/agustin/tmp/gemmini-gsim-provider-20261005/out/resnet1849_current_leaf_profile/device_profile.c",
+    "sha256": "c51b9cc54a6164314abc6f50153c6393837afd4f11a2da9ad853b9c8e85910c8"
+  },
+  "expected_calls": 70,
+  "all70_source_order_matches": true,
+  "all70_symbol_counts_complete": true,
+  "source_alignment_sha256": "bc24c0043f13b2f4813b8ee05860a6cbbc640dca6072b2f3d699818494ae75d9",
+  "native_and_strict_spike_original1000_bits_exact": true,
+  "final_nofsm": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/model.nofsm_audit.json",
+    "sha256": "812ceb31d84242332396b3b670fc4223fe70bb88c1ff81a401d01086c6eb5e0f"
+  },
+  "marker": "9c4ff5258d52",
+  "spike": {
+    "isa": "rv64gc",
+    "extension": "gemmini",
+    "argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x80000000",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resnet1874_conserved_leaf_profile/model.elf"
+    ],
+    "retired_instruction_counter_not_hardware_cycles": 10226266,
+    "unprofiled_retired_instruction_counter": 10222806,
+    "instrumented_minus_unprofiled_retired_instructions": 3460,
+    "conserved_counters": {
+      "forward_counter": 10226219,
+      "device_counter": 6625133,
+      "host_gap_counter": 3601086,
+      "tail_counter": 52457
+    }
+  },
+  "before_after_hardware_cycles": null,
+  "hardware_status": "qualified released to stockqueue owner; no current profile hardware timings yet",
+  "outcome": "Admit diagnostic only; everyoriginaloutput exact and actualsource/objects preserved",
+  "negative_outcomes": [],
+  "token_usage_available": false,
+  "token_note": "Root retains owned-thread accounting centrally; no exclusive attribution claimed"
+}
