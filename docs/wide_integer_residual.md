@@ -11,3 +11,7 @@ The opt-in backend is generalized over proven source scalar parameters; no regio
 ## Stock FireSim confirmation
 
 Job1773 completed at **170,994 kernel cycles**, 7.04% above the159,744 compute floor. All65,536 original-source pairs and output guards passed, with actual staged ELF and exact stock bitstream identities verified. This confirms the primitive schedule on the requested hardware configuration. The fully source-exact whole candidate (ELF02d029dc…) is queued separately as1774; no full-model hardware timing is inferred from this kernel result.
+
+## Follow-up infrastructure opportunity
+
+Primitive FireSim runs spend much more wall time in queue setup than in simulation (the full-pair1773 simulation itself reported3.8seconds). An explicit multi-case capsule ELF could amortize setup across coefficient/schedule variants. Each named case would need its own full-output/guard check and cycle marker, with the capsule manifest bound to the single final ELF and stock bitstream identities. The current collector deliberately accepts one metric; adding a separate capsule schema is future work, not an implicit relaxation of result attribution.
