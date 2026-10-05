@@ -1,0 +1,205 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Full 22-layer pretrained TinyLlama, 8 tokens; exact eight independent scalar accumulators with upstream partial K-unroll count2. Original model/reference and existing fused activation policy unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/model.elf",
+  "elf_sha256": "95739f4518002cf7c47477350c18ada0b929c02c4d7099ad842890dc0615508e",
+  "reference_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/spike.log",
+  "spike_console_sha256": "3e5a321a8583fb7ed89ac4d56c68b74879cf58177b7c21502d4d938c1e57d3a0",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "metrics": {
+    "cycles": "163999471",
+    "build_hash": "4d661019e7ff",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "prior_spike_instructions": 166184456,
+  "instruction_reduction_fraction": 0.013147950491831817,
+  "initial_spike_instructions": 209494756,
+  "instruction_reduction_fraction_vs1806": 0.2171667008218573,
+  "hardware_status": "Not measured for this ELF. Latest verified control is four-output/K2 job1828 at612282210 FireSim forward cycles.",
+  "hardware_control": {
+    "job_id": 1828,
+    "forward_cycles": 612282210,
+    "scope": "four exact outputs with partial K-unroll2"
+  },
+  "native_validation": {
+    "scope": "tiny_eight_outputs_unroll2: native host with scalar integer device stand-ins",
+    "llvm_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/host_llvm/model.native.ll",
+    "llvm_sha256": "5ff45995f67652191536619962e38b4a9af4369e0deadda7fb5d9385b0e040e6",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "original_reference_gate": {
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+    "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "unchanged": true,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true
+  },
+  "prior_compiled_output_bitexact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "95739f4518002cf7c47477350c18ada0b929c02c4d7099ad842890dc0615508e",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "4d661019e7ff",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/lower/model.ll",
+      "source_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+      "selected_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/host_llvm/model.ll",
+      "selected_sha256": "46c48410c15c26b86bebbc43cc2903b9e0d4ff147392a6c74207a9e58080615f"
+    },
+    "supplemental_objects_sha256": "283e7968050a1c1666ea075623355d66025516cdc945799a919a6d04097da415",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "compiler_contract": {
+    "feature": "scalar_contraction_accumulator_8_outputs",
+    "features": [
+      "scalar_contraction_accumulator_8_outputs",
+      "unroll_scalar_contraction_reduction_by_2"
+    ],
+    "default_off": true,
+    "target_independent": true,
+    "coverage": {
+      "coverage": "OK scalar_contraction_accumulator_8_outputs 45",
+      "reduction_unroll_coverage": "OK unroll_scalar_contraction_reduction_by_2 45",
+      "full_llvm_replay_bitexact_after_normal_abi_repair": true,
+      "abi_repair": {
+        "schema": "wide_ciface_inline_v1",
+        "max_flattened_arguments": 256,
+        "inlined": [
+          {
+            "implementation": "forward",
+            "wrapper": "_mlir_ciface_forward",
+            "flattened_arguments": 3973
+          }
+        ],
+        "count": 1
+      },
+      "llvm_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+      "source_runner_sha256": "43debad741af72b05d7a7529dc8cac3754e806ae8580facdbb0b10fd7ec135fe"
+    },
+    "supported": "Original strict static f32 tensor contraction body/maps/types, final parallel extent divisible by eight. Partial tiles remain unchanged.",
+    "f32_arithmetic": "Eight scalar scf.for iter_args. Each retains original increasing-K order and separate arith.mulf then arith.addf, original operand order and no fastmath permission. LLVM partial K-unroll count2 changes scheduling only.",
+    "alias_contract": "Original input SSA tensors remain immutable; destination tensor loop-carried, each of eight output inserts after its final K. Upstream bufferization owns physical aliases and required copies; no physical noalias assumption.",
+    "selection_metadata": "Output counts1/2/4/8 share one alternative_group. Unroll counts2/4 share another; each requires_exactly_one_of all output schedules after implication closure. Runtime guards remain."
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "host_clang_optimization": "O3",
+    "fuse_quantize_round_convert": true,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "fuse_activation_polynomial_fma": true,
+    "activation_policy_unchanged": true,
+    "normalization_expf_calls": 22,
+    "activation_fma_calls": 176,
+    "new_contraction_fma_permissions": false
+  },
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5,
+    "hoisted_weight_arrays": 155
+  },
+  "source_artifacts": {
+    "model_object_sha256": "5e5178431fa4c4dcd7c16c262b5b3d3b2cd6e8acaeeb71836315cdcb6a0b9818",
+    "source_llvm_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+    "target_llvm_sha256": "46c48410c15c26b86bebbc43cc2903b9e0d4ff147392a6c74207a9e58080615f",
+    "native_llvm_sha256": "5ff45995f67652191536619962e38b4a9af4369e0deadda7fb5d9385b0e040e6",
+    "builder_script_sha256": "ed6055f87b805f450e69255f28be06a541644f80f00b39490c1e47ed1c34b3c9"
+  },
+  "assembly_observations": {
+    "scope": "Actual active _mlir_ciface_forward first attention section, selected target model.o",
+    "pv_k8": "Partial K2 contains16 products and8 independent exact accumulator chains; zero product spills. Loop uses separate fmul.s and fadd.s.",
+    "model_text_bytes": 1018880,
+    "four_output_k2_text_bytes": 1016830,
+    "text_increase_fraction_vs_four_output_k2": 0.002016069549482191,
+    "artifact": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/eight_outputs_unroll2_first_attention.dis",
+    "artifact_sha256": "eaf871b40810491bd0cd1a54feb76c9aa638604543a36dc496d2161fd586f24b"
+  },
+  "verification": {
+    "focused_native_registry_proposer_tests": 166,
+    "skips": 0,
+    "structure": "pass",
+    "target_name_check": "pass",
+    "regex_check": "pass",
+    "docs": "pass"
+  },
+  "core_feature_commit": "9f3b77707",
+  "generic_selection_commit": "fe2956096",
+  "identity_fix_commit": "5f362809a",
+  "device_source_commit": "e604d52",
+  "device_objects_unchanged_from_previous_host_arms": true,
+  "infrastructure_findings": [
+    "Selection constraints now describe legal independent tuning axes to the automatic proposer. Empty metadata defaults leave existing features unchanged.",
+    "Hardware cycle timing remains authoritative over instruction and spill screens. No FireSim result claimed for this ELF."
+  ]
+}
