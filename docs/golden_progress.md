@@ -6,9 +6,9 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, five static resident convolutions, fresh output ownership, packed guarded mean, clamp/RNE and exact host quantization packets | 38,603,949 (1886) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned | [1886](perf_records/firesim1886_resnet_quant_packet_verified.json) |
+| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, residual prefetch and complete-input convolution stripes | 38,468,933 (1897) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned. Single run,0.350% below prior1886 best | [1897](perf_records/firesim1897_resnet_stripe_composition_verified.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, two-lane host pointwise packets, eight ordered contraction outputs/K2, cached-A B-prefetch and fresh writer ownership | 531,072,370 (1880) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1880](perf_records/tiny_pointwise_packet_firesim.json) |
-| Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Both older ABI-corrected and newer ordered-FMA outlined actualRV64GC models fail89/1,600 original elements(maxabs.115166), with identical target output bytes. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
+| Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | Qualified baseline admitted as stock1906; hardware cycles pending | Native and actual RV64GC target **all1,600 original words bitexact**, zero gate failures. Original atol=0.03125/rtol=0.02 unchanged. Normal API rebuild has an identical complete loaded image except its diagnostic marker | [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [1906 admission](perf_records/smol_first_exact_stock_baseline_admission.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -17,7 +17,20 @@ remaining performance targets or pretrained ResNet accuracy.
 
 [Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
 regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
-uses shared calibrated selection for explicitly supplied, source-bound contraction alternatives; it does not invoke shared whole-program search. Four compiler export/selection commands now expose seven AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This remains a full-source identity admission gate. The normal build now additionally accepts `--contraction-calibrations` to run the existing shared measured selector per exact source contraction and compile its winner into the real device catalog. Independent full-model native/strict target execution closes all1,241 original i32 outputs and actual final ELF/symbol bindings. Whole-graph search and whole-model costs remain unknown. [Normal build selection](perf_records/golden_calibrated_normal_model_qualification.json). [Binding](perf_records/golden_model_plan_binding_qualification.json).
+uses shared calibrated selection for explicitly supplied, source-bound contraction alternatives; it does not invoke shared whole-program search. Five compiler export/selection/build commands now expose eight AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This remains a full-source identity admission gate. The normal build now additionally accepts `--contraction-calibrations` to run the existing shared measured selector per exact source contraction and compile its winner into the real device catalog. Independent full-model native/strict target execution closes all1,241 original i32 outputs and actual final ELF/symbol bindings. Whole-graph search and whole-model costs remain unknown. [Normal build selection](perf_records/golden_calibrated_normal_model_qualification.json). [Binding](perf_records/golden_model_plan_binding_qualification.json).
+
+The first real Tiny source calibration now closes through that normal route: resident-A/B-prefetch
+measures111,885→76,456cycles(31.67%) on a common-address original-input GSIM pair. The complete
+normal model retains all155 calls, selecting one source contraction and preserving154 other bindings.
+All256,000 original compiled words, the Torch gate, strict RV64GC Spike and final zero-FSM audit pass.
+A generic Merlin fix preserves different source-bound implementations when their tensor shapes agree.
+This is one selected contraction, not a31.67% whole-model improvement. Expansion across equivalent
+resource-legal contractions is being qualified before hardware submission.
+[Measured schedule](perf_records/tiny_resident_a_prefetch_gsim.json),
+[normal full model](perf_records/tiny_resident_a_prefetch_whole_spike.json).
+
+[Infrastructure and optimization ownership](infra_vs_dialect.md) separates correctness/integration
+fixes, portable host performance and target scheduling, with matched measurements for each gain.
 
 Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
 with all1,000 reference logits passing its self-check and54 buffered layer timings.
@@ -89,10 +102,12 @@ full-reduction weight-resident convolution schedule for wider feature maps.
 The general stripe policy passes40 focused tests and independent/tail capsules.
 H56/C64 saves15.89% fencedGSIM; H28/C128 saves19.22%, full outputs/guards exact.
 All52 source numeric proofs are retained; only six device objects change versus1853.
-Original1,000 whole native+strictSpike words remain exact. Stock1878 now verifies39,754,283cycles,
+Original1,000 whole native+strictSpike words remain exact. Stock1878 verifies39,754,283cycles,
 725,265(1.792%) below1853 with actual staging closed. Target composition control1874 is39,201,279; the newer1886 host-packet arm is38,603,949.
-The independently qualified stripe+transfer+residual composition is queued1897 against1874;
-its host/runtime/startup/weight objects remain identical. No additive gain is inferred.
+The independently qualified stripe+transfer+residual composition now verifies38,468,933cycles
+in stock1897,1.868% below1874 and0.350% below1886(single-run evidence);
+its host/runtime/startup/weight objects remain identical1874. No additive gain is inferred.
+[Verified new whole-model best](perf_records/firesim1897_resnet_stripe_composition_verified.json).
 [Isolated hardware](perf_records/resnet_resident_stripe_policy_firesim.json).
 [Residency strategy](resident_stripe_conv.md).
 
@@ -106,8 +121,9 @@ a 6.989% matched reduction, with all64 original words exact and staged hardware 
 SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
 [complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
 
-Smol's full native gate is exact; **whole target accuracy remains unresolved**. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; both full actual targets fail89/1,600 with identical output bytes, and minimized target diagnosis is active. The newer source-order schedule retires134,730,816,466instructions versus327,506,537,392; neither is a hardware-cycle result. All first-layer Q/K/V/output/fc1/fc2 integer A/B/C boundaries match the same accepted native path, which does not certify separately carried floating scales. [Six-stage trace](perf_records/smol_target_six_stages.json). A separately labeledO0 correctness ELF also builds,
+Smol's full native and actual target gates are now exact with the explicit generic math policy.
+The first optimized RV64GC host compile timed out at900seconds on a large monolithic function.
+Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly. Before the math policy both full actual targets failed89/1,600 with identical output bytes; these failed receipts remain historical evidence. The newer source-order schedule retired134,730,816,466instructions versus327,506,537,392; neither is a hardware-cycle result. All first-layer Q/K/V/output/fc1/fc2 integer A/B/C boundaries match the same accepted native path, which did not certify separately carried floating scales. [Six-stage trace](perf_records/smol_target_six_stages.json). A separately labeledO0 correctness ELF also builds,
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work. A source-derived post-vision
 suffix now passes all1,600 original final bits on actual target execution with the old failing runtime
@@ -124,13 +140,19 @@ rejected before hardware. Tiny two-lane scalar pointwise packets save22.09% warm
 capsule; stock1880 now verifies531,072,370wholecycles,38,078,697(6.6904%) below1846, all256,000 original words/Torch gate exact and actual staging closed. [Hardware](perf_records/tiny_pointwise_packet_firesim.json). Other queued arms remain pending experiments.
 
 
-Current Smol diagnosis has closed the first four isolated vision blocks, post-layernorm and
+The Smol diagnosis closed the first four isolated vision blocks, post-layernorm and
 the language/action suffix against original captured states with the original failing runtime
 frozen. The fifth vision block (index4) passes natively and diverges on the target; the next
 isolated block passes. This localizes a reproducible failure without certifying the whole model.
-Replacing only expf with diagnostic native results restores all786,432 original fifth-block bits, with zero lookup misses. The generic optional `(float)exp((double)x)` policy also restores this entire block and full native all1,600 final bits. Actual full-model target validation is still running; lookup stays diagnostic-only. [Causality](perf_records/smol_block4_expf_causality.json).
+Replacing only expf with diagnostic native results restores all786,432 original fifth-block bits, with zero lookup misses. The generic optional `(float)exp((double)x)` policy restores this entire block and full native/actual-target all1,600 final bits. Lookup stays diagnostic-only. The normal build reproduces all executable/runtime/weights/input bytes and loaded segment addresses, sizes and permissions, differing only in the diagnostic marker; its gate is explicitly inherited by that complete equivalence, without claiming a new replay. Stock1906 is the single qualified hardware baseline, cycles pending. [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [causality](perf_records/smol_block4_expf_causality.json).
 [Localization](perf_records/smol_later_vision_block_localization.json),
 [corrected block2 and rejected diagnostic input](perf_records/smol_vision_block2_corrected_target.json).
+
+The complete original attention-head hardware pair rejects the gamma certificate candidate:
+stock1894 control2,618,580,085cycles versus1895 candidate3,077,601,494cycles,17.53% slower.
+Both preserve all65,536 original output bits and staged identities. Reduced device/readback work
+does not pay for CPU certificate work; this candidate remains disabled.
+[Matched hardware](perf_records/firesim1895_original_attention_head_gamma_verified.json).
 
 The generic early-saturation/eight-lane exact integer readout candidate preserves every
 original ResNet output in native and strict target execution. Only two CPU adapters change;
