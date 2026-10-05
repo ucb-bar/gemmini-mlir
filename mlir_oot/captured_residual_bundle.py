@@ -98,13 +98,15 @@ def binding_attributes(route, source_sha, receipt_sha):
     qparams={k:FloatAttr(v,F32) for k,v in route['proof']['source'].items() if k!='relu'}
     qparams['relu']=IntegerAttr(int(route['proof']['source']['relu']),i64)
     qparams.update({k:FloatAttr(v,F32) for k,v in route['proof']['primitive'].items()})
-    return {'gemmini.source_sha256':StringAttr(source_sha),
+    attrs={'gemmini.source_sha256':StringAttr(source_sha),
             'gemmini.capture_receipt_sha256':StringAttr(receipt_sha),
             'gemmini.residual_proof_sha256':StringAttr(proof_sha),
             'gemmini.qparams':DictionaryAttr(qparams),
             'gemmini.numeric_policy':DictionaryAttr({'kind':StringAttr(numeric['kind']),
                 'max_output_lsb':IntegerAttr(numeric['max_output_lsb'],i64),
                 'domain_pairs':IntegerAttr(65536,i64)})}
+    if 'physical_layout' in route:attrs['gemmini.residual_layout']=StringAttr(canonical(route['physical_layout']))
+    return attrs
 
 
 def rewrite(quantize, route, symbol, source_sha, receipt_sha):
@@ -113,11 +115,22 @@ def rewrite(quantize, route, symbol, source_sha, receipt_sha):
     if any(o.name=='func.func' and o.sym_name.data==symbol for o in module.body.block.ops):
         raise ValueError('residual symbol already exists')
     ops=[];inputs=[]
-    for value in route['inputs']:
+    physical=route.get('physical_layout');values=route['inputs']
+    if physical is not None:
+        from .residual_layout import shared_transpose
+        if shared_transpose(values,route['shape'])!=physical:raise ValueError('residual layout proof changed')
+        values=[value.owner.operands[0] for value in values]
+    for value in values:
         views,value=reshape(value,[route['m'],64]);ops+=views;inputs.append(value)
     outtype=TensorType(i8,[route['m'],64]);empty=tensor.EmptyOp([],outtype);ops.append(empty)
     call=func.CallOp(symbol,[*inputs,empty.tensor],[outtype]);ops.append(call)
-    views,result=reshape(call.results[0],route['shape']);ops+=views
+    views,result=reshape(call.results[0],physical['physical_shape'] if physical else route['shape']);ops+=views
+    if physical is not None:
+        from xdsl.dialects.linalg.ops import TransposeOp
+        from xdsl.dialects.builtin import DenseArrayBase
+        logical=TensorType(i8,route['shape']);init=tensor.EmptyOp([],logical)
+        transpose=TransposeOp(result,init.tensor,DenseArrayBase.from_list(i64,physical['permutation']),logical)
+        ops.extend([init,transpose]);result=transpose.results[0]
     if result.type != quantize.results[0].type:raise ValueError('residual output reshape mismatch')
     quantize.parent.insert_ops_before(ops,quantize)
     quantize.results[0].replace_all_uses_with(result)
@@ -217,7 +230,8 @@ def compile_adapter(source, output, llvm_bin):
     return dict(compiler_argv=command,compiler_sha256=sha(llvm_bin/'clang'),source_sha256=sha(source),object_sha256=sha(output))
 
 
-def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar"):
+def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar",shared_permutation=False):
+    if shared_permutation and implementation!="cpu_lut":raise ValueError("shared permutation requires exact CPU lookup implementation")
     if cpu_lut_schedule not in ("scalar","raw_u8_x4"):raise ValueError("unknown CPU lookup schedule")
     if cpu_lut_schedule!="scalar" and implementation!="cpu_lut":raise ValueError("CPU lookup schedule requires cpu_lut implementation")
     if implementation not in ("gemmini", "cpu_lut"):
@@ -237,6 +251,10 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
         try:route=inspect(op,max_output_lsb,implementation=implementation)
         except ValueError as error:
             refused.append(dict(region=region,reason=str(error)));continue
+        if shared_permutation:
+            from .residual_layout import shared_transpose
+            try:route['physical_layout']=shared_transpose(route['inputs'],route['shape'])
+            except ValueError as error:route['layout_refusal']=str(error)
         symbol=f'gemmini_residual_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         declarations.append(rewrite(op,route,symbol,source_sha,receipt_sha))
         if implementation == 'cpu_lut':
@@ -269,8 +287,8 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--shared-permutation',action='store_true');p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule,shared_permutation=a.shared_permutation)
     print(json.dumps(dict(routes=len(result['routes']),refused=len(result['refused']),numeric_policy=result['numeric_policy']),indent=2))
 
 if __name__=='__main__':main()

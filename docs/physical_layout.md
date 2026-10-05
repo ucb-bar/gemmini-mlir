@@ -73,3 +73,25 @@ After full weight hoisting, the prepared activation census is106copies /
 calls; the other copy is the input conversion. Moving a **shared proven
 permutation** across the flat elementwise residual ABI can address this seam.
 Receipt: `docs/perf_records/resnet_exact50_nested_hoist_layout.json`.
+
+## Shared residual permutation
+
+`--residual-shared-permutation` (bundle `shared_permutation=True`) is an
+additional opt-in for the exact CPU lookup implementation. Each operand must
+come from an explicit `linalg.transpose` with identical permutation and
+positive, static, unencoded i8 shapes. The proof checks both source-to-result
+shape maps and the logical residual shape. Different permutations, missing
+transposes, unknown axes and unsupported types retain the original layout;
+the route records the refusal reason.
+
+Because the proved lookup is uniform and elementwise, the common permutation
+commutes with it. Consume both physical operands, flatten to the unchanged
+`[M,64]` ABI, reshape its result to the physical shape, and apply the original
+permutation at the output. Subsequent matched residuals repeat this proof;
+the general layout pass cancels the intervening inverse transposes. The
+manifest and typed external declaration retain the explicit layout proof.
+
+On exact50, all 16 residuals are admitted. The live transpose census falls
+from 36 copies / 13,045,760 output bytes to 2 copies / 702,464 bytes. Remaining
+copies are the input float layout and the final i8 layout before mean reduction.
+The full native model matches all 1,000 fresh-capture golden bits exactly.
