@@ -64,9 +64,30 @@ fenced GSIM kernel cycles, while total harness cycles increase. The whole
 transfer-policy arm preserves1849 host/shim/weights bytes and all1,000 original
 output bits in native and actual Spike, changing24 dense kernel objects.
 Stock FireSim1853 verifies40,479,548 cycles,1,790,260 (4.235%) below1849.
-It is now the best ResNet arm; the independent residual arm1854 is queued.
+It is now the best ResNet arm. The independent residual arm1854 verifies
+40,981,079 cycles,3.049% below1849. Both strategies compose in a candidate
+with all1,000 original native and actual Spike words exact; stock1861 is queued.
+No additive whole-model gain is inferred.
 [Schedule](multirow_resident_a.md),
 [whole gate](perf_records/resnet_transfer_command_policy_spike.json).
+
+The additional reference-parity worker identified a missing complete-input,
+full-reduction weight-resident convolution schedule for wider feature maps.
+A general resource-checked stripe generator passes15 partition/bounds tests
+and three independent actual GSIM capsules. The paired H56/C64 capsule saves
+15.89% fenced kernel cycles with all200,704 original outputs and guards exact;
+whole-model source binding and FireSim qualification remain pending.
+[Residency strategy](resident_stripe_conv.md).
+
+Stock QK64 exact source replay measures1,137,275→910,407 cycles for one versus
+four independent outputs (1856/1857),19.95% lower, all1,024 original words exact.
+Generic Merlin selected BF16 widening includes allocation and conversion in
+each replay capsule. LHS-only widening lowers retired instructions13.02% for
+QK64 and8.42% for PV192; widening both operands atM1 is slower and rejected.
+Eight/sixteen independent outputs lower instructions further; native, strict
+Spike and final zeroFSM gates pass. These are replay capsules, not a5B full
+SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
+[complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
 at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
