@@ -18,9 +18,10 @@ There are no other bindings with this measured signature in the current
 ResNet catalog. Matmul5/8 have K256 but N64; those schedules are retained
 because the new full-K bank pattern has not been measured there.
 
-The composition uses the same guarded mean, exact readouts, residuals,
-pooled stem, virtual padding, classifier, and host transforms as the
-qualified mean control. Its actual linked device bytes enter normal build
+The composition retains the original blocked-channel mean from the fastest
+1812 control, together with its exact readouts, residuals, pooled stem,
+virtual padding, classifier and host transforms. The exact guarded-mean
+1819 arm regressed in hardware and is kept as a separate negative receipt. Its actual linked device bytes enter normal build
 identity. Full original native and Spike output validation and a final
 zero-FSM ELF audit are required before any hardware submission. The local
 GSIM improvement is not a whole-model or hardware performance claim.
