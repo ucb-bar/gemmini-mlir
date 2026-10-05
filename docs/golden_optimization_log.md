@@ -12,7 +12,7 @@ The reference's measured dynamic compute-command ledger is the section-level tar
 
 | ResNet section | Jack dynamic computes | Current xDSL golden status |
 | --- | ---: | --- |
-| Stem convolution and pool | 43,904 | Source-proved packed stem/pool fused and whole-model exact; current best1836 |
+| Stem convolution and pool | 43,904 | Source-proved packed stem/pool fused and whole-model exact; current best1853 |
 | 1×1 ReLU | 241,984 | Whole-model exact; three selected banked dense schedules measured |
 | 1×1 no ReLU | 216,832 | Whole-model exact; source-bound dense schedules measured |
 | 1×1 downsample | 97,024 | Source stride/layout binding proved; whole-model exact |
@@ -21,7 +21,7 @@ The reference's measured dynamic compute-command ledger is the section-level tar
 | Residual identity matmul | 22,208 | 16 source-bound exact residual adds in whole model; differing source scales can require multiple coefficient chunks |
 | Global average pool | 512 | Source-exact guarded packed CPU mean in current best; no device identity matmul |
 | FC | 8,064 | Source-bound wide-B/cached-A specialization in current best |
-| **Total** | **1,155,264** | 42,837,088cycles1836, all1,000 original outputs exact;22.387M remains unmet |
+| **Total** | **1,155,264** | 40,479,548cycles1853, all1,000 original outputs exact;22.387M remains unmet |
 
 ## Measured device changes
 

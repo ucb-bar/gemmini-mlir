@@ -43,7 +43,7 @@ operations after fusion, not one source operation. [Profile](perf_records/tiny_c
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1849 in the table above. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1853 in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 The1849 profile control has22,989,952 calculated padded mesh geometry cycles:
 8,893,440 pointwise,7,990,272 direct,5,193,216 residual,784,000 pooled stem
