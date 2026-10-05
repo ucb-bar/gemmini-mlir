@@ -1,0 +1,196 @@
+{
+  "schema": "source_bound_quant_packet_whole_qualification_v1",
+  "core_commit": "e823a6099",
+  "owner": "Merlin generic host tensor scheduling and explicitly selected CPU RNE legalization; OOT experiment only supplies unchanged device recipe",
+  "scope": "whole ResNet original1000 bitexact; hardware pending, no default changes",
+  "control_job": 1853,
+  "control_hardware_cycles": 40479548,
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "e25d67294047fc72c2046640311543fb4cde95f5759b913c6af441f0b4044dba",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10053314",
+      "METRIC build_hash 273e514ef18f",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/spike.log",
+    "spike_console_sha256": "b019625ec3ebe829ade5bfcccddc2eb773146c9899dbb878300c5daae85cca29",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "e25d67294047fc72c2046640311543fb4cde95f5759b913c6af441f0b4044dba",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3224,
+      "2": 19839,
+      "3": 1245,
+      "4": 14480,
+      "5": 116352,
+      "6": 130832,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "maps": [
+    {
+      "shape": [
+        1,
+        224,
+        224,
+        3
+      ],
+      "packet_axis": 2,
+      "lanes": 4,
+      "tail": 0,
+      "integer_bits": 8,
+      "bounds": [
+        -128,
+        127
+      ],
+      "helpers": {
+        "4": "bounded_rne_packet_142_4"
+      },
+      "numeric_contract": "original scalar body cloned; no reassociation",
+      "memory_contract": "immutable input tensors, carried output tensor; upstream bufferization owns alias copies"
+    }
+  ],
+  "packet_llvm": {
+    "schema": "bounded_rne_packet_llvm_v1",
+    "source_sha256": "476c11388b9a4549b66664f5bee64756e91d309accdd39576da4b60037007166",
+    "routes": [
+      {
+        "lanes": 4,
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "raw_inputs": [
+          "%13",
+          "%31",
+          "%49",
+          "%67"
+        ],
+        "selection": "pure straight-line return aggregate and complete typed RNE proofs"
+      }
+    ],
+    "rewritten_sha256": "1e586aa9cc1f54215007ca9e76897d64c219add1a04a9aa86503ea11d005d6e8"
+  },
+  "unchanged_objects": {
+    "crt.o": {
+      "same": true,
+      "control": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "candidate": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d"
+    },
+    "console.o": {
+      "same": true,
+      "control": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "candidate": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec"
+    },
+    "libc_min.o": {
+      "same": true,
+      "control": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+      "candidate": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+    },
+    "malloc.o": {
+      "same": true,
+      "control": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+      "candidate": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2"
+    },
+    "merlin_model.o": {
+      "same": true,
+      "control": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "candidate": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c"
+    },
+    "mlir_rt.o": {
+      "same": true,
+      "control": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "candidate": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51"
+    },
+    "model_call.o": {
+      "same": true,
+      "control": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+      "candidate": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb"
+    },
+    "weights_blob.o": {
+      "same": true,
+      "control": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+      "candidate": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee"
+    },
+    "device_catalog/kernel.o": {
+      "same": true,
+      "control": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3",
+      "candidate": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3"
+    },
+    "device_catalog/fused_mixed_kernel.o": {
+      "same": true,
+      "control": "44171a1e02a1a1de6bb4f2cf60c0724f758d9922df260865516dda79f70f7da0",
+      "candidate": "44171a1e02a1a1de6bb4f2cf60c0724f758d9922df260865516dda79f70f7da0"
+    },
+    "device_catalog/guarded_mean_mixed.o": {
+      "same": true,
+      "control": "eccec8087056d87d26e851ba676f8ff98184292a743ecec278f975c5cef2aa58",
+      "candidate": "eccec8087056d87d26e851ba676f8ff98184292a743ecec278f975c5cef2aa58"
+    },
+    "device_catalog/pool_fused_mixed.o": {
+      "same": true,
+      "control": "3270a4bf7b29ec8da68d37c93179117e9af039dfe73d82c413dc074c36b4834c",
+      "candidate": "3270a4bf7b29ec8da68d37c93179117e9af039dfe73d82c413dc074c36b4834c"
+    },
+    "device_catalog/residual_mixed.o": {
+      "same": true,
+      "control": "24640c6e72020d3d16a8e050770f29955928b849f98ae28d25b662260c116a84",
+      "candidate": "24640c6e72020d3d16a8e050770f29955928b849f98ae28d25b662260c116a84"
+    }
+  },
+  "core_tests": "72 passed: scalar numeric proof, tails/live destination native upstream bufferization and default deallocation, dead-use/unknown-effect distinction, LLVM refusal, architecture and no-regex gates",
+  "primitive_full_hardware_proof": "bounded_rne_packet_cpu_firesim.json; standalone full input/padded destination plus guards, all source words exact; warm3042623->1749755",
+  "control_spike_instructions": 10195770,
+  "candidate_spike_instructions": 10053314,
+  "spike_instruction_metric_is_not_hardware_cycles": true,
+  "host_vectorize": true,
+  "generalize_before_fuse": true,
+  "fuse_post": true,
+  "token_usage_available": false
+}
