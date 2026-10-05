@@ -59,6 +59,8 @@ def main() -> int:
     ap.add_argument("--bm", type=int, default=4)
     ap.add_argument("--bn", type=int, default=4)
     ap.add_argument("--tune", action="store_true")
+    ap.add_argument("--build-only", action="store_true",
+                    help="build and audit for a separate hardware numeric run")
     ap.add_argument("--embed-expected", action="store_true",
                     help="compute oracle on the host and link expected values into the probe")
     ap.add_argument("--wide-store", action="store_true")
@@ -66,6 +68,8 @@ def main() -> int:
     ap.add_argument("--cache-b", action="store_true")
     ap.add_argument("--cache-a", action="store_true")
     ap.add_argument("--pipeline-m", action="store_true")
+    ap.add_argument("--prefetch-m", action="store_true")
+    ap.add_argument("--banked-m", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
     ap.add_argument("--bias", action="store_true")
@@ -82,7 +86,7 @@ def main() -> int:
                   relu=args.relu, wide_store=args.wide_store,
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
                   cache_a=args.cache_a,
-                  pipeline_m=args.pipeline_m, wide_a=args.wide_a,
+                  pipeline_m=args.pipeline_m, prefetch_m=args.prefetch_m, banked_m=args.banked_m, wide_a=args.wide_a,
                   wide_b=args.wide_b)
     if args.tune:
         if (args.bm, args.bn) != (4, 4):
@@ -132,6 +136,13 @@ def main() -> int:
     if audit["status"] != "pass":
         raise RuntimeError("final linked ELF contains a forbidden Gemmini instruction")
 
+    if args.build_only:
+        receipt = {"status": "built_not_executed", "shape": asdict(shape),
+                   "elf_sha256": built.elf_sha256, "nofsm_audit": audit}
+        (workdir / "build_only.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        print(json.dumps(receipt, indent=2))
+        return 0
+
     run = run_on_gsim(built.elf, target="gemmini", max_cycles=args.max_cycles,
                       timeout_s=args.timeout_s, backdoor=True,
                       stdout_path=workdir / "gsim.stdout")
@@ -154,6 +165,8 @@ def main() -> int:
         "cache_b": args.cache_b,
         "cache_a": args.cache_a,
         "pipeline_m": args.pipeline_m,
+        "prefetch_m": args.prefetch_m,
+        "banked_m": args.banked_m,
         "wide_a": args.wide_a,
         "wide_b": args.wide_b,
         "status": "pass" if passed else "fail",

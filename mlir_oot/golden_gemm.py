@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import io
 import math
+from typing import Callable
 from dataclasses import dataclass
 
 from xdsl.dialects import llvm
@@ -45,6 +46,8 @@ class Shape:
     cache_b: bool = False
     cache_a: bool = False
     pipeline_m: bool = False
+    prefetch_m: bool = False
+    banked_m: bool = False
     wide_a: bool = False
     wide_b: bool = False
 
@@ -66,6 +69,12 @@ class Shape:
         if self.cache_a and (self.m > F.DIM or self.bm != 1 or
                              self.wide_a or self.pipeline_m or self.cache_b):
             raise ValueError("cached A needs one output-row tile and no competing A schedule")
+        if self.banked_m and not (self.pipeline_m and self.wide_a and self.cache_b):
+            raise ValueError("banked M needs alternating slots, wide A, and cached B")
+        if self.banked_m and self.bm * _ceil_div(self.k, F.DIM) * F.DIM > F.SPAD_BANK_ROWS:
+            raise ValueError("A block does not fit one stock scratchpad bank")
+        if self.prefetch_m and not (self.pipeline_m and self.wide_a and self.cache_b):
+            raise ValueError("M prefetch needs alternating slots, wide A, and cached B")
         slots = 2 if self.pipeline_m else 1
         a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
         a_rows = slots * self.bm * a_panel_tiles
@@ -146,7 +155,10 @@ class GoldenGemm:
         a_panel_tiles = kt if s.wide_a or s.cache_a else 1
         a_base = slot * s.bm * a_panel_tiles if s.pipeline_m else 0
         b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
-        acc_base = slot * s.bm * s.bn if s.pipeline_m else 0
+        if s.banked_m:
+            a_base = slot * (F.SPAD_BANK_ROWS // F.DIM)
+            b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
+        acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
         krow = self._tile(k0, 0)
         if not s.wide_a and not s.cache_a:
             for a, rows in enumerate(mr):
@@ -216,14 +228,14 @@ class GoldenGemm:
                     else:
                         compute(rows, False)
 
-    def _output_block(self, m0: SSAValue, n0: SSAValue,
+    def _prepare_output_block(self, m0: SSAValue, n0: SSAValue,
                       mr: tuple[int, ...], nr: tuple[int, ...],
                       slot: int = 0) -> None:
         s = self.shape
-        acc_base = slot * s.bm * s.bn if s.pipeline_m else 0
+        acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
         if s.wide_a:
             kt = _ceil_div(s.k, F.DIM)
-            a_base = slot * s.bm * kt if s.pipeline_m else 0
+            a_base = slot * (F.SPAD_BANK_ROWS // F.DIM if s.banked_m else s.bm * kt) if s.pipeline_m else 0
             for a, rows in enumerate(mr):
                 mrow = self._tile(m0, a)
                 ptr = self._ptr(self.a, mrow, s.k, self.fb.const(0))
@@ -239,6 +251,14 @@ class GoldenGemm:
                     self._rocc("mvin", {"local": isa.acc_addr((acc_base + a * s.bn + d) * F.DIM),
                                           "rows": rows, "cols": cols,
                                           "load_id": 2}, ptr)
+    def _output_block(self, m0: SSAValue, n0: SSAValue,
+                      mr: tuple[int, ...], nr: tuple[int, ...],
+                      slot: int = 0, *, prepared: bool = False,
+                      prefetch: Callable[[], None] | None = None) -> None:
+        s = self.shape
+        acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
+        if not prepared:
+            self._prepare_output_block(m0, n0, mr, nr, slot)
         if s.cache_b or s.wide_a:
             for ki in range(_ceil_div(s.k, F.DIM)):
                 self._k_tile(m0, n0, self.fb.const(ki), mr, nr,
@@ -246,6 +266,8 @@ class GoldenGemm:
                              self.bias is None and ki == 0,
                              ki if s.cache_b else None, slot,
                              ki if s.wide_a or s.cache_a else None)
+                if prefetch is not None and ki == max(0, _ceil_div(s.k, F.DIM) // 2 - 1):
+                    prefetch()
         else:
             first_kr = min(F.DIM, s.k)
             self._k_tile(m0, n0, self.fb.const(0), mr, nr, first_kr,
@@ -312,7 +334,7 @@ class GoldenGemm:
         if s.cache_b:
             nt = _ceil_div(s.n, F.DIM)
             a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a or s.cache_a else 1
-            b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
+            b_base = 2 * F.SPAD_BANK_ROWS // F.DIM if s.banked_m else (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
             for ki in range(_ceil_div(s.k, F.DIM)):
                 kr = min(F.DIM, s.k - ki * F.DIM)
                 for d in range(1 if s.wide_b else nt):
@@ -328,7 +350,36 @@ class GoldenGemm:
                 self._output_block(m0, n0, mr, nr, slot)
             self._for_groups(_groups(s.n, s.bn), n_body)
 
-        if s.pipeline_m:
+        if s.prefetch_m:
+            nr = tuple(min(F.DIM, s.n - d * F.DIM)
+                       for d in range(_ceil_div(s.n, F.DIM)))
+            n0 = self.fb.const(0)
+            for start, stop, step, widths in _groups(s.m, s.bm):
+                count = (stop - start) // step
+                self._prepare_output_block(self.fb.const(start), n0, widths, nr, 0)
+                def block(iv, slot, next_slot=None):
+                    callback = None
+                    if next_slot is not None:
+                        def callback():
+                            self._prepare_output_block(
+                                self.fb.add_i(iv, self.fb.const(step)), n0,
+                                widths, nr, next_slot)
+                    self._output_block(iv, n0, widths, nr, slot,
+                                       prepared=True, prefetch=callback)
+                pairs = count // 2
+                if pairs > 1:
+                    def pair(iv):
+                        block(iv, 0, 1)
+                        block(self.fb.add_i(iv, self.fb.const(step)), 1, 0)
+                    self.fb.for_loop(start, start + (pairs - 1) * 2 * step,
+                                     2 * step, pair)
+                if pairs:
+                    last = start + (pairs - 1) * 2 * step
+                    block(self.fb.const(last), 0, 1)
+                    block(self.fb.const(last + step), 1, 0 if count % 2 else None)
+                if count % 2:
+                    block(self.fb.const(start + pairs * 2 * step), 0)
+        elif s.pipeline_m:
             for start, stop, step, widths in _groups(s.m, s.bm):
                 count = (stop - start) // step
                 pairs = count // 2
@@ -355,7 +406,7 @@ class GoldenGemm:
             f"bias{int(s.bias)}:scale{s.scale}:relu{int(s.relu)}:"
             f"wide_store{int(s.wide_store)}:reuse_b{int(s.reuse_b)}:"
             f"cache_b{int(s.cache_b)}:pipeline_m{int(s.pipeline_m)}:"
-            f"cache_a{int(s.cache_a)}:"
+            f"cache_a{int(s.cache_a)}:prefetch_m{int(s.prefetch_m)}:banked_m{int(s.banked_m)}:"
             f"wide_a{int(s.wide_a)}:wide_b{int(s.wide_b)}")
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
@@ -412,6 +463,8 @@ def main() -> int:
                     help="preload one short output-row A tile across N blocks")
     ap.add_argument("--pipeline-m", action="store_true",
                     help="alternate A and accumulator slots across output blocks")
+    ap.add_argument("--prefetch-m", action="store_true")
+    ap.add_argument("--banked-m", action="store_true")
     ap.add_argument("--wide-a", action="store_true")
     ap.add_argument("--wide-b", action="store_true")
     ap.add_argument("--emit", choices=("target", "llvm"), required=True)
@@ -422,7 +475,7 @@ def main() -> int:
                   relu=args.relu, wide_store=args.wide_store,
                   reuse_b=args.reuse_b, cache_b=args.cache_b,
                   cache_a=args.cache_a,
-                  pipeline_m=args.pipeline_m, wide_a=args.wide_a,
+                  pipeline_m=args.pipeline_m, prefetch_m=args.prefetch_m, banked_m=args.banked_m, wide_a=args.wide_a,
                   wide_b=args.wide_b)
     if args.tune:
         if (args.bm, args.bn) != (4, 4):

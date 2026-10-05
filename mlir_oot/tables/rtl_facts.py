@@ -24,6 +24,13 @@ ACC_ROW_BYTES = DIM * 4
 SPAD_ROWS = SCRATCHPAD_BYTES // SPAD_ROW_BYTES      # 16384
 ACC_ROWS = ACCUMULATOR_BYTES // ACC_ROW_BYTES       # 1024
 
+# Stock FireSimGemminiRocketConfig local memory banking. Cross-checked with
+# gemmini_params.h BANK_NUM/BANK_ROWS and the matched reference configuration.
+SPAD_BANKS = 4
+SPAD_BANK_ROWS = SPAD_ROWS // SPAD_BANKS             # 4096
+ACC_BANKS = 2
+ACC_BANK_ROWS = ACC_ROWS // ACC_BANKS               # 512
+
 # --- datapath dtypes (facts.datapaths) ------------------------------------------------------
 OPERAND_DTYPE = "i8"
 ACCUMULATOR_DTYPE = "i32"
