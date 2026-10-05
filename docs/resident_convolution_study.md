@@ -50,3 +50,17 @@ instruction-footprint tradeoff for the whole-model hardware gate. A future
 schedule/compiler abstraction for loop-varying local addresses could compact
 the body without changing this scratch residency; it needs an explicit typed
 operand and correct encoding rather than an ignored scheduling attribute.
+
+## Explicit source-bound composition
+
+`captured_requant_bundle --resident-input-region REGION` is repeatable and
+empty by default. It requires an existing exact direct-convolution binding
+and a proved removable zero-padding shell. Each selected region retains its
+original source/weights hashes, complete scalar transition proof and numeric
+contract. Missing/non-direct/refused requested regions fail the bundle build.
+The generator then validates resident scratch/accumulator capacity.
+
+The measured-class composition selects matmul29/32/35/38/41 only. Each is
+H14/W14/Cin256/Cout256, stride1, i8/ReLU, with its own unchanged proved scale.
+It preserves the three already gated banked pointwise bindings. No other
+convolution shape is selected merely because it fits in scratch memory.
