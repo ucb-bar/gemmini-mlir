@@ -175,7 +175,10 @@ extern void gemmini_golden_conv(int8_t*,int8_t*,int32_t*);
  *r=*c;
 }}
 '''
-    return text.replace("gemmini_golden_conv",kernel_symbol)
+    text=text.replace("gemmini_golden_conv",kernel_symbol)
+    if s.output_dtype == "i8":
+        text=text.replace("int32_t*","int8_t*")
+    return text
 
 
 def serialize(module, declarations):

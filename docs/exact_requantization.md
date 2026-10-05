@@ -72,3 +72,32 @@ per-channel scales cannot be represented by one CONFIG_ST value. A compiler may
 split output-channel groups only when each group's scale is proven equal and
 must account for the added configuration/DMA costs. Current exact proofs do
 not grant permission to approximate the five refused layers or residual paths.
+
+## Source-bound whole-graph bundle
+
+`python -m mlir_oot.captured_requant_bundle CAPTURE --llvm-bin LLVM_BIN --output OUTPUT`
+verifies the capture source receipt, manifest, and safetensors identity before
+specializing immutable zero bias channels. This must run before normal model
+preparation/offload. `rewritten.mlir` contains 27 fused calls: 12 direct spatial
+convolutions and 15 dense GEMMs. It leaves 4 direct convolutions and 23 other
+GEMMs for the existing binders. Link all three device objects. `native_oracle.c`
+provides corresponding reference adapters for complete host numeric validation.
+
+Each fused call produces spatial-major i8 `[M,N]`; original reshape/transpose
+operations are replayed in i8 to preserve exact source output layout. Persistent
+NHWC propagation remains a separate graph transform. The bundle removes the
+accepted float dequantization, zero-bias addition, ReLU, and quantization chains;
+it does not remove residual branches or approximate the five failed scale proofs.
+Changing the captured weights requires rebuilding, even though input images may
+vary. Nonzero captured biases are conservatively refused by this bundle until
+its ABI binds a synthesized preload table explicitly.
+
+Current source-bound build: `out/current_requant_bundle`, object SHA256
+`4a0bfb4d64f2e13ed3d8919aef42dea8eae4b77528a765e284594ad66173fedc`.
+All 27 routes compile, the combined object has no undefined symbols and passes
+no-FSM audit; rewritten IR verifies before and after serialization. Native
+selected dense and direct kernels match the original ordered f32 epilogue for
+200,704 values each, including nonzero direct-convolution halo values. This
+checks scalar kernels and source semantics; whole graph device execution must
+still be verified by the integration build. Existing primitive i8 GEMM GSIM and
+direct-convolution FireSim evidence cover their underlying instruction schedules.

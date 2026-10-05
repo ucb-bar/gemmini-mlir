@@ -11,46 +11,12 @@ from mlir_oot.golden_requant import f32,synthesize_bias
 from merlin.runtime.captured_constants import verify_capture_constant
 
 
-def scalar(value):
-    op=value.owner
-    if not isinstance(op,Operation) or op.name!='tensor.splat':raise ValueError('not scalar splat')
-    c=op.operands[0].owner
-    if not isinstance(c,Operation) or c.name!='arith.constant':raise ValueError('not constant scalar')
-    return c.properties.get('value',c.attributes.get('value')).value.data
+from mlir_oot.captured_requant import inspect_chain
 
 
 def chain(op):
-    dims=match_integer_gemm(op);v=op.results[0];scales=[];bias=None;relu=False
-    while True:
-        uses=list(v.uses)
-        if len(uses)!=1:raise ValueError('fanout before quantization')
-        u=uses[0].operation;name=u.name
-        if name=='builtin.unregistered':name=u.attributes['op_name__'].data
-        if name=='quant_ext.quantize_per_tensor':
-            if bias is None or len(scales)!=2:raise ValueError('expected two dequant scales and one bias')
-            if scalar(u.operands[2])!=0:raise ValueError('nonzero output zero point')
-            if u.properties['quant_min'].value.data!=-128 or u.properties['quant_max'].value.data!=127:raise ValueError('non-int8 quant limits')
-            return dims,scales,bias,1.0/f32(scalar(u.operands[1])),relu
-        if name in ('tensor.collapse_shape','tensor.expand_shape','linalg.transpose'):
-            v=u.results[0];continue
-        if name!='linalg.generic':raise ValueError('boundary '+name)
-        ops=[x for x in u.regions[0].block.ops if x.name!='arith.constant'];names=[x.name for x in ops]
-        if names==['arith.sitofp','linalg.yield'] and not scales and bias is None:pass
-        elif names==['arith.mulf','linalg.yield'] and bias is None:
-            other=next(x for x in u.operands[:-1] if x is not v);scales.append(f32(scalar(other)))
-        elif names==['arith.addf','linalg.yield'] and bias is None:
-            other=next(x for x in u.operands[:-1] if x is not v)
-            while isinstance(other.owner,Operation) and other.owner.name in ('tensor.collapse_shape','tensor.expand_shape'):
-                other=other.owner.operands[0]
-            if not isinstance(other,BlockArgument) or tuple(other.type.get_shape())!=(dims.n,) or str(other.type.get_element_type())!='f32':raise ValueError('not captured channel bias')
-            bias=other
-        elif names==['arith.maximumf','linalg.yield'] and bias is not None:
-            maximum=ops[0];other=next(x for x in maximum.operands if not isinstance(x,BlockArgument))
-            if other.owner.name!='arith.constant' or other.owner.properties['value'].value.data!=0:raise ValueError('nonzero activation clamp')
-            relu=True
-        elif 'arith.addf' in names and bias is not None:raise ValueError('residual addition before quantization')
-        else:raise ValueError('non-unary epilogue '+','.join(names))
-        v=u.results[0]
+    c=inspect_chain(op)
+    return c['dimensions'],c['scales'],c['bias'],c['reciprocal'],c['relu']
 
 
 def main():
