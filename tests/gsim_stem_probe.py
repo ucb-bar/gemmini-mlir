@@ -1,0 +1,81 @@
+"""Numerical direct-convolution probe; no host im2col, linked ELF audit."""
+import argparse
+import numpy as np
+from dataclasses import asdict
+import json
+from pathlib import Path
+import re
+import struct
+from mlir_oot.golden_stem import StemShape, GoldenStem
+from mlir_oot.golden_device_compile import compile_module
+from mlir_oot.no_fsm_audit import audit_elf
+from merlin.perf.layer_bench import build_program, run_on_gsim
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--workdir', type=Path, required=True)
+    ap.add_argument('--llvm-bin', type=Path, required=True)
+    for key, value in [('h',5),('w',35),('cout',19)]:
+        ap.add_argument('--'+key,type=int,default=value)
+    ap.add_argument('--output-dtype',choices=['i8','i32'],default='i32')
+    ap.add_argument('--scale',type=float,default=1.0)
+    ap.add_argument('--relu',action='store_true')
+    ap.add_argument('--build-only',action='store_true')
+    ap.add_argument('--max-cycles',type=int,default=3000000)
+    ap.add_argument('--timeout-s',type=int,default=600)
+    a = ap.parse_args()
+    s = StemShape(a.h,a.w,a.cout,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu)
+    out = a.workdir.resolve()
+    out.mkdir(parents=True,exist_ok=False)
+    receipt = compile_module(GoldenStem(s).build(),a.llvm_bin,out)
+    av=(np.arange((s.h+6)*(s.w+6)*3,dtype=np.int32)%11-5).reshape(s.h+6,s.w+6,3)
+    bv=(np.arange(147*s.cout,dtype=np.int32)%13-6).reshape(7,7,3,s.cout)
+    expected=np.zeros((s.oh,s.ow,s.cout),np.int32)
+    for ky in range(7):
+        for kx in range(7):
+            expected+=av[ky:ky+2*s.oh:2,kx:kx+2*s.ow:2]@bv[ky,kx]
+    if s.output_dtype=='i8':
+        expected=np.clip(np.rint(expected.astype(np.float32)*np.float32(s.scale)),0 if s.relu else -128,127).astype(np.int8)
+    values=[str(int(x)) for x in expected.reshape(-1)]
+    source = out/'probe.c'
+    ctype = 'int32_t' if s.output_dtype == 'i32' else 'int8_t'
+    source.write_text('''#include <stdint.h>
+#include <stdio.h>
+''' + f'''extern void gemmini_golden_stem(int8_t*,int8_t*,{ctype}*);
+static int8_t a[{(s.h+6)*(s.w+6)*3}] __attribute__((aligned(64)));
+static int8_t b[{49*3*s.cout}] __attribute__((aligned(64)));
+static struct {{{ctype} c[{len(values)}]; uint8_t guard[2048];}} box __attribute__((aligned(64)));
+static const int32_t expected[] = {{{','.join(values)}}};
+''' + '''static uint64_t cycles(void) {uint64_t v; __asm__ volatile("rdcycle %0":"=r"(v)::"memory"); return v;}
+int main(void) {
+ for (int i=0;i<sizeof(a);i++) a[i]=i%11-5;
+ for (int i=0;i<sizeof(b);i++) b[i]=i%13-6;
+ for (int i=0;i<2048;i++) box.guard[i]=0x5a;
+ uint64_t t=cycles(); gemmini_golden_stem(a,b,box.c); t=cycles()-t;
+ printf("GOLDEN_STEM_CYCLES %d\\n",(int)t);
+ for(int i=0;i<sizeof(expected)/sizeof(expected[0]);i++) if(box.c[i]!=expected[i]) {
+ printf("GOLDEN_STEM FAIL i=%d got=%d expected=%d\\n",i,box.c[i],expected[i]); return 1;}
+ for(int i=0;i<2048;i++) if(box.guard[i]!=0x5a) {printf("GUARD_FAIL\\n"); return 2;}
+ printf("GOLDEN_STEM PASS\\n"); return 0;
+}
+''')
+    built = build_program([source,out/'kernel.o'],out,target='gemmini',extra_cflags=['-march=rv64gc'],max_loaded_bytes=None)
+    audit = audit_elf(built.elf.read_bytes())
+    (out/'nofsm_audit.json').write_text(json.dumps(audit,indent=2)+'\n')
+    if audit['status'] != 'pass':
+        raise RuntimeError('forbidden instruction in linked ELF')
+    if a.build_only:
+        print(built.elf)
+        return 0
+    run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
+    match = re.search(r'GOLDEN_STEM_CYCLES (\d+)',run.stdout_tail)
+    passed = run.completed and run.returncode == 0 and 'GOLDEN_STEM PASS' in run.stdout_tail
+    result = dict(shape=asdict(s),status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
+                  elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
+    (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))
+    return 0 if passed else 1
+
+if __name__ == '__main__':
+    raise SystemExit(main())
