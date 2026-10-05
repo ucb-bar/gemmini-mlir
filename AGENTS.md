@@ -12,6 +12,18 @@ contract: generic algorithm and semantic checks in Merlin; hardware facts and in
 implementation here. Promote generic prototypes into Merlin and delegate from OOT; do not
 maintain duplicate shared implementations here or add target-specific branches to core.
 
+## General compiler behavior
+
+The OOT MLIR dialect is a **compiler backend, not a workload-specific kernel generator**.
+Production transforms and lowering derive choices from operation semantics, shapes,
+layouts, numeric contracts and declared hardware capabilities. Do not select behavior by
+model name, captured provenance ID, golden output or benchmark constants. Constant/shape
+specialization must derive from the current input IR with legality and resource checks.
+Source-bound model selections belong in experiment drivers. Promote winning strategies
+into general passes and cost models; qualify independent shapes, spatial/channel tails,
+numeric policies and fallback/refusal cases. Performance targets motivate optimization;
+they do not justify replacing model computation or baking in the benchmark.
+
 Preserve explicit numeric policy selection, immutable original model accuracy gates, exact
 source/catalog bindings, and final-ELF instruction audits when moving an implementation.
 Keep measured optimization notes and negative evidence; simulator instruction counts,
