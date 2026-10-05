@@ -1,0 +1,889 @@
+{
+  "schema": "exact_residual_banked_m_prefetch_qualification_v1",
+  "status": "whole_native_spike_pass_hardware_pending",
+  "source_commit": "3b156689619718cd022efecae0398e29d8a2bead",
+  "core_commit": "31ad8e728d219d7b1f30bf4d5b6ceb0162ec539c",
+  "source_files": {
+    "mlir_oot/golden_wide_resadd.py": "4dbcc4281f156adee224d12c6b63815b679d9fbffd744dd2ae58f8e2368e4b13",
+    "mlir_oot/captured_residual_bundle.py": "c82e41dca38c096352d023c9f06b4728d567d8976f5943a6f567a94e6c1d4abf",
+    "tests/test_wide_residual_prefetch.py": "a81e09b58e05fa25554c0cc9fc494b36a59ec1cb64a5d93a09e30b2b5d1bec63",
+    "tests/test_captured_residual_bundle.py": "407e9bd007e1a961693ae4d6ca5bd1ec8f9e18eaa1c40e76f1af945dcb993297",
+    "tests/gsim_wide_residual_prefetch_probe.py": "0da719428df8975b33be88cf0262083b8765a1ac0319314daae17d8215397e29"
+  },
+  "scope": "Explicit default-off target schedule; exact integer chunk arithmetic/source order unchanged. GSIM kernel cycles and Spike instructions do not establish whole FireSim performance. Independent stock hardware arm compares1849. No model/provenance strategy selector; source IDs identify bindings only.",
+  "schedule": {
+    "spad_operand_slot_banks": [
+      0,
+      2
+    ],
+    "resident_coefficient_bank": 1,
+    "operand_slot_rows": 128,
+    "weight_rows": 48,
+    "accumulator_banks": [
+      0,
+      1
+    ],
+    "footprints": "Derived from rtl_facts dimension/bank capacity; repeated independent panels each have exact same preload/compute order as serial, no full32 execute feedback. Single-panel input retains serial emission. Paired CPU CFG loop drains static odd/even panel tails without extra input reads.",
+    "numeric_contract": "p,q positive1..32767; signed-i8 inputs, overflow-proved signed-i32 accumulation; source-proved one binary32 scaled/clipped/RNE i8 store; arbitrary cross-row physical pointer aliasing not granted; same input tensor-value/fully-written output ABI as serial."
+  },
+  "capsules": [
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 65536,
+      "full_signed_i8_pairs": true,
+      "m": 1024,
+      "p": 2609,
+      "q": 2180,
+      "scale": 0.00037060913746245205,
+      "relu": true,
+      "prefetch_m": false,
+      "kernel_cycles": 174255,
+      "source": {
+        "lhs_scale": 0.011258588172495365,
+        "rhs_scale": 0.00940733402967453,
+        "output_scale": 0.011643771082162857,
+        "relu": true
+      },
+      "source_receipt_sha256": "03740973ce4b7a1cb2acfdc91c7fac190894266f8cdd0451c9e905a274f74328",
+      "source_pairs_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf",
+      "input_sha256": {
+        "a": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "b": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723"
+      },
+      "expected_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "08cb76cece7897a5344c711f77b0a526f7fcb30e2d08746fa85f2a6c995c9fda",
+        "llvm_mlir_sha256": "ff50763d1790fb19fa46fd421abe69aac431ba9b1c8ef60383557903c0911c07",
+        "llvm_ir_sha256": "1adf14559e4a43f97e056997f1254fe8956b5722abb9aa2c75f3bd092d44e62b",
+        "object_sha256": "f198d7e11add145e7359a6bd438abf3567d8e98d93250c015faa1558c54de2e9",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/layer.elf",
+      "elf_sha256": "8c7ced27e05d4561996ee453a81b17151bac1739dc69bf4503b2ac51bea6e812",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 174255\nRESIDUAL_PREFETCH PASS all65536 guards\n",
+      "stderr": "SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002780\n[gsim-ar] #7 addr=0x800027c0\n[gsim-ar] #8 addr=0x80064000\n[gsim-ar] #9 addr=0x80002700\n[gsim-ar] #10 addr=0x80002740\n[gsim-ar] #11 addr=0x80002800\n[gsim-ar] #12 addr=0x80044040\n[gsim-ar] #13 addr=0x80044080\n[gsim-ar] #14 addr=0x80002640\n[gsim-ar] #15 addr=0x80002940\n[gsim-ar] #16 addr=0x80063f80\n[gsim-ar] #17 addr=0x80063f40\n[gsim-ar] #18 addr=0x80002980\n[gsim-ar] #19 addr=0x80002a80\n[gsim-ar] #20 addr=0x80033800\n[gsim-ar] #21 addr=0x80033840\n[gsim-ar] #22 addr=0x80033880\n[gsim-ar] #23 addr=0x800338c0\n[gsim-ar] #24 addr=0x80033900\n[gsim-ar] #25 addr=0x80033940\n[gsim-ar] #26 addr=0x80033980\n[gsim-ar] #27 addr=0x800339c0\n[gsim-ar] #28 addr=0x80033a00\n[gsim-ar] #29 addr=0x80033a40\n[gsim-ar] #30 addr=0x80033a80\n[gsim-ar] #31 addr=0x80033ac0\n[gsim-ar] #32 addr=0x80033b00\n[gsim-ar] #33 addr=0x80033b40\n[gsim-ar] #34 addr=0x80033b80\n[gsim-ar] #35 addr=0x80033bc0\n[gsim-ar] #36 addr=0x80033c00\n[gsim-ar] #37 addr=0x80033c40\n[gsim-ar] #38 addr=0x80033c80\n[gsim-ar] #39 addr=0x80033cc0\n[link-probe] ticks=200000 in_fires=16321 out_fires=6524 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33085 out_fires=13236 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=50011 out_fires=20006 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=761011 wall=54.20s (14042 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=371 dram_w=2968 dram_ar=4495 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80033bc0 last_ar=0x800025c0 max_ar=0x80064000 r_fires=35960 b_fires=371 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/result.json",
+        "sha256": "9d005df0166bc12a0ac85a05d08a8aff48ef6f3ccfaa15eb4bf6563b6e55a4ab"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/spike.log",
+        "sha256": "b61633e4e07436a1db24175041004835ab823b0b7462b1c27528da5ec016ea30"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/gsim.stdout",
+        "sha256": "dcc08401e7ec6ecb33404d690a9361889fb9ec2df096aa95147ecdb1af500335"
+      }
+    },
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 65536,
+      "full_signed_i8_pairs": true,
+      "m": 1024,
+      "p": 2609,
+      "q": 2180,
+      "scale": 0.00037060913746245205,
+      "relu": true,
+      "prefetch_m": true,
+      "kernel_cycles": 176722,
+      "source": {
+        "lhs_scale": 0.011258588172495365,
+        "rhs_scale": 0.00940733402967453,
+        "output_scale": 0.011643771082162857,
+        "relu": true
+      },
+      "source_receipt_sha256": "03740973ce4b7a1cb2acfdc91c7fac190894266f8cdd0451c9e905a274f74328",
+      "source_pairs_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf",
+      "input_sha256": {
+        "a": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "b": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723"
+      },
+      "expected_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "5587887d306f3ac63256b63e9078708f7e224debf3e14b1d7c334bea92dac86e",
+        "llvm_mlir_sha256": "a7e5751e94b4e6e75d2d0dd262da6830ac0397ed4090c743c34b878e34c44066",
+        "llvm_ir_sha256": "29f61f7e08c4a31c2210da6967582b9d364c0c1ff4697a1ca126231c19cc35e5",
+        "object_sha256": "07f43baa43ea739958f7a100784f2826c1cee859f4179c7fe658a864677ed1f8",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/layer.elf",
+      "elf_sha256": "8e9fdb066b34c5d39247263e5d10c2d2b10e331bc4456b5a039d7ff638a49d3e",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 176722\nRESIDUAL_PREFETCH PASS all65536 guards\n",
+      "stderr": "SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002cc0\n[gsim-ar] #7 addr=0x80064540\n[gsim-ar] #8 addr=0x80002d00\n[gsim-ar] #9 addr=0x80002c40\n[gsim-ar] #10 addr=0x80002c80\n[gsim-ar] #11 addr=0x80044580\n[gsim-ar] #12 addr=0x800445c0\n[gsim-ar] #13 addr=0x80002b80\n[gsim-ar] #14 addr=0x80002e40\n[gsim-ar] #15 addr=0x800644c0\n[gsim-ar] #16 addr=0x80064480\n[gsim-ar] #17 addr=0x80002e80\n[gsim-ar] #18 addr=0x80002f80\n[gsim-ar] #19 addr=0x80033d40\n[gsim-ar] #20 addr=0x80033d80\n[gsim-ar] #21 addr=0x80033dc0\n[gsim-ar] #22 addr=0x80033e00\n[gsim-ar] #23 addr=0x80033e40\n[gsim-ar] #24 addr=0x80033e80\n[gsim-ar] #25 addr=0x80033ec0\n[gsim-ar] #26 addr=0x80033f00\n[gsim-ar] #27 addr=0x80033f40\n[gsim-ar] #28 addr=0x80033f80\n[gsim-ar] #29 addr=0x80033fc0\n[gsim-ar] #30 addr=0x80034000\n[gsim-ar] #31 addr=0x80034040\n[gsim-ar] #32 addr=0x80034080\n[gsim-ar] #33 addr=0x800340c0\n[gsim-ar] #34 addr=0x80034100\n[gsim-ar] #35 addr=0x80034140\n[gsim-ar] #36 addr=0x80034180\n[gsim-ar] #37 addr=0x800341c0\n[gsim-ar] #38 addr=0x80034200\n[gsim-ar] #39 addr=0x80034240\n[link-probe] ticks=200000 in_fires=16276 out_fires=6506 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33026 out_fires=13212 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=49956 out_fires=19984 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=762188 wall=53.63s (14212 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=402 dram_w=3216 dram_ar=4366 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80042b00 last_ar=0x80002b00 max_ar=0x80064540 r_fires=34928 b_fires=402 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/result.json",
+        "sha256": "401b968abe57682bcedb9d0598d1bb5a17652286c0ada53477c2acb7c47e237b"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/spike.log",
+        "sha256": "e0852aecfcb275ee3499807310ae83ec89c535d9b1d143202eecac0a1a6a7038"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/prefetch_fullpairs/gsim.stdout",
+        "sha256": "0dbd1be1707ad8f45f111428bddb11421da66be5631eb3256c4dfab760c7ed86"
+      }
+    },
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 65536,
+      "full_signed_i8_pairs": true,
+      "m": 1024,
+      "p": 2609,
+      "q": 2180,
+      "scale": 0.00037060913746245205,
+      "relu": true,
+      "prefetch_m": true,
+      "banked_accumulators": true,
+      "kernel_cycles": 164532,
+      "source": {
+        "lhs_scale": 0.011258588172495365,
+        "rhs_scale": 0.00940733402967453,
+        "output_scale": 0.011643771082162857,
+        "relu": true
+      },
+      "source_receipt_sha256": "03740973ce4b7a1cb2acfdc91c7fac190894266f8cdd0451c9e905a274f74328",
+      "source_pairs_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf",
+      "input_sha256": {
+        "a": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+        "b": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723"
+      },
+      "expected_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "fa93e15e4fa2ba1d3cd8fe0f74530851492827078d96511fca5cdc1a3e5b211d",
+        "llvm_mlir_sha256": "40e83c66a4035c160b2266ba2bdcfd5e977873c01627d582f9b6bafcc98c6688",
+        "llvm_ir_sha256": "c63954a4eb7807aada3969c10e92aa815a02e39a3125756f2683b744ca4ff341",
+        "object_sha256": "69f5bef92f2f671b1b7e622c91994676d19d83fbaaac2b6a419f390386f48618",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/layer.elf",
+      "elf_sha256": "5c1ddb7e563fd300619b55b6928d55f4b9d34a75d0c5ee42be009e99b75c1ac0",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 164532\nRESIDUAL_PREFETCH PASS all65536 guards\n",
+      "stderr": "SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002d00\n[gsim-ar] #7 addr=0x80064580\n[gsim-ar] #8 addr=0x80002d40\n[gsim-ar] #9 addr=0x80002c80\n[gsim-ar] #10 addr=0x80002cc0\n[gsim-ar] #11 addr=0x800445c0\n[gsim-ar] #12 addr=0x80044600\n[gsim-ar] #13 addr=0x80002bc0\n[gsim-ar] #14 addr=0x80002e80\n[gsim-ar] #15 addr=0x80064500\n[gsim-ar] #16 addr=0x800644c0\n[gsim-ar] #17 addr=0x80002ec0\n[gsim-ar] #18 addr=0x80002fc0\n[gsim-ar] #19 addr=0x80033d80\n[gsim-ar] #20 addr=0x80033dc0\n[gsim-ar] #21 addr=0x80033e00\n[gsim-ar] #22 addr=0x80033e40\n[gsim-ar] #23 addr=0x80033e80\n[gsim-ar] #24 addr=0x80033ec0\n[gsim-ar] #25 addr=0x80033f00\n[gsim-ar] #26 addr=0x80033f40\n[gsim-ar] #27 addr=0x80033f80\n[gsim-ar] #28 addr=0x80033fc0\n[gsim-ar] #29 addr=0x80034000\n[gsim-ar] #30 addr=0x80034040\n[gsim-ar] #31 addr=0x80034080\n[gsim-ar] #32 addr=0x800340c0\n[gsim-ar] #33 addr=0x80034100\n[gsim-ar] #34 addr=0x80034140\n[gsim-ar] #35 addr=0x80034180\n[gsim-ar] #36 addr=0x800341c0\n[gsim-ar] #37 addr=0x80034200\n[gsim-ar] #38 addr=0x80034240\n[gsim-ar] #39 addr=0x80034280\n[link-probe] ticks=200000 in_fires=16261 out_fires=6500 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33046 out_fires=13220 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=49966 out_fires=19988 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=745952 wall=52.72s (14150 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=427 dram_w=3416 dram_ar=4379 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80042b40 last_ar=0x80002b40 max_ar=0x80064580 r_fires=35032 b_fires=427 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/result.json",
+        "sha256": "8f0fe03515a59663e231e0b44d5b408855bec1208ff732d10177a646faa46482"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/spike.log",
+        "sha256": "af8afc870d19d9897326760131b592cf9a87dab044e05d032317d03e90a446cc"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_fullpairs/gsim.stdout",
+        "sha256": "4e0957cb09215786b2b5b7e4112db09b2cfe63f22b66f3bde01f7791550d1228"
+      }
+    },
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 3072,
+      "full_signed_i8_pairs": false,
+      "m": 48,
+      "p": 127,
+      "q": 128,
+      "scale": 0.00390625,
+      "relu": false,
+      "prefetch_m": true,
+      "banked_accumulators": true,
+      "kernel_cycles": 1765,
+      "source": null,
+      "source_receipt_sha256": null,
+      "source_pairs_sha256": null,
+      "input_sha256": {
+        "a": "8defb4290f1f6d9b26584612689b3a190175e0e66a804e11115d50e24b2eedb2",
+        "b": "026d5a44625c4edf9c7f4150ad300cab746f52cd33ebdd51f2d35c072fd9104c"
+      },
+      "expected_sha256": "a0dc6826fd2b08bce61ed02f1b62ca4b9b1764f084f0a377a675153e2c675b87",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "0e9c7a7548c06c9671dcd34db8585060bde03c58bea960c2434902c715db0ab2",
+        "llvm_mlir_sha256": "daf96efe0902eebde0071e2127bd484a31ba0313aa38ab931f7514bb448631f1",
+        "llvm_ir_sha256": "854a2fbc13437810d669bcda7c4495dc6bf7ae1643e7937830eb758c0c138832",
+        "object_sha256": "2dd7c6a6740891194354c638b6e98da4823bc9a03fc8b39ab122336027428746",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/layer.elf",
+      "elf_sha256": "593739e25196a24c900fa1299e91a13e4154d14890b21d8adf5823b1e1a35b8f",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 1765\nRESIDUAL_PREFETCH PASS all3072 guards\n",
+      "stderr": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002880\n[gsim-ar] #7 addr=0x80027100\n[gsim-ar] #8 addr=0x800028c0\n[gsim-ar] #9 addr=0x80002800\n[gsim-ar] #10 addr=0x80002840\n[gsim-ar] #11 addr=0x80007140\n[gsim-ar] #12 addr=0x80007180\n[gsim-ar] #13 addr=0x80002740\n[gsim-ar] #14 addr=0x80002a40\n[gsim-ar] #15 addr=0x80027080\n[gsim-ar] #16 addr=0x80027040\n[gsim-ar] #17 addr=0x80002b80\n[gsim-ar] #18 addr=0x80005d00\n[gsim-ar] #19 addr=0x80005d40\n[gsim-ar] #20 addr=0x80005d80\n[gsim-ar] #21 addr=0x80005dc0\n[gsim-ar] #22 addr=0x80005e00\n[gsim-ar] #23 addr=0x80005e40\n[gsim-ar] #24 addr=0x80005e80\n[gsim-ar] #25 addr=0x80005ec0\n[gsim-ar] #26 addr=0x80005f00\n[gsim-ar] #27 addr=0x80005f40\n[gsim-ar] #28 addr=0x80005f80\n[gsim-ar] #29 addr=0x80005fc0\n[gsim-ar] #30 addr=0x80006000\n[gsim-ar] #31 addr=0x80006040\n[gsim-ar] #32 addr=0x80006080\n[gsim-ar] #33 addr=0x800060c0\n[gsim-ar] #34 addr=0x80006100\n[gsim-ar] #35 addr=0x80006140\n[gsim-ar] #36 addr=0x80006180\n[gsim-ar] #37 addr=0x800061c0\n[gsim-ar] #38 addr=0x80006200\n[gsim-ar] #39 addr=0x80006240\n\n[gsim-emu] FINISHED: cycles=62497 wall=4.28s (14605 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=2 dram_w=16 dram_ar=330 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80006e40 last_ar=0x800026c0 max_ar=0x80027100 r_fires=2640 b_fires=2 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/result.json",
+        "sha256": "79243fccfe88f1b324b469b51a68a3ea5537c52aa539d111ec31d09579424bfe"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/spike.log",
+        "sha256": "8aee198653083e2d19def3dc6fd7ee5f207a39b10a7f4e976a6936f839cf69c2"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_odd_small/gsim.stdout",
+        "sha256": "3526eaefd4c39f86a54c9f43bceed63e6d725e4b74e94e1f10e90abb0c06d17a"
+      }
+    },
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 2048,
+      "full_signed_i8_pairs": false,
+      "m": 32,
+      "p": 32767,
+      "q": 32767,
+      "scale": 1.52587890625e-05,
+      "relu": false,
+      "prefetch_m": true,
+      "banked_accumulators": true,
+      "kernel_cycles": 66995,
+      "source": null,
+      "source_receipt_sha256": null,
+      "source_pairs_sha256": null,
+      "input_sha256": {
+        "a": "4ab48adefeb74cc0d602154fc0e0231133df7d639ecb6df9c911010ebc5d4f84",
+        "b": "cffba7a7f162446effa0cc2c7d322ab2957e6d3e963233ad73c1ff815497ae49"
+      },
+      "expected_sha256": "7e7da8d992d9e962986b1179dd49b2385bdbe05031b9db752b7bc5feecd8badc",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "daadfa28c660c025776e9bb0f9e244fa7cb7c9e201516ef5407d5259b4bef712",
+        "llvm_mlir_sha256": "33b435adc78bd2d01cf0bda4a9da1e2eed5a15f46e46baa3d4f35f36936c323f",
+        "llvm_ir_sha256": "3e1d33050d024d8aacff652330b31501d2366888aa3ab894e646ab190c2b23ac",
+        "object_sha256": "d86f6fc038391237381749a2ee086f26676281eadedcf65878c29de1bbfeb972",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/layer.elf",
+      "elf_sha256": "c973f49832b20dd01b3f9358933e87484c070805d3058b551b8cd4a129dc9a61",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 66995\nRESIDUAL_PREFETCH PASS all2048 guards\n",
+      "stderr": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002a00\n[gsim-ar] #7 addr=0x80026240\n[gsim-ar] #8 addr=0x80002940\n[gsim-ar] #9 addr=0x80002980\n[gsim-ar] #10 addr=0x80002a40\n[gsim-ar] #11 addr=0x800029c0\n[gsim-ar] #12 addr=0x80006280\n[gsim-ar] #13 addr=0x800062c0\n[gsim-ar] #14 addr=0x80002880\n[gsim-ar] #15 addr=0x800028c0\n[gsim-ar] #16 addr=0x80002b80\n[gsim-ar] #17 addr=0x800261c0\n[gsim-ar] #18 addr=0x80026180\n[gsim-ar] #19 addr=0x80002bc0\n[gsim-ar] #20 addr=0x80002cc0\n[gsim-ar] #21 addr=0x80005240\n[gsim-ar] #22 addr=0x80005280\n[gsim-ar] #23 addr=0x800052c0\n[gsim-ar] #24 addr=0x80005300\n[gsim-ar] #25 addr=0x80005340\n[gsim-ar] #26 addr=0x80005380\n[gsim-ar] #27 addr=0x800053c0\n[gsim-ar] #28 addr=0x80005400\n[gsim-ar] #29 addr=0x80005440\n[gsim-ar] #30 addr=0x80005480\n[gsim-ar] #31 addr=0x800054c0\n[gsim-ar] #32 addr=0x80005500\n[gsim-ar] #33 addr=0x80005540\n[gsim-ar] #34 addr=0x80005580\n[gsim-ar] #35 addr=0x800055c0\n[gsim-ar] #36 addr=0x80005600\n[gsim-ar] #37 addr=0x80005640\n[gsim-ar] #38 addr=0x80005680\n[gsim-ar] #39 addr=0x800056c0\n\n[gsim-emu] FINISHED: cycles=123481 wall=9.50s (12999 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=1 dram_w=8 dram_ar=271 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x800261c0 last_ar=0x80002800 max_ar=0x80026240 r_fires=2168 b_fires=1 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/result.json",
+        "sha256": "5ef6e6a8c6024747e8bbfea99fd5f8ac181a0161a557291170587976173f935d"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/spike.log",
+        "sha256": "a2bb62b14349e95d06c7c0856296ce90a496cec6521ecf058d8e30212a5b1ef1"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/banked_even_max/gsim.stdout",
+        "sha256": "6e6301ef1bd55408a40d3d9203c05c5c7f822744b11f9780999f82f6b28c6b86"
+      }
+    },
+    {
+      "schema": "residual_m_prefetch_capsule_v1",
+      "status": "pass",
+      "elements": 1024,
+      "full_signed_i8_pairs": false,
+      "m": 16,
+      "p": 1,
+      "q": 1,
+      "scale": 0.5,
+      "relu": true,
+      "prefetch_m": true,
+      "banked_accumulators": true,
+      "kernel_cycles": 811,
+      "source": null,
+      "source_receipt_sha256": null,
+      "source_pairs_sha256": null,
+      "input_sha256": {
+        "a": "36468d322b4a2b1502f34ed1af5d8f79aa4fb4f6abc800bcb04a418fcd3c17c8",
+        "b": "d9aa1fa10b109be5484062cb4848eb143da4ab97fbef40ff7223e2fa1f8d12a1"
+      },
+      "expected_sha256": "e3c6a364b97d8619c8d4d495d424dfe035a3bfa1ad42947dc560fa5bbbbe2547",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "41e7d5fb722468e39a61ad8c8a241ace27e417e2a4335265b3d7acc4dc9db90a",
+        "llvm_mlir_sha256": "efae8f9f45dcb1c96a4b7a870ac823565eb1eb29f643758924836c32645e43b8",
+        "llvm_ir_sha256": "0e82c4999e30f4228d16fe7c4b515d07fd7287f5c84440802c7b3de0be598978",
+        "object_sha256": "8c97f0f5bb8cf9453833add089fbb963670d06662c72bef7b0785112c1861788",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/kernel.o"
+          ]
+        ]
+      },
+      "elf_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/layer.elf",
+      "elf_sha256": "1804d8ebb6364838cc36f2d43d75d8863e373538bbacf628f8d3f5a932efb55b",
+      "nofsm_status": "pass",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "RESIDUAL_KERNEL_CYCLES 811\nRESIDUAL_PREFETCH PASS all1024 guards\n",
+      "stderr": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=10000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x800026c0\n[gsim-ar] #7 addr=0x80024f00\n[gsim-ar] #8 addr=0x80002700\n[gsim-ar] #9 addr=0x80002640\n[gsim-ar] #10 addr=0x80002680\n[gsim-ar] #11 addr=0x80004f40\n[gsim-ar] #12 addr=0x80004f80\n[gsim-ar] #13 addr=0x80002580\n[gsim-ar] #14 addr=0x80002840\n[gsim-ar] #15 addr=0x80024e80\n[gsim-ar] #16 addr=0x80024e40\n[gsim-ar] #17 addr=0x80002880\n[gsim-ar] #18 addr=0x80002980\n[gsim-ar] #19 addr=0x80004300\n[gsim-ar] #20 addr=0x80004340\n[gsim-ar] #21 addr=0x80004380\n[gsim-ar] #22 addr=0x800043c0\n[gsim-ar] #23 addr=0x80004400\n[gsim-ar] #24 addr=0x80004440\n[gsim-ar] #25 addr=0x80004480\n[gsim-ar] #26 addr=0x800044c0\n[gsim-ar] #27 addr=0x80004500\n[gsim-ar] #28 addr=0x80004540\n[gsim-ar] #29 addr=0x80004580\n[gsim-ar] #30 addr=0x800045c0\n[gsim-ar] #31 addr=0x80004600\n[gsim-ar] #32 addr=0x80004640\n[gsim-ar] #33 addr=0x80004680\n[gsim-ar] #34 addr=0x800046c0\n[gsim-ar] #35 addr=0x800029c0\n[gsim-ar] #36 addr=0x800028c0\n[gsim-ar] #37 addr=0x80003b00\n[gsim-ar] #38 addr=0x80004700\n[gsim-ar] #39 addr=0x80003b40\n\n[gsim-emu] FINISHED: cycles=42248 wall=2.80s (15098 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=1 dram_w=8 dram_ar=193 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80004d80 last_ar=0x80002500 max_ar=0x80024f00 r_fires=1544 b_fires=1 cvfpu_accepts=0 uart_chars=0\n",
+      "receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/result.json",
+        "sha256": "cef6cec4f79b01cbb38045e812950630e6bf93fc4807884ce426a5ad504eeab7"
+      },
+      "spike_log": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/spike.log",
+        "sha256": "a2b118c26ee8da3ad1005553be59506f7e75666ebcb7c9e1f2a49f51500c9c06"
+      },
+      "spike_pass": true,
+      "gsim_stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/single_fallback/gsim.stdout",
+        "sha256": "54a132d5d7c71daa493305b0ff17dc9403eadd9d2a60dbbf580140eac4e31f07"
+      }
+    }
+  ],
+  "default_identity": {
+    "status": "pass",
+    "previous_source_sha256": "ea83165f56ab6bf89fb8d4dd8ec24adcf294c4cfd09d46ece4420d90fd4fa2cd",
+    "previous": {
+      "schema": "gemmini_golden_device_compile_v1",
+      "target_ir_sha256": "08cb76cece7897a5344c711f77b0a526f7fcb30e2d08746fa85f2a6c995c9fda",
+      "llvm_mlir_sha256": "ff50763d1790fb19fa46fd421abe69aac431ba9b1c8ef60383557903c0911c07",
+      "llvm_ir_sha256": "1adf14559e4a43f97e056997f1254fe8956b5722abb9aa2c75f3bd092d44e62b",
+      "object_sha256": "f198d7e11add145e7359a6bd438abf3567d8e98d93250c015faa1558c54de2e9",
+      "object_nofsm_status": "pass",
+      "compiler_sha256": {
+        "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+        "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "compiler_argv": [
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+          "--mlir-to-llvmir",
+          "out/artifacts/probes/residual-m-prefetch/previous_serial/kernel.llvm.mlir",
+          "-o",
+          "out/artifacts/probes/residual-m-prefetch/previous_serial/kernel.ll"
+        ],
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-c",
+          "out/artifacts/probes/residual-m-prefetch/previous_serial/kernel.ll",
+          "-o",
+          "out/artifacts/probes/residual-m-prefetch/previous_serial/kernel.o"
+        ]
+      ]
+    },
+    "current": {
+      "schema": "gemmini_golden_device_compile_v1",
+      "target_ir_sha256": "08cb76cece7897a5344c711f77b0a526f7fcb30e2d08746fa85f2a6c995c9fda",
+      "llvm_mlir_sha256": "ff50763d1790fb19fa46fd421abe69aac431ba9b1c8ef60383557903c0911c07",
+      "llvm_ir_sha256": "1adf14559e4a43f97e056997f1254fe8956b5722abb9aa2c75f3bd092d44e62b",
+      "object_sha256": "f198d7e11add145e7359a6bd438abf3567d8e98d93250c015faa1558c54de2e9",
+      "object_nofsm_status": "pass",
+      "compiler_sha256": {
+        "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+        "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "compiler_argv": [
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+          "--mlir-to-llvmir",
+          "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.llvm.mlir",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.ll"
+        ],
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-c",
+          "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.ll",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/control_fullpairs/kernel.o"
+        ]
+      ]
+    }
+  },
+  "default_identity_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/default_identity.json",
+    "sha256": "91bc80dc38aa984015614fe6caad09b49eaafd33138c56e496e20b92ab1c7d12"
+  },
+  "negative_input_only_source": {
+    "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/input_prefetch_source.py",
+    "sha256": "45690bdf3ca2a87642e08727f88b3068854ff68e61b572d531d0ff9c507c5db3"
+  },
+  "fullpair_source_certificate": {
+    "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/docs/perf_records/residual_coefficient_minimality.json",
+    "sha256": "4588db1e738897c25f38dc149ed4c0fe5bcd676e7952f725e84c99dcb6a04ddb"
+  },
+  "gsim_comparison": {
+    "control_cycles": 174255,
+    "input_only_cycles": 176722,
+    "input_only_slowdown_pct": 1.4157412986714872,
+    "banked_cycles": 164532,
+    "banked_reduction_cycles": 9723,
+    "banked_reduction_pct": 5.57975380907291,
+    "measurement_scope": "Kernel mcycle interval, identical original complete65536 source pair bytes/reference, same pinned GSIM engine; no whole-model cycle claim."
+  },
+  "focused_tests": {
+    "passed": 110,
+    "subtests": 18,
+    "skipped": 0,
+    "log": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/focused_tests.log",
+      "sha256": "78c91a773b7d065c1db9aa7f45c40eef53444ac57c00886e8c4ab02e01552246"
+    }
+  },
+  "whole": {
+    "control_job": 1849,
+    "control_fireSim_forward_cycles": 42269808,
+    "control_elf": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/model.elf",
+      "sha256": "ef09926406e9e911e87c4c758b50c49dce77764f3c565df5b7af992466d6ea24"
+    },
+    "candidate_elf": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/model.elf",
+      "sha256": "aa762ab861c1033b69515383f4b6856addba597b3939c85f2fbc79198f285955"
+    },
+    "build_marker": "efca9cdab000",
+    "native_validation": {
+      "scope": "native whole model with scalar device standins",
+      "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source"
+    },
+    "native_receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/native_validation.json",
+      "sha256": "d276a3f427707714771efc43a3b29a9c38072add3022bf93df3046110e94cd3d"
+    },
+    "spike_validation": {
+      "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+      "elf_sha256": "aa762ab861c1033b69515383f4b6856addba597b3939c85f2fbc79198f285955",
+      "target_native_exact": true,
+      "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source",
+      "metrics": [
+        "METRIC cycles 10040333",
+        "METRIC build_hash efca9cdab000",
+        "METRIC memref_rank_mismatch 0"
+      ],
+      "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+      "output_elements": 1000,
+      "output_bytes": 4000,
+      "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "reference_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/host/output.npy",
+      "spike_full_output_match": true,
+      "spike_console_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/spike.log",
+      "spike_console_sha256": "c5329d0159d16addc2fe87a65119c2989df9d89a8f36f331f40ef8707b167d22",
+      "torch_golden_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/capture/golden.npy",
+      "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "torch_atol": 0.0,
+      "torch_rtol": 0.0,
+      "torch_allclose": true
+    },
+    "spike_receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/spike_validation.json",
+      "sha256": "3b56db100c95127e0aaf25ca206e7ede8be47e650cd8b99fcbb7ff346e275a47"
+    },
+    "final_nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "aa762ab861c1033b69515383f4b6856addba597b3939c85f2fbc79198f285955",
+      "executable_sections": 1,
+      "custom_funct_counts": {
+        "0": 329,
+        "1": 3310,
+        "2": 9691,
+        "3": 1307,
+        "4": 14878,
+        "5": 117160,
+        "6": 132038,
+        "7": 70,
+        "14": 48
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "final_nofsm_receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/model.nofsm_audit.json",
+      "sha256": "95cb495361fb7b456f3fcc523979c9a428ffa60ec795a4de21fa13e4ea201577"
+    },
+    "unchanged_artifacts": [
+      {
+        "relative_path": "model.o",
+        "sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/model.o",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/model.o"
+      },
+      {
+        "relative_path": "host_llvm/model.linked.ll",
+        "sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/host_llvm/model.linked.ll",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/host_llvm/model.linked.ll"
+      },
+      {
+        "relative_path": "host_llvm/model.native.ll",
+        "sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/host_llvm/model.native.ll",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/host_llvm/model.native.ll"
+      },
+      {
+        "relative_path": "device/device_catalog_shim.o",
+        "sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/device/device_catalog_shim.o",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/device/device_catalog_shim.o"
+      },
+      {
+        "relative_path": "cgen/weights.bin",
+        "sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/cgen/weights.bin",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/cgen/weights.bin"
+      },
+      {
+        "relative_path": "cgen/model_io.h",
+        "sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+        "control_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/cgen/model_io.h",
+        "candidate_path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/whole_banked_residual/build_direct/cgen/model_io.h"
+      }
+    ],
+    "residual_schedule_derivation": {
+      "baseline_manifest": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/residual_bundle/residual.json",
+      "baseline_manifest_sha256": "9c5156ecaea12d88d527cbd1e3f93a21fad5a54a887cca9d06ef9556170c1abc",
+      "baseline_object_sha256": "e2a6456768a22da082059a0ab7a9ee582baa354aa24a023379dc63fa5017dc35",
+      "full_pair_checks": [
+        {
+          "symbol": "gemmini_residual_0",
+          "proof_sha256": "3ec547ec64e62cdba76a08cd05b76cf7097eb5add581aa426ebfb30d718dbf18",
+          "full_pair_sha256": "f98b6bba389c422605814dfededc0af4345d35c8b281221c906c57d1056ed7bf"
+        },
+        {
+          "symbol": "gemmini_residual_1",
+          "proof_sha256": "1175e64e6ee6301f3f1a5f72195bb6131847226aad0b12ede5aba4ade1330c3b",
+          "full_pair_sha256": "8a5bd23f4e1c59b05d8119f1a3957d4b9e3bb951a0ff1f3f6cce25d1b07ca7b8"
+        },
+        {
+          "symbol": "gemmini_residual_2",
+          "proof_sha256": "a237a9ce8263cace5faab05acddbaee796801db97ad1f157f61359da7764e31f",
+          "full_pair_sha256": "e5256d14f346fe157779374d787d3b05f2ebba4ee53d9754209482d9fb5b2aef"
+        },
+        {
+          "symbol": "gemmini_residual_3",
+          "proof_sha256": "9dd30fb14034d547c9b5b584782c8f5a5d66840a69e9671cde0075658cc85a8e",
+          "full_pair_sha256": "42bc1fc4b8906928bf6e82c405fb201c20ebb7208fc8329cbdfebb8bf9585744"
+        },
+        {
+          "symbol": "gemmini_residual_4",
+          "proof_sha256": "3e14731a0ef6c547d5981b24341b7f8a1023e655bc4ce49202f706695fb0a79e",
+          "full_pair_sha256": "3943129366bbd3945a6be2c357487faf7f45f7d8e4340c3a97e8471745f61c19"
+        },
+        {
+          "symbol": "gemmini_residual_5",
+          "proof_sha256": "94065a3b4ad565a852ffaf6ddf24d1ff8d032fe4e7b6e11355257a51b7bc85f2",
+          "full_pair_sha256": "2f3f6a63413fc22a638415832ad14542a134adc427eb3480cace4593560d059a"
+        },
+        {
+          "symbol": "gemmini_residual_6",
+          "proof_sha256": "5dfd414134fc39faacf620ae281481e6daef4ecb6bc9e3f657a06f9f92d95069",
+          "full_pair_sha256": "9bcf80b4b383f034459f2621f524583f8638e0ebae4b83ffdfcc824ce32c154f"
+        },
+        {
+          "symbol": "gemmini_residual_7",
+          "proof_sha256": "c06775e0caf02e46dbc0e9c7f9d8df6fac7791638d7c716d12e66f5cf58c0dc4",
+          "full_pair_sha256": "551352e1c3338744c970991c93a21bdacab258f76fd1aaf198d0be3df7fb9894"
+        },
+        {
+          "symbol": "gemmini_residual_8",
+          "proof_sha256": "3f512574c70901b2c0142d631785310f0426f6edc43e6fd7e8a4969691112e5a",
+          "full_pair_sha256": "b4c6e537c9f72559da79a900c280e7b86603b18a3c8223eaa38e1597c88a65dc"
+        },
+        {
+          "symbol": "gemmini_residual_9",
+          "proof_sha256": "ef0266031e00860b0293183e4b2e09903b8d08eaaecabaa622b8f3f96d216818",
+          "full_pair_sha256": "3258dee16890ec84bc440f8294dfac0031d6e675f8c407e613443af4a7fdf5a9"
+        },
+        {
+          "symbol": "gemmini_residual_10",
+          "proof_sha256": "4848197042756ec686a0f60a9d42ef7a3e247236a63d3e9fdfcdb90e8b18a8c0",
+          "full_pair_sha256": "f067f6844e28c3c7b6d790cb8b16220e41d4c9678195e15ea6fbd90579f6f5b7"
+        },
+        {
+          "symbol": "gemmini_residual_11",
+          "proof_sha256": "ae44663ff505a2a9a8265a0fb43fb17758a3144d6a702c9b119f94b17f423128",
+          "full_pair_sha256": "8bd4376915b022d542ccba2b27dc80429eae68606c2e467d1370811d36a1cdc3"
+        },
+        {
+          "symbol": "gemmini_residual_12",
+          "proof_sha256": "18f29b42d0a7171c12f093f088442b430ed215b324fb8ad6386d17d716ea70cc",
+          "full_pair_sha256": "0415632488c85ea8de6f753356dbb59da6277a8d6f39ac248aeeb3213264d72d"
+        },
+        {
+          "symbol": "gemmini_residual_13",
+          "proof_sha256": "76ac472552fdc45f8591c1f5620c78e04b1609df8bda84b54a06b866029d8711",
+          "full_pair_sha256": "6f728794f50a77471d7cd70bc51181fbd86cc0d94fd60596bb2da06933e670ee"
+        },
+        {
+          "symbol": "gemmini_residual_14",
+          "proof_sha256": "dfa34818bb492826132551b44c5330af4b7949c9cef54875885b9799f0d187ea",
+          "full_pair_sha256": "f63130e6d888252ccb3aedc1de16ea30177ddbe2dab6183efff189faa935d892"
+        },
+        {
+          "symbol": "gemmini_residual_15",
+          "proof_sha256": "3f791b8bd27f9942044a8e8254f33c1175a0eda3a2e63d91f8613ff627c3c4ba",
+          "full_pair_sha256": "078def229b605778e39ee065b3c426b271dc4eb58fb9e4a7074329f822c9a230"
+        }
+      ],
+      "linker_argv": [
+        "/usr/bin/ld.lld",
+        "-r",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_0/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_0/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_1/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_1/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_2/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_2/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_3/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_3/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_4/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_4/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_5/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_5/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_6/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_6/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_7/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_7/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_8/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_8/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_9/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_9/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_10/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_10/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_11/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_11/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_12/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_12/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_13/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_13/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_14/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_14/adapter.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_15/kernel.o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_15/adapter.o",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/residual.o"
+      ],
+      "linker_sha256": "7ad9a0e8fe6d0e79b71172d731e33872c0274e49fceb7b516d774876d5a58ade",
+      "unchanged": [
+        "source_binding",
+        "rewritten_host",
+        "native_oracle",
+        "adapter_objects",
+        "coefficients",
+        "source_numeric_proofs",
+        "coefficient_tables"
+      ]
+    },
+    "residual_bundle_manifest": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/residual.json",
+      "sha256": "9fecd068c12e17ef453c58894d42216a38307cdc542b87123b2dbb4aff800765"
+    },
+    "requant_object": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_banked_command_policy_bundle/requant.o",
+      "sha256": "bf4f8c4ffbaeadf97f15df926a741dd1757c5b3a6131f0ad7be51aa60688053c"
+    }
+  },
+  "drivers": {
+    "rebuild_residual_schedule.py": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/rebuild_residual_schedule.py",
+      "sha256": "ccbcfeca2fd6182904b6d86fe0d2d28c263b8d7548e42ce35c66fc6a4559f50a"
+    },
+    "build_whole.py": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/build_whole.py",
+      "sha256": "4b99308c2da8b0526e15a47843cccf8bc7bfbc5de7cb3ac4b878c48e160ae7ea"
+    },
+    "validate_whole.py": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/validate_whole.py",
+      "sha256": "d3e7d9392fc4ebe77567170a52b659348bcb69585f3ff73db645730e3c021b57"
+    }
+  },
+  "held_constraints": [
+    "No smaller coefficient or altered readout contract",
+    "No 32-bit accumulator feedback",
+    "Original immutable1000-output golden unchanged with atol=rtol0",
+    "No hardware win until stock FireSim comparison",
+    "No generic host/numeric code added in OOT"
+  ],
+  "hardware_submission": {
+    "job_id": 1854,
+    "config": "FireSimGemminiRocketConfig",
+    "queue_owner": "firesim_recovery",
+    "independent_closure": "all1000 native/original golden/Spike/noFSM/ELF pins independently checked",
+    "performance_status": "pending"
+  }
+}
