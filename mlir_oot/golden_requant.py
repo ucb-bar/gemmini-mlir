@@ -111,6 +111,87 @@ def prove_scale_bound(scales, lo=-(1 << 31), hi=(1 << 31)-1, relu=False):
     )
 
 
+def synthesize_store_scale(scales, lo=-(1 << 31), hi=(1 << 31)-1, relu=False):
+    """Solve exact readout constraints over every positive finite f32 scale.
+
+    Source output transitions constrain target(T)>=q and target(T-1)<q.
+    Each constraint is monotone in the ordered positive-float bit pattern
+    (reversed for a negative accumulator). Their intersection is therefore one
+    exact interval, obtained by integer binary searches without real rounding
+    relaxations. A contradictory interval proves this zero-bias form infeasible.
+    """
+    scales=tuple(f32(s) for s in scales)
+    if not scales or any(not math.isfinite(s) or s<=0 for s in scales):
+        raise ValueError('all scales must be finite positive f32 constants')
+    if not (-(1 << 31)<=lo<=hi<(1 << 31)):
+        raise ValueError('invalid i32 proof domain')
+    def from_bits(bits):
+        return struct.unpack('<f',struct.pack('<I',bits))[0]
+    first, last=1,0x7f7fffff
+    lower, upper=first,last
+    low=0 if relu else -128
+    witnesses={}
+    transitions=[]
+    def constrain(acc,q,reached):
+        nonlocal lower,upper
+        def valid(bits):
+            return (quantized(acc,(from_bits(bits),),relu)>=q)==reached
+        if acc==0:
+            if not valid(first):
+                lower=last+1
+                witnesses['constant']=dict(accumulator=acc,output=q,reached=reached)
+            return
+        increasing=(acc>0)==reached
+        left,right=first,last+1
+        while left<right:
+            mid=(left+right)//2
+            if valid(mid)==increasing:
+                right=mid
+            else:
+                left=mid+1
+        if increasing:
+            if left>lower:
+                lower=left
+                witnesses['lower']=dict(accumulator=acc,output=q,reached=reached,scale_bits=left)
+        else:
+            if left-1<upper:
+                upper=left-1
+                witnesses['upper']=dict(accumulator=acc,output=q,reached=reached,scale_bits=left-1)
+    for q in range(low+1,128):
+        left,right=lo,hi+1
+        while left<right:
+            mid=(left+right)//2
+            if quantized(mid,scales,relu)>=q:right=mid
+            else:left=mid+1
+        transitions.append((q,left))
+        if left<=hi:constrain(left,q,True)
+        if left>lo:constrain(left-1,q,False)
+        if lower>upper:
+            return dict(exact=False,source_scales=list(scales),accumulator_min=lo,
+                accumulator_max=hi,relu=relu,scale_bits_min=lower,scale_bits_max=upper,
+                proof='contradictory exact constraints across every positive finite f32 store scale',
+                conflicting_output=q,witnesses=witnesses)
+    combined=1.0
+    for s in scales:combined=f32(combined*s)
+    bits=struct.unpack('<I',struct.pack('<f',combined))[0]
+    bits=max(lower,min(upper,bits))
+    scale=from_bits(bits)
+    # Independently compare all target transitions before publishing a solution.
+    for q,threshold in transitions:
+        left,right=lo,hi+1
+        while left<right:
+            mid=(left+right)//2
+            if quantized(mid,(scale,),relu)>=q:right=mid
+            else:left=mid+1
+        if left!=threshold:
+            raise AssertionError('synthesized scale transition validation failed')
+    return dict(exact=True,scale=scale,source_scales=list(scales),accumulator_min=lo,
+        accumulator_max=hi,relu=relu,scale_bits_min=lower,scale_bits_max=upper,
+        rounding='nearest_even',output_min=low,output_max=127,transitions=127-low,
+        proof='exact intersection of all source transition constraints over positive finite f32 scales; independently revalidated',
+        witnesses=witnesses)
+
+
 def _constant(value):
     op=value.owner
     if not isinstance(op,Operation) or op.name!='arith.constant' or str(value.type)!='f32':

@@ -18,7 +18,7 @@ from xdsl.ir import Region
 from .frontend.parse import parse_module
 from .contraction_patterns import match_integer_gemm
 from .captured_requant import inspect_chain
-from .golden_requant import synthesize_bias, prove_scale_bound
+from .golden_requant import synthesize_bias, prove_scale_bound, synthesize_store_scale
 from .golden_contraction_upstream import choose_shape
 from .golden_gemm import GoldenGemm
 from .conv_schedule import select_kernel
@@ -135,13 +135,19 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         proof=synthesize_bias(chain['scales'],biases,chain['reciprocal'],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
         error=0
         if proof['accepted_channels']!=dims.n:
-            if max_output_lsb==0 or np.any(biases!=0):
+            if np.any(biases!=0):
                 refused.append(dict(region=rid,reason='float transition proof refused',accepted_channels=proof['accepted_channels']));continue
-            bounded=prove_scale_bound([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
-            error=bounded['max_output_lsb_error']
-            if error>max_output_lsb:
-                refused.append(dict(region=rid,reason='local readout error exceeds selected policy',proof=bounded));continue
-            proof=dict(bounded,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
+            solved=synthesize_store_scale([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+            if solved['exact']:
+                proof=dict(solved,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
+            else:
+                if max_output_lsb==0:
+                    refused.append(dict(region=rid,reason='no positive finite f32 store scale preserves all transitions',proof=solved));continue
+                bounded=prove_scale_bound([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+                error=bounded['max_output_lsb_error']
+                if error>max_output_lsb:
+                    refused.append(dict(region=rid,reason='local readout error exceeds selected policy',proof=bounded));continue
+                proof=dict(bounded,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
         if np.any(biases!=0) or any(x!=0 for x in proof['integer_bias']):
             refused.append(dict(region=rid,reason='nonzero bias requires explicit integer table ABI'));continue
         try:direct=match_conv(op)
