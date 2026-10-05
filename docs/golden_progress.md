@@ -7,7 +7,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, combined clamp/RNE, blocked64 mean | 47,020,321 (1795) | All 1,000 golden output words exact | [1795](perf_records/resnet_dense_split_block64_firesim1795.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit activation polynomial | 791,638,514 (1800) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1800](perf_records/tiny_activation_poly_firesim1800.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 | 764,493,870 (1806) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1806](perf_records/tiny_fused_activation_poly_o3_firesim1806.json) |
 | Full SmolVLA | Not admitted | Original full numerical gate still fails; source convolution/normalization/attention arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -42,8 +42,15 @@ FireSim1800 verifies791,638,514 cycles,8.67% fewer than1792 and56.03% fewer than
 [Gate](perf_records/tiny_scalar_quant_rne_act_poly_spike.json).
 Explicit fused polynomial evaluation with ClangO3 retains all captured output bits
 and the original Torch gate, retiring209,494,756 Spike instructions (4.09% fewer
-than1800's build). It has no hardware result yet.
-[Gate](perf_records/tiny_fused_activation_poly_o3_spike.json).
+than1800's build). FireSim1806 verifies764,493,870 forward cycles,3.43% fewer
+than1800 and57.53% fewer than1747. This remains an explicitly selected activation
+approximation with capture-specific accuracy evidence.
+[Gate](perf_records/tiny_fused_activation_poly_o3_spike.json),
+[hardware](perf_records/tiny_fused_activation_poly_o3_firesim1806.json).
+The fresh profile for this compiled model preserves all existing objects and
+passes full output/count/conservation checks in Spike; job1809 is collecting
+hardware attribution. Its191,247,666 host instructions and18,254,522 device
+instructions are not hardware cycle estimates.
 
 Fresh ResNet profile1801 attributes47,057,935 interior cycles to35,450,518 device
 and11,607,417 host cycles, with all70 primitive calls conserved. Instrumentation
@@ -54,8 +61,11 @@ See [current profile](perf_records/resnet_current_leaf_profile_firesim1801.json)
 and [selected geometry](perf_records/resnet_current_issue_geometry.json).
 
 Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
-050009e and SDPA scale/causal/options semantics at 69c0370. The latter passes
-28 focused tests including actual native comparisons. Explicit backend arithmetic
+050009e, SDPA scale/causal/options semantics at69c0370, and half-precision
+matmul f32 accumulation plus initialized rank-2 outputs at46851eaf. The latest
+commit passes160 focused and related tests, including45 native execution cases.
+Fresh SmolVLA capture retains the original weights, inputs, golden and manifest
+identities; its complete gate is being rerun. Explicit backend arithmetic
 compatibility experiments remain separate from default frontend semantics.
 
 The selected ResNet schedule's mesh issue geometry totals22,805,632 cycles,

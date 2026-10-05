@@ -694,6 +694,22 @@ queued. Neither proxy result establishes hardware performance. Receipts:
 `perf_records/tiny_fused_activation_poly_o3_spike.json` and
 `perf_records/tiny_activation_poly_host_o3_spike.json`.
 
+Subsequent FireSim1806 verifies764,493,870 forward cycles for the fused polynomial
+withClangO3:3.43% fewer than1800 and57.53% fewer than1747. All256,000 captured
+output bits, unchanged Torch tolerance, final zeroFSM audit, staged ELF and stock
+bitstream identities pass. The activation approximation still requires original
+accuracy gates for other captures. See
+`perf_records/tiny_fused_activation_poly_o3_firesim1806.json`.
+
+The independently compiled allocator declaration screen adds only LLVM malloc
+return-noalias under the pinned monotonic arena contract. It produces byte-identical
+model.o and final ELF to1806; no duplicate native, Spike or FireSim run is needed.
+No permanent compiler option is promoted from this emission-neutral experiment.
+The fresh1806 profile passes full Spike output/count/conservation checks and is
+queued as1809; its191,247,666 host instructions are not hardware cycles.
+See `perf_records/tiny_malloc_noalias_emission_neutral.json` and
+`perf_records/tiny_fused_poly_current_profile_spike.json`.
+
 Captured ResNet classifier M1/N1000/K2048 GSIM execution measures594,580 to456,259
 cycles (23.26% fewer) forwideB/cacheA. All1,000 i32outputs and2,048 guard bytes
 match. Native full-model capture supplying its activation/hoisted weights matches
@@ -711,3 +727,17 @@ Torch replay also reproduces all1,600 retainedgolden values; full-source boundar
 tracing now localizes remaining language/actor error. No full Smol hardware is
 admitted. Exact arithmetic compatibility remains optional and source/backend
 bound; no default frontend rewrite or reference replacement was made.
+
+### Upstream half-precision contraction correction
+
+An executed long-reduction witness exposed BF16 accumulation in24 SmolVLA
+language/actor PV results:K4096 ones produced256 instead of4096. model2MLIR main
+now includes46851eaf, which widens BF16/f16 operands to f32, accumulates in f32,
+and narrows once across mm, matmul, bmm, batched and broadcast paths. Rank-2
+contractions also begin from zero rather than uninitialized tensor.empty.
+All160 focused/related tests pass, including45 native long-reduction,
+product-rounding and empty-K cases plus10 export-path gates. Remote main was
+independently verified. The fresh whole SmolVLA source has zero opaque operations;
+original checkpoint weights, extras, six inputs,1,600 reference outputs,
+manifest and input-order hashes remain unchanged. Its full gate is pending.
+Backend-compatible arithmetic policies remain explicit and independent.
