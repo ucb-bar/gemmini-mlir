@@ -1,0 +1,444 @@
+{
+  "schema": "golden_calibrated_source_selection_qualification_v1",
+  "timestamp_utc": "2026-10-05T21:46:18.429244+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Existing shared exact-cover search can choose real legal source compiler alternatives from measured prices and drive actual emitted code",
+  "source": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/source.mlir",
+    "sha256": "39697629a35c939067db06d855da73afbbb67d0210cc099e1f2135c25b6332de"
+  },
+  "calibration": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/calibration.json",
+    "sha256": "6c3c6979d301a5ec097d9e92389e1ff886bc28c053ff47d9943cd7c5c30a8243"
+  },
+  "selected_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/selected_cli/golden_optimized_plan.json",
+    "sha256": "50b8c203eb05d2e6c56d9955f3e11fd106debe5fe6c487feea61f8a04c02d6ef"
+  },
+  "metric_scope": "Full kernel GSIM cycle counter for one source geometry and pinned amplitude21 fixture; not whole-model FireSim",
+  "before_cycles": 3234,
+  "after_cycles": 2357,
+  "improvement_fraction": 0.27118119975262833,
+  "geometry": {
+    "batch": 1,
+    "m": 17,
+    "n": 73,
+    "k": 65
+  },
+  "outputs_checked": 1241,
+  "guard_bytes_checked": 2048,
+  "input_amplitude": 21,
+  "numeric_scope": "Exact matched signed-i8 integer GEMM to i32, every fixture output and guard checked by real target probe; not whole-model quality",
+  "solver": {
+    "schema": "global_plan_result_v1",
+    "status": "refused",
+    "plan": {
+      "schema": "global_plan_v1",
+      "selected": [
+        {
+          "id": "contraction_9ec1b2a041370d10",
+          "nodes": [
+            0
+          ],
+          "implementation": "gemmini_export_9ec1b2a041370d10",
+          "placement": "gemmini",
+          "cycles": {
+            "lo": 2357.0,
+            "hi": 2357.0,
+            "resolved": true,
+            "provenance": [
+              "gsim_fixture:d233c04a936caa5246bd009871acb9a0f99eb4383d6876466db6641bfb5fae85:object:876849e42639d7147f56c93c1f62af5f23c543452a3fc2e822644a86e591c3e1"
+            ],
+            "missing": []
+          },
+          "inputs": [
+            {
+              "buffer": "lhs",
+              "representation": {
+                "placement": "memory",
+                "layout": "dense_row_major",
+                "dtype": "i8",
+                "encoding": "plain",
+                "quantization": "none",
+                "attributes": {}
+              }
+            },
+            {
+              "buffer": "rhs",
+              "representation": {
+                "placement": "memory",
+                "layout": "dense_row_major",
+                "dtype": "i8",
+                "encoding": "plain",
+                "quantization": "none",
+                "attributes": {}
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "buffer": "output",
+              "representation": {
+                "placement": "memory",
+                "layout": "dense_row_major",
+                "dtype": "i32",
+                "encoding": "plain",
+                "quantization": "none",
+                "attributes": {}
+              }
+            }
+          ],
+          "demands": [],
+          "occupancy": [
+            {
+              "resource": "opaque_invocation_elapsed",
+              "cycles": {
+                "lo": 2357.0,
+                "hi": 2357.0,
+                "resolved": true,
+                "provenance": [
+                  "gsim_fixture:d233c04a936caa5246bd009871acb9a0f99eb4383d6876466db6641bfb5fae85:object:876849e42639d7147f56c93c1f62af5f23c543452a3fc2e822644a86e591c3e1"
+                ],
+                "missing": []
+              },
+              "provenance": "gsim_fixture:d233c04a936caa5246bd009871acb9a0f99eb4383d6876466db6641bfb5fae85:object:876849e42639d7147f56c93c1f62af5f23c543452a3fc2e822644a86e591c3e1"
+            }
+          ],
+          "required_capabilities": [],
+          "resident_inputs": [],
+          "resident_outputs": [],
+          "scratch_bytes": 0,
+          "metadata": {
+            "source_sha256": "39697629a35c939067db06d855da73afbbb67d0210cc099e1f2135c25b6332de"
+          }
+        }
+      ],
+      "transitions": [],
+      "cycles": {
+        "lo": 2357.0,
+        "hi": 2357.0,
+        "resolved": true,
+        "provenance": [
+          "Exactly one opaque measured invocation; no internal engine composition inferred"
+        ],
+        "missing": []
+      },
+      "arena_bytes": 0,
+      "arena_offsets": {},
+      "required_capabilities": [],
+      "notes": [],
+      "digest": "55c28781b26f922b9966ee9f02c0ef9fa948d37afe56abd9a246494fd8966b0b"
+    },
+    "physical_floor": {
+      "cycles": null,
+      "resolved": false,
+      "provenance": [],
+      "missing": [
+        "No full-source physical floor is derived from fixture duration"
+      ]
+    },
+    "legal_floor": {
+      "cycles": null,
+      "resolved": false,
+      "provenance": [],
+      "missing": [
+        "No full-source physical floor is derived from fixture duration"
+      ]
+    },
+    "solver_lower_bound": {
+      "cycles": 2357.0,
+      "resolved": true,
+      "provenance": [
+        "compatible-plan branch-and-bound"
+      ],
+      "missing": []
+    },
+    "optimality_gap": 0.0,
+    "attainment": null,
+    "physical_attainment": null,
+    "expanded_states": 1,
+    "complete_plans": 2,
+    "elapsed_s": 0.0002503548748791218,
+    "timed_out": false,
+    "exhausted": true,
+    "refusals": [
+      "No full-source physical floor is derived from fixture duration"
+    ],
+    "occupancy": {
+      "total_cycles": 2357.0,
+      "busy_cycles": {
+        "opaque_invocation_elapsed": 2357.0
+      },
+      "compute_resources": [],
+      "movement_resources": [],
+      "movement_elapsed_cycles": 0,
+      "compute_utilization": null,
+      "overlap_cycles": 0.0,
+      "overlap_available_cycles": 0,
+      "latency_hiding_efficiency": 1.0,
+      "idle_cycles": 0.0,
+      "critical_path_cycles": 2357.0,
+      "movement_bytes": 0.0,
+      "movement_commands": 0,
+      "encoding_transitions": 0,
+      "provenance": [
+        "Exactly one opaque measured invocation; no internal engine composition inferred"
+      ],
+      "missing": []
+    }
+  },
+  "calibrated_enumeration_complete": true,
+  "roofline_attainment_resolved": false,
+  "accelerator_engine_occupancy": "UNKNOWN",
+  "physical_floor": "UNKNOWN",
+  "selected_plan_controls_emitted_code": true,
+  "shared_solver_selected": true,
+  "emitted_delta": "Selected cached A/wide B/next-K B prefetch family; calibrated kernel symbol/object emitted by SourceContractionEmitter",
+  "selected_kernel": "gemmini_export_9ec1b2a041370d10",
+  "selected_object": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/selected_cli/kernel.o",
+    "sha256": "876849e42639d7147f56c93c1f62af5f23c543452a3fc2e822644a86e591c3e1"
+  },
+  "source_immutable": true,
+  "whole_model_policy_changed": false,
+  "whole_model_correctness_verified": false,
+  "full_model_hardware_measured": false,
+  "calibrated_candidate_records": {
+    "control": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        17,
+        73,
+        65
+      ],
+      "kernel_symbol": "gemmini_export_83fa10f723eb11b2",
+      "block": [
+        2,
+        5
+      ],
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": true,
+      "cache_b": false,
+      "cache_a": false,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": false,
+      "separate_b_bank": false,
+      "prefetch_b": false,
+      "prefetch_b_rows": null,
+      "status": "pass",
+      "kernel_cycles": 3234,
+      "engine_cycles_including_harness": 48036,
+      "elf_sha256": "c98c7ffe3b6f84d885c074b2f80fab9d644421ab6da13e4292cb2ae02b29ef22",
+      "target_ir_sha256": "208db700a147d9a4cc4ee401df3b398036c0f6bf8291d6b9390b007f967fd8fb",
+      "llvm_ir_sha256": "4405282b9d3f3bf92c7a1fe801ffce69e88913c766b73757807d3319ae19979b",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "c98c7ffe3b6f84d885c074b2f80fab9d644421ab6da13e4292cb2ae02b29ef22",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 15,
+          "2": 6,
+          "3": 10,
+          "4": 15,
+          "5": 15,
+          "6": 30,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 3234\nGOLDEN_GEMM PASS M=17 N=73 K=65\n",
+      "stderr_tail": ""
+    },
+    "resident": {
+      "schema": "gemmini_golden_gemm_gsim_probe_v1",
+      "shape": [
+        17,
+        73,
+        65
+      ],
+      "kernel_symbol": "gemmini_export_9ec1b2a041370d10",
+      "block": [
+        2,
+        5
+      ],
+      "output_dtype": "i32",
+      "bias": false,
+      "input_amplitude": 21,
+      "scale": 1.0,
+      "relu": false,
+      "embedded_expected": true,
+      "static_inputs": true,
+      "wide_store": false,
+      "reuse_b": true,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false,
+      "prefetch_b": true,
+      "prefetch_b_rows": null,
+      "status": "pass",
+      "kernel_cycles": 2357,
+      "engine_cycles_including_harness": 47188,
+      "elf_sha256": "e2461061f0bc693b4395e9ec43ce915b2d33fcdfdbed42fa59ef54e6b3c264ae",
+      "target_ir_sha256": "3ce5e9686b1cb73c66d84d267ea4aa60c42f236fc5383e2f0f38f6ff33102b46",
+      "llvm_ir_sha256": "017c6d755d5f1d250032e8cb9b6ed79e125ac6ec04c7e1c4826897a64d49860d",
+      "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "e2461061f0bc693b4395e9ec43ce915b2d33fcdfdbed42fa59ef54e6b3c264ae",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 4,
+          "1": 10,
+          "2": 10,
+          "3": 10,
+          "4": 25,
+          "5": 25,
+          "6": 50,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 2357\nGOLDEN_GEMM PASS M=17 N=73 K=65\n",
+      "stderr_tail": ""
+    }
+  },
+  "fixture_pins": {
+    "control": {
+      "a.bin": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/control_probe/a.bin",
+        "sha256": "bf390d8a8f440bcf77c4de3103a166bf3216af13bc351b8b6577880d3f38dd2d"
+      },
+      "b.bin": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/control_probe/b.bin",
+        "sha256": "f796d66c80478716f5954bbd24fb3f98efd5d28107cb174c3a6b7216ae1dd83d"
+      },
+      "gemm_expected.inc": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/control_probe/gemm_expected.inc",
+        "sha256": "947ee6650e0e26565ae34205bdf66e0391fd0840348a67eb706f4be9f27ed016"
+      },
+      "layer.elf": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/control_probe/layer.elf",
+        "sha256": "c98c7ffe3b6f84d885c074b2f80fab9d644421ab6da13e4292cb2ae02b29ef22"
+      },
+      "gsim.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/control_probe/gsim.stdout",
+        "sha256": "de2d85195c97fc84af2f4b84ac4ac85884af6abc4896b759e2d18977c7562d90"
+      }
+    },
+    "resident": {
+      "a.bin": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/a.bin",
+        "sha256": "bf390d8a8f440bcf77c4de3103a166bf3216af13bc351b8b6577880d3f38dd2d"
+      },
+      "b.bin": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/b.bin",
+        "sha256": "f796d66c80478716f5954bbd24fb3f98efd5d28107cb174c3a6b7216ae1dd83d"
+      },
+      "gemm_expected.inc": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/gemm_expected.inc",
+        "sha256": "947ee6650e0e26565ae34205bdf66e0391fd0840348a67eb706f4be9f27ed016"
+      },
+      "layer.elf": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/layer.elf",
+        "sha256": "e2461061f0bc693b4395e9ec43ce915b2d33fcdfdbed42fa59ef54e6b3c264ae"
+      },
+      "gsim.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/gsim.stdout",
+        "sha256": "f2b965a346fbdf78a651734ea830a9b8fea9929f375cb263ca0378c4c72caa19"
+      }
+    }
+  },
+  "spike": {
+    "argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--isa=rv64gc",
+      "--extension=gemmini",
+      "-m0x80000000:0x80000000",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/layer.elf"
+    ],
+    "status": "pass",
+    "log": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/resident_probe/spike.log",
+      "sha256": "800e2e6a809c8037716a417f48ead1c7da7631af022ecbbe07826dc18c62dd73"
+    },
+    "retired_instructions_not_hardware_cycles": 380
+  },
+  "validation": {
+    "focused_tests_passed": 24,
+    "normal_manifest_command_executed": true,
+    "package_inventory": {
+      "raw_receipt": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/calibrated_source_plan/compiler_inventory.json",
+        "sha256": "dccb0d1cbfc932739616dcbd5c3e471cf3b9350ef31443b0a321d16f80bb1a13"
+      },
+      "symbols": 532,
+      "surfaces": [
+        {
+          "id": "golden_calibrated_source_selection",
+          "path": "mlir_oot/golden_calibrated_plan.py",
+          "symbol": "optimize_contraction"
+        },
+        {
+          "id": "golden_dense_shape",
+          "path": "mlir_oot/golden_contraction_upstream.py",
+          "symbol": "choose_shape"
+        },
+        {
+          "id": "golden_dense_transfer_family",
+          "path": "mlir_oot/dense_schedule.py",
+          "symbol": "select_kernel"
+        },
+        {
+          "id": "golden_remaining_b_slots",
+          "path": "mlir_oot/b_slot_placement.py",
+          "symbol": "select_remaining_b_slots"
+        },
+        {
+          "id": "golden_dense_output_schedule",
+          "path": "mlir_oot/golden_gemm.py",
+          "symbol": "GoldenGemm._output_block"
+        },
+        {
+          "id": "golden_conv_schedule",
+          "path": "mlir_oot/conv_schedule.py",
+          "symbol": "select_kernel"
+        },
+        {
+          "id": "golden_conv_resident_stripe",
+          "path": "mlir_oot/golden_resident_stripe_conv.py",
+          "symbol": "GoldenResidentStripeConv.build"
+        }
+      ],
+      "missing": [],
+      "edit_contract_sha256": "9c6e554dfff4f6e6d364b87d3d4d1e46b836d177ab77ceb63a19bd272d4de44a"
+    }
+  },
+  "outcome": "Accept opt-in measured singleton selection/emission seam; whole-model alternatives and stronger cost/floor/engine proofs remain required",
+  "negative_attempts": [
+    "Initial Spike without explicit Gemmini extension refused custom instructions; explicit extension/strictRV64GC run passed",
+    "Shared solver roofline status remains refused because physical/legal floors are UNKNOWN; preserve scoped complete calibrated enumeration instead of claiming attainment"
+  ],
+  "token_usage_available": false,
+  "token_note": "Parent-owned raw thread counters recorded centrally; child goal tracker unavailable and no exclusive optimization attribution claimed"
+}

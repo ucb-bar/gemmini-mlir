@@ -92,23 +92,18 @@ class SourceContractionEmitter:
              'scope:one exact source contraction; surrounding model work is unmodified and unaccounted here'))
 
 
-def export_contraction(source_path,region_id,llvm_bin,workdir,*,
-                       dense_input_policy=None,dense_b_slot_policy=None,
-                       large_n=False,prefetch_b=False,activity_timeline=None,
-                       activity_artifact_sha256=None):
-    """Select, compile and verify the actual exported operation implementation."""
+def select_contraction_export(source_path,region_id,*,dense_input_policy=None,
+                              dense_b_slot_policy=None,large_n=False,prefetch_b=False):
+    """Derive one legal source alternative without compiling or pricing it."""
     from merlin.xdsl_dialects.lowering.dispatch_program import Buffer,DispatchProgram,Node
     from merlin.xdsl_dialects.lowering.global_plan import (
-        BufferRepresentation,CycleInterval,GlobalPlan,RegionAlternative,ValueRepresentation,
+        BufferRepresentation,CycleInterval,RegionAlternative,ValueRepresentation,
     )
-    from merlin.xdsl_dialects.lowering.global_plan_emission import emit_global_plan
     if dense_input_policy not in (None,'banked_command_cost','resident_a_command_cost','transfer_command_cost'):
         raise ValueError('unknown dense compiler policy')
     if dense_b_slot_policy not in (None,'remaining_rows'):
         raise ValueError('unknown B slot compiler policy')
-    if activity_timeline is None and activity_artifact_sha256 is not None:
-        raise ValueError('activity artifact identity requires a timeline')
-    source_path=Path(source_path);workdir=Path(workdir)
+    source_path=Path(source_path)
     source_bytes=source_path.read_bytes()
     source_sha=hashlib.sha256(source_bytes).hexdigest()
     dims,shape,binding=select(source_bytes.decode(),region_id,large_n=large_n,prefetch_b=prefetch_b)
@@ -140,8 +135,28 @@ def export_contraction(source_path,region_id,llvm_bin,workdir,*,
         inputs=tuple(BufferRepresentation(name,rep(name))for name in ('lhs','rhs')),
         outputs=(BufferRepresentation('output',rep('output')),),
         metadata=(('source_sha256',source_sha),))
+    return dict(source_sha256=source_sha,dimensions=asdict(dims),binding=binding,
+        generator=generator,schedule_kind=kind,b_slot_decision=b_decision,
+        kernel_symbol=symbol,logical=logical,alternative=alternative)
+
+
+def export_contraction(source_path,region_id,llvm_bin,workdir,*,
+                       dense_input_policy=None,dense_b_slot_policy=None,
+                       large_n=False,prefetch_b=False,activity_timeline=None,
+                       activity_artifact_sha256=None):
+    """Select, compile and verify the actual exported operation implementation."""
+    from merlin.xdsl_dialects.lowering.global_plan import GlobalPlan
+    from merlin.xdsl_dialects.lowering.global_plan_emission import emit_global_plan
+    if activity_timeline is None and activity_artifact_sha256 is not None:
+        raise ValueError('activity artifact identity requires a timeline')
+    options=dict(dense_input_policy=dense_input_policy,dense_b_slot_policy=dense_b_slot_policy,
+                 large_n=large_n,prefetch_b=prefetch_b)
+    selection=select_contraction_export(source_path,region_id,**options)
+    logical,alternative,generator=(selection[name]for name in ('logical','alternative','generator'))
+    unknown=alternative.cycles
     plan=GlobalPlan((alternative,),(),unknown,
                     notes=('Explicit source compiler decision; shared cycle-ranking solver is not invoked',))
+    workdir=Path(workdir)
     emitter=SourceContractionEmitter(source_path,logical,alternative,generator,llvm_bin,workdir)
     emission=emit_global_plan(logical,plan,emitter)
     activity=None
@@ -165,10 +180,11 @@ def export_contraction(source_path,region_id,llvm_bin,workdir,*,
                       occupancy=asdict(activity_timeline.occupancy(
                           provenance=(f'object_sha256:{activity_artifact_sha256}',
                                       *event_provenance.values()))))
-    result=dict(schema='golden_source_contraction_export_v1',source_sha256=source_sha,
-        dimensions=asdict(dims),binding=binding,schedule=asdict(generator.shape),
-        schedule_kind=kind,prefetch_b_rows=generator.prefetch_b_rows,
-        b_slot_decision=b_decision,kernel_symbol=symbol,compilation=emitter.compilation,
+    result=dict(schema='golden_source_contraction_export_v1',source_sha256=selection['source_sha256'],
+        dimensions=selection['dimensions'],binding=selection['binding'],schedule=asdict(generator.shape),
+        schedule_kind=selection['schedule_kind'],prefetch_b_rows=generator.prefetch_b_rows,
+        compiler_options=options,
+        b_slot_decision=selection['b_slot_decision'],kernel_symbol=selection['kernel_symbol'],compilation=emitter.compilation,
         logical_dispatch=logical.to_dict(),global_plan=plan.to_dict(),
         global_plan_emission=emission.receipt(),emitted_dispatch=emission.dispatch.to_dict(),
         activity=activity,occupancy_status='unknown' if activity is None else 'caller_supplied',

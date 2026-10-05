@@ -126,6 +126,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--emit-target-artifact", action="store_true")
     ap.add_argument("--emit-command-buffer", default=None, metavar="PATH")
     ap.add_argument("--export-golden-contraction", action="store_true")
+    ap.add_argument("--optimize-golden-contraction", action="store_true")
+    ap.add_argument("--calibration", type=Path)
     ap.add_argument("--export-golden-capture", action="store_true")
     ap.add_argument("--emit-golden-inventory", metavar="PATH")
     ap.add_argument("--region")
@@ -147,11 +149,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("input", nargs="?", default="-")
     args = ap.parse_args(argv)
 
-    exports=(args.export_golden_contraction,args.export_golden_capture,bool(args.emit_golden_inventory))
+    exports=(args.export_golden_contraction,args.optimize_golden_contraction,
+             args.export_golden_capture,bool(args.emit_golden_inventory))
     if sum(exports)>1:
         ap.error('select one golden export command')
     compilation_options=(args.region,args.llvm_bin,args.workdir,args.large_n,args.prefetch_b,
-                         args.dense_input_policy,args.dense_b_slot_policy)
+                         args.dense_input_policy,args.dense_b_slot_policy,args.calibration)
     capture_options=(args.flat_spatial,args.virtual_padding,args.exact_integer_readout,
                      args.banked_prefetch,args.grouped_b,args.separate_b_bank,
                      args.resident_input_policy,args.resident_stripes)
@@ -162,8 +165,13 @@ def main(argv: list[str] | None = None) -> int:
         ap.error('golden export commands cannot mix with interface pipeline options')
     if args.emit_golden_inventory and (args.input!='-' or any((*compilation_options,*capture_options))):
         ap.error('inventory export accepts no compilation options or input')
-    if args.export_golden_contraction and any(capture_options):
+    if (args.export_golden_contraction or args.optimize_golden_contraction) and any(capture_options):
         ap.error('capture schedule options require --export-golden-capture')
+    if args.calibration is not None and not args.optimize_golden_contraction:
+        ap.error('calibration requires --optimize-golden-contraction')
+    if args.optimize_golden_contraction and any((args.large_n,args.prefetch_b,
+                                                args.dense_input_policy,args.dense_b_slot_policy)):
+        ap.error('optimized alternatives derive options from their pinned exports')
     if args.export_golden_capture and any((args.region,args.large_n,args.prefetch_b)):
         ap.error('contraction identity and schedule options require --export-golden-contraction')
     if any(exports):
@@ -178,15 +186,22 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if args.input=='-' or args.llvm_bin is None or args.workdir is None:
                     raise ValueError('golden compilation requires an input file, --llvm-bin and --workdir')
-                if args.export_golden_contraction:
+                if args.export_golden_contraction or args.optimize_golden_contraction:
                     if not args.region:raise ValueError('contraction export requires --region identity')
-                    result=export_contraction(Path(args.input),args.region,args.llvm_bin,args.workdir,
-                        large_n=args.large_n,prefetch_b=args.prefetch_b,
-                        dense_input_policy=args.dense_input_policy,dense_b_slot_policy=args.dense_b_slot_policy)
+                    if args.optimize_golden_contraction:
+                        from .golden_calibrated_plan import optimize_contraction
+                        if args.calibration is None:raise ValueError('optimized contraction requires --calibration')
+                        result=optimize_contraction(Path(args.input),args.region,args.llvm_bin,
+                                                   args.workdir,args.calibration)
+                    else:
+                        result=export_contraction(Path(args.input),args.region,args.llvm_bin,args.workdir,
+                            large_n=args.large_n,prefetch_b=args.prefetch_b,
+                            dense_input_policy=args.dense_input_policy,dense_b_slot_policy=args.dense_b_slot_policy)
                     print(json.dumps(dict(kernel_symbol=result['kernel_symbol'],
                         object_sha256=result['compilation']['object_sha256'],
                         selected_plan_controls_emitted_code=result['selected_plan_controls_emitted_code'],
-                        receipt=str(args.workdir/'golden_export.json'))))
+                        receipt=str(args.workdir/('golden_optimized_plan.json'
+                            if args.optimize_golden_contraction else 'golden_export.json')))))
                 else:
                     result=export_capture(Path(args.input),args.llvm_bin,args.workdir,
                         flat_spatial=args.flat_spatial,virtual_padding=args.virtual_padding,

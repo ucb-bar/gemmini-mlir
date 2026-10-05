@@ -101,3 +101,58 @@ target implementations. Ordinary host lowering also needs complete source-task
 to machine CFG accounting before that stronger proof can be claimed. This adapter
 labels that accounting, original rewrite-chain equivalence and costs as unproven
 or unknown; it does not manufacture `mixed_program_plan_v1` evidence.
+
+## Measured shared selection that reaches emitted code
+
+`gemmini-opt --optimize-golden-contraction --region ID --calibration FILE
+--llvm-bin PATH --workdir PATH SOURCE` and the manifest command
+`optimize_golden_contraction` use existing Merlin `ExplicitPlanningAdapter`,
+`ActivityTimeline`, `optimize_program` and `GlobalPlanEmission`. The source
+contraction is the complete declared optimization unit. Surrounding model work
+is outside this route.
+
+First compile legal alternatives through `--export-golden-contraction`. Its
+receipt now carries the explicit compiler options. Measure their actual objects
+with the existing full-output GSIM probe and pinned static inputs. A calibration
+manifest names at least two exports and measurements, each by path and SHA256,
+plus the exact GSIM engine pin:
+
+```json
+{
+  "schema": "golden_contraction_calibrations_v1",
+  "gsim_engine": {"path": "/path/to/emulator", "sha256": "..."},
+  "candidates": [
+    {"export": {"path": "a/golden_export.json", "sha256": "..."},
+     "timing": {"path": "a_probe/result.json", "sha256": "..."}},
+    {"export": {"path": "b/golden_export.json", "sha256": "..."},
+     "timing": {"path": "b_probe/result.json", "sha256": "..."}}
+  ]
+}
+```
+
+The compiler re-derives every candidate from the current source semantics and
+explicit options. It checks exact source/operation geometry, schedules/slots,
+compiled object and IR identities, engine/linked-ELF/no-FSM closure, raw duration
+and numeric UART markers, and identical static input/expected-output hashes.
+Unpriced, duplicate, altered or incompatible candidates refuse. The shared
+search evaluates every admitted alternative; `SourceContractionEmitter` compiles
+the winner and requires its emitted object hash to equal the calibrated object.
+The plan's selected implementation therefore changes actual target code.
+
+Only an opaque measured invocation is priced. Its coarse timeline cannot reveal
+compute/DMA occupancy or overlap inside the accelerator. Physical/legal roofline
+floors remain unknown, so the shared result retains `status: refused` for that
+stronger attainment gate while returning its complete best measured plan.
+The receipt explicitly distinguishes complete calibrated enumeration from
+resolved roofline attainment. No fixture duration is reused for another source,
+input fixture, kernel shape or full model.
+
+Actual source `M17/N73/K65` with amplitude21 and independent tails checked every
+1,241 output plus2,048 guard bytes. Control measured3,234 GSIM kernel cycles;
+cached A/wide B/next-K prefetch measured2,357 (27.1% lower). The manifest command
+selected and emitted the latter actual object, and strict RV64GC Spike with the
+explicit Gemmini extension and final no-FSM audit passed.
+[Measured source-selection qualification](perf_records/golden_calibrated_source_selection_qualification.json).
+This is a working scoped selection/emission foundation; the normal whole-model
+binding remains an identity admission gate until its complete legal alternatives,
+host transitions, costs and downstream instruction accounting are supplied.

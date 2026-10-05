@@ -40,6 +40,19 @@ commands:
     - '{tool}'
     - --emit-golden-inventory
     - '{output_json}'
+  optimize_golden_contraction:
+    argv:
+    - '{tool}'
+    - --optimize-golden-contraction
+    - --region
+    - '{region_id}'
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --workdir
+    - '{output_dir}'
+    - --calibration
+    - '{calibration_json}'
+    - '{input_mlir}'
   emit_command_buffer:
     argv:
     - '{tool}'
@@ -128,6 +141,28 @@ components:
   - mlir_oot/codegen/
   - mlir_oot/ir/
   - mlir_oot/tables/
+  optimize_golden_contraction:
+  - manifest.yaml
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/golden_calibrated_plan.py
   export_golden_capture:
   - manifest.yaml
   - gemmini-opt
@@ -312,6 +347,16 @@ status_detail: Graded by merlin.targetgen.capsule_grade against the gemmini caps
 target: gemmini
 version: 0
 optimization_surfaces:
+- id: golden_calibrated_source_selection
+  scope: heuristic
+  path: mlir_oot/golden_calibrated_plan.py
+  symbol: optimize_contraction
+  effects: [tiling, movement, residency, latency_hiding]
+  cca_axes: [compute.register_block, dispatch.dma_overlap, memory.capacity_fit]
+  mechanism: Bind legal same-source compiler alternatives to exact measured fixture prices and invoke Merlin's existing exact-cover search.
+  emitted_delta: Compiles the selected actual target implementation and requires its calibrated object identity.
+  validation: Preserve source, fixture, compiler and engine pins; refuse unpriced, duplicate, changed or incomplete alternatives and validate the emitted object.
+  abandonment: Refuse incompatible calibration; keep physical floor, internal engine occupancy and whole-model costs unknown until independently established.
 - id: golden_dense_shape
   scope: heuristic
   path: mlir_oot/golden_contraction_upstream.py

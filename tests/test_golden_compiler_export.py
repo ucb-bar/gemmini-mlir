@@ -53,10 +53,11 @@ def test_inventory_uses_actual_new_commands_and_existing_contract_checks():
     result=export_inventory(PACKAGE)
     inventory=result['package_inventory']
     assert not inventory['missing']
-    assert len(inventory['surfaces'])==6
+    assert len(inventory['surfaces'])==7
     symbol=next(row for row in inventory['symbols']
         if row['path']=='mlir_oot/golden_gemm.py' and row['symbol']=='GoldenGemm._output_block')
-    assert set(symbol['commands'])=={'export_golden_capture','export_golden_contraction','build_golden_model'}
+    assert set(symbol['commands'])=={'export_golden_capture','export_golden_contraction',
+                                    'optimize_golden_contraction','build_golden_model'}
     assert 'emit_command_buffer' not in symbol['commands']
     contract=result['compiler_edit_contract']
     assert len(contract['required_decisions'])==len(inventory['surfaces'])
@@ -70,7 +71,7 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     argv=[part.format(tool=str(PACKAGE/'gemmini-opt'),output_json=receipt)
           for part in manifest['commands']['export_golden_inventory']['argv']]
     completed=subprocess.run([sys.executable,*argv],capture_output=True,text=True,check=True)
-    assert json.loads(completed.stdout)['surfaces']==6
+    assert json.loads(completed.stdout)['surfaces']==7
     assert json.loads(receipt.read_text())['compiler_edit_contract']['sha256']
 
 
@@ -80,6 +81,8 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     ['--export-golden-capture','--region','ignored'],
     ['--emit-golden-inventory','out.json','--prefetch-b'],
     ['--export-golden-contraction','--emit-target-artifact'],
+    ['--export-golden-contraction','--calibration','unused.json'],
+    ['--optimize-golden-contraction','--prefetch-b'],
 ])
 def test_incompatible_or_inert_cli_options_refuse(args):
     with pytest.raises(SystemExit) as failure:main(args)
