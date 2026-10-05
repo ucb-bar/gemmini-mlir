@@ -82,8 +82,10 @@ target accuracy gates still run.
 The resulting `device_prepared/global_plan/compiler_plan.json` carries complete
 prepared-IR preservation and artifact bindings for Phase 2 review alongside the
 existing package inventory/edit contract. Unsupported external symbols or
-incomplete catalog/binary bindings are refused. The identity plan preserves the
-existing compiler decisions. It claims no optimization or shared solver use.
+incomplete catalog/binary bindings are refused. The identity plan is an admission
+check for the existing compiler decisions. Its checked outlined IR is discarded;
+the selected plan does not control compiled IR or target schedules. It claims no
+optimization or shared solver use.
 
 The unchanged qualified 1853 artifact was replayed through these same hooks:
 3,434 source graph nodes, 70 external catalog routes and the exact classifier

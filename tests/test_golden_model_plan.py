@@ -48,6 +48,8 @@ def test_complete_integer_source_plan_drives_unchanged_normal_catalog_path(tmp_p
     assert len(state['logical_dispatch']['nodes'])>1
     assert len(state['global_plan']['selected'])==len(state['logical_dispatch']['nodes'])
     assert state['prepared_ir_operation_cover_complete']
+    assert state['identity_plan_admission_gate']
+    assert not state['selected_plan_controls_emission']
     assert state['outlined_preservation_proof']['computation']=='expanded_driver_structurally_equivalent'
     manifest,obj=routing.catalog_builder(prepared,tmp_path/'catalog')
     assert obj.is_file() and state['catalog']['object_sha256']==sha(obj)

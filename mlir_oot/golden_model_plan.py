@@ -98,8 +98,8 @@ class GoldenModelPlanBinding:
             representation=lambda name:ValueRepresentation('tensor_ssa','logical',graph.buffers[name].dtype))
         emitter=OutlinedGlobalPlanEmitter(outlined)
         emission=emit_global_plan(graph,plan,emitter)
-        # Consume the checked identity emission at the actual compilation boundary,
-        # preserving the original bytes consumed by the established compiler path.
+        # Gate the existing compiler path on identity preservation. The emitted
+        # outlined module is checked, but the original prepared bytes are compiled.
         if not outlined.module.is_structurally_equivalent(emitter.module):
             raise ValueError('identity plan unexpectedly changed outlined source')
         if _sha(prepared)!=source_sha:
@@ -120,7 +120,8 @@ class GoldenModelPlanBinding:
             declared_external_entrypoints={name:('_mlir_ciface_'+name
                 if 'llvm.emit_c_interface' in op.attributes else name) for name,op in declarations.items()},
             called_external_symbols=dict(called),prepared_ir_operation_cover_complete=True,
-            selected_plan_controls_emission=True,selection_kind='identity preservation of existing compiler decisions',
+            selected_plan_controls_emission=False,identity_plan_admission_gate=True,
+            selection_kind='identity admission check of existing compiler decisions',
             selection_controls_target_schedule=False,
             compiled_source_policy='preserve exact original prepared bytes after checked identity-emission gate',
             shared_solver_selected=False,cycles_status='UNKNOWN',occupancy_status='UNKNOWN',
