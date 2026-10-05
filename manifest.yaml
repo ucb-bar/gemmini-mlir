@@ -349,6 +349,16 @@ status_detail: Graded by merlin.targetgen.capsule_grade against the gemmini caps
 target: gemmini
 version: 0
 optimization_surfaces:
+- id: golden_calibrated_model_catalog
+  scope: codegen
+  path: mlir_oot/golden_calibrated_catalog.py
+  symbol: compile_calibrated_catalog
+  effects: [tiling, movement, residency, latency_hiding]
+  cca_axes: [compute.register_block, dispatch.dma_overlap, memory.capacity_fit]
+  mechanism: Bind explicit prepared-source calibrations to the ordinary model catalog and invoke the existing shared selector for each covered contraction.
+  emitted_delta: Replaces the actual selected object and source-call symbol while retaining every required unselected implementation in the linked catalog.
+  validation: Require exact source and operation bindings, selected receipt/object pins, complete default coverage, unique symbols and final executable closure with original numeric gates.
+  abandonment: Refuse stale or incomplete calibration; keep whole-graph costs, alias analysis and shared whole-model selection unknown rather than summing capsule measurements.
 - id: golden_calibrated_source_selection
   scope: heuristic
   path: mlir_oot/golden_calibrated_plan.py

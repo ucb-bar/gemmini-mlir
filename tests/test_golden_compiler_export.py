@@ -53,7 +53,11 @@ def test_inventory_uses_actual_new_commands_and_existing_contract_checks():
     result=export_inventory(PACKAGE)
     inventory=result['package_inventory']
     assert not inventory['missing']
-    assert len(inventory['surfaces'])==7
+    catalog_owner=next(row for row in inventory['symbols']
+        if row['path']=='mlir_oot/golden_calibrated_catalog.py'
+        and row['symbol']=='compile_calibrated_catalog')
+    assert catalog_owner['commands']==['build_golden_model']
+    assert any(row['id']=='golden_calibrated_model_catalog' for row in inventory['surfaces'])
     symbol=next(row for row in inventory['symbols']
         if row['path']=='mlir_oot/golden_gemm.py' and row['symbol']=='GoldenGemm._output_block')
     assert set(symbol['commands'])=={'export_golden_capture','export_golden_contraction',
@@ -71,7 +75,7 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     argv=[part.format(tool=str(PACKAGE/'gemmini-opt'),output_json=receipt)
           for part in manifest['commands']['export_golden_inventory']['argv']]
     completed=subprocess.run([sys.executable,*argv],capture_output=True,text=True,check=True)
-    assert json.loads(completed.stdout)['surfaces']==7
+    assert json.loads(completed.stdout)['surfaces']==8
     assert json.loads(receipt.read_text())['compiler_edit_contract']['sha256']
 
 
