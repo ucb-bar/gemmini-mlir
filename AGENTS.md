@@ -23,6 +23,8 @@ Source-bound model selections belong in experiment drivers. Promote winning stra
 into general passes and cost models; qualify independent shapes, spatial/channel tails,
 numeric policies and fallback/refusal cases. Performance targets motivate optimization;
 they do not justify replacing model computation or baking in the benchmark.
+Provenance IDs remain valid for traceability and exact source-to-device binding; they
+must not select the optimization strategy.
 
 Preserve explicit numeric policy selection, immutable original model accuracy gates, exact
 source/catalog bindings, and final-ELF instruction audits when moving an implementation.

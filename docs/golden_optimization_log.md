@@ -961,3 +961,27 @@ list and produces byte-identical rewritten IR and device object, reusing its ful
 qualification. [Equivalence](perf_records/resnet_resident_compiler_policy_equivalence.json).
 The three dense banked source selections in that combined experiment remain explicit experiment
 choices; this policy generalizes the resident convolution part.
+
+
+### Completed shared host/layout extractions
+
+Merlin now owns structural bounded host RNE recognition, explicit portable/RV64GC CPU
+code generation and the normal pre-object callback. The default policy preserves bytes.
+Source-derived signed widths/bounds generalize beyond i8;24 core tests cover independent i8/i16
+domains, quoted/multiline SSA, strict/constrained/flagged refusal and explicit policy selection.
+All89 actual Tiny routes and both native/RV64GC objects remain byte-identical; prior all-five
+rounding-mode boundary capsules retain their107,415 checks. OOT keeps the historical printer
+prefix and legacy relink/accelerator audit adapter. [Extraction](perf_records/late_rne_core_extraction.json).
+
+Common explicit permutation proof also moved to Merlin, with arbitrary ranks/element types,
+static tails and live fanout. OOT retains the residual implementation's two-i8 operand policy.
+Ten core and three existing OOT tests pass; all16 retained residual routes keep identical
+layout/proof/declaration fields and adapter/native C bytes. The pre-residual source snapshot
+was unavailable, so this evidence does not claim a full-source rewrite replay.
+[Extraction](perf_records/shared_permutation_extraction.json).
+
+These changes preserve source provenance for traceability and exact generated-kernel binding;
+provenance identifiers do not select production optimization strategies. Further generic host
+fusion/compilation scalability work continues in Merlin. Smol's generic elementwise fusion
+retains all1,600 original outputs bitexact and reduces accepted host LLVM28MiB to21MiB; target
+optimized compilation is still being qualified, with the900s failures retained.

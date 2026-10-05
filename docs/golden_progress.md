@@ -27,6 +27,12 @@ schedules, instruction lowering, resource facts and target ABI wrappers. The ext
 preserves all proof and generated C bytes for five independent cases and both actual source
 readouts; generic numeric tests moved to core. [Extraction receipt](perf_records/generic_numeric_owner_extraction.json).
 
+Structural bounded host RNE legalization and common tensor permutation proofs now also live
+in Merlin; the OOT provider delegates with unchanged qualified object/C bytes. The general
+resident compiler policy chooses the same seven kernels from shape/padding/resource facts,
+without a resident source-ID selection list, and reproduces the qualified device object and
+rewritten IR byte for byte. [Policy equivalence](perf_records/resnet_resident_compiler_policy_equivalence.json).
+
 Generic source-bound post-offload callbacks and explicit full-write/result-identity contracts
 now let the normal model builder expose fresh output ownership. All155 Tiny calls are covered,
 with native and actual Spike outputs unchanged; isolated hardware arm1842 compares with1835.
