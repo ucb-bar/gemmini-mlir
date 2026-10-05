@@ -27,7 +27,7 @@ def stage_capture(capture:Path,bundle:Path,destination:Path):
     return destination
 
 
-def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
+def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,propagate_layout=False):
     """Callbacks for the derived capture; verify fused symbol set before compilation."""
     llvm_bin,requant_bundle=map(Path,(llvm_bin,requant_bundle));state={}
     requant=json.loads((requant_bundle/'requant.json').read_text());requant_sha=sha(requant_bundle/'requant.json')
@@ -65,6 +65,10 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
         prepared,report=rewrite_prepared_file(rewritten,identity)
         prepared=Path(prepared)
         (identity/'identity_view_report.json').write_text(json.dumps(report.to_dict(),indent=2)+'\n')
+        if propagate_layout:
+            from .physical_layout import rewrite_file
+            prepared,layout_report=rewrite_file(prepared,Path(work)/'physical_layout')
+            state['layout_report']=layout_report
         state.update(direct=direct,manifest=manifest,prepared_sha256=sha(prepared))
         return prepared
     def build(source,work):
@@ -85,6 +89,7 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
         if audit['status']!='pass':raise ValueError('fused mixed object no-FSM audit failed')
         manifest['compilation']={'schema':'gemmini_fused_mixed_compile_v1','object_sha256':sha(merged),'object_nofsm_status':'pass','dense_compilation':manifest['compilation'],'direct_manifest_sha256':sha(state['direct']/'direct_conv.json'),'requant_manifest_sha256':requant_sha,'weights_sha256':requant['weights_sha256'],'linker_argv':command,'linker_sha256':sha(linker)}
         manifest['direct_convolutions']=state['manifest']['routes'];manifest['fused_requantizations']=requant['routes'];manifest['total_device_contractions']=manifest['covered_contractions']+len(manifest['direct_convolutions'])+len(requant['routes'])
+        if propagate_layout:manifest['physical_layout']=state['layout_report']
         manifest['native_oracle_sources']=[str(state['direct']/'native_oracle.c'),str(requant_bundle/'native_oracle.c')]
         path=work/'device_catalog.json';path.write_text(json.dumps(manifest,indent=2)+'\n');(work/'fused_mixed_object_audit.json').write_text(json.dumps(audit,indent=2)+'\n')
         return path,merged
