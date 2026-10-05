@@ -1,0 +1,772 @@
+{
+  "schema": "resnet_banked_command_policy_full_gate_v1",
+  "scope": "General shape/resource/command-cost dense policy; no dense source selections. Retains the exact1836 static resident experiment and all other device/host policies. Defaults unchanged.",
+  "capture_source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "route_count": 52,
+  "fresh_writer_calls": 70,
+  "all_numeric_proofs_unchanged": true,
+  "rewritten_ir_byte_identical": true,
+  "changed_device_regions": [
+    "matmul_3",
+    "matmul_4",
+    "matmul_7",
+    "matmul_10"
+  ],
+  "source_replay": {
+    "schema": "banked_command_policy_source_screen_v1",
+    "policy": "banked_command_cost",
+    "selection_inputs": "Source GEMM dtype/shape/epilogue, target resources and primitive command counts; no dense source IDs supplied",
+    "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+    "control_manifest": "/scratch/agustin/tmp/gemmini-resident-conv-20261005/out/exact52_three_banked_resident_bundle/requant.json",
+    "control_manifest_sha256": "0394708033915f3c3861ca683b4d2a765c7d4bd6165470ebf85a50c69b57a85b",
+    "routes": 52,
+    "numeric_proofs_unchanged": true,
+    "rewritten_ir_byte_identical": true,
+    "changed_device_regions": [
+      "matmul_3",
+      "matmul_4",
+      "matmul_7",
+      "matmul_10"
+    ],
+    "object_sha256": "bf4f8c4ffbaeadf97f15df926a741dd1757c5b3a6131f0ad7be51aa60688053c",
+    "decisions": [
+      {
+        "region": "matmul_1",
+        "decision": {
+          "applied": false,
+          "refusal": "primitive command count does not decrease",
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 64,
+            "k": 64,
+            "bm": 1,
+            "bn": 4,
+            "macs": 12845056,
+            "array_floor_cycles": 50176,
+            "mesh_compute_commands": 3136,
+            "padded_array_floor_cycles": 50176,
+            "dma_request_bytes_upper": 405504,
+            "dma_request_transfer_cycles_at_16B_upper": 25344,
+            "unique_tensor_bytes": 405504,
+            "unique_dram_floor_cycles_at_16B": 25344,
+            "primitive_command_count": 6668,
+            "output_blocks": 196,
+            "mvout_commands": 196,
+            "a_panel_loads": 784,
+            "b_panel_loads": 16,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 4
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 64,
+            "k": 64,
+            "bm": 1,
+            "bn": 4,
+            "macs": 12845056,
+            "array_floor_cycles": 50176,
+            "mesh_compute_commands": 3136,
+            "padded_array_floor_cycles": 50176,
+            "dma_request_bytes_upper": 405504,
+            "dma_request_transfer_cycles_at_16B_upper": 25344,
+            "unique_tensor_bytes": 405504,
+            "unique_dram_floor_cycles_at_16B": 25344,
+            "primitive_command_count": 6668,
+            "output_blocks": 196,
+            "mvout_commands": 196,
+            "a_panel_loads": 784,
+            "b_panel_loads": 16,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 4
+          }
+        }
+      },
+      {
+        "region": "matmul_3",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 8,
+            "bn": 8,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1613824,
+            "dma_request_transfer_cycles_at_16B_upper": 100864,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26664,
+            "output_blocks": 50,
+            "mvout_commands": 784,
+            "a_panel_loads": 1568,
+            "b_panel_loads": 1600,
+            "a_mvin_commands": 392,
+            "b_mvin_commands": 400
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 1,
+            "bn": 16,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 784,
+            "a_panel_loads": 784,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_4",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 8,
+            "bn": 8,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1613824,
+            "dma_request_transfer_cycles_at_16B_upper": 100864,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26664,
+            "output_blocks": 50,
+            "mvout_commands": 784,
+            "a_panel_loads": 1568,
+            "b_panel_loads": 1600,
+            "a_mvin_commands": 392,
+            "b_mvin_commands": 400
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 1,
+            "bn": 16,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 784,
+            "a_panel_loads": 784,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_5",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 64,
+            "k": 256,
+            "bm": 16,
+            "bn": 4,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 28436,
+            "output_blocks": 13,
+            "mvout_commands": 196,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 3136,
+            "b_mvin_commands": 16
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 64,
+            "k": 256,
+            "bm": 1,
+            "bn": 4,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 196,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 784,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_7",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 8,
+            "bn": 8,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1613824,
+            "dma_request_transfer_cycles_at_16B_upper": 100864,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26664,
+            "output_blocks": 50,
+            "mvout_commands": 784,
+            "a_panel_loads": 1568,
+            "b_panel_loads": 1600,
+            "a_mvin_commands": 392,
+            "b_mvin_commands": 400
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 1,
+            "bn": 16,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 784,
+            "a_panel_loads": 784,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_8",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 64,
+            "k": 256,
+            "bm": 16,
+            "bn": 4,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 28436,
+            "output_blocks": 13,
+            "mvout_commands": 196,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 3136,
+            "b_mvin_commands": 16
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 64,
+            "k": 256,
+            "bm": 1,
+            "bn": 4,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 196,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 784,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_10",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 8,
+            "bn": 8,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1613824,
+            "dma_request_transfer_cycles_at_16B_upper": 100864,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26664,
+            "output_blocks": 50,
+            "mvout_commands": 784,
+            "a_panel_loads": 1568,
+            "b_panel_loads": 1600,
+            "a_mvin_commands": 392,
+            "b_mvin_commands": 400
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 256,
+            "k": 64,
+            "bm": 1,
+            "bn": 16,
+            "macs": 51380224,
+            "array_floor_cycles": 200704,
+            "mesh_compute_commands": 12544,
+            "padded_array_floor_cycles": 200704,
+            "dma_request_bytes_upper": 1019904,
+            "dma_request_transfer_cycles_at_16B_upper": 63744,
+            "unique_tensor_bytes": 1019904,
+            "unique_dram_floor_cycles_at_16B": 63744,
+            "primitive_command_count": 26084,
+            "output_blocks": 196,
+            "mvout_commands": 784,
+            "a_panel_loads": 784,
+            "b_panel_loads": 64,
+            "a_mvin_commands": 196,
+            "b_mvin_commands": 16
+          }
+        }
+      },
+      {
+        "region": "matmul_11",
+        "decision": {
+          "applied": true,
+          "refusal": null,
+          "cost_unit": "primitive_commands_not_cycles",
+          "control": {
+            "m": 3136,
+            "n": 128,
+            "k": 256,
+            "bm": 8,
+            "bn": 8,
+            "macs": 102760448,
+            "array_floor_cycles": 401408,
+            "mesh_compute_commands": 25088,
+            "padded_array_floor_cycles": 401408,
+            "dma_request_bytes_upper": 1236992,
+            "dma_request_transfer_cycles_at_16B_upper": 77312,
+            "unique_tensor_bytes": 1236992,
+            "unique_dram_floor_cycles_at_16B": 77312,
+            "primitive_command_count": 53736,
+            "output_blocks": 25,
+            "mvout_commands": 392,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 128,
+            "a_mvin_commands": 3136,
+            "b_mvin_commands": 32
+          },
+          "candidate": {
+            "m": 3136,
+            "n": 128,
+            "k": 256,
+            "bm": 1,
+            "bn": 8,
+            "macs": 102760448,
+            "array_floor_cycles": 401408,
+            "mesh_compute_commands": 25088,
+            "padded_array_floor_cycles": 401408,
+            "dma_request_bytes_upper": 1236992,
+            "dma_request_transfer_cycles_at_16B_upper": 77312,
+            "unique_tensor_bytes": 1236992,
+            "unique_dram_floor_cycles_at_16B": 77312,
+            "primitive_command_count": 51384,
+            "output_blocks": 196,
+            "mvout_commands": 392,
+            "a_panel_loads": 3136,
+            "b_panel_loads": 128,
+            "a_mvin_commands": 784,
+            "b_mvin_commands": 32
+          }
+        }
+      },
+      {
+        "region": "matmul_13",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_14",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_15",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_17",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_18",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_20",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_21",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_23",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_24",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_26",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_27",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_28",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_30",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_31",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_33",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_34",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_36",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_37",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_39",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_40",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_42",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_43",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_45",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_46",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_47",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_49",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      },
+      {
+        "region": "matmul_50",
+        "decision": {
+          "applied": false,
+          "refusal": "cached B panels exceed the static or scratchpad budget"
+        }
+      },
+      {
+        "region": "matmul_52",
+        "decision": {
+          "applied": false,
+          "refusal": "output block exceeds the accumulator"
+        }
+      }
+    ],
+    "scope": "Explicit general banked compiler search option; static command costs are not hardware cycle predictions. Resident source selections retain the1836 experimental control. Whole-model gates/hardware are separate."
+  },
+  "control_job": 1836,
+  "control_hardware_cycles": 42837088,
+  "host_object_byte_identical_to_control": true,
+  "host_object_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+  "original_full_native_gate": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "actual_final_elf_spike_gate": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "ef09926406e9e911e87c4c758b50c49dce77764f3c565df5b7af992466d6ea24",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10013297",
+      "METRIC build_hash 2f9a72559690",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/spike.log",
+    "spike_console_sha256": "1ecc72d6df220708720c543c1cf704655dfeeb23ba5df1c8ee903be8fc862d00",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "final_elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/model.elf",
+  "final_elf_sha256": "ef09926406e9e911e87c4c758b50c49dce77764f3c565df5b7af992466d6ea24",
+  "normal_build": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "2f9a72559690",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/lower/model.ll",
+      "source_sha256": "85b38bfc4b0c1887043cc9a02ba0105b6278c08f9fb78164e49c9fcb755794e0",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_banked_command_policy/build_direct/host_llvm/model.linked.ll",
+      "selected_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c"
+    },
+    "supplemental_objects_sha256": "89ddefa2536b67305420a3a7812f67fb419efeee8a6cd6481ea763fbd3d9d0d8",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "final_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "ef09926406e9e911e87c4c758b50c49dce77764f3c565df5b7af992466d6ea24",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3262,
+      "2": 9643,
+      "3": 1259,
+      "4": 14686,
+      "5": 115840,
+      "6": 130526,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "control_spike_retired_instructions": 9946365,
+  "candidate_spike_retired_instructions": 10013297,
+  "hardware_claim": "None until independent verified stock FireSim terminal measurement. More Spike instructions coexist with positive kernel GSIM timing; do not infer a whole-model gain."
+}
