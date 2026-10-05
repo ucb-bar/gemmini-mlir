@@ -254,3 +254,13 @@ versus unprofiled11,497,420 instructions is profiling overhead only in this
 functional execution, not hardware overhead.47,020,321 remains hardware control.
 Profile inherits1795 harnesshash; final profile ELF686f2dd3... identifies it.
 Stock queue1801 will provide current device/host attribution.
+
+## Tiny activation polynomial hardware1800
+
+Strict stock result791,638,514 forwardcycles, full256,000-value/1,024,000-byte
+digest identical to prior captured native/Spike outputs; originalTorch tolerance
+unchanged. Final staged ELF/bitstream and UART pinned, normal build929c4f149a78.
+This saves8.67% versus1792 at866,822,103 and56.03% versus1747 at1,800,267,524.
+The explicit provenance-scoped activation approximation preserves these captured
+outputs but makes no universal source-bitexact activation promise. The19.41%
+Spike instruction reduction predicted a direction, not the hardware magnitude.
