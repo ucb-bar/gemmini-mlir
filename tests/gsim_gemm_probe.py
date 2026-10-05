@@ -174,6 +174,7 @@ def main() -> int:
         "shape": [args.m, args.n, args.k],
         "kernel_symbol": args.kernel_symbol,
         "block": [shape.bm, shape.bn],
+        "selected_schedule": asdict(shape),
         "output_dtype": args.output_dtype,
         "bias": args.bias,
         "input_amplitude": args.input_amplitude,
