@@ -11,3 +11,22 @@ def test_resident_resources_and_nonoverlap_admission():
   with pytest.raises(ValueError):GoldenResidentConv(bad)
  # Smaller odd widths/partial output channels are legal and fully verifiable.
  GoldenResidentConv(replace(s,h=3,w=5,cin=32,cout=19,bn=2)).build().verify()
+
+def test_grouped_resident_rows_admit_final_stage_without_extra_mesh_tiles():
+ from mlir_oot.golden_resident_conv import command_counts
+ s=ConvShape(7,7,512,512,bn=16,output_dtype='i8',scale=.0015428082551807165,relu=True)
+ # Two width7 rows are separated by the two halo lanes in a width9 plane.
+ # Four mesh tiles cover49 valid output rows; the final tile has one row.
+ g=GoldenResidentConv(s,rows_per_tile=2)
+ assert g.row_tiles==((0,2,16),(2,2,16),(4,2,16),(6,1,7))
+ g.build().verify()
+ counts=command_counts(s,rows_per_tile=2)
+ assert counts['padded_array_issue_cycles']==9*32*32*4*16
+ assert counts['accumulator_rows']==1024 and counts['resident_input_rows']==2592
+ # The old one-output-row schedule cannot hold this N panel in its accumulator.
+ with pytest.raises(ValueError):GoldenResidentConv(s)
+
+@pytest.mark.parametrize('rows',[0,3,True,1.5])
+def test_grouped_resident_rows_refuse_unencodable_or_untyped_group(rows):
+ s=ConvShape(7,7,512,512,bn=4)
+ with pytest.raises(ValueError):GoldenResidentConv(s,rows_per_tile=rows)

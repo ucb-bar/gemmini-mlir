@@ -18,6 +18,7 @@ def main():
     for key, value in [('h',3),('w',19),('cin',20),('cout',19),('stride',1)]:
         ap.add_argument('--'+key,type=int,default=value)
     ap.add_argument('--resident-input',action='store_true')
+    ap.add_argument('--resident-rows-per-tile',type=int,default=1)
     ap.add_argument('--virtual-padding',action='store_true',help='use unpadded input and primitive zero DMA at borders')
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
@@ -35,6 +36,8 @@ def main():
     ap.add_argument('--max-cycles',type=int,default=3000000)
     ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
+    if a.resident_rows_per_tile != 1 and not a.resident_input:
+        ap.error('resident row groups require --resident-input')
     if (a.wide_a or a.separate_b_bank or a.band_rows is not None) and not a.flat_spatial:
         ap.error("wide A or separate B bank requires --flat-spatial")
     s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,bn=a.bn,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu,explicit_halo=a.flat_spatial and not a.virtual_padding)
@@ -42,7 +45,7 @@ def main():
     out.mkdir(parents=True,exist_ok=False)
     if a.resident_input:
         from mlir_oot.golden_resident_conv import GoldenResidentConv
-        kernel = GoldenResidentConv(s)
+        kernel = GoldenResidentConv(s, rows_per_tile=a.resident_rows_per_tile)
     elif a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
         kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding,pingpong_b=a.pingpong_b)
@@ -73,7 +76,7 @@ static int8_t a[{ih*iw*s.cin}] __attribute__((aligned(64)));
 static int8_t b[{9*s.cin*s.cout}] __attribute__((aligned(64)));
 static struct {{{ctype} c[{len(values)}]; uint8_t guard[2048];}} box __attribute__((aligned(64)));
 static const int32_t expected[] = {{{','.join(values)}}};
-''' + '''static uint64_t cycles(void) {uint64_t v; __asm__ volatile("rdcycle %0":"=r"(v)::"memory"); return v;}
+''' + '''static uint64_t cycles(void) {uint64_t v; __asm__ volatile("csrr %0, mcycle":"=r"(v)::"memory"); return v;}
 int main(void) {
  for (int i=0;i<sizeof(a);i++) a[i]=i%11-5;
  for (int i=0;i<sizeof(b);i++) b[i]=i%13-6;

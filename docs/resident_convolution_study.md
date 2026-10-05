@@ -64,3 +64,24 @@ The measured-class composition selects matmul29/32/35/38/41 only. Each is
 H14/W14/Cin256/Cout256, stride1, i8/ReLU, with its own unchanged proved scale.
 It preserves the three already gated banked pointwise bindings. No other
 convolution shape is selected merely because it fits in scratch memory.
+
+## Grouped output rows for narrow resident planes
+
+The final-stage width7 source convolution needs a different resident mapping.
+One mesh tile per output row would issue7 tiles instead of the flat schedule's4.
+The explicit `rows_per_tile=2` mapping uses16 consecutive scratch rows: two
+width7 output rows separated by two halo lanes at padded pitch9. Only the valid
+lanes0–6 and9–15 are stored to their original NHWC destinations. The final tile
+contains one row. Channel/tap reduction order, source scale and zero padding
+remain unchanged. Static resource checks admit4×16×16=1024 accumulator rows.
+
+On source matmul51 geometry/scale (H7/W7/Cin512/Cout512), both standalone
+capsules pass all25,088 signed-i8 outputs and2,048 guard bytes in actual stock
+GSIM and strict RV64GC Gemmini Spike, with zero FSM instructions. GSIM decreases
+759,715 to743,898 cycles (2.08%). The padded mesh issue floor stays589,824.
+Inputs are deterministic synthetic data; this is not a whole-model measurement.
+The candidate's text grows68,980 to310,354 bytes because channel selection is
+unrolled. A bounded ordinary CPU channel loop is the next controlled screen.
+The default remains one row per tile, preserving already queued device bytes.
+
+Receipt: [grouped resident screen](perf_records/resnet_grouped_resident7_gsim.json).
