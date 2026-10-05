@@ -71,3 +71,12 @@ intentionally charged to host gaps because wrappers surround primitive device
 calls. Per-call shapes, source regions, categories and intervals are retained in
 the receipt. This provides measured priorities for host cleanup and device
 schedule work; the analytical selected issue floor is not a measured runtime.
+
+## ResNet exact uniform quantization + roundeven hardware1781
+
+The controlled host-improvement candidate completed in55,239,221 stock FireSim
+forward cycles versus62,441,162 for1775 (11.53% fewer). All1,000 original capture
+outputs are bit-exact; staged ELF, bitstream and UART identities are pinned.
+The no-FSM hardware schedules match1775. This combines two source-proven uniform
+quantization rewrites and the target round-to-nearest-even helper; their separate
+contributions are not isolated by this measurement.
