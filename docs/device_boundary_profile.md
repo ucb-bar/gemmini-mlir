@@ -13,7 +13,7 @@ Instrumented timings remain diagnostic. Wrapper overhead is mostly assigned to h
 Base ELF: 4ab852cd4b8b8037fe309076062bca23f3ff8e7f051d2d3269dfbd9ab6f4e14c.
 Profile ELF: 4367b3b79576a42e80e46e2aa0977ba7ca417da793f45cbc52fcb9a696696d4e.
 
-Actual Gemmini Spike: all 1,000 output words match the captured oracle bit-for-bit, rank mismatches 0, all 54 calls and 33 unique boundaries present, interval conservation passes. The forward counter is 1,193,352,331 versus 1,193,349,750 without profiling (+2581 retired instructions). Device-boundary counter 4,724,660; host-gap counter 1,188,627,671. These are functional Spike instruction counts, not hardware performance. FireSim job 1741 measures the same profile with the verified stock config.
+Actual Gemmini Spike: all 1,000 output words match the captured oracle bit-for-bit, rank mismatches 0, all 54 calls and 33 unique boundaries present, interval conservation passes. The wrapper forward counter is 1,193,352,331. The original harness metric is 1,193,352,377 versus 1,193,349,750 without profiling (+2,627 retired instructions). Device-boundary counter 4,724,660; host-gap counter 1,188,627,671. These are functional Spike instruction counts, not hardware performance. FireSim job 1741 measures the same profile with the verified stock config.
 
 Largest instruction-count gaps precede the stem (131,594,925) and the first pointwise contraction after the stem (137,117,632). Per-call gaps identify where to inspect host layout, padding, pooling and quantization code; they do not identify which individual operation is responsible without further source attribution.
 
