@@ -20,3 +20,9 @@ Largest instruction-count gaps precede the stem (131,594,925) and the first poin
 ## Automatic-loop infrastructure consequence
 
 Keep profiling at existing call boundaries or after optimization. Inserting opaque profiler calls before every upstream op can inhibit fusion and measure a different program. Preserve provenance from each device call to its source region so a host gap can be mapped to intervening operations. Include final ELF identity and wrapper overhead in benchmark records.
+
+## Unprofiled hardware baseline for attribution
+
+Stock FireSimGemminiRocketConfig job 1737 completed with **3,529,465,283 forward cycles** for the mixed direct16+dense38 ResNet artifact (ELF SHA `4ab852cd4b8b8037fe309076062bca23f3ff8e7f051d2d3269dfbd9ab6f4e14c`). All 1,000 output words are bit-exact against the captured integer oracle; rank mismatches are zero. Both actual staged ELF and actual bitstream hashes were checked before teardown. The immutable job-bound receipt is `docs/perf_records/resnet_direct_firesim1737.json`.
+
+This is 21.85% fewer cycles than fused-host job 1731 (4,516,405,461) and 37.87% fewer than initial baseline job 1730 (5,680,463,426). It remains far above the 22M goal. The paired boundary-profile job 1741 uses unchanged model/device objects with final-link wrappers; use its hardware host gaps and completed device calls to attribute the remaining cost. Spike retired-instruction shares are not hardware cycle shares.
