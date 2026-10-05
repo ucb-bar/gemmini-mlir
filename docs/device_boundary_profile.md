@@ -40,3 +40,7 @@ All 1,000 output words are bit-exact; actual staged ELF/bitstream identities mat
 Harness METRIC cycles is 3,541,290,794, versus the unprofiled 3,529,465,283: +11,825,511 cycles (0.335%). Final-link instrumentation perturbs timing, so individual intervals should be interpreted with that limitation. No host-gap figure identifies a single op: each gap includes preceding epilogues and next-call preparation.
 
 Largest host gaps precede ordinal1 (282,134,606), ordinal5 (255,400,597), stem ordinal0 (232,533,325), ordinal8 (173,283,746), ordinal11 (157,251,743), and classifier ordinal53 (152,500,167). Eliminating host format/quantization/layout work is the principal whole-model priority. Device work itself is still above the 22M goal: directconv13/14/15 each take about 6.12M cycles, and directconv7..12 each about 2.34–2.40M; those deeper convolutions are the next device schedule targets.
+
+## Fused epilogue whole-model result
+
+Job 1743 (source-proven fused27 epilogues) completed at **3,146,164,937 forward cycles**, with all 1,000 output words bit-exact against the same original oracle, zero rank mismatches, and actual staged ELF/bitstream hashes verified. This is 10.86% below mixed direct baseline 1737 and 44.61% below initial baseline 1730. Receipt: `docs/perf_records/resnet_fused27_firesim1743.json`. The 1741 attribution applies to the earlier mixed artifact; it is not a per-section profile of this fused artifact.
