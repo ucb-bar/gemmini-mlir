@@ -985,3 +985,31 @@ provenance identifiers do not select production optimization strategies. Further
 fusion/compilation scalability work continues in Merlin. Smol's generic elementwise fusion
 retains all1,600 original outputs bitexact and reduces accepted host LLVM28MiB to21MiB; target
 optimized compilation is still being qualified, with the900s failures retained.
+
+
+### Current isolated ownership and rejected resident-loop measurements
+
+Tiny1842 measures607,616,796 cycles against the same eight-output/K2 control1835
+610,246,484 (2,629,688 fewer,0.431%). Original Torch accuracy and all256,000 compiled
+output bits are unchanged; device bytes match the control and B-prefetch is off.
+Ownership+prefetch1846 passed its independent normal build/native/Spike/final-ELF
+gates and is queued, with device bytes identical1841. There is no combined cycle
+claim until its own terminal receipt.
+[Isolated hardware](perf_records/tiny_expanded_writer_firesim1842.json),
+[composition gate](perf_records/tiny_expanded_writer_prefetch_spike.json).
+
+ResNet1844 verifies43,514,726 cycles,677,638 (1.582%) slower than1836 despite
+retiring fewer Spike instructions. All1,000 original output bits remain exact.
+The channel-loop/grouped-row policy remains an optional legal compiler strategy,
+not the selected fastest recipe;42,837,088 remains best.
+[Negative hardware](perf_records/resnet_resident_channel_loop_firesim1844.json).
+
+Smol host fusion alone retains the full native gate but both ordinary fused and
+unfused optimized builds hit900-second timeouts. Whole-module noinline after LLVM
+loop extraction compiled in about565seconds, and helper-only noinline compiled
+in about77.4seconds while retaining original functions' inlining policies. These
+are compilation timings, not inference performance. Final full native/device
+qualification and generic Merlin option integration remain in progress. The
+wide-dot attention reassociation control fails144/1,600 original gate elements
+(maxabs .142716), so exact mathematical digit reconstruction cannot be assumed
+to preserve source attention accumulation. Source stage-specific controls follow.

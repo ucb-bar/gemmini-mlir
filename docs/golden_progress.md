@@ -35,7 +35,7 @@ rewritten IR byte for byte. [Policy equivalence](perf_records/resnet_resident_co
 
 Generic source-bound post-offload callbacks and explicit full-write/result-identity contracts
 now let the normal model builder expose fresh output ownership. All155 Tiny calls are covered,
-with native and actual Spike outputs unchanged; isolated hardware arm1842 compares with1835.
+with native and actual Spike outputs unchanged. Isolated hardware arm1842 measures607,616,796 cycles versus610,246,484 in1835 (0.431% lower); device bytes are unchanged and prefetch is off. The separately gated ownership+prefetch composition1846 is queued; no combined hardware gain is inferred.
 Eight-output/K2 plus device prefetch arm1841 now verifies571,097,507 hardware cycles,0.300% below1839; this small difference is one run, not a variance-adjusted claim.
 The current1837 four-output/K4 hardware profile conserves155 calls and attributes611,478,982
 interior cycles to219,073,155 device and392,405,827 host; intervals include all intervening
@@ -43,12 +43,11 @@ operations after fusion, not one source operation. [Profile](perf_records/tiny_c
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed; stock FireSim1844 is queued. It retires9,467,083 instructions versus9,946,365; this is not a hardware cycle
-claim. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836;42,837,088 remains the best. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function; a separately labeledO0 correctness ELF builds and
-passes the final no-FSM audit. Actual Spike is running. Reusable host fusion/compilation
+at900seconds on a large monolithic function. Generic loop extraction with noinline applied only to new helpers compiled an optimized target object in about77.4seconds; its full native accuracy and actual device gate are pending. A separately labeledO0 correctness ELF also builds,
+passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
 
