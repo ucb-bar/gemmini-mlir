@@ -1,0 +1,64 @@
+{
+  "scope": "Explicit fresh-allocation return alias contract hypothesis; only malloc declaration changed in LLVM; no code change and no duplicate native/Spike/HW execution",
+  "allocation_contract": {
+    "scope": "Explicit experimental fresh-allocation return alias contract; unchanged monotonic bump allocator between arena resets; no input/output/weights overlap with arena",
+    "source_sha256": "95bb9ad3e269d7fb6115d0c8d41757c2f337a0c7046f09a15e44d11e87f5a5f6",
+    "selected_sha256": "ac152abc676d35c5aa8fd819a901aa0f3f28e3dd4cb149e822bfb0d59d532335",
+    "allocator_source_sha256": "24465091ee82fc8597eff95521ac6f472a8bed2e986c05ba8e2ff2d29b5fa4ed",
+    "attribute": "malloc return noalias only"
+  },
+  "normal_build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_fused_o3_malloc_noalias/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "ca3fc42e173e",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_fused_o3_malloc_noalias/build/lower/model.ll",
+      "source_sha256": "3b42b54c1de02605fc4879d433f6a81ee11e96f5c64fc021acaf8c22b602dd0f",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_fused_o3_malloc_noalias/build/host_llvm/model.ll",
+      "selected_sha256": "ac152abc676d35c5aa8fd819a901aa0f3f28e3dd4cb149e822bfb0d59d532335"
+    },
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "control_hardware_job": 1806,
+  "model_object_sha256": "471ba3aafd47f35799fee82ac48b7eb31f0b4e748e0672fe012e2a50797c05dc",
+  "elf_sha256": "23db973e3efb352ad9c7deca2d24d808ce4fdfbeee6a425169fdd2560dec56d2",
+  "byte_identical_to_control": true,
+  "result": "emission-neutral; not promoted; no hardware improvement claim; does not address independent external tensor result-alias uncertainty"
+}
