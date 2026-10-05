@@ -179,7 +179,12 @@ legacy/prepared endpoint bits agree in independent oracle tests; mismatch of
 actual summarylength refuses. Plan origin/unmodified state, stableRNE and
 unobserved fenv/errno side effects are explicit semantic contracts. GCC emitted
 new v4_h1_prepared has both fdiv.d before loop; native originalheadbits/counts
-pass, strict target run is active. No performance result claimed until terminal.
+pass, strict target qualifies all65536 originalbits/gate0/rank0/DONE/rc0/noFSM.
+Complete1,411,626,064instructions,1.31% belowplain gamma,19.09% abovefair
+control; QKcertstage507,005,987/PVcert98,288,239, remaining stages/counts
+unchanged. Exact70818d67…4bac, marker3f5072cc62aa. Recovery holds this refined
+qualified candidate until actual1894/1895 results establish hardware direction;
+a small instruction change does not justify expanding the queue backlog.
 
 Current test count:38 numericalcertificate +8 packing tests,46total; generic
 no-regex, target-name and structural gates passed. Additional source snapshots
