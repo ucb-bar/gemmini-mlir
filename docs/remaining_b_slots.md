@@ -49,5 +49,19 @@ alone did not select the faster dense stripe schedule. Bank layout and primitive
 commands belong in the OOT backend; generic dependency, proof and recording
 infrastructure belongs in Merlin.
 
-The full immutable source bundle, native model, strict target and stock FireSim
-are the remaining gates before this schedule joins a whole-model recipe.
+## Full source and target gate
+
+The immutable 52-route source bundle retains every numeric proof, exact readout
+contract and rewritten IR byte. Seven pointwise objects change, selected only
+by the general slot policy. All 70 fresh writer contracts remain covered.
+Native and actual strict RV64GC Gemmini Spike match all 1,000 original f32
+output bits exactly, and the final linked ELF passes zero FSM.
+
+All host/runtime/weights/shim/classifier bytes match the 1853 control through
+the pinned normal builder. ELF `127d5adb...ea2b74`, marker `bf4c0c49c6e1` is
+ready for stock FireSim. Its 10,195,247 Spike instructions are functional
+evidence, not hardware cycles. [Full gate](perf_records/resnet_remaining_b_slots_policy_spike.json).
+The [optimization journey](perf_records/remaining_b_slots_optimization_journey.json)
+records the resource refusals, local measured win, whole correctness gates,
+ownership and metric scopes. Stock whole-model timing remains the admission
+gate; capsule gains are not assumed additive.

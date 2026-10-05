@@ -1,0 +1,672 @@
+{
+  "schema": "resnet_remaining_b_slots_policy_full_gate_v1",
+  "owner": "/root/reference_parity",
+  "checkpoint_utc": "2026-10-05 20:42:38 UTC",
+  "hypothesis": "Legal disjoint next-K B slots in remaining rows after complete cached A allow transfer overlap across deeper contractions. Source arithmetic, bytes and reductions are preserved; actual stock cycles decide admission.",
+  "control1853": {
+    "job_id": 1853,
+    "whole_model_cycles": 40479548
+  },
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_fresh_remaining_b_slots_pinned_runtime/build_direct/model.elf",
+    "elf_sha256": "127d5adbee5f4982bab5706a059e2a7c072ffd8c2c0bd74ed62ffacc1fea2b74",
+    "model_marker": "bf4c0c49c6e1",
+    "core_commit": "f5d2f0650a6b338b5c6c366dc46bbe57f9d6ab65",
+    "memory_bytes": 2147483648,
+    "arena_mb": 256,
+    "stack_mb": 16,
+    "console": "htif",
+    "isa": "rv64gc"
+  },
+  "source_replay": {
+    "schema": "remaining_b_slots_policy_source_screen_v1",
+    "policy": "remaining_rows_b_prefetch",
+    "selection_inputs": "Source GEMM shape, existing cached-A schedule and complete reserved SPAD row intervals; no source IDs supplied",
+    "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+    "control_manifest": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle/requant.json",
+    "control_manifest_sha256": "c76ab2f6b118eb4b3bb6aba3241bb378df99f9dec596d2196f3d323961a726bc",
+    "routes": 52,
+    "numeric_proofs_unchanged": true,
+    "rewritten_ir_byte_identical": true,
+    "changed_device_regions": [
+      "matmul_14",
+      "matmul_28",
+      "matmul_31",
+      "matmul_34",
+      "matmul_37",
+      "matmul_40",
+      "matmul_43"
+    ],
+    "object_sha256": "59bdbb221ebf0a7ab94aed8e0e068190ec97c78b5a99c2f128feefddd0340179",
+    "decisions": [
+      {
+        "region": "matmul_1",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_3",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_4",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_5",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_7",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_8",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_10",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_11",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_13",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_14",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 12544,
+          "reserved_b_panel_rows": 16,
+          "prefetch_b_rows": [
+            12544,
+            12560
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_15",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_17",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_18",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_20",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_21",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_23",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_24",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "requires complete cached A, multiple K panels and no competing B placement"
+        }
+      },
+      {
+        "region": "matmul_26",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_27",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_28",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_30",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_31",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_33",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_34",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_36",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_37",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_39",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_40",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_42",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_43",
+        "decision": {
+          "applied": true,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": null,
+          "reserved_a_rows": 13312,
+          "reserved_b_panel_rows": 64,
+          "prefetch_b_rows": [
+            13312,
+            13376
+          ],
+          "b_banks": [
+            3,
+            3
+          ],
+          "ordering": "initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain",
+          "emitted_delta": "B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged"
+        }
+      },
+      {
+        "region": "matmul_45",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_46",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_47",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_49",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_50",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      },
+      {
+        "region": "matmul_52",
+        "decision": {
+          "applied": false,
+          "timing_claim": false,
+          "policy": "remaining_rows",
+          "selection": "shape and complete SPAD extents",
+          "refusal": "existing B prefetch schedule retained"
+        }
+      }
+    ],
+    "scope": "Explicit general remaining-row B-slot placement option; legal bank sharing is not a hardware cycle prediction. Existing1836 narrow resident controls remain unchanged. Whole-model gates/hardware are separate."
+  },
+  "source_replay_sha256": "c0bfe00724bcb57e4510de9df4dc16f22cfeadb409e5f80152d0fd0fd016bbce",
+  "host_runtime_weights_shim_classifier_comparison": {
+    "model.o": {
+      "candidate_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+      "control1853_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+      "byte_identical": true
+    },
+    "host_llvm/model.linked.ll": {
+      "candidate_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+      "control1853_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+      "byte_identical": true
+    },
+    "host_llvm/model.ll": {
+      "candidate_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+      "control1853_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+      "byte_identical": true
+    },
+    "host_llvm/model.native.ll": {
+      "candidate_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+      "control1853_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+      "byte_identical": true
+    },
+    "device/device_catalog_shim.o": {
+      "candidate_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+      "control1853_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+      "byte_identical": true
+    },
+    "cgen/weights.bin": {
+      "candidate_sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+      "control1853_sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+      "byte_identical": true
+    },
+    "cgen/model_io.h": {
+      "candidate_sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+      "control1853_sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+      "byte_identical": true
+    },
+    "crt.o": {
+      "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "control1853_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "byte_identical": true
+    },
+    "mlir_rt.o": {
+      "candidate_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "control1853_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+      "byte_identical": true
+    },
+    "libc_min.o": {
+      "candidate_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+      "control1853_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+      "byte_identical": true
+    },
+    "console.o": {
+      "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "control1853_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "byte_identical": true
+    },
+    "model_call.o": {
+      "candidate_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+      "control1853_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+      "byte_identical": true
+    },
+    "device_catalog/kernel.o": {
+      "candidate_sha256": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3",
+      "control1853_sha256": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3",
+      "byte_identical": true
+    }
+  },
+  "fresh_writer_calls": 70,
+  "contract_manifests": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_remaining_b_slots_policy_bundle/requant.json",
+      "sha256": "d46236a2440d3fc3cfc16016cbaa4538f9a9aff9f2b5022f757ee1ff3ea3c515",
+      "provider": "requant"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/residual_bundle/residual.json",
+      "sha256": "9c5156ecaea12d88d527cbd1e3f93a21fad5a54a887cca9d06ef9556170c1abc",
+      "provider": "residual"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/stem_pool_bundle/stem_pool.json",
+      "sha256": "2a4f5796b953128d495395dd8a769027953f59a2bd0b3673b5a07b28cf9b2c27",
+      "provider": "stem"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_fresh_remaining_b_slots_pinned_runtime/mean_bundle/mean.json",
+      "sha256": "12da1877c809343304885d2e28f8714fe9b25568a07cbf4d9bf654c73d248461",
+      "provider": "mean"
+    }
+  ],
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "strict_spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "127d5adbee5f4982bab5706a059e2a7c072ffd8c2c0bd74ed62ffacc1fea2b74",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10195247",
+      "METRIC build_hash bf4c0c49c6e1",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_fresh_remaining_b_slots_pinned_runtime/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_fresh_remaining_b_slots_pinned_runtime/spike.log",
+    "spike_console_sha256": "d2c0ac1ef22d9ee81aaef4a0000b993a21e1a3d33e30c22d57e69a369b10bdee",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_fresh_remaining_b_slots_pinned_runtime/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "final_linked_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "127d5adbee5f4982bab5706a059e2a7c072ffd8c2c0bd74ed62ffacc1fea2b74",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3238,
+      "2": 19839,
+      "3": 1245,
+      "4": 14530,
+      "5": 117024,
+      "6": 131554,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "recipes": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/prepare_remaining_b_slots_policy.py",
+      "sha256": "d261b6f9033c590c44871fb2950cfe4dc6f206ae9b9a8651b7ef869e7e6c4df7"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/build_fresh_remaining_b_slots_pinned_runtime.py",
+      "sha256": "1250a39075af610c9e51df3997c1c7889ebb5f8be41d0f9796efad522f59f928"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/validate_fresh_remaining_b_slots_pinned_runtime.py",
+      "sha256": "0fc90a5af0bb6f3297162036153d062be89ff516b6a8a16f1cf523343777567a"
+    }
+  ],
+  "stock_hardware": {
+    "status": "ready",
+    "job_id": null,
+    "cycles": null
+  },
+  "token_checkpoint": {
+    "child_goal_counter_available": false,
+    "root_owned_thread_raw_counters": "Root supplies cumulative/per-thread raw snapshots independently; no exclusive attribution inferred here."
+  },
+  "outcome": "Original full-model native and strict target gates pass; stock comparison ready",
+  "why": "Only seven generically admitted pointwise kernels differ from1853. Original rewritten IR/numeric proofs, all host/runtime/weights/shim bytes and all1000 original f32 output bits remain exact."
+}
