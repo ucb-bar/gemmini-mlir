@@ -320,3 +320,22 @@ a candidate compiler abstraction, not evidence that it alone removes the2.92M
 measured readout-containing host intervals. Likewise prestem remains a5.24M
 interval containing input layout/quantization; any packed-input host lowering
 needs actual LLVM loop and memory evidence before claiming an isolated gain.
+
+### Generic full-writer ownership extraction
+
+The source-proved fresh-result rewrite now belongs to `merlin.llvmlower.fresh_tensor_writer`.
+Each contract explicitly supplies the returned argument, all completely written arguments,
+the borrowed external symbol, and allocation alignment. Core validates the complete selection
+before editing declarations; upstream bufferization/deallocation owns fresh buffers. No
+routing or numerical defaults change. Providers still prove identity/full writes and that the
+borrowed callee does not retain or free buffers. OOT owns the ranked C bridge, its symbol naming,
+and its 64-bit descriptor layout. There is no duplicated core rewrite.
+
+All 70 qualified ResNet routes reproduce byte-identical generic IR and borrowed bridge C
+(`fresh_tensor_writer_core_extraction.json`), so this extraction does not require a new model
+performance claim. Nine core tests include invalid later selections, borrowed-symbol collisions,
+and actual native upstream lowering with two independent full writers at O0/O2 and default
+deallocation. Seven existing OOT live-input/native gates also pass. Allocation alignment is
+an IR allocation request: later output-parameter forwarding can use caller-owned storage, whose
+alignment remains a separate caller obligation. The test does not assume stronger final-pointer
+alignment. The previously rejected return-original-C wrapper remains absent.
