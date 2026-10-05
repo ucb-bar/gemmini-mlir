@@ -38,7 +38,7 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
         check_requant();module=parse_module(Path(source).read_text())
         symbols={x['symbol'] for x in requant['routes']};calls=[x.callee.root_reference.data for x in module.walk() if x.name=='func.call' and x.callee.root_reference.data in symbols]
         if len(calls)!=len(symbols) or set(calls)!=symbols:raise ValueError('prepared source does not contain exact fused call set')
-        direct=Path(work)/'direct_conv';manifest=build_direct(Path(source),llvm_bin,direct,flat_spatial=flat_spatial)
+        direct=Path(work)/'direct_conv';manifest=build_direct(Path(source),llvm_bin,direct,flat_spatial=flat_spatial,allow_empty=True)
         rewritten=direct/'rewritten.mlir'
         if sha(rewritten)!=manifest['rewritten_sha256']:raise ValueError('direct rewrite identity mismatch')
         reparsed=parse_module(rewritten.read_text())

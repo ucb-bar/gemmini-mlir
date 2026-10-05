@@ -30,8 +30,8 @@ int main(void) {
  __asm__ volatile("rdcycle %0":"=r"(end)::"memory");
  printf("GOLDEN_RESADD_CYCLES %d\\n",(int)(end-begin));
  for(int i=0;i<65536;i++)if(c.output[i]!=expected[i]){printf("FAIL %d got%d want%d\\n",i,c.output[i],expected[i]);return 1;}
- for(int i=0;i<2048;i++)if(c.guard[i]!=0x5a){puts("FAIL guard");return 2;}
- puts("GOLDEN_RESADD PASS full65536pairs");return 0;
+ for(int i=0;i<2048;i++)if(c.guard[i]!=0x5a){printf("FAIL guard%d\\n",i);return 2;}
+ printf("GOLDEN_RESADD PASS full%dpairs\\n",65536);return 0;
 }
 ''')
 compile_module(build(1024,64,lhs_scale=args.lhs,rhs_scale=args.rhs,output_scale=args.readout,relu=True),args.llvm_bin,w)

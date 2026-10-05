@@ -20,7 +20,7 @@ from .golden_device_compile import compile_module
 from .no_fsm_audit import audit_elf
 
 
-def build(source: Path, llvm_bin: Path, output: Path, *, flat_spatial=False):
+def build(source: Path, llvm_bin: Path, output: Path, *, flat_spatial=False, allow_empty=False):
     output.mkdir(parents=True,exist_ok=False)
     text=source.read_text();module=parse_module(text)
     selected=[]
@@ -28,7 +28,7 @@ def build(source: Path, llvm_bin: Path, output: Path, *, flat_spatial=False):
         if match_integer_gemm(op) is None:continue
         try:selected.append(match(op))
         except ValueError:pass
-    if not selected:raise ValueError('no structurally proven direct convolution')
+    if not selected and not allow_empty:raise ValueError('no structurally proven direct convolution')
     objects=[];declarations=[];routes=[];native=[]
     for i,b in enumerate(selected):
         # One unique symbol per source operation avoids assuming shared graph lifetimes.
@@ -54,6 +54,11 @@ def build(source: Path, llvm_bin: Path, output: Path, *, flat_spatial=False):
         found=shutil.which('ld.lld')
         if found is None:raise ValueError('ld.lld is required for the relocatable bundle')
         linker=Path(found)
+    if not objects:
+        empty=output/'empty.c';empty.write_text('/* Uncalled audited anchor for the explicitly empty component. */\nvoid gemmini_empty_direct_bundle_anchor(void) {}\n')
+        obj=output/'empty.o'
+        subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-c',str(empty),'-o',str(obj)],check=True,capture_output=True)
+        objects.append(obj)
     subprocess.run([str(linker),'-r',*[str(x) for x in objects],'-o',str(linked)],check=True,capture_output=True)
     audit=audit_elf(linked.read_bytes())
     if audit['status']!='pass':raise ValueError('direct-conv bundle has forbidden commands')

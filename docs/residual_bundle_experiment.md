@@ -29,3 +29,13 @@ of a one-step residual, typed declaration round trips, contiguous reshape
 verification, and all-pair native oracle validation. The fresh closed capture
 compiles 16 explicit bound-1 routes and passes the linked zero-FSM audit.
 Whole-model quality and target execution remain independent required gates.
+
+Nonunit primitive simulation subsequently passed every signed-i8 operand pair
+and the output guard using the first captured load scales0.9669194221496582
+and0.8079284429550171, readout1:54,310 GSIM kernel cycles. The final ELF
+passed the zero-FSM audit. Receipt: `docs/perf_records/residual_nonunit_fullpair_gsim.json`.
+
+Composition also supports an explicitly empty remaining-direct component after
+earlier fusions consume every direct convolution. Standalone no-match refusal
+is unchanged; composed empty artifacts contain an uncalled ordinary CPU anchor
+so strict executable-section auditing is preserved.
