@@ -110,6 +110,28 @@ def merlin_builder(llvm_bin: Path):
     return build
 
 
+def merlin_identity_view_transform(prepared: Path, workdir: Path) -> Path:
+    """Apply Merlin's proven 1x1 im2col view before catalog source binding."""
+    try:
+        from merlin.llvmlower.im2col_identity_view import rewrite_prepared_file
+    except ImportError as exc:
+        raise RuntimeError("Merlin's identity im2col pass is required") from exc
+    prepared, workdir = Path(prepared), Path(workdir)
+    workdir.mkdir(parents=True, exist_ok=True)
+    transformed, report = rewrite_prepared_file(prepared, workdir)
+    transformed = Path(transformed)
+    # The upstream pass parses its own IR; this target additionally verifies
+    # the mixed i8*i8->i32 named-matmul form it will compile and bind.
+    parse_module(transformed.read_text())
+    (workdir / "identity_view_report.json").write_text(
+        json.dumps({"schema": "gemmini_identity_view_transform_v1",
+                    "source_sha256": hashlib.sha256(prepared.read_bytes()).hexdigest(),
+                    "prepared_sha256": hashlib.sha256(transformed.read_bytes()).hexdigest(),
+                    **report.to_dict()}, indent=2) + "\n"
+    )
+    return transformed
+
+
 def final_elf_audit(elf: Path) -> None:
     """Refuse a linked model that gained any forbidden hardware-loop instruction."""
     elf = Path(elf)
