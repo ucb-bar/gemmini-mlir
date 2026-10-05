@@ -1,0 +1,65 @@
+{
+  "schema": "tiny_next_host_optimization_journey_v1",
+  "starting_verified_stock": {
+    "job": 1880,
+    "cycles": 531072370,
+    "scope": "All 22 layers/eight tokens/256000 f32 original compiled bits plus original Torch gate.",
+    "ELF": "d0a2aaa939fdbe1ffd7d2931901cb49b37c6cbf0f00250d9ea7cc38c8c54de70"
+  },
+  "token_checkpoint": {
+    "token_usage_available": false,
+    "exclusive_peroptimization_input_cached_output_billing_tokens": "unknown",
+    "shared_campaign_snapshot_owner": "root"
+  },
+  "experiments": [
+    {
+      "hypothesis": "Wider independent source arithmetic packets may reduce host dependency latency.",
+      "owner": "Merlin",
+      "emitted_change": "Pointwise width 2 to 4; host model only; every device, runtime and weight object unchanged.",
+      "metric_before": {
+        "stock_cycles": 531072370,
+        "functional_instructions": 166605674
+      },
+      "metric_after": {
+        "functional_instructions": 166863672,
+        "stock_cycles": null
+      },
+      "gate": "Native and strict Spike all 256000 compiled words plus original Torch gate and zero FSM pass.",
+      "decision": "Held: source capsule width 4 already slower than width 2; no stock run."
+    },
+    {
+      "hypothesis": "Current host and device costs may differ from the historical 1837 split.",
+      "owner": "OOT counter boundary wrappers; generic compiler and runtime objects reused.",
+      "emitted_change": "Final-link wrapping 5 primitives/155 calls only; model, runtime, kernel and weights SHA unchanged.",
+      "metric_before": {
+        "stock_cycles": 531072370
+      },
+      "metric_after": {
+        "functional_instructions": 166613149,
+        "functional_forward_instructions": 166613106,
+        "functional_device_instructions": 24871103,
+        "functional_host_gap_instructions": 141742003,
+        "stock_cycles": null
+      },
+      "gate": "All 256000 words, original Torch gate and zero FSM; complete 155-call coverage and counter conservation pass.",
+      "decision": "Stock 1901 admitted as diagnostic; no baseline speedup claim."
+    },
+    {
+      "hypothesis": "Adjacent independent RNE results may avoid serializing every lane through one opaque scratch register.",
+      "owner": "Merlin host CPU legalization",
+      "emitted_change": "Complete original typed proofs become two-result inline asm: all fmax, all fmin, all fcvt RNE; only adjacent results with earlier same-block inputs and no crossed statement.",
+      "metric_before": {
+        "capsule_warm_actual_gsim_cycles": 256637,
+        "capsule_functional_instructions": 108797
+      },
+      "metric_after": {
+        "capsule_warm_actual_gsim_cycles": 247568,
+        "capsule_functional_instructions": 108797,
+        "whole_stock_cycles": null,
+        "whole_functional_instructions": 166605674
+      },
+      "gate": "42 compiler tests; all 5 actual RV rounding modes and 792 independent boundary words; native and strict Spike all 256000 compiled words plus immutable Torch gate; zero FSM/rank0/DONE/rc0",
+      "decision": "Fully source-qualified; request one stock paired candidate against verified 1880. Actual whole hardware cycles pending."
+    }
+  ]
+}

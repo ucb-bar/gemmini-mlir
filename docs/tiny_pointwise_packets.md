@@ -38,12 +38,13 @@ shim bytes are identical to qualified stock job1846. Full strict Gemmini Spike
 qualification also retains every original bit, with166,605,674 functional
 instructions versus1846's168,567,482. Runtime, device, shim, weights, startup
 and console objects are byte-identical to1846; only the host model and
-marker-bearing harness object differ. Whole FireSim timing is pending; the
-stock best remains569,151,067 cycles. See
+marker-bearing harness object differ. Stock FireSim 1880 independently verified531,072,370 whole-model cycles,
+38,078,697 cycles (6.6904%) below 1846 while preserving all 256,000 words
+and the immutable Torch gate. See
 `perf_records/tiny_pointwise_packet_spike.json`.
 
-Stock FireSim job1880 is admitted with the qualified ELF, independent
-qualification/reference checks and detached collector2863471. The original
-qualification receipt remains immutable. Actual whole-model cycles are pending.
-Admission is recorded separately in
+Stock FireSim job 1880 is admitted with the qualified ELF, independent
+qualification/reference checks and detached collector 2863471. The original
+qualification receipt remains immutable. Actual whole-model cycles closed at 531,072,370; see
+`perf_records/tiny_pointwise_packet_firesim1880.json`. Admission is recorded in
 `perf_records/tiny_pointwise_packet_firesim1880_admission.json`.

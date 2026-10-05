@@ -1,0 +1,225 @@
+{
+  "schema": "tiny_rne_basic_block_capsule_archived_v1",
+  "hypothesis": "Independent adjacent bounded conversion lanes reduce opaque scratch-register serialization without changing operations.",
+  "ownership": "Merlin host CPU legalization; OOT actualRocket qualification/perf",
+  "core_commit": "94053801f",
+  "qualification": {
+    "schema": "rne_packet_capsule_v1",
+    "elf_sha256": "ede4bc2b99db4239bb3a2233cda55c9fac435743040a7de8701d6a3c2ea10b13",
+    "source_sha256": "f2c08f4c038fa45b9fbcee4f1fad7fc311b5605cbce5af3bc4600f297dad922e",
+    "cases": [
+      {
+        "name": "control",
+        "native2049_exact": true,
+        "packet": {
+          "routes": []
+        },
+        "remaining_scalar": {
+          "schema": "merlin_late_bounded_rne_v1",
+          "source_sha256": "4bd76abfd3a215583e3fcc3c2e2c096f8650a31fc1397c16e3365cd0af7fa10c",
+          "routes": [
+            {
+              "result": "%152",
+              "clamped_input": "%122",
+              "raw_input": "%118",
+              "dtype": "f32",
+              "integer_dtype": "i8",
+              "bounds": [
+                -128,
+                127
+              ],
+              "rounding": "nearest_ties_even",
+              "source_nan": "poison_from_fptosi"
+            },
+            {
+              "result": "%153",
+              "clamped_input": "%123",
+              "raw_input": "%119",
+              "dtype": "f32",
+              "integer_dtype": "i8",
+              "bounds": [
+                -128,
+                127
+              ],
+              "rounding": "nearest_ties_even",
+              "source_nan": "poison_from_fptosi"
+            },
+            {
+              "result": "%213",
+              "clamped_input": "%198",
+              "raw_input": "%196",
+              "dtype": "f32",
+              "integer_dtype": "i8",
+              "bounds": [
+                -128,
+                127
+              ],
+              "rounding": "nearest_ties_even",
+              "source_nan": "poison_from_fptosi"
+            }
+          ],
+          "host_isa": "rv64gc",
+          "rewritten_sha256": "393218d8035efc2e9f8cf7e08b9042141df08460d4cb66e9dc3a87efac66e9be"
+        },
+        "llvm_sha256": "393218d8035efc2e9f8cf7e08b9042141df08460d4cb66e9dc3a87efac66e9be"
+      },
+      {
+        "name": "grouped",
+        "native2049_exact": true,
+        "packet": {
+          "schema": "bounded_rne_basic_block_v1",
+          "source_sha256": "c3526c5686ab1ff35099ec207d5a852c6f144b702b76cd16e3c3ef5af5f1d24e",
+          "routes": [
+            {
+              "lanes": 2,
+              "integer_dtype": "i8",
+              "bounds": [
+                -128,
+                127
+              ],
+              "raw_inputs": [
+                "%118",
+                "%119"
+              ],
+              "selection": "adjacent typed RNE results; independent earlier same-block inputs",
+              "proofs": [
+                {
+                  "result": "%152",
+                  "clamped_input": "%122",
+                  "raw_input": "%118",
+                  "dtype": "f32",
+                  "integer_dtype": "i8",
+                  "bounds": [
+                    -128,
+                    127
+                  ],
+                  "rounding": "nearest_ties_even",
+                  "source_nan": "poison_from_fptosi"
+                },
+                {
+                  "result": "%153",
+                  "clamped_input": "%123",
+                  "raw_input": "%119",
+                  "dtype": "f32",
+                  "integer_dtype": "i8",
+                  "bounds": [
+                    -128,
+                    127
+                  ],
+                  "rounding": "nearest_ties_even",
+                  "source_nan": "poison_from_fptosi"
+                }
+              ]
+            }
+          ],
+          "rewritten_sha256": "01622c78a8ec690f390ad857c1e2b6c54536dd5dda373a70b97910f6499efa45"
+        },
+        "remaining_scalar": {
+          "schema": "merlin_late_bounded_rne_v1",
+          "source_sha256": "01622c78a8ec690f390ad857c1e2b6c54536dd5dda373a70b97910f6499efa45",
+          "routes": [
+            {
+              "result": "%213",
+              "clamped_input": "%198",
+              "raw_input": "%196",
+              "dtype": "f32",
+              "integer_dtype": "i8",
+              "bounds": [
+                -128,
+                127
+              ],
+              "rounding": "nearest_ties_even",
+              "source_nan": "poison_from_fptosi"
+            }
+          ],
+          "host_isa": "rv64gc",
+          "rewritten_sha256": "bee58bd7319608f39f2e1342ad7066713c754d4c8aafc0949767ffa8bfb69c5c"
+        },
+        "llvm_sha256": "bee58bd7319608f39f2e1342ad7066713c754d4c8aafc0949767ffa8bfb69c5c"
+      }
+    ],
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "ede4bc2b99db4239bb3a2233cda55c9fac435743040a7de8701d6a3c2ea10b13",
+      "executable_sections": 3,
+      "custom_funct_counts": {},
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "five_actual_RV_rounding_modes_pass": true,
+    "original_boundary_words": 792,
+    "all2049_outputs_and128_guard_bytes": true,
+    "token_usage_available": false,
+    "scope": "Actual2049sourcearithmetic capsule; not whole-model performance",
+    "fixture_sha256": "c5394e392e6af29d06190b9a029fbd99b4813dc767560456996e2ab92e4f93dd",
+    "actual_gsim_capsule": {
+      "scope": "Warm2049element original arithmetic, timedallocation+compute+outputcopy; serial-clock GemminiGsimSerialClkConfig, notstockFireSim",
+      "before_cycles": 256637,
+      "after_cycles": 247568,
+      "delta_cycles": -9069,
+      "speedup_fraction": 0.035337850738591865,
+      "retired_instructions_before": 108797,
+      "retired_instructions_after": 108797,
+      "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "gsim_log_sha256": "2824a5dfbc06fbd57b029007819d0fec143c6bfb61f7b73938f2dbea62f8b09a",
+      "gsim_receipt_sha256": "661233bbfe95587591fe4af76b8f5c17e222425bcf94e63e74fd1d0e014ce277",
+      "status": "focused positive; wholemodel andstockcycleevidence pending"
+    }
+  },
+  "gsim": {
+    "records": [],
+    "finish": {
+      "cycles": 1454707,
+      "wall_seconds": 95.41,
+      "done": true,
+      "exit_code": 0
+    },
+    "wall_seconds": 95.42642946518026,
+    "returncode": 0,
+    "stdout_sha256": "2824a5dfbc06fbd57b029007819d0fec143c6bfb61f7b73938f2dbea62f8b09a",
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "command_sha256": "024cf7aedee53a48427f1c0c5ecba76315656222c29aaad578b27b77cb31a938",
+    "stdout_tail": "RNE_MODE_PASS 0\nRNE_MODE_PASS 1\nRNE_MODE_PASS 2\nRNE_MODE_PASS 3\nRNE_MODE_PASS 4\nCONTROL_CYCLES 0 265263\nGROUPED_CYCLES 0 250013\nCONTROL_CYCLES 1 256637\nGROUPED_CYCLES 1 247568\nRNE_PACKET PASS\n",
+    "stderr_tail": "x80010200\n[gsim-ar] #12 addr=0x80010240\n[gsim-ar] #13 addr=0x80003780\n[gsim-ar] #14 addr=0x800035c0\n[gsim-ar] #15 addr=0x80002d80\n[gsim-ar] #16 addr=0x80030140\n[gsim-ar] #17 addr=0x80030100\n[gsim-ar] #18 addr=0x80002dc0\n[gsim-ar] #19 addr=0x80002b00\n[gsim-ar] #20 addr=0x8000c580\n[gsim-ar] #21 addr=0x80002b40\n[gsim-ar] #22 addr=0x80002b80\n[gsim-ar] #23 addr=0x80002bc0\n[gsim-ar] #24 addr=0x80002c00\n[gsim-ar] #25 addr=0x80002c40\n[gsim-ar] #26 addr=0x80002c80\n[gsim-ar] #27 addr=0x800300c0\n[gsim-ar] #28 addr=0x8000d200\n[gsim-ar] #29 addr=0x80002e00\n[gsim-ar] #30 addr=0x80002cc0\n[gsim-ar] #31 addr=0x80002e40\n[gsim-ar] #32 addr=0x80002d00\n[gsim-ar] #33 addr=0x80002d40\n[gsim-ar] #34 addr=0x80002e80\n[gsim-ar] #35 addr=0x8000c5c0\n[gsim-ar] #36 addr=0x8000c600\n[gsim-ar] #37 addr=0x8000c640\n[gsim-ar] #38 addr=0x8000c680\n[gsim-ar] #39 addr=0x8000d240\n[link-probe] ticks=200000 in_fires=16758 out_fires=6706 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33521 out_fires=13422 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=50421 out_fires=20182 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=67292 out_fires=26936 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1000000 in_reset=14 done=0\n[gsim-emu] 1000000 cycles, 65.7s, 15219 cyc/s\n[link-probe] ticks=1000000 in_fires=84178 out_fires=33696 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1200000 in_fires=101059 out_fires=40454 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1400000 in_fires=118008 out_fires=47234 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=1454707 wall=95.41s (15246 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=3 dram_w=24 dram_ar=795 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80030080 last_ar=0x80003540 max_ar=0x800301c0 r_fires=6360 b_fires=3 cvfpu_accepts=0 uart_chars=0\n",
+    "load_path": "backdoor"
+  },
+  "spike_console": "RNE_MODE_PASS 0\nRNE_MODE_PASS 1\nRNE_MODE_PASS 2\nRNE_MODE_PASS 3\nRNE_MODE_PASS 4\nCONTROL_CYCLES 0 108797\nGROUPED_CYCLES 0 108797\nCONTROL_CYCLES 1 108797\nGROUPED_CYCLES 1 108797\nRNE_PACKET PASS\n",
+  "gsim_console": "RNE_MODE_PASS 0\nRNE_MODE_PASS 1\nRNE_MODE_PASS 2\nRNE_MODE_PASS 3\nRNE_MODE_PASS 4\nCONTROL_CYCLES 0 265263\nGROUPED_CYCLES 0 250013\nCONTROL_CYCLES 1 256637\nGROUPED_CYCLES 1 247568\nRNE_PACKET PASS\n",
+  "scope": "2049 independent source-arithmetic outputs plus128guard bytes; actual serialclockGSIM; not wholemodel/stockFireSim",
+  "decision": "Focusedpositive; fullmodel qualification inprogress, nohardwarepromotion yet",
+  "token_checkpoint": {
+    "token_usage_available": false,
+    "exclusive_input_cached_output_billing_tokens": "unknown",
+    "shared_snapshot_owner": "root"
+  }
+}
