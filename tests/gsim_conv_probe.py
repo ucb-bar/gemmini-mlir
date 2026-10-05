@@ -22,6 +22,8 @@ def main():
     ap.add_argument('--scale',type=float,default=1.0)
     ap.add_argument('--relu',action='store_true')
     ap.add_argument('--build-only',action='store_true')
+    ap.add_argument('--max-cycles',type=int,default=3000000)
+    ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
     s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu)
     out = a.workdir.resolve()
@@ -75,7 +77,7 @@ int main(void) {
     if a.build_only:
         print(built.elf)
         return 0
-    run = run_on_gsim(built.elf,target='gemmini',max_cycles=3000000,timeout_s=600,backdoor=True,stdout_path=out/'gsim.stdout')
+    run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
     result = dict(shape=asdict(s),status='pass' if passed else 'fail',kernel_cycles=int(match[1]) if match else None,
