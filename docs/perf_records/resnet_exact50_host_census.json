@@ -1,0 +1,473 @@
+{
+  "source": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_exact50_lut_hoisted/build_direct/device_catalog/catalog_source.mlir",
+  "scope": "return reachable tensor SSA; per-op output cardinality, reduction counts lower bounds",
+  "generic_count": 25,
+  "weighted_scalar_ops": {
+    "arith.sitofp": 504808,
+    "arith.mulf": 480720,
+    "arith.addf": 304104,
+    "arith.maximumf": 303104,
+    "math.roundeven": 227840,
+    "arith.minimumf": 227840,
+    "arith.fptosi": 227840,
+    "arith.subf": 100352,
+    "arith.constant": 75268,
+    "arith.divf": 2052,
+    "arith.extsi": 2000,
+    "arith.muli": 1000,
+    "arith.addi": 1000
+  },
+  "scalar_regions_by_op": {
+    "arith.mulf": 11,
+    "arith.sitofp": 9,
+    "arith.addf": 7,
+    "arith.constant": 6,
+    "arith.maximumf": 6,
+    "arith.divf": 5,
+    "math.roundeven": 4,
+    "arith.minimumf": 4,
+    "arith.fptosi": 4,
+    "arith.extsi": 2,
+    "arith.muli": 1,
+    "arith.addi": 1,
+    "arith.subf": 1
+  },
+  "regions": [
+    {
+      "shape": [
+        1,
+        3,
+        224,
+        224
+      ],
+      "type": "tensor<1x3x224x224xi8>",
+      "elements": 150528,
+      "ops": [
+        "arith.mulf",
+        "math.roundeven",
+        "arith.sitofp",
+        "arith.addf",
+        "arith.maximumf",
+        "arith.minimumf",
+        "arith.fptosi"
+      ],
+      "input_owners": [
+        "arg",
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "type": "tensor<1x2048x7x7xf32>",
+      "elements": 100352,
+      "ops": [
+        "arith.sitofp",
+        "arith.sitofp",
+        "arith.subf",
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "tensor.expand_shape",
+        "tensor.splat",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        196,
+        256
+      ],
+      "type": "tensor<196x256xf32>",
+      "elements": 50176,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        256,
+        14,
+        14
+      ],
+      "type": "tensor<1x256x14x14xi8>",
+      "elements": 50176,
+      "ops": [
+        "arith.mulf",
+        "math.roundeven",
+        "arith.sitofp",
+        "arith.addf",
+        "arith.maximumf",
+        "arith.minimumf",
+        "arith.fptosi"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        256,
+        14,
+        14
+      ],
+      "type": "tensor<1x256x14x14xf32>",
+      "elements": 50176,
+      "ops": [
+        "arith.constant",
+        "arith.maximumf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        196,
+        256
+      ],
+      "type": "tensor<196x256xf32>",
+      "elements": 50176,
+      "ops": [
+        "arith.sitofp"
+      ],
+      "input_owners": [
+        "func.call",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        256,
+        14,
+        14
+      ],
+      "type": "tensor<1x256x14x14xf32>",
+      "elements": 50176,
+      "ops": [
+        "arith.addf"
+      ],
+      "input_owners": [
+        "linalg.transpose",
+        "tensor.expand_shape",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        196,
+        256
+      ],
+      "type": "tensor<196x256xf32>",
+      "elements": 50176,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        49,
+        512
+      ],
+      "type": "tensor<49x512xf32>",
+      "elements": 25088,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        512,
+        7,
+        7
+      ],
+      "type": "tensor<1x512x7x7xi8>",
+      "elements": 25088,
+      "ops": [
+        "arith.mulf",
+        "math.roundeven",
+        "arith.sitofp",
+        "arith.addf",
+        "arith.maximumf",
+        "arith.minimumf",
+        "arith.fptosi"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        49,
+        512
+      ],
+      "type": "tensor<49x512xf32>",
+      "elements": 25088,
+      "ops": [
+        "arith.sitofp"
+      ],
+      "input_owners": [
+        "func.call",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        512,
+        7,
+        7
+      ],
+      "type": "tensor<1x512x7x7xf32>",
+      "elements": 25088,
+      "ops": [
+        "arith.addf"
+      ],
+      "input_owners": [
+        "linalg.transpose",
+        "tensor.expand_shape",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        512,
+        7,
+        7
+      ],
+      "type": "tensor<1x512x7x7xf32>",
+      "elements": 25088,
+      "ops": [
+        "arith.constant",
+        "arith.maximumf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        49,
+        512
+      ],
+      "type": "tensor<49x512xf32>",
+      "elements": 25088,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        2048
+      ],
+      "type": "tensor<1x2048xf32>",
+      "elements": 2048,
+      "ops": [
+        "arith.divf"
+      ],
+      "input_owners": [
+        "linalg.reduce",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        2048
+      ],
+      "type": "tensor<1x2048xi8>",
+      "elements": 2048,
+      "ops": [
+        "arith.mulf",
+        "math.roundeven",
+        "arith.sitofp",
+        "arith.addf",
+        "arith.maximumf",
+        "arith.minimumf",
+        "arith.fptosi"
+      ],
+      "input_owners": [
+        "tensor.expand_shape",
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1000
+      ],
+      "type": "tensor<1x1000xf32>",
+      "elements": 1000,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1000
+      ],
+      "type": "tensor<1x1000xf32>",
+      "elements": 1000,
+      "ops": [
+        "arith.addf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "arg",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1000
+      ],
+      "type": "tensor<1x1000xi32>",
+      "elements": 1000,
+      "ops": [
+        "arith.extsi",
+        "arith.extsi",
+        "arith.muli",
+        "arith.addi"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "arg",
+        "tensor.splat"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1000
+      ],
+      "type": "tensor<1x1000xf32>",
+      "elements": 1000,
+      "ops": [
+        "arith.sitofp"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1000
+      ],
+      "type": "tensor<1x1000xf32>",
+      "elements": 1000,
+      "ops": [
+        "arith.mulf"
+      ],
+      "input_owners": [
+        "linalg.generic",
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [],
+      "type": "tensor<f32>",
+      "elements": 1,
+      "ops": [
+        "arith.constant",
+        "arith.divf"
+      ],
+      "input_owners": [
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [],
+      "type": "tensor<f32>",
+      "elements": 1,
+      "ops": [
+        "arith.constant",
+        "arith.divf"
+      ],
+      "input_owners": [
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [],
+      "type": "tensor<f32>",
+      "elements": 1,
+      "ops": [
+        "arith.constant",
+        "arith.divf"
+      ],
+      "input_owners": [
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    },
+    {
+      "shape": [],
+      "type": "tensor<f32>",
+      "elements": 1,
+      "ops": [
+        "arith.constant",
+        "arith.divf"
+      ],
+      "input_owners": [
+        "tensor.splat",
+        "tensor.empty"
+      ]
+    }
+  ]
+}

@@ -37,3 +37,25 @@ return-reachable SSA; they describe tensor outputs, not actual DRAM traffic.
 Receipt: `docs/perf_records/resnet_exact_layout_probe.json`.
 Regression tests cover inverse layout cancellation through a scalar epilogue,
 unknown call boundaries, and attributed external-declaration serialization.
+
+## Closed-recipe exact50 + CPU LUT census
+
+The same pass reaches89copies /36,500,672bytes from159copies /
+44,096,940bytes on the newer exact50/LUT/hoisted prepared graph. Residual
+calls are explicit layout barriers; they are not treated as generic scalar ops.
+
+Only25 live generic arithmetic regions remain. Four quantization sites cover
+227,840elements: input150,528; late256channel50,176; late512channel25,088;
+post-mean2,048. Two exact integer-readout fallback kernels can address the late
+75,264elements; these are separate work. One float reduction remains.
+
+The16 exact CPU LUT calls process5,519,360elements. The compiled RV64GC adapter
+uses13instructions per element (including indexing, pointer increments and
+branch), approximately71,751,680instructions before checks/copies. This is
+15.5% of the current463,973,868 whole-model Spike count. Reindexing the table by
+raw uint8 bits and unrolling its loop are exact, general opportunities; neither
+optimization is implemented by the layout pass.
+
+Full weighted source census: `docs/perf_records/resnet_exact50_host_census.json`.
+Per-operation cardinalities are output-element counts; reduction work requires
+its reduction dimension and is not included in those simple scalar counts.
