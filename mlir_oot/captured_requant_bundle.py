@@ -1,8 +1,10 @@
-"""Source/weight-bound exact unary requant fusion, preserving direct convolution.
+"""Source/weight-bound unary requant fusion, preserving direct convolution.
 
 Only immutable zero-bias captured channels are currently specialized here.
 The general scalar proof supports nonzero bias, but this bundle refuses it until
 its descriptor ABI explicitly binds the synthesized integer preload table.
+Exact equivalence is the default. An explicitly requested one-step policy can
+admit a zero-bias readout after proving its complete accumulator-domain error.
 """
 import argparse
 from dataclasses import asdict,replace
@@ -16,7 +18,7 @@ from xdsl.ir import Region
 from .frontend.parse import parse_module
 from .contraction_patterns import match_integer_gemm
 from .captured_requant import inspect_chain
-from .golden_requant import synthesize_bias
+from .golden_requant import synthesize_bias, prove_scale_bound
 from .golden_contraction_upstream import choose_shape
 from .golden_gemm import GoldenGemm
 from .conv_schedule import select_kernel
@@ -79,7 +81,7 @@ def _replay_layouts(value,layouts):
     return operations,value
 
 
-def rewrite_path(op,chain,symbol,direct):
+def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None):
     dims=chain['dimensions'];operations=[]
     if direct:
         if direct.orientation!='spatial_first':raise ValueError('fused captured direct path needs spatial-first contraction')
@@ -102,11 +104,21 @@ def rewrite_path(op,chain,symbol,direct):
     attrs=ArrayAttr([DictionaryAttr({'bufferization.access':StringAttr(x)}) for x in ['read','read','write']])
     declaration=func.FuncOp(symbol,([x.type for x in inputs]+[ct],[ct]),Region(),visibility='private',arg_attrs=attrs)
     declaration.attributes['llvm.emit_c_interface']=UnitAttr();module.body.block.add_op(declaration)
+    if numeric_contract is not None:
+        declaration.attributes['merlin.numeric_contract']=DictionaryAttr({
+            'unit':StringAttr('quantized_output_lsb'),
+            'max_abs_error':IntegerAttr(numeric_contract['max_output_lsb_error'],i64),
+            'selected_policy_limit':IntegerAttr(numeric_contract['selected_policy_limit'],i64),
+            'source_region':StringAttr(numeric_contract['source_region']),
+            'proof_domain':StringAttr('complete signed-int8 contraction accumulator interval'),
+        })
     return declaration
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0):
     from merlin.runtime.captured_constants import verify_capture_constant
+    if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
+        raise ValueError('select an explicit zero- or one-step local output error policy')
     output.mkdir(parents=True,exist_ok=False)
     source=(capture/'model.mlir').read_text();module=parse_module(source)
     source_sha=hashlib.sha256(source.encode()).hexdigest();pins=json.loads((capture/'capture_receipt.json').read_text())['artifacts']
@@ -121,8 +133,15 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
         constant=verify_capture_constant(manifest_path=capture/'weights.safetensors.manifest.json',manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],safetensors_path=capture/'weights.safetensors',safetensors_sha256=pins['weights.safetensors']['sha256'],entry_argument_index=chain['bias'].index,source_shape=[dims.n],source_dtype='f32',max_payload_bytes=dims.n*4)
         biases=np.frombuffer(constant.logical_payload,dtype='<f4');bound=dims.k*16384
         proof=synthesize_bias(chain['scales'],biases,chain['reciprocal'],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+        error=0
         if proof['accepted_channels']!=dims.n:
-            refused.append(dict(region=rid,reason='float transition proof refused',accepted_channels=proof['accepted_channels']));continue
+            if max_output_lsb==0 or np.any(biases!=0):
+                refused.append(dict(region=rid,reason='float transition proof refused',accepted_channels=proof['accepted_channels']));continue
+            bounded=prove_scale_bound([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+            error=bounded['max_output_lsb_error']
+            if error>max_output_lsb:
+                refused.append(dict(region=rid,reason='local readout error exceeds selected policy',proof=bounded));continue
+            proof=dict(bounded,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
         if np.any(biases!=0) or any(x!=0 for x in proof['integer_bias']):
             refused.append(dict(region=rid,reason='nonzero bias requires explicit integer table ABI'));continue
         try:direct=match_conv(op)
@@ -130,9 +149,10 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
         base=direct.shape if direct else choose_shape(dims)
         schedule=replace(base,output_dtype='i8',scale=proof['scale'],relu=chain['relu'])
         if not direct:schedule=replace(schedule,wide_store=True)
-        symbol=f'gemmini_exact_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
+        symbol=f'gemmini_{"exact" if error==0 else "bounded"}_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         bias_index=chain['bias'].index
-        declaration=rewrite_path(op,chain,symbol,direct);declarations.append(declaration)
+        numeric_contract=dict(max_output_lsb_error=error,selected_policy_limit=max_output_lsb,source_region=rid)
+        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract);declarations.append(declaration)
         if direct:
             generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial);schedule=generator.conv
         else:
@@ -143,7 +163,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
         (work/'adapter.c').write_text(adapter)
         subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-ffreestanding','-fno-builtin','-c',str(work/'adapter.c'),'-o',str(work/'adapter.o')],check=True,capture_output=True)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
-        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,proof=proof,compilation=compilation))
+        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,compilation=compilation))
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -152,12 +172,12 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False):
     linked=output/'requant.o';subprocess.run([str(linker),'-r',*[str(p) for p in objects],'-o',str(linked)],check=True,capture_output=True)
     audit=audit_elf(linked.read_bytes())
     if audit['status']!='pass':raise ValueError('forbidden device instruction')
-    result=dict(schema='gemmini_exact_captured_requant_bundle_v1',source_sha256=source_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=hashlib.sha256(printed.encode()).hexdigest(),object_sha256=hashlib.sha256(linked.read_bytes()).hexdigest(),routes=routes,refused=refused,nofsm_audit=audit,scope='Specializes only hash-bound captured zero-bias parameters. Runtime input images remain variable. Other weights/bias blobs require recompilation. Whole-model accuracy still must be checked.')
+    result=dict(schema='gemmini_exact_captured_requant_bundle_v1' if max_output_lsb==0 else 'gemmini_bounded_captured_requant_bundle_v1',selected_max_output_lsb=max_output_lsb,source_sha256=source_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=hashlib.sha256(printed.encode()).hexdigest(),object_sha256=hashlib.sha256(linked.read_bytes()).hexdigest(),routes=routes,refused=refused,nofsm_audit=audit,scope='Specializes only hash-bound captured zero-bias parameters. Runtime input images remain variable. Other weights/bias blobs require recompilation. Explicit local error limits do not establish full-model quality; original goldens must be retained and checked.')
     (output/'requant.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

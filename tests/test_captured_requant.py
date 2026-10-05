@@ -39,3 +39,20 @@ class TestCapturedRequant(unittest.TestCase):
         _,op=self.fixture();chain=inspect_chain(op)
         consumer=chain['operations'][0];op.parent.insert_op_after(consumer.clone(),consumer)
         with self.assertRaisesRegex(ValueError,'fanout'):inspect_chain(op)
+
+    def test_explicit_numeric_contract_survives_structural_serialization(self):
+        module,op=self.fixture();chain=inspect_chain(op)
+        contract=dict(max_output_lsb_error=1,selected_policy_limit=1,source_region='fixture')
+        rewrite_path(op,chain,'bounded_requant',None,numeric_contract=contract)
+        parsed=parse_module(serialize(module,[]));parsed.verify()
+        declaration=next(x for x in parsed.walk() if x.name=='func.func' and x.sym_name.data=='bounded_requant')
+        actual=declaration.attributes['merlin.numeric_contract'].data
+        self.assertEqual(actual['max_abs_error'].value.data,1)
+        self.assertEqual(actual['selected_policy_limit'].value.data,1)
+        self.assertEqual(actual['source_region'].data,'fixture')
+
+    def test_invalid_numeric_policy_refused_before_reading_capture(self):
+        from mlir_oot.captured_requant_bundle import build
+        for policy in (-1,2,True,0.5):
+            with self.assertRaisesRegex(ValueError,'local output error policy'):
+                build(Path('absent'),Path('absent'),Path('absent'),max_output_lsb=policy)

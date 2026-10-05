@@ -55,6 +55,62 @@ def prove_scale(scales,lo=-(1<<31),hi=(1<<31)-1,relu=False):
                 proof='exhaustive monotone integer-output transition comparison',transitions=127-low)
 
 
+def prove_scale_bound(scales, lo=-(1 << 31), hi=(1 << 31)-1, relu=False):
+    """Compute the exact worst output error over the complete accumulator domain.
+
+    Both saturated int8 outputs are monotone step functions. Their values are
+    constant between the union of their transition points, so comparing each
+    transition and the domain endpoints covers every possible accumulator.
+    This reports a bound; callers must explicitly select an error policy before
+    replacing source arithmetic. It does not establish model-level quality.
+    """
+    scales = tuple(f32(s) for s in scales)
+    if not scales or any(not math.isfinite(s) or s <= 0 for s in scales):
+        raise ValueError('all scales must be finite positive f32 constants')
+    if not (-(1 << 31) <= lo <= hi < (1 << 31)):
+        raise ValueError('invalid i32 proof domain')
+    scale = 1.0
+    for s in scales:
+        scale = f32(scale*s)
+    if not math.isfinite(scale) or scale <= 0:
+        raise ValueError('combined scale is not finite positive f32')
+    low = 0 if relu else -128
+    boundaries = {lo, hi}
+    transitions = []
+    for q in range(low+1, 128):
+        thresholds = []
+        for sequence in (scales, (scale,)):
+            left, right = lo, hi+1
+            while left < right:
+                mid = (left+right)//2
+                if quantized(mid, sequence, relu) >= q:
+                    right = mid
+                else:
+                    left = mid+1
+            thresholds.append(left)
+            if left <= hi:
+                boundaries.add(left)
+        if thresholds[0] != thresholds[1]:
+            transitions.append(dict(output=q, source=thresholds[0], target=thresholds[1]))
+    error = 0
+    witness = None
+    for acc in sorted(boundaries):
+        source = quantized(acc, scales, relu)
+        target = quantized(acc, (scale,), relu)
+        delta = abs(source-target)
+        if delta > error:
+            error = delta
+            witness = dict(accumulator=acc, source=source, target=target)
+    return dict(
+        scale=scale, source_scales=list(scales), accumulator_min=lo, accumulator_max=hi,
+        rounding='nearest_even', output_min=low, output_max=127,
+        proof='complete union of monotone integer-output transition points and endpoints',
+        transitions=127-low, differing_transitions=transitions,
+        max_output_lsb_error=error, exact=error == 0, witness=witness,
+        scope='Local readout error only; requires an explicit numerical policy and full-model quality gate.',
+    )
+
+
 def _constant(value):
     op=value.owner
     if not isinstance(op,Operation) or op.name!='arith.constant' or str(value.type)!='f32':

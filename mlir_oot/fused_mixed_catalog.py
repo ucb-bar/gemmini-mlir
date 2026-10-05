@@ -21,7 +21,8 @@ def stage_capture(capture:Path,bundle:Path,destination:Path):
     shutil.copyfile(bundle/'rewritten.mlir',destination/'model.mlir')
     receipt=json.loads((capture/'capture_receipt.json').read_text())
     receipt['artifacts']['model.mlir']={'bytes':(destination/'model.mlir').stat().st_size,'sha256':manifest['rewritten_sha256']}
-    receipt['derived_from']={'source_sha256':manifest['source_sha256'],'requant_manifest_sha256':sha(bundle/'requant.json'),'transform':'exact captured unary requantization'}
+    policy=manifest.get('selected_max_output_lsb',0)
+    receipt['derived_from']={'source_sha256':manifest['source_sha256'],'requant_manifest_sha256':sha(bundle/'requant.json'),'transform':'exact captured unary requantization' if policy==0 else 'captured unary requantization with explicitly selected local error policy','numeric_policy':{'unit':'quantized_output_lsb','local_limit':policy,'full_model_quality_established':False,'original_golden_preserved':True}}
     (destination/'capture_receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     return destination
 
@@ -47,6 +48,18 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False):
                 access=[] if attrs is None else [x.data.get('bufferization.access') for x in attrs]
                 if [getattr(x,'data',None) for x in access]!=['read','read','write']:
                     raise ValueError('fused declaration lost its bufferization access contract')
+                route=next(x for x in requant['routes'] if x['symbol']==declaration.sym_name.data)
+                if 'numeric_contract' in route:
+                    expected=route['numeric_contract']
+                    contract=declaration.attributes.get('merlin.numeric_contract')
+                    if contract is None:
+                        raise ValueError('fused declaration lost its numerical contract')
+                    data=contract.data
+                    if (getattr(data.get('unit'),'data',None)!='quantized_output_lsb'
+                            or getattr(data.get('source_region'),'data',None)!=expected['source_region']
+                            or data['max_abs_error'].value.data!=expected['max_output_lsb_error']
+                            or data['selected_policy_limit'].value.data!=expected['selected_policy_limit']):
+                        raise ValueError('fused declaration numerical contract differs from proof')
         from merlin.llvmlower.im2col_identity_view import rewrite_prepared_file
         identity=Path(work)/'identity_views';identity.mkdir(parents=True,exist_ok=True)
         prepared,report=rewrite_prepared_file(rewritten,identity)

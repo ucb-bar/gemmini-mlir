@@ -334,3 +334,25 @@ late7×7 C512 wide-A kernel passes every25,088 output and guard at939,677 GSIM
 kernel cycles; cross-simulator comparisons to FireSim are provisional. The
 whole narrow-flat candidate passes native/Spike. Hardware job1757 measures the
 best standalone late-conv variant before any blanket schedule promotion.
+
+### Explicit bounded readout experiment
+
+An opt-in `captured_requant_bundle --max-output-lsb=1` now admits the six
+otherwise-refused zero-bias unary epilogues. Exact mode remains the default.
+`prove_scale_bound` compares the union of every source/target monotone integer
+output transition and the domain endpoints; the step functions are constant
+between these points. This computes the exact worst error across all possible
+accumulators rather than sampling calibration outputs. Each of the six has
+maximum1 output step, with a reproducible accumulator witness. Source shapes,
+qparams, bias bytes, original arithmetic order, rewritten bytes and compiled
+objects remain bound. The complete new bundle has52 routes/16 direct and a
+zero-FSM object audit. Twenty-four proof/rewrite regression tests pass.
+
+The selected local limit and proven error are typed declaration attributes and
+manifest fields, verified again after preparation. Derived capture receipts
+state the selected numerical policy and preserve the original framework
+reference. This candidate is not exact source lowering and has no full-model
+quality or hardware release yet. Its next gate composes the explicit residual
+candidate and compares to the unchanged golden; actual target outputs must
+match the candidate's native implementation independently. Evidence:
+`perf_records/resnet_bounded_unary_candidate.json`.
