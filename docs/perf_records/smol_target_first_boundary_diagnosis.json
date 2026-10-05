@@ -1,0 +1,223 @@
+{
+  "schema": "smol_target_stage_diagnosis_checkpoint_v1",
+  "token_usage_available": false,
+  "original_failing_elf_sha256": "e0122716488b5ac1287d44735745e358ee4dd438855ff8c453b3f10f0bc05045",
+  "original_model_object_sha256": "4e06a20f8479966fe1c34ba6173d917e91d51f7957371fa00d7dacf4168aa75e",
+  "original_runtime_object_sha256": "2f612a63310c1bf30a38824f4debd64fce0f2780551e028f198114d555590e5e",
+  "original_full_gate_unchanged": "atol .03125 rtol .02,1600 original source outputs",
+  "cases": {
+    "first_input_boundary": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/model.elf",
+      "elf_sha256": "2094e4cd2968c2d36944df7bfd0ba704548bffebfff416a15dadd9848fa3efda",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/spike.log",
+      "log_sha256": "19370626392527cceac7d2bdf8fc6faf8af50c5c13e77917702b4fb342640eb4",
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "2094e4cd2968c2d36944df7bfd0ba704548bffebfff416a15dadd9848fa3efda",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 76,
+          "1": 756,
+          "2": 329,
+          "3": 1656,
+          "4": 758,
+          "5": 2554,
+          "6": 3312,
+          "7": 19
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "kernel_probe": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/kernel_probe/model.elf",
+      "elf_sha256": "af051494070a67bfe6d0ebafa61cd2abe7327924fc2d542ceda6ec9dcedc1305",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/kernel_probe/spike.log",
+      "log_sha256": "7892422e5b4dbae7255f0232f0fb833b5d75c40fef35d3dc9a877be1404e08c2",
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "af051494070a67bfe6d0ebafa61cd2abe7327924fc2d542ceda6ec9dcedc1305",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 76,
+          "1": 756,
+          "2": 329,
+          "3": 1656,
+          "4": 758,
+          "5": 2554,
+          "6": 3312,
+          "7": 19
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "gelu_probe": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/gelu_probe/model.elf",
+      "elf_sha256": "31635665a1fb7136e359d5b1d692626c6bdfe9cefccad7915d61433c2e7d24aa",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/gelu_probe/spike.log",
+      "log_sha256": "4fbd408ee539bade5a3b93d7dd71e8c071c3cde9ed330a6199167d3fc95adb1b",
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "31635665a1fb7136e359d5b1d692626c6bdfe9cefccad7915d61433c2e7d24aa",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 76,
+          "1": 756,
+          "2": 329,
+          "3": 1656,
+          "4": 758,
+          "5": 2554,
+          "6": 3312,
+          "7": 19
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "six_target": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/six_target/model.elf",
+      "elf_sha256": "5671cd86149a7c9080642931219cb8250ce5bb1c749678595acec22244cecc75",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/first_device/six_target/spike.log",
+      "log_sha256": "9500ca641b61db9d4a0f57dff3df528b0b7946ec2c69dd102259cc61d1c3ff95",
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "5671cd86149a7c9080642931219cb8250ce5bb1c749678595acec22244cecc75",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 76,
+          "1": 756,
+          "2": 329,
+          "3": 1656,
+          "4": 758,
+          "5": 2554,
+          "6": 3312,
+          "7": 19
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "status": "running; Q/K/V input and output complete hashes pass, first-layer outprojection/fc1/fc2 pending"
+    }
+  },
+  "findings": [
+    "Original target CPU prefix agrees with accepted native on all786432 first activation bytes and589824 first weight bytes.",
+    "Identical first device object with captured operands produces all786432 original i32 sums plus2048 guard words exactly.",
+    "GELU source-order f32 operation chain with glibc vs newlib tanhf agrees at BF16 output on all65280 finite BF16 inputs; a scoped negative result, not universal libm equivalence."
+  ],
+  "native_stage_references": [
+    {
+      "call": 1,
+      "operand": "a",
+      "bytes": 786432,
+      "sha256": "9a45d4431739ea6407f9d1cec5212eeab382042eed1a694479946d5012b6e6ee"
+    },
+    {
+      "call": 1,
+      "operand": "b",
+      "bytes": 589824,
+      "sha256": "f8dfbcf259b5898ae088a3ca755dfec6c3be963ea52ec2236b3446dd76f90c59"
+    },
+    {
+      "call": 1,
+      "operand": "c",
+      "bytes": 3145728,
+      "sha256": "9449b174472339c158c2b54ccae939923264dae2ff9b6c41d05b850d0d03c8eb"
+    },
+    {
+      "call": 2,
+      "operand": "a",
+      "bytes": 786432,
+      "sha256": "9a45d4431739ea6407f9d1cec5212eeab382042eed1a694479946d5012b6e6ee"
+    },
+    {
+      "call": 2,
+      "operand": "b",
+      "bytes": 589824,
+      "sha256": "da7cd88cc7c0e1ff17b2e267ce6d31aa96d4de84972384e3f0fad7d23a7415e8"
+    },
+    {
+      "call": 2,
+      "operand": "c",
+      "bytes": 3145728,
+      "sha256": "81deb1b810acf27b06bf058b8ce459e256d85a75f5f73d9596069b33be140aba"
+    },
+    {
+      "call": 3,
+      "operand": "a",
+      "bytes": 786432,
+      "sha256": "9a45d4431739ea6407f9d1cec5212eeab382042eed1a694479946d5012b6e6ee"
+    },
+    {
+      "call": 3,
+      "operand": "b",
+      "bytes": 589824,
+      "sha256": "223287546012f2bf9401cfc0bac1892b570186ccfc099becd88f9cb7ef182319"
+    },
+    {
+      "call": 3,
+      "operand": "c",
+      "bytes": 3145728,
+      "sha256": "fe34f059f385fe7235e8477aeec4548c3e9c65ea74eefacf6be79f51d40ca655"
+    },
+    {
+      "call": 4,
+      "operand": "a",
+      "bytes": 786432,
+      "sha256": "df94d2767f27a641e2a5d05985475185ee23fbb07dd4154a41b2f0ea97412c20"
+    },
+    {
+      "call": 4,
+      "operand": "b",
+      "bytes": 589824,
+      "sha256": "a4dc11264280c4525baf562e8c1ffdee0b20c03fe214973e4c6eaebd5338480d"
+    },
+    {
+      "call": 4,
+      "operand": "c",
+      "bytes": 3145728,
+      "sha256": "f9ace690e40808d865b0907c0bbc00f65c213e87239b8821692634a8c0ea7562"
+    },
+    {
+      "call": 5,
+      "operand": "a",
+      "bytes": 786432,
+      "sha256": "6846e79434adcf72901bc125d449006813841c55cba1aadd6930cc0994b1cb5e"
+    },
+    {
+      "call": 5,
+      "operand": "b",
+      "bytes": 2359296,
+      "sha256": "bb01eb1ce527f559c444f2f967fe27737aaacff0ca46ad98da2c2eaa04019aa6"
+    },
+    {
+      "call": 5,
+      "operand": "c",
+      "bytes": 12582912,
+      "sha256": "60dbbc23d7ce92cdf2d5a8eeb0896dc8ca0633f45f2df15a5455b1bb34f2b5c1"
+    },
+    {
+      "call": 6,
+      "operand": "a",
+      "bytes": 3145728,
+      "sha256": "984ef7ef0bfc3f46d37aa19750b00f84f2acc62ce1ca1e525271993acea98987"
+    },
+    {
+      "call": 6,
+      "operand": "b",
+      "bytes": 2359296,
+      "sha256": "52587d10039a794760bfcd71748db9eebd21312a1c2a9b7f583ec95998653ac1"
+    },
+    {
+      "call": 6,
+      "operand": "c",
+      "bytes": 3145728,
+      "sha256": "1144d3112d581d62b5c37b5c106cfaaf8804eeb336744ca46be88d176e0137a4"
+    }
+  ],
+  "unmodified_objects": "Boundary wrappers relink original failed model.o/runtime/device/shim/weights/startup objects; probes exit early. Original source and reference arrays unchanged."
+}
