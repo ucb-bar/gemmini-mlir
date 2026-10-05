@@ -7,7 +7,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, virtual padding/layout, resident/banked transfer plus banked residual prefetch, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 39,201,279 (1874) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned | [1874](perf_records/resnet_transfer_residual_composed_firesim.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch and fresh writer ownership | 569,151,067 (1846) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1846](perf_records/tiny_expanded_writer_prefetch_firesim1846.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, two-lane host pointwise packets, eight ordered contraction outputs/K2, cached-A B-prefetch and fresh writer ownership | 531,072,370 (1880) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1880](perf_records/tiny_pointwise_packet_firesim.json) |
 | Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Both older ABI-corrected and newer ordered-FMA outlined actualRV64GC models fail89/1,600 original elements(maxabs.115166), with identical target output bytes. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -17,7 +17,7 @@ remaining performance targets or pretrained ResNet accuracy.
 
 [Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
 regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
-does not invoke shared whole-program search. Three real compiler export commands now expose six AST edit surfaces. The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This is an admission gate; it does not select a new schedule or invoke shared global optimization. [Binding](perf_records/golden_model_plan_binding_qualification.json).
+does not invoke shared whole-program search. Four compiler export/selection commands now expose seven AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This is an admission gate; it does not select a new schedule or invoke shared global optimization. [Binding](perf_records/golden_model_plan_binding_qualification.json).
 
 Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
 with all1,000 reference logits passing its self-check and54 buffered layer timings.
@@ -102,8 +102,7 @@ Generic Merlin selected BF16 widening includes allocation and conversion in
 each replay capsule. QK4 LHS-only stock1872 measures828,986cycles,8.94% below1857.
 PV4 stock1873 verifies168,142cycles; strict control1875 verifies180,776,
 a 6.989% matched reduction, with all64 original words exact and staged hardware pinned.
-[Strict PV control](perf_records/ordered_attention_pv_control_firesim.json). Both-operand M1 widening is rejected. QK16 passed original
-native/strictSpike/zeroFSM and is queued1883. These are replay capsules, not a5B full
+[Strict PV control](perf_records/ordered_attention_pv_control_firesim.json). Both-operand M1 widening is rejected. QK16 passes original native/strictSpike/zeroFSM and stock1883 now verifies814,343cycles,1.766% below LHS-widened QK4 and10.552% below1857. [QK16](perf_records/ordered_attention_qk_lhs16_firesim.json). These are replay capsules, not a5B full
 SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
 [complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
 
@@ -123,8 +122,22 @@ unchanged1853 host/runtime/weights/shim. Stock1888 is queued. Generic Merlin bou
 save42.49% warm cycles on a complete quantization/packing capsule; the whole arm preserves original
 1,000 words and all13 checked nonhost objects, queued1886. The first redundant dead-branch arm was
 rejected before hardware. Tiny two-lane scalar pointwise packets save22.09% warmGSIM on the full
-capsule; original256,000 whole words andTorch gate pass with unchanged1846 device/runtime, queued1880.
-These are independently qualified pending arms, with no whole-cycle composition claim.
+capsule; stock1880 now verifies531,072,370wholecycles,38,078,697(6.6904%) below1846, all256,000 original words/Torch gate exact and actual staging closed. [Hardware](perf_records/tiny_pointwise_packet_firesim.json). Other queued arms remain pending experiments.
+
+
+Current Smol diagnosis has closed the first four isolated vision blocks, post-layernorm and
+the language/action suffix against original captured states with the original failing runtime
+frozen. The fifth vision block (index4) passes natively and diverges on the target; the next
+isolated block passes. This localizes a reproducible failure without certifying the whole model.
+Native and target expf can differ on some actual inputs even in a block whose complete output
+is exact; libm differences alone do not prove causality.
+[Localization](perf_records/smol_later_vision_block_localization.json),
+[corrected block2 and rejected diagnostic input](perf_records/smol_vision_block2_corrected_target.json).
+
+The generic early-saturation/eight-lane exact integer readout candidate preserves every
+original ResNet output in native and strict target execution. Only two CPU adapters change;
+the unmodified control link reproduces verified1874 byte for byte. Whole retired instructions
+fall10,222,806→9,389,018; no hardware-cycle gain is claimed before the stock measurement.
 
 The following narrative retains the earlier experiment sequence; the table above is current.
 
@@ -201,7 +214,7 @@ See [mesh geometry](perf_records/resnet_exact52_mesh_geometry.json) and
 
 ## Reference and schedule
 
-The sole 22,387,449-cycle evidence is Jack's `resnet50_nofsm_q1013.zip` manifest. Its ZIP contains an ELF, disassembly, FireSim bundle and manifest, but no source. We inspected the ZIP and extracted the ELF/disassembly into `out/reference_q1013/`; no Jack folder was opened. `python -B -m mlir_oot.reference_profile ELF DIS -o static_schedule.json` gives static instruction counts for the function symbols. It finds 72 model-related symbols, 42 four-byte aliases and 30 larger bodies. Among those bodies there are 13,764 static `PRELOAD_CMD`, 8,359 `COMPUTE_AND_STAY_CMD`, 5,405 `COMPUTE_AND_FLIP_CMD`, 2,178 `LOAD_CMD`, 1,537 `LOAD2_CMD`, and 909 `LOAD3_CMD` instructions. Static counts are not dynamic issue counts or cycle attribution. The archive's ELF includes six `LOOP_WS*` commands in a linked library routine; the ZIP therefore cannot meet the stricter final-ELF zero-FSM criterion even though the measured path may not execute that routine.
+The original 22,387,449-cycle evidence was Jack's `resnet50_nofsm_q1013.zip` manifest. Its ZIP contains an ELF, disassembly, FireSim bundle and manifest, but no source. We inspected the ZIP and extracted the ELF/disassembly into `out/reference_q1013/`; no Jack folder was opened. `python -B -m mlir_oot.reference_profile ELF DIS -o static_schedule.json` gives static instruction counts for the function symbols. It finds 72 model-related symbols, 42 four-byte aliases and 30 larger bodies. Among those bodies there are 13,764 static `PRELOAD_CMD`, 8,359 `COMPUTE_AND_STAY_CMD`, 5,405 `COMPUTE_AND_FLIP_CMD`, 2,178 `LOAD_CMD`, 1,537 `LOAD2_CMD`, and 909 `LOAD3_CMD` instructions. Static counts are not dynamic issue counts or cycle attribution. The archive's ELF includes six `LOOP_WS*` commands in a linked library routine; the ZIP therefore cannot meet the stricter final-ELF zero-FSM criterion even though the measured path may not execute that routine.
 
 Our `no_fsm_audit.py` scans all executable RISC-V ELF sections after linking, decodes variable-length instructions, and refuses every `LOOP_*` funct, unknown Gemmini funct, and invalid Gemmini funct3. It must pass on every candidate submitted for a zero-FSM claim. The GSIM probe ELFs pass it; the archived reference fails it.
 

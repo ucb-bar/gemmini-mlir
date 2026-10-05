@@ -2,15 +2,16 @@
 
 ## Actual scope
 
-The development package now exposes three explicit commands through `gemmini-opt`.
+The development package now exposes four compiler export/selection commands through `gemmini-opt`.
 The existing interface commands retain their original component membership. This
 does not alter an already sealed package, certify the backend, select whole-model
 schedules through a shared solver, or change qualified model artifacts.
 
 | Command | Executed compiler route | Checked result |
 | --- | --- | --- |
-| `--emit-golden-inventory PATH` | Merlin `inspect_compiler_package`, `build_compiler_edit_contract`, `phase2_edit_contract.load` and `validate_against_package` | Six exact AST decision/codegen owners, real command membership, canonical edit-contract identity |
+| `--emit-golden-inventory PATH` | Merlin `inspect_compiler_package`, `build_compiler_edit_contract`, `phase2_edit_contract.load` and `validate_against_package` | Seven exact AST decision/codegen owners, real command membership, canonical edit-contract identity |
 | `--export-golden-contraction --region ID --llvm-bin PATH --workdir PATH SOURCE` | Existing exact upstream integer contraction matcher, target schedule selection, primitive xDSL generation, ordinary LLVM/RoCC compilation | Source SHA, operation identity, selected kernel symbol, object SHA, shared `GlobalPlanEmission` boundary/accounting checks and object no-FSM audit |
+| `--optimize-golden-contraction --region ID --llvm-bin PATH --workdir PATH --calibrations PATH SOURCE` | Existing shared planner ranks pinned full-fixture measurements and compiles its selected generator | Actual selected object matches calibration; source/input/engine/ABI hashes closed; complete ranking with unresolved physical floor retained |
 | `--export-golden-capture --llvm-bin PATH --workdir PATH model.mlir` | Existing pinned capture epilogue binder and compiler | The binder's original exact source/numeric/parameter receipts and actual selected routes |
 
 The contraction export covers one unbatched `i8 × i8 → i32` contraction from
@@ -35,7 +36,7 @@ occupancy remain caller-supplied evidence, with no hardware calibration inferred
 
 `manifest.yaml` declares shape selection, dense transfer-family selection, remaining
 B slot placement, dense output command emission, convolution family selection and
-resident convolution stripe emission. Each declaration resolves to an existing
+resident convolution stripe emission, plus calibrated selection reaching actual emission. Each declaration resolves to an existing
 symbol in an actual new compilation command component. Numeric proof functions,
 instruction encodings, hardware identities and verification are not granted as
 optimization surfaces.

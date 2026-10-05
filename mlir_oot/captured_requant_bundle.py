@@ -125,7 +125,7 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=
     return declaration
 
 
-def integer_adapter(schedule,symbol,kernel,direct,proof):
+def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None):
     adapter=emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel).replace('int8_t*c)','int32_t*c)').replace('int8_t*,int8_t*,int8_t*','int8_t*,int8_t*,int32_t*')
     adapter=adapter.replace('memref2 *c)', 'memref2 *scratch,memref2 *c)')
     output='(int32_t*)c->aligned+c->offset' if direct else '(int8_t*)c->aligned+c->offset'
@@ -135,10 +135,15 @@ def integer_adapter(schedule,symbol,kernel,direct,proof):
     adapter=adapter.replace(' if (', ' '+check+'\n if (',1)
     readout=symbol+'_readout'
     adapter=adapter.replace('*r=*c;',f'{readout}((const int32_t*)scratch->aligned+scratch->offset,(int8_t*)c->aligned+c->offset,{m*n});*r=*c;')
-    return emit_readout(proof,readout,fixedpoint=True)+adapter
+    return emit_readout(proof,readout,fixedpoint=True,**dict(readout_options or {}))+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None):
+    readout_options=dict(readout_options or {})
+    if set(readout_options)-{'saturation_first','packet'}:
+        raise ValueError('unsupported generic readout schedule options')
+    if readout_options and not exact_integer_readout:
+        raise ValueError('readout schedule options require exact integer readout')
     from .golden_resident_conv import ResidentConvOptions
     resident_input_options=dict(resident_input_options or {})
     if set(resident_input_options)-set(resident_input_regions):
@@ -254,11 +259,13 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             schedule=generator.shape
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
-        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
+        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout,readout_options=readout_options) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
         (work/'adapter.c').write_text(adapter)
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
         routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+        if readout and readout_options:
+            routes[-1]['readout_schedule_options']=readout_options
         if rid in resident_input_options:
             routes[-1]['resident_options']=asdict(resident_input_options[rid])
         if direct and resident_stripes:
@@ -291,7 +298,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes',));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes',));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()
