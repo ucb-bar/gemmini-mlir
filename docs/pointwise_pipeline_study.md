@@ -21,7 +21,7 @@ Full 3136x64x64 measurements use identical i8 bias/scale/ReLU semantics:
 | Schedule | GSIM kernel cycles | Stock FireSim kernel cycles |
 |---|---:|---:|
 | Baseline bm16 | 104,931 | 105,258 (job 1725) |
-| Prefetch bm4 | 94,304 | Pending job 1736 |
+| Prefetch bm4 | 94,304 | 94,089 (job 1736) |
 | Prefetch bm8 | 96,414 | Not submitted |
 | Prefetch with separate banks, bm8 | 91,250 | **92,101 (job 1733)** |
 | Prefetch with separate banks, bm1 | Full shape not run | **53,624 (job 1734)** |
