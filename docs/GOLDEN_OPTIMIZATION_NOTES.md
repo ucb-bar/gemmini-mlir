@@ -172,3 +172,15 @@ instructions. Both retain the same source H,W arithmetic order and strongest
 combined clamp/RNE host path; device executable bytes and runtime objects match.
 This is one hardware observation per variant; blocking remains explicit/default
 off. The historical late-relink harness hash alone is insufficient identity.
+
+## Identified separate-B, block64 and exact host composition
+
+New build selects the fully proved separate-B dense bundle plus verified block64
+reduction, uniform quantization and exact combined clamp/RNE. The backend now
+hashes selected host LLVM before compiling model.o and emitting harness identity
+(f71783670baa). Explicit host_vectorize=True preserves the historical ResNet
+policy. Full native and actual Spike outputs match all original1,000 float bits;
+final ELF has zero FSM. Spike11,497,420 is an instruction proxy. Stock job1795
+will compare against1789; no hardware result yet. Full4,000-byte SHA256 is emitted
+after timing with one-value prefix, shortening serial output without weakening
+full-output coverage. ELF4ef297f990815f309f80d6c2916af8e772b83e28d0b8cad686c5f5909b35092e.
