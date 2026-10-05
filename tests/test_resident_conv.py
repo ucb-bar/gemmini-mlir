@@ -49,3 +49,41 @@ def test_resident_options_refuse_unselected_or_untyped_settings_before_output(tm
    build(tmp_path/'no_capture',tmp_path/'no_tools',tmp_path/'output',
        resident_input_regions=('r',),resident_input_options=options)
   assert not (tmp_path/'output').exists()
+
+
+@pytest.mark.parametrize('shape,rows', [
+ (ConvShape(14,14,256,256,bn=4),1),
+ (ConvShape(7,7,512,512,bn=16),2),
+ (ConvShape(5,5,32,19,bn=2,output_dtype='i32'),2),
+ (ConvShape(3,1,16,17,bn=2,output_dtype='i32'),3),
+])
+def test_compiler_policy_derives_rows_without_source_identity(shape,rows):
+ from mlir_oot.golden_resident_conv import choose_compact_resident
+ generator,options=choose_compact_resident(shape)
+ assert options.rows_per_tile==rows and options.loop_channels
+ generator.build().verify()
+ # Including every valid row exactly once is independent of halo/mesh lanes.
+ assert [y+r for y,count,_ in generator.row_tiles for r in range(count)]==list(range(shape.h))
+
+
+@pytest.mark.parametrize('shape', [
+ ConvShape(14,15,256,256,bn=4),
+ ConvShape(14,14,256,256,stride=2,bn=4),
+ ConvShape(14,14,1024,256,bn=4),
+ ConvShape(14,14,256,256,bn=8),
+])
+def test_compiler_policy_refuses_unsupported_shape_or_resources(shape):
+ from mlir_oot.golden_resident_conv import choose_compact_resident
+ with pytest.raises(ValueError):choose_compact_resident(shape)
+
+
+def test_compiler_policy_requires_source_padding_proof_and_no_id_selection(tmp_path):
+ from mlir_oot.captured_requant_bundle import build
+ for kwargs in (
+  {'resident_input_policy':'unknown'},
+  {'resident_input_policy':'compact_channel_planes'},
+  {'resident_input_policy':'compact_channel_planes','flat_spatial':True,
+   'virtual_padding':True,'resident_input_regions':('r',)},
+ ):
+  with pytest.raises(ValueError):build(tmp_path/'no_capture',tmp_path/'no_tools',tmp_path/'output',**kwargs)
+  assert not (tmp_path/'output').exists()

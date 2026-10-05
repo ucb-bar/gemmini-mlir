@@ -7,7 +7,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, virtual padding/layout, three banked dense schedules, five resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 42,837,088 (1836) | All 1,000 original output words exact | [1836](perf_records/resnet_fresh_resident_firesim1836.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, four exact scalar outputs/K-unroll4 plus explicit cached-A B-prefetch | 572,814,021 (1839) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1839](perf_records/tiny_b_prefetch_firesim1839.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch | 571,097,507 (1841) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1841](perf_records/tiny_eight_k2_b_prefetch_firesim1841.json) |
 | Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output now **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC target qualification in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -30,14 +30,14 @@ readouts; generic numeric tests moved to core. [Extraction receipt](perf_records
 Generic source-bound post-offload callbacks and explicit full-write/result-identity contracts
 now let the normal model builder expose fresh output ownership. All155 Tiny calls are covered,
 with native and actual Spike outputs unchanged; isolated hardware arm1842 compares with1835.
-Eight-output/K2 plus device prefetch arm1841 has separate qualified evidence and awaits hardware.
+Eight-output/K2 plus device prefetch arm1841 now verifies571,097,507 hardware cycles,0.300% below1839; this small difference is one run, not a variance-adjusted claim.
 The current1837 four-output/K4 hardware profile conserves155 calls and attributes611,478,982
 interior cycles to219,073,155 device and392,405,827 host; intervals include all intervening
 operations after fusion, not one source operation. [Profile](perf_records/tiny_current_k4_profile_firesim1837.json).
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed. It retires9,467,083 instructions versus9,946,365; this is not a hardware cycle
+objects changed; stock FireSim1844 is queued. It retires9,467,083 instructions versus9,946,365; this is not a hardware cycle
 claim. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out

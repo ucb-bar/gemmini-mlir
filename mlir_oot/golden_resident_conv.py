@@ -19,6 +19,22 @@ class ResidentConvOptions:
     loop_channels: bool = False
 
 
+def choose_compact_resident(conv):
+    """Derive an opt-in schedule from spatial span and declared resources.
+
+    This is a target compiler policy, independent of source provenance or model
+    identity. The largest legal adjacent-row group reduces mesh padding and
+    ordinary channel loops bound code size. Resource refusal leaves selection
+    of an alternative schedule to the caller; this is no universal speed claim.
+    """
+    conv.validate()
+    if conv.w + 2 > F.DIM:
+        raise ValueError('resident width plus halo exceeds DIM')
+    rows = min(conv.h, 1 + (F.DIM - conv.w) // (conv.w + 2))
+    options = ResidentConvOptions(rows_per_tile=rows, loop_channels=True)
+    return GoldenResidentConv(conv, **asdict(options)), options
+
+
 class GoldenResidentConv(GoldenGemm):
     def __init__(self, s, *, rows_per_tile=1, loop_channels=False):
         s.validate()

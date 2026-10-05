@@ -946,3 +946,18 @@ The exact Jack ZIP was reopened at the user-specified name. Its four members mat
 extraction byte for byte, and its manifest records22,387,449 cycles. Archive/member hashes and
 absence of source are pinned in [inventory](perf_records/q1013_reference_zip_inventory.json).
 No Jack folder was opened.
+
+
+### General resident convolution selection
+
+An explicit target compiler policy, `compact_channel_planes`, now derives adjacent-row groups
+from spatial span and declared scratchpad/accumulator resources, using ordinary CPU channel
+loops. It selects from convolution shape and proved virtual padding, with a recorded refusal
+and the legal existing schedule as fallback. No model name or source-ID list drives this policy.
+It remains optional; legality alone does not imply best performance on every shape. Independent
+width1/5/7/14, channel/output tails, unsupported stride/width and resource cases are checked.
+The actual reference-source replay selects the same seven kernels without a resident source-ID
+list and produces byte-identical rewritten IR and device object, reusing its full native/Spike
+qualification. [Equivalence](perf_records/resnet_resident_compiler_policy_equivalence.json).
+The three dense banked source selections in that combined experiment remain explicit experiment
+choices; this policy generalizes the resident convolution part.
