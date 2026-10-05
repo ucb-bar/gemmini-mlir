@@ -204,3 +204,15 @@ and51.85% fewer than original1747 at1,800,267,524. The normal backend now hashes
 selected host LLVM, so build_hash2acafad83908 identifies the composition.
 Original Torch quality policy remains unchanged; this is exact to prior compiled
 outputs. ResNet1795 remains queued separately.
+
+## Tiny short-M orientation screen: rejected
+
+Actual pinned GSIM, M8/N512/K2048 i32: current wideB/cacheA kernel180,722cycles.
+Equivalent B-transpose times A-transpose with resident cached B, reuseB and
+independent B bank needs368,318kernelcycles (2.04x). Online activation transpose
+adds119,258 and output transpose38,131, total525,707 versus180,724 including
+empty baseline timing overhead. Offline stored-weight transpose is free in this
+screen. All4,096 outputs and2,048 guard bytes pass for both, with final zero-FSM
+ELFs and identical original fixture/output oracle. This specific arm loses even
+without layout costs and stops here; no whole-model rewrite or FireSim queue.
+It does not establish impossibility of every alternative transposed schedule.

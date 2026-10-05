@@ -1,0 +1,200 @@
+{
+  "schema": "golden_short_m_orientation_screen_v1",
+  "baseline": {
+    "status": "pass",
+    "shape": {
+      "m": 8,
+      "n": 512,
+      "k": 2048,
+      "output_dtype": "i32",
+      "bm": 1,
+      "bn": 32,
+      "bias": false,
+      "scale": 1.0,
+      "relu": false,
+      "wide_store": false,
+      "reuse_b": false,
+      "cache_b": false,
+      "cache_a": true,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": true,
+      "separate_b_bank": false
+    },
+    "original_shape": [
+      8,
+      512,
+      2048
+    ],
+    "transposed": false,
+    "separate_b_bank": false,
+    "cycles": [
+      1,
+      180722,
+      1
+    ],
+    "cycles_order": [
+      "activation_transpose",
+      "kernel",
+      "output_transpose"
+    ],
+    "elf_sha256": "b7306784e772fe4313baaa5eeea1000e92758709242cebb894819594e4294a1e",
+    "nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "b7306784e772fe4313baaa5eeea1000e92758709242cebb894819594e4294a1e",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 4,
+        "1": 16,
+        "2": 128,
+        "3": 32,
+        "4": 64,
+        "6": 64,
+        "7": 1
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "fixture_hashes": {
+      "activation": "2ea0b5c1e227d76a91528ae399e068b211633a183abe85b319d0236d76be055c",
+      "weight": "2e3438a817f1b267695def4dbaf4896f85eacbd02d164ac557662b1861ad7623",
+      "expected": "f2ab0a2532072e7671086381df689f6f0356313e24f6fa012071686a7e9aaca0"
+    },
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "derived",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "stdout_tail": "ORIENTATION_CYCLES 1 180722 1\nORIENTATION PASS\n",
+    "weight_transpose_policy": "offline constant materialization, not included in online cycles"
+  },
+  "transposed_banked_cached_b": {
+    "status": "pass",
+    "shape": {
+      "m": 512,
+      "n": 8,
+      "k": 2048,
+      "output_dtype": "i32",
+      "bm": 16,
+      "bn": 1,
+      "bias": false,
+      "scale": 1.0,
+      "relu": false,
+      "wide_store": false,
+      "reuse_b": true,
+      "cache_b": true,
+      "cache_a": false,
+      "pipeline_m": false,
+      "prefetch_m": false,
+      "banked_m": false,
+      "wide_a": false,
+      "wide_b": false,
+      "separate_b_bank": true
+    },
+    "original_shape": [
+      8,
+      512,
+      2048
+    ],
+    "transposed": true,
+    "separate_b_bank": true,
+    "cycles": [
+      119258,
+      368318,
+      38131
+    ],
+    "cycles_order": [
+      "activation_transpose",
+      "kernel",
+      "output_transpose"
+    ],
+    "elf_sha256": "90f60cbb2276b16a657261cb0111a28812f741b9a1dcb4e5ec77d509a4fc7f55",
+    "nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "90f60cbb2276b16a657261cb0111a28812f741b9a1dcb4e5ec77d509a4fc7f55",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 4,
+        "1": 128,
+        "2": 2048,
+        "3": 16,
+        "4": 128,
+        "5": 1920,
+        "6": 2048,
+        "7": 1
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "fixture_hashes": {
+      "activation": "2ea0b5c1e227d76a91528ae399e068b211633a183abe85b319d0236d76be055c",
+      "weight": "ac88ef43e7092bf253ff4a21ddb9cfdd0d353379bc3f94e112bf8c8087158a79",
+      "expected": "f2ab0a2532072e7671086381df689f6f0356313e24f6fa012071686a7e9aaca0"
+    },
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "derived",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "stdout_tail": "ORIENTATION_CYCLES 119258 368318 38131\nORIENTATION PASS\n",
+    "weight_transpose_policy": "offline constant materialization, not included in online cycles"
+  },
+  "ratio_kernel": 2.0380363209791836,
+  "ratio_online_total": 2.9088942254487504,
+  "decision": "Reject this kernel arm: transposed kernel itself loses 2.04x before online transpose cost; no whole-model rewrite or FireSim submission",
+  "scope": "One actual pinned GSIM comparison M8,N512,K2048, full4096 i32 output equality and2048 guard bytes, equivalent transposed original input bytes, zero-FSM final ELFs; no claim all transposed schedules are exhausted"
+}
