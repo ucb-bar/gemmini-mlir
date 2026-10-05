@@ -1,12 +1,13 @@
 """A small builder over the xDSL LLVM dialect for the compiler-generated CPU lane.
 
-Two deliberate constraints, both established by measuring what the target's program oracle
-actually executes (see docs/iteration_notes.md):
+The published capsule path keeps two constraints established by the target's program
+oracle (see docs/iteration_notes.md):
 
 * the emitted `llvm.func` is **single-block** — the kernel is fully unrolled straight-line code;
 * the CPU lane is **branch-free and select-free** — every min/max/clamp/predicate is built out of
   sign-mask integer arithmetic, so nothing depends on `llvm.icmp`/`llvm.select`.
 
+The golden kernel path also uses this builder's `for_loop` to emit ordinary CPU CFG loops.
 Everything is constructed as real IR; no part of the artifact is assembled from strings.
 """
 from __future__ import annotations
@@ -48,7 +49,7 @@ def iconst(value: int, ty: IntegerType = i64) -> TypedConstantOp:
 
 
 class FnBuilder:
-    """Builds the body of one single-block `llvm.func`."""
+    """Builds one `llvm.func`, with optional CPU loops for the golden path."""
 
     def __init__(self, arg_types: list[Attribute]):
         self.region = Region([])
@@ -68,7 +69,13 @@ class FnBuilder:
         if hit is not None:
             return hit
         op = iconst(value, ty)
-        self.entry.add_op(op) if self.blk is self.entry else self.blk.add_op(op)
+        # Keep constants in the entry block so they dominate CPU loops.  A loop may already
+        # have installed the entry terminator when its body asks for a new constant.
+        terminator = self.entry.last_op
+        if terminator is not None and terminator.has_trait(llvm.IsTerminator):
+            self.entry.insert_op_before(op, terminator)
+        else:
+            self.entry.add_op(op)
         self._consts[key] = op.results[0]
         return op.results[0]
 
@@ -76,6 +83,32 @@ class FnBuilder:
         """`for iv in [0, count)`, fully unrolled — the kernel stays single-block."""
         for i in range(count):
             body(self.const(i))
+
+    def for_loop(self, start: int, stop: int, step: int,
+                 body: Callable[[SSAValue], None]) -> None:
+        """Emit an ordinary CPU loop in LLVM CFG; no Gemmini loop opcode is involved."""
+        if step <= 0 or start < 0 or stop < start:
+            raise ValueError("invalid CPU loop bounds")
+        if start == stop:
+            return
+        header = Block(arg_types=[i64])
+        loop_body = Block()
+        exit_block = Block()
+        self.region.add_block(header)
+        self.region.add_block(loop_body)
+        self.region.add_block(exit_block)
+        self.add(llvm.BrOp(header, self.const(start)))
+        self.blk = header
+        iv = header.args[0]
+        cond = self.add(llvm.ICmpOp(
+            iv, self.const(stop), IntegerAttr(llvm.ICmpPredicateFlag.SLT.to_int(), i64)
+        )).results[0]
+        self.add(llvm.CondBrOp(cond, loop_body, [], exit_block, []))
+        self.blk = loop_body
+        body(iv)
+        nxt = self.add_i(iv, self.const(step))
+        self.add(llvm.BrOp(header, nxt))
+        self.blk = exit_block
 
     # -- memory ------------------------------------------------------------------------------
     def gep(self, base: SSAValue, index: SSAValue, elem_ty: Attribute) -> SSAValue:

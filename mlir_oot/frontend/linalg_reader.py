@@ -18,6 +18,7 @@ from typing import Any
 from xdsl.dialects.builtin import ModuleOp, StringAttr, TensorType
 from xdsl.ir import Operation
 
+from ..contraction_patterns import match_integer_gemm
 from ..tables import rtl_facts as F
 
 #: The contraction families the mesh can take, and the operand dtype it can take them at.
@@ -95,6 +96,15 @@ def _normalise_dtype(name: str) -> str:
             "int8": "i8", "int32": "i32", "int64": "i64"}.get(name, name)
 
 
+def _current_mesh_contraction(op: Operation) -> bool:
+    """An integer rewrite may retain f32 provenance while changing operand types.
+
+    Placement must use the operation that will execute.  The original dtype is
+    still useful provenance, but it cannot veto a legal current i8 matmul.
+    """
+    return match_integer_gemm(op) is not None
+
+
 def place(region: Region) -> Region:
     """Assign `region` to the mesh or to the host lane, from the RTL-derived datapath."""
     if region.family not in MESH_FAMILIES:
@@ -141,6 +151,11 @@ def read(module: ModuleOp) -> LinalgWorkload:
                             dtype=_normalise_dtype(_s(op, "prov.orig_dtype")))
             seen[rid] = region
             wl.regions.append(place(region))
+        if _current_mesh_contraction(op) and region.family in MESH_FAMILIES:
+            region.dtype = F.OPERAND_DTYPE
+            place(region)
+            region.reason = ("region contains a current exact i8 GEMM after the integer rewrite; "
+                             "its other operations remain on the host")
         region.n_ops += 1
     if not wl.regions:
         # An unannotated module is one anonymous region; its family/dtype come from the entry

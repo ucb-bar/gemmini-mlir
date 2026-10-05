@@ -30,6 +30,7 @@ K_COMPUTE_PRELOADED = 4
 K_COMPUTE_ACCUMULATE = 5
 K_PRELOAD = 6
 K_FLUSH = 7
+K_MVIN3 = 14
 
 #: CONFIG subtypes, carried in rs1[1:0].
 CONFIG_EX = 0
@@ -66,6 +67,9 @@ def _u64(value: int) -> int:
 def assert_legal(funct: int) -> int:
     if funct not in F.LEGAL_FUNCTS:
         raise ValueError(f"funct {funct} is not in the decoder's legal set")
+    name = F.FUNCT_NAMES.get(funct, "")
+    if name.startswith("LOOP_"):
+        raise ValueError(f"funct {funct} ({name}) uses a hardware loop FSM")
     return funct
 
 
@@ -156,7 +160,7 @@ def _mem_rs2(local_addr: int, cols: int, rows: int) -> int:
 
 def mvin(*, local_addr: int, cols: int, rows: int, load_id: int = 0):
     """`gemmini_extended_mvin`; rs1 is the DRAM address (runtime pointer)."""
-    funct = {0: K_MVIN, 1: K_MVIN2}[load_id]
+    funct = {0: K_MVIN, 1: K_MVIN2, 2: K_MVIN3}[load_id]
     return funct, None, _mem_rs2(local_addr, cols, rows)
 
 

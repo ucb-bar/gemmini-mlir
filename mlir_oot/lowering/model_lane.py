@@ -20,9 +20,9 @@ from typing import Any
 from xdsl.dialects.builtin import IntegerType, TensorType
 from xdsl.ir import Operation, SSAValue
 
-from ..codegen.host_linalg import HOST_LINALG_ELEMENT_BUDGET, attr_of, estimate_cost
+from ..contraction_patterns import match_integer_gemm
+from ..codegen.host_linalg import HOST_LINALG_ELEMENT_BUDGET, estimate_cost
 from ..frontend.linalg_reader import HOST_LANE, MESH_LANE, LinalgWorkload
-from ..tables import rtl_facts as F
 from .plan import Buffer, Epilogue, LoweringDeclined, Plan, kernel_args
 
 
@@ -68,40 +68,10 @@ def mesh_eligible(op: Operation, lane_of: dict[str, str]) -> bool:
     adds the second question a placement cannot answer -- whether the op's own shape is one the
     tile schedule expresses (a rank-2 contraction at the mesh operand dtype).
     """
-    if op.name != "linalg.matmul":
-        return False
     if lane_of.get(_region_id(op)) != MESH_LANE:
         return False
-    try:
-        lhs, rhs = _shape(op.operands[0].type), _shape(op.operands[1].type)
-        out = _shape(op.results[0].type)
-    except LoweringDeclined:
-        return False
-    if len(lhs) != 2 or len(rhs) != 2 or len(out) != 2:
-        return False
-    if lhs[1] != rhs[0] or out != (lhs[0], rhs[1]):
-        return False
-    if not all(_elem(t.type) == F.OPERAND_DTYPE
-               for t in (op.operands[0], op.operands[1])):
-        return False
-    # The mesh contraction starts from a ZERO accumulator.  An `outs` operand that is anything
-    # else carries an initial value the tile schedule would silently drop, so such a matmul is
-    # not one this lowering can express and stays on the host.
-    return _is_zero_init(op.operands[2])
-
-
-def _is_zero_init(value: SSAValue) -> bool:
-    """Is `value` a fill of the additive identity (what a from-zero accumulation needs)?"""
-    producer = value.owner if isinstance(value.owner, Operation) else None
-    if producer is None or producer.name != "linalg.fill":
-        return False
-    scalar = producer.operands[0]
-    src = scalar.owner if isinstance(scalar.owner, Operation) else None
-    if src is None or src.name != "arith.constant":
-        return False
-    attr = attr_of(src, "value")
-    data = getattr(getattr(attr, "value", None), "data", None)
-    return data is not None and float(data) == 0.0
+    matched = match_integer_gemm(op)
+    return matched is not None and matched.batch == 1 and len(_shape(op.operands[0].type)) == 2
 
 
 class MixedBuilder:

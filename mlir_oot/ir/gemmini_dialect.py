@@ -148,8 +148,13 @@ class MvinOp(_GemminiOp):
             raise VerifyException("gemmini.mvin takes the source DRAM pointer as its operand")
         self._extent("rows")
         cols = self.a("cols")
-        if not isinstance(cols, int) or not (1 <= cols <= DIM):
-            raise VerifyException(f"gemmini.mvin: `cols` = {cols!r} must be in 1..{DIM}")
+        # The load controller distributes up to four adjacent DIM-wide
+        # blocks down scratchpad rows using CONFIG_LD.block_mvin_stride.
+        # q1013 uses 16x64 MVIN/MVIN2 for its 1x1 kernels.
+        local = self.a("local")
+        max_cols = DIM if isinstance(local, int) and local & isa.ACC_ADDR_BIT else DIM * 4
+        if not isinstance(cols, int) or not (1 <= cols <= max_cols):
+            raise VerifyException(f"gemmini.mvin: `cols` = {cols!r} must be in 1..{max_cols}")
         self._local("local")
 
 
@@ -163,7 +168,17 @@ class MvoutOp(_GemminiOp):
         if len(self.operands_) != 1:
             raise VerifyException("gemmini.mvout takes the destination DRAM pointer as its operand")
         self._extent("rows")
-        self._extent("cols")
+        cols = self.a("cols")
+        local = self.a("local")
+        # The store controller can read four adjacent 16-column accumulator
+        # tiles as one 16x64 int8 DMA.  q1013 uses this form dynamically.  A
+        # full-width i32 accumulator read keeps the single-tile bound.
+        wide_acc_i8 = (isinstance(local, int) and bool(local & isa.ACC_ADDR_BIT)
+                       and not bool(local & isa.ACC_FULL_ROW_BIT))
+        max_cols = DIM * 4 if wide_acc_i8 else DIM
+        if not isinstance(cols, int) or not (1 <= cols <= max_cols):
+            raise VerifyException(
+                f"gemmini.mvout: `cols` = {cols!r} must be in 1..{max_cols}")
         self._local("local")
 
 
@@ -190,6 +205,8 @@ class ComputeOp(_GemminiOp):
         self._extent("a_cols")
         self._extent("a_rows")
         self._local("a")
+        if "bd" in self.attributes:
+            self._local("bd")
 
 
 @irdl_op_definition

@@ -461,10 +461,21 @@ class Builder:
             raise LoweringDeclined(
                 f"conv2d weight {weight.shape} is not the [{kdim}, {co}] im2col packing",
                 op="conv2d", shape=weight.shape)
-        im2col = self.declare(f"{ifm.name}_im2col", [rows, kdim], ifm.dtype, "input")
-        self.params.setdefault("im2col_recipes", []).append(
-            {"source": ifm.name, "target": im2col.name, "kh": kh, "kw": kw, "ci": ci,
-             "stride": stride, "padding": padding, "dilation": dilation, "layout": layout})
+        # A unit 1x1 convolution visits the NHWC pixels in memory order.  The
+        # tensor ABI pads each C row to DIM, exactly the pitch a [M,C] matrix
+        # uses, so the original activation is already the GEMM lhs.  Keep the
+        # explicit gather for strided/padded/spatial kernels.
+        direct_lhs = (kh == kw == 1 and stride == [1, 1] and
+                      padding == [0, 0, 0, 0])
+        if direct_lhs:
+            lhs_name = ifm.name
+        else:
+            im2col = self.declare(f"{ifm.name}_im2col", [rows, kdim], ifm.dtype, "input")
+            lhs_name = im2col.name
+            self.params.setdefault("im2col_recipes", []).append(
+                {"source": ifm.name, "target": im2col.name, "kh": kh, "kw": kw, "ci": ci,
+                 "stride": stride, "padding": padding, "dilation": dilation,
+                 "layout": layout})
         e = _epilogue_from(node.attrs)
         out_shape = epilogue_out_shape(rows, co, e)
         if out_shape != node.out_shape:
@@ -482,7 +493,7 @@ class Builder:
                                   "operands": {"src": weight_name, "dst": handle},
                                   "attributes": {"layout": "packed_conv_rhs"}})
         self.commands.append({"opcode": "MATMUL_RESIDENT",
-                              "operands": {"lhs": im2col.name, "rhs": handle, "dst": acc}})
+                              "operands": {"lhs": lhs_name, "rhs": handle, "dst": acc}})
         attrs = {"epilogue": e.stages, "output_dtype": e.output_dtype}
         if "acc_scale" in node.attrs:
             attrs["acc_scale"] = float(node.attrs["acc_scale"])
@@ -499,7 +510,7 @@ class Builder:
         self.commands.append({"opcode": "COMMIT",
                               "operands": conv_commit,
                               "attributes": attrs})
-        self.tasks.append(Contraction(im2col.name, weight_name, node.name, rows, kdim, co,
+        self.tasks.append(Contraction(lhs_name, weight_name, node.name, rows, kdim, co,
                                       lhs_row_elems=kdim, rhs_row_elems=co, epilogue=e))
 
     def _op_attention_qk(self, node) -> None:

@@ -39,3 +39,7 @@ cd gemmini-mlir
 - Fingerprint: `n/a`
 
 See `.merlin/provenance.yaml` and `.merlin/certification.yaml` for the full lineage. Each commit on this repo is one promotion; the history is the provenance trail.
+
+## Experimental no-FSM golden branch
+
+The `golden/nofsm-wholemodels` working branch adds an **uncertified candidate** beside the published capsule backend. See [docs/golden_progress.md](docs/golden_progress.md) for the exact Jack ZIP reference, reproducible commands, measured probes, upstream lowering results, and remaining model work. The historical `manifest.yaml` grading above applies to the published parent, not this branch.
