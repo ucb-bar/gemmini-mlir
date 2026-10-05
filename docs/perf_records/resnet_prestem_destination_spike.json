@@ -1,0 +1,115 @@
+{
+  "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+  "elf_sha256": "58d66f8e796dd4018b1dae58671637568e3f9c89a1e3a1f85419415aad625bc5",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 11001021",
+    "METRIC build_hash 0ae8175b7e30",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_destination_fused/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_destination_fused/spike.log",
+  "spike_console_sha256": "c599152d49e719a2ae3c6b2293fc8ef15a5d2e3de5ca91498ed9fd2c2c1a5a11",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_destination_fused/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "schema": "resnet_exact_prestem_destination_target_gate_v1",
+  "elf": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_destination_fused/build_direct/model.elf",
+  "core_commit": "0e9bceda9",
+  "control_job": 1795,
+  "control_spike_instructions": 11497420,
+  "candidate_spike_instructions": 11001021,
+  "fraction_instruction_reduction": 0.04317481661103095,
+  "hardware_cycles_measured": false,
+  "remaining_limitation": "Upstream bodyless device return alias conservatism leaves a second pad allocation/copy; no unsupported alias override was applied.",
+  "rewrite_receipt": {
+    "schema": "exact_insert_slice_destination_v1",
+    "source_sha256": "c0ac3a7753276ec8562b8b273c6a9cf6335d55848a6f7a4d2b5535eaba4c15c9",
+    "rewritten_sha256": "b7dec7181c713a40376464ccae590a4a9d21a7bec499c399b5bd067804035b90",
+    "routes": [
+      {
+        "source_shape": [
+          1,
+          3,
+          224,
+          224
+        ],
+        "destination_shape": [
+          1,
+          3,
+          230,
+          230
+        ],
+        "offsets": [
+          0,
+          0,
+          3,
+          3
+        ],
+        "scalar_body": "unchanged clone",
+        "storage": "fresh fill with producer writing exact interior slice"
+      },
+      {
+        "source_shape": [
+          1,
+          224,
+          224,
+          3
+        ],
+        "destination_shape": [
+          1,
+          230,
+          230,
+          3
+        ],
+        "offsets": [
+          0,
+          3,
+          3,
+          0
+        ],
+        "scalar_body": "unchanged clone",
+        "storage": "fresh fill with producer writing exact interior slice"
+      }
+    ],
+    "scalar_arithmetic_changed": false,
+    "call_abi_changed": false
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "58d66f8e796dd4018b1dae58671637568e3f9c89a1e3a1f85419415aad625bc5",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2996,
+      "2": 12503,
+      "3": 1334,
+      "4": 11966,
+      "5": 100544,
+      "6": 112510,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  }
+}

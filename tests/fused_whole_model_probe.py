@@ -116,6 +116,7 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--residual-shared-permutation',action='store_true');p.add_argument('--residual-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.)
     p.add_argument('--host-feature', action='append', choices=('fuse_quantize_round_convert','lower_roundeven_to_intrinsic'), default=[], help='explicit exact host arithmetic lowering; defaults remain unchanged')
+    p.add_argument('--reuse-tensor-destination',action='store_true')
     p.add_argument('--host-vectorize',choices=('true','false'),default=None)
     p.add_argument('--host-llvm-transform',choices=('clamp-rne',),default=None)
     p.add_argument('--output-sha256',action='store_true')
@@ -129,6 +130,7 @@ def main():
     capture=a.work/'capture';builddir=a.work/'build_direct'
     if not a.validate_existing:
         policy={key:os.environ.get(key) for key in ['MERLIN_GENERALIZE_BEFORE_FUSE','MERLIN_FUSE_POST','MERLIN_CLANG']}
+        policy['reuse_tensor_destination']=a.reuse_tensor_destination
         policy['host_features']=sorted(set(a.host_feature))
         policy.update(host_vectorize=a.host_vectorize,host_llvm_transform=a.host_llvm_transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap)
         (a.work/'host_compilation_policy.json').write_text(json.dumps(policy,indent=2)+'\n')
@@ -155,6 +157,7 @@ def main():
         (a.work/'whole_quality_policy.json').write_text(json.dumps({'allow_bounded_output':a.allow_bounded_output,'atol':a.atol,'rtol':a.rtol,'original_golden_sha256':hashlib.sha256((a.capture/'golden.npy').read_bytes()).hexdigest()},indent=2)+'\n')
         features={'named_int8_contraction',*a.host_feature}
         if a.hoist_weights:features.add('hoist_weight_invariant_quantize')
+        if a.reuse_tensor_destination:features.add('reuse_tensor_destination')
         transform=None
         if a.host_llvm_transform:
             from mlir_oot.late_quant_rne import merlin_host_llvm_transform
