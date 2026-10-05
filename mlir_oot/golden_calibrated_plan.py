@@ -35,7 +35,8 @@ def _measurement(selection, export_path, timing_path, engine_sha):
     measured = json.loads(timing_path.read_text())
     generator = selection['generator']
     shape = asdict(generator.shape)
-    for name in ('source_sha256', 'dimensions', 'binding', 'schedule_kind', 'kernel_symbol'):
+    for name in ('source_sha256', 'dimensions', 'binding', 'schedule_kind', 'kernel_symbol',
+                 'implementation_ir_sha256'):
         if exported[name] != selection[name]:
             raise ValueError(f'calibration export disagrees with current source selection: {name}')
     if exported['schedule'] != shape or exported['prefetch_b_rows'] != (
@@ -146,13 +147,15 @@ def optimize_contraction(source_path, region_id, llvm_bin, workdir, calibration_
         raise ValueError(f'calibrated source plan selection refused: {result.refusals}')
     winner = result.plan.selected[0]
     selection, selected_evidence = selections[winner.id], evidence[winner.id]
-    emitter = SourceContractionEmitter(source_path, logical, winner, selection['generator'], llvm_bin, workdir)
+    emitter = SourceContractionEmitter(source_path, logical, winner, selection['generator'], llvm_bin, workdir,
+        primitive_module=selection['primitive_module'])
     emission = emit_global_plan(logical, result.plan, emitter)
     if emitter.compilation['object_sha256'] != selected_evidence['object_sha256']:
         raise ValueError('solver-selected emitted object differs from its calibrated implementation')
     if _sha(calibration_path) != calibration_sha:
         raise ValueError('calibration changed during selection/emission')
     receipt = dict(schema='golden_calibrated_contraction_plan_v1', source_sha256=selection['source_sha256'],
+        implementation_ir_sha256=selection['implementation_ir_sha256'],
         dimensions=selection['dimensions'], binding=selection['binding'],
         schedule=asdict(selection['generator'].shape), schedule_kind=selection['schedule_kind'],
         prefetch_b_rows=selection['generator'].prefetch_b_rows,

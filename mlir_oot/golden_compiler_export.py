@@ -48,15 +48,17 @@ def export_inventory(package):
 class SourceContractionEmitter:
     """Compile one bound alternative and return the shared executable accounting."""
 
-    def __init__(self,source_path,logical,alternative,generator,llvm_bin,workdir):
+    def __init__(self,source_path,logical,alternative,generator,llvm_bin,workdir,*,primitive_module=None):
         from merlin.xdsl_dialects.lowering.global_plan_emission import dispatch_digest
         self.source_path=Path(source_path)
         self.source_sha256=dict(alternative.metadata)['source_sha256']
+        self.implementation_ir_sha256=dict(alternative.metadata)['implementation_ir_sha256']
         if _sha(source_path)!=self.source_sha256:
             raise ValueError('contraction source changed before emission binding')
         self.logical_digest=dispatch_digest(logical)
         self.alternative=alternative
         self.generator=generator
+        self.primitive_module=(primitive_module if primitive_module is not None else generator.build()).clone()
         self.schedule_binding=(asdict(generator.shape),generator.prefetch_b_rows)
         self.llvm_bin=Path(llvm_bin)
         self.workdir=Path(workdir)
@@ -73,7 +75,10 @@ class SourceContractionEmitter:
             raise ValueError('contraction export requires its exact bound singleton alternative')
         if (asdict(self.generator.shape),self.generator.prefetch_b_rows)!=self.schedule_binding:
             raise ValueError('selected generator schedule changed after binding')
-        module=self.generator.build()
+        from merlin.xdsl_dialects._common import text
+        if hashlib.sha256(text(self.primitive_module,generic=True).encode()).hexdigest()!=self.implementation_ir_sha256:
+            raise ValueError('selected primitive implementation changed after source binding')
+        module=self.primitive_module.clone()
         module.body.block.first_op.properties['sym_name']=StringAttr(self.alternative.implementation)
         self.compilation=compile_module(module,self.llvm_bin,self.workdir)
         if _sha(self.source_path)!=self.source_sha256:
@@ -122,7 +127,12 @@ def select_contraction_export(source_path,region_id,*,dense_input_policy=None,
              generator=type(generator).__qualname__,schedule_kind=kind,
              prefetch_b_rows=generator.prefetch_b_rows)
     digest=hashlib.sha256(json.dumps(key,sort_keys=True).encode()).hexdigest()
-    symbol='gemmini_export_'+digest[:16]
+    # Exact logical/source identity remains in the alternative and binding.
+    # Equal emitted primitive programs share physical code across source uses.
+    from merlin.xdsl_dialects._common import text
+    primitive_module=generator.build()
+    implementation_ir_sha=hashlib.sha256(text(primitive_module,generic=True).encode()).hexdigest()
+    symbol='gemmini_export_'+implementation_ir_sha[:16]
     unknown=CycleInterval.unknown('No source-bound timing calibration was supplied')
     logical=DispatchProgram('contraction_export',[0,1],{
         'lhs':Buffer('lhs',[dims.m,dims.k],'i8','arg',0),
@@ -135,10 +145,11 @@ def select_contraction_export(source_path,region_id,*,dense_input_policy=None,
     alternative=RegionAlternative('contraction_'+digest[:16],(0,),symbol,'gemmini',unknown,
         inputs=tuple(BufferRepresentation(name,rep(name))for name in ('lhs','rhs')),
         outputs=(BufferRepresentation('output',rep('output')),),
-        metadata=(('source_sha256',source_sha),))
+        metadata=(('implementation_ir_sha256',implementation_ir_sha),('source_sha256',source_sha)))
     return dict(source_sha256=source_sha,dimensions=asdict(dims),binding=binding,
         generator=generator,schedule_kind=kind,b_slot_decision=b_decision,
-        kernel_symbol=symbol,logical=logical,alternative=alternative)
+        kernel_symbol=symbol,logical=logical,alternative=alternative,
+        implementation_ir_sha256=implementation_ir_sha,primitive_module=primitive_module)
 
 
 def export_contraction(source_path,region_id,llvm_bin,workdir,*,
@@ -158,7 +169,8 @@ def export_contraction(source_path,region_id,llvm_bin,workdir,*,
     plan=GlobalPlan((alternative,),(),unknown,
                     notes=('Explicit source compiler decision; shared cycle-ranking solver is not invoked',))
     workdir=Path(workdir)
-    emitter=SourceContractionEmitter(source_path,logical,alternative,generator,llvm_bin,workdir)
+    emitter=SourceContractionEmitter(source_path,logical,alternative,generator,llvm_bin,workdir,
+        primitive_module=selection['primitive_module'])
     emission=emit_global_plan(logical,plan,emitter)
     activity=None
     if activity_timeline is not None:
@@ -182,6 +194,7 @@ def export_contraction(source_path,region_id,llvm_bin,workdir,*,
                           provenance=(f'object_sha256:{activity_artifact_sha256}',
                                       *event_provenance.values()))))
     result=dict(schema='golden_source_contraction_export_v1',source_sha256=selection['source_sha256'],
+        implementation_ir_sha256=selection['implementation_ir_sha256'],
         dimensions=selection['dimensions'],binding=selection['binding'],schedule=asdict(generator.shape),
         schedule_kind=selection['schedule_kind'],prefetch_b_rows=generator.prefetch_b_rows,
         compiler_options=options,
