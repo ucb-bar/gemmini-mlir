@@ -184,3 +184,13 @@ final ELF has zero FSM. Spike11,497,420 is an instruction proxy. Stock job1795
 will compare against1789; no hardware result yet. Full4,000-byte SHA256 is emitted
 after timing with one-value prefix, shortening serial output without weakening
 full-output coverage. ELF4ef297f990815f309f80d6c2916af8e772b83e28d0b8cad686c5f5909b35092e.
+
+### Scalar-host ResNet control is identical
+
+Explicit host_vectorize=False versus1795's True completed full native/Spike
+original-golden gates. Both emitted byte-identical final ELF4ef297f9..., selected
+host LLVM and model.o; both retire11,497,420 Spike instructions. The backend
+receipts confirm the distinct requested booleans. No duplicate hardware job is
+submitted because this ResNet lowering contains no effective vectorization
+change under these features. Tiny's scalar-host improvement does not transfer
+to this already transformed ResNet instance.
