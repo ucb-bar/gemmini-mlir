@@ -19,6 +19,7 @@ def main():
         ap.add_argument('--'+key,type=int,default=value)
     ap.add_argument('--resident-input',action='store_true')
     ap.add_argument('--resident-rows-per-tile',type=int,default=1)
+    ap.add_argument('--resident-loop-channels',action='store_true')
     ap.add_argument('--virtual-padding',action='store_true',help='use unpadded input and primitive zero DMA at borders')
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
@@ -36,7 +37,7 @@ def main():
     ap.add_argument('--max-cycles',type=int,default=3000000)
     ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
-    if a.resident_rows_per_tile != 1 and not a.resident_input:
+    if (a.resident_rows_per_tile != 1 or a.resident_loop_channels) and not a.resident_input:
         ap.error('resident row groups require --resident-input')
     if (a.wide_a or a.separate_b_bank or a.band_rows is not None) and not a.flat_spatial:
         ap.error("wide A or separate B bank requires --flat-spatial")
@@ -45,7 +46,7 @@ def main():
     out.mkdir(parents=True,exist_ok=False)
     if a.resident_input:
         from mlir_oot.golden_resident_conv import GoldenResidentConv
-        kernel = GoldenResidentConv(s, rows_per_tile=a.resident_rows_per_tile)
+        kernel = GoldenResidentConv(s, rows_per_tile=a.resident_rows_per_tile,loop_channels=a.resident_loop_channels)
     elif a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
         kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding,pingpong_b=a.pingpong_b)

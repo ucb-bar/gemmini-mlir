@@ -5,7 +5,7 @@ places wide input loads directly into this layout; shifted resident rows
 supply all nine taps without repeated input DMA. Current family is stride1
 with each output row fitting one DIM tile. Resource admission is explicit.
 """
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 import json
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import StringAttr
@@ -13,9 +13,18 @@ from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
 from .tables import rtl_facts as F, isa
 
 
+@dataclass(frozen=True)
+class ResidentConvOptions:
+    rows_per_tile: int = 1
+    loop_channels: bool = False
+
+
 class GoldenResidentConv(GoldenGemm):
-    def __init__(self, s, *, rows_per_tile=1):
+    def __init__(self, s, *, rows_per_tile=1, loop_channels=False):
         s.validate()
+        if type(loop_channels) is not bool:
+            raise ValueError('resident channel-loop selection must be boolean')
+        self.loop_channels = loop_channels
         if s.explicit_halo or s.stride != 1 or s.w + 2 > F.DIM or s.cin % F.DIM:
             raise ValueError('resident convolution needs unpadded stride1, width+halo<=DIM and aligned Cin')
         self.plane = (s.h+2)*(s.w+2)
@@ -55,17 +64,37 @@ class GoldenResidentConv(GoldenGemm):
         def channel(n0,nr):
             for kh in range(3):
                 for kw in range(3):
-                    for ci in range(0,s.cin,F.DIM):
+                    def reduction(ki, first, static_ci=None):
+                        krow = self.fb.const((kh*3+kw)*s.cin+static_ci) if static_ci is not None else self.fb.add_i(
+                            self.fb.const((kh*3+kw)*s.cin),self.fb.mul_i(ki,self.fb.const(F.DIM)))
                         for d in range(0,len(nr),4):
-                            ptr=self._ptr(self.b,self.fb.const((kh*3+kw)*s.cin+ci),s.cout,self._tile(n0,d))
+                            ptr=self._ptr(self.b,krow,s.cout,self._tile(n0,d))
                             self._rocc('mvin',{'local':self.bbase+d*F.DIM,'rows':F.DIM,'cols':sum(nr[d:d+4]),'load_id':1},ptr)
                         for d,cols in enumerate(nr):
                             for tile,(y,count,span) in enumerate(self.row_tiles):
                                 self._rocc('preload',{'bd':self.bbase+d*F.DIM if tile==0 else isa.GARBAGE_ADDR,
-                                    'c':isa.acc_addr((tile*s.bn+d)*F.DIM,accumulate=not(kh==0 and kw==0 and ci==0)),
+                                    'c':isa.acc_addr((tile*s.bn+d)*F.DIM,accumulate=not first),
                                     'bd_cols':cols,'bd_rows':F.DIM,'c_cols':cols,'c_rows':span})
-                                self._rocc('compute',{'a':(ci//F.DIM)*self.plane+(y+kh)*pw+kw,
-                                    'a_cols':F.DIM,'a_rows':span,'accumulate':tile!=0})
+                                offset=(y+kh)*pw+kw
+                                attrs={'a_cols':F.DIM,'a_rows':span,'accumulate':tile!=0}
+                                if static_ci is not None:
+                                    attrs['a']=(static_ci//F.DIM)*self.plane+offset
+                                    self._rocc('compute',attrs)
+                                else:
+                                    address=self.fb.add_i(self.fb.mul_i(ki,self.fb.const(self.plane)),self.fb.const(offset))
+                                    attrs.update(a_max=(s.cin//F.DIM-1)*self.plane+offset,
+                                        a_reserved_rows=(s.cin//F.DIM)*self.plane)
+                                    self._rocc('compute',attrs,address)
+                    if self.loop_channels:
+                        # The first update initializes C; every later channel/tap
+                        # accumulates in the original increasing HWIO order.
+                        first=kh==0 and kw==0
+                        if first:reduction(self.fb.const(0),True)
+                        self.fb.for_loop(int(first),s.cin//F.DIM,1,
+                            lambda ki:reduction(ki,False))
+                    else:
+                        for ci in range(0,s.cin,F.DIM):
+                            reduction(None,kh==0 and kw==0 and ci==0,ci)
             # Padding lanes inside a grouped tile are never materialized. Each
             # valid row has its original NHWC destination and scratch row pitch.
             for tile,(y,count,span) in enumerate(self.row_tiles):
@@ -81,6 +110,8 @@ class GoldenResidentConv(GoldenGemm):
         module.attributes['gemmini.resident_conv_layout']=StringAttr('channel-tile-major padded spatial planes; disjoint input DMA partitions')
         if self.rows_per_tile != 1:
             module.attributes['gemmini.resident_conv_rows_per_tile']=StringAttr(str(self.rows_per_tile))
+        if self.loop_channels:
+            module.attributes['gemmini.resident_conv_loop_channels']=StringAttr('bounded ordinary CPU channel loop')
         return module
 
 

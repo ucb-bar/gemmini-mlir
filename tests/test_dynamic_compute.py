@@ -46,6 +46,20 @@ class TestDynamicCompute(unittest.TestCase):
         with self.assertRaisesRegex(VerifyException, "exceeds reserved scratchpad"):
             module.verify()
 
+    def test_short_row_read_can_end_at_reserved_boundary(self):
+        module = GoldenGemm(Shape(8, 128, 64, "i32", bm=1, bn=1,
+                                  cache_a=True)).build()
+        op = next(op for op in module.walk() if isinstance(op, ComputeOp))
+        op.attributes["a_max"] = IntegerAttr(F.SPAD_ROWS - 7, i64)
+        op.attributes["a_reserved_rows"] = IntegerAttr(F.SPAD_ROWS, i64)
+        op.attributes["a_rows"] = IntegerAttr(7, i64)
+        module.verify()
+        # The execute controller zeroes omitted rows; only the encoded row
+        # extent is read. One more requested row would cross the reserved end.
+        op.attributes["a_rows"] = IntegerAttr(8, i64)
+        with self.assertRaisesRegex(VerifyException, "exceeds reserved scratchpad"):
+            module.verify()
+
 
 if __name__ == "__main__":
     unittest.main()

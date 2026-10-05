@@ -138,7 +138,13 @@ def integer_adapter(schedule,symbol,kernel,direct,proof):
     return emit_readout(proof,readout,fixedpoint=True)+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=()):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None):
+    from .golden_resident_conv import ResidentConvOptions
+    resident_input_options=dict(resident_input_options or {})
+    if set(resident_input_options)-set(resident_input_regions):
+        raise ValueError('resident options require explicitly selected source regions')
+    if any(not isinstance(o,ResidentConvOptions) for o in resident_input_options.values()):
+        raise ValueError('resident options require typed ResidentConvOptions')
     if virtual_padding and not flat_spatial:raise ValueError('virtual padding requires flat spatial scheduling')
     from merlin.runtime.captured_constants import verify_capture_constant
     if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
@@ -199,7 +205,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             if rid in resident_input_regions:
                 from .golden_resident_conv import GoldenResidentConv
                 if virtual_input is None:raise ValueError('resident input requires source-proven virtual padding')
-                generator=GoldenResidentConv(schedule);schedule_kind='resident_input_channel_planes'
+                options=resident_input_options.get(rid,ResidentConvOptions())
+                generator=GoldenResidentConv(schedule,**asdict(options));schedule_kind='resident_input_channel_planes'
             else:
                 generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial,virtual_padding=virtual_input is not None)
             schedule=generator.conv
@@ -213,6 +220,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
         routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+        if rid in resident_input_options:
+            routes[-1]['resident_options']=asdict(resident_input_options[rid])
     selected_regions={r['region'] for r in routes if 'full_k_banked_prefetch' in r['schedule_kind']}
     if selected_regions != set(full_k_banked_regions):raise ValueError('requested full-K banked source regions not all selected')
     selected_resident={r['region'] for r in routes if r['schedule_kind']=='resident_input_channel_planes'}

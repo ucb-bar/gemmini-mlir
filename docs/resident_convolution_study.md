@@ -85,3 +85,33 @@ unrolled. A bounded ordinary CPU channel loop is the next controlled screen.
 The default remains one row per tile, preserving already queued device bytes.
 
 Receipt: [grouped resident screen](perf_records/resnet_grouped_resident7_gsim.json).
+
+## Bounded channel loops and device code size
+
+`loop_channels=True` keeps the original increasing HWIO reduction order in
+ordinary CPU loops. The already typed dynamic A operand computes the address
+`channel_tile*plane + shifted_spatial_row`. Its range is proved from the loop
+bounds and encoded row extent. The verifier now uses `a_rows` rather than DIM
+for that extent: the stock ExecuteController masks reads beyond the requested
+short row count. The width5 tail ends exactly at its98-row resident allocation;
+requesting one extra row is refused. Neither instruction encoding nor defaults
+change, and replayed H14 and H7 static objects are byte-identical.
+
+| Capsule | Static resident GSIM | Looped resident GSIM | Looped text bytes |
+| --- | ---: | ---: | ---: |
+| H7/W7/Cin512/Cout512, two output rows per tile | 743,898 | 708,664 | 11,102 |
+| H14/W14/Cin256/Cout256, one output row per tile | 533,649 | 521,496 | 9,998 |
+
+Both complete output/guard checks pass in GSIM and strict RV64GC Spike. A
+H5/W5/Cin32/Cout19 i32 capsule additionally passes channel, output-channel and
+spatial tails. The H7 flat control is759,715cycles, so the combined resident
+mapping and channel loop save6.72% on that capsule. H7 text falls310,354 to11,102
+bytes. These are synthetic source-shape measurements, not whole-model cycles.
+
+Source-bound bundle callers provide typed `ResidentConvOptions` per explicitly
+selected region. Missing selection or untyped options fail before output is
+created; row/resource admission still comes from each bound source shape.
+Default options keep one row and static channels. Complete original native,
+Spike and FireSim gates precede enabling a new composition.
+
+Receipt: [bounded channel loops](perf_records/resnet_resident_channel_loop_gsim.json).

@@ -224,7 +224,7 @@ class ComputeOp(_GemminiOp):
                 raise VerifyException("gemmini.compute: dynamic A address must be one i64 operand")
             maximum, reserved = self.a("a_max"), self.a("a_reserved_rows")
             if (not isinstance(maximum, int) or not isinstance(reserved, int)
-                    or maximum < 0 or maximum + DIM > reserved
+                    or maximum < 0 or maximum + self.a("a_rows") > reserved
                     or reserved > F.SPAD_ROWS):
                 raise VerifyException("gemmini.compute: dynamic A range exceeds reserved scratchpad rows")
         else:
