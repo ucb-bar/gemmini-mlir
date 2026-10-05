@@ -6,9 +6,9 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, general resident/banked transfer command-cost policy, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 40,479,548 (1853) | All 1,000 original output words exact | [1853](perf_records/resnet_transfer_command_policy_firesim.json) |
+| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer plus banked residual prefetch, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 39,201,279 (1874) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned | [1874](perf_records/resnet_transfer_residual_composed_firesim.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch and fresh writer ownership | 569,151,067 (1846) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1846](perf_records/tiny_expanded_writer_prefetch_firesim1846.json) |
-| Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Older ABI-corrected actualRV64GC model still fails89/1,600 original elements(maxabs.115166); newer upstream ordered-FMA outlined model is running actual target replay. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
+| Full SmolVLA, original numeric gate retained | No qualified whole-model hardware result yet | Native output **bitexact all1,600** using scalar stand-ins. Both older ABI-corrected and newer ordered-FMA outlined actualRV64GC models fail89/1,600 original elements(maxabs.115166), with identical target output bytes. Original atol=0.03125/rtol=0.02 unchanged | [Failed target](perf_records/smol_corrected_runtime_spike_failed.json), [new qualification](perf_records/smol_upstream_ordered_fma_native.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -17,7 +17,12 @@ remaining performance targets or pretrained ResNet accuracy.
 
 [Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
 regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
-does not invoke shared whole-program search. Real export/edit-surface wiring is in progress.
+does not invoke shared whole-program search. Three real compiler export commands now expose six AST edit surfaces. The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This is an admission gate; it does not select a new schedule or invoke shared global optimization. [Binding](perf_records/golden_model_plan_binding_qualification.json).
+
+Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
+with all1,000 reference logits passing its self-check and54 buffered layer timings.
+The reference has different numerical coefficients and physical boundaries; this result does not
+qualify our original-source model. [Same-stock reference](perf_records/q1013_diagnostic_reference_firesim.json).
 
 ## Current compiler work and ownership
 
@@ -47,7 +52,7 @@ operations after fusion, not one source operation. [Profile](perf_records/tiny_c
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1853 in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1874 in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 The1849 profile control has22,989,952 calculated padded mesh geometry cycles:
 8,893,440 pointwise,7,990,272 direct,5,193,216 residual,784,000 pooled stem
@@ -68,10 +73,13 @@ fenced GSIM kernel cycles, while total harness cycles increase. The whole
 transfer-policy arm preserves1849 host/shim/weights bytes and all1,000 original
 output bits in native and actual Spike, changing24 dense kernel objects.
 Stock FireSim1853 verifies40,479,548 cycles,1,790,260 (4.235%) below1849.
-It is now the best ResNet arm. The independent residual arm1854 verifies
+This qualified the transfer arm. The independent residual arm1854 verifies
 40,981,079 cycles,3.049% below1849. Both strategies compose in a candidate
 with all1,000 original native and actual Spike words exact. The1861 UART counter39,201,279
-lacks complete actual staging proof and is **unverified**; strict immutable rerun1874 is queued.
+lacks complete actual staging proof and remains historically **unverified**. Its strict immutable
+rerun1874 now verifies39,201,279 with all1,000 original words exact and staged ELF/bitstream
+closed:1,278,269cycles(3.158%) below1853. This is the current best.
+[Verified composition](perf_records/resnet_transfer_residual_composed_firesim.json).
 No additive whole-model gain is inferred.
 [Schedule](multirow_resident_a.md),
 [whole gate](perf_records/resnet_transfer_command_policy_spike.json).
@@ -81,23 +89,32 @@ full-reduction weight-resident convolution schedule for wider feature maps.
 The general stripe policy passes40 focused tests and independent/tail capsules.
 H56/C64 saves15.89% fencedGSIM; H28/C128 saves19.22%, full outputs/guards exact.
 All52 source numeric proofs are retained; only six device objects change versus1853.
-Original1,000 whole native+strictSpike words remain exact; stock1878 is queued.
+Original1,000 whole native+strictSpike words remain exact. Stock1878 now verifies39,754,283cycles,
+725,265(1.792%) below1853 with actual staging closed. Best1874 remains39,201,279.
+The independently qualified stripe+transfer+residual composition is queued1897 against1874;
+its host/runtime/startup/weight objects remain identical. No additive gain is inferred.
+[Isolated hardware](perf_records/resnet_resident_stripe_policy_firesim.json).
 [Residency strategy](resident_stripe_conv.md).
 
 Stock QK64 exact source replay measures1,137,275→910,407 cycles for one versus
 four independent outputs (1856/1857),19.95% lower, all1,024 original words exact.
 Generic Merlin selected BF16 widening includes allocation and conversion in
 each replay capsule. QK4 LHS-only stock1872 measures828,986cycles,8.94% below1857.
-PV4 stock1873 verifies168,142cycles; strict control1875 is pending, so no paired
-percentage is accepted. Both-operand M1 widening is rejected. QK16 passed original
+PV4 stock1873 verifies168,142cycles; strict control1875 verifies180,776,
+a 6.989% matched reduction, with all64 original words exact and staged hardware pinned.
+[Strict PV control](perf_records/ordered_attention_pv_control_firesim.json). Both-operand M1 widening is rejected. QK16 passed original
 native/strictSpike/zeroFSM and is queued1883. These are replay capsules, not a5B full
 SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
 [complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
 
 Smol's full native gate is exact; **whole target accuracy remains unresolved**. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; the old ABI-corrected target fails89/1,600 and minimized target diagnosis is active. A separately labeledO0 correctness ELF also builds,
+at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; both full actual targets fail89/1,600 with identical output bytes, and minimized target diagnosis is active. The newer source-order schedule retires134,730,816,466instructions versus327,506,537,392; neither is a hardware-cycle result. All first-layer Q/K/V/output/fc1/fc2 integer A/B/C boundaries match the same accepted native path, which does not certify separately carried floating scales. [Six-stage trace](perf_records/smol_target_six_stages.json). A separately labeledO0 correctness ELF also builds,
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
-scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
+scalability and cheaper explicitly gated device attention remain work. A source-derived post-vision
+suffix now passes all1,600 original final bits on actual target execution with the old failing runtime
+objects frozen; this localizes the remaining discrepancy to the vision prefix. First-block diagnosis
+is running. [Frozen-runtime suffix](perf_records/smol_postvision_suffix_frozen_runtime.json).
+The diagnostic supplies a captured intermediate and is separate from whole-model qualification; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
 
 General remaining-row B-slot prefetch selects seven pointwise kernels from shape/resource facts.
