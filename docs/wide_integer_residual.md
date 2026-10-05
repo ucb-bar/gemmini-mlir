@@ -7,3 +7,7 @@ The default-off `wide_integer` residual backend derives p, q and one representab
 The hardest first tuple, p2609/q2180/scale0.00037060913746245205, passes all 65,536 original-source input pairs and output guards on GSIM at **170,847 kernel cycles**, versus159,744 compute issue floor. Actual Gemmini Spike also passes the complete pair oracle. The final ELF zero-FSM audit passes. Stock FireSim job1773 is pending at this record; these GSIM cycles are not a FireSim result. The full-domain fixture includes negative/positive extrema, saturation and rounding boundaries.
 
 The opt-in backend is generalized over proven source scalar parameters; no region name chooses a coefficient or schedule. Device compilation, adapter source/object, coefficient table and search engine hashes are recorded. Whole-model equality to the unchanged original golden remains a separate required gate.
+
+## Stock FireSim confirmation
+
+Job1773 completed at **170,994 kernel cycles**, 7.04% above the159,744 compute floor. All65,536 original-source pairs and output guards passed, with actual staged ELF and exact stock bitstream identities verified. This confirms the primitive schedule on the requested hardware configuration. The fully source-exact whole candidate (ELF02d029dc…) is queued separately as1774; no full-model hardware timing is inferred from this kernel result.
