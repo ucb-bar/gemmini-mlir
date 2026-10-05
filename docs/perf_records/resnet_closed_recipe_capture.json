@@ -1,0 +1,199 @@
+{
+  "schema": "golden_closed_recipe_resnet_capture_v1",
+  "capture_root": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture",
+  "placement_fix_commit": "7c072660a",
+  "capture_recipe_sha256": "6497b3dde13e91c1787ec6bce07674866861da6389bccc7f3388cda7e386df51",
+  "annotation_counts": {
+    "annotated_contractions": 54,
+    "annotated_sums": 16,
+    "annotated_means": 1
+  },
+  "placement_refusals": [],
+  "same_checkpoint": true,
+  "same_input": true,
+  "checkpoint_sha256": "39215a3ffb546111aac5380b5e79254eeec164009231259b41c921b2e43347e6",
+  "input_sha256": "f6659bacb01fb754025a4a8683f51a6cbc654c8f0f6dd4b98eb97b92eb927d41",
+  "old_framework_golden_sha256": "67cef475404423d0e41064ccac3da6a007fad88b1d7d18be6e017470f62761f3",
+  "new_framework_golden_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "golden_change_reason": "The existing recipe now quantizes container-owned functional residual sums and mean. The fresh same-instance integer reference is distinct from the earlier capture.",
+  "capture_receipt": {
+    "artifacts": {
+      "extra.npz": {
+        "bytes": 25517602,
+        "sha256": "c88f03eaa2f72ccb6ac7171b7ca1c6d7b78b72b6c3fb9ddb188d62e5023e8036"
+      },
+      "frontend-trace.json": {
+        "bytes": 12088282,
+        "sha256": "4fba325e6e737b93733177f32afea875fc1b679c2976c127e0dbd7451e95375f"
+      },
+      "golden.npy": {
+        "bytes": 4128,
+        "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+      },
+      "input_order.json": {
+        "bytes": 16,
+        "sha256": "e1ff9855a479ffdc89002dfd68987d195be993b973113a5a7292afac121ff50b"
+      },
+      "inputs.npz": {
+        "bytes": 602372,
+        "sha256": "5546d705e10c4f13ed4e1d91b6d67cf35f3976521a5fdd79fe2e782409053953"
+      },
+      "integer-reference.json": {
+        "bytes": 19060,
+        "sha256": "f1ef100f59335ded5ffb3ad357f319632aa66ab0d19b90e0fe14df8c318ba7c0"
+      },
+      "meta.json": {
+        "bytes": 176516,
+        "sha256": "08522ee39ba9cc23dec249b23dc17fa34d932b0c89d24d8350cec9e93367bdeb"
+      },
+      "model.mlir": {
+        "bytes": 2133962,
+        "sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5"
+      },
+      "weights.safetensors": {
+        "bytes": 25622968,
+        "sha256": "08f83e75fc8b9526a43e4fb0905628e72048571dc8921b723bd48b77a42c31ee"
+      },
+      "weights.safetensors.manifest.json": {
+        "bytes": 15807,
+        "sha256": "58fc94de3b70567687c71aab98176f452f19aea14a1cf6340a16085d7e7090ca"
+      }
+    },
+    "framework": {
+      "torch": "2.10.0+cu128",
+      "torchao": "0.16.0"
+    },
+    "lifted_constants": {},
+    "materialized_abi": {
+      "complete": true,
+      "inputs": 1,
+      "lifted_constants": []
+    },
+    "schema": "m2m.capture-receipt.v1",
+    "source": {
+      "bytes": 8796,
+      "path": "/scratch/agustin/tmp/model2MLIR-phase0-current/workloads/resnet50_v1_5/loader.py",
+      "sha256": "96844f55e40ff25d0fd65bc17b508c8c7e257f67b6b8f8d2f00e7960ebcc9b27"
+    },
+    "source_closure_verified": false,
+    "tool": {
+      "commit": "d82f4aa9d07b7c0b1c18c50461bdcfa7f1db39a0",
+      "executed_entrypoint": {
+        "bytes": 47560,
+        "path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/src/merlin/targetgen/_m2m_capture_worker.py",
+        "sha256": "3432d2af0a64c2b8e91e17a69015ea15c39594109f9d2aad52424494ce5ac993"
+      },
+      "source_inventory_status": "complete",
+      "source_sha256": {
+        "m2m/api.py": "5195c9860daf95d9bea6c9999c8e8506e70a3f5bf0bb7a98cfa7400d7b785939",
+        "m2m/capture/bundle.py": "c8fd136914044731f14df2eac980210ebb36349f21666409f1f305b51c340754",
+        "m2m/capture/bundle_integrity.py": "0e1b8d1b3f25482999a1056fcd02769f4d399252cc54e71259165a115098f88b",
+        "m2m/capture/external_quantization.py": "2c93894006a57dd7b09d53302202ec12baf44190345776d7bf7dd4c4e6dbcdfd",
+        "m2m/capture/provenance.py": "3f0adff74657e96779036de844f52c74a1c294ebe5cf3834eb24e2a5507bf10d",
+        "m2m/capture/pt2e_integer_reference.py": "694d7f1e7dfcfa3f55ec1248ba3eb0fcaaff074e4bb2b36fa74e28b4e531a826",
+        "m2m/capture/pt2e_integerize.py": "5b58bc67703679454a212df3b2234269a3baeab808e2a3d0b7b854c88af96078",
+        "m2m/capture/torch_export.py": "9300b7b96253400a1aaaac6cc8f2f948035a20311750f536baff20f71214e2da",
+        "m2m/capture/torch_mlir_bridge.py": "8d04051e1804b648228c13760d0cc40854a03ef8d6564f68915c2aa285f20144",
+        "m2m/capture/torchao_pipeline.py": "f6be743fc0b2e6edbe3af664b3b98d2f6d583975494f25a644dd867649118ad2",
+        "m2m/capture/trace.py": "4c005016cbed1d83dc0de837b1b3a85e02281382717cc544320f437df8b29461",
+        "m2m/ir/decompositions.py": "2957bdf42bf99254d2b1310352c6346f9041422ee564891bdd177e6981a98a30",
+        "m2m/ir/import_fx.py": "32abb11a023061bfb5b0c9869eeec1c6acd4c7f18991cb12058fe18ec6dc800d",
+        "m2m/ir/torchmlir_decomps.py": "b208203296dd2d9f329a1fe2a693296cb8ba92337c3bdbbea57d5afcb6747745",
+        "m2m/transforms/expand_ext.py": "8ac01298156f1d6bee3e76d0e77ad745318da2cbd4c48cfc67a84cf8478a6eef",
+        "m2m/transforms/expand_quant.py": "1ff0b04b8cb4b3003bade9b190c3fe573abbcb423fbb1b48c2151edcbfa6b65e",
+        "m2m/transforms/externalize.py": "7515ae1ca014609ec37890d485aa7f0265362e94b62efeddb6742cceece61049",
+        "m2m/transforms/fuse_qdq.py": "838d517de78d839a4b26d80e064ed397dc81c1113b14f6db6b24d888150c6abe"
+      },
+      "unavailable_sources": []
+    }
+  },
+  "epilogue_proof": {
+    "exact_routes": 46,
+    "direct_routes": 12,
+    "refused": [
+      {
+        "region": "matmul_0",
+        "reason": "boundary tensor.insert_slice"
+      },
+      {
+        "region": "matmul_4",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_25",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_29",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_43",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_48",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_51",
+        "reason": "float transition proof refused",
+        "accepted_channels": 0
+      },
+      {
+        "region": "matmul_53",
+        "reason": "boundary func.return"
+      }
+    ],
+    "object_sha256": "1017b05e062aa7fa72c93569643cc7b5f2d38882af8aab77949f62ab8ca6b4cf"
+  },
+  "scaled_load_residual_proof": {
+    "exact": 0,
+    "refused": 16,
+    "pairs_per_site": 65536,
+    "max_output_lsb_error": 1,
+    "report_sha256": "89a5e5a742e0f78564a13b85e014513ddc4fac212a338d8da6994c1fe2027374",
+    "graph_rewrite": false
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0
+  },
+  "actual_gemmini_spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "f25a8a176657aed2b11c9f3134acc33f383c95d72cfaa41712762114198fd939",
+    "elements": 1000,
+    "exact_equal": true,
+    "metrics": [
+      "METRIC cycles 821610403",
+      "METRIC build_hash 4106cf67d835",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "final_elf_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "f25a8a176657aed2b11c9f3134acc33f383c95d72cfaa41712762114198fd939",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 249,
+      "1": 1744,
+      "2": 2805,
+      "3": 1046,
+      "4": 3086,
+      "5": 16512,
+      "6": 19598,
+      "7": 54
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "scope": "Random-init synthetic-input compiler semantics gate. All1000 outputs exact against fresh same-instance quantized reference. Spike retired instructions are not hardware cycles. No pretrained accuracy or FireSim speed claim."
+}

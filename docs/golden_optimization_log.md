@@ -266,3 +266,71 @@ at3,529,465,283forward cycles,21.85% below4,516,405,461 for1731. Pinned staged
 ELF/bitstream identity is verified. This remains far above22M; boundary-profile
 job1741 and later fused/stem variants are required to attribute the remaining
 cost. Evidence: `perf_records/resnet_direct_firesim1737.json`.
+
+### Closed recipe capture and complete residual-domain proof
+
+Merlin7c072660a fixes container-owned functional quantization. The module
+inventory lists leaves, so the old ownership check refused functional sums in
+Bottleneck containers even when the operation planner admitted both operands.
+The regression reproduced this for nested ordinary and in-place adds; root adds
+passed. Known containers now use the existing per-operation plan. Explicitly
+unsupported leaves, missing ownership metadata and float-returned open sums
+remain refused. Five ownership and thirteen related quantization tests pass.
+
+Recapturing the same random checkpoint39215a3f… and inputf6659bac… with the
+unchanged recipe6497b3dd… annotates54 contractions,16 sums and1 mean, with no
+placement refusals. Its framework golden changes because the originally selected
+recipe now actually quantizes the sums/mean. This is a fresh same-instance
+reference, not a bit-identical replacement for the earlier capture. Forty-six
+unary epilogues admit exact readout fusion, including12 direct convolutions;
+six fail the full float-transition proof. Pooled-stem whole native and actual
+Gemmini Spike outputs match all1,000 fresh goldens exactly. Final no-FSM
+ELFf25a8a17…;821,610,403 retired instructions, not hardware cycles. This random,
+synthetic-input gate establishes compiler semantics rather than pretrained
+accuracy. Evidence: `perf_records/resnet_closed_recipe_capture.json`.
+
+The new residual proof compares every65,536 signed-i8 operand pair using the
+original f32 arithmetic order against two hardware scaled-load rounds followed
+by integer addition and scaled readout. All16 fresh residual sites fail exact
+matching; each candidate has a maximum error of1 output step and retains a
+counterexample. Seven tests cover exact identity, double-rounding differences,
+a real structural Q/DQ fixture and malformed shape/clamp/body refusals. No
+approximate rewrite is enabled. This finite domain is a reusable proof boundary
+for the automatic optimizer; a bounded candidate needs an explicit numerical
+policy and a separate full-model quality gate.
+
+### Further upstream half arithmetic fixes
+
+model2MLIR main e9aa908 preserves GELU approximate=none/tanh and computes half
+GELU with f32 intermediates before narrowing. Previously all twelve Smol vision
+GELUs used the erf form regardless of the selected tanh mode. Compiled BF16 and
+FP16 none/tanh probes now match Torch exactly. Mainb0979bb similarly keeps
+half convolution reduction and bias addition in f32 until one final narrowing.
+The bf16 biased-convolution reproducer changes maxabs0.0078125→0; direct BF16
+and FP16 probes also match Torch exactly. Seventy-four focused and related
+frontend tests pass. Same-checkpoint/input/buffer/golden fresh Smol captures
+isolate these lowering fixes; the three-fix full Smol outputs still fail their
+numerical gate, and the four-fix gate is running. Operator correctness alone is
+not a full-model release. Updated evidence:
+`perf_records/model2mlir_half_precision_fixes.json`.
+
+### Infrastructure and abstractions still required
+
+Verified FireSim1741 attributes98.25% of ResNet forward cycles to host gaps.
+The current graph inserts physical tensor permutations, float readout work and
+residual conversions around device calls. Device compilation needs to carry
+physical layout and numerical policy across operation boundaries, preserve
+stored-weight transforms outside inference and account for every remaining host
+region. An exact source graph can refuse a representationally limited readout;
+a bounded transformation must declare its error in machine-readable metadata
+and validate full-model quality independently. Bias initialization also needs
+its own accumulator contract: Gemmini can preload D even when its store/readout
+facet has no bias-add stage. Inferring bias capability from the readout alone
+leaves unnecessary host arithmetic.
+
+Spatial-flat direct convolution now derives output/channel blocks from actual
+accumulator capacity and gathers across pixel rows for small feature maps. Its
+late7×7 C512 wide-A kernel passes every25,088 output and guard at939,677 GSIM
+kernel cycles; cross-simulator comparisons to FireSim are provisional. The
+whole narrow-flat candidate passes native/Spike. Hardware job1757 measures the
+best standalone late-conv variant before any blanket schedule promotion.

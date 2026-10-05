@@ -3,30 +3,132 @@
   "upstream": "https://github.com/ucb-bar/model2MLIR",
   "branch": "main",
   "layer_norm_commit": "a472fef681955a7cc437b476ede62215b3eef96a",
-  "softmax_commit": "d82f4aa",
-  "change": "Use f32 reductions and elementwise intermediates for bf16/f16 normalization; narrow only the final output.",
+  "softmax_commit": "d82f4aa9d07b7c0b1c18c50461bdcfa7f1db39a0",
+  "change": "Use Torch f32 opmath for half LayerNorm, softmax, GELU and convolution; retain GELU approximate=none/tanh and round convolution after bias.",
   "tests": {
-    "command": "PYTHONPATH=. /scratch/agustin/projects/model2MLIR/.venv/bin/python -m pytest tests/test_softmax_precision.py tests/test_layer_norm_precision.py tests/test_transforms.py tests/test_capture_receipt.py tests/test_scalar_square.py tests/test_pt2e_channel.py -q --disable-warnings",
-    "passed": 50,
-    "coverage": "bf16/f16; LayerNorm affine absent, input dtype and f32; one/two normalized axes; softmax final/nonfinal axis and named expansion"
+    "command": "PYTHONPATH=. /scratch/agustin/projects/model2MLIR/.venv/bin/python -m pytest tests/test_convolution_precision.py tests/test_direct_conv_padding.py tests/test_gelu_precision.py tests/test_softmax_precision.py tests/test_layer_norm_precision.py tests/test_transforms.py tests/test_capture_receipt.py tests/test_scalar_square.py tests/test_pt2e_channel.py -q --disable-warnings",
+    "passed": 74,
+    "coverage": "bf16/f16; LayerNorm affine absent, input dtype and f32; one/two normalized axes; softmax final/nonfinal axis and named expansion; bf16/f16/f32 GELU none/tanh and actual capture mode; bf16/f16 convolution direct/im2col with/without bias"
   },
   "executed_mlir": {
     "engine": "native LLVM compiled model2MLIR bundle",
     "layer_norm": {
-      "shape": [2, 768],
+      "shape": [
+        2,
+        768
+      ],
       "dtype": "bf16",
-      "before": {"exact": false, "relative_l2": 1.227004051208496, "max_abs_error": 3.1043701171875},
-      "after": {"exact": true, "relative_l2": 0.0, "max_abs_error": 0.0},
+      "before": {
+        "exact": false,
+        "relative_l2": 1.227004051208496,
+        "max_abs_error": 3.1043701171875
+      },
+      "after": {
+        "exact": true,
+        "relative_l2": 0.0,
+        "max_abs_error": 0.0
+      },
       "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/layernorm_after"
     },
     "softmax": {
-      "shape": [2, 1024],
+      "shape": [
+        2,
+        1024
+      ],
       "dtype": "bf16",
       "input": "uniform rows",
-      "before": {"strict_allclose": false, "relative_l2": 3.0, "row_sum": 4.0, "first": 0.00390625},
-      "after": {"exact": true, "relative_l2": 0.0, "row_sum": 1.0, "first": 0.0009765625},
+      "before": {
+        "strict_allclose": false,
+        "relative_l2": 3.0,
+        "row_sum": 4.0,
+        "first": 0.00390625
+      },
+      "after": {
+        "exact": true,
+        "relative_l2": 0.0,
+        "row_sum": 1.0,
+        "first": 0.0009765625
+      },
       "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/softmax_after"
+    },
+    "gelu": {
+      "gelu_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/gelu_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "gelu_tanh_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/gelu_tanh_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "gelu_f16_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/gelu_f16_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "gelu_tanh_f16_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/gelu_tanh_f16_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      }
+    },
+    "convolution": {
+      "conv_bf16_before": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/conv_bf16_before",
+        "validation": {
+          "allclose": true,
+          "exact": false,
+          "relative_l2": 0.0027403247077018023,
+          "max_abs_error": 0.0078125
+        }
+      },
+      "conv_bf16_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/conv_bf16_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "conv_bf16_direct_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/conv_bf16_direct_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      },
+      "conv_f16_direct_after": {
+        "artifact_root": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/conv_f16_direct_after",
+        "validation": {
+          "allclose": true,
+          "exact": true,
+          "relative_l2": 0.0,
+          "max_abs_error": 0.0
+        }
+      }
     }
   },
-  "scope": "Operator correctness. Fresh full SmolVLA capture and numerical gate remain separate. No FireSim performance claim."
+  "scope": "Operator correctness. Fresh full SmolVLA capture and numerical gate remain separate. No FireSim performance claim.",
+  "gelu_commit": "e9aa9085ddc40b6d0364c579df23a14f18af3c63",
+  "convolution_commit": "b0979bbb76f49138b15129b11eb3ea66cb851e57"
 }
