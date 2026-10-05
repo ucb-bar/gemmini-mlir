@@ -15,6 +15,30 @@ from merlin.llvmlower.abi import HostModel
 from merlin.llvmlower.codegen import mlir_runtime_c
 
 
+def forward_args(capture, build):
+    """Bind the same trailing hoisted tensors used by the bare-metal harness."""
+    from merlin.llvmlower.quant_hoist import read_plan, read_values
+    args=list(resolve_forward_args(capture))
+    plan=read_plan(build)
+    if plan:
+        values=read_values(build)
+        dtypes={'i8':np.dtype('int8'),'i32':np.dtype('int32'),'i64':np.dtype('int64'),
+                'f16':np.dtype('float16'),'bf16':np.dtype('uint16'),
+                'f32':np.dtype('float32'),'f64':np.dtype('float64')}
+        try:
+            for arg in plan:
+                if arg.key not in values:
+                    raise ValueError('hoisted native argument bytes are missing: '+arg.key)
+                value=np.ascontiguousarray(values[arg.key])
+                if (value.shape!=arg.shape or arg.dtype not in dtypes
+                        or value.dtype!=dtypes[arg.dtype]):
+                    raise ValueError('hoisted native argument shape or dtype differs: '+arg.key)
+                args.append(value)
+        finally:
+            if hasattr(values,'close'):values.close()
+    return args
+
+
 def quality(actual, reference, *, allow_bounded=False, atol=0., rtol=0.):
     if actual.shape != reference.shape:raise ValueError('whole output shape differs')
     if not np.isfinite(atol) or not np.isfinite(rtol) or atol<0 or rtol<0:raise ValueError('quality tolerances must be finite and nonnegative')
@@ -39,7 +63,7 @@ def native_validate(capture,build,host,llvm_bin,*,allow_bounded=False,atol=0.,rt
     (host/'reference.c').write_text('\n'.join(source))
     subprocess.run([str(llvm_bin/'clang'),'-O0','-fPIC','-c',str(build/'lower/model.ll'),'-o',str(host/'model.o')],check=True)
     subprocess.run(['cc','-O3','-march=native','-fPIC','-shared',str(host/'model.o'),str(host/'reference.c'),*catalog['native_oracle_sources'],str(build/'device/device_catalog_shim.c'),str(mlir_runtime_c()),'-lm','-o',str(host/'model.so')],check=True)
-    args=resolve_forward_args(capture);reference=np.load(capture/'golden.npy');actual=np.zeros_like(reference)
+    args=forward_args(capture,build);reference=np.load(capture/'golden.npy');actual=np.zeros_like(reference)
     model=HostModel.load(str(host/'model.so'));model([(a.ctypes.data,a.shape) for a in args]+[(actual.ctypes.data,actual.shape)])
     report={'scope':'native whole model with scalar device standins','original_golden':str((capture/'golden.npy').resolve()),'original_golden_sha256':hashlib.sha256((capture/'golden.npy').read_bytes()).hexdigest(),**quality(actual,reference,allow_bounded=allow_bounded,atol=atol,rtol=rtol)}
     (host/'validation.json').write_text(json.dumps(report,indent=2)+'\n');np.save(host/'output.npy',actual)
@@ -68,7 +92,7 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
     if a.residual_max_output_lsb and (not a.residual_add or not a.allow_bounded_output):p.error('bounded residuals require --residual-add and explicit --allow-bounded-output')
     if not np.isfinite(a.atol) or not np.isfinite(a.rtol) or a.atol<0 or a.rtol<0:p.error('quality tolerances must be finite and nonnegative')
     capture=a.work/'capture';builddir=a.work/'build_direct'
@@ -95,7 +119,9 @@ def main():
             apply_residual(capture,residual)
             prepare,compile=residual_callbacks(a.llvm_bin,residual,(prepare,compile))
         (a.work/'whole_quality_policy.json').write_text(json.dumps({'allow_bounded_output':a.allow_bounded_output,'atol':a.atol,'rtol':a.rtol,'original_golden_sha256':hashlib.sha256((a.capture/'golden.npy').read_bytes()).hexdigest()},indent=2)+'\n')
-        result=build(capture,builddir,int8_compute=True,features=frozenset({'named_int8_contraction'}),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
+        features={'named_int8_contraction'}
+        if a.hoist_weights:features.add('hoist_weight_invariant_quantize')
+        result=build(capture,builddir,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
     native=native_validate(capture,builddir,a.work/'host',a.llvm_bin,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol,enforce_quality=False);print(native,flush=True)
     target=spike_validate(capture,builddir,a.spike,a.work,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol);print(target,flush=True)
