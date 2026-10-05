@@ -1,5 +1,10 @@
 # Jack q1013 executable versus the current exact compiler plan
 
+**Later measurement:** stock reference diagnostic1876 completed at22,387,449
+cycles with all54 hardware layer records and its own self-check.
+[Actual geometry-paired hardware intervals](q1013_paired_hardware_intervals.md)
+supersede the unknown per-layer reference timing in this earlier executable study.
+
 The owned archive contains the ELF, disassembly, FireSim bitstream bundle and
 manifest. It contains no C source or per-layer hardware UART. The manifest gives
 22,387,449 whole-model cycles. No Jack directory was opened. This study uses
