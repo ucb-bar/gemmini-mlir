@@ -1,21 +1,24 @@
+import pytest
 import ctypes
 import subprocess
 import numpy as np
 from mlir_oot.captured_residual_bundle import lookup_kernel, source_table
 
 
-def test_lookup_full_domain_against_independent_compiled_source_chain(tmp_path):
-    q=dict(lhs_scale=.010870203375816345,rhs_scale=.0059822131879627705,output_scale=.01697084680199623,relu=True)
+@pytest.mark.parametrize("relu", [False, True])
+@pytest.mark.parametrize("schedule", ["scalar", "raw_u8_x4"])
+def test_lookup_full_domain_against_independent_compiled_source_chain(tmp_path, schedule, relu):
+    q=dict(lhs_scale=.010870203375816345,rhs_scale=.0059822131879627705,output_scale=.01697084680199623,relu=relu)
     route={'m':1024,'proof':{'source':q}}
-    source=lookup_kernel(route,'lookup')+f'''
+    source=lookup_kernel(route,'lookup',schedule=schedule)+f'''
 #include <math.h>
 void reference(const int8_t*a,const int8_t*b,int8_t*c) {{
  for(int i=0;i<65536;i++) {{
  volatile float x=(float)a[i]*{float(q['lhs_scale']).hex()}f;
  volatile float y=(float)b[i]*{float(q['rhs_scale']).hex()}f;
- volatile float z=x+y;if(z<0)z=0;
+ volatile float z=x+y;{'if(z<0)z=0;' if relu else ''}
  volatile float v=z*{float(np.float32(1./q['output_scale'])).hex()}f;
- float r=nearbyintf(v);if(r<0)r=0;if(r>127)r=127;c[i]=(int8_t)r;
+ float r=nearbyintf(v);if(r<{0 if relu else -128})r={0 if relu else -128};if(r>127)r=127;c[i]=(int8_t)r;
  }}
 }}
 '''
@@ -49,3 +52,8 @@ def test_lookup_rewrite_is_exact_for_separately_rounded_load_counterexample():
     parsed=parse_module(serialize(module,[declaration]));parsed.verify()
     assert route['numeric_policy']['kind']=='exact_source'
     with pytest.raises(ValueError,match='exact policy'):inspect(q,1,implementation='cpu_lut')
+
+
+def test_lookup_schedule_refuses_unknown_variant():
+    with pytest.raises(ValueError,match='schedule'):
+        lookup_kernel({},'invalid',schedule='unproved')

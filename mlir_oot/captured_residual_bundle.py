@@ -179,8 +179,26 @@ def source_table(source):
     return np.clip(np.rint(z*np.float32(f32(1.0/source['output_scale']))),0 if source['relu'] else -128,127).astype(np.int8)
 
 
-def lookup_kernel(route,kernel):
+def lookup_kernel(route,kernel,*,schedule='scalar'):
+    if schedule not in ('scalar','raw_u8_x4'):raise ValueError('unknown CPU lookup schedule')
     table=source_table(route['proof']['source'])
+    if schedule=='raw_u8_x4':
+        import numpy as np
+        # Raw byte0..255 denotes signed0..127,-128..-1. Rotate each
+        # table axis; the source proof and every table value stay unchanged.
+        table=np.roll(table,128,axis=(0,1))
+        body='\n'.join(f'  c[i+{j}]={kernel}_table[((unsigned)(uint8_t)a[i+{j}]<<8)|(unsigned)(uint8_t)b[i+{j}]];' for j in range(4))
+        values=','.join(str(int(x)) for x in table.ravel())
+        return f'''#include <stdint.h>
+static const int8_t {kernel}_table[65536] __attribute__((aligned(64)))={{{values}}};
+void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*identity,int8_t*scratch) {{
+ (void)identity;(void)scratch;
+ for(int i=0;i<{route['m']*64};i+=4) {{
+{body}
+ }}
+}}
+'''
+
     values=','.join(str(int(x)) for x in table.ravel())
     return f'''#include <stdint.h>
 static const int8_t {kernel}_table[65536] __attribute__((aligned(64)))={{{values}}};
@@ -199,7 +217,9 @@ def compile_adapter(source, output, llvm_bin):
     return dict(compiler_argv=command,compiler_sha256=sha(llvm_bin/'clang'),source_sha256=sha(source),object_sha256=sha(output))
 
 
-def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini"):
+def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar"):
+    if cpu_lut_schedule not in ("scalar","raw_u8_x4"):raise ValueError("unknown CPU lookup schedule")
+    if cpu_lut_schedule!="scalar" and implementation!="cpu_lut":raise ValueError("CPU lookup schedule requires cpu_lut implementation")
     if implementation not in ("gemmini", "cpu_lut"):
         raise ValueError("unknown residual implementation")
     if implementation == "cpu_lut" and max_output_lsb != 0:
@@ -221,10 +241,10 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini"):
         declarations.append(rewrite(op,route,symbol,source_sha,receipt_sha))
         if implementation == 'cpu_lut':
             work.mkdir(parents=True)
-            c=adapter(route,symbol,kernel)+lookup_kernel(route,kernel)
+            c=adapter(route,symbol,kernel)+lookup_kernel(route,kernel,schedule=cpu_lut_schedule)
             (work/'adapter.c').write_text(c)
             adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
-            compilation=dict(implementation='cpu_lut',table_bytes=65536)
+            compilation=dict(implementation='cpu_lut',table_bytes=65536,schedule=cpu_lut_schedule)
             objects.append(work/'adapter.o');native.append(c)
         else:
             scales=route['proof']['primitive']
@@ -249,8 +269,8 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini"):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule)
     print(json.dumps(dict(routes=len(result['routes']),refused=len(result['refused']),numeric_policy=result['numeric_policy']),indent=2))
 
 if __name__=='__main__':main()
