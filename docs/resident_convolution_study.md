@@ -42,3 +42,11 @@ fields too. Absent fields preserve existing defaults. Bitfield regressions
 and actual small/full target output checks cover the fix. A semantic device
 artifact hash is only useful if every selected scheduling field reaches the
 instruction encoder; silent attribute omission must fail compiler gates.
+
+The current encoder requires static local addresses, so the resident schedule
+unrolls its channel/tap address selection. `kernel.o` grows from82,144 to
+154,216 bytes (file sizes, not a dynamic instruction count). This is a concrete
+instruction-footprint tradeoff for the whole-model hardware gate. A future
+schedule/compiler abstraction for loop-varying local addresses could compact
+the body without changing this scratch residency; it needs an explicit typed
+operand and correct encoding rather than an ignored scheduling attribute.
