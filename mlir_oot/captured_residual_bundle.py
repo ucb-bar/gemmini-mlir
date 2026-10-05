@@ -293,6 +293,8 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
             if not found['accepted']:
                 refused.append(dict(region=region,reason='no exact wide integer candidate in selected search neighborhood',proof=found));continue
             coeff=found['accepted'][0]
+            if any(type(coeff[key]) is not int or not 1<=coeff[key]<=32767 for key in ('p','q')):
+                refused.append(dict(region=region,reason='exact candidate outside supported positive chunk coefficients',proof=found));continue
             route['proof']=dict(proof='independent exhaustive 65536 signed-i8 pair comparison of source f32 chain and integer diagonal accumulation plus one readout',source=found['source'],primitive={'readout':coeff['scale']},coefficients=coeff,pairs=65536,exact=True,max_output_lsb_error=0,search=found,search_engine_sha256=sha(engine),search_source_sha256=sha(search_source))
         if shared_permutation:
             from .residual_layout import shared_transpose
