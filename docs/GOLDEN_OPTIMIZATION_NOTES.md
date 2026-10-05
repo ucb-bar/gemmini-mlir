@@ -162,3 +162,13 @@ UART and native/Spike/Torch reference receipts are pinned. Compared with1776's
 42.77% fewer. Device arithmetic remains unchanged; the explicit scalar RV64GC
 host schedule avoids target-inappropriate vectorized host IR. Stronger exact
 scalar+quantization/RNE candidate1792 is queued separately, not yet measured.
+
+## Exact blocked reduction hardware1789
+
+Verified stock forward48,780,534 cycles, all1,000 original output bits exact,
+final/staged ELF and bitstream pinned. Channel block64 saves892,619 cycles
+(1.80%) versus strongest unblocked1786 at49,673,153, despite2.41% more Spike
+instructions. Both retain the same source H,W arithmetic order and strongest
+combined clamp/RNE host path; device executable bytes and runtime objects match.
+This is one hardware observation per variant; blocking remains explicit/default
+off. The historical late-relink harness hash alone is insufficient identity.
