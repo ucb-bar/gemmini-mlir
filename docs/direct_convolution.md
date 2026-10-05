@@ -70,3 +70,11 @@ from i32, so its cycles are not an equal-precision speedup comparison.
 The probe supports `--wide-b --output-dtype i8 --scale 0.03125 --relu` and
 `--build-only` for preparing an audited ELF for the FireSim queue without a
 GSIM run. The queued ELF should retain its independent embedded output oracle.
+
+The exact ResNet 56×56×64→64 wide-load/int8-store candidate passed the complete
+200,704-element oracle and guard under Spike's Gemmini functional extension
+(dim16). The final ELF is statically FSM-free. Its command counts are 31,872
+computes, 9,296 A loads, 1,992 B loads, and 224 output stores. The functional
+receipt is `perf_records/conv_resnet56_c64_wide_i8_spike.json`. Spike's printed
+rdcycle count is retired instructions and must not be reported as FireSim
+performance. The matching ELF is ready for the stock FireSim queue.

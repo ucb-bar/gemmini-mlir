@@ -1,0 +1,44 @@
+{
+  "schema": "gemmini_direct_conv_spike_functional_v1",
+  "status": "pass",
+  "interpretation": "Functional only. Spike rdcycle counts retired instructions and is not hardware cycle evidence. Full tensor and guard validated.",
+  "elf_sha256": "fe88d3f40b753c04c6ea53982d7db1da0413845708131a9ded45010b655dc007",
+  "spike_binary_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+  "command": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--extension=gemmini",
+    "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/conv_resnet56_c64_wide_i8/layer.elf"
+  ],
+  "stdout": "GOLDEN_CONV_CYCLES 124038\nGOLDEN_CONV PASS\nGemmini extension configured with:\n    dim = 16\n",
+  "stderr": "",
+  "command_counts": {
+    "config": 5,
+    "fence": 2,
+    "flush": 1,
+    "mvin_a": 9296,
+    "mvin_b": 1992,
+    "preload": 31872,
+    "compute": 31872,
+    "mvout": 224,
+    "host_im2col_bytes": 0,
+    "padded_array_issue_cycles": 509952
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "fe88d3f40b753c04c6ea53982d7db1da0413845708131a9ded45010b655dc007",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 42,
+      "2": 196,
+      "3": 12,
+      "4": 168,
+      "5": 504,
+      "6": 672,
+      "7": 1
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  }
+}
