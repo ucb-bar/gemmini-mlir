@@ -1090,14 +1090,15 @@ numeric/datapath constraint, not a missed lower-coefficient choice in that famil
 
 ### Current mesh budget and complete-M transfer-family search
 
-The1849 source-bound plan's calculated padded mesh occupancy totals22,989,952:
+The1849 source-bound plan's calculated padded mesh geometry totals22,989,952:
 pointwise8,893,440, direct7,990,272, residual5,193,216, pooledstem784,000 and
 classifier129,024. The five resident H14 convolutions add184,320 padded issue
 cycles over the older1801 plan while reducing measured transfer overhead. Every
 one of the70 kernels binds to the actual1850 profile; device time is33,814,043.
-The geometric occupancy is specific to this arithmetic/tile plan. Reaching22M
-requires reducing padded work or selecting a different exact epilogue algorithm
-alongside host/transfer improvements; it is not a universal algorithmic minimum.
+The geometric count assumes padded DIM waves. Pinned RTL can execute shorter
+WS waves when garbage D, operand extents and transposer state permit it, so this
+is not a mandatory cycle floor. Exact variable-wave accounting and alternative
+epilogues are being investigated alongside host/transfer improvements.
 [Current geometry](perf_records/resnet1849_current_issue_geometry.json).
 
 Complete multirow A residency now gives each row tile disjoint dynamic K-panel
@@ -1129,3 +1130,13 @@ and exact expected BF16 values with the matching Clang runtime. This is a
 Merlin runtime/device-compilation correction; full target1,600-output replay
 remains necessary after relinking. Native correctness alone did not certify
 the target runtime ABI.
+
+
+### Transfer-policy stock hardware win
+
+Stock1853 verifies40,479,548 forward cycles and all1,000 original output words
+exactly. This saves1,790,260 (4.235%) versus1849, with identical accepted host,
+shim and weights bytes. The general resident/banked transfer family policy is
+now the measured best, still above Jack's22,387,449. Independent residual arm
+1854 retains1849 as its control; composition awaits its hardware result.
+[Hardware](perf_records/resnet_transfer_command_policy_firesim.json).
