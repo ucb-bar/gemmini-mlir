@@ -1,15 +1,16 @@
 """Independent full bounded-RNE probe over all frm modes and boundary neighbors."""
 from pathlib import Path
-import json,subprocess
+import json,subprocess,argparse
 import numpy as np
 from mlir_oot.late_quant_rne import rewrite
 from mlir_oot.no_fsm_audit import audit_elf
 from merlin.perf.layer_bench import build_program
 root=Path(__file__).resolve().parent.parent
-out=root/'out/bounded_quant_rne_probe';out.mkdir(parents=True,exist_ok=True)
+parser=argparse.ArgumentParser();parser.add_argument('--combine-clamp',action='store_true');args=parser.parse_args()
+out=root/('out/bounded_quant_clamp_rne_probe' if args.combine_clamp else 'out/bounded_quant_rne_probe');out.mkdir(parents=True,exist_ok=True)
 llvm=Path('/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin')
 source=root/'tests/fixtures/bounded_quant_rne.ll'
-text,proof=rewrite(source.read_text());(out/'quant.ll').write_text(text)
+text,proof=rewrite(source.read_text(),combine_clamp=args.combine_clamp);(out/'quant.ll').write_text(text)
 subprocess.run([str(llvm/'llvm-as'),str(out/'quant.ll'),'-o',str(out/'quant.bc')],check=True)
 subprocess.run([str(llvm/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-c',str(out/'quant.ll'),'-o',str(out/'quant.o')],check=True)
 rng=np.random.default_rng(715)
@@ -29,6 +30,13 @@ int main(void){
    unsigned actual_mode;__asm__ volatile("frrm %0":"=r"(actual_mode));
    if(got!=expected[i]||actual_mode!=(unsigned)mode){printf("RNE_FAIL %d %d %d %d\n",mode,i,got,expected[i]);return 1;}
   }
+  const uint32_t nan_bits[]={0x7fc00000,0x7f800001,0xffc00000,0xff800001};
+  for(unsigned j=0;j<4;++j){
+   union {uint32_t u;float f;} value={.u=nan_bits[j]};
+   volatile int8_t unspecified=quant(value.f);(void)unspecified;
+   unsigned actual_mode;__asm__ volatile("frrm %0":"=r"(actual_mode));
+   if(actual_mode!=(unsigned)mode)return 2;
+  }
  }
  __asm__ volatile("fsrm zero");printf("BOUNDED_RNE PASS\n");return 0;
 }
@@ -37,5 +45,5 @@ b=build_program([p,out/'quant.o'],out,target='gemmini',extra_cflags=['-march=rv6
 audit=audit_elf(b.elf.read_bytes());assert audit['status']=='pass'
 r=subprocess.run(['/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike','--isa=rv64gc','--extension=gemmini',str(b.elf)],capture_output=True,text=True,check=True)
 (out/'spike.log').write_text(r.stdout+r.stderr);assert 'BOUNDED_RNE PASS' in r.stdout+r.stderr
-proof.update(values=len(values),frm_modes=5,checks=len(values)*5,nofsm_audit=audit)
+proof.update(combine_clamp=args.combine_clamp,nan_executions=20,nan_output_contract="source poison; outputs deliberately not compared",values=len(values),frm_modes=5,checks=len(values)*5,nofsm_audit=audit)
 (out/'receipt.json').write_text(json.dumps(proof,indent=2)+'\n');print(proof)

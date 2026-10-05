@@ -12,7 +12,7 @@ import re
 V = r'%[-a-zA-Z$._0-9]+'
 
 
-def _rewrite_function(text: str, *, native_oracle=False):
+def _rewrite_function(text: str, *, native_oracle=False, combine_clamp=False):
     lines=text.splitlines(keepends=True); definitions={}
     for line in lines:
         m=re.match(r'\s*('+V+r') = (.*)',line)
@@ -52,6 +52,9 @@ def _rewrite_function(text: str, *, native_oracle=False):
         if native_oracle:
             out.append(f'{indent}{temp} = call float @llvm.roundeven.f32(float {x})\n')
             out.append(f'{indent}{result} = fptosi float {temp} to i8\n')
+        elif combine_clamp:
+            out.append(f'{indent}{temp} = call i32 asm "fmax.s ft0, $1, $2\\0Afmin.s ft0, ft0, $3\\0Afcvt.w.s $0, ft0, rne", "=r,f,f,f,~{{ft0}}"(float {lo[1]}, float -1.280000e+02, float 1.270000e+02)\n')
+            out.append(f'{indent}{result} = trunc i32 {temp} to i8\n')
         else:
             out.append(f'{indent}{temp} = call i32 asm "fcvt.w.s $0, $1, rne", "=r,f"(float {x})\n')
             out.append(f'{indent}{result} = trunc i32 {temp} to i8\n')
@@ -60,12 +63,12 @@ def _rewrite_function(text: str, *, native_oracle=False):
     return rewritten,dict(schema='gemmini_late_bounded_rne_v1',source_sha256=hashlib.sha256(text.encode()).hexdigest(),rewritten_sha256=hashlib.sha256(rewritten.encode()).hexdigest(),routes=proofs)
 
 
-def rewrite(text: str, *, native_oracle=False):
+def rewrite(text: str, *, native_oracle=False, combine_clamp=False):
     proofs=[]
     if re.search(r"\bstrictfp\b|llvm\.experimental\.constrained",text):
         return text,dict(schema="gemmini_late_bounded_rne_v1",routes=[],refusal="strict or constrained FP module",source_sha256=hashlib.sha256(text.encode()).hexdigest())
     def replace_function(match):
-        body,receipt=_rewrite_function(match[0],native_oracle=native_oracle)
+        body,receipt=_rewrite_function(match[0],native_oracle=native_oracle,combine_clamp=combine_clamp)
         proofs.extend(receipt['routes'])
         return body
     rewritten=re.sub(r'^define [^\n]*\{\n.*?^}[^\n]*',replace_function,text,flags=re.M|re.S)
@@ -74,7 +77,7 @@ def rewrite(text: str, *, native_oracle=False):
     return rewritten,dict(schema='gemmini_late_bounded_rne_v1',source_sha256=hashlib.sha256(text.encode()).hexdigest(),rewritten_sha256=hashlib.sha256(rewritten.encode()).hexdigest(),routes=proofs)
 
 
-def build(build_dir, work, llvm_bin, gcc, runtime_dir):
+def build(build_dir, work, llvm_bin, gcc, runtime_dir, *, combine_clamp=False):
     """Opt-in late model-object replacement; all other linked objects are pinned."""
     from pathlib import Path
     import json,subprocess
@@ -86,7 +89,7 @@ def build(build_dir, work, llvm_bin, gcc, runtime_dir):
     # LLVM verifies the original and the replacement; textual matching is never
     # used as a substitute for SSA/type verification.
     subprocess.run([str(llvm_bin/'llvm-as'),str(source),'-o',str(work/'source.bc')],check=True)
-    original=source.read_text();target,proof=rewrite(original)
+    original=source.read_text();target,proof=rewrite(original,combine_clamp=combine_clamp)
     if not proof['routes']:raise ValueError('no proven bounded RNE chain')
     ll=work/'model.ll';ll.write_text(target)
     subprocess.run([str(llvm_bin/'llvm-as'),str(ll),'-o',str(work/'model.bc')],check=True)
@@ -111,7 +114,7 @@ def build(build_dir, work, llvm_bin, gcc, runtime_dir):
     subprocess.run(link,check=True)
     audit=audit_elf((work/'model.elf').read_bytes())
     if audit['status']!='pass':raise ValueError('final ELF failed no-FSM audit')
-    proof.update(base_elf_sha256=sha(base),elf_sha256=sha(work/'model.elf'),objects={str(p):sha(p) for p in objects},compiler_argv=compile,linker_argv=link,nofsm_audit=audit)
+    proof.update(combine_clamp=combine_clamp,base_elf_sha256=sha(base),elf_sha256=sha(work/'model.elf'),objects={str(p):sha(p) for p in objects},compiler_argv=compile,linker_argv=link,nofsm_audit=audit)
     (work/'receipt.json').write_text(json.dumps(proof,indent=2)+'\n')
     return proof
 
@@ -120,5 +123,6 @@ if __name__=='__main__':
     import argparse,json
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('build-dir','work','llvm-bin','gcc','runtime-dir'):p.add_argument('--'+name,required=True)
-    a=p.parse_args();r=build(a.build_dir,a.work,a.llvm_bin,a.gcc,a.runtime_dir)
+    p.add_argument("--combine-clamp",action="store_true")
+    a=p.parse_args();r=build(a.build_dir,a.work,a.llvm_bin,a.gcc,a.runtime_dir,combine_clamp=a.combine_clamp)
     print(json.dumps({'routes':len(r['routes']),'elf_sha256':r['elf_sha256']},indent=2))

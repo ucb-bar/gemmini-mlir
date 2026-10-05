@@ -42,3 +42,15 @@ def test_native_preserves_existing_intrinsic_declaration_attributes():
     assert len(proof['routes'])==1
     assert new.count('declare float @llvm.roundeven.f32')==1
     assert 'declare float @llvm.roundeven.f32(float) #0' in new
+
+
+def test_combined_clamp_consumes_proven_raw_value_and_preserves_source_uses():
+    source=SOURCE.replace('  ret i8 %v17','  %other = fadd float %v2, 1.000000e+00\n  ret i8 %v17')
+    new,proof=rewrite(source,combine_clamp=True)
+    assert len(proof['routes'])==1
+    assert 'fmax.s ft0, $1, $2' in new and 'fmin.s ft0, ft0, $3' in new
+    assert '~{ft0}' in new and '(float %x, float -1.280000e+02, float 1.270000e+02)' in new
+    assert '%other = fadd float %v2' in new
+    assert '%v2 = call float @llvm.minimum.f32' in new
+    bad=source.replace('i8 -1, i8 1','i8 1, i8 -1')
+    assert rewrite(bad,combine_clamp=True)[0]==bad

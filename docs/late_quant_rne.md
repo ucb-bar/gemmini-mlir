@@ -56,3 +56,28 @@ not hardware cycles. All other linked model/device/runtime/weight objects
 retain their pinned identity. Receipt: `docs/perf_records/late_bounded_quant_rne.json`.
 `tests/probe_late_quant_whole.py` validates an existing late-RNE build using
 its generated native oracle and the existing complete-model comparison gates.
+
+## Optional combined clamp and RNE
+
+`--combine-clamp` consumes the proven raw input in one inline assembly block:
+`fmax.s` with -128, `fmin.s` with127, then `fcvt.w.s ..., rne`. The temporary
+floating register is explicitly clobbered; integer conversion remains explicit
+RNE. Existing clamp SSA values remain available when other uses need them.
+
+For all source-defined finite/infinite inputs, RISC-V min/max produce the exact
+same clamped float (zero signs cannot affect the integer result). RISC-V's
+numeric-operand preference on NaN differs from LLVM minimum/maximum, but the
+original NaN-to-i8 conversion was poison. The target may define that previously
+undefined result; this creates no promise about NaN outputs. Strict FP still
+refuses, and unconstrained fflags behavior remains outside the contract.
+
+The combined variant passes107,415 independently computed numeric comparisons
+across all five frm modes. It additionally executes positive/negative quiet and
+signaling NaNs under all five modes, checking that frm remains unchanged while
+deliberately making no assertion about their undefined source output values.
+Fourteen structural/refusal tests pass.
+
+Whole native + actual Spike remain bitexact on all1000 outputs, rank mismatch0,
+final no-FSM. Spike instructions12,271,325 →11,355,701 (7.46% additional savings;
+20.34% below the14,254,689 base). Hardware timing remains unmeasured. Receipt:
+`docs/perf_records/late_combined_clamp_quant_rne.json`.
