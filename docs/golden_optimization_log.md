@@ -1243,3 +1243,12 @@ and norm metadata are included; copies for numeric comparison and hashing occur
 after each interval. Neither wholehead performance nor a winning policy is
 claimed. Original1894/1895 artifacts remain immutable.
 [Qualification](perf_records/attention_complete_packing_pair_spike.json).
+
+### Stock1900 exact readout win
+
+Two exactSAT8 host readout adapters reduce wholeResNet forward cycles from
+39,201,279(1874) to **37,946,541**, saving1,254,738(3.20%). All1,000 original
+output words and actual stagedELF/stockbitstream pins match. This single-run
+result is1.36% below priorbest1897; neither localcapsule gains nor independent
+stripe/packet gains are added. Originalsource arithmetic/numericproof remains.
+[Strict hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json).
