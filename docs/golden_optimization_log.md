@@ -1086,3 +1086,46 @@ integer accumulator bias. A four-chunk projection plusCPUthreshold readout is
 exact but loses its mesh saving to scalar readout/DMA cost. This identifies a
 numeric/datapath constraint, not a missed lower-coefficient choice in that family.
 [Certificate](residual_coefficient_minimality.md).
+
+
+### Current mesh budget and complete-M transfer-family search
+
+The1849 source-bound plan's calculated padded mesh occupancy totals22,989,952:
+pointwise8,893,440, direct7,990,272, residual5,193,216, pooledstem784,000 and
+classifier129,024. The five resident H14 convolutions add184,320 padded issue
+cycles over the older1801 plan while reducing measured transfer overhead. Every
+one of the70 kernels binds to the actual1850 profile; device time is33,814,043.
+The geometric occupancy is specific to this arithmetic/tile plan. Reaching22M
+requires reducing padded work or selecting a different exact epilogue algorithm
+alongside host/transfer improvements; it is not a universal algorithmic minimum.
+[Current geometry](perf_records/resnet1849_current_issue_geometry.json).
+
+Complete multirow A residency now gives each row tile disjoint dynamic K-panel
+addresses and proves the entire reserved A extent before optional bank2/3 B
+prefetch. Five independent single-row/uncached IR controls stay byte-identical.
+Five current-core capsules pass every output,2048 guards, final noFSM and strict
+RV64GC Spike, including bias, both reuse modes, K/M/N tails and an oversized
+reserved M block. M49/N2048/K512 measures367,749→284,299 fenced GSIM kernel
+cycles (22.69% lower); total harness cycles increase1,479,163→1,493,952.
+[Capsules](perf_records/multirow_resident_a_gsim.json).
+
+The default-off transfer_command_cost policy compares legal resident-A and
+full-K banked families using dimensions, epilogue, target resources, primitive
+command counts and requested DMA volume. Model names, dense source IDs and
+golden values do not select strategies. A normal whole-model arm retains1849's
+other experiment settings, all52 source numeric proofs and rewritten IR,
+changing24 dense device objects. Host model.o, selected/native LLVM, shim,
+weights, IO header and startup bytes remain identical. All1,000 original output
+bits match in native and actual strict RV64GC Spike; final ELFdd10036b...da9bb
+passes zeroFSM, marker68d31eef6259. Spike10,195,770 is an instruction count;
+stock whole-model FireSim is required before adopting it as the best.
+[Whole gate](perf_records/resnet_transfer_command_policy_spike.json).
+
+Actual Smol target replay exposed a shared BF16 helper calling-convention
+mismatch: LLVM Clang calls/returns BF16 in FP registers, whereas the GCC-built
+runtime's unsigned-short fallback uses integer registers. A minimal strict
+RV64GC Spike conversion reproduces incorrect signed zeros with the GCC runtime
+and exact expected BF16 values with the matching Clang runtime. This is a
+Merlin runtime/device-compilation correction; full target1,600-output replay
+remains necessary after relinking. Native correctness alone did not certify
+the target runtime ABI.

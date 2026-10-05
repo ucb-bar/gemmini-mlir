@@ -8,7 +8,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 |---|---:|---|---|
 | ResNet exact52/wide16, virtual padding/layout, general banked dense command-cost policy, five static resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 42,269,808 (1849) | All 1,000 original output words exact | [1849](perf_records/resnet_banked_command_policy_firesim.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, eight exact scalar outputs/K-unroll2 plus explicit cached-A B-prefetch and fresh writer ownership | 569,151,067 (1846) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1846](perf_records/tiny_expanded_writer_prefetch_firesim1846.json) |
-| Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output now **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC target qualification in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
+| Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC qualification uncovered a shared BF16 runtime ABI mismatch; correction and full target replay are in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -43,7 +43,27 @@ operations after fusion, not one source operation. [Profile](perf_records/tiny_c
 
 The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
 and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
-objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836;42,837,088 remains the best. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. The current best is1849 in the table above. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+
+The current1849 plan has22,989,952 calculated padded mesh occupancy cycles:
+8,893,440 pointwise,7,990,272 direct,5,193,216 residual,784,000 pooled stem
+and129,024 classifier. All70 kernels are bound to the actual1850 source profile,
+which measures33,814,043 device cycles plus8,489,121 host cycles. This occupancy
+describes the selected arithmetic and tiling, not every possible exact algorithm.
+The22M objective needs less padded work or different exact epilogue execution
+alongside host and transfer improvements.
+[Current geometry](perf_records/resnet1849_current_issue_geometry.json).
+
+General complete-M input residency and a shape/resource/command-cost comparison
+of resident and banked transfer families are now implemented as explicit,
+default-off OOT compiler options. Five actual capsules pass outputs, guards,
+final noFSM and strict RV64GC Spike; the paired wide contraction saves22.69%
+fenced GSIM kernel cycles, while total harness cycles increase. The whole
+transfer-policy arm preserves1849 host/shim/weights bytes and all1,000 original
+output bits in native and actual Spike, changing24 dense kernel objects.
+Stock FireSim qualification is the next gate.
+[Schedule](multirow_resident_a.md),
+[whole gate](perf_records/resnet_transfer_command_policy_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
 at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
