@@ -6,9 +6,9 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, combined clamp/RNE, blocked64 mean | 47,020,321 (1795) | All 1,000 golden output words exact | [1795](perf_records/resnet_dense_split_block64_firesim1795.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 | 764,493,870 (1806) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1806](perf_records/tiny_fused_activation_poly_o3_firesim1806.json) |
-| Full SmolVLA | Not admitted | Original full numerical gate still fails; source convolution/normalization/attention arithmetic diagnosis continues | Optimization log |
+| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, clamp/RNE, blocked64 mean, pre-stem destination reuse and classifier wide-B/resident-A | 46,316,907 (1812) | All 1,000 golden output words exact | [1812](perf_records/resnet_prestem_classifier_firesim1812.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + exact scalar contraction accumulators | 648,210,569 (1816) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1816](perf_records/tiny_scalar_accumulator_firesim1816.json) |
+| Full SmolVLA | Not admitted | Original full elementwise gate remains atol=0.03125, rtol=0.02; source RoPE arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -51,20 +51,19 @@ The fresh profile for this compiled model preserves all existing objects and
 passes full output/count/conservation checks in Spike and FireSim1809. Hardware
 interior765,151,605 cycles divides into219,056,004 device and546,095,601 host;
 all155 calls are conserved. Its765,152,026 whole-forward timing adds658,156
-observed cycles (0.0861%) to the unprofiled1806 control. Host intervals before
+observed cycles (0.0861%) to the unprofiled1806 control. This profile predates the1816 scalar accumulator improvement. Host intervals before
 attention output projections and down projections include all intervening CPU
 operations. See [fresh profile](perf_records/tiny_fused_current_profile_firesim1809.json).
 
 Fresh ResNet profile1801 attributes47,057,935 interior cycles to35,450,518 device
 and11,607,417 host cycles, with all70 primitive calls conserved. Instrumentation
 and placement add38,118 observed whole-forward cycles (0.081%);47,020,321 remains
-the unprofiled control. The captured classifier tail's wide-B/cached-A GSIM screen
-is23.26% faster with exact outputs; it has not been promoted into the model.
+the unprofiled profile control. The captured classifier tail's wide-B/cached-A GSIM screen
+is23.26% faster with exact outputs; it is now composed with destination reuse in1812.
 See [current profile](perf_records/resnet_current_leaf_profile_firesim1801.json)
 and [selected geometry](perf_records/resnet_current_issue_geometry.json).
 Exact pointwise destination reuse for the padded pre-stem passes complete native
-and Spike gates, reducing retired instructions4.32%; it has not yet been measured
-in FireSim. A proposed external result-alias wrapper failed a live-alias regression
+and Spike gates, reducing retired instructions4.32%. Composed with the classifier schedule,1812 verifies46,316,907 cycles,1.50% fewer than1795. A proposed external result-alias wrapper failed a live-alias regression
 and was removed. A branchless readout correction also remains rejected: four
 completed GSIM passes on50,176 captured values are24.47% slower by median; the
 600-second probe timed out before its full pass marker and smaller readout.
@@ -77,7 +76,7 @@ Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
 matmul f32 accumulation plus initialized rank-2 outputs at46851eaf. The latest
 commit passes160 focused and related tests, including45 native execution cases.
 Fresh SmolVLA capture retains the original weights, inputs, golden and manifest
-identities; its complete gate is being rerun. Explicit backend arithmetic
+identities. The fresh complete gate still fails47/1600 outputs, with relativeL2 .016156828 and maxabs .096718788. Explicit backend arithmetic
 compatibility experiments remain separate from default frontend semantics.
 
 The selected ResNet schedule's mesh issue geometry totals22,805,632 cycles,
@@ -185,3 +184,13 @@ The upstream ResNet preparation now enables Merlin's exact 1×1 im2col identity-
 For an actual Merlin model build, set `DeviceRouting.prepared_transform` to `mlir_oot.golden_device_catalog.merlin_identity_view_transform` alongside the catalog-builder and final-ELF-audit callbacks. The preparation hook runs before catalog compilation and source hashing. Its ResNet callback smoke proved 33 views and compiled all 54 contractions to 21 audited kernels; a runtime regression test checks that catalog selection and offload bind the transformed bytes.
 
 The complete ResNet capture now compiles to an RV64GC ELF with all54 contractions linked and a passing final no-FSM audit (SHA18823d02831d0b98…). The same LLVM host graph plus identical device ABI shim, using scalar int8 reference kernels, reproduces all1000 captured integer-reference outputs exactly: relative L2=0, max error=0, argmax713 matches. This proves host lowering/layout/ABI for the captured random-initialized model, not hardware execution, pretrained quality, or22M performance. Actual Gemmini Spike execution is now running before a complete-model FireSim measurement.
+
+## Current exact candidates and compilation contract
+
+Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. All155 device contractions and the previously selected activation approximation remain unchanged. The next strict four-output schedule is under qualification. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
+
+The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes; hardware timing is pending. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
+
+Normal build markers now include the actual linked device/matrix object bytes in link order, with length and domain separation. Object paths do not affect identity. Final and staged ELF SHA256 remain authoritative for both new and historical runs. The prepared source, ABI, target object, native standin, source numeric policy and final ISA audit must close over the same compilation. Default-off compiler transforms remain independently selectable.
+
+SmolVLA retains the existing elementwise gate by explicit user direction. Original Torch MKL VML high-accuracy sine/cosine dispatch differs from scalar libm at three BF16 query entries, which propagate into attention. SLEEF was investigated but is not the selected Torch backend. A bounded integer-position RoPE lookup policy is under qualification; unrelated timestep trig remains separate, and the original weights, inputs and golden remain immutable.
