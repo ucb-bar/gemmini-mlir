@@ -264,3 +264,21 @@ This saves8.67% versus1792 at866,822,103 and56.03% versus1747 at1,800,267,524.
 The explicit provenance-scoped activation approximation preserves these captured
 outputs but makes no universal source-bitexact activation promise. The19.41%
 Spike instruction reduction predicted a direction, not the hardware magnitude.
+
+## Current ResNet hardware profile1801
+
+Strict profile interior47,057,935 = device35,450,518 + host11,607,417 cycles;
+all70 primitive calls appear exactly once and intervals conserve. Harness
+47,058,439 is38,118 cycles above unprofiled1795's47,020,321 (0.081%); this delta
+includes instrumentation and placement, so it is not a subtractive correction.
+Full original output digest and final zero-FSM/staged identities pass.
+
+Device category counters: {'pooled_stem': 1441675, 'dense': 14897959, 'direct_conv': 12333730, 'residual': 6777154}.
+Largest preceding host intervals are prestem5,238,180, preclassifier2,159,097,
+after matmul25 exact CPU readout1,957,501, after48 readout963,250, and before
+matmul14 615,221. Intervals include all intervening host work, not isolated
+operation timers. Classifier itself637,888 is being screened with exact captured
+activation/weight operands at M1/N1000/K2048 for wideB/cacheA tail handling.
+The remaining11.61M host cost makes further exact host fusion/materialization
+work relevant; device35.45M independently exceeds22M, requiring arithmetic or
+schedule improvement as well.
