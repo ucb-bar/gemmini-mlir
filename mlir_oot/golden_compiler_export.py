@@ -99,7 +99,7 @@ def select_contraction_export(source_path,region_id,*,dense_input_policy=None,
     from merlin.xdsl_dialects.lowering.global_plan import (
         BufferRepresentation,CycleInterval,RegionAlternative,ValueRepresentation,
     )
-    if dense_input_policy not in (None,'banked_command_cost','resident_a_command_cost','transfer_command_cost'):
+    if dense_input_policy not in (None,'banked_command_cost','resident_a_command_cost','transfer_command_cost','resident_a_prefetch'):
         raise ValueError('unknown dense compiler policy')
     if dense_b_slot_policy not in (None,'remaining_rows'):
         raise ValueError('unknown B slot compiler policy')
@@ -112,7 +112,8 @@ def select_contraction_export(source_path,region_id,*,dense_input_policy=None,
     generator,kind=select_kernel(shape,
         banked_command_policy=dense_input_policy=='banked_command_cost',
         resident_a_command_policy=dense_input_policy=='resident_a_command_cost',
-        transfer_command_policy=dense_input_policy=='transfer_command_cost')
+        transfer_command_policy=dense_input_policy=='transfer_command_cost',
+        resident_a_prefetch_policy=dense_input_policy=='resident_a_prefetch')
     b_decision=None
     if dense_b_slot_policy is not None:
         generator,b_decision=select_remaining_b_slots(generator)

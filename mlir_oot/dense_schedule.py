@@ -95,8 +95,25 @@ def choose_transfer_by_command_cost(shape):
     return chosen,dict(applied=True,selected_family=name,cost_unit='primitive_commands_not_cycles',families=choices)
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False):
-    policies_selected=(banked_command_policy,resident_a_command_policy,transfer_command_policy)
+def resident_a_prefetch(shape):
+    """Expose a resource-legal one-row-tile overlap alternative for measurement.
+
+    This explicit choice does not require a command-count improvement. All A
+    panels become resident before increasing-K B ping-pong. Tile sizes and
+    numeric epilogues are preserved; actual calibrated latency decides whether
+    this alternative should be selected, including a single N block.
+    """
+    shape.validate()
+    if (_ceil_div(shape.m,F.DIM) != 1 or shape.cache_b or shape.separate_b_bank
+            or shape.pipeline_m or shape.prefetch_m or shape.banked_m):
+        raise ValueError('resident A prefetch requires one row tile and no competing cached/pipelined placement')
+    candidate=replace(shape,cache_a=True,wide_a=False,prefetch_b=True)
+    candidate.validate()
+    return candidate
+
+
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False, resident_a_prefetch_policy=False):
+    policies_selected=(banked_command_policy,resident_a_command_policy,transfer_command_policy,resident_a_prefetch_policy)
     if full_k_banked and any(policies_selected):
         raise ValueError('banked compiler policy cannot mix with explicit full-K selection')
     if sum(bool(p) for p in policies_selected)>1:
@@ -140,6 +157,9 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
         selected,decision=choose_transfer_by_command_cost(selected)
         if decision['applied']:
             policies.append('transfer_command_cost_'+decision['selected_family'])
+    if resident_a_prefetch_policy:
+        selected=resident_a_prefetch(selected)
+        policies.append('resident_a_prefetch')
     if separate_b_bank and not selected.banked_m and not selected.separate_b_bank:
         candidate=replace(selected,separate_b_bank=True)
         try:
