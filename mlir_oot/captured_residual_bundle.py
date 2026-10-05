@@ -260,7 +260,13 @@ def compile_adapter(source, output, llvm_bin):
     return dict(compiler_argv=command,compiler_sha256=sha(llvm_bin/'clang'),source_sha256=sha(source),object_sha256=sha(output))
 
 
-def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar",shared_permutation=False):
+def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cpu_lut_schedule="scalar",shared_permutation=False,prefetch_m=False,banked_accumulators=False):
+    if type(prefetch_m) is not bool or type(banked_accumulators) is not bool:
+        raise ValueError('residual schedule options must be boolean')
+    if banked_accumulators and not prefetch_m:
+        raise ValueError('banked accumulators require residual M prefetch')
+    if (prefetch_m or banked_accumulators) and implementation != 'wide_integer':
+        raise ValueError('residual M prefetch requires wide_integer implementation')
     if shared_permutation and implementation not in ("cpu_lut","wide_integer"):raise ValueError("shared permutation requires exact residual implementation")
     if cpu_lut_schedule not in ("scalar","raw_u8_x4"):raise ValueError("unknown CPU lookup schedule")
     if cpu_lut_schedule!="scalar" and implementation!="cpu_lut":raise ValueError("CPU lookup schedule requires cpu_lut implementation")
@@ -305,7 +311,11 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
         if implementation=='wide_integer':
             from .golden_wide_resadd import build as build_wide,tables
             coeff=route['proof']['coefficients']
-            device=build_wide(route['m'],coeff['p'],coeff['q'],coeff['scale'],relu=route['proof']['source']['relu'])
+            device=build_wide(route['m'],coeff['p'],coeff['q'],coeff['scale'],relu=route['proof']['source']['relu'],prefetch_m=prefetch_m,banked_accumulators=banked_accumulators)
+            if prefetch_m:
+                resources=device.attributes.get('gemmini.residual_m_prefetch')
+                route['device_schedule']=dict(prefetch_m=prefetch_m,banked_accumulators=banked_accumulators,active=resources is not None,
+                    resources={key:value.value.data for key,value in resources.data.items()} if resources is not None else {})
             device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
             compilation=compile_module(device,llvm_bin,work)
             c=wide_adapter(route,symbol,kernel);(work/'adapter.c').write_text(c)
@@ -342,8 +352,8 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini",cp
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--shared-permutation',action='store_true');p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule,shared_permutation=a.shared_permutation)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--shared-permutation',action='store_true');p.add_argument('--cpu-lut-schedule',choices=('scalar','raw_u8_x4'),default='scalar');p.add_argument('--implementation',choices=('gemmini','cpu_lut','wide_integer'),default='gemmini');p.add_argument('--prefetch-m',action='store_true');p.add_argument('--banked-accumulators',action='store_true');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation,cpu_lut_schedule=a.cpu_lut_schedule,shared_permutation=a.shared_permutation,prefetch_m=a.prefetch_m,banked_accumulators=a.banked_accumulators)
     print(json.dumps(dict(routes=len(result['routes']),refused=len(result['refused']),numeric_policy=result['numeric_policy']),indent=2))
 
 if __name__=='__main__':main()

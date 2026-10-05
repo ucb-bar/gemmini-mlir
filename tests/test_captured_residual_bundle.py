@@ -97,3 +97,56 @@ def test_adapter_owned_table_links_at_baremetal_address(tmp_path):
     subprocess.run([str(linker),'-T',str(script),'-e','identity',str(tmp_path/'adapter.o'),'-o',str(tmp_path/'adapter.elf')],check=True,capture_output=True)
     assert audit_elf((tmp_path/'adapter.elf').read_bytes())['status']=='pass'
     assert compilation['object_sha256'] and compilation['source_sha256']
+
+
+@pytest.mark.parametrize('options,error', [
+    ({'prefetch_m': 1}, 'boolean'),
+    ({'banked_accumulators': 1}, 'boolean'),
+    ({'banked_accumulators': True}, 'require residual M prefetch'),
+    ({'prefetch_m': True}, 'requires wide_integer'),
+    ({'prefetch_m': True, 'implementation': 'cpu_lut'}, 'requires wide_integer'),
+])
+def test_residual_schedule_requires_explicit_compatible_implementation(tmp_path, options, error):
+    from mlir_oot.captured_residual_bundle import build
+    with pytest.raises(ValueError, match=error):
+        build(tmp_path / 'missing', tmp_path / 'toolchain', tmp_path / 'output', **options)
+
+
+def test_source_bound_prefetch_preserves_rewrite_proof_adapter_and_oracle(tmp_path):
+    import hashlib
+    import json
+    from mlir_oot.captured_residual_bundle import build
+    llvm = Path('/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin')
+    if not (llvm / 'clang').is_file() or not (llvm / 'mlir-translate').is_file():
+        pytest.skip('target toolchain unavailable')
+    capture = tmp_path / 'capture'
+    capture.mkdir()
+    source = Path(__file__).with_name('fixtures').joinpath('captured_resadd.mlir').read_text()
+    relu = '''    %relu = linalg.generic {indexing_maps = [affine_map<(d0, d1) -> (d0, d1)>, affine_map<(d0, d1) -> (d0, d1)>], iterator_types = ["parallel", "parallel"]} ins(%sum : tensor<16x64xf32>) outs(%empty : tensor<16x64xf32>) {
+      ^bb0(%x: f32, %out: f32):
+        %zero_f = arith.constant 0.0 : f32
+        %r = arith.maximumf %x, %zero_f : f32
+        linalg.yield %r : f32
+    } -> tensor<16x64xf32>
+'''
+    source = source.replace('    %q = ', relu + '    %q = ').replace('(%sum, %scale, %zp)', '(%relu, %scale, %zp)')
+    (capture / 'model.mlir').write_text(source.replace('16x64', '48x64'))
+    for name in ('weights.safetensors', 'weights.safetensors.manifest.json'):
+        (capture / name).write_bytes(b'fixture')
+    receipt = {'artifacts': {name: {'sha256': hashlib.sha256((capture / name).read_bytes()).hexdigest()}
+                            for name in ('model.mlir', 'weights.safetensors', 'weights.safetensors.manifest.json')}}
+    (capture / 'capture_receipt.json').write_text(json.dumps(receipt))
+    serial = build(capture, llvm, tmp_path / 'serial', implementation='wide_integer')
+    candidate = build(capture, llvm, tmp_path / 'banked', implementation='wide_integer',
+                      prefetch_m=True, banked_accumulators=True)
+    assert len(serial['routes']) == len(candidate['routes']) == 1
+    assert serial['rewritten_sha256'] == candidate['rewritten_sha256']
+    assert serial['native_oracle_sha256'] == candidate['native_oracle_sha256']
+    original, selected = serial['routes'][0], candidate['routes'][0]
+    assert original['proof_sha256'] == selected['proof_sha256']
+    assert original['adapter_compilation']['object_sha256'] == selected['adapter_compilation']['object_sha256']
+    assert 'device_schedule' not in original
+    assert selected['device_schedule']['active']
+    assert selected['device_schedule']['resources']['panel_count'] == 3
+    assert serial['object_sha256'] != candidate['object_sha256']
+    assert candidate['nofsm_audit']['status'] == 'pass'
