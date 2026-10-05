@@ -1,0 +1,102 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Full pretrained 22-layer TinyLlama, original quantization scope, 8 tokens, large-N cached-A/wide-B catalog and optimized runtime",
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/build/model.elf",
+  "elf_sha256": "436efef084200bf530bd3c7aaf43db002bf5d310cee427d7d115223b8742ad5b",
+  "reference": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/host/output.npy",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_full_output_match": true,
+  "torch_allclose": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "original_baseline_output_bit_exact": true,
+  "torch_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "torch_relative_l2": 2.1918432935308374e-07,
+  "torch_max_abs_error": 9.5367431640625e-06,
+  "spike_observed": {
+    "encoding": "f32le",
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3"
+  },
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/spike.log",
+  "spike_console_sha256": "b27eda72ab1ecced057e0d3745cd8a2d7694b0514de73aba37db2aa7e2512b1a",
+  "native_llvm_sha256": "a7e558614939395f93a17cf8c19bafee257ace79c4eef4752d7bc97a3112fbd9",
+  "capture_receipt": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/capture_receipt.json",
+  "metrics": {
+    "cycles": "678959918",
+    "build_hash": "6db7a1f7ee3a",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike retired instruction proxy, not FireSim timing",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "436efef084200bf530bd3c7aaf43db002bf5d310cee427d7d115223b8742ad5b",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "contractions": 155,
+  "device_signatures": 5,
+  "hoisted_weight_arrays": 155,
+  "host_object_reuse": false,
+  "host_compile_reason": "Generalize/fuse preparation changed LLVM SHA; cached object identity guard refused reuse",
+  "runtime_commits": [
+    "c16584354",
+    "5586d188d",
+    "96b9b8440"
+  ],
+  "runtime_sources": {
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/abi/mlir_runtime.c": {
+      "sha256": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3"
+    },
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/baremetal/spike/libc_min.c": {
+      "sha256": "a4fbb36b9e2814a6c8787c3ef7e9c36740ecfbabfea7dc18e7fde8009e0cf67b"
+    }
+  },
+  "runtime_objects": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/build/mlir_rt.o": {
+      "sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51"
+    },
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_runtime/build/libc_min.o": {
+      "sha256": "a827a57082b834669a9c7dada97087fa1bacb0e7b7b47028ad125c4309918b76"
+    }
+  },
+  "native_validation": {
+    "scope": "tiny_large_n_runtime: native host with scalar integer device stand-ins",
+    "llvm_sha256": "a7e558614939395f93a17cf8c19bafee257ace79c4eef4752d7bc97a3112fbd9",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "compiler_policy": {
+    "large_n": true,
+    "MERLIN_GENERALIZE_BEFORE_FUSE": true,
+    "MERLIN_FUSE_POST": true,
+    "respect_captured_quantization_scope": true,
+    "hoist_weight_invariant_quantize": true
+  },
+  "fireSim_status": "pending submission"
+}

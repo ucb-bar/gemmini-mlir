@@ -484,3 +484,29 @@ and155hoisted arrays. Its prepared hostLLVM changed under exact host fusion,
 so object reuse was refused and the host model was freshly compiled. Full native
 quality passes unchanged versusTorch (relativeL2 2.1918433e-7, maxabs9.536743e-6).
 Complete actualSpike output-digest validation is running before queue submission.
+
+### Verified complete ResNet acceleration and Tiny large-N admission
+
+Stock FireSim1774 verifies68,385,997 forward cycles for the complete exact52
+readout/wide16 residual/shared-layout/runtime build. All1,000 closed-recipe
+golden outputs are bit-exact, with pinned stagedELF and stock bitstream. This is
+91.13% fewer cycles (11.28x faster) than same-capture1769's771,357,461. The
+22M objective remains unmet by3.11x; final-link device/host boundary profiling
+will determine the next priorities. These gains combine several changes and
+cannot be attributed to one pass alone.
+
+Exact virtual padding removes16 direct-convolution CPU padding buffers using
+source-proven zero-border primitive gathers. Stem padding remains. Combined
+with wide16 residuals and the same runtime it matches all1,000 golden bits and
+retires19,286,601Spike instructions versus21,144,570 padded (8.79% fewer).
+Its separately pinned ELF288af46a... is queued as1775 for a hardware comparison.
+
+The full Tiny large-N candidate finishes actualSpike and passes full256,000
+output SHA256 verification against the independently Torch-validated native
+output. It is bit-exact to the earlier full Tiny compiled baseline. Final
+ELF436efef0...742ad5b has no forbidden or unknown Gemmini instructions. Spike
+retires678,959,918 instructions; this is not a hardware timing claim. Original
+Torch tolerance remainsatol0.03125/rtol0.02, relativeL22.1918433e-7 and
+maximumabsoluteerror9.536743e-6. Evidence, host/compiler/runtime identities and
+scope: `perf_records/tiny_large_n_runtime_spike.json`. Stock FireSim submission
+is authorized after these gates.
