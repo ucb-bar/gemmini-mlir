@@ -1,0 +1,143 @@
+{
+  "schema": "rejected_stem_banked_overlap_screen_v1",
+  "decision": "reject; no source catalog selection and no FireSim queue",
+  "timing_scope": "Kernel timing markers observed, but both GSIM runs exhausted6M total cycles before full-output/guard completion; these are not full numeric hardware passes. Candidate full actual Spike checks passed.",
+  "fraction_observed_regression": 0.11045151843834056,
+  "geometry": {
+    "control": {
+      "compute": 49000,
+      "preload": 49000,
+      "mvin_a": 6125,
+      "mvin_b": 14,
+      "pool_mvout": 112,
+      "convolution_rows_computed": 125,
+      "convolution_rows_required": 112,
+      "padded_array_issue_cycles": 784000,
+      "phase_fences": 56,
+      "host_intermediate_bytes": 0,
+      "host_im2col_bytes": 0
+    },
+    "candidate": {
+      "compute": 65464,
+      "preload": 65464,
+      "mvin_a": 8183,
+      "mvin_b": 14,
+      "pool_mvout": 224,
+      "convolution_rows_computed": 167,
+      "convolution_rows_required": 112,
+      "padded_array_issue_cycles": 1047424,
+      "phase_fences": 0,
+      "host_intermediate_bytes": 0,
+      "host_im2col_bytes": 0
+    },
+    "reservation_station": "/scratch2/agustin/wt/chipyard-stock/generators/gemmini/src/main/scala/gemmini/ReservationStation.scala",
+    "reservation_station_sha256": "d2d71c91d4ff1e26691bbcd7cd809aad16652680fd50177410f99de9bfb255e4",
+    "legality": "Exactly2 accumulator banks; band336rows<=512. MVOUT pool footprint from starting address to end of bank covers every read. Later same-bank preload waits on store read WAR until completion; other bank is independent. A scratch reuse likewise tracked by RS load/execute WAR. Final fence remains."
+  },
+  "candidate_spike": {
+    "log": "/scratch/agustin/tmp/gemmini-stem-bank-screen-20261005/out/stem224_banked/spike.log",
+    "sha256": "644fff01d2278afab325e28ed275e8e1c41721d5100597278004ae118080636c",
+    "outputs": 200704,
+    "guard_bytes": 2048,
+    "pass": true
+  },
+  "reproduction_patch_sha256": "dcc159e1b86919184c24d6e378a691b508efb397ab85622c22c90d0a96fedf0f",
+  "control": {
+    "result_path": "/scratch/agustin/tmp/gemmini-stem-bank-screen-20261005/out/stem224_control/result.json",
+    "result_sha256": "80ae40f099cbf62a7a9ba7dd200173f6c374e88217776e04be3af30dd43dbebc",
+    "shape": {
+      "h": 224,
+      "w": 224,
+      "cout": 64,
+      "scale": 0.0020730062387883663,
+      "pooled_rows": 4,
+      "banked_pool": false
+    },
+    "kernel_cycles_observed": 1333146,
+    "gsim_completed": false,
+    "gsim_numeric_pass": false,
+    "stdout": "GOLDEN_STEM_POOL_CYCLES 1333146\n",
+    "elf": "/scratch/agustin/tmp/gemmini-stem-bank-screen-20261005/out/stem224_control/layer.elf",
+    "elf_sha256": "e62f6ea6a9ad07ab15edc8c74f2ebc2501e77efc2064bb154bceb89d956c0da6",
+    "nofsm_status": "pass",
+    "gsim_engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "derived",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    }
+  },
+  "candidate": {
+    "result_path": "/scratch/agustin/tmp/gemmini-stem-bank-screen-20261005/out/stem224_banked/result.json",
+    "result_sha256": "595865d994994b9ee944cde0afce769ce7b555c0c5fc70a9a95e376301a7beef",
+    "shape": {
+      "h": 224,
+      "w": 224,
+      "cout": 64,
+      "scale": 0.0020730062387883663,
+      "pooled_rows": 1,
+      "banked_pool": true
+    },
+    "kernel_cycles_observed": 1480394,
+    "gsim_completed": false,
+    "gsim_numeric_pass": false,
+    "stdout": "GOLDEN_STEM_POOL_CYCLES 1480394\n",
+    "elf": "/scratch/agustin/tmp/gemmini-stem-bank-screen-20261005/out/stem224_banked/layer.elf",
+    "elf_sha256": "ff9f7d297d67765b1549ebabbf216f83556d2d7bd532a97fb8c3f9ba6cf36961",
+    "nofsm_status": "pass",
+    "gsim_engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "derived",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    }
+  }
+}
