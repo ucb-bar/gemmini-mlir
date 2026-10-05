@@ -47,14 +47,15 @@ def inspect(quantize, max_output_lsb=0, *, implementation="gemmini"):
         raise ValueError("CPU lookup residual requires exact policy")
     numeric = policy(max_output_lsb)
     source = match(quantize)
-    ratios = [f32(source[k] / source['output_scale']) for k in ('lhs_scale', 'rhs_scale')]
-    factor = max(1.0, *ratios)
-    proof = prove(**source, lhs_load=f32(ratios[0]/factor), rhs_load=f32(ratios[1]/factor), readout=factor)
     if implementation == 'cpu_lut':
         table = source_table(source)
         proof = dict(proof='exhaustive source float32 lookup table', pairs=65536,
                      exact=True, mismatched_pairs=0, max_output_lsb_error=0,
                      source=source, primitive={}, table_sha256=hashlib.sha256(table.tobytes()).hexdigest())
+    else:
+        ratios = [f32(source[k] / source['output_scale']) for k in ('lhs_scale', 'rhs_scale')]
+        factor = max(1.0, *ratios)
+        proof = prove(**source, lhs_load=f32(ratios[0]/factor), rhs_load=f32(ratios[1]/factor), readout=factor)
     if proof['max_output_lsb_error'] > max_output_lsb:
         raise ValueError('complete residual proof exceeds explicitly requested output-LSB policy')
     shape = list(quantize.results[0].type.get_shape())
