@@ -1,0 +1,21 @@
+{
+  "original_oracle_elf_sha256": "379e3e4955c2ecf243a0fa20d33bcac4daa9cad646b9440fd495680142f74d0c",
+  "negative_elf_sha256": "944dea5ea1edafb36b939e2aadb78be87c3c36bf4e2909f41f135db0df9e898c",
+  "table_file_offset": 206656,
+  "table_bytes": 56280,
+  "changed_bytes": 704,
+  "only_changed_native_expf_output_words": true,
+  "model_code_addresses_runtime_weights_unchanged": true,
+  "target_output_probe_log_sha256": "7d7447939084198ee918e844528042bbb9d1156e7295d79cc641407f60d8bc1b",
+  "scope": "Diagnostic causal negative control, not production implementation",
+  "observed_raw_sha256": "815f54f82c36bc0c4a0a9463e4de0262453219ce9dbd459d09ba476c34d4376e",
+  "reproduces_original_failing_target_bits": true,
+  "output_elements": 786432,
+  "calls": 1572864,
+  "misses": 0,
+  "spike_retired_instructions": 23226556960,
+  "spike_log": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_negative/spike.log",
+  "spike_log_sha256": "407abf3c5b2462093ad07bf1e00bfc6724cca6ee1f7eaf12dd0b3988e84c02dc",
+  "token_usage_available": false,
+  "conclusion": "Changing only lookup output words from native expf to measured target expf restores the original wrong block digest. All ELF code, addresses, inputs, runtime and weights are byte-identical to the passing oracle, excluding relink layout as the explanation."
+}
