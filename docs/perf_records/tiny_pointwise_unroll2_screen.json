@@ -151,5 +151,32 @@
     "--isa=rv64gc",
     "-m0x80000000:0x400000000",
     "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/model.elf"
-  ]
+  ],
+  "source_diagnosis": {
+    "profile_control_job": 1837,
+    "profile_source": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/tiny_current_k4_profile_firesim1837.json",
+      "sha256": "1fff4cd09581ed08c784094c3ecbcb42dad065c1a497357135cc6902058c5c41"
+    },
+    "host_interval_census": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/tiny1837_host_interval_census.json",
+      "sha256": "bde19599fd51b2bb381ff70fa69ddf5c56f826f73ac2f6ffd242eb253c5fb4f1"
+    },
+    "measured_host_gap_total_cycles": 392405827,
+    "down_projection_preceding_intervals_total_cycles": 165369540,
+    "intervals": 22,
+    "scope": "Measured preceding host gaps include all intervening host instructions and profiling overhead, not individual source-op cycle attribution. Census is pre-fusion; accepted LLVM/assembly determines actual emitted work.",
+    "accepted_control_llvm": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/host_llvm/model.ll",
+      "sha256": "ba91e12cbd06e70454e079376a704281703cef342d4138ff9ee254c060e4991a"
+    },
+    "accepted_control_f64_arithmetic_or_float_double_cast_lines": 0,
+    "accepted_control_f32_fdiv_static_instructions": 89,
+    "accepted_control_f32_fma_static_calls": 176,
+    "first_mlp_interval_static_f32_fma_calls": 8,
+    "first_mlp_interval_static_f32_divides": 1,
+    "first_mlp_fused_body": "Gate/up i32 accumulator readout and scale application; f32 exp range reduction and Horner polynomial; reciprocal denominator division; SiLU/product; fixed captured scale quantization/clamp/exactRNE to i8. One45056-element loop, with no materialized f32 activation intermediate or dynamic quantization reduction in this gap.",
+    "first_control_mlp_inner_frame_spills": 0,
+    "remaining_schedule_limit": "NaN-propagating exp clamp produces two comparison/branch paths per element; dependent Horner FMAs and divide remain largely serial even after factor-two unrolling. This exact option saves loop/address overhead; stronger operation interleaving would require a separate structurally legal tensor schedule and actual qualification."
+  }
 }
