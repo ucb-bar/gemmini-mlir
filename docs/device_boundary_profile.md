@@ -26,3 +26,17 @@ Keep profiling at existing call boundaries or after optimization. Inserting opaq
 Stock FireSimGemminiRocketConfig job 1737 completed with **3,529,465,283 forward cycles** for the mixed direct16+dense38 ResNet artifact (ELF SHA `4ab852cd4b8b8037fe309076062bca23f3ff8e7f051d2d3269dfbd9ab6f4e14c`). All 1,000 output words are bit-exact against the captured integer oracle; rank mismatches are zero. Both actual staged ELF and actual bitstream hashes were checked before teardown. The immutable job-bound receipt is `docs/perf_records/resnet_direct_firesim1737.json`.
 
 This is 21.85% fewer cycles than fused-host job 1731 (4,516,405,461) and 37.87% fewer than initial baseline job 1730 (5,680,463,426). It remains far above the 22M goal. The paired boundary-profile job 1741 uses unchanged model/device objects with final-link wrappers; use its hardware host gaps and completed device calls to attribute the remaining cost. Spike retired-instruction shares are not hardware cycle shares.
+
+## Verified hardware attribution (job 1741)
+
+All 1,000 output words are bit-exact; actual staged ELF/bitstream identities match. All 54 completed device calls cover the expected 33 symbols, with zero overflow and exact interval conservation. The labeled per-call record is `docs/perf_records/resnet_direct_boundary_profile_firesim1741.json`.
+
+| Interval | Hardware cycles | Forward share |
+|---|---:|---:|
+| Wrapped forward | 3,541,290,278 | 100% |
+| Completed device calls | 61,849,668 | 1.75% |
+| Host gaps, including wrapper overhead | 3,479,440,610 | 98.25% |
+
+Harness METRIC cycles is 3,541,290,794, versus the unprofiled 3,529,465,283: +11,825,511 cycles (0.335%). Final-link instrumentation perturbs timing, so individual intervals should be interpreted with that limitation. No host-gap figure identifies a single op: each gap includes preceding epilogues and next-call preparation.
+
+Largest host gaps precede ordinal1 (282,134,606), ordinal5 (255,400,597), stem ordinal0 (232,533,325), ordinal8 (173,283,746), ordinal11 (157,251,743), and classifier ordinal53 (152,500,167). Eliminating host format/quantization/layout work is the principal whole-model priority. Device work itself is still above the 22M goal: directconv13/14/15 each take about 6.12M cycles, and directconv7..12 each about 2.34–2.40M; those deeper convolutions are the next device schedule targets.
