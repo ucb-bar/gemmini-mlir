@@ -455,3 +455,32 @@ wholeSpike instructions from463,973,868 to254,701,066. These are retired
 instruction results, not hardware cycles. FireSim1767 measures2,461,226,911 for
 the earlier original-golden hoisted/banded variant; FireSim1769 is a separately
 identified closed-recipe exact52-readout/LUT/nested-hoist baseline.
+
+
+### Runtime copy closure and complete exact device residuals
+
+Merlin5586d188d coalesces common contiguous memref suffixes after proving positive
+address bounds and disjoint source/destination ranges. Overlap and negative
+strides retain the original scalar order. Merlin96b9b8440 copies/clears aligned
+bytes through alias-safe native words, with byte fallback for misalignment and
+tails. The39 runtime tests cover strided copies, overlap, full halos/guards,
+singletonaxes, every pointeralignment and length0..129. Structure, no-target-name
+and no-regex gates pass. The exact17-padding microbenchmark falls165,257,880 to
+1,985,883 actualSpikeinstructions (98.80% fewer); this isolates coalescing and
+uses the standalone benchmark's existing libc.
+
+The wider primitive residual kernel passes all65,536 source operand pairs plus
+guards at170,847GSIMcycles and170,994stockFireSimcycles (job1773), about7.04%
+over its159,744array issue floor. Complete exact52 +wide16 +shared permutations
++propagated layouts +nested hoist +new runtime matches all1,000 original
+closed-recipe golden bits in native and actualSpike. FinalELF02d029dc…54700c
+passes zeroFSM; Spike retires21,144,570instructions. FullFireSim1774 is queued;
+21.1M is not a whole-model hardware cycle claim. Earlier exact52 CPU-LUT
+baselineFireSim1769 is771,357,461cycles with the same closed-recipe golden.
+
+A full22-layer Tiny candidate enables the verified large-N cached-A/wide-B
+schedule and these runtime fixes, keeping its original155 contractions/5kernels
+and155hoisted arrays. Its prepared hostLLVM changed under exact host fusion,
+so object reuse was refused and the host model was freshly compiled. Full native
+quality passes unchanged versusTorch (relativeL2 2.1918433e-7, maxabs9.536743e-6).
+Complete actualSpike output-digest validation is running before queue submission.
