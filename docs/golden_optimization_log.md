@@ -12,16 +12,16 @@ The reference's measured dynamic compute-command ledger is the section-level tar
 
 | ResNet section | Jack dynamic computes | Current xDSL golden status |
 | --- | ---: | --- |
-| Stem convolution and pool | 43,904 | Packed stem and pool-on-store not yet generated |
-| 1×1 ReLU | 241,984 | Dense kernel numerically tested; whole graph layout/binding pending |
-| 1×1 no ReLU | 216,832 | Dense kernel available; whole graph pending |
-| 1×1 downsample | 97,024 | Dense kernel available; stride/layout binding pending |
-| 3×3 stride one | 423,360 | Whole-output-row direct gather not yet generated |
-| 3×3 stride two | 101,376 | Whole-output-row direct gather not yet generated |
-| Residual identity matmul | 22,208 | Isolated primitive kernel numerically tested |
-| Global average pool | 512 | No model-bound golden kernel yet |
-| FC | 8,064 | Source matmul has a compiled device specialization |
-| **Total** | **1,155,264** | No whole-model golden run yet |
+| Stem convolution and pool | 43,904 | Source-proved packed stem/pool fused and whole-model exact; current best1836 |
+| 1×1 ReLU | 241,984 | Whole-model exact; three selected banked dense schedules measured |
+| 1×1 no ReLU | 216,832 | Whole-model exact; source-bound dense schedules measured |
+| 1×1 downsample | 97,024 | Source stride/layout binding proved; whole-model exact |
+| 3×3 stride one | 423,360 | Whole-model exact direct gather; resident/channel-loop variants qualified |
+| 3×3 stride two | 101,376 | Whole-model exact direct gather; resident/channel-loop variants qualified |
+| Residual identity matmul | 22,208 | 16 source-bound exact residual adds in whole model; differing source scales can require multiple coefficient chunks |
+| Global average pool | 512 | Source-exact guarded packed CPU mean in current best; no device identity matmul |
+| FC | 8,064 | Source-bound wide-B/cached-A specialization in current best |
+| **Total** | **1,155,264** | 42,837,088cycles1836, all1,000 original outputs exact;22.387M remains unmet |
 
 ## Measured device changes
 
@@ -909,3 +909,40 @@ through three xDSL parses and upstream verification; actual native returned
 bits also pass.44 focused/related tests pass. Full preparation of the trusted
 191,535-value softmax is exact. The replacement whole-model accuracy gate is
 pending under the unchanged atol=.03125/rtol=.02 criterion.
+
+
+## Compiler ownership and generalization (2026-10-05)
+
+The user requires a general compiler backend. All accelerator dialect operations,
+encodings, device schedules/resource facts and target ABI glue live in the OOT repository.
+Reusable host code generation, packing, requantization, graph optimization, device compilation
+orchestration, ownership, dispatch and runtime live in Merlin. Both repository instruction
+files enforce this rule. Production choices derive from current input semantics/types/layouts,
+numeric contracts and capabilities; capture IDs and model-specific selections stay in experiment
+drivers. Successful experiments must become general transforms/cost models, with independent
+shape, tail, numeric and fallback/refusal qualification.
+
+Concrete changes and evidence:
+
+| Change | Shared Merlin mechanism | OOT responsibility / remaining work |
+| --- | --- | --- |
+| Exact requantization / integer readout | Complete monotone transition proof, scale/bias synthesis, explicit local error bounds and CPU readout code generation | Emit device scale/store only when provider semantics satisfy the generic contract; target wrapper stays OOT |
+| Guarded mean / packing | Rational binary32 error bound, every reachable signed-i8 sum, exact replay for ambiguous sums, contiguous/NHWC CPU emitters | Source-binding adapter and target-specific descriptor remain OOT |
+| Fresh device results | Explicit full-write/result identity; upstream allocation/deallocation; optional source-bound post-offload callback | Provider declares actual kernel effects and emits borrowed ABI bridge; initialized destinations supported only by explicit contract |
+| Host assertion paths | Generic bare-metal puts/abort through existing console ABI, nonzero failure status | No accelerator semantics added |
+| B-prefetch | Generic contracts and normal build identity remain shared | Cached-A scratch-bank scheduling and exact tails in OOT;1839 measures6.415% lower whole Tiny cycles with identical host bytes |
+| Resident convolution | Generic shape/layout/source proof boundaries remain shared | Bounded channel loops and narrow-row groups in OOT; seven source selections are experiments, not production model-ID rules |
+| Source numeric compatibility | Generic ordered reductions/products, packing and explicit source-policy contracts | Source-bound experimental selection preserves immutable full gates; Smol now bitexact all1,600 native outputs |
+| Host RNE / compile scalability | Move reusable host legalization to structural core matching; evaluate generic fusion/outlined compilation | ISA/device encoding stays at its declared owner; monolithic optimized Smol compile timed out900s, separateO0 correctness image runs |
+
+Generic numeric extraction moves tests with implementation.81 core tests (including fresh
+writer and ordered-product related tests) pass;25 OOT tests and12 execute-address subtests pass.
+Generated C and proof fields are byte-identical for five independent extraction cases and both
+actual current-best readouts. [Receipt](perf_records/generic_numeric_owner_extraction.json).
+The initial packed-mean migrated test failures came from dlopen path reuse after pytest cleanup;
+source-hashed library names fix test attribution without changing generated computation.
+
+The exact Jack ZIP was reopened at the user-specified name. Its four members match the owned
+extraction byte for byte, and its manifest records22,387,449 cycles. Archive/member hashes and
+absence of source are pinned in [inventory](perf_records/q1013_reference_zip_inventory.json).
+No Jack folder was opened.

@@ -6,14 +6,47 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, three banked dense schedules, clamp/RNE, packed guarded mean, pre-stem destination reuse and classifier wide-B/resident-A | 43,969,384 (1829) | All 1,000 golden output words exact | [1829](perf_records/resnet_three_banked_packed_firesim1829.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + four independent exact scalar accumulators and partial K-unroll2 | 612,282,210 (1828) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1828](perf_records/tiny_four_output_unroll2_firesim1828.json) |
-| Full SmolVLA | Not admitted | Original full elementwise gate remains atol=0.03125, rtol=0.02; source RoPE arithmetic diagnosis continues | Optimization log |
+| ResNet exact52/wide16, virtual padding/layout, three banked dense schedules, five resident convolutions, fresh output ownership, packed guarded mean and clamp/RNE | 42,837,088 (1836) | All 1,000 original output words exact | [1836](perf_records/resnet_fresh_resident_firesim1836.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, four exact scalar outputs/K-unroll4 plus explicit cached-A B-prefetch | 572,814,021 (1839) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1839](perf_records/tiny_b_prefetch_firesim1839.json) |
+| Full SmolVLA, all source numeric policies including64 ordered source sums and16 ordered actor f32 products | No qualified whole-model hardware result yet | Full native output now **bitexact all1,600** to immutable original golden, using scalar device stand-ins; original atol=0.03125/rtol=0.02 unchanged. Actual RV64GC target qualification in progress | [Native full gate](/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-source-fma-20261005/full_gate_receipt.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
 Tiny uses the full pretrained checkpoint. These results do not establish the
 remaining performance targets or pretrained ResNet accuracy.
+
+## Current compiler work and ownership
+
+The OOT dialect is a general compiler backend. Production decisions use input semantics,
+shapes, layouts, numeric contracts and hardware capabilities; model names, captured IDs and
+benchmark constants are confined to experiment selection/receipts. See [AGENTS.md](../AGENTS.md).
+
+Merlin now owns complete requantization transition proofs, CPU integer readout and guarded
+contiguous/packed mean code generation. OOT delegates to those owners and retains device
+schedules, instruction lowering, resource facts and target ABI wrappers. The extraction
+preserves all proof and generated C bytes for five independent cases and both actual source
+readouts; generic numeric tests moved to core. [Extraction receipt](perf_records/generic_numeric_owner_extraction.json).
+
+Generic source-bound post-offload callbacks and explicit full-write/result-identity contracts
+now let the normal model builder expose fresh output ownership. All155 Tiny calls are covered,
+with native and actual Spike outputs unchanged; isolated hardware arm1842 compares with1835.
+Eight-output/K2 plus device prefetch arm1841 has separate qualified evidence and awaits hardware.
+The current1837 four-output/K4 hardware profile conserves155 calls and attributes611,478,982
+interior cycles to219,073,155 device and392,405,827 host; intervals include all intervening
+operations after fusion, not one source operation. [Profile](perf_records/tiny_current_k4_profile_firesim1837.json).
+
+The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
+and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
+objects changed. It retires9,467,083 instructions versus9,946,365; this is not a hardware cycle
+claim. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+
+Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
+at900seconds on a large monolithic function; a separately labeledO0 correctness ELF builds and
+passes the final no-FSM audit. Actual Spike is running. Reusable host fusion/compilation
+scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
+attention has19.33B MACs and cannot by itself establish the5B target.
+
+The following narrative retains the earlier experiment sequence; the table above is current.
 
 The exact uniform-zero/scale-aware quantize-round pass now applies to the two
 remaining ResNet quantizers. All1,000 outputs remain exact in native and actual
