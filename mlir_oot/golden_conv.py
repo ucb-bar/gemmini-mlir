@@ -25,6 +25,7 @@ class ConvShape:
     scale: float = 1.0
     relu: bool = False
     wide_b: bool = False
+    explicit_halo: bool = False
 
     @property
     def oh(self):
@@ -63,17 +64,17 @@ class GoldenConv(GoldenGemm):
         def row(y, taps):
             def channel(n0, nr):
                 for kh in taps:
-                    iy = self.fb.add_i(self.fb.mul_i(y, self.fb.const(s.stride)), self.fb.const(kh - 1))
+                    iy = self.fb.add_i(self.fb.mul_i(y, self.fb.const(s.stride)), self.fb.const(kh if s.explicit_halo else kh - 1))
                     for kw in range(3):
                         def reduction(ci, kr, first):
                             for a, rows in enumerate(widths):
                                 x = a * F.DIM
-                                valid = [r for r in range(rows) if 0 <= (x+r)*s.stride+kw-1 < s.w]
+                                valid = list(range(rows)) if s.explicit_halo else [r for r in range(rows) if 0 <= (x+r)*s.stride+kw-1 < s.w]
                                 if len(valid) != rows:
                                     self._rocc("mvin", {"local": a*F.DIM, "rows": rows, "cols": kr, "load_id": 0}, zero)
                                 if valid:
                                     left, count = valid[0], len(valid)
-                                    pixel = self.fb.add_i(self.fb.mul_i(iy, self.fb.const(s.w)), self.fb.const((x+left)*s.stride+kw-1))
+                                    pixel = self.fb.add_i(self.fb.mul_i(iy, self.fb.const(s.w+2 if s.explicit_halo else s.w)), self.fb.const((x+left)*s.stride+kw-(0 if s.explicit_halo else 1)))
                                     ptr = self._ptr(self.a, pixel, s.cin, ci)
                                     self._rocc("mvin", {"local": a*F.DIM+left, "rows": count, "cols": kr, "load_id": 0}, ptr)
                             krow = self.fb.add_i(ci, self.fb.const((kh*3+kw)*s.cin))
@@ -107,7 +108,7 @@ class GoldenConv(GoldenGemm):
         # Group rows with identical padding; interior rows share one CPU loop.
         groups = []
         for y in range(s.oh):
-            taps = tuple(kh for kh in range(3) if 0 <= y*s.stride+kh-1 < s.h)
+            taps = tuple(kh for kh in range(3) if s.explicit_halo or 0 <= y*s.stride+kh-1 < s.h)
             if groups and groups[-1][2] == taps:
                 groups[-1] = (groups[-1][0],y+1,taps)
             else:
@@ -130,13 +131,13 @@ def command_counts(s: ConvShape) -> dict[str, int]:
     nt = _ceil_div(s.cout,F.DIM)
     blocks = _ceil_div(nt,s.bn)
     for y in range(s.oh):
-        taps = sum(0 <= y*s.stride+kh-1 < s.h for kh in range(3))
+        taps = sum(s.explicit_halo or 0 <= y*s.stride+kh-1 < s.h for kh in range(3))
         result['mvin_b'] += taps*3*kt*(sum(_ceil_div(min(s.bn,nt-d),4) for d in range(0,nt,s.bn)) if s.wide_b else nt)
         result['compute'] += taps*3*kt*nt*len(widths)
         result['mvout'] += (sum(_ceil_div(min(s.bn,nt-d),4) for d in range(0,nt,s.bn)) if s.output_dtype == 'i8' else nt)*len(widths)
         for kw in range(3):
             for a, rows in enumerate(widths):
-                valid = sum(0 <= (a*F.DIM+r)*s.stride+kw-1 < s.w for r in range(rows))
+                valid = rows if s.explicit_halo else sum(0 <= (a*F.DIM+r)*s.stride+kw-1 < s.w for r in range(rows))
                 result['mvin_a'] += taps*kt*blocks*((valid != rows)+(valid > 0))
     result['preload'] = result['compute']
     result['padded_array_issue_cycles'] = result['compute']*F.DIM

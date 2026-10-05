@@ -1,0 +1,106 @@
+{
+  "status": "pass",
+  "source_sha256": "c6901cb01fd2ad8cb87d3039a92682a6819c9b463c675bd495384964f97f126b",
+  "source_region": "conv_2",
+  "shape": {
+    "h": 56,
+    "w": 56,
+    "cin": 64,
+    "cout": 64,
+    "stride": 1,
+    "bn": 4,
+    "output_dtype": "i32",
+    "scale": 1.0,
+    "relu": false,
+    "wide_b": true,
+    "explicit_halo": true
+  },
+  "elf_sha256": "ce0bf2672eed71d58c25f2553dd58d2bc1942fe75e5fc733f3756a3995abec7f",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "ce0bf2672eed71d58c25f2553dd58d2bc1942fe75e5fc733f3756a3995abec7f",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 18,
+      "2": 72,
+      "3": 16,
+      "4": 72,
+      "5": 216,
+      "6": 288,
+      "7": 1
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "672c21a5512c2887efceef7adfe7f1cc88d1f2bb1230f085c6622406f4f18777",
+    "llvm_mlir_sha256": "4910861e0d1eb301a62f90c691cb145e401f10e1165e7150664736ea79e4ae09",
+    "llvm_ir_sha256": "188e25faa9ca167d852f7f58c2d10ffff36126db0086d5a977cd22cd8020cb42",
+    "object_sha256": "f3a0dbd4fd2f85295b0f38905c3d0f66d96d6040aad0e64aba6cef916526a8bd",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/device/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/device/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/device/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/device/kernel.o"
+      ]
+    ]
+  },
+  "host_commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/rewritten.mlir",
+      "--canonicalize",
+      "--one-shot-bufferize=bufferize-function-boundaries",
+      "--convert-linalg-to-loops",
+      "--expand-strided-metadata",
+      "--lower-affine",
+      "--convert-scf-to-cf",
+      "--convert-to-llvm",
+      "--reconcile-unrealized-casts",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/host.llvm.mlir"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+      "--mlir-to-llvmir",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/host.llvm.mlir",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/host.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-O2",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/host.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/upstream_conv2_e2e_v2/host.o"
+    ]
+  ],
+  "stdout": "UPSTREAM_CONV PASS values=200704 heap=1894976\nGemmini extension configured with:\n    dim = 16\n",
+  "stderr": "",
+  "scope": "Selected captured gather/matmul plus generated host boundary conversions; functional Spike only; nonzero quantized halo retained; no whole-model or FireSim claim"
+}

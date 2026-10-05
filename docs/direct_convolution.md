@@ -86,3 +86,73 @@ engine budget. Future probe failures record completion/return-code/stderr as
 well as stdout, and both budgets are CLI options. The optimized int8 candidate
 has full functional evidence above and is submitted as FireSim queue job 1722;
 accept timing only after queue confirms simulator-loaded ELF identity.
+
+## Proven upstream boundary bridge
+
+`direct_conv_binding.match` proves two source families without trusting a
+provenance label:
+
+* Older prepared capture: `Cin×KH×KW×N×OH×OW` affine gather, complete row-major
+  collapse/expand, then signed integer weights×pixels matmul.
+* Current quantized capture: nine spatial tap slices, NCHW→NHWC transposes,
+  complete row-major flattening, concatenation along K, then signed integer
+  pixels×weights matmul. Every static slice is composed back to its base input;
+  all nine paths must agree on the base, geometry and stride. Tap ordering is
+  checked against KH/KW/Cin reduction order.
+
+Both require a from-zero signed i8×i8→i32 contraction, one batch, exact 3×3 taps,
+and stride 1 or 2. They recognize all 16 3×3 contractions in each ResNet source.
+The seven-by-seven stem and 1×1 contractions are outside this matcher.
+
+`rewrite` replaces the proven contraction with an external direct-convolution
+call. Its padded activation is transposed to NHWC; the new `explicit_halo`
+kernel mode consumes every original halo value, including nonzero values. It
+never infers that quantization/padding commutes. Older weights require an
+OIHW→HWIO transpose and their result requires restoring channel-first order.
+The current source already uses HWIO-linear weights and spatial-first results,
+so its replacement requires only the activation layout conversion plus views.
+All other uses of the original producers remain intact; canonical DCE removes
+unused gather/concat chains. The external ABI uses the standard MLIR C interface
+and explicit dense descriptor checks. It has no static temporary buffers.
+
+`tests/upstream_conv_probe.py` extracts a selected region from the real source,
+compiles the rewritten host MLIR and xDSL primitive device code to RV64gc, links
+and audits the final ELF, and runs an independent oracle with deliberately
+nonzero halo values. Functional results (all values compared):
+
+| Capture/region | Stride | Output values | Allocated host layout bytes | Result |
+|---|---:|---:|---:|---|
+| Older / conv_2 | 1 | 200,704 | 1,894,976 | PASS |
+| Older / conv_12 | 2 | 100,352 | 1,381,120 | PASS |
+| Current / matmul_2 | 1 | 200,704 | 1,018,240 | PASS |
+| Current / matmul_12 | 2 | 100,352 | 832,128 | PASS |
+
+All four final ELFs pass the static no-FSM audit. These are complete selected
+host+device boundary executions under Spike, not whole-model or FireSim timing.
+Source, target compiler and ELF identities are in the corresponding JSON files
+under `perf_records`.
+
+`python -m mlir_oot.direct_conv_bundle SOURCE --llvm-bin LLVM --output DIR`
+emits rewritten source, primitive device objects plus descriptor adapters,
+a linkable `direct_conv.o`, and a source-bound manifest. Apply it before the
+dense-GEMM catalog build; its unselected contractions remain in the module.
+Then run the existing model preparation/lowering and dense catalog on the
+rewritten source and link both device objects. Final whole-model ELF auditing
+still applies. Model-wide correctness and performance require subsequent runs.
+
+The xDSL bodyless function printer/parser loses argument access attributes.
+`serialize` restores the direct-call read/read/write annotations in final text;
+any later parser/printer must restore them again before one-shot bufferization.
+Otherwise bufferization defensively copies already converted input/weights.
+The `llvm.emit_c_interface` attribute must also reach LLVM lowering.
+
+Persistent NHWC propagation is the next performance step: carry layout facts
+through pointwise activation, quantization and residual operations, transform
+their indexing maps and result shapes together, and insert conversions only at
+real graph boundaries or incompatible consumers. Weight transforms should be
+performed offline. A layout fact must include logical axis order, physical
+strides, alias/users and quantized padding semantics; an extent match is
+insufficient. Both upstream families should converge to that shared layout
+representation, with the explicit conversions in this bridge as the reference
+semantics. Its current conversion cost is intentionally visible and must not be
+advertised as a maximum-performance default.
