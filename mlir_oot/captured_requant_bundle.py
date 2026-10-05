@@ -51,8 +51,10 @@ def scalar_oracle(s,kernel,direct):
     if direct:
         loops=f'''for(int y=0;y<{s.oh};y++) for(int x=0;x<{s.ow};x++) for(int n=0;n<{s.cout};n++) {{
  uint32_t acc=0;
- for(int ky=0;ky<3;ky++) for(int kx=0;kx<3;kx++) for(int ci=0;ci<{s.cin};ci++)
- acc+=(uint32_t)((int32_t)a[((y*{s.stride}+ky)*{s.w+2}+x*{s.stride}+kx)*{s.cin}+ci]*(int32_t)b[((ky*3+kx)*{s.cin}+ci)*{s.cout}+n]);
+ for(int ky=0;ky<3;ky++) for(int kx=0;kx<3;kx++) for(int ci=0;ci<{s.cin};ci++) {{
+ int iy=y*{s.stride}+ky-{0 if s.explicit_halo else 1},ix=x*{s.stride}+kx-{0 if s.explicit_halo else 1};
+ if(iy>=0 && iy<{s.h+(2 if s.explicit_halo else 0)} && ix>=0 && ix<{s.w+(2 if s.explicit_halo else 0)})
+ acc+=(uint32_t)((int32_t)a[(iy*{s.w+(2 if s.explicit_halo else 0)}+ix)*{s.cin}+ci]*(int32_t)b[((ky*3+kx)*{s.cin}+ci)*{s.cout}+n]); }}
  int index=(y*{s.ow}+x)*{s.cout}+n;'''
     else:
         loops=f'''for(int m=0;m<{s.m};m++) for(int n=0;n<{s.n};n++) {{
@@ -85,11 +87,11 @@ def _replay_layouts(value,layouts):
     return operations,value
 
 
-def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=None,source_sha=None):
+def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=None,source_sha=None,virtual_input=None):
     dims=chain['dimensions'];operations=[]
     if direct:
         if direct.orientation!='spatial_first':raise ValueError('fused captured direct path needs spatial-first contraction')
-        ops,activation=_transpose(direct.input,[0,2,3,1]);operations+=ops
+        ops,activation=_transpose(virtual_input if virtual_input is not None else direct.input,[0,2,3,1]);operations+=ops
         s=direct.shape;wt=TensorType(i8,[3,3,s.cin,s.cout])
         reassoc=ArrayAttr([ArrayAttr([IntegerAttr(i,i64) for i in (0,1,2)]),ArrayAttr([IntegerAttr(3,i64)])])
         weight=tensor.ExpandShapeOp(direct.weight,[],reassoc,list(wt.get_shape()),wt);operations.append(weight)
@@ -136,7 +138,8 @@ def integer_adapter(schedule,symbol,kernel,direct,proof):
     return emit_readout(proof,readout,fixedpoint=True)+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False):
+    if virtual_padding and not flat_spatial:raise ValueError('virtual padding requires flat spatial scheduling')
     from merlin.runtime.captured_constants import verify_capture_constant
     if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
         raise ValueError('select an explicit zero- or one-step local output error policy')
@@ -179,15 +182,21 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             refused.append(dict(region=rid,reason='nonzero bias requires explicit integer table ABI'));continue
         try:direct=match_conv(op)
         except ValueError:direct=None
-        base=direct.shape if direct else choose_shape(dims)
+        virtual_input=None;pad_proof=None;pad_refusal=None
+        if direct and virtual_padding:
+            from .virtual_padding import strip_zero_pad1
+            try:virtual_input,pad_proof=strip_zero_pad1(direct.input,direct.shape)
+            except ValueError as failure:pad_refusal=str(failure)
+        base=replace(direct.shape,explicit_halo=False) if virtual_input is not None else (direct.shape if direct else choose_shape(dims))
         schedule=replace(base,output_dtype='i32' if readout else 'i8',scale=proof['scale'],relu=False if readout else chain['relu'])
         if not direct:schedule=replace(schedule,wide_store=True)
         symbol=f'gemmini_{"exact" if error==0 else "bounded"}_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         bias_index=chain['bias'].index
         numeric_contract=dict(max_output_lsb_error=error,selected_policy_limit=max_output_lsb,source_region=rid)
-        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract,integer_readout=readout,source_sha=source_sha);declarations.append(declaration)
+        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract,integer_readout=readout,source_sha=source_sha,virtual_input=virtual_input);declarations.append(declaration)
+        if pad_proof is not None:declaration.attributes['gemmini.virtual_padding']=StringAttr(json.dumps(pad_proof,sort_keys=True))
         if direct:
-            generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial);schedule=generator.conv
+            generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial,virtual_padding=virtual_input is not None);schedule=generator.conv
         else:
             generator,schedule_kind=GoldenGemm(schedule),'dense_gemm'
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
@@ -196,7 +205,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         (work/'adapter.c').write_text(adapter)
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
-        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -210,7 +219,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

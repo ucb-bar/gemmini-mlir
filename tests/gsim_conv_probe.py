@@ -17,6 +17,7 @@ def main():
     ap.add_argument('--llvm-bin', type=Path, required=True)
     for key, value in [('h',3),('w',19),('cin',20),('cout',19),('stride',1)]:
         ap.add_argument('--'+key,type=int,default=value)
+    ap.add_argument('--virtual-padding',action='store_true',help='use unpadded input and primitive zero DMA at borders')
     ap.add_argument('--wide-b',action='store_true')
     ap.add_argument('--bn',type=int,default=4)
     ap.add_argument('--wide-a',action='store_true')
@@ -34,12 +35,12 @@ def main():
     a = ap.parse_args()
     if (a.wide_a or a.separate_b_bank or a.band_rows is not None) and not a.flat_spatial:
         ap.error("wide A or separate B bank requires --flat-spatial")
-    s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,bn=a.bn,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu,explicit_halo=a.flat_spatial)
+    s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,bn=a.bn,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu,explicit_halo=a.flat_spatial and not a.virtual_padding)
     out = a.workdir.resolve()
     out.mkdir(parents=True,exist_ok=False)
     if a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
-        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows)
+        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,virtual_padding=a.virtual_padding)
     else:
         kernel = GoldenConv(s)
     receipt = compile_module(kernel.build(),a.llvm_bin,out)

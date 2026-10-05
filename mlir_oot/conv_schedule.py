@@ -11,8 +11,10 @@ from .golden_gemm import _ceil_div
 from .tables import rtl_facts as F
 
 
-def select_kernel(shape, *, flat_spatial=False):
-    if flat_spatial and eligible(shape):
+def select_kernel(shape, *, flat_spatial=False, virtual_padding=False):
+    if virtual_padding and (not flat_spatial or shape.explicit_halo):
+        raise ValueError("virtual padding requires unpadded spatial schedule")
+    if flat_spatial and eligible(shape,virtual_padding=virtual_padding):
         # Keep at least the existing channel block. Prefer a multiple of four
         # tiles so all full B DMA commands transfer 64 adjacent channels.
         mt = _ceil_div(shape.oh * shape.ow, F.DIM)
@@ -22,8 +24,8 @@ def select_kernel(shape, *, flat_spatial=False):
         if bn >= 4:
             bn = bn // 4 * 4
         shape = replace(shape, bn=bn, wide_b=True)
-        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True), 'spatial_flat_wide_a_separate_b'
-    if flat_spatial and shape.explicit_halo:
-        rows = choose_band_rows(shape)
-        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,band_rows=rows), 'spatial_banded_wide_a_separate_b'
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,virtual_padding=virtual_padding), 'spatial_flat_wide_a_separate_b'
+    if flat_spatial and (shape.explicit_halo or virtual_padding):
+        rows = choose_band_rows(shape,virtual_padding=virtual_padding)
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,band_rows=rows,virtual_padding=virtual_padding), 'spatial_banded_wide_a_separate_b'
     return GoldenConv(shape), 'output_row'

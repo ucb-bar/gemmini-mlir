@@ -170,7 +170,7 @@ typedef struct {void *allocated,*aligned; intptr_t offset,sizes[4],strides[4];} 
 #endif
 extern void gemmini_golden_conv(int8_t*,int8_t*,int32_t*);
 ''' + f'''void _mlir_ciface_{symbol}(memref2 *r,memref4 *a,memref4 *b,memref2 *c) {{
- if ({checks('a',[1,s.h+2,s.w+2,s.cin])} || {checks('b',[3,3,s.cin,s.cout])} || {checks('c',[s.oh*s.ow,s.cout])}) __builtin_trap();
+ if ({checks('a',[1,s.h+(2 if s.explicit_halo else 0),s.w+(2 if s.explicit_halo else 0),s.cin])} || {checks('b',[3,3,s.cin,s.cout])} || {checks('c',[s.oh*s.ow,s.cout])}) __builtin_trap();
  gemmini_golden_conv((int8_t*)a->aligned+a->offset,(int8_t*)b->aligned+b->offset,(int32_t*)c->aligned+c->offset);
  *r=*c;
 }}

@@ -7,6 +7,7 @@ Only primitive Gemmini commands and ordinary CPU loops are emitted.
 """
 from dataclasses import asdict
 import json
+from xdsl.dialects import llvm
 from xdsl.dialects.builtin import StringAttr
 from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
 from .tables import rtl_facts as F, isa
@@ -28,17 +29,17 @@ def spatial_runs(s, rows=None):
     return runs
 
 
-def eligible(s, band_rows=None):
+def eligible(s, band_rows=None, *, virtual_padding=False):
     rows = s.oh if band_rows is None else band_rows
-    return (s.explicit_halo and 0 < rows <= s.oh and
+    return ((s.explicit_halo or virtual_padding) and 0 < rows <= s.oh and
         _ceil_div(rows*s.ow, F.DIM)*s.bn*F.DIM <= F.ACC_ROWS)
 
 
-def choose_band_rows(s):
+def choose_band_rows(s, *, virtual_padding=False):
     """Minimize padded spatial tiles, then weight passes, within accumulator capacity."""
     s.validate()
     maximum = min(s.oh, F.ACC_ROWS // (s.bn*F.DIM) * F.DIM // s.ow)
-    if not s.explicit_halo or maximum < 1:
+    if not (s.explicit_halo or virtual_padding) or maximum < 1:
         raise ValueError('complete output row requires explicit halo and accumulator capacity')
     def cost(rows):
         full, tail = divmod(s.oh,rows)
@@ -47,12 +48,36 @@ def choose_band_rows(s):
     return min(range(1,maximum+1),key=cost)
 
 
+def padding_segments(s, y, x, rows, kh, kw):
+    """Partition a spatial run into proven in-bounds DMA and zero-fill lanes."""
+    iy=y*s.stride+kh-1
+    valid=[r for r in range(rows) if 0<=iy<s.h and 0<=(x+r)*s.stride+kw-1<s.w]
+    if not valid:return [(0,rows,True)]
+    first,last=valid[0],valid[-1]+1
+    assert valid==list(range(first,last))
+    return ([(0,first,True)] if first else [])+[(first,last-first,False)]+([(last,rows-last,True)] if last<rows else [])
+
+
+def virtual_band_groups(s, rows):
+    """CPU loop groups have identical vertical validity for every relative row/tap."""
+    groups=[];signatures=[]
+    for start in range(0,s.oh,rows):
+        height=min(rows,s.oh-start)
+        signature=tuple(0<=(start+y)*s.stride+kh-1<s.h for y in range(height) for kh in range(3))
+        if groups and signatures[-1]==signature and groups[-1][2]==height:
+            groups[-1]=(groups[-1][0],start+rows,height)
+        else:groups.append((start,start+rows,height));signatures.append(signature)
+    return groups
+
+
 class GoldenFlatConv(GoldenGemm):
-    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False):
         s.validate()
-        if not eligible(s, band_rows):
+        if virtual_padding and s.explicit_halo:raise ValueError("virtual padding requires unpadded input shape")
+        if not eligible(s, band_rows,virtual_padding=virtual_padding):
             raise ValueError('spatial band requires explicit halo and accumulator capacity')
         self.conv = s
+        self.virtual_padding=virtual_padding
         self.band_rows = s.oh if band_rows is None else band_rows
         self.wide_a = wide_a
         self.separate_b_bank = separate_b_bank
@@ -67,7 +92,8 @@ class GoldenFlatConv(GoldenGemm):
         s = self.conv
         self._emit_config()
         self._rocc('config_ld', {'stride':s.stride*s.cin, 'load_id':0})
-        def band(y0, band_height):
+        zero=self.fb.add(llvm.IntToPtrOp(self.fb.const(0))).results[0] if self.virtual_padding else None
+        def band(y0, band_height, sample_y=0):
             widths = tuple(min(F.DIM, band_height*s.ow-start) for start in range(0, band_height*s.ow, F.DIM))
             runs = spatial_runs(s,band_height)
             panel_tiles = 4 if self.wide_a else 1
@@ -81,11 +107,16 @@ class GoldenFlatConv(GoldenGemm):
                     for kw in range(3):
                         def panel(ci, channels, first):
                             for tile, lane, y, x, rows in runs:
-                                iy = self.fb.add_i(self.fb.mul_i(y0,self.fb.const(s.stride)),self.fb.const(y*s.stride+kh))
-                                pixel = self.fb.add_i(self.fb.mul_i(iy,self.fb.const(s.w+2)),self.fb.const(x*s.stride+kw))
-                                ptr = self._ptr(self.a, pixel, s.cin, ci)
-                                self._rocc('mvin', {'local':tile*panel_width+lane,
-                                    'rows':rows, 'cols':channels, 'load_id':0}, ptr)
+                                segments=padding_segments(s,sample_y+y,x,rows,kh,kw) if self.virtual_padding else [(0,rows,False)]
+                                for offset,count,is_zero in segments:
+                                    ptr=zero
+                                    if not is_zero:
+                                        halo=0 if self.virtual_padding else 1
+                                        iy = self.fb.add_i(self.fb.mul_i(y0,self.fb.const(s.stride)),self.fb.const(y*s.stride+kh-(1-halo)))
+                                        pixel = self.fb.add_i(self.fb.mul_i(iy,self.fb.const(s.w+2*halo)),self.fb.const((x+offset)*s.stride+kw-(1-halo)))
+                                        ptr = self._ptr(self.a, pixel, s.cin, ci)
+                                    self._rocc('mvin', {'local':tile*panel_width+lane+offset,
+                                        'rows':count, 'cols':channels, 'load_id':0}, ptr)
                             for ki in range(_ceil_div(channels, F.DIM)):
                                 kr = min(F.DIM, channels-ki*F.DIM)
                                 krow = self.fb.add_i(ci, self.fb.const((kh*3+kw)*s.cin+ki*F.DIM))
@@ -117,15 +148,21 @@ class GoldenFlatConv(GoldenGemm):
                         self._rocc('mvout', {'local':isa.acc_addr((a*s.bn+d)*F.DIM,
                             full_row=s.output_dtype=='i32'), 'rows':rows, 'cols':sum(nr[d:d+step])}, ptr)
             self._for_groups(_groups(s.cout,s.bn), channel)
-        full, tail = divmod(s.oh,self.band_rows)
-        if full == 1:
-            band(self.fb.const(0),self.band_rows)
+        if self.virtual_padding:
+            for start,stop,height in virtual_band_groups(s,self.band_rows):
+                if stop-start==self.band_rows:band(self.fb.const(start),height,start)
+                else:self.fb.for_loop(start,stop,self.band_rows,lambda y0,h=height,sample=start:band(y0,h,sample))
         else:
-            self.fb.for_loop(0,full*self.band_rows,self.band_rows,
-                lambda y0: band(y0,self.band_rows))
-        if tail:
-            band(self.fb.const(full*self.band_rows),tail)
+            full, tail = divmod(s.oh,self.band_rows)
+            if full == 1:
+                band(self.fb.const(0),self.band_rows)
+            else:
+                self.fb.for_loop(0,full*self.band_rows,self.band_rows,
+                    lambda y0: band(y0,self.band_rows))
+            if tail:
+                band(self.fb.const(full*self.band_rows),tail)
         module = self._finish('gemmini_golden_flat_conv')
+        if self.virtual_padding:module.attributes['gemmini.virtual_padding']=StringAttr('static-zero-pad1-bounded-DMA')
         module.attributes['gemmini.flat_conv_band_rows'] = StringAttr(str(self.band_rows))
         module.attributes['gemmini.flat_conv_shape'] = StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.flat_conv_wide_a'] = StringAttr(str(self.wide_a))
@@ -133,9 +170,9 @@ class GoldenFlatConv(GoldenGemm):
         return module
 
 
-def command_counts(s, *, wide_a=False, band_rows=None):
+def command_counts(s, *, wide_a=False, band_rows=None,virtual_padding=False):
     s.validate()
-    if not eligible(s,band_rows):
+    if not eligible(s,band_rows,virtual_padding=virtual_padding):
         raise ValueError('spatial band exceeds capacity or lacks explicit halo')
     rows = s.oh if band_rows is None else band_rows
     full, tail = divmod(s.oh,rows)
@@ -146,8 +183,14 @@ def command_counts(s, *, wide_a=False, band_rows=None):
     groups = _ceil_div(nt,s.bn)
     bloads = sum(_ceil_div(min(s.bn,nt-d),4) for d in range(0,nt,s.bn))
     compute = 9*kt*nt*mt
+    aloads=9*runs
+    if virtual_padding:
+        aloads=sum(len(padding_segments(s,start+y,x,n,kh,kw))
+            for start in range(0,s.oh,rows)
+            for _,_,y,x,n in spatial_runs(s,min(rows,s.oh-start))
+            for kh in range(3) for kw in range(3))
     return dict(compute=compute, preload=compute,
-        mvin_a=9*_ceil_div(s.cin,64 if wide_a else 16)*runs*groups,
+        mvin_a=aloads*_ceil_div(s.cin,64 if wide_a else 16)*groups,
         mvin_b=9*kt*bloads*len(bands), mvout=mt*(nt if s.output_dtype=='i32' else bloads),
         padded_array_issue_cycles=compute*F.DIM, host_im2col_bytes=0,
         weight_bytes=9*s.cin*s.cout*len(bands), spatial_tiles=mt,
