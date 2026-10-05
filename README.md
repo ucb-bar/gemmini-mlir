@@ -42,4 +42,8 @@ See `.merlin/provenance.yaml` and `.merlin/certification.yaml` for the full line
 
 ## Experimental no-FSM golden branch
 
+Implementation ownership is mandatory: target-specific dialects, instructions, kernels,
+schedules and ABI glue live here; reusable host code generation, packing, requantization,
+global optimization, dispatch and runtime infrastructure live in Merlin. See [AGENTS.md](AGENTS.md).
+
 The `golden/nofsm-wholemodels` working branch adds an **uncertified candidate** beside the published capsule backend. See [docs/golden_progress.md](docs/golden_progress.md) for the exact Jack ZIP reference, reproducible commands, measured probes, upstream lowering results, and remaining model work. The [optimization log](docs/golden_optimization_log.md) records each measured schedule change and the compiler or infrastructure abstraction needed to automate it. The historical `manifest.yaml` grading above applies to the published parent, not this branch.
