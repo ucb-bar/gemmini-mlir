@@ -88,11 +88,17 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
 
 def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
                     *, max_kernels: int | None = None, large_n: bool = False) -> dict:
-    module, manifest = build_catalog(source_path.read_text(), max_kernels=max_kernels,large_n=large_n)
+    # The model compiler may overwrite its prepared path during offload. Keep
+    # the exact bytes consumed here so bindings remain independently replayable.
+    source_bytes = source_path.read_bytes()
+    module, manifest = build_catalog(source_bytes.decode('utf-8'), max_kernels=max_kernels,large_n=large_n)
     if not manifest["covered_contractions"]:
         raise ValueError("source has no exact integer GEMM contractions")
     receipt = compile_module(module, llvm_bin, workdir)
+    source_snapshot = workdir / 'catalog_source.mlir'
+    source_snapshot.write_bytes(source_bytes)
     result = {**manifest, "compilation": receipt,
+              "source_snapshot": str(source_snapshot.resolve()),
               "whole_model_memory_bound": False,
               "whole_model_correctness_verified": False}
     (workdir / "device_catalog.json").write_text(json.dumps(result, indent=2) + "\n")
