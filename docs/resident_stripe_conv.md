@@ -67,7 +67,7 @@ selected/native LLVM, shim, weights, IO header, runtime, startup, console and
 call wrapper are byte-identical1853. This preserves clean device-schedule
 comparison without reverting the current Merlin ABI fix. The candidate
 ELF1bcf4e3c...cdeb21, marker140ac4cafa7c retires10,056,866 Spike instructions;
-hardware cycles remain pending. [Full gate](perf_records/resnet_resident_stripe_policy_spike.json).
+stock FireSim job1878 is submitted and hardware cycles remain pending. [Full gate](perf_records/resnet_resident_stripe_policy_spike.json).
 
 This explicit schedule is not enabled as a universal default. Stock FireSim
 decides whether it joins the best whole-model recipe.
