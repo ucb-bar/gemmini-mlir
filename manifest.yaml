@@ -4,6 +4,17 @@ authoring:
   generated_by_agent: true
   mode: agent_generated_from_rtl_facts
 commands:
+  build_golden_model:
+    argv:
+    - '{model_tool}'
+    - '{capture_dir}'
+    - '{requant_bundle}'
+    - --work
+    - '{output_dir}'
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --spike
+    - '{spike}'
   export_golden_contraction:
     argv:
     - '{tool}'
@@ -52,6 +63,44 @@ commands:
     - --verify-diagnostics
     - '{input_mlir}'
 components:
+  build_golden_model:
+  - manifest.yaml
+  - gemmini-model-build
+  - tests/fused_whole_model_probe.py
+  - mlir_oot/__init__.py
+  - mlir_oot/golden_model_plan.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/fused_mixed_catalog.py
+  - mlir_oot/direct_conv_bundle.py
+  - mlir_oot/direct_conv_binding.py
+  - mlir_oot/golden_device_catalog.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/stem_mixed_catalog.py
+  - mlir_oot/stem_pool_mixed_catalog.py
+  - mlir_oot/stem_pool_bundle.py
+  - mlir_oot/captured_residual_bundle.py
+  - mlir_oot/residual_mixed_catalog.py
+  - mlir_oot/conv_schedule.py
+  - mlir_oot/golden_conv.py
+  - mlir_oot/golden_flat_conv.py
+  - mlir_oot/golden_resident_conv.py
+  - mlir_oot/golden_resident_stripe_conv.py
+  - mlir_oot/physical_layout.py
+  - mlir_oot/late_quant_rne.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
   export_golden_inventory:
   - manifest.yaml
   - gemmini-opt
@@ -163,6 +212,7 @@ components:
   - mlir_oot/frontend/
 entrypoints:
   tool: gemmini-opt
+  model_tool: gemmini-model-build
 family: tensor_resident
 grading:
   gradeable: true

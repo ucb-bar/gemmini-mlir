@@ -59,9 +59,43 @@ instructions. Its counter is functional execution evidence, not hardware
 timing. The source, selected symbol, object, plan emission and final ELF pins
 are retained in [the qualification receipt](perf_records/golden_compiler_export_qualification.json).
 
-Whole-model optimization still needs the existing device-routing callbacks to
-enumerate all legal region/transition alternatives, supply calibrated full-shape
-costs and occupancy, pass them to the shared exact-cover selector, and lower the
-chosen plan through the shared emission protocol. This change establishes the
-real OOT ownership and operation emission route needed for that work. It does
-not claim that whole-model selection is already active.
+## Enabled model path
+
+`gemmini-model-build` invokes the normal captured-model build and accuracy driver.
+Its `DeviceRouting` is now wrapped by `bind_device_routing` by default. Before
+catalog compilation, the wrapper outlines the complete prepared source and emits
+an identity cover through `OutlinedGlobalPlanEmitter`. Expanded before/after
+outlined emission computations must be structurally equivalent. Original prepared
+bytes are passed unchanged to the established compiler after this gate. Strict
+source-to-outlined structural equivalence is unknown because the existing outliner
+can clone initializers; this adapter does not substitute outlined IR for source.
+
+The wrapper permits explicitly declared external catalog functions during
+outlining, then requires their actual compiled definitions. It derives C-interface
+entry symbols from `llvm.emit_c_interface`, closes all actual catalog calls and
+primitive symbols, and matches every remaining exact integer contraction to the
+compiler's selected dense binding. The final hook joins the ordinary Merlin
+catalog/shim ABI receipt, linked image symbols, source snapshots, host/link object
+hashes and no-FSM audit. The existing normal native/original-golden and strict
+target accuracy gates still run.
+
+The resulting `device_prepared/global_plan/compiler_plan.json` carries complete
+prepared-IR preservation and artifact bindings for Phase 2 review alongside the
+existing package inventory/edit contract. Unsupported external symbols or
+incomplete catalog/binary bindings are refused. The identity plan preserves the
+existing compiler decisions. It claims no optimization or shared solver use.
+
+The unchanged qualified 1853 artifact was replayed through these same hooks:
+3,434 source graph nodes, 70 external catalog routes and the exact classifier
+binding close against the actual composite object and linked ELF. This is a
+read-only accounting replay of the existing artifact; it is not a newly compiled
+or newly timed model. The receipt records original/prepared source identities and
+the downstream limits explicitly.
+
+Whole-model selection still needs the existing routing callbacks to enumerate all
+legal region/transition alternatives, provide calibrated full-shape costs and
+occupancy, pass them to the shared exact-cover selector, and compile the selected
+target implementations. Ordinary host lowering also needs complete source-task
+to machine CFG accounting before that stronger proof can be claimed. This adapter
+labels that accounting, original rewrite-chain equivalence and costs as unproven
+or unknown; it does not manufacture `mixed_program_plan_v1` evidence.

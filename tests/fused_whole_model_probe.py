@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 from mlir_oot.fused_mixed_catalog import stage_capture,merlin_callbacks
 from mlir_oot.golden_device_catalog import final_elf_audit
+from mlir_oot.golden_model_plan import bind_device_routing
 from merlin.runtime.backends.spike_model import build
 from merlin.llvmlower.device_build import DeviceRouting
 from merlin.runtime.dispatch_runtime import resolve_forward_args
@@ -165,7 +166,8 @@ def main():
         if a.host_llvm_transform:
             from mlir_oot.late_quant_rne import merlin_host_llvm_transform
             transform=merlin_host_llvm_transform(a.llvm_bin,combine_clamp=True)
-        result=build(capture,builddir,host_vectorize=None if a.host_vectorize is None else a.host_vectorize=='true',host_llvm_transform=transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
+        routing,_plan_binding=bind_device_routing(DeviceRouting('gemmini',str(Path(__file__).resolve().parents[1]),'int8','i32',prepared_transform=prepare,catalog_builder=compile,final_elf_audit=final_elf_audit),original_source=a.capture/'model.mlir')
+        result=build(capture,builddir,host_vectorize=None if a.host_vectorize is None else a.host_vectorize=='true',host_llvm_transform=transform,output_sha256=a.output_sha256,output_dump_cap=a.output_dump_cap,int8_compute=True,features=frozenset(features),cflags_override=['-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin'],device=routing,dram_bytes=2*1024**3,arena_mb=256,stack_bytes=16*1024**2,console='htif')
         (a.work/'build_result.json').write_text(json.dumps(result,indent=2,default=str)+'\n')
     native=native_validate(capture,builddir,a.work/'host',a.llvm_bin,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol,enforce_quality=False);print(native,flush=True)
     target=spike_validate(capture,builddir,a.spike,a.work,allow_bounded=a.allow_bounded_output,atol=a.atol,rtol=a.rtol);print(target,flush=True)

@@ -56,7 +56,7 @@ def test_inventory_uses_actual_new_commands_and_existing_contract_checks():
     assert len(inventory['surfaces'])==6
     symbol=next(row for row in inventory['symbols']
         if row['path']=='mlir_oot/golden_gemm.py' and row['symbol']=='GoldenGemm._output_block')
-    assert set(symbol['commands'])=={'export_golden_capture','export_golden_contraction'}
+    assert set(symbol['commands'])=={'export_golden_capture','export_golden_contraction','build_golden_model'}
     assert 'emit_command_buffer' not in symbol['commands']
     contract=result['compiler_edit_contract']
     assert len(contract['required_decisions'])==len(inventory['surfaces'])
