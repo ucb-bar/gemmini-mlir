@@ -428,3 +428,30 @@ representative M8,N2048,K2048 GEMM from1,445,879 to925,141 cycles (36.02% fewer)
 All16,384 outputs and guards pass, with staged ELF and stock bitstream identities
 checked. The model-level impact remains to be measured. The late C512
 convolution FireSim1758 passes at793,557 cycles for all25,088 outputs and guard.
+
+
+### Exact wider integer residual arithmetic
+
+Searching a ratio neighborhood with integer coefficients up to32767 finds an
+exact representative for every one of the16 closed-recipe residuals. Independent
+NumPy comparison verifies all65,536 signed-i8 pairs for each against the original
+ordered f32 source arithmetic. The source scales and golden are unchanged.
+Largest coefficients are2609/2180; smallest217/179. The earlier p,q≤127 refusal
+remains valid for its restricted form. No optimality or broader infeasibility
+claim follows from this neighborhood search.
+
+A prospective primitive schedule decomposes each coefficient into signed-i8
+127 chunks plus a remainder, loads the two source panels once, and accumulates
+diagonal products before one scaled i8 readout. This avoids CPU lookup work.
+The naive all16 residual mesh issue floor is5,193,216cycles/324,576commands;
+actual scheduling, correctness and FireSim timing are still to be established.
+Evidence and reproduction command: `perf_records/residual_wide_integer_candidates.json`.
+
+Exact shared permutation proofs now commute through all16 elementwise residual
+lookups. The whole graph drops36 live layout copies to2 (input and final mean),
+retains all1,000 original golden bits in native/actualSpike, and passes final
+noFSM. Raw-byte four-way lookup unrolling and shared-layout propagation bring
+wholeSpike instructions from463,973,868 to254,701,066. These are retired
+instruction results, not hardware cycles. FireSim1767 measures2,461,226,911 for
+the earlier original-golden hoisted/banded variant; FireSim1769 is a separately
+identified closed-recipe exact52-readout/LUT/nested-hoist baseline.
