@@ -1,0 +1,83 @@
+{
+  "scope": "Current-core generic build/link and GSIM orchestration through explicit OOT support only; existing prebuilt device and numeric harness objects; no legacy Python imports.",
+  "core_package": "/scratch/agustin/tmp/merlin-tiny-ownership-prefetch-20261005/src/merlin/__init__.py",
+  "provider": "/scratch/agustin/tmp/gemmini-gsim-provider-20261005/support/gemmini_gsim/backend.py",
+  "provider_sha256": "94331518029ede84a7843a2a0aea8c598f8891e0ffefd2ccd7c38b64fb53c005",
+  "inputs": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/gsim_17x64x64_wide_guard/gemm_probe.o": "e7a27e97bd83c20d02fe1c029c2648ead8fc997a83e889ae0d9cb8ad46a9783c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/gsim_17x64x64_wide_guard/kernel.o": "1cc3b4c27dd6eaaad3be1a137dc16db6d86b26d582779856d01bdf828e6ff751"
+  },
+  "elf": "/scratch/agustin/tmp/gemmini-gsim-provider-20261005/out/current_core_probe/layer.elf",
+  "elf_sha256": "d639d7e56e0e1f306da10cf0a6b8a83b064ea44545165d581e2db2ac48f0e98a",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "d639d7e56e0e1f306da10cf0a6b8a83b064ea44545165d581e2db2ac48f0e98a",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 4,
+      "2": 2,
+      "3": 2,
+      "4": 16,
+      "5": 16,
+      "6": 32,
+      "7": 1,
+      "14": 8
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "run": {
+    "records": [],
+    "finish": {
+      "cycles": 101898,
+      "wall_seconds": 6.95,
+      "done": true,
+      "exit_code": 0
+    },
+    "wall_seconds": 6.959717015968636,
+    "returncode": 0,
+    "stdout_sha256": "69e1e0703437b10c211c890d20338e34d9bd177cd2e462d9543a694590c56ae9",
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "command_sha256": "eaea901337873f0fea008ff2118ef80928fe84227a4b79710336c6f2d1e2a252",
+    "stdout_tail": "GOLDEN_GEMM_CYCLES 1919\nGOLDEN_GEMM PASS M=17 N=64 K=64\n",
+    "stderr_tail": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=2000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002840\n[gsim-ar] #7 addr=0x80026080\n[gsim-ar] #8 addr=0x80002880\n[gsim-ar] #9 addr=0x800027c0\n[gsim-ar] #10 addr=0x80002800\n[gsim-ar] #11 addr=0x800060c0\n[gsim-ar] #12 addr=0x80006100\n[gsim-ar] #13 addr=0x80002700\n[gsim-ar] #14 addr=0x800029c0\n[gsim-ar] #15 addr=0x80026000\n[gsim-ar] #16 addr=0x80025fc0\n[gsim-ar] #17 addr=0x80002a00\n[gsim-ar] #18 addr=0x80003f00\n[gsim-ar] #19 addr=0x80003f40\n[gsim-ar] #20 addr=0x80003f80\n[gsim-ar] #21 addr=0x80003fc0\n[gsim-ar] #22 addr=0x80004000\n[gsim-ar] #23 addr=0x80004040\n[gsim-ar] #24 addr=0x80004080\n[gsim-ar] #25 addr=0x800040c0\n[gsim-ar] #26 addr=0x80004100\n[gsim-ar] #27 addr=0x80004140\n[gsim-ar] #28 addr=0x80004180\n[gsim-ar] #29 addr=0x800041c0\n[gsim-ar] #30 addr=0x80004200\n[gsim-ar] #31 addr=0x80004240\n[gsim-ar] #32 addr=0x80004280\n[gsim-ar] #33 addr=0x800042c0\n[gsim-ar] #34 addr=0x80004300\n[gsim-ar] #35 addr=0x80002a40\n[gsim-ar] #36 addr=0x80005080\n[gsim-ar] #37 addr=0x800050c0\n[gsim-ar] #38 addr=0x80005100\n[gsim-ar] #39 addr=0x80005140\n\n[gsim-emu] FINISHED: cycles=101898 wall=6.95s (14670 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=1 dram_w=8 dram_ar=246 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80026080 last_ar=0x80002680 max_ar=0x80026080 r_fires=1968 b_fires=1 cvfpu_accepts=0 uart_chars=0\n",
+    "load_path": "backdoor"
+  },
+  "legacy_backend_imports": [],
+  "focused_tests_passed": 15,
+  "original_elf_sha256": "d639d7e56e0e1f306da10cf0a6b8a83b064ea44545165d581e2db2ac48f0e98a",
+  "elf_byte_identical_to_original": true,
+  "kernel_cycles": 1919,
+  "numeric_guard_protocol": "GOLDEN_GEMM PASS after all1088 integer comparisons and trailing guard checks"
+}
