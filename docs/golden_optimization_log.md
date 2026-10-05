@@ -1013,3 +1013,13 @@ qualification and generic Merlin option integration remain in progress. The
 wide-dot attention reassociation control fails144/1,600 original gate elements
 (maxabs .142716), so exact mathematical digit reconstruction cannot be assumed
 to preserve source attention accumulation. Source stage-specific controls follow.
+
+
+### Tiny ownership+prefetch composition measured
+
+Stock1846 verifies569,151,067 forward cycles,1,946,440 (0.341%) below1841.
+All256,000 compiled output bits and the original Torch gate remain unchanged;
+actual device objects match1841. This is the new verified Tiny best. The small
+difference is one run and has no variance-adjusted claim. Exact host factor-two
+pointwise scheduling1847 is a separate arm against1841, without fresh ownership.
+[Composition hardware](perf_records/tiny_expanded_writer_prefetch_firesim1846.json).
