@@ -47,3 +47,15 @@ records its exact command and compiler/source/object hashes. A regression
 compiles a table-owning adapter and links its text/data at0x80000000; the
 resulting ELF passes the ordinary no-FSM audit. Object audit alone cannot
 establish that the complete device/host memory model links correctly.
+
+## Whole-candidate outcome: rejected
+
+The closed-recipe candidate combined52 unary routes (46exact plus6 explicitly
+bounded), one pooled stem,16 bounded residuals and the remaining classifier.
+Its final ELF passes the zero-FSM audit and actual Gemmini Spike matches all
+1,000 same-candidate native output words exactly, with zero rank mismatches.
+However it fails the unchanged original-golden allclose gate at explicit
+atol0.03125/rtol0.02: maximum absolute error1.29150390625 and relative
+L2=0.014636863999840584. The candidate is **not queued or promoted**.
+Spike reports400,297,663 retired instructions; this is not hardware timing.
+Receipt: `docs/perf_records/resnet_combined_bound1_rejected.json`.

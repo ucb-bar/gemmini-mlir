@@ -1,0 +1,59 @@
+{
+  "schema": "gemmini_bounded_residual_unary_experiment_v1",
+  "status": "rejected_whole_model_quality",
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": false,
+    "max_abs_error": 1.29150390625,
+    "relative_l2": 0.014636863999840584,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": false,
+    "quality_pass": false,
+    "numeric_policy": "explicit_bounded_experiment"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "222ebc4452044a8f9a4b44bd276aec9120d86b4dcc913c154b420aa65311a1a5",
+    "target_native_exact": true,
+    "native_reference_sha256": "edac4d4b9638082c848bfdced794e6420ea5441ce636356b59426d60fb486c5b",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": false,
+    "max_abs_error": 1.29150390625,
+    "relative_l2": 0.014636863999840584,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": false,
+    "quality_pass": false,
+    "numeric_policy": "explicit_bounded_experiment",
+    "metrics": [
+      "METRIC cycles 400297663",
+      "METRIC build_hash f8f8bf0b2b20",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "222ebc4452044a8f9a4b44bd276aec9120d86b4dcc913c154b420aa65311a1a5",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2942,
+      "2": 5947,
+      "3": 1017,
+      "4": 7686,
+      "5": 47616,
+      "6": 55302,
+      "7": 70,
+      "14": 16
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "scope": "Explicit max1LSB per residual and selected unary; original golden unchanged; actual Spike matches same-candidate native exactly; failed full quality gate; not queued or promoted."
+}
