@@ -71,3 +71,7 @@ Job 1758 measured **793,557 kernel cycles** for the H7/W7/C512 3x3 direct convol
 ## Large-N dense hardware gate
 
 Stock FireSim jobs 1763/1764 compared M8/N2048/K2048 i32 GEMM with bm1/bn64 and no bias. Wide B loads (64 columns per group) plus cached A reduced kernel cycles from **1,445,879** to **925,141**: **36.02% fewer cycles**, **1.563x** speedup. All 16,384 outputs and guards passed in both, with final zero-FSM ELFs and staged ELF/bitstream identities verified. Candidate GSIM measured 927,138 cycles. This is a representative kernel gate for Tiny/Smol dense scheduling; whole-model speedups and other shapes still require independent validation. Receipt: `docs/perf_records/large_n_dense_firesim1763_1764.json`.
+
+## Original-capture hoisted whole ResNet
+
+Job 1767 measured **2,461,226,911 forward cycles** with all 1,000 original outputs bit-exact. Final zero-FSM ELF and actual staged ELF/stock bitstream identities passed. This is 7.58% below pooled-stem job 1750; the variant combines weight hoisting with selected bank/flat/pooled schedules, so the improvement is not attributed solely to hoisting. Receipt: `docs/perf_records/resnet_original_hoisted_firesim1767.json`.
