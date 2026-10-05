@@ -238,3 +238,31 @@ therefore the full mismatch needs region/operator localization, currently the
 vision/prefix boundary. Atomic capture identity and preserved buffer dtypes
 exclude the previously observed mixed-bundle defect. Targetcompilation is stopped
 on failed numeric gates so queue/compiler work focuses on admissible programs.
+
+### Half-precision frontend arithmetic fixed upstream
+
+Vision-prefix localization exposed two model2MLIR bugs: bf16/f16 LayerNorm
+and softmax reduced and normalized in the input dtype. PyTorch uses f32
+intermediates. Wide bf16 reductions can stop accumulating while inputs remain
+nonzero, so relaxing whole-model tolerances cannot repair this defect.
+
+Upstream main commits `a472fef` (LayerNorm) and `d82f4aa` (softmax) widen
+intermediates and narrow only the final output. The compiled 2×768 LayerNorm
+reproducer changes relative L2 error1.227→0, bit-exact against Torch. The
+compiled uniform1024-way softmax changes row sum4→1, likewise bit-exact.
+The earlier broad absolute tolerance admitted the wrong small probabilities;
+the operator gate now requires exact output or its explicit strict tolerance.
+Fifty focused and related tests pass, including mixed f32 affine parameters,
+multiple normalized axes, nonfinal softmax axes and named-op expansion.
+Evidence: `perf_records/model2mlir_half_precision_fixes.json`.
+
+Fresh full SmolVLA capture is being revalidated with these fixes. Its checkpoint,
+input, buffer and framework-golden hashes match the failing fresh capture;
+the numerical comparison therefore isolates frontend lowering changes. No
+full-policy numerical or hardware-performance result is claimed yet.
+
+Full ResNet direct16/dense38 FireSim job1737 now passes all1000 outputs exactly
+at3,529,465,283forward cycles,21.85% below4,516,405,461 for1731. Pinned staged
+ELF/bitstream identity is verified. This remains far above22M; boundary-profile
+job1741 and later fused/stem variants are required to attribute the remaining
+cost. Evidence: `perf_records/resnet_direct_firesim1737.json`.
