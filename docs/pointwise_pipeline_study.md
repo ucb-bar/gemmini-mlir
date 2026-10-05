@@ -47,3 +47,19 @@ Job 1734 completed with all 200,704 values and guard bytes passing: **53,624 ker
 The first captured-scale probes (jobs1745/1746) used the original small integer operand fixture. At the exact captured scale0.0038317402359098196 with no bias and ReLU, all200,704 expected outputs rounded to zero. Both jobs were canceled while still queued; no measurement is claimed.
 
 Replacement jobs1752 (bm16 baseline) and1753 (banked prefetch bm1) use amplitude13 deterministic signed-i8 operands. Expected outputs now contain28 distinct values in0..58, with102,625 nonzero entries. All200,704 values and guard bytes are checked. Device object hashes remain identical to the original captured-scale kernels; only harness inputs/oracle changed. Final ELF no-FSM audits pass. Added `--input-amplitude` is bounded1..21 so both deterministic input patterns remain signed-i8 representable; default1 preserves existing fixtures.
+
+## Captured-scale hardware comparison
+
+Both corrected-fixture jobs completed with all200,704 varied outputs and guard
+bytes passing, final zero-FSM ELFs, and actual staged ELF/bitstream hashes
+verified. Bias is disabled, ReLU enabled, and output scale is the exact
+source-proven0.0038317402359098196.
+
+| Schedule | Stock FireSim cycles |
+|---|---:|
+| Current bm16, job1752 |90,323|
+| Banked prefetch bm1, job1753 |51,922|
+
+The source-compatible candidate cuts kernel cycles42.52% (1.740x speedup),
+ending3.48% above the50,176 compute floor. This supports selection for this
+exact source-bound epilogue/shape, not unrestricted promotion to other shapes.
