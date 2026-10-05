@@ -1,0 +1,160 @@
+{
+  "schema": "exact_reduction_layout_experiment_v1",
+  "variants": [
+    {
+      "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+      "elf_sha256": "d730da853d9e3c5edf0471abcf4296e812f4ce474248bdbf35dc67df77fa9018",
+      "target_native_exact": true,
+      "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source",
+      "metrics": [
+        "METRIC cycles 19552971",
+        "METRIC build_hash e070f3502008",
+        "METRIC memref_rank_mismatch 0"
+      ],
+      "variant": "physical_order",
+      "artifact": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_reduction_layout",
+      "model_object_sha256": "3966a2ef4cc26ffe2ce2fd719ea2c1df079df6de39cd57a703497cfcb9527e7f",
+      "layout_report": {
+        "schema": "exact_physical_layout_v1",
+        "before": {
+          "copies": 102,
+          "output_bytes": 18623468,
+          "producer_boundaries": {
+            "linalg.transpose": 16,
+            "tensor.expand_shape": 49,
+            "tensor.extract_slice": 36,
+            "tensor.insert_slice": 1
+          }
+        },
+        "after": {
+          "copies": 1,
+          "output_bytes": 602112,
+          "producer_boundaries": {
+            "argument": 1
+          }
+        },
+        "rewrite": {
+          "requested": 295,
+          "canceled": 49,
+          "unit_views": 0,
+          "scalar_regions": 2,
+          "static_slices": 475,
+          "ordered_reductions": 1,
+          "boundary_transposes": 50
+        },
+        "call_abi_changed": false,
+        "scalar_arithmetic_changed": false,
+        "source_sha256": "0f281cba40e9f9275937e27a29174f1571e7394fffb7aff720421c447a7c52ec",
+        "rewritten_sha256": "15cd2f41b52d89b4107528bfb05f66e60746546e1e2bad1f38c6819d3e2c8424"
+      },
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "d730da853d9e3c5edf0471abcf4296e812f4ce474248bdbf35dc67df77fa9018",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 329,
+          "1": 3956,
+          "2": 12519,
+          "3": 1350,
+          "4": 11934,
+          "5": 100832,
+          "6": 112766,
+          "7": 70,
+          "14": 48
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    {
+      "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+      "elf_sha256": "c30affc6687baee226be52c3c219fbf94b3c558149e4ddd4bdb3fc20c19cedfd",
+      "target_native_exact": true,
+      "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source",
+      "metrics": [
+        "METRIC cycles 19286601",
+        "METRIC build_hash 28d775c3b77e",
+        "METRIC memref_rank_mismatch 0"
+      ],
+      "variant": "parallel_first",
+      "artifact": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/whole_exact52_reduction_ordered",
+      "model_object_sha256": "1fda829162ba289fff62efc7a70d60858671fa5128c5ab4a11797155f03d9e76",
+      "layout_report": {
+        "schema": "exact_physical_layout_v1",
+        "before": {
+          "copies": 102,
+          "output_bytes": 18623468,
+          "producer_boundaries": {
+            "linalg.transpose": 16,
+            "tensor.expand_shape": 49,
+            "tensor.extract_slice": 36,
+            "tensor.insert_slice": 1
+          }
+        },
+        "after": {
+          "copies": 1,
+          "output_bytes": 602112,
+          "producer_boundaries": {
+            "argument": 1
+          }
+        },
+        "rewrite": {
+          "requested": 295,
+          "canceled": 49,
+          "unit_views": 0,
+          "scalar_regions": 2,
+          "static_slices": 475,
+          "ordered_reductions": 1,
+          "boundary_transposes": 50
+        },
+        "call_abi_changed": false,
+        "scalar_arithmetic_changed": false,
+        "source_sha256": "2e51fe146ffd52b21dbe946f7afb24b4418c488c6f41d2b681eaf8a42617c994",
+        "rewritten_sha256": "804f97a156ad6c12d6421936957c0f2833411fbb17f4f37e4721cf6dc4e8a612"
+      },
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "c30affc6687baee226be52c3c219fbf94b3c558149e4ddd4bdb3fc20c19cedfd",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 329,
+          "1": 3956,
+          "2": 12519,
+          "3": 1350,
+          "4": 11934,
+          "5": 100832,
+          "6": 112766,
+          "7": 70,
+          "14": 48
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    }
+  ],
+  "baseline_model_object_sha256": "1fda829162ba289fff62efc7a70d60858671fa5128c5ab4a11797155f03d9e76",
+  "conclusion": "Parallel-first transformed model object is byte-identical to baseline1775; LLVM already fused final transpose and DQ. Physical-order variant changes iteration schedule but regresses Spike instruction count; no hardware promotion.",
+  "performance_scope": "Spike counts are retired instructions, not hardware cycles; source copy census is not materialized runtime traffic"
+}

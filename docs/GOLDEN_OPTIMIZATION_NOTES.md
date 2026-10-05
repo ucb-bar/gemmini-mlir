@@ -80,3 +80,23 @@ outputs are bit-exact; staged ELF, bitstream and UART identities are pinned.
 The no-FSM hardware schedules match1775. This combines two source-proven uniform
 quantization rewrites and the target round-to-nearest-even helper; their separate
 contributions are not isolated by this measurement.
+
+## Exact reduction layout transfer: no baseline speedup claim
+
+An isolated Merlin rewrite carries a common preferred input permutation through
+pointwise producers into reductions only if parallel-axis and reduction-axis
+relative orders are each preserved. Scalar bodies, initial accumulator values,
+output layout, and H,W floating-point accumulation order remain unchanged.
+Eight tests cover scalar-chain preservation and refusal of unknown/effectful or
+order-changing layouts. Both whole-model experiments pass native and actual
+Gemmini Spike against all1,000 original output bits, plus final zero-FSM audit.
+
+The parallel-first generic version generates a model.o byte-identical to1775:
+1fda829162ba289fff62efc7a70d60858671fa5128c5ab4a11797155f03d9e76,
+and exactly the same19,286,601 Spike retired instructions. Existing downstream
+fusion already eliminated the apparent final transpose and DQ materialization.
+The physical-order named variant changes loops to H,W,C and uses19,552,971
+instructions. Its cache behavior is unmeasured; it is not promoted. A source-level
+copy census must not be described as remaining runtime copy traffic. The3.21M
+hardware classifier gap motivates a genuinely different blocked reduction
+schedule, not another equivalent transpose elimination.
