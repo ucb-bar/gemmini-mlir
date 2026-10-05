@@ -132,3 +132,12 @@ ELF SHA256, complete object/transform receipts and staged hardware identity are
 the variant identity; the inherited build_hash alone is insufficient. The new
 backend host-LLVM hook being developed by the parent will establish transformed
 LLVM identity before model.o, harness hash and final linking for future builds.
+
+## ResNet combined exact clamp/RNE hardware1786
+
+Verified stock FireSim forward49,673,153 cycles, all1,000 unchanged original
+outputs exact. Final/staged ELF and bitstream identities are pinned. This is
+10.08% fewer cycles than1781 (55,239,221),20.45% fewer than1775 (62,441,162).
+This becomes the controlled unblocked reference for queued blocked-reduction1789.
+Its inherited base harness build_hash is not unique to the late transform;
+final ELF/object/transform hashes supply that identity. No22M claim is made.
