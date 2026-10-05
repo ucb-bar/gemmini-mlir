@@ -92,7 +92,7 @@ def spike_validate(capture,build,spike,work,*,allow_bounded=False,atol=0.,rtol=0
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut'),default='gemmini');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('bundle',type=Path);p.add_argument('--work',type=Path,required=True);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--spike',type=Path,required=True);p.add_argument('--validate-existing',action='store_true');p.add_argument('--packed-stem',action='store_true');p.add_argument('--pooled-stem',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--propagate-layouts',action='store_true');p.add_argument('--hoist-weights',action='store_true');p.add_argument('--residual-add',action='store_true');p.add_argument('--residual-implementation',choices=('gemmini','cpu_lut'),default='gemmini');p.add_argument('--residual-max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--allow-bounded-output',action='store_true');p.add_argument('--atol',type=float,default=0.);p.add_argument('--rtol',type=float,default=0.);a=p.parse_args();a.work.mkdir(parents=True,exist_ok=True)
     if a.residual_max_output_lsb and (not a.residual_add or not a.allow_bounded_output):p.error('bounded residuals require --residual-add and explicit --allow-bounded-output')
     if not np.isfinite(a.atol) or not np.isfinite(a.rtol) or a.atol<0 or a.rtol<0:p.error('quality tolerances must be finite and nonnegative')
     capture=a.work/'capture';builddir=a.work/'build_direct'
@@ -108,10 +108,10 @@ def main():
             from mlir_oot.stem_pool_bundle import build as build_pool,apply_capture
             from mlir_oot.stem_pool_mixed_catalog import merlin_callbacks as pool_callbacks
             pool=a.work/'stem_pool_bundle';build_pool(capture,a.llvm_bin,pool);apply_capture(capture,pool)
-            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial)
+            prepare,compile=pool_callbacks(a.llvm_bin,a.bundle,pool,flat_spatial=a.flat_spatial,propagate_layout=a.propagate_layouts)
         else:
-            if a.flat_spatial and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
-            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':True} if a.flat_spatial else {}))
+            if (a.flat_spatial or a.propagate_layouts) and a.packed_stem:raise ValueError('flat spatial option currently composes with pooled stem or ordinary fused catalog')
+            prepare,compile=callbacks(a.llvm_bin,a.bundle,**({'flat_spatial':a.flat_spatial,'propagate_layout':a.propagate_layouts} if not a.packed_stem else {}))
         if a.residual_add:
             from mlir_oot.captured_residual_bundle import build as build_residual
             from mlir_oot.residual_mixed_catalog import apply_capture as apply_residual,merlin_callbacks as residual_callbacks
