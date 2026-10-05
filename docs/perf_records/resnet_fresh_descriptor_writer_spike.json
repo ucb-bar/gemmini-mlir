@@ -1,0 +1,1678 @@
+{
+  "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+  "elf_sha256": "a2f223510446563252396343bfa254c9f534a1c3e26444752710ace1cc456416",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 10703997",
+    "METRIC build_hash 161988a46c9b",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/spike.log",
+  "spike_console_sha256": "9676375b5f60f2d4b8842f91bbe8c31d5331bd0a3ac845eb2262ca74737e6a12",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "schema": "resnet_fresh_descriptor_writer_spike_v1",
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "build": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "161988a46c9b",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/build_direct/lower/model.ll",
+      "source_sha256": "ec49f7893c2ead1ede848a17ff87c94909e54ca143270fd87bff84389e55de81",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5/build_direct/host_llvm/model.linked.ll",
+      "selected_sha256": "b75af2757e26bb6e7ade4a9851b6d46083b231884fc47969522a3d87fb57601d"
+    },
+    "supplemental_objects_sha256": "3b56619942aeca735e1021bf9caa8cc9217176997acec7eaf921833d897851c1",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "a2f223510446563252396343bfa254c9f534a1c3e26444752710ace1cc456416",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2902,
+      "2": 12629,
+      "3": 1334,
+      "4": 11966,
+      "5": 100544,
+      "6": 112510,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "ownership_contract": {
+    "schema": "descriptor_writer_contract_emission_v1",
+    "route_count": 69,
+    "qualified_work": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/fresh_device_result/whole_v5",
+    "host_mlir_byte_identical": true,
+    "bridge_object_byte_identical": true,
+    "bridge_object_sha256": "47544e30f2f94bb6ef5c491159178a9bd02db5d87e1f2e435483c338eea52dfb",
+    "contracts": [
+      {
+        "symbol": "gemmini_exact_requant_0",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_1",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_2",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_3",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_4",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_5",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_6",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_7",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_8",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_9",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_10",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_11",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_12",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_13",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_14",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_15",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_16",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_17",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_18",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_19",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_20",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_21",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_22",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_23",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_24",
+        "result_argument": 3,
+        "fully_written_arguments": [
+          2,
+          3
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_25",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_26",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_27",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_28",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_29",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_30",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_31",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_32",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_33",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_34",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_35",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_36",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_37",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_38",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_39",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_40",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_41",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_42",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_43",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_44",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_45",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_46",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_47",
+        "result_argument": 3,
+        "fully_written_arguments": [
+          2,
+          3
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_48",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_49",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_50",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_requant_51",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_exact_stem_pool",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_0",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_1",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_2",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_3",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_4",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_5",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_6",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_7",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_8",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_9",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_10",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_11",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_12",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_13",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_14",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      },
+      {
+        "symbol": "gemmini_residual_15",
+        "result_argument": 2,
+        "fully_written_arguments": [
+          2
+        ]
+      }
+    ]
+  },
+  "source_contract": "Current ranked C-interface adapters fully write designated destinations and return the actual passed result descriptor; the caller explicitly supplies result_arg2 or result_arg3. No output type inference.",
+  "compile_policy": "Same1812 mean/providers/device schedules; host_vectorize=True; generalize_before_fuse=1; fuse_post=1; exact clamp/RNE; RV64GC/lp64d/medany/O2; only69 ranked adapters use fresh allocations and borrowed void bridges; expanded classifier stays unchanged",
+  "comparison": {
+    "control_job": 1812,
+    "control_spike_instructions": 10985615,
+    "candidate_spike_instructions": 10703997,
+    "fraction_instruction_reduction": 0.02563516016172058,
+    "hardware_status": "pending"
+  },
+  "focused_tests": {
+    "passed": 7,
+    "actual_native_O0_O2": true,
+    "default_upstream_deallocation": true,
+    "repeated_calls": 3
+  },
+  "sources": {
+    "mlir_oot/descriptor_writer.py": "7ab052c847727ab7788e1c465e08aed6834849ecb1b457533b79286fceeaf0be",
+    "tests/test_descriptor_writer.py": "f37fd4a64ab10d48ef8944e50fb3ea47689950041c08749856d14f6e1325b2e7"
+  },
+  "host_derivation": {
+    "schema": "fresh_descriptor_writer_prototype_v1",
+    "original_prepared_sha256": "0d39af604cd938853dbc8d950e953457af87a3181a380901563ba944c468a0bc",
+    "rewritten_sha256": "9d8d54609b0b14efad0ca682c0b41648b1106106e17c7bfd1e31da57dccb9ee4",
+    "routes": [
+      {
+        "symbol": "gemmini_exact_requant_0",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_0__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_1",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_1__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_2",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_2__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_3",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_3__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_4",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_4__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_5",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_5__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_6",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_6__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_7",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_7__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_8",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_8__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_9",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_9__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_10",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_10__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_11",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_11__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_12",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_12__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_13",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_13__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_14",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_14__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_15",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_15__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_16",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_16__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_17",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_17__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_18",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_18__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_19",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_19__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_20",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_20__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_21",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_21__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_22",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_22__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_23",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_23__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_24",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_24__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_25",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_25__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_26",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_26__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_27",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_27__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_28",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_28__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_29",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_29__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_30",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_30__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_31",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_31__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_32",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_32__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_33",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_33__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_34",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_34__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_35",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_35__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_36",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_36__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_37",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_37__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_38",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_38__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_39",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_39__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_40",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_40__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_41",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_41__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_42",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_42__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_43",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_43__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_44",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_44__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_45",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_45__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_46",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_46__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_47",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_47__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_48",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_48__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_49",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_49__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_50",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_50__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_51",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_requant_51__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_stem_pool",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_exact_stem_pool__borrowed_write",
+        "argument_ranks": [
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_0",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_0__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_1",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_1__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_2",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_2__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_3",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_3__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_4",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_4__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_5",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_5__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_6",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_6__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_7",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_7__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_8",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_8__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_9",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_9__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_10",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_10__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_11",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_11__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_12",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_12__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_13",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_13__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_14",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_14__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_residual_15",
+        "calls": 1,
+        "fresh_writers": [
+          2
+        ],
+        "result_argument": 2,
+        "borrowed_symbol": "gemmini_residual_15__borrowed_write",
+        "argument_ranks": [
+          2,
+          2,
+          2
+        ],
+        "result_rank": 2
+      }
+    ],
+    "shim_sha256": "31729edf01ba3e2fc43ae905b63eccadcf6ec636cb4ca1cb988fe04b8bcd2f6d",
+    "contract": "Prequalified current adapters fully write and return the passed descriptor; all writable call operands are sole-use tensor.empty; fresh memref.alloc owns every writer; borrowed void shim suppresses duplicate return ownership"
+  }
+}
