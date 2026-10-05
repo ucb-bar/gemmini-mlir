@@ -623,8 +623,16 @@ selected host object. Explicit scalar versus historical vector host selection
 produces byte-identical LLVM, model.o and final ELF for this transformed graph,
 so that duplicate was not queued. Compact full-output SHA reduces total emulated
 cycles to364,867,232 versus~1.897B in1789; this queue occupancy change is separate
-from timed forward arithmetic. A fresh leaf profile is being prepared because
-1777's earlier host/device attribution no longer describes this composition.
+from timed forward arithmetic. Fresh profile1801 measures47,057,935 interior
+cycles:35,450,518 device and11,607,417 host, with all70 primitive calls conserved.
+The47,058,439 whole-forward profile adds38,118 observed cycles (0.081%) over1795;
+instrumentation and placement effects keep1795 as the unprofiled control.
+Dense kernels account for14,897,959, direct conv12,333,730, residual6,777,154,
+and pooled stem1,441,675. Host intervals are largest beforestem5,238,180,
+beforeclassifier2,159,097 and aftermatmul25/48 readouts1,957,501/963,250.
+The selected issue floor is22,805,632; it does not predict achievable total time.
+See `perf_records/resnet_current_leaf_profile_firesim1801.json` and
+`perf_records/resnet_current_issue_geometry.json`.
 
 Tiny1792 verifies866,822,103 cycles,15.86% fewer than1788 and51.85% fewer than1747.
 All256,000 output bytes remain exact to the prior compiled model and pass the
@@ -632,8 +640,10 @@ original Torch gate. The explicit scalar activation polynomial replaces22 f32
 activation expf chains, retaining every normalization expf call. Native and
 actual Spike still reproduce every output bit on this capture; the arithmetic
 approximation is not universally bit-exact. Spike218,423,000 instructions are
-19.41% fewer than1792. FireSim1800 is queued, with full final-ELF zeroFSM and
-normal object-bound build identity. Receipt:
+19.41% fewer than1792. FireSim1800 verifies791,638,514 forward cycles,8.67% fewer
+than1792 and56.03% fewer than1747. Full final-ELF zeroFSM, complete output digest
+and normal object-bound build identity pass. Receipts:
+`perf_records/tiny_activation_poly_firesim1800.json` and
 `perf_records/tiny_scalar_quant_rne_act_poly_spike.json`.
 
 The needed generic abstraction is numerical rewrite selection independent of
@@ -659,7 +669,45 @@ SmolVLA's exact four-partial convolution fixes every initial embedding bit, but
 the full conv4/flash/old-balanced-normalization gate still FAILS:84/1,600 outputs
 outside the original tolerance, relativeL2 .019814495, maxabs .128245711. The
 explicit pinned Welford LayerNorm builder matches all786,432 original first-norm
-values and4.72M independent replay values; full integration is running. Default
+values and4.72M independent replay values. Full conv4/flash/Welford stillFAILS:
+78/1,600 outputs outside tolerance, relativeL2 .018923141, maxabs .114600658. Default
 frontend/pipeline behavior is unchanged. Core integrates the explicit flash,
 masked attention, conv4 and LayerNorm builders. Complete source-bound gates
 determine whole-model admission.
+
+### Fused activation evaluation and precise CPU attention panels
+
+Merlin0f6271072 exposes default-off `fuse_activation_polynomial_fma`, implying
+the independent activation approximation and narrow exact FMA intrinsic lowering.
+It changes polynomial arithmetic explicitly; normalization still calls expf.
+All63 relevant scalar/vector/native/Spike/compiler tests pass. Initial six vector
+test failures were missing llvm-objdump onPATH; with the declared toolchainPATH,
+all six execute and pass. No gate or tool requirement was weakened.
+
+The full Tiny fused-polynomial+ClangO3 arm retains every captured output bit and
+the original Torch gate in native and actual Spike. Its176 activation FMAs and
+all22 normalization expf calls are recorded.209,494,756 Spike instructions are
+4.09% fewer than the current1800 build. ClangO3 alone changes the model object
+and retires217,424,612 (0.46% fewer); its native oracle/device/runtime artifacts
+are byte-identical toO2. The small isolated optimization screen is not separately
+queued. Neither proxy result establishes hardware performance. Receipts:
+`perf_records/tiny_fused_activation_poly_o3_spike.json` and
+`perf_records/tiny_activation_poly_host_o3_spike.json`.
+
+Captured ResNet classifier M1/N1000/K2048 GSIM execution measures594,580 to456,259
+cycles (23.26% fewer) forwideB/cacheA. All1,000 i32outputs and2,048 guard bytes
+match. Native full-model capture supplying its activation/hoisted weights matches
+all original outputs; the schedule itself has not been promoted into a full model.
+See `perf_records/resnet_classifier_captured_tail_gsim.json`.
+
+SmolVLA CPU PV accumulation is now traced to actual oneMKL2024.0 Update2 DEF Zen
+SGEMM dispatch, independently of ATenAVX2 softmax. It computes zero-seeded serial
+FMA panels192+192+128, then adds the prior destination aftereachpanel. Explicit
+policy `mkl_2024_0_u2_def_zen_k192` reproduces all12 heads and every inspected
+intermediate. The compatible conv4/Welford/PV192 trusted-input vision chain
+matches9,437,184 original outputs acrossall12layers bitexact. The unchanged full
+model gate stillFAILS (relativeL2 .016156828, maxabs .096718788). Its original
+Torch replay also reproduces all1,600 retainedgolden values; full-source boundary
+tracing now localizes remaining language/actor error. No full Smol hardware is
+admitted. Exact arithmetic compatibility remains optional and source/backend
+bound; no default frontend rewrite or reference replacement was made.
