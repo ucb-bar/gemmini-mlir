@@ -613,3 +613,53 @@ accumulation explains all30 initial embedding differences. Perturbing only those
 explicit backend-compatible xDSL schedule is being tested; frontend default
 f32-opmath correctness is preserved. Attention BF16-to-f32 accumulation uses a
 different dispatch and cannot inherit this convolution schedule blindly.
+
+### Strongest composed hardware and explicit activation option
+
+ResNet1795 verifies47,020,321 forward cycles,3.61% fewer than1789, with the dense
+separate-B-bank schedule composed with blocked64 mean and combined clamp/RNE.
+All1,000 original output bytes are exact; normal build identity includes the
+selected host object. Explicit scalar versus historical vector host selection
+produces byte-identical LLVM, model.o and final ELF for this transformed graph,
+so that duplicate was not queued. Compact full-output SHA reduces total emulated
+cycles to364,867,232 versus~1.897B in1789; this queue occupancy change is separate
+from timed forward arithmetic. A fresh leaf profile is being prepared because
+1777's earlier host/device attribution no longer describes this composition.
+
+Tiny1792 verifies866,822,103 cycles,15.86% fewer than1788 and51.85% fewer than1747.
+All256,000 output bytes remain exact to the prior compiled model and pass the
+original Torch gate. The explicit scalar activation polynomial replaces22 f32
+activation expf chains, retaining every normalization expf call. Native and
+actual Spike still reproduce every output bit on this capture; the arithmetic
+approximation is not universally bit-exact. Spike218,423,000 instructions are
+19.41% fewer than1792. FireSim1800 is queued, with full final-ELF zeroFSM and
+normal object-bound build identity. Receipt:
+`perf_records/tiny_scalar_quant_rne_act_poly_spike.json`.
+
+The needed generic abstraction is numerical rewrite selection independent of
+host scheduling. Merlin0ef811692 exposes `approximate_transcendental_activation`
+as a default-off scalar/vector f32 arithmetic option; the existing vectorized
+option implies it and separately selects vectorization. Unsupported bf16/f64
+types and normalization keep their existing lowering.48 focused tests pass,
+including actual scalar native arithmetic and unchanged normalization/default
+behavior. The fresh explicit-option build is byte-identical in finalELF,
+model.o, target/native LLVM and device.o to the fully executed trial. Every
+future model/input still requires its original accuracy gate.
+
+Two concrete device hypotheses were rejected after actual GSIM execution:
+transposed Tiny M8/N512/K2048 costs368,318 kernel cycles versus180,722 before
+online transpose costs; direct-conv alternating B banks costs777,710 versus
+775,788. Full outputs and guards match and finalELFs are zeroFSM in both arms.
+They were not promoted or queued. These are tested schedules, not proofs that
+all orientation or overlap alternatives lose. Receipts:
+`perf_records/tiny_short_m_orientation_gsim.json` and
+`perf_records/resnet_direct_b_bank_overlap_gsim.json`.
+
+SmolVLA's exact four-partial convolution fixes every initial embedding bit, but
+the full conv4/flash/old-balanced-normalization gate still FAILS:84/1,600 outputs
+outside the original tolerance, relativeL2 .019814495, maxabs .128245711. The
+explicit pinned Welford LayerNorm builder matches all786,432 original first-norm
+values and4.72M independent replay values; full integration is running. Default
+frontend/pipeline behavior is unchanged. Core integrates the explicit flash,
+masked attention, conv4 and LayerNorm builders. Complete source-bound gates
+determine whole-model admission.

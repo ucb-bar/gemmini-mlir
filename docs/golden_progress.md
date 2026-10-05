@@ -6,8 +6,8 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, combined clamp/RNE, blocked64 mean | 48,780,534 (1789) | All 1,000 golden output words exact | [1789](perf_records/resnet_reduction_block64_firesim1789.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host schedule | 1,030,207,906 (1788) | All 256,000 output digest exact; unchanged Torch gate passes | [1788](perf_records/tiny_scalar_host_firesim1788.json) |
+| ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, combined clamp/RNE, blocked64 mean | 47,020,321 (1795) | All 1,000 golden output words exact | [1795](perf_records/resnet_dense_split_block64_firesim1795.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE | 866,822,103 (1792) | All 256,000 output digest exact; unchanged Torch gate passes | [1792](perf_records/tiny_scalar_quant_rne_firesim1792.json) |
 | Full SmolVLA | Not admitted | Original full numerical gate still fails; source convolution/normalization/attention arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -31,9 +31,14 @@ timing with the strongest host path remains pending.
 Tiny's combined scalar host, quantization fusion and bounded clamp/RNE candidate
 passes the full native and actual Spike output gate, with all 256,000 outputs
 unchanged. It retires 271,019,239 instructions, 60.08% fewer than the earlier
-678,959,918 build. FireSim1792 is queued; no hardware cycle gain is claimed yet.
+678,959,918 build. FireSim1792 verifies 866,822,103 cycles, 15.86% fewer than1788 and51.85% fewer than1747.
 Its actual legalized model object participates in the normal build identity.
 See [target gate](perf_records/tiny_scalar_host_quant_rne_spike.json).
+The explicit scalar activation polynomial replaces22 activation expf chains while
+retaining every normalization expf call. All256,000 output bits remain unchanged
+in native and actual Spike on this capture; the approximation makes no universal
+bit-exact promise. It retires218,423,000 instructions (19.41% fewer than1792).
+FireSim1800 is queued. [Gate](perf_records/tiny_scalar_quant_rne_act_poly_spike.json).
 
 Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
 050009e and SDPA scale/causal/options semantics at 69c0370. The latter passes
