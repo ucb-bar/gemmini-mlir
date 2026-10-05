@@ -1,0 +1,137 @@
+{
+  "schema": "golden_captured_classifier_tail_screen_v1",
+  "source_binding": {
+    "source_region": "matmul_53",
+    "shape": [
+      1,
+      1000,
+      2048
+    ],
+    "output_dtype": "i32",
+    "scale": 1,
+    "bias": false,
+    "native_capture_whole_original_exact": true,
+    "source_prepared_sha256": "5457bc3c14f32111f5072dce1a924bb401e995835f45702df8f97aeec15425b1",
+    "activation_sha256": "78a41ad543da3fc81bc69e13f427fe25d90eb27692ff8f1aaeef98f277d5c051",
+    "weights_sha256": "f549ee55622b18ff2edfe19b1ca417d54b518f06f1f19314bf53d0201fbecba8",
+    "fixture_sha256": "ead43c62e0985acdcdeccb55a8cbab305659d1c824059788fbcf41e6aa12b07a",
+    "weight_entry_arg": 162,
+    "golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+  },
+  "fixture_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/classifier_fixture/fixture.npz",
+  "baseline": {
+    "schema": "gemmini_golden_gemm_gsim_probe_v1",
+    "shape": [
+      1,
+      1000,
+      2048
+    ],
+    "kernel_symbol": "gemmini_golden_gemm",
+    "block": [
+      1,
+      63
+    ],
+    "output_dtype": "i32",
+    "bias": false,
+    "input_amplitude": 1,
+    "scale": 1.0,
+    "relu": false,
+    "embedded_expected": true,
+    "static_inputs": true,
+    "wide_store": false,
+    "reuse_b": false,
+    "cache_b": false,
+    "cache_a": false,
+    "pipeline_m": false,
+    "prefetch_m": false,
+    "banked_m": false,
+    "wide_a": false,
+    "wide_b": false,
+    "separate_b_bank": false,
+    "status": "pass",
+    "kernel_cycles": 594580,
+    "engine_cycles_including_harness": 628332,
+    "elf_sha256": "545bdaa13f9278d55493d3fd5cb224dedd1d4b5cf4350a567af95e39014efaf8",
+    "target_ir_sha256": "6ceda55c9de429aa83b943336dc49a45137770fb88373379bb767a50b726affa",
+    "llvm_ir_sha256": "af1f828abec2feea375c0380c19aaf0dacae23b45e0262a247f6074bce767da3",
+    "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "545bdaa13f9278d55493d3fd5cb224dedd1d4b5cf4350a567af95e39014efaf8",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 4,
+        "1": 126,
+        "2": 2,
+        "3": 63,
+        "4": 126,
+        "6": 126,
+        "7": 1
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "stdout_tail": "GOLDEN_GEMM_CYCLES 594580\nGOLDEN_GEMM PASS M=1 N=1000 K=2048\n",
+    "stderr_tail": ""
+  },
+  "candidate": {
+    "schema": "gemmini_golden_gemm_gsim_probe_v1",
+    "shape": [
+      1,
+      1000,
+      2048
+    ],
+    "kernel_symbol": "gemmini_golden_gemm",
+    "block": [
+      1,
+      63
+    ],
+    "output_dtype": "i32",
+    "bias": false,
+    "input_amplitude": 1,
+    "scale": 1.0,
+    "relu": false,
+    "embedded_expected": true,
+    "static_inputs": true,
+    "wide_store": false,
+    "reuse_b": false,
+    "cache_b": false,
+    "cache_a": true,
+    "pipeline_m": false,
+    "prefetch_m": false,
+    "banked_m": false,
+    "wide_a": false,
+    "wide_b": true,
+    "separate_b_bank": false,
+    "status": "pass",
+    "kernel_cycles": 456259,
+    "engine_cycles_including_harness": 489926,
+    "elf_sha256": "c4ee6bc51129f37195f2c560013cdda3acf1cc9e4a311e5abc8a0ba97e5cce9a",
+    "target_ir_sha256": "7ec574d9e76ba689653f0234bae4eb3d11e05bd09a3e2ec61f6995f7829e2b7d",
+    "llvm_ir_sha256": "15f693dfa012c2ae9d29c8056c7c64d64f3a76bc905838d984dfdfc2a6276dd6",
+    "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "c4ee6bc51129f37195f2c560013cdda3acf1cc9e4a311e5abc8a0ba97e5cce9a",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 4,
+        "1": 32,
+        "2": 128,
+        "3": 63,
+        "4": 126,
+        "6": 126,
+        "7": 1
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "stdout_tail": "GOLDEN_GEMM_CYCLES 456259\nGOLDEN_GEMM PASS M=1 N=1000 K=2048\n",
+    "stderr_tail": ""
+  },
+  "fraction_reduction": 0.23263648289548922,
+  "scope": "Actual captured classifier input from exact whole native execution and immutable hoisted weights; i32 output contract unchanged, full1000 outputs+2048 guards pass on actual GSIM, final zeroFSM",
+  "queue_decision": "Positive standalone screen only; no automatic model promotion or hardware queue before whole-model exact gate"
+}

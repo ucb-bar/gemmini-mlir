@@ -282,3 +282,15 @@ activation/weight operands at M1/N1000/K2048 for wideB/cacheA tail handling.
 The remaining11.61M host cost makes further exact host fusion/materialization
 work relevant; device35.45M independently exceeds22M, requiring arithmetic or
 schedule improvement as well.
+
+## Captured classifier tail: positive GSIM screen
+
+Actual classifier M1/N1000/K2048 activation and immutable hoisted weight bytes
+were extracted during another full native execution that matched every original
+model output. Classifier weight argument162 matches the staged hoisted argument.
+The source i32/no-bias output contract is unchanged. Current bm1/bn63 schedule
+takes594,580 GSIM cycles; wideB64 plus cachedA takes456,259 (23.26% fewer).
+All1,000 i32 outputs and2,048 guard bytes pass, and both final ELFs have zeroFSM.
+Source/prepared/operand/fixture hashes are recorded. This validates the partial
+N1000 tail for the tested shape, but requires full-model integration and exact
+gating before hardware; no queue or default promotion yet.
