@@ -56,3 +56,13 @@ def test_domain_survives_verified_static_reshape_and_transpose():
     init=tensor.EmptyOp([],TensorType(i8,[64,16]))
     tr=TransposeOp(q.results[0],init.tensor, DenseArrayBase.from_list(i64,[1,0]))
     assert domain(tr.results[0])['minimum']==0
+
+
+def test_search_rejects_empty_or_out_of_type_domains_before_execution(tmp_path):
+    import pytest
+    from mlir_oot.golden_residual_domains import restricted_search
+    source=dict(lhs_scale=1.,rhs_scale=1.,output_scale=1.,relu=True)
+    valid=dict(minimum=-128,maximum=127)
+    for bad in (dict(minimum=1,maximum=0),dict(minimum=-129,maximum=127),dict(minimum=0.,maximum=127)):
+        with pytest.raises(ValueError):
+            restricted_search(source,[valid,bad],tmp_path/'never_executed',tmp_path)

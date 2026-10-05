@@ -59,6 +59,10 @@ def domain(value):
 
 
 def restricted_search(source,domains,engine,work):
+    if len(domains)!=2 or any(type(d.get(k)) is not int for d in domains for k in ('minimum','maximum')):
+        raise ValueError('two integer operand intervals required')
+    if any(not -128 <= d['minimum'] <= d['maximum'] <= 127 for d in domains):
+        raise ValueError('nonempty signed-i8 intervals required')
     expected=source_values(source)
     a=np.arange(-128,128,dtype=np.int32)[:,None]
     b=np.arange(-128,128,dtype=np.int32)[None,:]
