@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 from xdsl.dialects import func,tensor
 from xdsl.dialects.linalg.ops import TransposeOp
-from xdsl.dialects.builtin import ArrayAttr,DictionaryAttr,IntegerAttr,StringAttr,TensorType,UnitAttr,i8,i64
+from xdsl.dialects.builtin import ArrayAttr,DictionaryAttr,IntegerAttr,StringAttr,TensorType,UnitAttr,i8,i32,i64
 from xdsl.ir import Region
 from .frontend.parse import parse_module
 from .contraction_patterns import match_integer_gemm
@@ -25,6 +25,8 @@ from .conv_schedule import select_kernel
 from .golden_device_compile import compile_module
 from .direct_conv_binding import match as match_conv,_transpose,serialize,emit_c_adapter
 from .no_fsm_audit import audit_elf
+from .exact_integer_readout import derive as derive_readout, emit_readout, fixedpoint_candidate
+from .captured_residual_bundle import compile_adapter
 
 
 def dense_adapter(s,symbol,kernel):
@@ -56,6 +58,8 @@ def scalar_oracle(s,kernel,direct):
         loops=f'''for(int m=0;m<{s.m};m++) for(int n=0;n<{s.n};n++) {{
  uint32_t acc=0;for(int k=0;k<{s.k};k++)acc+=(uint32_t)((int32_t)a[m*{s.k}+k]*(int32_t)b[k*{s.n}+n]);
  int index=m*{s.n}+n;'''
+    if s.output_dtype == 'i32':
+        return f'''#include <stdint.h>\nvoid {kernel}(int8_t*a,int8_t*b,int32_t*c) {{{loops} c[index]=(int32_t)acc; }} }}\n'''
     return f'''#include <math.h>
 void {kernel}(int8_t*a,int8_t*b,int8_t*c) {{
 {loops}
@@ -81,7 +85,7 @@ def _replay_layouts(value,layouts):
     return operations,value
 
 
-def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None):
+def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=None,source_sha=None):
     dims=chain['dimensions'];operations=[]
     if direct:
         if direct.orientation!='spatial_first':raise ValueError('fused captured direct path needs spatial-first contraction')
@@ -91,6 +95,8 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None):
         weight=tensor.ExpandShapeOp(direct.weight,[],reassoc,list(wt.get_shape()),wt);operations.append(weight)
         inputs=[activation,weight.result]
     else:inputs=list(op.operands[:2])
+    if integer_readout is not None:
+        scratch=tensor.EmptyOp([],TensorType(i32,[dims.m,dims.n]));operations.append(scratch);inputs.append(scratch.tensor)
     ct=TensorType(i8,[dims.m,dims.n]);empty=tensor.EmptyOp([],ct);operations.append(empty)
     call=func.CallOp(symbol,[*inputs,empty.tensor],[ct]);operations.append(call)
     views,result=_replay_layouts(call.results[0],chain['layouts']);operations+=views
@@ -101,7 +107,7 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None):
     chain['quantize'].results[0].replace_all_uses_with(result)
     for old in reversed(chain['operations']):old.parent.erase_op(old)
     op.parent.erase_op(op)
-    attrs=ArrayAttr([DictionaryAttr({'bufferization.access':StringAttr(x)}) for x in ['read','read','write']])
+    attrs=ArrayAttr([DictionaryAttr({'bufferization.access':StringAttr(x)}) for x in (['read','read','write','write'] if integer_readout is not None else ['read','read','write'])])
     declaration=func.FuncOp(symbol,([x.type for x in inputs]+[ct],[ct]),Region(),visibility='private',arg_attrs=attrs)
     declaration.attributes['llvm.emit_c_interface']=UnitAttr();module.body.block.add_op(declaration)
     if numeric_contract is not None:
@@ -112,10 +118,25 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None):
             'source_region':StringAttr(numeric_contract['source_region']),
             'proof_domain':StringAttr('complete signed-int8 contraction accumulator interval'),
         })
+    if integer_readout is not None:
+        declaration.attributes['gemmini.integer_readout']=DictionaryAttr({'proof_sha256':StringAttr(hashlib.sha256(json.dumps(integer_readout,sort_keys=True).encode()).hexdigest()),'source_sha256':StringAttr(source_sha),'scratch_bytes':IntegerAttr(dims.m*dims.n*4,i64),'scratch_ownership':StringAttr('caller_owned_unique')})
     return declaration
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0):
+def integer_adapter(schedule,symbol,kernel,direct,proof):
+    adapter=emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel).replace('int8_t*c)','int32_t*c)').replace('int8_t*,int8_t*,int8_t*','int8_t*,int8_t*,int32_t*')
+    adapter=adapter.replace('memref2 *c)', 'memref2 *scratch,memref2 *c)')
+    output='(int32_t*)c->aligned+c->offset' if direct else '(int8_t*)c->aligned+c->offset'
+    adapter=adapter.replace(output,'(int32_t*)scratch->aligned+scratch->offset')
+    m,n=(schedule.oh*schedule.ow,schedule.cout) if direct else (schedule.m,schedule.n)
+    check=f'if(!scratch->aligned || scratch->offset<0 || scratch->sizes[0]!={m} || scratch->sizes[1]!={n} || scratch->strides[0]!={n} || scratch->strides[1]!=1 || ((uintptr_t)((int32_t*)scratch->aligned+scratch->offset)&3))__builtin_trap();'
+    adapter=adapter.replace(' if (', ' '+check+'\n if (',1)
+    readout=symbol+'_readout'
+    adapter=adapter.replace('*r=*c;',f'{readout}((const int32_t*)scratch->aligned+scratch->offset,(int8_t*)c->aligned+c->offset,{m*n});*r=*c;')
+    return emit_readout(proof,readout,fixedpoint=True)+adapter
+
+
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False):
     from merlin.runtime.captured_constants import verify_capture_constant
     if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
         raise ValueError('select an explicit zero- or one-step local output error policy')
@@ -133,7 +154,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         constant=verify_capture_constant(manifest_path=capture/'weights.safetensors.manifest.json',manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],safetensors_path=capture/'weights.safetensors',safetensors_sha256=pins['weights.safetensors']['sha256'],entry_argument_index=chain['bias'].index,source_shape=[dims.n],source_dtype='f32',max_payload_bytes=dims.n*4)
         biases=np.frombuffer(constant.logical_payload,dtype='<f4');bound=dims.k*16384
         proof=synthesize_bias(chain['scales'],biases,chain['reciprocal'],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
-        error=0
+        error=0;readout=None
         if proof['accepted_channels']!=dims.n:
             if np.any(biases!=0):
                 refused.append(dict(region=rid,reason='float transition proof refused',accepted_channels=proof['accepted_channels']));continue
@@ -141,35 +162,41 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             if solved['exact']:
                 proof=dict(solved,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
             else:
-                if max_output_lsb==0:
+                if exact_integer_readout:
+                    readout=derive_readout([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+                    if fixedpoint_candidate(readout) is None:
+                        raise ValueError('exact integer readout lacks a proved fixed-point estimate')
+                    proof=dict(readout,scale=1.0,source_bias='immutable all-zero channel vector',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n,store_scale_refusal=solved)
+                elif max_output_lsb==0:
                     refused.append(dict(region=rid,reason='no positive finite f32 store scale preserves all transitions',proof=solved));continue
-                bounded=prove_scale_bound([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
-                error=bounded['max_output_lsb_error']
-                if error>max_output_lsb:
-                    refused.append(dict(region=rid,reason='local readout error exceeds selected policy',proof=bounded));continue
-                proof=dict(bounded,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
+                else:
+                    bounded=prove_scale_bound([*chain['scales'],chain['reciprocal']],max(-(1<<31),-bound),min((1<<31)-1,bound),chain['relu'])
+                    error=bounded['max_output_lsb_error']
+                    if error>max_output_lsb:
+                        refused.append(dict(region=rid,reason='local readout error exceeds selected policy',proof=bounded));continue
+                    proof=dict(bounded,source_bias='immutable all-zero channel vector; f32 addition preserves quantized output',channels=dims.n,accepted_channels=dims.n,integer_bias=[0]*dims.n)
         if np.any(biases!=0) or any(x!=0 for x in proof['integer_bias']):
             refused.append(dict(region=rid,reason='nonzero bias requires explicit integer table ABI'));continue
         try:direct=match_conv(op)
         except ValueError:direct=None
         base=direct.shape if direct else choose_shape(dims)
-        schedule=replace(base,output_dtype='i8',scale=proof['scale'],relu=chain['relu'])
+        schedule=replace(base,output_dtype='i32' if readout else 'i8',scale=proof['scale'],relu=False if readout else chain['relu'])
         if not direct:schedule=replace(schedule,wide_store=True)
         symbol=f'gemmini_{"exact" if error==0 else "bounded"}_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         bias_index=chain['bias'].index
         numeric_contract=dict(max_output_lsb_error=error,selected_policy_limit=max_output_lsb,source_region=rid)
-        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract);declarations.append(declaration)
+        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract,integer_readout=readout,source_sha=source_sha);declarations.append(declaration)
         if direct:
             generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial);schedule=generator.conv
         else:
             generator,schedule_kind=GoldenGemm(schedule),'dense_gemm'
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
-        adapter=emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel)
+        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
         (work/'adapter.c').write_text(adapter)
-        subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-O2','-ffreestanding','-fno-builtin','-c',str(work/'adapter.c'),'-o',str(work/'adapter.o')],check=True,capture_output=True)
+        adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
-        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,compilation=compilation))
+        routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -183,7 +210,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout);print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

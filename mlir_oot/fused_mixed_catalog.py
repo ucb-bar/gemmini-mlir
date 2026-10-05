@@ -46,9 +46,22 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,prop
             if declaration.name=='func.func' and declaration.sym_name.data in symbols:
                 attrs=declaration.properties.get('arg_attrs')
                 access=[] if attrs is None else [x.data.get('bufferization.access') for x in attrs]
-                if [getattr(x,'data',None) for x in access]!=['read','read','write']:
+                route=next(x for x in requant['routes'] if x['symbol']==declaration.sym_name.data)
+                readout=route.get('integer_readout')
+                expected_access=['read','read','write','write'] if readout else ['read','read','write']
+                if [getattr(x,'data',None) for x in access]!=expected_access:
                     raise ValueError('fused declaration lost its bufferization access contract')
                 route=next(x for x in requant['routes'] if x['symbol']==declaration.sym_name.data)
+                if readout:
+                    attr=declaration.attributes.get('gemmini.integer_readout')
+                    expected_sha=hashlib.sha256(json.dumps(readout,sort_keys=True).encode()).hexdigest()
+                    schedule=route['schedule'];count=(schedule['h']-1)//schedule['stride']+1 if route['direct_conv'] else 0
+                    elements=count*((schedule['w']-1)//schedule['stride']+1)*schedule['cout'] if route['direct_conv'] else schedule['m']*schedule['n']
+                    if attr is None or attr.data['proof_sha256'].data!=expected_sha or attr.data['source_sha256'].data!=requant['source_sha256'] or attr.data['scratch_bytes'].value.data!=elements*4 or attr.data['scratch_ownership'].data!='caller_owned_unique':
+                        raise ValueError('integer readout source/proof/scratch binding changed')
+                    inputs=declaration.function_type.inputs.data
+                    if len(inputs)!=4 or str(inputs[2].get_element_type())!='i32' or inputs[2].get_shape()!=inputs[3].get_shape():
+                        raise ValueError('integer readout scratch geometry/type changed')
                 if 'numeric_contract' in route:
                     expected=route['numeric_contract']
                     contract=declaration.attributes.get('merlin.numeric_contract')
