@@ -94,6 +94,22 @@ class _GemminiOp(IRDLOperation):
             raise VerifyException(
                 f"{self.name}: scratchpad row {addr} exceeds the RTL depth {F.SPAD_ROWS}")
 
+    def _execute_source(self, key: str) -> None:
+        """Execute reads use the narrow operand lane, even for ACC addresses.
+
+        Stock ExecuteController and Scratchpad force execute read `full=false`;
+        A/B/D consume the scaled `data` response, not `full_data`. Bit29 selects
+        full-width rows on DMA readout only. Reject its use as an execute source
+        request rather than silently encoding an unsupported i32 read.
+        """
+        self._local(key)
+        addr = self.a(key)
+        if (addr != isa.GARBAGE_ADDR and addr & isa.ACC_ADDR_BIT
+                and addr & isa.ACC_FULL_ROW_BIT):
+            raise VerifyException(
+                f"{self.name}: `{key}` requests an unsupported full-width "
+                "accumulator execute read; stock execute operands are i8")
+
 
 @irdl_op_definition
 class FlushOp(_GemminiOp):
@@ -204,7 +220,7 @@ class PreloadOp(_GemminiOp):
     def verify_(self) -> None:
         for key in ("bd_cols", "bd_rows", "c_cols", "c_rows"):
             self._extent(key)
-        self._local("bd")
+        self._execute_source("bd")
         self._local("c")
 
 
@@ -218,7 +234,7 @@ class ComputeOp(_GemminiOp):
         self._extent("a_cols")
         self._extent("a_rows")
         if len(self.operands_) == 0:
-            self._local("a")
+            self._execute_source("a")
         elif len(self.operands_) == 1:
             if self.operands_[0].type != i64 or "a" in self.attributes:
                 raise VerifyException("gemmini.compute: dynamic A address must be one i64 operand")
@@ -230,7 +246,7 @@ class ComputeOp(_GemminiOp):
         else:
             raise VerifyException("gemmini.compute: at most one dynamic A address is supported")
         if "bd" in self.attributes:
-            self._local("bd")
+            self._execute_source("bd")
 
 
 @irdl_op_definition

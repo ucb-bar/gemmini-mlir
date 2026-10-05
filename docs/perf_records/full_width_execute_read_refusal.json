@@ -1,0 +1,274 @@
+{
+  "schema": "gemmini_full_width_execute_read_refusal_v1",
+  "status": "refused",
+  "requested_schedule": "Exact radix residual: D=old i32 accumulator C, zero A/B, destination C.accumulate gives2C, enabling base256 coefficient digits.",
+  "reason": "Stock execute accumulator sources force full=false and use narrowed i8 scaled response; DMA full-row capability does not provide full-width execute D. Cannot claim exact2C for arbitrary original i32 accumulators.",
+  "source_audit_scope": "Current clean Gemmini RTL checkout/config chain, SHA-pinned. Retained GSIM engine receipt binds its original derivation; that receipt's raw FIRRTL path is no longer present, so current Scala bytes are not claimed identical to the generated GSIM source.",
+  "gemmini_rtl_commit": "63f0b68a68f185a016a2993f2fb32e1661ea9e6c",
+  "source_audit": [
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala",
+      "sha256": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+      "assignments": [
+        {
+          "line": 141,
+          "text": "val d_address_rs1 = rs1s(preload_cmd_place).asTypeOf(local_addr_t)"
+        },
+        {
+          "line": 140,
+          "text": "val b_address_rs2 = rs2s(b_address_place).asTypeOf(local_addr_t)"
+        },
+        {
+          "line": 471,
+          "text": "io.acc.read_req(i).bits.full := false.B"
+        },
+        {
+          "line": 491,
+          "text": "io.acc.read_req(i).bits.full := false.B"
+        },
+        {
+          "line": 804,
+          "text": "val accReadData = if (ex_read_from_acc) VecInit(io.acc.read_resp.map(_.bits.data.asUInt)) else readData"
+        },
+        {
+          "line": 838,
+          "text": "val dataD = VecInit(dataD_unpadded.asTypeOf(Vec(block_size, inputType)).zipWithIndex.map { case (d, i) => Mux(i.U < cntl.d_unpadded_cols, d, inputType.zero)}.map(d => d.asTypeOf(inputType).withWidthOf(spatialArrayWeightType)))"
+        }
+      ]
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/Scratchpad.scala",
+      "sha256": "e4d3a12c700fe9edaf5c2ce2f283ec5233a98bd103fb04054160e8097cb89a4f",
+      "assignments": [
+        {
+          "line": 730,
+          "text": "bio.read.req.bits.full := false.B"
+        },
+        {
+          "line": 734,
+          "text": "bio.read.req.bits.full := write_dispatch_q.bits.laddr.read_full_acc_row"
+        }
+      ]
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/MeshWithDelays.scala",
+      "sha256": "c33f4d576301a902d33cb7ab9f3fd4c95dc9b76f605fb399037c55e03291e6cb",
+      "assignments": [
+        {
+          "line": 42,
+          "text": "val D_TYPE = Vec(meshColumns, Vec(tileColumns, weightType)) // TODO should this be weightType, inputType, or something like max(inputType, weightType)?"
+        }
+      ]
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/Configs.scala",
+      "sha256": "178c21ac741c89c08158efa71fb34da35d27b75bd50bde5116a5e19178f8391b",
+      "assignments": [
+        {
+          "line": 23,
+          "text": "inputType = SInt(8.W),"
+        },
+        {
+          "line": 24,
+          "text": "weightType = SInt(8.W),"
+        },
+        {
+          "line": 25,
+          "text": "accType = SInt(32.W),"
+        },
+        {
+          "line": 114,
+          "text": "mvin_scale_acc_args = None,"
+        },
+        {
+          "line": 208,
+          "text": "mvin_scale_acc_args = None,"
+        }
+      ]
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/chipyard/GemminiConfigs.scala",
+      "sha256": "0c9472831c2b53595b075c90a7175b40fd56b7472cfbb3ec14038b23305ba5e6",
+      "assignments": [
+        {
+          "line": 10,
+          "text": "class GemminiRocketConfig extends Config("
+        },
+        {
+          "line": 11,
+          "text": "new gemmini.DefaultGemminiConfig ++                            // use Gemmini systolic array GEMM accelerator"
+        },
+        {
+          "line": 45,
+          "text": "new gemmini.DefaultGemminiConfig ++                            // use Gemmini systolic array GEMM accel"
+        }
+      ]
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/firechip/chip/src/main/scala/TargetConfigs.scala",
+      "sha256": "9e1c8a611463f261d17039a37f1d5ae5cb4a068d5eaaa206d42c64bcbdf9405c",
+      "assignments": [
+        {
+          "line": 269,
+          "text": "class FireSimGemminiRocketConfig extends Config("
+        },
+        {
+          "line": 272,
+          "text": "new chipyard.GemminiRocketConfig)"
+        }
+      ]
+    }
+  ],
+  "experiments": {
+    "in_place": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/gsim/result.json",
+      "sha256": "c5c79dba29f23f76e6782dfab25e2fa42828d4e3f4a2f6fe49eeb641fedbb114",
+      "record": {
+        "status": "probe_failed",
+        "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/gsim/layer.elf",
+        "elf_sha256": "22fdebd9134aabb99d379c456644bcd733b6cf053837514fb060d9b2f8e7592c",
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "22fdebd9134aabb99d379c456644bcd733b6cf053837514fb060d9b2f8e7592c",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 8,
+            "1": 2,
+            "2": 2,
+            "3": 2,
+            "4": 2,
+            "6": 2,
+            "7": 2
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "completed": false,
+        "returncode": -1,
+        "stdout_tail": "",
+        "stderr_tail": " < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n",
+        "engine": {
+          "target": "gemmini",
+          "engine": "gsim",
+          "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+          "source": "derived",
+          "available": true,
+          "refused": false,
+          "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+          "flavour": "binary",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "receipt_status": "bound",
+          "receipt": {
+            "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+            "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+            "schema_version": "merlin.gsim-model-build.v2",
+            "status": "complete",
+            "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+            "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+            "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+            "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+            "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+            "provenance": null,
+            "tools": {
+              "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+              "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+              "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+            }
+          }
+        },
+        "engine_cycles": null
+      }
+    },
+    "seed_copy_distinct_destination": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/gsim_copy/result.json",
+      "sha256": "21a58f5fad551563fcfcd457392cd2e6b98d9825e12bc0ace66bb0214202537f",
+      "record": {
+        "status": "probe_failed",
+        "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/gsim_copy/layer.elf",
+        "elf_sha256": "6d07c93689fcc3372fc59c05716aa4dcf6e4ea88c0cef639eec0ef8fdfd93f0a",
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "6d07c93689fcc3372fc59c05716aa4dcf6e4ea88c0cef639eec0ef8fdfd93f0a",
+          "executable_sections": 3,
+          "custom_funct_counts": {
+            "0": 8,
+            "1": 2,
+            "2": 4,
+            "3": 2,
+            "4": 2,
+            "6": 2,
+            "7": 2
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "completed": false,
+        "returncode": -1,
+        "stdout_tail": "",
+        "stderr_tail": "tionStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusArg(\"gemmini_timeout\", 10000), \"pipeline stall\")\n\u001b[1;31m\u001b[0m\nAssertion failed: pipeline stall\n    at ReservationStation.scala:568 assert(cycles_since_issue < PlusAr",
+        "engine": {
+          "target": "gemmini",
+          "engine": "gsim",
+          "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+          "source": "derived",
+          "available": true,
+          "refused": false,
+          "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+          "flavour": "binary",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "receipt_status": "bound",
+          "receipt": {
+            "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+            "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+            "schema_version": "merlin.gsim-model-build.v2",
+            "status": "complete",
+            "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+            "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+            "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+            "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+            "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+            "provenance": null,
+            "tools": {
+              "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+              "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+              "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+            }
+          }
+        },
+        "engine_cycles": null
+      }
+    },
+    "strict_spike": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/spike.log",
+      "sha256": "2f7ec6949f6d2f61549bb5b02136de69720f947d0559dde6fa001ad364b88cc0",
+      "exit_code": 255,
+      "result": "Simulator out_of_range rejects accumulator execute D address; no numerical result."
+    },
+    "numeric_gate": "Neither experiment completed output/guard verification. Stall does not prove a numerical narrowing outcome or identify a unique causal dependency."
+  },
+  "artifact_sources": {
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/build_probe.py": "dd60b7d86416e86028f2b352116e95fde2fb8cbaf1f12bfeaa3995b4dee20ee6",
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/build_probe_copy.py": "842dfc369c38a1003c5b316ac91b971221de7bf6b1311be04f666bf1a913d80c",
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/probe.c": "9badc4d977a9b6a2a1229ae711c784dcf69f9a1c53019c3ee84ba1cae370c299",
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/object/kernel.gemmini.mlir": "8447c20aee76a9fa18f6d699f5862ebe6e5c15e144f5cee40861d7234592acf0",
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/acc-d/object_copy/kernel.gemmini.mlir": "da160ac8cdf013928f89865751a3e22afb9bdbc739ca7eb11b42dd55e39b3157"
+  },
+  "verifier_guard": {
+    "scope": "ComputeOp static a/bd and PreloadOp bd execute source addresses",
+    "refusal": "ACC_ADDR_BIT plus ACC_FULL_ROW_BIT; GARBAGE_ADDR exempt",
+    "preserved": "Scratchpad and narrow ACC execute sources; full-width accumulator MVOUT; dynamic A remains existing bounded scratchpad contract.",
+    "focused_tests": 38,
+    "positive_subtests": 12
+  },
+  "promotion": {
+    "kernel_enabled": false,
+    "hardware_queued": false,
+    "core_changes": false,
+    "approximation_or_gate_changes": false
+  },
+  "follow_up": "The existing direct signed-i8 diagonal family requires at least ceil(p/127)+ceil(q/127) positive chunks without a wider exact feedback lane. This bound applies to that family only; no global schedule optimality claim. Other legal implementations require separate source-domain proof and measured resource/dataflow support."
+}

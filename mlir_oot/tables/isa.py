@@ -50,7 +50,7 @@ GARBAGE_ADDR = 0xFFFFFFFF
 #: local-address metadata bits (LocalAddr.scala bundle order, MSB first)
 ACC_ADDR_BIT = 1 << (ADDR_LEN - 1)          # bit 31 -- address names the accumulator
 ACC_ACCUMULATE_BIT = 1 << (ADDR_LEN - 2)    # bit 30 -- add into the accumulator row
-ACC_FULL_ROW_BIT = 1 << (ADDR_LEN - 3)      # bit 29 -- read the full i32 accumulator row
+ACC_FULL_ROW_BIT = 1 << (ADDR_LEN - 3)      # bit 29 -- full i32 row for DMA readout
 
 MASK64 = (1 << 64) - 1
 
