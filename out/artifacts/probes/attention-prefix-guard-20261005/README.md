@@ -138,3 +138,52 @@ result. Generic numeric APIs are default-off; there is no production attention
 lowering or whole-model integration for this diagnostic yet. A general pass
 would need semantic recognition, original reduction/order/numeric contracts,
 integer/dyadic range proofs, guarded replay and real target cost selection.
+
+## Later certificate/packing screens
+
+Merlin b9ef128cb adds a division-free checked half-ulp induction for one zero
+chunk. It requires h(M+n*h)<=h with outward bounds, and otherwise refuses.
+Target v3_h1_checked qualifies all65536 original BF16 bits, gate0/rank0/DONE/rc0
+and all executable words:1,436,270,593 instructions,3.19% below strong factored
+candidate but0.41% above cheap gamma. Replay49408QK/8187PV equals strong.
+No extra hardware launch or selected strategy: scalar complete-cost negative
+versus fair control remains preserved.
+
+Merlin 6d04e8879 fixes a discovered generic FTZ/DAZ eligibility bug. Floating
+comparison tiny+tiny==subnormal_constant could falsely accept0==0 if operands
+flush. The guard now inspects raw computed float/double sums, both exactly2.
+Independent process loads a real fast-math constructor and proves refusal.
+Unsafe compile-mode tests run in separate processes to preserve pytest FENV.
+Stock RV64GC target qualifications above have no such flush mode and remain
+valid; no historical source/ELF/receipt is mutated.
+
+Merlin d183f14db adds dynamic signed BF16 radix packing through integer exponent
+and mantissa decoding. It replaces per-input fdiv.s/lrint conversion in the
+reference with exact nearest-even shift/clip, preserving all row scales and
+coefficients. Generic API supportsdigits1..3 and caller input/recon/digit/element
+strides; rejects nonfinite/nonBF16/wrongrounding/unsafecompile/invalidstep.
+Exhaustive65,280 finiteBF16 patterns per digit count, exact-rational RNE and
+independent original floating encoder agree; tails/ties/subnormals/layouts tested.
+New target v2_h1_integer_ieee qualifies all65536 original bits/gate0/rank0/DONE/
+rc0/noFSM, exactd3cc02df…b2ff, markerb8612c50bb00:1,446,846,123instructions.
+Packing190,170,058 versus173,693,036 (+9.49%), complete+1.15% versusplain gamma;
+remaining stages/replaycounts unchanged. Disassembly proves encode fdiv.s is
+removed, but extra integer/validation work costs instructions. **Do not promote
+it or claim cycles saved from this instruction result.** All12head native
+v2_h12_integer_native matches all786432 original bits; this is functional
+qualification, not a new targetall12 receipt or hardware cycle result.
+
+Merlin 1bed14e62 adds one checked gamma plan per actual reduction length. It
+moves invariant binary64 gamma/eta divisions outside the output loop. All
+legacy/prepared endpoint bits agree in independent oracle tests; mismatch of
+actual summarylength refuses. Plan origin/unmodified state, stableRNE and
+unobserved fenv/errno side effects are explicit semantic contracts. GCC emitted
+new v4_h1_prepared has both fdiv.d before loop; native originalheadbits/counts
+pass, strict target run is active. No performance result claimed until terminal.
+
+Current test count:38 numericalcertificate +8 packing tests,46total; generic
+no-regex, target-name and structural gates passed. Additional source snapshots
+for later cases freeze build-time builder; historical limitation above remains
+only for earlier cases. BF16 bit packing is an optional shared runtime helper,
+not a workload or target-specific production transform. Token counters remain
+unavailable perchild; shared parent goal attribution only.

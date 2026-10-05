@@ -36,17 +36,16 @@ def sha(path):
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--heads', type=int, default=1)
-    parser.add_argument('--variant', type=int, choices=(0,1,2,3,4), default=1)
+    parser.add_argument('--variant', type=int, choices=(0,1,2,3), default=1)
     parser.add_argument('--native-only', action='store_true')
     parser.add_argument('--tag', default='')
     parser.add_argument('--inline-outward', action='store_true')
-    parser.add_argument('--integer-pack', action='store_true')
     args = parser.parse_args(); assert 1 <= args.heads <= 12
     work = here/(f'v{args.variant}_h{args.heads}'+('_'+args.tag if args.tag else ''))
     # An experiment directory is an immutable source/ELF receipt once built.
     work.mkdir(parents=True, exist_ok=False)
     shutil.copyfile(here/'build_capsule.py', work/'build_capsule.py')
-    for name in ['ordered_fma_bounds.h', 'fma_product_norms.h', 'bf16_radix_pack.h']:
+    for name in ['ordered_fma_bounds.h', 'fma_product_norms.h']:
         shutil.copyfile(core/'merlin/runtime/c'/name, work/name)
     shutil.copyfile(core/'merlin/runtime/baremetal/spike/output_sha256.h', work/'output_sha256.h')
     shutil.copyfile(core/'out/artifacts/probes/attention-guard-refinement-20261005/selective_absnorm/guard_absnorm.c', work/'reference_guard.c')
@@ -72,7 +71,6 @@ void pv128_plane(const int8_t*a,const int8_t*b,int32_t*c){run(a,b,c,1024,64,128)
     (work/'native_stub.c').write_text(native_stub)
     native_command=[str(llvm/'clang'), '-std=c11','-O2','-fno-fast-math','-ffp-contract=off','-shared','-fPIC',f'-DHEADS={args.heads}',f'-DVARIANT={args.variant}','-DNATIVE=1','-DBUILD_HASH="native_functional_only"',str(work/'driver.c'),str(work/'native_stub.c'),str(work/'data.S'),'-lblas','-lm','-o',str(work/'native.so')]
     if args.inline_outward:native_command.insert(1,'-DINLINE_OUTWARD=1')
-    if args.integer_pack:native_command.insert(1,'-DINTEGER_PACK=1')
     subprocess.run(native_command, check=True, capture_output=True, text=True)
     native = ctypes.CDLL(str(work/'native.so')); native.attention_capsule_output.restype=ctypes.POINTER(ctypes.c_float)
     started=time.monotonic(); rc=native.main(); elapsed=time.monotonic()-started
@@ -80,11 +78,8 @@ void pv128_plane(const int8_t*a,const int8_t*b,int32_t*c){run(a,b,c,1024,64,128)
     output=np.ctypeslib.as_array(native.attention_capsule_output(), shape=(args.heads*1024*64,)).copy().reshape(args.heads,1024,64)
     assert np.array_equal(output.view('u4'), arrays[3].view('u4')), 'native original bit audit'
     np.save(work/'output.npy',output)
-    strategies=['absolute_device_original_gamma','holder_metadata_signed_prefix_half_ulp_source_parts','holder_metadata_signed_prefix_gamma_source_parts','holder_metadata_checked_half_ulp_source_parts','holder_metadata_prepared_signed_prefix_gamma_source_parts']
+    strategies=['absolute_device_original_gamma','holder_metadata_signed_prefix_half_ulp_source_parts','holder_metadata_signed_prefix_gamma_source_parts','holder_metadata_checked_half_ulp_source_parts']
     qualification={'schema':'original_attention_end_to_end_capsule_v1','scope':f'{args.heads} complete original first-vision attention heads; not whole model, other attention layers, or hardware performance','variant':strategies[args.variant],'physical_output_dtype':'bf16','digest_encoding':'lossless bf16 widening to IEEE f32 little endian','element_count':output.size,'original_gate':{'atol':.03125,'rtol':.02,'native_pass':True,'native_original_bit_mismatches':0},'native_functional_seconds':elapsed,'native_reference_sha256':sha(work/'output.npy'),'native_reference_raw_f32le_sha256':hashlib.sha256(output.tobytes()).hexdigest(),'original_fixture_sha256':{str(path):sha(path) for path in pin_paths},'token_usage_available':False,'token_attribution':'Root retains shared campaign snapshots; exact per-agent/experiment attribution unavailable.'}
-    numeric_sources=[work/'driver.c',work/'reference_guard.c',work/'ordered_fma_bounds.h',work/'fma_product_norms.h',work/'bf16_radix_pack.h',work/'output_sha256.h',work/'build_capsule.py']
-    source_closure={str(path):sha(path) for path in numeric_sources}
-    qualification.update({'source_closure_sha256':source_closure,'native_compiler_argv':native_command,'native_compiler_sha256':sha(llvm/'clang'),'native_library_sha256':sha(work/'native.so'),'integer_pack':args.integer_pack})
     (work/'native_qualification.json').write_text(json.dumps(qualification,indent=2)+'\n')
     print('NATIVE_QUALIFIED',qualification,flush=True)
     if args.native_only:return
@@ -100,11 +95,11 @@ void pv128_plane(const int8_t*a,const int8_t*b,int32_t*c){run(a,b,c,1024,64,128)
     target_flags=['-std=gnu11','-O2','-fno-fast-math','-ffp-contract=off','-mcmodel=medany','-march=rv64gc','-mabi=lp64d','-fno-common','-fno-builtin-printf']
     subprocess.run([str(compiler),*target_flags,'-c',str(work/'data.S'),'-o',str(dataobj)],check=True,capture_output=True)
     objects.append(dataobj)
-    marker=hashlib.sha256(json.dumps({'source':source_closure,'objects':{str(p):sha(p) for p in objects},'variant':args.variant,'heads':args.heads,'inline_outward':args.inline_outward,'integer_pack':args.integer_pack},sort_keys=True).encode()).hexdigest()[:12]
+    source_closure={str(path):sha(path) for path in [work/'driver.c',work/'reference_guard.c',work/'ordered_fma_bounds.h',work/'fma_product_norms.h',work/'output_sha256.h',work/'build_capsule.py']}
+    marker=hashlib.sha256(json.dumps({'source':source_closure,'objects':{str(p):sha(p) for p in objects},'variant':args.variant,'heads':args.heads,'inline_outward':args.inline_outward},sort_keys=True).encode()).hexdigest()[:12]
     mainobj=work/'main.o'
     command=[str(compiler),*target_flags,f'-DHEADS={args.heads}',f'-DVARIANT={args.variant}',f'-DBUILD_HASH="{marker}"','-c',str(work/'driver.c'),'-o',str(mainobj)]
     if args.inline_outward:command.insert(1,'-DINLINE_OUTWARD=1')
-    if args.integer_pack:command.insert(1,'-DINTEGER_PACK=1')
     subprocess.run(command,check=True,capture_output=True,text=True)
     objects.append(mainobj)
     # Compile the provider-owned curated startup/syscalls, then link libc for

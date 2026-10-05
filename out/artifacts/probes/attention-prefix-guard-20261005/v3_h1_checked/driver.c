@@ -7,9 +7,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "ordered_fma_bounds.h"
-#ifdef INTEGER_PACK
-#include "bf16_radix_pack.h"
-#endif
 #include "fma_product_norms.h"
 #include "output_sha256.h"
 #ifdef INLINE_OUTWARD
@@ -69,16 +66,6 @@ void __assert_func(const char *file,int line,const char *function,const char *ex
 static void encode(const float *source, float *reconstructed, int8_t *planes,
                    double *steps, merlin_fma_operand_norm *norms, int rows, int k,
                    int transpose_planes) {
-#ifdef INTEGER_PACK
-  const merlin_fma_bound beginning=merlin_fma_bound_begin();assert(beginning.valid);
-  for(int row=0;row<rows;row++) {
-    float step;
-    assert(merlin_bf16_radix_row(&beginning,source+row*k,k,1,reconstructed+row*k,1,
-        planes+(transpose_planes?row:row*k),rows*k,transpose_planes?rows:1,DIGITS,&step));
-    steps[row]=step;
-    assert(merlin_fma_operand_summarize(source+row*k,reconstructed+row*k,k,1,1,norms+row));
-  }
-#else
   for (int row=0;row<rows;row++) {
     float maximum=0;
     for(int z=0;z<k;z++) maximum=fmaxf(maximum,fabsf(source[row*k+z]));
@@ -97,7 +84,6 @@ static void encode(const float *source, float *reconstructed, int8_t *planes,
     }
     assert(merlin_fma_operand_summarize(source+row*k,reconstructed+row*k,k,1,1,norms+row));
   }
-#endif
 }
 
 static void integer_center(int m,int n,int k,
@@ -136,9 +122,6 @@ static void integer_center(int m,int n,int k,
 
 static void certify(int elements,int length,float *lo,float *hi,int original_gamma) {
   const merlin_fma_bound beginning=merlin_fma_bound_begin();assert(beginning.valid);
-#if VARIANT==4
-  const merlin_fma_zero_gamma_plan plan=merlin_fma_zero_gamma_prepare(&beginning,(size_t)length);assert(plan.valid);
-#endif
   const double lu=length*0x1p-24,g=nextafter(lu/(1-lu),INFINITY);
   const double eta=nextafter(length*0x1p-149/(1-lu),INFINITY);
   for(int t=0;t<elements;t++) {
@@ -146,10 +129,6 @@ static void certify(int elements,int length,float *lo,float *hi,int original_gam
       const double s=ua(absolute[t],repr[t]);
       const double radius=ua(repr[t],ua(um(g,s),eta));
       lo[t]=fl(da(center[t],-radius));hi[t]=fu(ua(center[t],radius));
-    } else if(VARIANT==4) {
-#if VARIANT==4
-      assert(merlin_fma_zero_gamma_apply(&plan,(merlin_fma_chunk){center[t],center[t],absolute[t],repr[t],(size_t)length},lo+t,hi+t));
-#endif
     } else if(VARIANT==3) {
       assert(merlin_fma_zero_chunk_half_ulp(&beginning,(merlin_fma_chunk){center[t],center[t],absolute[t],repr[t],(size_t)length},lo+t,hi+t));
     } else if(VARIANT==2) {

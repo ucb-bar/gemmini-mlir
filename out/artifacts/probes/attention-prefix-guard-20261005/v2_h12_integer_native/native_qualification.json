@@ -1,0 +1,59 @@
+{
+  "schema": "original_attention_end_to_end_capsule_v1",
+  "scope": "12 complete original first-vision attention heads; not whole model, other attention layers, or hardware performance",
+  "variant": "holder_metadata_signed_prefix_gamma_source_parts",
+  "physical_output_dtype": "bf16",
+  "digest_encoding": "lossless bf16 widening to IEEE f32 little endian",
+  "element_count": 786432,
+  "original_gate": {
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "native_pass": true,
+    "native_original_bit_mismatches": 0
+  },
+  "native_functional_seconds": 2.5354899938683957,
+  "native_reference_sha256": "403bcf93c907966ae4e0c55893bcd04fcee08b18ffbddedd463a401f6438b437",
+  "native_reference_raw_f32le_sha256": "62fe429186d656bb088629622d547d26b8655107ed14d8dffbf9b7438c7339ee",
+  "original_fixture_sha256": {
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input0.npy": "2f7867055879b39b78587a853aaa2c48e79c13f096e3e894e6223b1761284904",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input1.npy": "ca682117226ee876b385cc84945945069c10a9f1bc08c1d5bad8d9f50f16222d",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/input2.npy": "e552f559a3c17f54f3b5ffb5646659dd83de8aaea3b2acb062a9a8fa31405938",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_vision_layer0_sdpafix/host/torch_sdpa/output.npy": "001f88713135f4bca4bebf8bbc24b5df5121b3c5dd6bf90dff1d68513396e241"
+  },
+  "token_usage_available": false,
+  "token_attribution": "Root retains shared campaign snapshots; exact per-agent/experiment attribution unavailable.",
+  "source_closure_sha256": {
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/driver.c": "6d353782b9f03439b4e6f7aeb2c695426afa617546d547fa3a98362e55a13884",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/ordered_fma_bounds.h": "c547943e1c6d5b754292dbe02d0305e9ef68510e69343dab14f4512e85da298d",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/fma_product_norms.h": "d397c08c8bbceafd965bb243f2effdc8335f379e99860fe13e66bc2139b3dccf",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/bf16_radix_pack.h": "2051496ddccd7fe3ab580df897d5fc703e2279c768812183178fd6f5a38f1944",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/output_sha256.h": "67c2e67a1c3b82f4619542a747bae359fc73abbaad4ec6cf94c2e69776ced251",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/build_capsule.py": "9941bf67e55e4970d3a70249b8cf7ab68e2fe7786d5e76bc3b641b80950b5d43"
+  },
+  "native_compiler_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-DINTEGER_PACK=1",
+    "-DINLINE_OUTWARD=1",
+    "-std=c11",
+    "-O2",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-shared",
+    "-fPIC",
+    "-DHEADS=12",
+    "-DVARIANT=2",
+    "-DNATIVE=1",
+    "-DBUILD_HASH=\"native_functional_only\"",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/driver.c",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/native_stub.c",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/data.S",
+    "-lblas",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v2_h12_integer_native/native.so"
+  ],
+  "native_compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+  "native_library_sha256": "6b2d16f33166c4ceec96dcbb35ca62049eb1c157fb596e5d144af4363ef82bc6",
+  "integer_pack": true
+}

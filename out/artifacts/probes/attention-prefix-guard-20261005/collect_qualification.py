@@ -77,7 +77,7 @@ def collect(case: Path, process_exit_code: int) -> dict:
     numeric_closure = {}
     historical_builder = {}
     for path, expected in build["source_closure_sha256"].items():
-        if Path(path).name == "build_capsule.py":
+        if Path(path).name == "build_capsule.py" and Path(path).parent != case:
             historical_builder[path] = {"recorded_sha256": expected, "current_sha256": sha(Path(path)),
                 "frozen_build_time_copy_available": False}
         else:
@@ -100,7 +100,9 @@ def collect(case: Path, process_exit_code: int) -> dict:
         raise ValueError("stage attribution exceeds complete timed interval")
     strategies = ["exact_device_absnorm_original_gamma",
                   "holder_metadata_signed_prefix_half_ulp_source_parts",
-                  "holder_metadata_signed_prefix_gamma_source_parts"]
+                  "holder_metadata_signed_prefix_gamma_source_parts",
+                  "holder_metadata_checked_half_ulp_source_parts",
+                  "holder_metadata_prepared_signed_prefix_gamma_source_parts"]
     return {
         "schema": "original_attention_strict_spike_qualification_v1",
         "qualified": True,

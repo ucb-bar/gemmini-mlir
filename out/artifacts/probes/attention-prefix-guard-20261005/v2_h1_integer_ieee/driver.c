@@ -136,9 +136,6 @@ static void integer_center(int m,int n,int k,
 
 static void certify(int elements,int length,float *lo,float *hi,int original_gamma) {
   const merlin_fma_bound beginning=merlin_fma_bound_begin();assert(beginning.valid);
-#if VARIANT==4
-  const merlin_fma_zero_gamma_plan plan=merlin_fma_zero_gamma_prepare(&beginning,(size_t)length);assert(plan.valid);
-#endif
   const double lu=length*0x1p-24,g=nextafter(lu/(1-lu),INFINITY);
   const double eta=nextafter(length*0x1p-149/(1-lu),INFINITY);
   for(int t=0;t<elements;t++) {
@@ -146,10 +143,6 @@ static void certify(int elements,int length,float *lo,float *hi,int original_gam
       const double s=ua(absolute[t],repr[t]);
       const double radius=ua(repr[t],ua(um(g,s),eta));
       lo[t]=fl(da(center[t],-radius));hi[t]=fu(ua(center[t],radius));
-    } else if(VARIANT==4) {
-#if VARIANT==4
-      assert(merlin_fma_zero_gamma_apply(&plan,(merlin_fma_chunk){center[t],center[t],absolute[t],repr[t],(size_t)length},lo+t,hi+t));
-#endif
     } else if(VARIANT==3) {
       assert(merlin_fma_zero_chunk_half_ulp(&beginning,(merlin_fma_chunk){center[t],center[t],absolute[t],repr[t],(size_t)length},lo+t,hi+t));
     } else if(VARIANT==2) {
