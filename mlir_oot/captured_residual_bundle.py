@@ -40,12 +40,21 @@ def policy(max_output_lsb):
                 scope='per residual output; not a whole-model quality guarantee')
 
 
-def inspect(quantize, max_output_lsb=0):
+def inspect(quantize, max_output_lsb=0, *, implementation="gemmini"):
+    if implementation not in ("gemmini", "cpu_lut"):
+        raise ValueError("unknown residual implementation")
+    if implementation == "cpu_lut" and max_output_lsb != 0:
+        raise ValueError("CPU lookup residual requires exact policy")
     numeric = policy(max_output_lsb)
     source = match(quantize)
     ratios = [f32(source[k] / source['output_scale']) for k in ('lhs_scale', 'rhs_scale')]
     factor = max(1.0, *ratios)
     proof = prove(**source, lhs_load=f32(ratios[0]/factor), rhs_load=f32(ratios[1]/factor), readout=factor)
+    if implementation == 'cpu_lut':
+        table = source_table(source)
+        proof = dict(proof='exhaustive source float32 lookup table', pairs=65536,
+                     exact=True, mismatched_pairs=0, max_output_lsb_error=0,
+                     source=source, primitive={}, table_sha256=hashlib.sha256(table.tobytes()).hexdigest())
     if proof['max_output_lsb_error'] > max_output_lsb:
         raise ValueError('complete residual proof exceeds explicitly requested output-LSB policy')
     shape = list(quantize.results[0].type.get_shape())
@@ -158,6 +167,30 @@ void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*identity,int8_
 '''
 
 
+def source_table(source):
+    import numpy as np
+    if any(not math.isfinite(source[k]) or source[k] <= 0 for k in ('lhs_scale','rhs_scale','output_scale')):
+        raise ValueError('positive finite source scales required')
+    a=np.arange(-128,128,dtype=np.float32)[:,None]
+    b=np.arange(-128,128,dtype=np.float32)[None,:]
+    z=np.add(a*np.float32(source['lhs_scale']), b*np.float32(source['rhs_scale']),dtype=np.float32)
+    if source['relu']:z=np.maximum(z,np.float32(0))
+    return np.clip(np.rint(z*np.float32(f32(1.0/source['output_scale']))),0 if source['relu'] else -128,127).astype(np.int8)
+
+
+def lookup_kernel(route,kernel):
+    table=source_table(route['proof']['source'])
+    values=','.join(str(int(x)) for x in table.ravel())
+    return f'''#include <stdint.h>
+static const int8_t {kernel}_table[65536] __attribute__((aligned(64)))={{{values}}};
+void {kernel}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*identity,int8_t*scratch) {{
+ (void)identity;(void)scratch;
+ for(int i=0;i<{route['m']*64};i++)
+  c[i]={kernel}_table[((unsigned)((int)a[i]+128)<<8)|(unsigned)((int)b[i]+128)];
+}}
+'''
+
+
 def compile_adapter(source, output, llvm_bin):
     source,output,llvm_bin=map(Path,(source,output,llvm_bin))
     command=[str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin','-c',str(source),'-o',str(output)]
@@ -165,7 +198,11 @@ def compile_adapter(source, output, llvm_bin):
     return dict(compiler_argv=command,compiler_sha256=sha(llvm_bin/'clang'),source_sha256=sha(source),object_sha256=sha(output))
 
 
-def build(capture,llvm_bin,output,*,max_output_lsb=0):
+def build(capture,llvm_bin,output,*,max_output_lsb=0,implementation="gemmini"):
+    if implementation not in ("gemmini", "cpu_lut"):
+        raise ValueError("unknown residual implementation")
+    if implementation == "cpu_lut" and max_output_lsb != 0:
+        raise ValueError("CPU lookup residual requires exact policy")
     capture,llvm_bin,output=map(Path,(capture,llvm_bin,output));numeric=policy(max_output_lsb)
     output.mkdir(parents=True,exist_ok=False)
     source=(capture/'model.mlir').read_text();source_sha=sha(capture/'model.mlir');receipt_sha=sha(capture/'capture_receipt.json')
@@ -176,18 +213,26 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0):
     for op in list(module.walk()):
         if op_name(op)!='quant_ext.quantize_per_tensor':continue
         region=getattr(op.attributes.get('prov.region_id'),'data','')
-        try:route=inspect(op,max_output_lsb)
+        try:route=inspect(op,max_output_lsb,implementation=implementation)
         except ValueError as error:
             refused.append(dict(region=region,reason=str(error)));continue
         symbol=f'gemmini_residual_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         declarations.append(rewrite(op,route,symbol,source_sha,receipt_sha))
-        scales=route['proof']['primitive']
-        device=build_kernel(route['m'],64,lhs_scale=scales['lhs_load'],rhs_scale=scales['rhs_load'],output_scale=scales['readout'],relu=route['proof']['source']['relu'])
-        device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
-        compilation=compile_module(device,llvm_bin,work)
-        c=adapter(route,symbol,kernel);(work/'adapter.c').write_text(c)
-        adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
-        objects.extend([work/'kernel.o',work/'adapter.o']);native.append(c+native_oracle(route,kernel))
+        if implementation == 'cpu_lut':
+            work.mkdir(parents=True)
+            c=adapter(route,symbol,kernel)+lookup_kernel(route,kernel)
+            (work/'adapter.c').write_text(c)
+            adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
+            compilation=dict(implementation='cpu_lut',table_bytes=65536)
+            objects.append(work/'adapter.o');native.append(c)
+        else:
+            scales=route['proof']['primitive']
+            device=build_kernel(route['m'],64,lhs_scale=scales['lhs_load'],rhs_scale=scales['rhs_load'],output_scale=scales['readout'],relu=route['proof']['source']['relu'])
+            device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
+            compilation=compile_module(device,llvm_bin,work)
+            c=adapter(route,symbol,kernel);(work/'adapter.c').write_text(c)
+            adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
+            objects.extend([work/'kernel.o',work/'adapter.o']);native.append(c+native_oracle(route,kernel))
         routes.append({k:v for k,v in route.items() if k not in ('inputs','cleanup_ops')}|dict(region=region,symbol=symbol,kernel=kernel,compilation=compilation,adapter_compilation=adapter_compilation,proof_sha256=hashlib.sha256(canonical(route['proof']).encode()).hexdigest()))
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     (output/'native_oracle.c').write_text('\n'.join(native))
@@ -198,13 +243,13 @@ def build(capture,llvm_bin,output,*,max_output_lsb=0):
         subprocess.run([str(linker),'-r',*[str(x) for x in objects],'-o',str(linked)],check=True,capture_output=True)
         audit=audit_elf(linked.read_bytes())
         if audit['status']!='pass':raise ValueError('residual object contains forbidden instruction')
-    result=dict(schema='gemmini_captured_residual_bundle_v1',source_sha256=source_sha,capture_receipt_sha256=receipt_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=sha(output/'rewritten.mlir'),object_sha256=sha(linked) if objects else None,native_oracle_sha256=sha(output/'native_oracle.c'),numeric_policy=numeric,routes=routes,refused=refused,nofsm_audit=audit,scope='Explicit local arithmetic experiment; unchanged original golden and whole-model quality gate still required; no default promotion.')
+    result=dict(schema='gemmini_captured_residual_bundle_v1',implementation=implementation,source_sha256=source_sha,capture_receipt_sha256=receipt_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=sha(output/'rewritten.mlir'),object_sha256=sha(linked) if objects else None,native_oracle_sha256=sha(output/'native_oracle.c'),numeric_policy=numeric,routes=routes,refused=refused,nofsm_audit=audit,scope='Explicit local arithmetic experiment; unchanged original golden and whole-model quality gate still required; no default promotion.')
     (output/'residual.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0);p.add_argument('--implementation',choices=('gemmini','cpu_lut'),default='gemmini');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,max_output_lsb=a.max_output_lsb,implementation=a.implementation)
     print(json.dumps(dict(routes=len(result['routes']),refused=len(result['refused']),numeric_policy=result['numeric_policy']),indent=2))
 
 if __name__=='__main__':main()
