@@ -7,7 +7,7 @@ The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles,
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet closed recipe, exact52/wide16/virtual padding/layout/runtime, dense separate B bank, clamp/RNE, packed guarded mean, pre-stem destination reuse and classifier wide-B/resident-A | 44,507,889 (1824) | All 1,000 golden output words exact | [1824](perf_records/resnet_packed_mean_firesim1824.json) |
-| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + four independent exact scalar accumulators | 615,651,105 (1821) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1821](perf_records/tiny_four_output_firesim1821.json) |
+| Full 22-layer TinyLlama, 8 tokens, large-N/runtime, scalar host + quantization fusion + clamp/RNE + explicit fused activation polynomial + Clang O3 + four independent exact scalar accumulators and partial K-unroll2 | 612,282,210 (1828) | All 256,000 captured output bits unchanged; unchanged Torch gate passes | [1828](perf_records/tiny_four_output_unroll2_firesim1828.json) |
 | Full SmolVLA | Not admitted | Original full elementwise gate remains atol=0.03125, rtol=0.02; source RoPE arithmetic diagnosis continues | Optimization log |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -187,7 +187,7 @@ The complete ResNet capture now compiles to an RV64GC ELF with all54 contraction
 
 ## Current exact candidates and compilation contract
 
-Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. Four independent output accumulators improve this to615,651,105 in1821,5.02% fewer than1816; every output bit is unchanged. All155 device contractions and the previously selected activation approximation remain unchanged. Two-output1825 and four-output with partial K-unroll2 in1828 are pending hardware comparison. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
+Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. Four independent output accumulators improve this to615,651,105 in1821,5.02% fewer than1816; every output bit is unchanged. Partial K-unroll2 improves this further to612,282,210 in1828,0.547% fewer than1821. Two-output1825 measures622,639,906 and is rejected in favor of four outputs. All155 device contractions and the previously selected activation approximation remain unchanged. Partial K-unroll4 is queued as1832. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
 
 The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes. FireSim1819 measured46,680,853cycles,0.79% above1812; this arm is not the best recipe and its driver omitted explicit host scheduling. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
 
@@ -216,3 +216,15 @@ tests retain infinities, signed zeros, NaN payloads and subnormals;44 related
 tests pass. The trusted191,535-value softmax fixture is exact through full
 preparation. The fresh whole-model gate remains pending; this does not admit
 SmolVLA to hardware or relax its original elementwise criterion.
+
+The explicit fresh-output descriptor interface passes all1,000 original native
+and actualSpike outputs, zeroFSM and7 focused ownership/refusal tests. Caller
+contracts reproduce the qualified host MLIR and compiled bridge byte-identically;
+stock1831 is pending. See [ownership contract](descriptor_writer_contract.md).
+
+Resident-input direct convolution reduces the matched H14/W14/C256 capsule from
+675,375 to533,649 GSIM cycles with all50,176 outputs and guards exact. A DMA
+block-stride field had been silently dropped by lowering; its corrected encoding
+now has a regression gate. Five source-bound whole-model routes are qualifying
+with separate preserved scale proofs. This is a capsule gain, not yet a whole
+FireSim result. See [resident study](resident_convolution_study.md).
