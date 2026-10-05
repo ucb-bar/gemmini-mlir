@@ -74,3 +74,34 @@ A future automatic loop can select this exact bundle after proving its pattern
 and comparing measured costs, retaining the float fallback and immutable
 reference. Broader axes, dynamic shapes and encoded layouts require their own
 binding proofs.
+
+## Explicit packed NHWC variant
+
+`--packed-nhwc` proves the existing named transpose has permutation[0,3,1,2]
+from static NHWC to BCHW and consumes its physical input directly. It keeps
+each logical channel's H/W index order in the ambiguous-sum replay. The current
+packed implementation requires channels divisible by eight. Sizes/strides and
+the original permutation are recorded in the bundle.
+
+For aligned little-endian input, xor128 biases eight signed bytes to unsigned
+values. Alternate bytes widen to four unsigned16-bit lanes in each of two
+64-bit sums. Count at most128 bounds every lane by32640, so carries cannot cross
+lanes. Subtracting count*128 recovers every exact signed integer sum. Unaligned
+input uses the scalar strided path. Byte order is checked at compile time, and
+word loads use a may_alias type without a restrict promise.
+
+The complete model passes native and actualSpike with all1,000 original words
+unchanged, retiring10,214,792 instructions (7.02% fewer than1812). Both fusion
+environment flags and explicit host scheduling are pinned to the control. The
+packed host scheduling true/false builds in fact have identical model objects
+and finalELFs; no duplicate run was used. StockFireSim1824 measures cycles.
+Twenty-three focused tests include packed/unpacked, every count2 pair and count49
+sum, both reduction orders, aligned/unaligned data, count128, multiple batches,
+guards and layout refusals. See
+[packed gate](perf_records/resnet_packed_guarded_mean_spike.json).
+
+The earlier contiguous guarded mean1819 measured46,680,853cycles,0.79% above
+1812. It omitted explicit host scheduling and retained a final layout
+transpose, so this timing alone does not isolate either factor's cost. It is
+not the best recipe. The packed variant removes the transpose under a source
+proof; hardware comparison still decides admission.

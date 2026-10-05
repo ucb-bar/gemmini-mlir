@@ -2,7 +2,7 @@ from pathlib import Path
 import pytest
 from mlir_oot.frontend.parse import parse_module
 from mlir_oot.golden_resadd_proof import op_name
-from mlir_oot.guarded_mean_bundle import inspect, rewrite
+from mlir_oot.guarded_mean_bundle import inspect, packed_nhwc_route, rewrite
 from mlir_oot.direct_conv_binding import serialize
 
 
@@ -40,3 +40,29 @@ def test_bound_input_geometry_and_writer_survive_serialization():
 ])
 def test_unproved_source_variants_refuse(old,new):
     with pytest.raises(ValueError):inspect(quantizer(parse_module(source().replace(old,new))))
+
+
+def packed_source():
+    text=source().replace('tensor<1x2x1x2','tensor<1x8x1x2').replace('tensor<1x2x','tensor<1x8x')
+    text=text.replace('%a:tensor<1x8x1x2xi8>', '%physical:tensor<1x1x2x8xi8>')
+    return text.replace(' %dq =', ''' %init_transpose = tensor.empty() : tensor<1x8x1x2xi8>
+ %a = linalg.transpose ins(%physical:tensor<1x1x2x8xi8>) outs(%init_transpose:tensor<1x8x1x2xi8>) permutation=[0,3,1,2]
+ %dq =''')
+
+
+def test_packed_binding_uses_original_nhwc_input_and_preserves_output_shape():
+    module=parse_module(packed_source());q=quantizer(module)
+    route=packed_nhwc_route(inspect(q));physical=route['input']
+    assert route['input_matrix_shape']==[2,8] and route['output_shape']==[1,8]
+    rewrite(module,q,route,'packed_test','b'*64)
+    module.verify();parse_module(serialize(module,[])).verify()
+    call=next(o for o in module.walk() if o.name=='func.call')
+    value=call.arguments[0]
+    while value is not physical:value=value.owner.operands[0]
+    assert value is physical
+
+
+def test_packed_binding_refuses_missing_transpose_and_partial_byte_group():
+    with pytest.raises(ValueError):packed_nhwc_route(inspect(quantizer(parse_module(source()))))
+    text=packed_source().replace('1x8x','1x4x').replace('1x1x2x8','1x1x2x4')
+    with pytest.raises(ValueError):packed_nhwc_route(inspect(quantizer(parse_module(text))))

@@ -1,0 +1,147 @@
+{
+  "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+  "elf_sha256": "5e5c863712f1b2f132b054e3e0710b24fb28fd79c94d15125b6bc40c5b6aa519",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 10214792",
+    "METRIC build_hash 1e981a35609f",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_packed_controlled/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_packed_controlled/spike.log",
+  "spike_console_sha256": "27ee2cb80f64107874ac0c50339ca7ee93591dd371e1c6c6a526454a7d70a8e5",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_packed_controlled/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "schema": "packed_nhwc_guarded_quantized_mean_whole_resnet_gate_v1",
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_packed_controlled/build_direct/model.elf",
+  "build_hash": "1e981a35609f",
+  "supplemental_objects_sha256": "994f21d98f560e8e1127f388fc150ec532425217ce1e66b4473ffddf0bcfc441",
+  "spike_instructions": 10214792,
+  "control1812_spike_instructions": 10985615,
+  "spike_reduction_fraction": 0.07016657692810102,
+  "native_validation": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "5e5c863712f1b2f132b054e3e0710b24fb28fd79c94d15125b6bc40c5b6aa519",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2902,
+      "2": 12629,
+      "3": 1334,
+      "4": 11966,
+      "5": 100544,
+      "6": 112510,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "bundle_manifest": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_packed_controlled/mean_bundle/mean.json",
+  "bundle_manifest_sha256": "99dbe1b9d6b5dd144864e93c7c1bf7a5f749c00ee520581582e8d806f7c19b2f",
+  "physical_layout_proof": {
+    "shape": [
+      1,
+      2048,
+      7,
+      7
+    ],
+    "output_shape": [
+      1,
+      2048
+    ],
+    "channels": 2048,
+    "source_region": "quantize_70",
+    "input_matrix_shape": [
+      49,
+      2048
+    ],
+    "physical_layout": "NHWC",
+    "transpose_permutation": [
+      0,
+      3,
+      1,
+      2
+    ],
+    "symbol": "merlin_guarded_quant_mean_0"
+  },
+  "proof_summary": {
+    "schema": "guarded_quantized_mean_v1",
+    "count": 49,
+    "input_scale": 1.7433754205703735,
+    "output_scale": 1.3525974750518799,
+    "reciprocal": 0.7393182516098022,
+    "sum_min": -6272,
+    "sum_max": 6223,
+    "error_bound_rational": "6666116142676299294177944865579990242470343438420821854012169312654087194374412703889146258583050443873034069886248362179849336103910559453980314174388478023581760515157866173274287521977377639258586760660597763795654596614262602910293641253357818286896997452536672590238857559601832844940205115738525100393649855535417637572807794806082670783877260320452233211238206192878547280255460073747580313535852604240680102253/24210400989913355128180449413515523613603171147101644682573509162564038157428566535288838359294816142075722840645249382134399852201356281304529551408771092317180939611076643875986156591363294797059841059078438878417453385196319601111603571480435066559642156806251357109069016946032299109269675324955414504867995898465671486821064001875838862838771766283371842274595607463503267128931788773096397831759825009215862109896704",
+    "error_bound_float": 0.0002753410051098933,
+    "ambiguous_sums": [
+      -4581,
+      -2300,
+      -2262,
+      -19,
+      19,
+      2262,
+      2300,
+      4581
+    ],
+    "arithmetic": "binary32 RN-even with gradual underflow; separate multiply/add; increasing reduction index; zero initial accumulator",
+    "domain": "all signed-i8 input arrays of the stated static count"
+  },
+  "packed_integer_proof": "Xor signed8 bias128; alternate bytes into unsigned16 lanes; at count<=128 every lane sum<=32640<65536, no interlane carry; subtractcount*128 exactly; original channel H/W reduction order on ambiguous sum fallback",
+  "host_compile_policy": {
+    "host_vectorize": true,
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "MERLIN_FUSE_POST": "1",
+    "cflags": [
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O2",
+      "-ffreestanding",
+      "-fno-builtin"
+    ]
+  },
+  "hardware_cycles_measured": false,
+  "control1819_limitation": "1819 is a qualified actual timing but changed mean layout and omitted explicit host_vectorize; its standalone mean causal effect is not isolated. Packed followup explicitly pins1812 scheduling and both fusion flags.",
+  "focused_tests": "23 focused tests pass: exhaustive65536 count2 arrays; all12496 count49 sums in two orders; aligned+unaligned packed inputs, maximalcount128 and two batches; guards/tampering/source+layoutrefusals",
+  "host_scheduling_screen": {
+    "host_vectorize_false_true_model_object_sha256": "69ec03293f7c69233ab7411be86cbe9255e1c7ef017b59ffd65d19b763a1891b",
+    "host_vectorize_false_true_elf_sha256": "5e5c863712f1b2f132b054e3e0710b24fb28fd79c94d15125b6bc40c5b6aa519",
+    "result": "byte-identical packed candidate; no duplicate correctness/simulation for firstsameartifact"
+  }
+}

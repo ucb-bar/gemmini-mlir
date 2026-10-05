@@ -790,3 +790,31 @@ Merlin0068b4b79 binds the normal harness marker to actual device/matrix bytes in
 ### SmolVLA retained accuracy and trig dispatch correction
 
 The user explicitly retains atol=0.03125 and rtol=0.02 for every element. Fresh model2MLIR46851 source preserves all checkpoint/input/golden identities but still fails47/1600 outputs, with identical prior output bits. Merlin already widened these half contractions, explaining why the necessary upstream fix did not alter this full result. Actual boundary recordings localized three BF16 language-query differences to source sine/cosine; projection and power-based timescales match. SLEEF u35 scalar reproduction matches SLEEF symbols but not Torch.sin/cos. Actual GDB dispatch is MKL VML (`vmsSin` to `mkl_vml_kernel_sSin_EXHAynn`) with high accuracy and FTZ/DAZ off. SLEEF is therefore not the selected backend. A pinned source-backend table for structurally bounded integer RoPE positions and constant frequencies is being qualified as an explicit policy. Arbitrary float angles and unrelated timestep trig are excluded. No full-model hardware admission yet.
+
+### Controlled mean layout and compilation policy audit
+
+FireSim1819 verifies46,680,853cycles,0.79% above1812, with full original outputs
+exact. Build audit found its driver omitted1812's explicit host_vectorize=True;
+it also retained a finalNHWC→BCHW transpose across the new opaque mean call.
+The timing does not isolate either cause, and1819 is not selected as best.
+The new packed variant proves transpose[0,3,1,2] in typed source and bypasses
+it. Eight signed bytes are biased to unsigned, widened into16-bit lanes and
+summed exactly: count<=128 bounds each lane below65536 and prevents cross-lane
+carry. Unaligned data uses scalar strided reduction. Exact source f32 order is
+replayed only for the same eight ambiguous totals.
+
+Full original native and actualSpike retain all1,000 bits, zeroFSM passes, and
+10,214,792 instructions are7.02% below1812.23 focused tests pass, including
+packed/unpacked exhaustive small arrays and reachable49-value sums, both
+orders, unaligned input, count128, multiple batches and guards. Its explicit
+host scheduling true/false model objects and finalELFs are byte-identical, so
+no duplicate simulation follows that option-only comparison. All other control
+options are explicit.1824 is queued, without a hardware speedup claim yet.
+
+Performance trials need declared compile-policy deltas as well as object and
+ELF identity. For a device-only trial, retain a host model object byte-identical
+to the selected control. For a host transform, record expanded features, host
+scheduling, fusion environment options, host LLVM transform and actual C flags,
+then explain each changed object. Normal markers bind device bytes; a marker
+alone does not certify that a comparison changed only its intended policy.
+The source-selected banked1823 arm now meets the stronger unchanged-host check.

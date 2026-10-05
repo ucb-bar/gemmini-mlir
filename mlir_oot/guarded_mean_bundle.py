@@ -20,7 +20,7 @@ from .captured_residual_bundle import reshape
 from .direct_conv_binding import serialize
 from .frontend.parse import parse_module
 from .golden_resadd_proof import _qdq, op_name
-from .guarded_quantized_mean import derive, emit_kernel
+from .guarded_quantized_mean import derive, emit_kernel, emit_packed_nhwc_kernel
 from .no_fsm_audit import audit_elf
 
 
@@ -93,7 +93,7 @@ def inspect(quantize):
 def rewrite(module, quantize, route, symbol, source_sha):
     if any(o.name == 'func.func' and o.sym_name.data == symbol for o in module.body.block.ops):
         raise ValueError('mean symbol already declared')
-    views, value = reshape(route['input'], [route['channels'], route['proof']['count']])
+    views, value = reshape(route['input'], route.get('input_matrix_shape', [route['channels'], route['proof']['count']]))
     outtype = quantize.results[0].type
     empty = tensor.EmptyOp([], outtype)
     call = func.CallOp(symbol, [value, empty.tensor], [outtype])
@@ -112,10 +112,15 @@ def rewrite(module, quantize, route, symbol, source_sha):
 def adapter(route, symbol):
     count, channels = route['proof']['count'], route['channels']
     b, c = route['output_shape']
-    return emit_kernel(route['proof'], symbol+'_kernel', channels) + f'''
+    if route.get('physical_layout') == 'NHWC':
+        kernel = emit_packed_nhwc_kernel(route['proof'], symbol+'_kernel', b, c)
+    else:
+        kernel = emit_kernel(route['proof'], symbol+'_kernel', channels)
+    rows, cols = route.get('input_matrix_shape', [channels, count])
+    return kernel + f'''
 typedef struct {{void *allocated,*aligned; int64_t offset,size[2],stride[2];}} {symbol}_memref2;
 void _mlir_ciface_{symbol}({symbol}_memref2 *result,{symbol}_memref2 *a,{symbol}_memref2 *out) {{
- if(a->size[0]!={channels} || a->size[1]!={count} || a->stride[0]!={count} || a->stride[1]!=1 ||
+ if(a->size[0]!={rows} || a->size[1]!={cols} || a->stride[0]!={cols} || a->stride[1]!=1 ||
     out->size[0]!={b} || out->size[1]!={c} || out->stride[0]!={c} || out->stride[1]!=1) __builtin_trap();
  {symbol}_kernel((const int8_t*)a->aligned+a->offset,(int8_t*)out->aligned+out->offset);
  *result=*out;
@@ -123,7 +128,21 @@ void _mlir_ciface_{symbol}({symbol}_memref2 *result,{symbol}_memref2 *a,{symbol}
 '''
 
 
-def build_and_apply(capture, llvm_bin, directory):
+def packed_nhwc_route(route):
+    """Prove the named transpose and preserve each channel's H/W order."""
+    view = route['input'].owner
+    b, c, h, w = route['shape']
+    if (not isinstance(view, Operation) or view.name != 'linalg.transpose'
+            or tuple(view.permutation.get_values()) != (0, 3, 1, 2)
+            or tuple(view.inputs[0].type.get_shape()) != (b, h, w, c)
+            or c % 8 or not isinstance(view.inputs[0].type.encoding, NoneAttr)):
+        raise ValueError('packed mean requires an exact NHWC to BCHW transpose and channels divisible by8')
+    view.verify()
+    return route | dict(input=view.inputs[0], input_matrix_shape=[b*h*w, c], physical_layout='NHWC',
+                        transpose_permutation=[0, 3, 1, 2])
+
+
+def build_and_apply(capture, llvm_bin, directory, *, packed_nhwc=False):
     capture, llvm_bin, directory = map(Path, (capture, llvm_bin, directory))
     directory.mkdir(parents=True, exist_ok=False)
     receipt = json.loads((capture/'capture_receipt.json').read_text())
@@ -135,7 +154,9 @@ def build_and_apply(capture, llvm_bin, directory):
     routes = []
     for op in list(module.walk()):
         if op_name(op) != 'quant_ext.quantize_per_tensor': continue
-        try: route = inspect(op)
+        try:
+            route = inspect(op)
+            if packed_nhwc: route = packed_nhwc_route(route)
         except ValueError: continue
         symbol = 'merlin_guarded_quant_mean_'+str(len(routes))
         rewrite(module, op, route, symbol, original)
@@ -223,8 +244,9 @@ def main():
                         help='Owned derived capture; model and receipt are rewritten in place')
     parser.add_argument('--llvm-bin', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--packed-nhwc', action='store_true')
     args = parser.parse_args()
-    record = build_and_apply(args.derived_capture, args.llvm_bin, args.output)
+    record = build_and_apply(args.derived_capture, args.llvm_bin, args.output, packed_nhwc=args.packed_nhwc)
     print(json.dumps({'routes': len(record['routes']),
                       'manifest': str(args.output / 'mean.json'),
                       'object_sha256': record['object_sha256']}))

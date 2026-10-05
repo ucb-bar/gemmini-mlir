@@ -73,6 +73,30 @@ def derive(count, input_scale, output_scale):
                 domain='all signed-i8 input arrays of the stated static count')
 
 
+def _source_replay(proof, stride=1):
+    count = proof['count']
+    access = 'row[k]' if stride == 1 else f'row[k*{stride}]'
+    return f'''  if (code==-129) {{
+   float sum=0.0f;
+   for (int k=0; k<{count}; ++k) {{
+    volatile float value=(float){access}*{proof['input_scale'].hex()}f;
+    sum=value+sum;
+   }}
+   float mean=sum/{float(count).hex()}f;
+   float scaled=mean*{proof['reciprocal'].hex()}f;
+   if (scaled<=-128.0f) code=-128;
+   else if (scaled>=127.0f) code=127;
+   else {{
+    code=(int32_t)scaled;
+    float delta=scaled-(float)code;
+    float absolute=delta<0.0f?-delta:delta;
+    if (absolute>0.5f || (absolute==0.5f && (code&1)))
+     code+=scaled<0.0f?-1:1;
+   }}
+  }}
+'''
+
+
 def emit_kernel(proof, symbol, channels):
     if proof != derive(proof['count'], proof['input_scale'], proof['output_scale']):
         raise ValueError('mean certificate changed')
@@ -90,25 +114,61 @@ void {symbol}(const int8_t *input, int8_t *output) {{
   int32_t total=0;
   for (int k=0; k<{count}; ++k) total+=(int32_t)row[k];
   int32_t code={symbol}_table[total+{128*count}];
-  if (code==-129) {{
-   float sum=0.0f;
-   for (int k=0; k<{count}; ++k) {{
-    volatile float value=(float)row[k]*{proof['input_scale'].hex()}f;
-    sum=value+sum;
-   }}
-   float mean=sum/{float(count).hex()}f;
-   float scaled=mean*{proof['reciprocal'].hex()}f;
-   if (scaled<=-128.0f) code=-128;
-   else if (scaled>=127.0f) code=127;
-   else {{
-    code=(int32_t)scaled;
-    float delta=scaled-(float)code;
-    float absolute=delta<0.0f?-delta:delta;
-    if (absolute>0.5f || (absolute==0.5f && (code&1)))
-     code+=scaled<0.0f?-1:1;
-   }}
+{_source_replay(proof)}  output[channel]=(int8_t)code;
+ }}
+}}
+'''
+
+
+def emit_packed_nhwc_kernel(proof, symbol, batches, channels):
+    """Consume contiguous NHWC without materializing a BCHW transpose.
+
+    Bias signed bytes by128, widen alternate bytes to unsigned16 lanes and
+    accumulate. Count<=128 bounds every lane by32640, so no carry can cross
+    lanes. Removing the bias gives the exact original signed integer sums.
+    Unaligned input uses a scalar fallback; little-endian word layout is checked.
+    """
+    if proof != derive(proof['count'], proof['input_scale'], proof['output_scale']):
+        raise ValueError('mean certificate changed')
+    if (type(batches) is not int or batches <= 0 or type(channels) is not int
+            or channels <= 0 or channels % 8 or not symbol.isidentifier()):
+        raise ValueError('positive batches, channels divisible by8 and C identifier required')
+    count = proof['count']
+    values = ','.join(map(str, proof['table']))
+    replay = _source_replay(proof, stride=channels)
+    return f'''#include <stdint.h>
+_Static_assert(__BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__,"little-endian packed mean required");
+typedef uint64_t {symbol}_alias_word __attribute__((may_alias));
+static const int16_t {symbol}_table[{len(proof['table'])}] __attribute__((aligned(64)))={{{values}}};
+static int8_t {symbol}_finish(int32_t total,const int8_t *row) {{
+ int32_t code={symbol}_table[total+{128*count}];
+{replay}
+ return (int8_t)code;
+}}
+void {symbol}(const int8_t *input,int8_t *output) {{
+ if ((uintptr_t)input&7) {{
+  for(int batch=0;batch<{batches};++batch) for(int channel=0;channel<{channels};++channel) {{
+   const int8_t *row=input+(int64_t)batch*{count*channels}+channel;
+   int32_t total=0;
+   for(int k=0;k<{count};++k) total+=(int32_t)row[k*{channels}];
+   output[batch*{channels}+channel]={symbol}_finish(total,row);
   }}
-  output[channel]=(int8_t)code;
+  return;
+ }}
+ for(int batch=0;batch<{batches};++batch) for(int channel=0;channel<{channels};channel+=8) {{
+  const int8_t *row=input+(int64_t)batch*{count*channels}+channel;
+  uint64_t even=0,odd=0;
+  for(int k=0;k<{count};++k) {{
+   uint64_t word=*(const {symbol}_alias_word*)(row+k*{channels});
+   word^=UINT64_C(0x8080808080808080);
+   even+=word&UINT64_C(0x00ff00ff00ff00ff);
+   odd+=(word>>8)&UINT64_C(0x00ff00ff00ff00ff);
+  }}
+  for(int lane=0;lane<8;++lane) {{
+   uint64_t sum=lane&1?odd:even;
+   int32_t total=(int32_t)((sum>>(16*(lane/2)))&65535)-{128*count};
+   output[batch*{channels}+channel+lane]={symbol}_finish(total,row+lane);
+  }}
  }}
 }}
 '''

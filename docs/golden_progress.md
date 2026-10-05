@@ -189,8 +189,17 @@ The complete ResNet capture now compiles to an RV64GC ELF with all54 contraction
 
 Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. All155 device contractions and the previously selected activation approximation remain unchanged. The next strict four-output schedule is under qualification. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
 
-The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes; hardware timing is pending. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
+The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes. FireSim1819 measured46,680,853cycles,0.79% above1812; this arm is not the best recipe and its driver omitted explicit host scheduling. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
 
 Normal build markers now include the actual linked device/matrix object bytes in link order, with length and domain separation. Object paths do not affect identity. Final and staged ELF SHA256 remain authoritative for both new and historical runs. The prepared source, ABI, target object, native standin, source numeric policy and final ISA audit must close over the same compilation. Default-off compiler transforms remain independently selectable.
 
 SmolVLA retains the existing elementwise gate by explicit user direction. Original Torch MKL VML high-accuracy sine/cosine dispatch differs from scalar libm at three BF16 query entries, which propagate into attention. SLEEF was investigated but is not the selected Torch backend. A bounded integer-position RoPE lookup policy is under qualification; unrelated timestep trig remains separate, and the original weights, inputs and golden remain immutable.
+
+The packed NHWC mean variant proves the existing transpose and consumes the
+physical layout directly. Exact unsigned16-lane sums process eight channels per
+word with no interlane carry, keeping source f32 fallback for ambiguous sums.
+Full native and actualSpike preserve all1,000 original words at10,214,792
+instructions,7.02% below1812.23 focused tests pass. Stock1824 is queued; this
+is not yet a hardware gain. The bankedmatmul11 arm1823 independently retains
+a host object byte-identical1812 and all52 source/numeric proofs. Tiny's exact
+four-output arm1821 is under hardware collection.
