@@ -48,3 +48,9 @@ Job 1743 (source-proven fused27 epilogues) completed at **3,146,164,937 forward 
 ## Pooled-stem whole-model result
 
 Job1750 completed at **2,663,212,150 forward cycles**, all1,000 output words bit-exact against the same original oracle, zero rank mismatches, and actual staged ELF/bitstream identities verified. This is15.35% below fused27 job1743 and53.12% below initial job1730. The artifact combines one pooled stem,27 fused epilogues,4 remaining direct convolutions and22 dense contractions. Receipt: `docs/perf_records/resnet_pooled_stem_firesim1750.json`. This is measured whole-model progress, still far above22M cycles.
+
+## Primitive profiling after fused catalogs
+
+`--leaf-kernels` profiles the primitive calls in fused unary, wide-integer residual, pooled-stem and dense components. GNU-style `--wrap` cannot intercept a raw primitive reference already resolved inside a partially linked object. This mode therefore reconstructs each original component from its hash-verified primitive and adapter leaf objects and requires the reconstructed partial-link bytes to match exactly before final-link wrapping. No model, adapter or kernel source is recompiled. Descriptor checks and the two exact CPU integer readouts remain in host gaps.
+
+The exact52/wide16/virtual-padding artifact (unprofiled ELF288af46a…) has70 unique calls. Its profile passes actual Gemmini Spike with all1,000 original outputs exact, all70 calls present, conserved intervals, and finalzeroFSM. Profile ELF7b2d9acb… reports19,289,994 retired instructions versus19,286,601 unprofiled. Primitive intervals total6,483,001; host gaps12,806,993. The gap before the stem is9,818,070 instructions, and the gaps after the two integer readouts are1,198,472 and599,431. These are functional Spike instruction counts; hardware job1777 is a separate explicit profiling measurement and is pending at this record.
