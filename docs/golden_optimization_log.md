@@ -1023,3 +1023,36 @@ actual device objects match1841. This is the new verified Tiny best. The small
 difference is one run and has no variance-adjusted claim. Exact host factor-two
 pointwise scheduling1847 is a separate arm against1841, without fresh ownership.
 [Composition hardware](perf_records/tiny_expanded_writer_prefetch_firesim1846.json).
+
+
+### General banked panel policy and current-core simulator support
+
+`banked_command_cost` derives candidate eligibility from static GEMM dtype/shape,
+unchanged epilogue, scratch/accumulator resources and primitive command count. It
+records refusals and preserves the legal existing schedule at equal/worse cost.
+No model name, provenance ID or golden value selects the strategy. The full52-route
+replay preserves every numeric proof and rewritten IR; against1836, four device
+kernels change and the actual host object/LLVM remain byte-identical. Full native
+and actual final-ELF Spike retain all1,000 original bits, zeroFSM. Kernel GSIM
+21,008→14,915 and independent95-row/48-column/K80 tails justify stock1849 trial,
+not a universal or whole-model cycle claim. Spike10,013,297 is slightly above
+control9,946,365; hardware remains pending.
+[Policy capsule](perf_records/banked_command_policy_gsim.json),
+[whole gate](perf_records/resnet_banked_command_policy_spike.json).
+
+The missing current-core GSIM registration is resolved by explicit OOT support.
+Merlin's existing recipe/command/receipt/deadline APIs needed no target branch.
+The provider supplies curated target ABI/recipe, engine arguments and paths,
+with required explicit configuration and byte-bound inputs. Fifteen tests and
+a real current-core numeric/guard run pass; final ELF matches the prior harness
+byte for byte. Legacy Python is no longer required for these capsule executions.
+[Provider](current_core_gsim_provider.md).
+
+Outlining qualification found that one LLVM forceattrs pass adding noinline and
+removing alwaysinline can leave neither attribute. The generic Merlin transform
+now uses separate removal/addition passes, with a direct attribute regression
+for every new helper and original function preservation. LLVM-diff did not check
+attributes and was insufficient evidence. The early77.4-second prototype also
+removed an original forward attribute; retain that timing as diagnostic only.
+Corrected normal-build compilation/device gates remain pending; numeric receipts
+retain their exact executed artifacts and original full gate.

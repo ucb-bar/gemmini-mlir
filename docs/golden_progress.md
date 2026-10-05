@@ -46,7 +46,7 @@ and actual final-ELF Spike, with an identical1836 host object and only seven dev
 objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836;42,837,088 remains the best. It retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
 
 Smol's native numerical blocker is closed. The first optimized RV64GC host compile timed out
-at900seconds on a large monolithic function. Generic loop extraction with noinline applied only to new helpers compiled an optimized target object in about77.4seconds; its full native original gate passes bitexact all1,600 outputs; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
+at900seconds on a large monolithic function. Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes and is rebuilding through the normal pipeline; actual device qualification remains pending. A separately labeledO0 correctness ELF also builds,
 passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
 scalability and cheaper explicitly gated device attention remain work; the exact scalar vision
 attention has19.33B MACs and cannot by itself establish the5B target.
@@ -266,3 +266,16 @@ block-stride field had been silently dropped by lowering; its corrected encoding
 now has a regression gate. Five source-bound whole-model routes are qualifying
 with separate preserved scale proofs. This is a capsule gain, not yet a whole
 FireSim result. See [resident study](resident_convolution_study.md).
+
+
+The general dense banked command-cost candidate passes all1,000 original native
+and final-ELF Spike values. Its host object/LLVM match1836 byte for byte; only
+four pointwise device objects change. Independent176x256x64 GSIM numeric/guard
+checks measure29.00% fewer kernel cycles, and95x48x80 tails pass. Whole-model
+stock1849 is queued; its slightly higher Spike instruction count is not a cycle
+claim. [Candidate gate](perf_records/resnet_banked_command_policy_spike.json).
+
+An explicit OOT support provider now exposes the curated harness/GSIM command to
+current Merlin orchestration, removing the legacy Python registration dependency.
+A real numeric/guard capsule retains byte-identical final ELF and1,919 GSIM kernel
+cycles. [Infrastructure evidence](perf_records/current_core_gsim_provider.json).
