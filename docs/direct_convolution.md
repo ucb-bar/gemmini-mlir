@@ -188,8 +188,9 @@ NHWC tensor including its explicit halo. HWIO reduction order and accumulator
 semantics are unchanged. This is a kernel schedule change after structural
 source binding, with no materialized host im2col.
 
-`conv_schedule.select_kernel(..., flat_spatial=True)` enables the option only
-when the complete output fits the accumulator. It derives the channel block
+`conv_schedule.select_kernel(..., flat_spatial=True)` initially selected the option when
+the complete output fit the accumulator; larger maps now use complete-row bands
+as described below. It derives the channel block
 from capacity. There is no model-name/region-name dispatch. Both direct and
 exact-requant bundles record `schedule_kind` and the selected shape. Ordinary
 row schedules remain the default and the fallback for larger feature maps.
@@ -298,3 +299,53 @@ The resulting complete ResNet passes all 1,000 original outputs exactly on
 native scalar standins and actual Gemmini Spike, with zero descriptor
 mismatches and zero final FSM instructions. See
 `docs/perf_records/resnet_flat_banked_conv_spike.json`.
+
+## Complete-row accumulator bands
+
+For feature maps too large to retain the complete output, the same scheduler
+now uses bands of complete output rows. The band base is an ordinary CPU loop
+induction variable. Row-fragment coordinates and the final short band retain
+the exact source halo semantics; no input rows or channels are read out of
+bounds. Stores use the original full-output row stride.
+
+`choose_band_rows` considers every capacity-safe row count, minimizes total
+padded M tiles, then minimizes weight passes. This prevents a greedy maximum
+row count from wasting array tiles. For example, 28×28 chooses eight rows,
+not nine: eight rows pack into 14 full tiles, with a four-row final band.
+
+| Output and channels | Band rows | Bands | Spatial tiles | Computes | B DMA |
+|---|---:|---:|---:|---:|---:|
+|56×56, C64|4|14|196|28,224|504|
+|28×28, C128|8|4|49|28,224|576|
+
+Both shapes have a 451,584-cycle padded array issue floor. Weight reads drop
+from 56 to 14 passes and from 28 to four passes respectively. Input/output
+layout and reduction order are unchanged. The selector records
+`spatial_banded_wide_a_separate_b`; the exact band height is also embedded in
+the target IR as `gemmini.flat_conv_band_rows`, pinned by its compilation hash.
+
+The numerical probe includes a stride-two shape with partial K and N tiles,
+multiple channel blocks, nonzero halo values, and a short final band. Full-size
+probes use the captured store scales and signed inputs spanning almost the
+entire i8 range, so small scales still produce nontrivial output values.
+
+
+The full-size banded kernels passed GSIM at **617,005 cycles** for 56×56 C64
+and **628,112 cycles** for 28×28 C128, checking all 200,704 / 100,352 i8 outputs
+and guards. The actual captured scales were 0.00206922204233706 and
+0.0013393994886428118, with ReLU. Near-full-range deterministic signed inputs
+and weights exercise meaningful narrowing. Tail probe and full-size receipts:
+`docs/perf_records/banded_conv_gsim.json`.
+
+The complete exact ResNet with all 16 direct 3×3 kernels using spatial-flat or
+row-banded schedules passes native and actual Gemmini Spike with all 1,000
+original captured outputs bitexact, zero descriptor mismatches, and zero FSM
+instructions in the final ELF. Receipt:
+`docs/perf_records/resnet_banded_conv_spike.json`.
+
+The 16 convolution kernels now require 487,872 compute commands and a 7,805,952
+cycle padded array issue floor, compared with 612,864 commands / 9,805,824 cycles
+for the original row schedules. This is a convolution-only analytical count;
+whole-model timing still includes dense kernels, stem, host layout/epilogue
+work, and runtime overhead. No 22M whole-model performance claim follows from
+these standalone gates.

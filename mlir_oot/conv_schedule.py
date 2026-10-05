@@ -6,7 +6,7 @@ capacity select eligibility; model names and region names are never consulted.
 """
 from dataclasses import replace
 from .golden_conv import GoldenConv
-from .golden_flat_conv import GoldenFlatConv, eligible
+from .golden_flat_conv import GoldenFlatConv, eligible, choose_band_rows
 from .golden_gemm import _ceil_div
 from .tables import rtl_facts as F
 
@@ -23,4 +23,7 @@ def select_kernel(shape, *, flat_spatial=False):
             bn = bn // 4 * 4
         shape = replace(shape, bn=bn, wide_b=True)
         return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True), 'spatial_flat_wide_a_separate_b'
+    if flat_spatial and shape.explicit_halo:
+        rows = choose_band_rows(shape)
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,band_rows=rows), 'spatial_banded_wide_a_separate_b'
     return GoldenConv(shape), 'output_row'

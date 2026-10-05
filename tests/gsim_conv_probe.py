@@ -21,6 +21,8 @@ def main():
     ap.add_argument('--bn',type=int,default=4)
     ap.add_argument('--wide-a',action='store_true')
     ap.add_argument('--separate-b-bank',action='store_true')
+    ap.add_argument('--band-rows',type=int)
+    ap.add_argument('--full-range',action='store_true',help='exercise signed i8 dynamic range with nontrivial requantized outputs')
     ap.add_argument('--static-inputs',action='store_true',help='embed deterministic input bytes to exclude large scalar setup loops')
     ap.add_argument('--flat-spatial',action='store_true',help='flatten spatial tiles; input includes explicit nonzero halo')
     ap.add_argument('--output-dtype',choices=['i8','i32'],default='i32')
@@ -30,24 +32,25 @@ def main():
     ap.add_argument('--max-cycles',type=int,default=3000000)
     ap.add_argument('--timeout-s',type=int,default=600)
     a = ap.parse_args()
-    if (a.wide_a or a.separate_b_bank) and not a.flat_spatial:
+    if (a.wide_a or a.separate_b_bank or a.band_rows is not None) and not a.flat_spatial:
         ap.error("wide A or separate B bank requires --flat-spatial")
     s = ConvShape(a.h,a.w,a.cin,a.cout,a.stride,bn=a.bn,wide_b=a.wide_b,output_dtype=a.output_dtype,scale=a.scale,relu=a.relu,explicit_halo=a.flat_spatial)
     out = a.workdir.resolve()
     out.mkdir(parents=True,exist_ok=False)
     if a.flat_spatial:
         from mlir_oot.golden_flat_conv import GoldenFlatConv
-        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank)
+        kernel = GoldenFlatConv(s,wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows)
     else:
         kernel = GoldenConv(s)
     receipt = compile_module(kernel.build(),a.llvm_bin,out)
     symbol = 'gemmini_golden_flat_conv' if a.flat_spatial else 'gemmini_golden_conv'
     ih, iw = (s.h+2,s.w+2) if s.explicit_halo else (s.h,s.w)
     import numpy as np
-    inp = (np.arange(ih*iw*s.cin,dtype=np.int64)%11-5).reshape(ih,iw,s.cin)
+    am,ao,bm,bo = (251,125,241,120) if a.full_range else (11,5,13,6)
+    inp = (np.arange(ih*iw*s.cin,dtype=np.int64)%am-ao).reshape(ih,iw,s.cin)
     if not s.explicit_halo:
         inp = np.pad(inp,((1,1),(1,1),(0,0)))
-    weight = (np.arange(9*s.cin*s.cout,dtype=np.int64)%13-6).reshape(3,3,s.cin,s.cout)
+    weight = (np.arange(9*s.cin*s.cout,dtype=np.int64)%bm-bo).reshape(3,3,s.cin,s.cout)
     acc = np.zeros((s.oh,s.ow,s.cout),dtype=np.int64)
     for ky in range(3):
         for kx in range(3):
@@ -76,11 +79,11 @@ int main(void) {
  for(int i=0;i<2048;i++) if(box.guard[i]!=0x5a) {printf("GUARD_FAIL\\n"); return 2;}
  printf("GOLDEN_CONV PASS\\n"); return 0;
 }
-''').replace('KERNEL_SYMBOL',symbol))
+''').replace('KERNEL_SYMBOL',symbol).replace('i%11-5',f'i%{am}-{ao}').replace('i%13-6',f'i%{bm}-{bo}'))
     inputs = []
     if a.static_inputs:
         assembly = []
-        for name, count, modulus, offset in [('a',ih*iw*s.cin,11,5),('b',9*s.cin*s.cout,13,6)]:
+        for name, count, modulus, offset in [('a',ih*iw*s.cin,am,ao),('b',9*s.cin*s.cout,bm,bo)]:
             data = out/(name+'.bin')
             (np.arange(count,dtype=np.int64)%modulus-offset).astype(np.int8).tofile(data)
             assembly.append(f'.section .data\n.balign 64\n.global {name}\n{name}:\n.incbin "{data}"\n')
@@ -103,7 +106,7 @@ int main(void) {
     run = run_on_gsim(built.elf,target='gemmini',max_cycles=a.max_cycles,timeout_s=a.timeout_s,backdoor=True,stdout_path=out/'gsim.stdout')
     match = re.search(r'GOLDEN_CONV_CYCLES (\d+)',run.stdout_tail)
     passed = run.completed and run.returncode == 0 and 'GOLDEN_CONV PASS' in run.stdout_tail
-    result = dict(shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
+    result = dict(shape=asdict(s),wide_a=a.wide_a,separate_b_bank=a.separate_b_bank,band_rows=a.band_rows,flat_spatial=a.flat_spatial,static_inputs=a.static_inputs,input_value_rules=[am,ao,bm,bo],status='pass' if passed else 'fail',completed=run.completed,returncode=run.returncode,stderr=run.stderr_tail,kernel_cycles=int(match[1]) if match else None,
                   elf_sha256=built.elf_sha256,compilation=receipt,nofsm_audit=audit,gsim_engine=run.engine,stdout=run.stdout_tail)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('compilation','nofsm_audit','gsim_engine')},indent=2))

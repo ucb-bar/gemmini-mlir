@@ -1,0 +1,153 @@
+{
+  "schema": "gemmini_complete_row_bands_gsim_v1",
+  "results": [
+    {
+      "shape": {
+        "h": 15,
+        "w": 19,
+        "cin": 20,
+        "cout": 79,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.03125,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": true,
+      "separate_b_bank": true,
+      "band_rows": 3,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 25708,
+      "elf_sha256": "7ba1b5d0a56827bf58edb43c009f2840c830e5180a97c491eb71d87c5c85c4ac",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "7ba1b5d0a56827bf58edb43c009f2840c830e5180a97c491eb71d87c5c85c4ac",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 72,
+          "2": 126,
+          "3": 8,
+          "4": 180,
+          "5": 180,
+          "6": 360,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 25708\nGOLDEN_CONV PASS\n",
+      "result_path": "out/banded_conv_tail/result.json"
+    },
+    {
+      "shape": {
+        "h": 56,
+        "w": 56,
+        "cin": 64,
+        "cout": 64,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.00206922204233706,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": true,
+      "separate_b_bank": true,
+      "band_rows": 4,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "input_value_rules": [
+        251,
+        125,
+        241,
+        120
+      ],
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 617005,
+      "elf_sha256": "31c4846950c903305501cea6ab7f45dd10b075e725f4130e9045985b25bd0a87",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "31c4846950c903305501cea6ab7f45dd10b075e725f4130e9045985b25bd0a87",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 36,
+          "2": 144,
+          "3": 14,
+          "4": 144,
+          "5": 1872,
+          "6": 2016,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 617005\nGOLDEN_CONV PASS\n",
+      "result_path": "out/banded_conv_56_full/result.json"
+    },
+    {
+      "shape": {
+        "h": 28,
+        "w": 28,
+        "cin": 128,
+        "cout": 128,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0013393994886428118,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": true,
+      "separate_b_bank": true,
+      "band_rows": 8,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "input_value_rules": [
+        251,
+        125,
+        241,
+        120
+      ],
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 628112,
+      "elf_sha256": "698a154ceb4cd952ce6cc3df6dad0a071f998fd41ff7e2157d343d80b04d6011",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "698a154ceb4cd952ce6cc3df6dad0a071f998fd41ff7e2157d343d80b04d6011",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 144,
+          "2": 540,
+          "3": 21,
+          "4": 576,
+          "5": 5472,
+          "6": 6048,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 628112\nGOLDEN_CONV PASS\n",
+      "result_path": "out/banded_conv_28_full/result.json"
+    }
+  ],
+  "scope": "Source-compatible explicit NHWC halo; original HWIO; captured positive store scales on full-size signed-range fixtures. GSIM timings, not FireSim."
+}

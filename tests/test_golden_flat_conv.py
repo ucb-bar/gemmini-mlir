@@ -50,7 +50,7 @@ class TestGoldenFlatConv(unittest.TestCase):
             original.pop(key); selected.pop(key)
         self.assertEqual(original, selected)
         self.assertEqual(select_kernel(s)[1], 'output_row')
-        self.assertEqual(select_kernel(ConvShape(56,56,64,64,explicit_halo=True),flat_spatial=True)[1], 'output_row')
+        self.assertEqual(select_kernel(ConvShape(56,56,64,64,explicit_halo=True),flat_spatial=True)[1], 'spatial_banded_wide_a_separate_b')
 
     def test_wide_a_channels_and_capacity(self):
         s = ConvShape(7, 7, 512, 512, bn=16, explicit_halo=True)
@@ -75,6 +75,30 @@ class TestGoldenFlatConv(unittest.TestCase):
         self.assertTrue(all(op.a('local')+4*16 <= 8192 for op in a))
         self.assertTrue(all(8192 <= op.a('local') < 16384 for op in b))
         lower(module).verify()
+
+    def test_complete_row_bands_and_tail_cover_source(self):
+        from mlir_oot.golden_flat_conv import choose_band_rows
+        for h,w,stride,expected in [(56,56,1,4),(28,28,1,8),(56,56,2,8),(31,19,1,None)]:
+            s = ConvShape(h,w,20,79,stride,explicit_halo=True)
+            rows = choose_band_rows(s)
+            if expected is not None:self.assertEqual(rows,expected)
+            pixels=[]
+            for start in range(0,s.oh,rows):
+                for tile,lane,y,x,count in spatial_runs(s,min(rows,s.oh-start)):
+                    for i in range(count):
+                        pixels.append((start+y,x+i))
+                        for kh in range(3):
+                            for kw in range(3):
+                                self.assertLess((start+y)*stride+kh,h+2)
+                                self.assertLess((x+i)*stride+kw,w+2)
+            self.assertEqual(pixels,[(y,x) for y in range(s.oh) for x in range(s.ow)])
+            module=GoldenFlatConv(s,wide_a=True,separate_b_bank=True,band_rows=rows).build()
+            module.verify();lower(module).verify()
+        for h,c in [(56,64),(28,128)]:
+            s=ConvShape(h,h,c,c,explicit_halo=True)
+            counts=command_counts(s,wide_a=True,band_rows=choose_band_rows(s))
+            self.assertEqual(counts['compute'],28224)
+            self.assertEqual(counts['padded_array_issue_cycles'],451584)
 
     def test_numeric_probe_shapes_lower_without_host_tensor_operations(self):
         for stride in (1, 2):
