@@ -1,0 +1,62 @@
+{
+  "schema": "resnet_exact_cpu_lut_schedule_v1",
+  "baseline_schedule": "scalar",
+  "candidate_schedule": "raw_u8_x4",
+  "baseline_instructions": 341424822,
+  "candidate_instructions": 316587699,
+  "delta_instructions": 24837123,
+  "firesim_measured": false,
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "7342f44adda6d1a3b77e59fea6fb2420968fa2bace3aa200345c71fbd0cd01e7",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 316587699",
+      "METRIC build_hash 0399d5547c25",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "7342f44adda6d1a3b77e59fea6fb2420968fa2bace3aa200345c71fbd0cd01e7",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 249,
+      "1": 3436,
+      "2": 8115,
+      "3": 1194,
+      "4": 9854,
+      "5": 74184,
+      "6": 84038,
+      "7": 54
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  }
+}
