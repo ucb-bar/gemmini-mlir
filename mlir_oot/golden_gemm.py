@@ -66,9 +66,9 @@ class Shape:
             raise ValueError("wide A panels require K to be a positive tile multiple larger than one tile")
         # Wide B groups up to four adjacent tiles within each output block.
         # Partial channel groups and multiple N blocks use their exact extents.
-        if self.cache_a and (self.m > F.DIM or self.bm != 1 or
+        if self.cache_a and (_ceil_div(self.m, F.DIM) > self.bm or
                              self.wide_a or self.pipeline_m or self.cache_b):
-            raise ValueError("cached A needs one output-row tile and no competing A schedule")
+            raise ValueError("cached A needs one complete M block and no competing A schedule")
         if self.banked_m and not (self.pipeline_m and self.wide_a and self.cache_b):
             raise ValueError("banked M needs alternating slots, wide A, and cached B")
         if self.banked_m and self.bm * _ceil_div(self.k, F.DIM) * F.DIM > F.SPAD_BANK_ROWS:
@@ -78,7 +78,7 @@ class Shape:
         if self.prefetch_b:
             if not self.cache_a or self.k <= F.DIM or self.separate_b_bank:
                 raise ValueError("B prefetch needs cached A, multiple K panels, and its own bank placement")
-            if _ceil_div(self.k, F.DIM) * F.DIM > 2 * F.SPAD_BANK_ROWS:
+            if self.bm * _ceil_div(self.k, F.DIM) * F.DIM > 2 * F.SPAD_BANK_ROWS:
                 raise ValueError("prefetched B requires cached A to fit the lower two banks")
             if self.bn * F.DIM > F.SPAD_BANK_ROWS:
                 raise ValueError("one prefetched B panel must fit one scratchpad bank")
@@ -211,15 +211,16 @@ class GoldenGemm:
             return (a_base + a * a_panel_tiles + (wide_k or 0)) * F.DIM
         dynamic_a = self.fb.mul_i(k0, self.fb.const(F.DIM)) if s.cache_a else None
 
-        def compute(rows: int, accumulate: bool) -> None:
+        def compute(rows: int, accumulate: bool, a: int = 0) -> None:
             attrs = {"a_cols": kr, "a_rows": rows, "accumulate": accumulate}
             if dynamic_a is None:
                 attrs["a"] = a_addr(0)
                 self._rocc("compute", attrs)
             else:
-                attrs["a_max"] = (kt - 1) * F.DIM
-                attrs["a_reserved_rows"] = kt * F.DIM
-                self._rocc("compute", attrs, dynamic_a)
+                attrs["a_max"] = (a * kt + kt - 1) * F.DIM
+                attrs["a_reserved_rows"] = s.bm * kt * F.DIM
+                address=dynamic_a if a == 0 else self.fb.add_i(dynamic_a,self.fb.const(a * kt * F.DIM))
+                self._rocc("compute", attrs, address)
 
         if s.reuse_b:
             # Keep a weight tile in the array while varying the A row tile.
@@ -238,7 +239,7 @@ class GoldenGemm:
                                                 "a_cols": kr, "a_rows": rows,
                                                 "accumulate": a != 0})
                     else:
-                        compute(rows, a != 0)
+                        compute(rows, a != 0, a)
         else:
             for a, rows in enumerate(mr):
                 for d, cols in enumerate(nr):
@@ -252,7 +253,7 @@ class GoldenGemm:
                         self._rocc("compute", {"a": a_addr(a),
                                                 "a_cols": kr, "a_rows": rows})
                     else:
-                        compute(rows, False)
+                        compute(rows, False, a)
 
     def _prepare_output_block(self, m0: SSAValue, n0: SSAValue,
                       mr: tuple[int, ...], nr: tuple[int, ...],
@@ -382,12 +383,15 @@ class GoldenGemm:
     def _emit_work(self) -> None:
         s = self.shape
         if s.cache_a:
-            for ki in range(_ceil_div(s.k, F.DIM)):
-                kr = min(F.DIM, s.k - ki * F.DIM)
-                ptr = self._ptr(self.a, self.fb.const(0), s.k,
-                                self.fb.const(ki * F.DIM))
-                self._rocc("mvin", {"local": ki * F.DIM,
-                                      "rows": s.m, "cols": kr, "load_id": 0}, ptr)
+            kt=_ceil_div(s.k,F.DIM)
+            for a in range(_ceil_div(s.m,F.DIM)):
+                rows=min(F.DIM,s.m-a * F.DIM)
+                for ki in range(kt):
+                    kr = min(F.DIM, s.k - ki * F.DIM)
+                    ptr = self._ptr(self.a, self.fb.const(a * F.DIM), s.k,
+                                    self.fb.const(ki * F.DIM))
+                    self._rocc("mvin", {"local": (a * kt + ki) * F.DIM,
+                                          "rows": rows, "cols": kr, "load_id": 0}, ptr)
         if s.cache_b:
             nt = _ceil_div(s.n, F.DIM)
             a_panel_tiles = _ceil_div(s.k, F.DIM) if s.wide_a or s.cache_a else 1

@@ -70,3 +70,29 @@ def test_default_kernel_identity_is_unchanged_and_prefetch_is_distinct():
     previous_digest = hashlib.sha256(json.dumps(previous_key, sort_keys=True).encode()).hexdigest()[:16]
     assert _symbol(key) == "gemmini_golden_" + previous_digest
     assert _symbol({**key, "shape": asdict(replace(base, prefetch_b=True))}) != _symbol(key)
+
+
+@pytest.mark.parametrize('m,n,k,bm,bn', [(17,73,65,2,4),(49,2048,512,4,16),(95,48,80,6,3)])
+def test_multiple_cached_a_rows_have_disjoint_panels_and_exact_edges(m,n,k,bm,bn):
+    shape=Shape(m,n,k,'i32',bm=bm,bn=bn,cache_a=True,wide_b=True,reuse_b=True,prefetch_b=True)
+    module=GoldenGemm(shape).build()
+    kt=(k+F.DIM-1)//F.DIM
+    a_loads=[op for op in module.walk() if op.name=='gemmini.mvin' and op.a('load_id')==0]
+    assert len(a_loads)==((m+F.DIM-1)//F.DIM)*kt
+    assert {op.a('local') for op in a_loads}==set(range(0,len(a_loads)*F.DIM,F.DIM))
+    assert all(op.a('local')+op.a('rows')<=2*F.SPAD_BANK_ROWS for op in a_loads)
+    if m%F.DIM:
+        assert len([op for op in a_loads if op.a('rows')==m%F.DIM])==kt
+    computes=[op for op in module.walk() if op.name=='gemmini.compute']
+    assert all(op.a('a_reserved_rows')==bm*kt*F.DIM for op in computes)
+    assert max(op.a('a_max') for op in computes)==(((m+F.DIM-1)//F.DIM)*kt-1)*F.DIM
+    module.verify();lower(module)
+    assert not any(op.name.startswith('gemmini.') for op in module.walk())
+
+
+def test_cached_a_requires_one_complete_m_block_and_full_reserved_bank_proof():
+    with pytest.raises(ValueError,match='one complete M block'):
+        Shape(33,64,64,'i32',bm=2,bn=4,cache_a=True).validate()
+    # Each individual row fits, but the full cached A panel overlaps B banks.
+    with pytest.raises(ValueError,match='lower two banks'):
+        Shape(32,32,4112,'i32',bm=2,bn=2,cache_a=True,prefetch_b=True).validate()

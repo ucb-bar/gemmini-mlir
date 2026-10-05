@@ -1,6 +1,6 @@
 from dataclasses import replace
 from mlir_oot.golden_gemm import Shape
-from mlir_oot.dense_schedule import select_kernel,choose_banked_by_command_cost
+from mlir_oot.dense_schedule import select_kernel,choose_banked_by_command_cost,choose_resident_a_by_command_cost,choose_transfer_by_command_cost
 from mlir_oot.golden_tuning import estimate
 
 
@@ -89,3 +89,48 @@ def test_command_policy_cannot_mix_with_explicit_full_k_selection():
  import pytest
  with pytest.raises(ValueError,match='cannot mix'):
   select_kernel(measured_shape(),full_k_banked=True,banked_command_policy=True)
+
+
+def test_resident_a_policy_preserves_epilogue_and_generalizes_row_and_channel_tails():
+ for m,n,k in ((49,2048,512),(17,73,65),(95,48,80),(196,1024,256)):
+  s=Shape(m,n,k,'i8',bm=2,bn=3,scale=.017,relu=True)
+  c,d=choose_resident_a_by_command_cost(s)
+  assert d['applied'] and c.cache_a and c.reuse_b
+  assert c.bm==(m+15)//16 and c.bm*c.bn*16<=1024
+  assert (c.m,c.n,c.k,c.scale,c.relu,c.output_dtype,c.bias)==(s.m,s.n,s.k,s.scale,s.relu,s.output_dtype,s.bias)
+  assert d['candidate']['primitive_command_count']<d['control']['primitive_command_count']
+  c.validate()
+  g,kind=select_kernel(s,resident_a_command_policy=True)
+  assert g.shape==c and kind.endswith('resident_a_command_cost')
+
+
+def test_resident_a_policy_full_resource_refusal_and_prefetch_fallback():
+ for s in (Shape(8,256,64,'i32',bm=1,bn=4),
+           Shape(1040,256,64,'i32',bm=4,bn=4),
+           Shape(49,2048,4112,'i32',bm=4,bn=16)):
+  c,d=choose_resident_a_by_command_cost(s)
+  assert c is s and not d['applied'] and d['refusal']
+ s=Shape(49,2048,2064,'i32',bm=4,bn=16)
+ c,d=choose_resident_a_by_command_cost(s)
+ assert d['applied'] and c.cache_a and not c.prefetch_b
+ assert 'lower two banks' in d['prefetch_b_refusal']
+ c.validate()
+
+
+def test_transfer_policy_compares_families_without_source_selection():
+ for s,family in ((Shape(176,256,64,'i8',bm=8,bn=8,wide_a=True,wide_b=True,wide_store=True),'banked'),
+                  (Shape(49,2048,512,'i8',bm=4,bn=16,wide_b=True,wide_store=True,reuse_b=True),'resident_a')):
+  c,d=choose_transfer_by_command_cost(s)
+  assert d['applied'] and d['selected_family']==family
+  assert estimate(c)['primitive_command_count']<estimate(s)['primitive_command_count']
+  g,kind=select_kernel(s,transfer_command_policy=True)
+  assert g.shape==c and kind.endswith('transfer_command_cost_'+family)
+  assert not choose_transfer_by_command_cost(c)[1]['applied']
+
+
+def test_multiple_command_cost_policies_are_refused():
+ import pytest
+ with pytest.raises(ValueError,match='one explicit'):
+  select_kernel(measured_shape(),resident_a_command_policy=True,banked_command_policy=True)
+ with pytest.raises(ValueError,match='cannot mix'):
+  select_kernel(measured_shape(),transfer_command_policy=True,full_k_banked=True)

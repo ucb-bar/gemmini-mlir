@@ -29,7 +29,7 @@ class TestGoldenTuning(unittest.TestCase):
         self.assertEqual(estimate(cached)["a_mvin_commands"], 16)
         self.assertEqual(estimate(ordinary)["mesh_compute_commands"],
                          estimate(cached)["mesh_compute_commands"])
-        with self.assertRaisesRegex(ValueError, "one output-row tile"):
+        with self.assertRaisesRegex(ValueError, "one complete M block"):
             replace(cached, m=32).validate()
 
     def test_model_rule_selects_cached_a_only_for_repeated_n_blocks(self):

@@ -45,9 +45,62 @@ def choose_banked_by_command_cost(shape):
         control=control_cost,candidate=candidate_cost)
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False):
-    if full_k_banked and banked_command_policy:
+def choose_resident_a_by_command_cost(shape):
+    """Cache a complete multirow M block when resources and command cost admit it."""
+    shape.validate()
+    mt,nt=_ceil_div(shape.m,F.DIM),_ceil_div(shape.n,F.DIM)
+    if mt <= 1:
+        return shape,dict(applied=False,refusal='policy requires multiple A row tiles')
+    bn=min(nt,F.ACC_ROWS//(mt*F.DIM))
+    if bn == 0:
+        return shape,dict(applied=False,refusal='complete M block exceeds accumulator capacity')
+    candidate=replace(shape,bm=mt,bn=bn,cache_a=True,cache_b=False,
+        wide_a=False,wide_b=True,wide_store=shape.output_dtype=='i8',
+        reuse_b=True,pipeline_m=False,prefetch_m=False,banked_m=False,
+        separate_b_bank=False,prefetch_b=False)
+    try:
+        candidate.validate()
+    except ValueError as failure:
+        return shape,dict(applied=False,refusal=str(failure))
+    prefetch_refusal=None
+    try:
+        prefetched=replace(candidate,prefetch_b=True)
+        prefetched.validate()
+    except ValueError as failure:
+        prefetch_refusal=str(failure)
+    else:
+        candidate=prefetched
+    control_cost,candidate_cost=estimate(shape),estimate(candidate)
+    applied=candidate_cost['primitive_command_count'] < control_cost['primitive_command_count']
+    return (candidate if applied else shape),dict(
+        applied=applied,refusal=None if applied else 'primitive command count does not decrease',
+        prefetch_b=candidate.prefetch_b,prefetch_b_refusal=prefetch_refusal,
+        cost_unit='primitive_commands_not_cycles',control=control_cost,candidate=candidate_cost)
+
+
+def choose_transfer_by_command_cost(shape):
+    """Compare legal transfer families using one explicit geometric cost policy."""
+    choices={}
+    candidates=[]
+    for name,choose in (('banked',choose_banked_by_command_cost),('resident_a',choose_resident_a_by_command_cost)):
+        candidate,decision=choose(shape)
+        choices[name]=decision
+        if decision['applied']:
+            cost=decision['candidate']
+            key=(cost['primitive_command_count'],cost['dma_request_bytes_upper'],cost['output_blocks'],name)
+            candidates.append((key,candidate,name))
+    if not candidates:
+        return shape,dict(applied=False,refusal='no legal transfer family reduces command count',families=choices)
+    _,chosen,name=min(candidates,key=lambda c:c[0])
+    return chosen,dict(applied=True,selected_family=name,cost_unit='primitive_commands_not_cycles',families=choices)
+
+
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False):
+    policies_selected=(banked_command_policy,resident_a_command_policy,transfer_command_policy)
+    if full_k_banked and any(policies_selected):
         raise ValueError('banked compiler policy cannot mix with explicit full-K selection')
+    if sum(bool(p) for p in policies_selected)>1:
+        raise ValueError('select one explicit dense command-cost policy')
     shape.validate();selected=shape;policies=[]
     if grouped_b and not shape.wide_b:
         candidate=replace(shape,wide_b=True)
@@ -79,6 +132,14 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
         selected,decision=choose_banked_by_command_cost(selected)
         if decision['applied']:
             policies.append('full_k_banked_command_cost')
+    if resident_a_command_policy:
+        selected,decision=choose_resident_a_by_command_cost(selected)
+        if decision['applied']:
+            policies.append('resident_a_command_cost')
+    if transfer_command_policy:
+        selected,decision=choose_transfer_by_command_cost(selected)
+        if decision['applied']:
+            policies.append('transfer_command_cost_'+decision['selected_family'])
     if separate_b_bank and not selected.banked_m and not selected.separate_b_bank:
         candidate=replace(selected,separate_b_bank=True)
         try:
