@@ -44,3 +44,7 @@ Largest host gaps precede ordinal1 (282,134,606), ordinal5 (255,400,597), stem o
 ## Fused epilogue whole-model result
 
 Job 1743 (source-proven fused27 epilogues) completed at **3,146,164,937 forward cycles**, with all 1,000 output words bit-exact against the same original oracle, zero rank mismatches, and actual staged ELF/bitstream hashes verified. This is 10.86% below mixed direct baseline 1737 and 44.61% below initial baseline 1730. Receipt: `docs/perf_records/resnet_fused27_firesim1743.json`. The 1741 attribution applies to the earlier mixed artifact; it is not a per-section profile of this fused artifact.
+
+## Pooled-stem whole-model result
+
+Job1750 completed at **2,663,212,150 forward cycles**, all1,000 output words bit-exact against the same original oracle, zero rank mismatches, and actual staged ELF/bitstream identities verified. This is15.35% below fused27 job1743 and53.12% below initial job1730. The artifact combines one pooled stem,27 fused epilogues,4 remaining direct convolutions and22 dense contractions. Receipt: `docs/perf_records/resnet_pooled_stem_firesim1750.json`. This is measured whole-model progress, still far above22M cycles.
