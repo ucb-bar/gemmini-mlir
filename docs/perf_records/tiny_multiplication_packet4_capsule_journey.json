@@ -1,0 +1,77 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "hypothesis": "Expose independent source f32 multiplication lanes after exact typed broadcast rsqrt hoisting, hiding multiply chain latency without changing source rounding or repeated math calls.",
+  "ownership": "Merlin generic typed tensor schedule; target codegen/ISA/resource/provider stays OOT. No target instruction emitter added to Merlin.",
+  "core_commit": "9126b46b4",
+  "emitted_change": "Explicit default-off packet_scalar_pointwise_multiplication_4; at least3sourceF32muls, static projected/unit-zero maps, noFMA/division/precisionchanges/strictscopes; exact scalar tails and tensor semantics.",
+  "before": {
+    "scope": "Same original first complete8\u00d72048 normalization with1926hoist and1880 frozen runtime object",
+    "actual_gsim_cycles": [
+      811517,
+      811065
+    ],
+    "mean_cycles": 811291
+  },
+  "after": {
+    "scope": "Samebody/input/weights/runtime; packet4 consumer only; complete allocations/reduction/epsilon/rsqrt/multiplies/quantization/outputtraffic",
+    "actual_gsim_cycles": [
+      599015,
+      596331
+    ],
+    "mean_cycles": 597673,
+    "saved_percent": 26.33062612552093
+  },
+  "gate": {
+    "native_original_i8_words": 16384,
+    "strict_original_i8_words": 16384,
+    "all5_rounding_modes_and_flags": true,
+    "dirtyguard_bytes": 128,
+    "immutable_input_bytes": 73728,
+    "independent_actualtarget_raw_f32_bitchecks": 21120,
+    "independent_source_specials_tails_flags": true,
+    "focused_native_refusal_default_compose_tests": 40,
+    "noFSM": true
+  },
+  "result": "Positive complete same-runtime capsule; whole original256000/Torch/native/strict/finalELF required separately. No whole-cycle forecast or stock admission.",
+  "installed_emission": {
+    "schema": "installed_typed_multiplication_packet_emission_v1",
+    "source": "61237fb6f737fa1b5aed69524fba3755224b3fcb502c72678bc65f19db7b2ddf",
+    "generic_module_path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/llvmlower/scalar_pointwise_packet.py",
+    "target_llvm_sha256": "c3a5a07a4174147f3bfb715ba42ba3d3bbefbc8fed8a34911357b4b7934cf145",
+    "target_object_sha256": "274eb216020e9d5101c53b5f1f552f246cfaeed8cbeff7087dca2433e76d9cfc",
+    "native_llvm_sha256": "6741d812a5d762c32bba5204dac22072866e6956181c909234ee7df333e28878",
+    "current_typed_selector_regenerates_timed_artifact_byteexact": true,
+    "independent_strict_refusal_followup_changes_unsupported_selection_only": true,
+    "token_usage_available": false,
+    "generic_module_sha256": "a189f6d4d99f6636958dc39b5e98d67e09c343a49f938d91f78a800819d0a919"
+  },
+  "initial_refusals_preserved": [
+    "Missing explicit harness environment",
+    "Original runtime libm __errno required by independent harness; added ordinary harness errno storage before final link."
+  ],
+  "artifact_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/strict_main.c": "b0f83bfba08101164a8fe838d6effb14c697e7915b2abab93d0a3654753d4e1d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/gsim.stdout": "c2d071b79152a0c842972c6417b9a8e96378f452142e1cf354465b66c547b628",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/build.log": "1280316b5e738a8f8315cf26d302e1d87410d3ee9ba7311a970293b44e280242",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/timing_main.c": "7e2ca98096fded7f9dbe38b58961fc4c1521f3881cf5debdd100620e99172cb3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent.log": "772470693c483ac93c01b3050b4fd762065354a08b99843f551002e7cb5e7898",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/model.so": "afe26c059c672a2e02b3736162ed22e8b22acef5b64a84d90347c78b91d53f54",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/target.ll": "c3a5a07a4174147f3bfb715ba42ba3d3bbefbc8fed8a34911357b4b7934cf145",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/model.o": "274eb216020e9d5101c53b5f1f552f246cfaeed8cbeff7087dca2433e76d9cfc",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/qualification.json": "cde1d4b91e4590228642baa6b6c86a2c7bb62079049f8619e7f91aa15322bb69",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent_errno_link_refusal.log": "939a329af6ff59110ca13c51c718fa594fb1eb80c72c053e092675577da89e9c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/gsim_receipt.json": "2b7bcffb50576f855f16de32a0a90111dd4f1cbf0609556bbe73439c45656f5e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent.py": "ac9fce179e5f476b15a2fcdd6c690a9f8f59ece54efa3080e2f2aa5256db842e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/verify_current.py": "d454ba4659c6465cd23c0b082788fb3b3803c800ad56ce2c602fdd0790c92db6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/timing_main.o": "b8c8aa8968372e3e4a20cc45afd82ae447f0b2639735c8f46b9f4503805fec67",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/result.json": "9a6e84a4f11d395ed4074f4206554eb7675855e31dfb52101921682246a67c7e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent_missing_harness_refusal.log": "7ce05defa45fef8e4eed206d6f1b5616d19c801f9ca024156c7e8529ae52a837",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/build.py": "3ec30a0f6d23046786a75bfd570ff29646ee0bae8027de06449286de7b337bba",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/native.ll": "6741d812a5d762c32bba5204dac22072866e6956181c909234ee7df333e28878",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/strict_main.o": "5febaf7671c1616cf7c0523a993ac492a0769c529c6b99a142fc7633239bbe1a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/timing_spike.log": "46fe08ecd8d671810a84f0c6fe8622f52f0c3d7bd3934b7e5f7c07f428b95946",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/strict.log": "46fe08ecd8d671810a84f0c6fe8622f52f0c3d7bd3934b7e5f7c07f428b95946",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/verify_current.log": "d12023612d83bd4b1860d8d762893f55e5541460143a7389745521a15528adb3"
+  },
+  "token_usage_available": false
+}

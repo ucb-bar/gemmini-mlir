@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent.py", line 38, in <module>
+    b=build_program(objects,W/'build',target='gemmini',max_loaded_bytes=None);audit=audit_elf(b.elf.read_bytes());assert audit['status']=='pass'
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/perf/layer_bench/build.py", line 85, in build_program
+    recipe = backends.harness_build_recipe(target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/runtime/backends/base.py", line 471, in harness_build_recipe
+    return factory()
+           ^^^^^^^^^
+  File "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/support/gemmini_gsim/backend.py", line 37, in harness_build_recipe
+    root = _path('MERLIN_GEMMINI_HARNESS_DIR', directory=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/support/gemmini_gsim/backend.py", line 27, in _path
+    raise ValueError(f'explicit {variable} is required')
+ValueError: explicit MERLIN_GEMMINI_HARNESS_DIR is required
