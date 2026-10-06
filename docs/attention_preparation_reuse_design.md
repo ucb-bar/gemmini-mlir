@@ -67,3 +67,27 @@ handle. A later consumer may not reinterpret a differently oriented handle.
   observations, original whole1,600-output gate, and source fallback ownership.
 - Measure a complete original group with preparation/storage costs included.
   Do not project the logical census or instruction counts to a whole-model gain.
+
+## Local encoding screen outcome
+
+The local Q encoding-only implementation is not enabled. Three complete original
+12-head target capsules passed all 196,608 accepted carrier words and guards,
+with unchanged product/replay counters. Against 5,034,507,191 control retired
+instructions, the first implementation used 5,152,843,018, forced inlining used
+5,397,217,199, and the final shared evaluator used 5,053,569,315 (+0.379%).
+The outlining hypothesis did not explain the outcome. No FPGA arm was admitted.
+See `perf_records/smol_local_query_preparation_negative.json` for immutable pins.
+
+This screen caches encoding, not admitted row norms. Q-only norm reuse is a
+separate possibility, but source work limits its scope: each query row visits
+2 × 64 QK reduction elements and 2 × (192 + 192 + 128) PV elements. Eliminating
+one repeated QK norm preparation removes 64 of 1,152 left-row element visits
+(5.56%). This is an operation count, not a timing fraction: QK exact inputs and
+PV uncertain probability intervals have different work. The measured 339.8M
+left-metadata scope cannot be claimed as its potential saving. Equal PV segment
+lengths alone do not authorize reuse because the source slices differ.
+
+Cross-group K/V preparation remains an unimplemented typed format/lifetime
+contract. Further work should price its complete storage and preparation costs
+against the current qualified numerical capabilities, rather than carrying
+forward the packing-only performance hypothesis.
