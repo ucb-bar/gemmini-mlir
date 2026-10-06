@@ -43,3 +43,21 @@ The new residue mapping independently proves current source semantics; unresolve
 reference addresses and its different numeric contract remain separate evidence.
 No whole-model hardware gain is established yet. Exact receipts are in
 [source_stride_residue_capsule.json](perf_records/source_stride_residue_capsule.json).
+
+The normal 52 route bundle now selects both admitted source-stride layouts.
+Against the 1897 control, exactly two kernel objects change. Against the queued
+1914 source-stride arm, only the new residue-layout kernel changes. All other
+kernel objects, adapters, source/readout proofs and source ABI are identical.
+The ordinary whole-model build and the final comparison ELF both pass all
+1,000 original output words in native and strict RV64GC Spike execution.
+The original zero-tolerance gate and zero-FSM final audit remain in force.
+
+The final comparison ELF is
+`139972ac583dc8887309b350494dd0311357041f1a04f9b5f66f79e635f0b31a`.
+It retains the exact 1897/1914 host, runtime, weights and harness objects and
+links the actual normal-build selected catalog. The inherited harness marker
+identifies that harness; complete final ELF and object hashes identify this arm.
+The fresh normal build, including its changed host code, is preserved separately.
+Whole hardware timing and an additive gain remain unknown. Full original gates,
+both source-bound comparisons and exact owned recipe pins are in
+[source_stride_residue_whole_qualification.json](perf_records/source_stride_residue_whole_qualification.json).
