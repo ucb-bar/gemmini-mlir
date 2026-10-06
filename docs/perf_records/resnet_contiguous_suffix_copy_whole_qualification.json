@@ -1,0 +1,67 @@
+{
+  "schema": "source_exact_contiguous_suffix_copy_whole_v1",
+  "core_commit": "e2cea0df1",
+  "core_worktree": "/scratch/agustin/tmp/merlin-border-initialization-20261005",
+  "optional_features": [
+    "specialize_contiguous_copy"
+  ],
+  "default_changed": false,
+  "control_job": 1903,
+  "control_reproduced_byte_exact": true,
+  "only_changed_linked_object": "model.o",
+  "all_original_1000_native_and_strict_bits": true,
+  "raw_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "final_zero_fsm": true,
+  "control_spike_instructions": 9246562,
+  "candidate_spike_instructions": 9199529,
+  "delta_instructions": -47033,
+  "instruction_not_hardware": true,
+  "hardware_admission": "held; modest whole instruction change; no cycle projection",
+  "final_elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/build_direct/model.elf",
+  "final_elf_sha256": "58c5c7dcbc5e602dc0e7351bb1a48a47f25d6afcf7d05e551af54dc8b1eb5a0d",
+  "marker": "273e514ef18f inherited, nonunique; final ELF/component hashes are authority",
+  "generic_proof": "Trace known views to distinct fresh memref.alloc roots; positive static equal shapes and strides determine longest common contiguous suffix. Source-lexicographic outer loops retain rank-reduced inner memref.copy; disjointness rules out overlap. Runtime retains alignment and byte-tail handling.",
+  "tests": "28 focused contiguous-suffix and uniform-copy tests PASS; structure/target-name/regex checks PASS",
+  "physical_transfers": [
+    {
+      "element_type": "i8",
+      "elements": 256,
+      "bytes": 256,
+      "llvm_memcpy_line": 264
+    },
+    {
+      "element_type": "i8",
+      "elements": 512,
+      "bytes": 512,
+      "llvm_memcpy_line": 367
+    },
+    {
+      "element_type": "i8",
+      "elements": 1024,
+      "bytes": 1024,
+      "llvm_memcpy_line": 474
+    }
+  ],
+  "unit_scope": "Actual selected post-bufferization LLVM uses i8 GEP and literal byte lengths. Earlier semantic f32 tensor views are a distinct scope and not authority for direct i8 device loads.",
+  "broader_expansion_negative": "resnet_expand_memref_copy_negative.json: +15.92% instructions; scalar expansion loses runtime word copy",
+  "composition": "No border/uniform composition in this arm",
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/controlled_link.json": "1d312b74d23b2a29897fe99a7e86362e89726117fcce15d9861bfb77aab99515",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/native_validation.json": "4970927c56584c407e86f1de7245a9512501a2882f158032fb33a1f7acccf785",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/spike_validation.json": "bd736e59d571c9177dc2cefab93c8ac77b82b2398c22d84c46e93c874a0e7f79",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/spike.log": "b32481d5b8916676d112191e0ec3d41806569fd3c3d1d23e55f769190c632e26",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/host/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/build_direct/model.elf": "58c5c7dcbc5e602dc0e7351bb1a48a47f25d6afcf7d05e551af54dc8b1eb5a0d",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix_controlled1903/build_direct/model.nofsm_audit.json": "c611579eae6dd8d6aeffaad2d96dbfdc065e59260a9f2c3c75edc9fea2e0c5ad",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/compilation_recipe.json": "1a321ee482c422e7e53c5e6da4e7eb2896ba5ac9f4073e92e604483bd356f9af",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/lower/lowering_recipe.json": "0c087573b338bda22c76c031267d74a71dede98c1eab75915aae74b84db4fa66",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/lower/contiguous_suffix_copy.json": "cd7692eb3cb9ebea95c1610e83336f1ba5aaf746efb6782b393b29ccab6bdb6a",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/host_llvm/model.ll": "b2d89d817ae476cc8236c15efd0473ec0ed1c4655c618d3e8a6d3d0ffacf0516",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/host_llvm/model.linked.ll": "5b492fa955e87e8ac82b188755d46f1ff7e4da23494945bdac01aeec32c5929f",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix/build_direct/model.o": "35627bff4f4ba4a6521176315017a0073d546febf197d49a25b168d10f57f0bd",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_suffix.py": "6b24224786ea8854376a0de1fe523076ba13788e79b972f647884f7cada9475b",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/qualify_suffix.py": "ca7cf148202429ccc4937ef48765743a8b3ba486c1eba97a924543e5f64c0e72",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/suffix_combined_tests.log": "1f5dfa1795bc0d9b7750666d9580cc79d9799d35143e2525303118f60c3b8a31"
+  },
+  "token_usage_available": false
+}
