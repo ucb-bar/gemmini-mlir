@@ -792,3 +792,53 @@ instructionbytes shrink69602→13992. Neither count alone explains cycle gains.
 Normal52-binding/native/strict/sourcecontrol qualification is in progress, with
 111 focused source-cell/tail/resource/default-identity tests PASS. No hardware
 release, whole speed claim or original ZIPnumeric-contract substitution.
+
+## 2026-10-06 11:39 UTC — completed stock group and stronger section controls
+
+Stock1968 is DONE/rc0 at7,075,784,369 provider ROI cycles. All786432original
+compiled54-op consumer i8words+1024BF16scales, guards, descriptors, inputbytes
+and eight statistics pass; exactELF5527a93a...d0ca6/UART/stagedELF/stockbitstream
+are pinned. Job elapsed520.10s includes setup/execution; it is not the slow
+wholeSmol run. Raw WORKSPACE_GROUP_INSTRUCTIONS is a legacy label for mcycle;
+on stock hardware these are CYCLES.1944(10.525B) and1945(8.026B) have different
+recipes and are not isolated word-policy controls. WholeSmol best remains1906
+258.6Bcycles; no48×extrapolation, whole5B claim or route promotion.
+[Terminal](perf_records/stock1968_word_consumer_terminal.json).
+
+Root318 exact capsule/debug/stock1968 evidence pins reclosed. New ResNet flat
+planes imported528b5e2 preserving all previous compact/capacity/packet probe
+choices, and106 source-cell/packet/retained-loop/default/export tests PASS.
+Agent normal52bundle changes only47/50 kernels; all52adapters/sourcebindings,
+other50objects and rewrittenIR are unchanged. Full native/strict1000 gate and
+frozen1903 control are still pending. No flat-plane stock release yet.
+[Complete capsules and ablation](perf_records/resident_flat_planes_capsules.json).
+
+Merlin debug_companion importede8efe0a6f;18actual compiler/symbolizer and negative
+binary/source testsPASS. It admits identical allocated ELFbytes/addresses/flags
+and normalized relocation symbol identities, refuses unsupported formats and
+conserves everyPC including missing source metadata. RISC-V production4object
+allocated sections/1213relocations and102finalallocated sections match, enabling
+existing3338365845instructionPCprofile mapping with no new target execution.
+Generic utility remains target-independent, tools/source/ISA/numerical gates
+caller-owned. Tests moved to DSE per local performance AGENT.md; structure/docs
+checksPASS. Sourceconstructor f32_interval_endpoint.h:17 costs215208045innermost
+instructions, including soft subtraction/addition and separate PV endpoint
+contexts. Nested source/callsite counts overlap and cannot be summed as disjoint
+costs. These are instruction counts, not hardwarecycles.
+[Actual source mapping](perf_records/composed_provider_debug_source_attribution.json).
+
+PreparedSoftmaxIntervalDomain is the next default-off portable proof under
+implementation. It must derive finite scaled-score/difference envelopes from
+actual plan and source domain, establish a finite nonnegative polynomial upper
+bound, and execute the original lane/tree/two-chunk schedule on that upper bound
+withalpha=1 to prove every prefix. Runtime active endpoint order/finiteness and
+alpha[0,1] are admitted once; all-masked, cutoff, signed-zero, NaN, underflow,
+overflow and unsupported-source cases retain checked fallback. Only typed private
+softmax consumers may elide checks; signedPV has a separate domain and remains
+checked. No global unchecked interval constructor or golden-derived range.
+
+Tiny separate exactly-two-multiply packet family retains current>=3 champion
+eligibility/default. New56native/default/refusal testsPASS; actualsource16384F32
+outputs and81920five-FRM/flags comparisons, plus independent3×7+tail1260rawspecial
+cases close. Actual source GSIM complete-cost pair is still live; no fullmodel
+composition or hardware release for this prospective policy.
