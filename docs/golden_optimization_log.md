@@ -1305,3 +1305,9 @@ An independent 48-row, three-panel drain case falls from 8,061 to 6,445 cycles
 measurements in the GSIM memory regime. The original full layer, ordinary
 source binding, caller-owned workspace, and whole-model gate remain required
 before enabling this family. [Qualified capsule](perf_records/residual_shared_affine_bracket_capsule.json).
+
+### Shared affine bracket: complete original captured residual
+
+The unchanged802,816-byte first residual now closes on strictRV64GC Spike and pinned GSIM, including both actual scaled readouts, the complete source output,8192 dirty guards and1,605,632 immutable input bytes. The shared298/249 producer uses5chunks and two certified stores; its portable full decoder preserves every ordered binary32 source result. Common-address paired ELFs differ one selector byte. The control takes1,996,004cycles and the new family1,928,741, a67,263cycle reduction (3.3699%) including both stores and decoding.
+
+This remains a layer capsule, with normal selection off and no new whole-model or stock FireSim claim. The earlier23.318% full-domain reduction did not extrapolate to the larger footprint; the old11chunk separate-predictor family remains rejected at+16.688%. All numeric gates stay exact. A separately proved first-output guard is the next default-off screen. [Full captured-layer receipt](perf_records/residual_shared_affine_bracket_original_capsule.json).
