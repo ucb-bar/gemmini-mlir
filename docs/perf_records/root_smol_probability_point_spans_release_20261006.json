@@ -1,0 +1,75 @@
+{
+  "schema": "golden_root_probability_point_span_release_v1",
+  "status": "pass",
+  "scope": "Matched complete 12-head attention provider group. This release is not a whole-model cycle result.",
+  "core_commit": "0b8e106316ff75f60feedd157b5686a368f2d80e",
+  "complete_group_qualification": {
+    "path": "/scratch/agustin/tmp/gemmini-probability-point-20261006/docs/perf_records/probability_point_spans_complete_group_qualification.json",
+    "sha256": "76d92ad924b15f0343e5233585419284d9535856b568a8a83783e3f7f1d48567",
+    "pins_independently_rehashed": 247,
+    "failures": 0
+  },
+  "normal_qualification": {
+    "path": "/scratch/agustin/tmp/gemmini-probability-point-20261006/docs/perf_records/smol_normal_probability_point_spans_qualification.json",
+    "sha256": "34ed4a3f57f37f964e696303ad584499cb4f3fa3fbbef46edacb3dbf196b916c",
+    "pins_independently_rehashed": 256,
+    "failures": 0,
+    "original_outputs": 1600,
+    "bitwise_mismatches": 0,
+    "calls": 48,
+    "source_fallbacks": 0,
+    "product_calls": 23040,
+    "one_workspace_all_calls": true,
+    "retained_original_source_fallback_words": 196608,
+    "fallback_word_mismatches": 0,
+    "fallback_descriptor_and_inputs_unchanged": true,
+    "whole_target_execution": "not launched",
+    "whole_host_llvm_equal_prior": false
+  },
+  "root_source_review": {
+    "admission": "Owned portable attention-template specialization, not arbitrary C or caller-supplied point-flag admission.",
+    "probability_value": "Successful producer requires equal finite BF16 endpoint bins, refreshed after original source replay. Ambiguous and nonfinite cases refuse before publication.",
+    "lifetime": "Private source/base/count/local epoch witness spans one synchronous QK or PV product call, with immutable input and disjoint output/plane storage.",
+    "representation_error": "Original radix representation error and source-ordered FMA admission remain required; exact source bounds do not prove an exact reconstructed product.",
+    "memory": "Private workspace capacity remains 123012928 bytes. No memory reduction claim.",
+    "selection": "Explicit default-off option. Eligibility uses source producer, consumer and lifetime structure, not model identities."
+  },
+  "root_tests": {
+    "command": "env PYTHONPATH=src /scratch/agustin/projects/oscar-merlin/.venv/bin/python -m pytest -q merlin/tests/runtime/test_probability_point_spans.py merlin/tests/runtime/test_source_attention_frontier.py merlin/tests/runtime/test_prepared_bf16_interval.py",
+    "cwd": "/scratch/agustin/tmp/merlin-probability-point-20261006",
+    "passed": 938,
+    "seconds": 72.87
+  },
+  "control": {
+    "elf": "/scratch/agustin/tmp/gemmini-probability-point-20261006/out/probability_points/control/model.elf",
+    "elf_sha256": "09ca3d0849ef423a49eef5af5c359b93df225f3f9b6483233c00b1c5830f6565",
+    "byte_reproduced": true,
+    "measured_job": 2003,
+    "cycles": 5288926830,
+    "retired_instructions": 2288221154,
+    "fresh_all_executable_no_fsm": true
+  },
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-probability-point-20261006/out/probability_points/candidate/model.elf",
+    "elf_sha256": "ec3215988a150a0aea70eb10562b69c8bb617a4a5188138789790af247a01039",
+    "changed_link_objects": ["provider.o"],
+    "retired_instructions": 2165148233,
+    "fresh_all_executable_no_fsm": true,
+    "original_consumer_i8_words": 786432,
+    "original_consumer_bf16_scales": 1024,
+    "all_eight_stats_and_guards_unchanged": true,
+    "unobserved_carrier_differences": 4,
+    "hardware_cycles": "UNKNOWN"
+  },
+  "normal_whole_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-probability-point-20261006/out/normal_attention_provider_probability_points/build/model.elf",
+    "sha256": "6c177ad390ab0adff85c57e1c96072d5ece535b61a432d347fcd1eb5515acdd0",
+    "fresh_all_executable_no_fsm": true,
+    "scope": "Fresh ordinary compilation and native full-model qualification; not the matched stock timing candidate."
+  },
+  "original_accuracy_gate": {"atol": 0.03125, "rtol": 0.02, "unchanged": true},
+  "target_config": "FireSimGemminiRocketConfig",
+  "stock_admitted": true,
+  "instruction_reduction_is_cycle_claim": false,
+  "whole_model_5B_goal_achieved": false
+}
