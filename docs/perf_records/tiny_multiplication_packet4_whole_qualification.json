@@ -1,0 +1,59 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "hypothesis": "Typed four-lane scheduling hides dependency latency in already-hoisted pure f32 multiplication consumers while retaining originalsource rounding/casts/order and allsourcebounddevicecalls.",
+  "ownership": "Generic typed host schedule and numerical/ownership legality Merlin; target codegen/ISA/device providers OOT.",
+  "core_commit": "9126b46b4",
+  "emitted_change": "Only additional explicit packet_scalar_pointwise_multiplication_4; verified1926hoist + originalFMApacket2/RNE/freshwriter kept. No rejected1954constantFMA composition.",
+  "before": {
+    "scope": "Verified1926 original22layer/eighttoken TinyLlama",
+    "stock_cycles": 461389700,
+    "strict_retired_instructions": 144498799
+  },
+  "after": {
+    "scope": "Fresh normal full same workload; only hostmodel object changes",
+    "strict_retired_instructions": 142343799,
+    "strict_instruction_change_percent": -1.4913618763018222,
+    "hardware_cycles": null
+  },
+  "gate": {
+    "native_original_bits_exact": 256000,
+    "strict_original_digest_words": 256000,
+    "original_torch_atol": 0.03125,
+    "original_torch_rtol": 0.02,
+    "original_torch_pass": true,
+    "memref_rank_mismatch": 0,
+    "DONE": true,
+    "final_executable_zero_FSM": true,
+    "all155_sourcebound_device_call_counts_conserved": true,
+    "current_control_LLVM_native_object_and_ELF_relink_byteidentical1926": true,
+    "elf_sha256": "7d2fa0c702116172864ee80651018c31fdcb897def36df216efe2bc615d454a7",
+    "inherited_marker": "37bdf9be0856",
+    "marker_unique": false
+  },
+  "local_scope": {
+    "actual_complete_original_norm_gsim_saved_percent": 26.33062612552093,
+    "whole_cycle_forecast": null,
+    "receipt_commit": "c0ab590"
+  },
+  "result": "Qualified isolated whole-model candidate. Actual stock cycles pending; no promotion or composition claim.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/build_whole.py": "2a43134275fd084c47d5b9202202334d58a837a00f360c3aa5238c778d59b5c0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/build.log": "2ebbefefa79571e2977d45e47ebe4700dd2d83b241a67b6722cc6072bf46ec99",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/validate_whole_native.py": "680208c9fd9b985f4137347799cf54f30e76041ff564accc5917e30471b0c87c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/validate_whole_native.log": "240eb9b5cd414f0fa7dc8fe2a1cbaec0b281bffae6fcbdc6a5b3f1c2eb75e746",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/qualify_whole_strict.py": "6a05a166ae54c2276330618f11f6f7b278f312f96a7c370dc0c68cee53a01b81",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/qualify_whole_strict.log": "524ba27380d02e6b0b32d82c3a77b758500363eb34f7565a6ec00016b86657f0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/normal_lower_recipe.json": "de001820bdd9a469ba827b197b1890688ff4d126aeb562107d197d3a7952e797",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/controlled_link.json": "e1ec1b1a4f398d38bdf7da40190d52c8ca57c8485552bccf6a127bfc6b1e9ddd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/model.nofsm_audit.json": "8dc928a114c4e6bd222328857856861851f65536375ec8eebb4128949e935a5f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/reference_validation.json": "0e2adb923c1d6c8dde3c89afac130e9f62745c4a3f26a44613d430f5789f3183",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/spike_validation.json": "016adfbb72b559018454a696b6e9c4e11234060be622b12898928319cba85694",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/spike.log": "91c60c632a332bec8cecd27b68438e16091e9574f26ac4f9bbed7f91f4b96c7c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host/validation.json": "224dfb88e05b87b13031719d3294334728808f8226c0be9635a8a47d4bc4aa85",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/lowering_recipe.json": "66867cc06354f3b9b0eeb3d3a30fd3d0c7943aa19a38648573d20a4350db82f6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/control/normal_lower_recipe.json": "3d3bd19dc691f48f7ff1185a9281e0432e2de6b1609e4be217da7a7ae017464c"
+  },
+  "compiled_model_object_sha256": "657eb9b7da4716cd9b58bf03db87809b1c84a65e25792098a0fecea56ba782e0",
+  "native_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "token_usage_available": false
+}
