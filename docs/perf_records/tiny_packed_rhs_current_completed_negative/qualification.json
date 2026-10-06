@@ -1,0 +1,162 @@
+{
+  "schema": "current_source_bound_packed_rhs_matched_capsule_v1",
+  "m": 8,
+  "n": 5632,
+  "k": 2048,
+  "nr": 64,
+  "output_block_bn_tiles": 64,
+  "original_control_typed_body_structurally_identical": true,
+  "same_executable_bytes": true,
+  "same_all_symbol_addresses": true,
+  "baseline_device_object_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.o",
+  "baseline_device_object_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+  "candidate": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "8690e46051d660a57f4435c88646f7b1b206bafc321ff98c37d199f0ea3c98b1",
+    "llvm_mlir_sha256": "eaeb468ee3aeb1c458f4a854c68b56b942c39e1564ff87d26d02f1dcb11e5348",
+    "llvm_ir_sha256": "38f15f73f7c2c4057dbfb8405879b0e37da829a2d16cb2acbd4874a5d7910fe6",
+    "object_sha256": "2905e69625848f78340592cf4b6ab857c4a5680ddd28b772c7f73a6c0982d654",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.o"
+      ]
+    ]
+  },
+  "offline_packing": "Merlin weight_panel.pack_bytes; exact reversible permutation; excluded from runtime ROI as immutable parameter preparation. No byte savings claim.",
+  "input_scope": "First actual current1983 source-bound gate projection, original full eight-token model capture passes256000originalbits/Torch; complete45056i32 output, no shape narrowing.",
+  "roi": "Whole actual primitive kernel, including config, A/B DMA, CPU command arithmetic, compute, all output writes and final fence. Repeat0 cold, repeats1/2 warm separately. Input/checker/printing outside ROI, same code/addresses.",
+  "captured_inputs": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/a.bin": "c3e46bdd186176986276e7fb9b7a56268b15b10b6063be7ad7d291ecd347cf63",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/b.bin": "14aa4e6ce43720513c3a8d7b346b138d88056b44bc786d56709d33dff552246d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/expected.bin": "448fd0cb116f3993c3a3e5574a2fc998ccc7af1afea9ed838779bfdef8ec839f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/validation.json": "4122f0c1e8fb3643472251ec2d3f89d536a5b5e8fd0f6443f9e8a80a97c11eec"
+  },
+  "actual_build_commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/main.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/main.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/data.S",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/data.o"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+      "--only-section=.text",
+      "-O",
+      "binary",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/layer.elf",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/text.bin"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/data.S",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/data.o"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+      "--only-section=.text",
+      "-O",
+      "binary",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/layer.elf",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/text.bin"
+    ]
+  ],
+  "audits": {
+    "dense": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "d2eae50551a9205e5220f71cfc1675af62bcff830b0a53c663b1347fe3127853",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 24,
+        "1": 408,
+        "2": 866,
+        "3": 416,
+        "4": 1632,
+        "6": 1632,
+        "7": 6
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "packed": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "dbc2425586cfd154d1d9e78c4dd85f95ed32579579c1828678de0f5a19dc6a3b",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 24,
+        "1": 408,
+        "2": 866,
+        "3": 416,
+        "4": 1632,
+        "6": 1632,
+        "7": 6
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "elfs": {
+    "dense": {
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/layer.elf",
+      "sha256": "d2eae50551a9205e5220f71cfc1675af62bcff830b0a53c663b1347fe3127853"
+    },
+    "packed": {
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/layer.elf",
+      "sha256": "dbc2425586cfd154d1d9e78c4dd85f95ed32579579c1828678de0f5a19dc6a3b"
+    }
+  },
+  "token_usage_available": false
+}
