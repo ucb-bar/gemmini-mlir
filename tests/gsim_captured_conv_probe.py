@@ -45,10 +45,12 @@ def main():
             "coalesced_resident_a",
             "mesh_flip",
             "compact_commands",
+            "resident_acc_stripes",
         ),
         required=True,
     )
     ap.add_argument("--bn", type=int)
+    ap.add_argument("--bm", type=int, help="explicit accumulator stripe tiles")
     ap.add_argument("--prefetch-b", action="store_true")
     ap.add_argument("--llvm-bin", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, required=True)
@@ -59,9 +61,18 @@ def main():
     source_receipt = json.loads((fixture / "receipt.json").read_text())
     dense = "m" in source_receipt["shape"]
     shape = (Shape if dense else ConvShape)(**source_receipt["shape"])
-    if dense and args.schedule not in ("control", "coalesced_resident_a", "mesh_flip"):
+    if dense and args.schedule not in (
+        "control",
+        "coalesced_resident_a",
+        "mesh_flip",
+        "resident_acc_stripes",
+    ):
         raise ValueError("dense fixture requires an explicit dense schedule")
-    if not dense and args.schedule in ("coalesced_resident_a", "mesh_flip"):
+    if not dense and args.schedule in (
+        "coalesced_resident_a",
+        "mesh_flip",
+        "resident_acc_stripes",
+    ):
         raise ValueError("selected dense schedule requires a dense fixture")
     if args.prefetch_b and args.schedule != "compact":
         raise ValueError("weight prefetch requires explicit compact schedule")
@@ -71,6 +82,12 @@ def main():
                 "exact control and isolated mesh mode do not accept tile overrides"
             )
         shape = replace(shape, bn=args.bn)
+    if args.bm is not None:
+        if args.schedule != "resident_acc_stripes":
+            raise ValueError(
+                "M stripe override requires explicit resident accumulator stripes"
+            )
+        shape = replace(shape, bm=args.bm, cache_a=False, prefetch_b=False)
     shape.validate()
     if not dense and shape.explicit_halo:
         raise ValueError("this paired resident probe requires unpadded inputs")
@@ -117,6 +134,11 @@ def main():
                 **source_receipt.get("resident_options", {}),
                 compact_commands=True,
             )
+        elif args.schedule == "resident_acc_stripes":
+            from mlir_oot.golden_resident_stripe_gemm import GoldenResidentStripeGemm
+
+            generator = GoldenResidentStripeGemm(shape, stripe_tiles=shape.bm)
+            shape = generator.shape
         elif args.schedule == "mesh_flip":
             if not shape.cache_a or not shape.reuse_b:
                 raise ValueError(
@@ -159,7 +181,17 @@ def main():
         module = generator.build()
         module.body.block.first_op.properties["sym_name"] = StringAttr(symbol)
         compilation = compile_module(module, args.llvm_bin, w)
-        if dense:
+        if args.schedule == "resident_acc_stripes":
+            resource = {
+                "input_rows": generator.input_rows,
+                "weight_rows": generator.weight_rows,
+                "weight_base_row": generator.bbase,
+                "stripe_tiles": generator.stripe_tiles,
+                "accumulator_rows": generator.stripe_tiles * shape.bn * F.DIM,
+                "full_reduction_weight_lifetime": "all increasing K panels retained across M stripes for current N group",
+                "input_lifetime": "complete A reserved through every N group; immutable caller storage",
+            }
+        elif dense:
             resource = {
                 "input_rows": shape.bm * ((shape.k + F.DIM - 1) // F.DIM) * F.DIM,
                 "resident_a_load_tiles": generator.resident_a_load_tiles,
