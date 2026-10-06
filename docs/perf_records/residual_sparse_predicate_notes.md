@@ -12,7 +12,7 @@ unchanged. Empty, single and multiple relations are proved independently.
 | Fixture | Original bitmap | Sparse predicate | Change | Scope |
 | --- | ---: | ---: | ---: | --- |
 | Independent signed-source policy, all 65,536 pairs | 1,443,055 | 1,213,531 | −15.9054% | Pinned GSIM, complete ranked adapter |
-| Original 1947 ReLU policy, 802,816 captured elements | Pending | Pending | Unknown | Same actual 1947 adapter and predictor |
+| Original 1947 ReLU policy, 802,816 captured elements | 1,657,423 | 1,748,089 | +5.4703% | Same actual 1947 adapter and predictor |
 
 The independent signed source has two ambiguous pairs. Its existing output
 guard admits more values than the original ReLU source, which has one ambiguous
@@ -41,7 +41,20 @@ outputs, and checks the input hash before and after extraction. A direct smoke
 on the restored historical object passes. The repair ledger and all hashes are
 included in `residual_sparse_predicate_initial_checkpoint.json`.
 
+The original footprint loses 90,666 cycles. It is rejected for promotion. Fewer
+loads or a smaller relation table did not establish a cheaper complete adapter.
+The independent signed-source positive remains a separate measured result.
+The complete receipt is `residual_sparse_predicate_complete_gsim.json`.
+
+The current 1992 model still uses the original first residual's 39-chunk
+`p=2609,q=2180` arithmetic. Its exact residual aggregate and final symbols were
+checked independently; neither the five-chunk output guard nor the sparse
+predicate is composed into it. Source scales and shape match the 1947
+alternative, but current model section costs and a compatible whole-model
+five-chunk result remain unknown. See
+`resnet1992_first_residual_strategy_witness.json`.
+
 No normal model route or hardware candidate has been enabled. Original model
 accuracy remains bitwise equality of all 1,000 binary32 outputs, with zero
 absolute and relative tolerance. Physical DRAM traffic, overlap and the current
-1988 model's section costs remain unknown.
+1992 model's section costs remain unknown.
