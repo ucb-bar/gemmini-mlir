@@ -111,7 +111,12 @@ def export(args):
     if manifest["schema"] != expected_schema:
         raise ValueError("another source protocol was selected")
     held = [case["id"] for case in manifest["cases"] if case["partition"] == "heldout"]
-    if held != ([1, 4, 7] if primitive else [1]):
+    declared_held = ([1, 4, 7] if primitive else [1])
+    if args.generator is not None:
+        declared_held = manifest.get("heldout_ids")
+        if not isinstance(declared_held, list) or not declared_held or any(type(x) is not int for x in declared_held):
+            raise ValueError("explicit source partition IDs required for another generator")
+    if held != declared_held:
         raise ValueError("predeclared middle partitions changed")
     commands = json.loads(commands_path.read_text())
     compile_rows = [row for row in commands if "-c" in row["argv"]]
@@ -138,6 +143,8 @@ def export(args):
             else "gather_service_battery_probe.py"
         )
     )
+    if args.generator is not None:
+        generator_path = args.generator.resolve()
     spec = importlib.util.spec_from_file_location(
         "qualified_service_generator", generator_path
     )
@@ -382,6 +389,12 @@ def export(args):
             ),
         }
     )
+    paths.add(generator_path)
+    if hasattr(generator, "PARENT"):
+        dependency = generator.PARENT.resolve()
+        if pin(dependency)["sha256"] != manifest.get("source_generator_dependency_sha256"):
+            raise ValueError("generator dependency changed")
+        paths.add(dependency)
     from merlin.perf.layer_bench import build_program, run_on_gsim
     from merlin.targetgen.elf_lanes import executable_sections
 
@@ -452,4 +465,5 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--gsim-directory", type=Path)
     parser.add_argument("--stock-record", type=Path)
+    parser.add_argument("--generator", type=Path)
     export(parser.parse_args())
