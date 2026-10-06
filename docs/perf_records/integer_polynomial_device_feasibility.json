@@ -1,0 +1,49 @@
+{
+  "scope": "Analytical feasibility only, no implemented source replacement, no timing or admission. Inputs are binary32 fractional polynomial arguments in[0,1]; full score intervals/floor crossings require additional proof.",
+  "fraction_bits": 20,
+  "coefficients_hex": [
+    "-0x1.446baa0000000p-4",
+    "-0x1.cb71ea0000000p-3",
+    "0x1.36d3e00000000p-2",
+    "0x1.c0ef420000000p-14"
+  ],
+  "fixed_coefficients": [
+    -83052,
+    -235236,
+    318288,
+    112
+  ],
+  "horner_error_stages": [
+    {
+      "source_magnitude_upper": 0.30354262462512294,
+      "fixed_magnitude_upper": 0.3035435676574707,
+      "uniform_error_upper": 1.0169851232255667e-06,
+      "proof": "f in[0,1]; source FMA RNE error<=2^-24*abs(real)+2^-150; fixed RNE error<=2^-21; coefficient error exact; fraction error<=2^-21"
+    },
+    {
+      "source_magnitude_upper": 0.6070852747933773,
+      "fixed_magnitude_upper": 0.6070871353149414,
+      "uniform_error_upper": 2.1515853918200727e-06,
+      "proof": "f in[0,1]; source FMA RNE error<=2^-24*abs(real)+2^-150; fixed RNE error<=2^-21; coefficient error exact; fraction error<=2^-21"
+    },
+    {
+      "source_magnitude_upper": 0.6071923453344985,
+      "fixed_magnitude_upper": 0.6071944236755371,
+      "uniform_error_upper": 3.1769219382396364e-06,
+      "proof": "f in[0,1]; source FMA RNE error<=2^-24*abs(real)+2^-150; fixed RNE error<=2^-21; coefficient error exact; fraction error<=2^-21"
+    }
+  ],
+  "source_score_cells": 3145728,
+  "endpoint_evaluations": 6291456,
+  "naive_dense_diagonal16": {
+    "horner_steps": 3,
+    "radix_digits": 3,
+    "degrees": 5,
+    "cross_products": 9,
+    "readback_bytes": 6039797760,
+    "useful_readback_if_diagonal_only_bytes": 377487360,
+    "scalar_integer_products": 2717908992
+  },
+  "decision": "Do not implement this naive device mapping.16x diagonal over-read yields6.04GB per group before packing, versus existing86.5MB product readback. Need a target-proved diagonal-only store/reduction or different polynomial representation before a credible complete-cost screen; no assumption that such an instruction exists.",
+  "token_usage_available": false
+}
