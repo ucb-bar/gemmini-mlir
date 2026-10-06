@@ -45,3 +45,28 @@ regions before invoking the four-pointer kernel. Both outputs remain live until
 the portable decoder completes, and the returned descriptor is the first output.
 Native stand-ins reproduce both primitive scaled stores plus that decoder;
 normal whole-model native/target and original-golden gates remain mandatory.
+
+## Normal whole-model qualification
+
+The normal source-bound build selects two paired routes and retains the other
+50 readout routes. All 1,000 original outputs pass bit-exact native and strict
+Gemmini Spike gates. A controlled final link first reproduces the original job
+1903 ELF byte for byte, then substitutes a byte-identical host object and changed device
+aggregate; the original runtime, main, weights, startup, and shim are retained.
+One hundred other requant leaf objects remain byte-identical. Review found the
+legacy prepared capture still declares i32 scratch, so this is an oversized
+storage diagnostic only. The intended i8 scratch normal route must be repaired
+and freshly qualified before admission. The retained main
+has a nonunique build marker, so the final ELF SHA and component closure identify
+this controlled experiment. See
+`perf_records/resnet_paired_readout_normal_whole_qualification.json`.
+
+The normal provider explicitly requests the generic decoder's
+`copy_policy="compiler_builtin"`: constant eight-byte copies can be lowered
+without an unresolved external memcpy in the freestanding device catalog.
+The generic default remains `runtime`. An actual RV64GC object test checks that
+the explicit policy has no undefined symbols, including with `-fno-builtin`.
+The original matched epilogue timing used the runtime-copy policy; the changed
+policy has a separate matched capsule and is not credited with that measurement.
+Whole-model instruction counts are correctness-run diagnostics, not FireSim
+performance. No whole-model hardware gain is claimed before the stock run.

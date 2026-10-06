@@ -78,10 +78,6 @@
     "control_reproduced_sha256": "7ee47ff7c904053c680200bb2ef2bfa207c081ef43f6711ba38d8d07c3e30d97",
     "elf_sha256": "649a6560d495afae0d4e10234e28f5e50a1e04f68e0c91826145243bb0592c08",
     "inherited_marker": "273e514ef18f; nonunique; finalELFSHA is identity",
-    "changed_objects": {
-      "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model.o": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
-      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/readout-saturation-packets-20261005/whole/guarded_mean_mixed.o": "661cb16d6e575b10689f1a36afe34792b4308f53bd48bfe9e61c12a90d4bb977"
-    },
     "new_model_object_sha256": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
     "linker_argv": [
       "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
@@ -125,7 +121,12 @@
       "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/weights_blob.o": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
       "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/device/device_catalog_shim.o": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62"
     },
-    "normal_build_compilation_recipe": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/normal_paired_readout_builtin/whole/build_direct/compilation_recipe.json"
+    "normal_build_compilation_recipe": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/normal_paired_readout_builtin/whole/build_direct/compilation_recipe.json",
+    "replacement_slots": {
+      "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model.o": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/readout-saturation-packets-20261005/whole/guarded_mean_mixed.o": "661cb16d6e575b10689f1a36afe34792b4308f53bd48bfe9e61c12a90d4bb977"
+    },
+    "replacement_slots_semantics": "Keys are original link input paths; values are candidate replacement hashes, not hashes of original paths"
   },
   "requant_leaf_object_comparison": [
     {
@@ -783,6 +784,9 @@
     "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/mlir_oot/captured_requant_bundle.py": "d1a5b9ee93a7efbdf779a1dae9e140b6d01345ac99b388f62e7a3d38f928367a"
   },
   "hardware_admitted": false,
-  "remaining_gate": "Matched builtin-decoder capsule actual GSIM pending; original runtime-copy decoder had positive complete epilogue result. No cycle projection from instructions.",
-  "token_usage_available": false
+  "remaining_gate": "Repair normal source replay to bind paired certificate and i8 scratch type, then repeat full native/strict gate; no hardware admission",
+  "token_usage_available": false,
+  "qualification_status": "DIAGNOSTIC_ONLY: original i32 scratch retained by legacy prepared-capture replay; intended byte scratch normal ABI not yet qualified",
+  "host_object_changed": false,
+  "scratch_allocation": "original i32 extent retained, safely oversized for paired byte stores; declaration ABI remains i32 despite selected adapter byte interpretation"
 }
