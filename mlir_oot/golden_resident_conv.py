@@ -71,6 +71,7 @@ def retain_resident_commands(control):
         compact_commands=True,
         weight_issue_tiles=control.weight_issue_tiles,
         flat_spatial_planes=control.flat_spatial_planes,
+        store_plan=control.store_plan,
     )
     for name in ("resident_stripe_decision", "source_stride_decision"):
         if hasattr(control, name):
@@ -116,6 +117,7 @@ def issue_resident_weight_packets(control, *, tiles=2):
             compact_commands=True,
             weight_issue_tiles=tiles,
             flat_spatial_planes=control.flat_spatial_planes,
+            store_plan=control.store_plan,
         )
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
@@ -162,14 +164,12 @@ def select_flat_resident_planes(control):
         return control, dict(
             decision, refusal="Requires proved virtual-pad flat convolution"
         )
-    if control.store_plan is not None:
-        return control, dict(
-            decision,
-            refusal="Paired readout ABI is not supported by this resident family",
-        )
     try:
         selected = GoldenResidentConv(
-            control.conv, flat_spatial_planes=True, compact_commands=True
+            control.conv,
+            flat_spatial_planes=True,
+            compact_commands=True,
+            store_plan=control.store_plan,
         )
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
@@ -208,8 +208,18 @@ class GoldenResidentConv(GoldenGemm):
         compact_commands=False,
         weight_issue_tiles=None,
         flat_spatial_planes=False,
+        store_plan=None,
     ):
         s.validate()
+        if store_plan is not None:
+            from .readout_store_plan import PairedReadoutPlan
+
+            if type(store_plan) is not PairedReadoutPlan:
+                raise ValueError("typed paired readout plan required")
+            if not flat_spatial_planes:
+                raise ValueError("paired resident stores require flat spatial planes")
+            store_plan.require_conv_producer(s)
+        self.store_plan = store_plan
         if weight_issue_tiles is not None and (
             type(weight_issue_tiles) is not int or not 1 <= weight_issue_tiles <= 4
         ):
@@ -378,6 +388,11 @@ class GoldenResidentConv(GoldenGemm):
                 wide_store=True,
                 reuse_b=True,
             )
+        )
+        from .golden_gemm import PTR
+
+        self.second_output = (
+            self.fb.entry.insert_arg(PTR, 3) if store_plan is not None else None
         )
 
     def input_row(self, padded_y):
@@ -590,6 +605,54 @@ class GoldenResidentConv(GoldenGemm):
             ):
                 spatial(None, self.row_tiles[-1][2], False, len(self.row_tiles) - 1)
 
+        def store_outputs(n0, nr):
+            def store(output, dtype):
+                for tile, (y, count, span) in enumerate(self.row_tiles):
+                    for row in range(count):
+                        step = 4 if dtype == "i8" else 1
+                        for d in range(0, len(nr), step):
+                            ptr = self._ptr(
+                                output,
+                                self.fb.const(self.output_pixel(y, row)),
+                                s.cout,
+                                self._tile(n0, d),
+                                4 if dtype == "i32" else 1,
+                            )
+                            self._rocc(
+                                "mvout",
+                                {
+                                    "local": isa.acc_addr(
+                                        (tile * s.bn + d) * F.DIM
+                                        + row * self.output_pitch,
+                                        full_row=dtype == "i32",
+                                    ),
+                                    "rows": span if self.flat_spatial_planes else s.ow,
+                                    "cols": sum(nr[d : d + step]),
+                                },
+                                ptr,
+                            )
+
+            if self.store_plan is None:
+                store(self.c, s.output_dtype)
+            else:
+                # Both passes consume the same completed ACC block. No load or
+                # compute overwrites it between them; final fence completes both
+                # disjoint byte outputs before the caller's exact decoder.
+                for output, scale in zip(
+                    (self.c, self.second_output), self.store_plan.store_scales
+                ):
+                    self._rocc(
+                        "config_st",
+                        {
+                            "stride": s.cout,
+                            "acc_scale": scale,
+                            "acc_act": isa.RELU
+                            if self.store_plan.relu
+                            else isa.NO_ACTIVATION,
+                        },
+                    )
+                    store(output, "i8")
+
         def channel(n0, nr):
             for kh in range(3):
                 for kw in range(3):
@@ -677,29 +740,7 @@ class GoldenResidentConv(GoldenGemm):
                             reduction(None, kh == 0 and kw == 0 and ci == 0, ci)
             # Padding lanes inside a grouped tile are never materialized. Each
             # valid row has its original NHWC destination and scratch row pitch.
-            for tile, (y, count, span) in enumerate(self.row_tiles):
-                for row in range(count):
-                    for d in range(0, len(nr), 4 if s.output_dtype == "i8" else 1):
-                        step = 4 if s.output_dtype == "i8" else 1
-                        ptr = self._ptr(
-                            self.c,
-                            self.fb.const(self.output_pixel(y, row)),
-                            s.cout,
-                            self._tile(n0, d),
-                            4 if s.output_dtype == "i32" else 1,
-                        )
-                        self._rocc(
-                            "mvout",
-                            {
-                                "local": isa.acc_addr(
-                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
-                                    full_row=s.output_dtype == "i32",
-                                ),
-                                "rows": span if self.flat_spatial_planes else s.ow,
-                                "cols": sum(nr[d : d + step]),
-                            },
-                            ptr,
-                        )
+            store_outputs(n0, nr)
 
         def prefetched_channel(n0, nr):
             kt = s.cin // F.DIM
@@ -755,29 +796,7 @@ class GoldenResidentConv(GoldenGemm):
                                 "accumulate": tile != 0,
                             },
                         )
-            for tile, (y, count, span) in enumerate(self.row_tiles):
-                for row in range(count):
-                    for d in range(0, len(nr), 4 if s.output_dtype == "i8" else 1):
-                        step = 4 if s.output_dtype == "i8" else 1
-                        ptr = self._ptr(
-                            self.c,
-                            self.fb.const(self.output_pixel(y, row)),
-                            s.cout,
-                            self._tile(n0, d),
-                            4 if s.output_dtype == "i32" else 1,
-                        )
-                        self._rocc(
-                            "mvout",
-                            {
-                                "local": isa.acc_addr(
-                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
-                                    full_row=s.output_dtype == "i32",
-                                ),
-                                "rows": span if self.flat_spatial_planes else s.ow,
-                                "cols": sum(nr[d : d + step]),
-                            },
-                            ptr,
-                        )
+            store_outputs(n0, nr)
 
         def packet_prefetched_channel(n0, nr):
             """Look ahead one disjoint weight packet, preserving K per output.
@@ -844,29 +863,7 @@ class GoldenResidentConv(GoldenGemm):
                                 "accumulate": tile != 0,
                             },
                         )
-            for tile, (y, count, span) in enumerate(self.row_tiles):
-                for row in range(count):
-                    step = 4 if s.output_dtype == "i8" else 1
-                    for d in range(0, len(nr), step):
-                        ptr = self._ptr(
-                            self.c,
-                            self.fb.const(self.output_pixel(y, row)),
-                            s.cout,
-                            self._tile(n0, d),
-                            4 if s.output_dtype == "i32" else 1,
-                        )
-                        self._rocc(
-                            "mvout",
-                            {
-                                "local": isa.acc_addr(
-                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
-                                    full_row=s.output_dtype == "i32",
-                                ),
-                                "rows": span if self.flat_spatial_planes else s.ow,
-                                "cols": sum(nr[d : d + step]),
-                            },
-                            ptr,
-                        )
+            store_outputs(n0, nr)
 
         def compact_packet_prefetched_channel(n0, nr):
             """Retain bounded K/row loops with the same packet dependency order."""
@@ -942,29 +939,7 @@ class GoldenResidentConv(GoldenGemm):
                         (base + (kt - 1) * len(chunks)) % 2,
                         final=True,
                     )
-            for tile, (y, count, span) in enumerate(self.row_tiles):
-                for row in range(count):
-                    step = 4 if s.output_dtype == "i8" else 1
-                    for d in range(0, len(nr), step):
-                        ptr = self._ptr(
-                            self.c,
-                            self.fb.const(self.output_pixel(y, row)),
-                            s.cout,
-                            self._tile(n0, d),
-                            4 if s.output_dtype == "i32" else 1,
-                        )
-                        self._rocc(
-                            "mvout",
-                            {
-                                "local": isa.acc_addr(
-                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
-                                    full_row=s.output_dtype == "i32",
-                                ),
-                                "rows": span if self.flat_spatial_planes else s.ow,
-                                "cols": sum(nr[d : d + step]),
-                            },
-                            ptr,
-                        )
+            store_outputs(n0, nr)
 
         def compact_prefetched_channel(n0, nr):
             """Retain alternating B loads across exact increasing K panels."""
@@ -1017,29 +992,7 @@ class GoldenResidentConv(GoldenGemm):
                     elif tap < 8:
                         load(tap + 1, self.fb.const(0), (base + ki + 1) % 2)
                     compute(tap, self.fb.const(ki), (base + ki) % 2)
-            for tile, (y, count, span) in enumerate(self.row_tiles):
-                for row in range(count):
-                    step = 4 if s.output_dtype == "i8" else 1
-                    for d in range(0, len(nr), step):
-                        ptr = self._ptr(
-                            self.c,
-                            self.fb.const(self.output_pixel(y, row)),
-                            s.cout,
-                            self._tile(n0, d),
-                            4 if s.output_dtype == "i32" else 1,
-                        )
-                        self._rocc(
-                            "mvout",
-                            {
-                                "local": isa.acc_addr(
-                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
-                                    full_row=s.output_dtype == "i32",
-                                ),
-                                "rows": span if self.flat_spatial_planes else s.ow,
-                                "cols": sum(nr[d : d + step]),
-                            },
-                            ptr,
-                        )
+            store_outputs(n0, nr)
 
         selected = (
             compact_packet_prefetched_channel
@@ -1107,6 +1060,19 @@ class GoldenResidentConv(GoldenGemm):
             module.attributes["gemmini.resident_conv_compact_commands"] = StringAttr(
                 "retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes"
             )
+        if self.store_plan is not None:
+            module.attributes["gemmini.paired_readout"] = StringAttr(
+                json.dumps(
+                    {
+                        "certificate": self.store_plan.certificate(),
+                        "abi": "A:i8*,B:i8*,first:i8*,second:i8*",
+                        "storage": "Two complete disjoint byte outputs, disjoint from immutable inputs; fresh caller-owned scratch remains live until decoder completes",
+                        "lifetime": "Both wide store passes precede ACC reuse; final fence completes both outputs",
+                    },
+                    sort_keys=True,
+                )
+            )
+
         return module
 
 

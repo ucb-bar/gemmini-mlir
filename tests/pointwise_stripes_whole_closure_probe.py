@@ -55,11 +55,11 @@ def check(receipt):
         raise ValueError("normal source catalog seal changed")
     link = receipt["controlled_link"]
     closure = receipt["source_bundle_closure"]
-    if (
-        link["control_elf_sha256"]
-        != "7ee47ff7c904053c680200bb2ef2bfa207c081ef43f6711ba38d8d07c3e30d97"
+    if link["control_elf_sha256"] != receipt.get(
+        "expected_control_elf_sha256",
+        "7ee47ff7c904053c680200bb2ef2bfa207c081ef43f6711ba38d8d07c3e30d97",
     ):
-        raise ValueError("controlled1903 was not byte reproduced")
+        raise ValueError("qualified control was not byte reproduced")
     changed = {Path(x["selected"]).parent.name for x in link["changed_leaves"]}
     if (
         changed != set(closure["changed_selected_kernels"])

@@ -13,24 +13,33 @@ from mlir_oot.tables import isa
 from mlir_oot.tables import rtl_facts as F
 
 
-def prove(generator):
+def prove(generator, module=None):
     s = generator.conv
-    fn = generator.build().body.block.first_op
+    fn = (generator.build() if module is None else module).body.block.first_op
     scratch, accumulator, strides, blocks = {}, {}, {}, {}
     counts, requested = Counter(), Counter()
-    written, input_written = set(), set()
+    paired = generator.store_plan is not None
+    output_bases = (2, 3) if paired else (2,)
+    written = {base: set() for base in output_bases}
+    input_written = set()
+    store_scale = store_activation = None
+    last = None
     weights = destination = None
     for step in trace_static_function(
         fn,
-        [StaticPointer(i, StaticInt(0, 64)) for i in range(3)],
+        [StaticPointer(i, StaticInt(0, 64)) for i in range(4 if paired else 3)],
         observe=lambda op: isinstance(op, G._GemminiOp),
         pointer_index_bits=64,
     ):
         op = step.operation
+        last = op
         counts[op.name] += 1
         if isinstance(op, G.ConfigLdOp):
             strides[op.a("load_id")] = op.a("stride")
             blocks[op.a("load_id")] = op.a("block_stride", F.DIM)
+        elif isinstance(op, G.ConfigStOp):
+            store_scale = op.a("acc_scale")
+            store_activation = op.a("acc_act")
         elif isinstance(op, G.MvinOp):
             pointer = step.inputs[0]
             assert isinstance(pointer, (StaticPointer, StaticInt))
@@ -121,11 +130,25 @@ def prove(generator):
                         assert accumulator[cell] == (oy, ox, n0 + n, k0)
                     else:
                         assert k0 == 0
+                        if cell in accumulator:
+                            old_y, old_x, old_n, old_k = accumulator[cell]
+                            old = (old_y * s.ow + old_x) * s.cout + old_n
+                            if old_y < s.oh and old_x < s.ow:
+                                assert old_k == 9 * s.cin
+                                assert all(old in written[b] for b in output_bases)
                     accumulator[cell] = (oy, ox, n0 + n, k0 + op.a("a_cols"))
         elif isinstance(op, G.MvoutOp):
             pointer = step.inputs[0]
-            assert isinstance(pointer, StaticPointer) and pointer.base == 2
-            width = 4 if s.output_dtype == "i32" else 1
+            assert isinstance(pointer, StaticPointer) and pointer.base in output_bases
+            width = 1 if paired or s.output_dtype == "i8" else 4
+            if paired:
+                assert not op.a("local") & isa.ACC_FULL_ROW_BIT
+                assert (
+                    store_scale == generator.store_plan.store_scales[pointer.base - 2]
+                )
+                assert store_activation == (
+                    isa.RELU if generator.store_plan.relu else isa.NO_ACTIVATION
+                )
             assert pointer.offset.value % width == 0
             local = op.a("local") & 0x3FFF
             for row in range(op.a("rows")):
@@ -135,16 +158,22 @@ def prove(generator):
                     oy, ox = divmod(pixel, s.ow)
                     cell = (local + row + col // F.DIM * F.DIM, col % F.DIM)
                     assert accumulator[cell] == (oy, ox, n, 9 * s.cin)
-                    assert 0 <= offset < s.oh * s.ow * s.cout and offset not in written
-                    written.add(offset)
+                    assert (
+                        0 <= offset < s.oh * s.ow * s.cout
+                        and offset not in written[pointer.base]
+                    )
+                    written[pointer.base].add(offset)
             requested["store_bytes"] += op.a("rows") * op.a("cols") * width
-    assert written == set(range(s.oh * s.ow * s.cout))
+    assert all(cells == set(range(s.oh * s.ow * s.cout)) for cells in written.values())
+    assert isinstance(last, G.FenceOp)
     if generator.flat_spatial_planes:
         assert len(input_written) == s.cin * generator.plane
     return {
         "commands": dict(counts),
         "requested_payload": dict(requested),
-        "all_output_cells_written_once": len(written),
+        "all_output_cells_written_once": len(written[2]),
+        "output_buffers": len(output_bases),
+        "both_stores_before_ACC_reuse_and_final_fence": paired,
         "source_operand_and_increasing_K_proved": True,
         "scratch_and_ACC_lifetimes_proved": True,
         "physical_DRAM_bytes": "UNKNOWN",

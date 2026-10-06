@@ -16,6 +16,7 @@ def check(receipt: dict) -> None:
             raise ValueError(f"artifact changed: {path}")
     for pair in receipt["pairs"]:
         fixture = json.loads(Path(pair["fixture_receipt"]).read_text())
+        paired = pair.get("paired_readout", False)
         results = []
         for filename in pair["results"]:
             path = Path(filename)
@@ -24,10 +25,13 @@ def check(receipt: dict) -> None:
                 result["status"] != "pass"
                 or not result["run_completed"]
                 or result["run_returncode"] != 0
-                or result["strict_target"]["status"] != "pass"
+                or result.get("strict_target", result.get("strict_spike", {})).get(
+                    "status"
+                )
+                != "pass"
             ):
                 raise ValueError("capsule did not close strict and hardware execution")
-            if result["guards_checked"] != 4096:
+            if result["guards_checked"] != (8192 if paired else 4096):
                 raise ValueError("dirty output guard check missing")
             if (
                 result["fixture_receipt_sha256"]
@@ -43,7 +47,10 @@ def check(receipt: dict) -> None:
                 .stat()
                 .st_size
             )
-            if result["outputs_checked"] * expected_type_bytes != extent:
+            expected_extent = (
+                extent // 4 * 2 if paired else extent // expected_type_bytes
+            )
+            if result["outputs_checked"] != expected_extent:
                 raise ValueError("partial output check")
             inputs = sum(
                 Path(pair["fixture_receipt"])
@@ -54,7 +61,11 @@ def check(receipt: dict) -> None:
             )
             if result["immutable_input_bytes_checked"] != inputs:
                 raise ValueError("input preservation check missing")
-            marker = f"CAPTURED_CONV_PASS N={result['outputs_checked']} SCHEDULE={result['schedule']}"
+            marker = (
+                f"PAIRED_CONV_PASS N={result['outputs_checked'] // 2}"
+                if paired
+                else f"CAPTURED_CONV_PASS N={result['outputs_checked']} SCHEDULE={result['schedule']}"
+            )
             if (
                 marker not in result["stdout"]
                 or marker not in (path.parent / "spike.stdout").read_text()
@@ -64,7 +75,7 @@ def check(receipt: dict) -> None:
                 raise ValueError("paired engine changed")
             if audit_elf((path.parent / "layer.elf").read_bytes())["status"] != "pass":
                 raise ValueError("linked capsule gained forbidden instructions")
-            if result["kernel_cycles"] is None:
+            if result.get("kernel_cycles", result.get("cycles")) is None:
                 raise ValueError("ROI timer missing")
             results.append(result)
         if (
@@ -74,10 +85,33 @@ def check(receipt: dict) -> None:
         ):
             raise ValueError("pair does not use common operand/output addresses")
         control = Path(pair["results"][0]).parent / "kernel.o"
-        if (
-            hashlib.sha256(control.read_bytes()).hexdigest()
-            != fixture["source_kernel_object_sha256"]
-        ):
+        control_sha = fixture.get("source_kernel_object_sha256")
+        if paired:
+            from mlir_oot.golden_conv import ConvShape
+            from mlir_oot.readout_store_plan import PairedReadoutPlan
+
+            manifest = json.loads(Path(pair["paired_manifest"]).read_text())
+            route = next(
+                r for r in manifest["routes"] if r["symbol"] == pair["source_symbol"]
+            )
+            proof = route["paired_readout"]["proof"]
+            plan = PairedReadoutPlan(
+                tuple(proof["source_scales"]),
+                tuple(proof["store_scales"]),
+                proof["lo"],
+                proof["hi"],
+                proof["relu"],
+            )
+            plan.require_conv_producer(ConvShape(**fixture["shape"]))
+            if (
+                tuple(fixture["source_numeric_proof"]["source_scales"])
+                != plan.source_scales
+                or plan.certificate() != proof
+                or any(r["proof"] != proof for r in results)
+            ):
+                raise ValueError("paired source/certificate changed")
+            control_sha = route["compilation"]["object_sha256"]
+        if hashlib.sha256(control.read_bytes()).hexdigest() != control_sha:
             raise ValueError("control implementation changed")
 
 
