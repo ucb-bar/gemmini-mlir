@@ -1,0 +1,114 @@
+{
+  "schema": "exact_pair_readout_matched_gsim_v1",
+  "token_usage_available": false,
+  "qualification_commit": "2dafd14",
+  "scope": "Complete original captured accumulator epilogue only; not convolution or whole model cycles",
+  "order": "ABBA per case, same input/outputs/ELF/accumulator addresses",
+  "metrics": [
+    {
+      "case": 0,
+      "candidate": false,
+      "store_cycles": 15680,
+      "scan_cycles": 1142745,
+      "roi_cycles": 1158425,
+      "preload_inclusive_cycles": 1187098
+    },
+    {
+      "case": 0,
+      "candidate": true,
+      "store_cycles": 11679,
+      "scan_cycles": 323127,
+      "roi_cycles": 334806,
+      "preload_inclusive_cycles": 356722
+    },
+    {
+      "case": 0,
+      "candidate": true,
+      "store_cycles": 11607,
+      "scan_cycles": 323241,
+      "roi_cycles": 334848,
+      "preload_inclusive_cycles": 353632
+    },
+    {
+      "case": 0,
+      "candidate": false,
+      "store_cycles": 14119,
+      "scan_cycles": 1137642,
+      "roi_cycles": 1151761,
+      "preload_inclusive_cycles": 1169497
+    },
+    {
+      "case": 1,
+      "candidate": false,
+      "store_cycles": 7846,
+      "scan_cycles": 570926,
+      "roi_cycles": 578772,
+      "preload_inclusive_cycles": 596829
+    },
+    {
+      "case": 1,
+      "candidate": true,
+      "store_cycles": 6083,
+      "scan_cycles": 163723,
+      "roi_cycles": 169806,
+      "preload_inclusive_cycles": 178627
+    },
+    {
+      "case": 1,
+      "candidate": true,
+      "store_cycles": 6045,
+      "scan_cycles": 163380,
+      "roi_cycles": 169425,
+      "preload_inclusive_cycles": 176821
+    },
+    {
+      "case": 1,
+      "candidate": false,
+      "store_cycles": 7034,
+      "scan_cycles": 569566,
+      "roi_cycles": 576600,
+      "preload_inclusive_cycles": 583755
+    }
+  ],
+  "engine": {
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "memory": "backdoor load0x80000000; different from stock FireSim"
+  },
+  "all_original_output_bytes_and_2048_guards_exact": true,
+  "complete": true,
+  "wall_seconds": 532.8223298480734,
+  "harness_cycles": 8411530,
+  "elf_sha256": "ab624f1bde94962f17c8470633ef5c00f07682ac080f93ae20f7453c2c3c99fd",
+  "hardware_submitted": false,
+  "default_changed": false,
+  "limitations": [
+    "Original convolution arithmetic omitted equally from both arms; actual source accumulators loaded beforehand",
+    "ROI includes store configurations, fences, both scaled passes and entire decoder; separate total includes common i32preload",
+    "Control config_st repeats for each capsule channelblock; original convolution can hoist its single fixed store configuration",
+    "Candidate portable word loads use memcpy under fno-builtin; measured calls retained",
+    "No additive whole-model prediction; normal source-bound whole gates still required"
+  ],
+  "artifacts": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/readout_pair_probe/receipt.json",
+      "sha256": "1905b4b800a5c8b8263a3b216a7a05050fef698a832af8c9aaa5b49033ee5271"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/readout_pair_probe/gsim.stdout",
+      "sha256": "16348affd647c59005aa5907be6ad5dea3230113cba8de24bfa4e12b6e87b39d"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/readout_pair_probe/build/layer.elf",
+      "sha256": "ab624f1bde94962f17c8470633ef5c00f07682ac080f93ae20f7453c2c3c99fd"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/readout_pair_probe/probe.c",
+      "sha256": "97951df6dbb2504e174497894a8e4e1d8b50b3890dab99fc850ca331683d95ca"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/readout_pair_probe/boundary_gate/receipt.json",
+      "sha256": "e78f4e6d040fac9487cbf9d232941a1db447b294d7046f8d68d9e14c8e0a7b4a"
+    }
+  ]
+}
