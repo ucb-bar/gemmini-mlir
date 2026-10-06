@@ -24,27 +24,7 @@
   "marker": "273e514ef18f inherited, nonunique; final ELF/component hashes are authority",
   "generic_proof": "Trace known views to distinct fresh memref.alloc roots; positive static equal shapes and strides determine longest common contiguous suffix. Source-lexicographic outer loops retain rank-reduced inner memref.copy; disjointness rules out overlap. Runtime retains alignment and byte-tail handling.",
   "tests": "28 focused contiguous-suffix and uniform-copy tests PASS; structure/target-name/regex checks PASS",
-  "physical_transfers": [
-    {
-      "element_type": "i8",
-      "elements": 256,
-      "bytes": 256,
-      "llvm_memcpy_line": 264
-    },
-    {
-      "element_type": "i8",
-      "elements": 512,
-      "bytes": 512,
-      "llvm_memcpy_line": 367
-    },
-    {
-      "element_type": "i8",
-      "elements": 1024,
-      "bytes": 1024,
-      "llvm_memcpy_line": 474
-    }
-  ],
-  "unit_scope": "Actual selected post-bufferization LLVM uses i8 GEP and literal byte lengths. Earlier semantic f32 tensor views are a distinct scope and not authority for direct i8 device loads.",
+  "unit_scope": "Actual composition model.o disassembly pins memset and memcpy byte lengths; all three inner-copy element types are i8. Earlier semantic f32 tensor views remain a distinct scope.",
   "broader_expansion_negative": "resnet_expand_memref_copy_negative.json: +15.92% instructions; scalar expansion loses runtime word copy",
   "composition": "Explicit composition; separate uniform and suffix controls preserved; no additive hardware claim",
   "artifacts": {
