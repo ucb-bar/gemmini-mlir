@@ -1,0 +1,84 @@
+{
+  "schema": "experimental_exact_reciprocal_observer_capsule_v1",
+  "actual_original_tap_words": 11264,
+  "dirty_guards": 128,
+  "immutable_inputs_bytes": 405504,
+  "source_sha256": "24f61771bba418f7a3375b29578124f772136a4c673d222402dec7ba88376ba1",
+  "full_original_source_sha256": "e55f45b4728856a581726e8c2ce3e8132d6b0f4ee225f844f8e1e4974b2481b7",
+  "capture_sha256": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+  "source_scope": "Original first preDown stage: only source reciprocal+3 separately roundedmul closed int8RNE observer; same full45056source body including polynomial,loads/stores,allocation/finalcopy.",
+  "source_closure_scope": "Experimental exact frozen scalar body proof only; no generalized compiler matcher or route installed.",
+  "policy": "RNE/gradualunderflow/nontrapping/flags+errno unobserved explicit experimental premise; othermodes refused before ROI.",
+  "cases": [
+    {
+      "name": "control",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/control.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/control.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/control.native.ll",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/control.so"
+      ],
+      "object_sha256": "08d8633cc95736d8a98a48299236c011aa066758db278e1bbb43415ef7f76011",
+      "target_ir_sha256": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+      "native_ir_sha256": "924c2cba8be59fde6b89e52df2aac04a96a586164c2ebcd4f325a67519687d26",
+      "original_45056_i8_exact": true
+    },
+    {
+      "name": "candidate",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/candidate.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/candidate.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/candidate.native.ll",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/cost_m2/candidate.so"
+      ],
+      "object_sha256": "d032c7e95897ceff3e2416bbf3960b902eb49802937839956ba09b81a90dd7dc",
+      "target_ir_sha256": "2b90bbb299b9af59fd9b86cbf82cf32b033c3ed3b1ed6ba6a48b8263e40d517e",
+      "native_ir_sha256": "3b827062a7e860f00d5c56701160ff0a20535794fbb270e5ea16de57825be1bd",
+      "original_45056_i8_exact": true
+    }
+  ],
+  "elf_sha256": "abf36c4cc6dbfe2932e64c2e49180748a9dd24901c1f4e228eec12b6a7b2a143",
+  "zero_FSM": true,
+  "strict_original_pass": true,
+  "rational_native_screen_sha256": "8175fbd5a96f9f3ad6fef1126fbd0693040561b151a40af76d00d7186044b37b",
+  "performance_promotion": false,
+  "token_usage_available": false
+}
