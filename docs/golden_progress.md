@@ -55,6 +55,11 @@ with all1,000 reference logits passing its self-check and54 buffered layer timin
 The reference has different numerical coefficients and physical boundaries; this result does not
 qualify our original-source model. [Same-stock reference](perf_records/q1013_diagnostic_reference_firesim.json).
 
+[Remaining ResNet gap](resnet_current_gap_status.md) records the measured historical
+section comparison and the unresolved attribution of the current13.72M-cycle gap.
+The current-best1903 profile is being qualified; historical1874 timings are not
+reported as current section costs.
+
 ## Current compiler work and ownership
 
 The OOT dialect is a general compiler backend. Production decisions use input semantics,
