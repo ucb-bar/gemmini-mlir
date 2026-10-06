@@ -94,6 +94,31 @@ savings, not stock cycles or a5B whole-model claim. Normal pooled whole-target
 integration is running; performance admission remains separate.
 [Classification proof and matched measurement](perf_records/smol_standard_classification_complete_group.json).
 
+An independently admitted absolute-value capability further reduces this same
+complete-group instruction count3,527,309,706→3,370,349,620(4.4499%). Its default
+object remains byteidentical.565,925 actual target representation checks pass
+across five rounding modes; all196,608 accepted carriers/guards and refinement
+counters remain unchanged. The new frozen native helper independently passes
+all48 original input bindings, all1,600 original whole outputs and all9,437,184
+compiled quantized bytes/12,288 escaping scales.209 live source/compiler/artifact
+pins and both final executable-section audits close. No hardware timing is
+claimed for this capability.
+[Absolute-value proof](perf_records/smol_standard_absolute_complete_group.json),
+[full48 compiled consumers](perf_records/smol_numeric_absolute_full48_journey.json).
+
+The ordinary prepared whole Smol model now compiles and links all17 provider
+objects through their actual companion LLVM ABI, with one pooled workspace and
+retained source fallback. Its new physical native route passes all1,600 original
+outputs with48 calls/zero fallback; forcing null workspace independently checks
+the actual compiled source fallback's196,608 endpoint words and input/descriptor
+ownership. Whole strict-target execution is running. Stock1944/1945 compare the
+two qualified row/floor and classification complete-group capsules; they are
+not whole models. Stock1947 measures only the qualified ResNet residual-output
+arm against1903, without composing other wins.
+[Ordinary Smol build](perf_records/smol_normal_workspace_provider_build.json),
+[physical native/fallback gate](perf_records/smol_normal_workspace_provider_native.json),
+[residual release](perf_records/residual_output_guard_release_closure.json).
+
 
 For the same complete original12-head device group, portable exact floor and
 source multiply/row invariants lower the functional Spike instruction proxy

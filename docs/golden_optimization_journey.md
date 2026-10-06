@@ -9,6 +9,41 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### Absolute values and ordinary physical compilation (2026-10-06 08:20 UTC)
+
+- **Absolute values — Merlin capability, OOT actual ISA proof:** the same
+  complete original12-head production group drops3,527,309,706→3,370,349,620
+  retired instructions(4.4499%). Default-disabled object bytes, all15 device
+  product objects, source/data/bridge/driver,196,608 accepted carriers/guards and
+  replay counters remain unchanged. Independent actual target565,925 paired
+  checks cover both precisions, all BF16 words, directed/random float values,
+  signed zeros, subnormal/infinite/NaN classes and five rounding modes. New
+  NaN-payload/interposition/errno/flag/nontrapping obligations are explicit.
+  All48 frozen native calls pass the unchanged1,600-word whole gate and every
+  compiled original consumer byte/escaping scale.209 pins reclosed. These are
+  instruction and functional observations; FireSim cycles remain unknown.
+  [Receipt](perf_records/smol_standard_absolute_complete_group.json).
+- **Actual physical ABI and pooled whole compilation — Merlin:** the normal
+  whole build closes all17 provider objects and final source/compiler/ABI/link
+  identities. A generic integer return-range parser accepts Clang's non-ABI
+  value fact while retaining ABI attribute refusals.24 focused tests pass,
+  one unavailable tool capability skips. Native execution through the actual
+  new physical wrappers uses one workspace and48 calls/zero fallback, all1,600
+  outputs exact. The actual compiled source fallback separately passes196,608
+  endpoint words with immutable inputs/descriptors. Whole strict target remains
+  live, with final ELF zero-FSM already closed.
+  [Build](perf_records/smol_normal_workspace_provider_build.json),
+  [native/fallback](perf_records/smol_normal_workspace_provider_native.json).
+- **ResNet residual-output release — Merlin legality/math, OOT instruction:**
+  complete original802,816-output Clang capsule1,996,045→1,656,089GSIMcycles
+  (17.031% lower); GCC negative and first incomplete long run retained.321pins,
+  independent aliases/guards/source binding and all1,000 whole original outputs
+  close. Stock1947 admits only its controlled1903 arm, with no composition.
+- **Required gates:** latest core docs and structure checks pass after the
+  classification/absolute-value capability and imported ABI fix. Actual measured
+  whole champions remain1930(34.905M ResNet),1926(461.390M Tiny),1906(258.622B
+  Smol); targets22M/300M/5B remain unmet.
+
 ### Whole hardware and production compilation checkpoint (2026-10-06 07:00 UTC)
 
 - **Tiny source normalization hoist — Merlin:** stock1926 preserves all256,000
