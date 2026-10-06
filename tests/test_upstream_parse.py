@@ -37,5 +37,28 @@ class TestBufferizedHostWriter(unittest.TestCase):
         self.assertTrue(any(isinstance(op, memref.AllocOp) for op in module.walk()))
 
 
+class TestFreshWriterBufferization(unittest.TestCase):
+    def test_read_only_tensor_buffer_roundtrip(self):
+        from io import StringIO
+        from xdsl.dialects.bufferization import ToBufferOp
+        from xdsl.printer import Printer
+        from mlir_oot.frontend.parse import parse_module
+
+        source = '''module {
+          func.func @borrow(%arg: tensor<2x3xbf16>) {
+            %buffer = bufferization.to_buffer %arg read_only : tensor<2x3xbf16> to memref<2x3xbf16>
+            func.return
+          }
+        }'''
+        module = parse_module(source)
+        operations = [op for op in module.walk() if isinstance(op, ToBufferOp)]
+        self.assertEqual(len(operations), 1)
+        self.assertIsNotNone(operations[0].read_only)
+        stream = StringIO()
+        Printer(stream=stream).print_op(module)
+        reparsed = parse_module(stream.getvalue())
+        self.assertTrue(module.is_structurally_equivalent(reparsed))
+
+
 if __name__ == "__main__":
     unittest.main()
