@@ -22,7 +22,10 @@ def apply_capture(capture, bundle):
     if sha(capture/'golden.npy')!=golden_sha:raise AssertionError('original golden changed')
 
 
-def merlin_callbacks(llvm_bin,bundle,base_callbacks):
+def merlin_callbacks(llvm_bin,bundle,base_callbacks,*,joint_bundle=None):
+    if joint_bundle is not None:
+        from .joint_residual_catalog import merlin_callbacks as joint_callbacks
+        return joint_callbacks(llvm_bin,bundle,joint_bundle,base_callbacks)
     llvm_bin,bundle=map(Path,(llvm_bin,bundle));record=json.loads((bundle/'residual.json').read_text());pin=sha(bundle/'residual.json')
     prepare_base,build_base=base_callbacks
     symbols={row['symbol']:row for row in record['routes']}

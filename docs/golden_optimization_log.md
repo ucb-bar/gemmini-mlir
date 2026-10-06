@@ -1330,3 +1330,9 @@ count, with no claimed whole-model cycle saving. Target qualification for five
 additional numeric contracts and ordinary source/ABI binding remain open.
 The default source policy is unchanged.
 [Source feasibility](perf_records/residual_shared_bracket_source_feasibility.json).
+
+### Source-bound joint residual normal compiler route
+
+The opt-in mixed catalog now matches an explicitly supplied complete joint certificate by original source arithmetic/scales. Typed shapes/resources, source hashes, exact numeric policy, descriptor access and complete call coverage all validate before mutation. Each selected call gains a private sole-use C1 empty tensor; existing generic fresh-writer lowering owns both fresh buffers and their lifetime. OOT supplies the four-argument ranked bridge, shared integer producer and two independently configured stores, then calls the portable Merlin decoder. Default old routes and objects remain unchanged; unused old selected implementations may stay linked under their original safe names.
+
+31 focused checks pass, including every65,536 native ranked-ABI pair with dirty guards/odd offsets and actual upstream bufferization/deallocation atO0/O2 on an independent48x64 shape with both inputs live across3 invocations. The route also binds the real1903 pre-fresh source and compiles/links its selected zeroFSM target object. Whole-model native/strict and allocation/decoder timing remain pending. The host model object necessarily changes to allocate C1, so a subsequent controlled comparison must preserve unrelated1903 objects while disclosing host ABI changes. No shared optimizer or automatic timing admission is claimed. [Binding receipt](perf_records/residual_joint_normal_route.json).
