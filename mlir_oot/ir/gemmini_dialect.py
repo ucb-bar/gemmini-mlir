@@ -127,6 +127,8 @@ class ConfigExOp(_GemminiOp):
     def verify_(self) -> None:
         if self.a("dataflow") not in (0, 1):
             raise VerifyException("gemmini.config_ex: `dataflow` must be 0 or 1")
+        if type(self.a("a_stride", 1)) is not int or not 1 <= self.a("a_stride", 1) <= 65535:
+            raise VerifyException("gemmini.config_ex: a_stride must fit positive16bits")
 
 
 @irdl_op_definition

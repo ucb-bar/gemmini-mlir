@@ -138,7 +138,7 @@ def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None):
     return emit_readout(proof,readout,fixedpoint=True,**dict(readout_options or {}))+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False):
     readout_options=dict(readout_options or {})
     if set(readout_options)-{'saturation_first','packet'}:
         raise ValueError('unsupported generic readout schedule options')
@@ -166,6 +166,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
     if virtual_padding and not flat_spatial:raise ValueError('virtual padding requires flat spatial scheduling')
     if type(resident_stripes) is not bool or (resident_stripes and (not virtual_padding or not flat_spatial)):
         raise ValueError('resident stripe policy requires boolean selection and proved virtual padding/spatial scheduling')
+    if type(source_stride_resident) is not bool or (source_stride_resident and (not virtual_padding or not flat_spatial)):
+        raise ValueError('source stride residency requires boolean selection and proved virtual padding/spatial scheduling')
     from merlin.runtime.captured_constants import verify_capture_constant
     if type(max_output_lsb) is not int or max_output_lsb not in (0,1):
         raise ValueError('select an explicit zero- or one-step local output error policy')
@@ -242,7 +244,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                         schedule_kind='resident_input_channel_planes'
             if generator is None:
                 generator,schedule_kind=select_kernel(schedule,flat_spatial=flat_spatial,virtual_padding=virtual_input is not None,
-                    resident_stripes=resident_stripes and virtual_input is not None)
+                    resident_stripes=resident_stripes and virtual_input is not None,
+                    source_stride_resident=source_stride_resident and virtual_input is not None)
             schedule=generator.conv
         else:
             from .dense_schedule import select_kernel as select_dense,choose_banked_by_command_cost,choose_resident_a_by_command_cost,choose_transfer_by_command_cost
@@ -272,6 +275,9 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         if direct and resident_stripes:
             routes[-1]['resident_stripe_policy_decision']=getattr(generator,'resident_stripe_decision',
                 dict(applied=False,refusal='previous explicit resident schedule retained' if virtual_input is not None else 'source-proven virtual padding unavailable'))
+        if direct and source_stride_resident:
+            routes[-1]['source_stride_policy_decision']=getattr(generator,'source_stride_decision',
+                dict(applied=False,refusal='previous explicit resident schedule retained' if virtual_input is not None else 'source-proven virtual padding unavailable'))
         if direct and resident_input_policy is not None:
             routes[-1]['resident_policy']=resident_input_policy
             routes[-1]['resident_policy_refusal']=policy_refusal
@@ -299,7 +305,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

@@ -56,11 +56,70 @@ def _resident_stripe_choice(control):
     return (candidate if decision['applied'] else control), decision
 
 
-def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_stripes=False):
+def choose_source_stride_resident(control):
+    """Rank one admitted source-stride layout by issue and requested traffic.
+
+    This serialized score ranks schedules. It does not predict DMA/execute
+    overlap, cache behavior, command dispatch or whole-model timing.
+    """
+    from .golden_resident_conv import GoldenResidentConv
+    decision=dict(applied=False, timing_claim=False,
+        cost_unit='padded_DIM_issue_plus_requested_16B_transfer_estimate')
+    if not isinstance(control,GoldenFlatConv) or not control.virtual_padding:
+        decision['refusal']='source stride residency needs a proved virtual-pad flat control'
+        return control,decision
+    s=control.conv
+    if s.stride != 2:
+        decision['refusal']='existing unit-stride families retain their selection'
+        return control,decision
+    input_rows=_ceil_div(s.cin,F.DIM)*(s.h+2)*(s.w+2)
+    base=_ceil_div(input_rows,F.DIM)*F.DIM
+    rows=min(s.oh,1+(F.DIM-s.ow)//(s.w+2))
+    try:
+        candidate=GoldenResidentConv(s,rows_per_tile=rows,source_stride=True,weight_base=base)
+    except ValueError as failure:
+        decision['refusal']=str(failure)
+        return control,decision
+    from .golden_flat_conv import command_counts as flat_counts
+    old=flat_counts(s,wide_a=control.wide_a,band_rows=control.band_rows,
+        virtual_padding=control.virtual_padding)
+    nonzero_rows=sum(n for start in range(0,s.oh,control.band_rows)
+        for _,_,y,x,count in spatial_runs(s,min(control.band_rows,s.oh-start))
+        for kh in range(3) for kw in range(3)
+        for _,n,zero in padding_segments(s,start+y,x,count,kh,kw) if not zero)
+    channel_blocks=_ceil_div(_ceil_div(s.cout,F.DIM),s.bn)
+    output_bytes=s.oh*s.ow*s.cout*(4 if s.output_dtype=='i32' else 1)
+    old_bytes=nonzero_rows*s.cin*channel_blocks+old['weight_bytes']+output_bytes
+    computes=9*(s.cin//F.DIM)*_ceil_div(s.cout,F.DIM)*len(candidate.row_tiles)
+    new_bytes=s.h*s.w*s.cin+9*s.cin*s.cout+output_bytes
+    decision.update(control=dict(padded_issue=old['padded_array_issue_cycles'],requested_bytes=old_bytes,
+        score=old['padded_array_issue_cycles']+_ceil_div(old_bytes,16)),
+        candidate=dict(padded_issue=computes*F.DIM,requested_bytes=new_bytes,
+            score=computes*F.DIM+_ceil_div(new_bytes,16)),
+        resources=dict(input_rows=input_rows,weight_base=base,weight_rows=s.bn*F.DIM,
+            accumulator_rows=len(candidate.row_tiles)*s.bn*F.DIM),
+        compiler_options=dict(source_stride=True,rows_per_tile=rows,weight_base=base))
+    decision['applied']=decision['candidate']['score'] < decision['control']['score']
+    decision['refusal']=None if decision['applied'] else 'source stride residency does not lower issue/traffic estimate'
+    return (candidate if decision['applied'] else control),decision
+
+
+def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_stripes=False,
+        source_stride_resident=False):
     if type(resident_stripes) is not bool:
         raise ValueError('resident stripe policy selection must be boolean')
     if virtual_padding and (not flat_spatial or shape.explicit_halo):
         raise ValueError("virtual padding requires unpadded spatial schedule")
+    if type(source_stride_resident) is not bool:
+        raise ValueError('source stride residency selection must be boolean')
+    if source_stride_resident:
+        if not flat_spatial or not virtual_padding:
+            raise ValueError('source stride residency needs spatial scheduling and proved virtual padding')
+        control,kind=select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding,
+            resident_stripes=resident_stripes)
+        selected,decision=choose_source_stride_resident(control)
+        selected.source_stride_decision=decision
+        return selected,'resident_source_stride_planes' if decision['applied'] else kind
     if resident_stripes:
         if not flat_spatial or not virtual_padding:
             raise ValueError('resident stripe policy requires proved virtual padding and spatial scheduling')

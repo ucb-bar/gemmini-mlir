@@ -23,7 +23,7 @@ def _encoded(op: G._GemminiOp) -> tuple[int, int | None, int] | None:
     if isinstance(op, G.FlushOp):
         return isa.flush()
     if isinstance(op, G.ConfigExOp):
-        return isa.config_ex(dataflow=a("dataflow"))
+        return isa.config_ex(dataflow=a("dataflow"), a_stride=a("a_stride", 1))
     if isinstance(op, G.ConfigLdOp):
         return isa.config_ld(stride=a("stride"), scale=a("scale", 1.0),
                              load_id=a("load_id"), block_stride=a("block_stride",isa.DIM),
