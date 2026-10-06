@@ -74,3 +74,19 @@ cache context make the complete hardware comparison necessary.
 
 Receipts are perf_records/smol_i64_radix_*.json. Exact token allocation per
 optimization is unavailable; the root ledger owns shared campaign checkpoints.
+
+## Fresh first-group initialization
+
+The explicit generic alternative initializes every fresh i64 scratch element from
+the fully written first i32 group (proved weight one), then accumulates only
+remaining groups. It removes zero fill and the first scratch read/add without
+changing lifetime, ownership, aliasing or output contract. Seven compiled and
+UBSan cases cover dirty tails, signed cancellation and independent radices.
+
+The complete matched original 32-by-64 K64 capsule includes ten unchanged dense
+group calls, encoding, readbacks, initialization, updates and conversion. AB/BA
+control cycles were 1,232,879 and 1,218,032; candidate cycles 1,193,113 and
+1,192,731. Mean improvement is 2.6548%, warm improvement 2.0772%, relative to
+constant-i64 zero initialization. All four complete output and dirty-guard checks
+and final no-FSM audit pass. This is a separate immutable small pair; job1924
+remains unchanged. No additional whole-head job or speedup projection is claimed.
