@@ -1,0 +1,51 @@
+{
+  "schema": "golden_root_current2013_mean_full_k_release_v1",
+  "status": "pass",
+  "qualification": "/scratch/agustin/tmp/gemmini-segmented-mean-full-k-20261006/docs/perf_records/resnet_segmented_mean_full_k_current2013_qualified.json",
+  "qualification_sha256": "a5866daab4df9b5429308566d289cf8321eeb7978f406d816303e017018c0865",
+  "pins_rehashed": true,
+  "pin_count": 8990,
+  "control": {
+    "job": 2013,
+    "cycles": 32553639,
+    "elf": "/scratch/agustin/tmp/gemmini-segmented-mean-full-k-20261006/out/segmented_mean_full_k/controlled2013/control/model.elf",
+    "elf_sha256": "2757df664036fd2c9c4dc86951ac69c1b042af62f12cbba66984cff8c540411e"
+  },
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-segmented-mean-full-k-20261006/out/segmented_mean_full_k/controlled2013/candidate/model.elf",
+    "elf_sha256": "80962e9fb581641ed194388a3321e2b9ab2bd85546a8892135e66ff1a2ec25d3"
+  },
+  "changed_kernels": [
+    "gemmini_exact_requant_14",
+    "gemmini_exact_requant_17",
+    "gemmini_exact_requant_20",
+    "gemmini_exact_requant_23"
+  ],
+  "scope": "Four full-K capacity-proved kernels plus exact integer mean producer and its source-derived ABI. All 52 requant adapters, other 48 kernels, paired-flat, five resident weight packets, three segmented-A consumers, old39 residual, stem, runtime and weights unchanged. Candidate host changes only through normal preparation for the source-proven mean ABI; source-stride remains off.",
+  "exact1000_original_words_native_and_strict_all_three_arms": true,
+  "atol": 0,
+  "rtol": 0,
+  "fresh_all_executable_zero_FSM": true,
+  "original_control_byte_reproduced": true,
+  "segmented_three_byte_retained": true,
+  "source_stride_included": false,
+  "historical_evidence": {
+    "mean": {
+      "job": 2018,
+      "cycles": 33230295,
+      "control_job": 1992,
+      "control_cycles": 33500256,
+      "receipt": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2018_integer_mean_terminal.json"
+    },
+    "full_k": {
+      "job": 2020,
+      "cycles": 33026561,
+      "control_job": 1992,
+      "control_cycles": 33500256,
+      "receipt": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2020_full_k_current_terminal.json"
+    },
+    "transfer_claim": "Independent historical stock gains justify this composition; no additive forecast or claimed gain for current2013."
+  },
+  "hardware_cycles": "UNKNOWN",
+  "default_enabled": false
+}
