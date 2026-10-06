@@ -452,3 +452,13 @@ optimization_surfaces:
   emitted_delta: Changes actual load widths/counts, live storage placement and output store grouping while retaining increasing reduction order.
   validation: Check all declared reserved extents, emitted and executed primitive multiplicities, exact source outputs, guards and immutable inputs on matched complete capsules.
   abandonment: Refuse invalid storage or nonzero seed; retain independent negative schedules and never transfer capsule gains to whole-model costs.
+- id: golden_dense_cached_b_capacity_admission
+  scope: heuristic
+  path: mlir_oot/dense_schedule.py
+  symbol: choose_capacity_cached_b
+  effects: [tiling, movement, residency, issue]
+  cca_axes: [compute.accumulator_resident, memory.onchip_resident, memory.capacity_fit]
+  mechanism: Admit explicitly requested complete-K/N B residency beyond the legacy static tile budget using actual placed scratchpad and accumulator intervals.
+  emitted_delta: The normal capture compiler selects the complete-weight kernel, coalesced disjoint A slots when aligned, and exact single-panel A for K tails; source arithmetic remains unchanged.
+  validation: Require default object identity, decoded tensor cell/source-K/lifetime proof, complete matched original and independent tail capsules, original whole-model gate and final zero-FSM audit.
+  abandonment: Preserve cached input/weights or refuse incompatible dense/bias/view/resource facts; admission and command counts do not establish timing profitability.

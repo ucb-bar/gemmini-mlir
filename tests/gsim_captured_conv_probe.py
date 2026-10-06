@@ -46,11 +46,14 @@ def main():
             "mesh_flip",
             "compact_commands",
             "resident_acc_stripes",
+            "capacity_cached_b",
         ),
         required=True,
     )
     ap.add_argument("--bn", type=int)
     ap.add_argument("--bm", type=int, help="explicit accumulator stripe tiles")
+    ap.add_argument("--row-tiles", type=int, help="explicit complete-B M tile group")
+    ap.add_argument("--benchmark-header", type=Path)
     ap.add_argument("--prefetch-b", action="store_true")
     ap.add_argument("--llvm-bin", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, required=True)
@@ -66,16 +69,20 @@ def main():
         "coalesced_resident_a",
         "mesh_flip",
         "resident_acc_stripes",
+        "capacity_cached_b",
     ):
         raise ValueError("dense fixture requires an explicit dense schedule")
     if not dense and args.schedule in (
         "coalesced_resident_a",
         "mesh_flip",
         "resident_acc_stripes",
+        "capacity_cached_b",
     ):
         raise ValueError("selected dense schedule requires a dense fixture")
     if args.prefetch_b and args.schedule != "compact":
         raise ValueError("weight prefetch requires explicit compact schedule")
+    if args.row_tiles is not None and args.schedule != "capacity_cached_b":
+        raise ValueError("row tile choice requires complete cached B")
     if args.bn is not None:
         if args.schedule in ("control", "mesh_flip", "compact_commands"):
             raise ValueError(
@@ -134,6 +141,14 @@ def main():
                 **source_receipt.get("resident_options", {}),
                 compact_commands=True,
             )
+        elif args.schedule == "capacity_cached_b":
+            from mlir_oot.dense_schedule import select_capacity_cached_b
+
+            generator, capacity_proof = select_capacity_cached_b(
+                GoldenGemm(shape),
+                row_tiles=args.row_tiles if args.row_tiles is not None else 1,
+            )
+            shape = generator.shape
         elif args.schedule == "resident_acc_stripes":
             from mlir_oot.golden_resident_stripe_gemm import GoldenResidentStripeGemm
 
@@ -181,7 +196,9 @@ def main():
         module = generator.build()
         module.body.block.first_op.properties["sym_name"] = StringAttr(symbol)
         compilation = compile_module(module, args.llvm_bin, w)
-        if args.schedule == "resident_acc_stripes":
+        if args.schedule == "capacity_cached_b":
+            resource = capacity_proof
+        elif args.schedule == "resident_acc_stripes":
             resource = {
                 "input_rows": generator.input_rows,
                 "weight_rows": generator.weight_rows,
@@ -283,6 +300,37 @@ int main(void) {{
 }}
 """
     )
+    benchmark_header = None
+    if args.benchmark_header is not None:
+        benchmark_header = w / "benchmark_buffer.h"
+        shutil.copyfile(args.benchmark_header, benchmark_header)
+        text = source.read_text()
+        text = text.replace(
+            "#include <stdio.h>", '#include <stdio.h>\n#include "benchmark_buffer.h"'
+        )
+        text = text.replace(
+            " for(int i=0;i<N;i++)captured_box.output[i]=-37;",
+            " merlin_benchmark_fill(captured_box.output,0xdb,sizeof(captured_box.output));",
+        ).replace(
+            " for(int i=0;i<2048;i++)captured_box.before[i]=captured_box.after[i]=0x5a;",
+            " uint8_t expected_guard[2048];\n"
+            " merlin_benchmark_fill(expected_guard,0x5a,sizeof(expected_guard));\n"
+            " merlin_benchmark_fill(captured_box.before,0x5a,sizeof(captured_box.before));\n"
+            " merlin_benchmark_fill(captured_box.after,0x5a,sizeof(captured_box.after));",
+        )
+        start = text.index(" for(int i=0;i<N;i++)if(captured_box.output")
+        end = text.index(' printf("CAPTURED_CONV_PASS', start)
+        text = (
+            text[:start]
+            + (
+                " if(merlin_benchmark_first_difference(captured_expected,captured_box.output,sizeof(captured_box.output))!=sizeof(captured_box.output))return 1;\n"
+                " if(merlin_benchmark_first_difference(expected_guard,captured_box.before,2048)!=2048||merlin_benchmark_first_difference(expected_guard,captured_box.after,2048)!=2048)return 2;\n"
+                f" if(merlin_benchmark_first_difference(captured_check_a,captured_a,{counts['a']})!={counts['a']})return 3;\n"
+                f" if(merlin_benchmark_first_difference(captured_check_b,captured_b,{counts['b']})!={counts['b']})return 4;\n"
+            )
+            + text[end:]
+        )
+        source.write_text(text)
     built = build_program(
         [source, w / "kernel.o", w / "inputs.o"],
         w,
@@ -353,6 +401,14 @@ int main(void) {{
         "common_operand_addresses": addresses,
         "elf_sha256": built.elf_sha256,
         "source_c_sha256": sha(source),
+        "benchmark_header": {
+            "path": str(benchmark_header),
+            "sha256": sha(benchmark_header),
+            "comparison": "Every byte outside ROI; shared exact word comparator with byte tails",
+            "output_poison": "Every output byte0xdb before measured call",
+        }
+        if benchmark_header
+        else None,
         "probe_driver": {
             "path": str(Path(__file__).resolve()),
             "sha256": sha(Path(__file__)),

@@ -150,6 +150,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--resident-a-load-coalescing", action="store_true")
     ap.add_argument("--spatial-command-loops", action="store_true")
     ap.add_argument("--dense-accumulator-stripes", action="store_true")
+    ap.add_argument("--dense-cached-b-capacity", action="store_true")
     ap.add_argument("-o", "--output", default=None)
     ap.add_argument("input", nargs="?", default="-")
     args = ap.parse_args(argv)
@@ -162,7 +163,7 @@ def main(argv: list[str] | None = None) -> int:
                          args.dense_input_policy,args.dense_b_slot_policy,args.calibration)
     capture_options=(args.flat_spatial,args.virtual_padding,args.exact_integer_readout,
                      args.banked_prefetch,args.grouped_b,args.separate_b_bank,
-                     args.resident_input_policy,args.resident_stripes,args.source_stride_resident,args.source_stride_row_residue,args.resident_a_load_coalescing,args.spatial_command_loops,args.dense_accumulator_stripes)
+                     args.resident_input_policy,args.resident_stripes,args.source_stride_resident,args.source_stride_row_residue,args.resident_a_load_coalescing,args.spatial_command_loops,args.dense_accumulator_stripes,args.dense_cached_b_capacity)
     if not any(exports) and any((*compilation_options,*capture_options)):
         ap.error('golden options require an explicit golden export command')
     if any(exports) and any((args.verify_diagnostics,args.convert_iface_to_gemmini,
@@ -215,7 +216,7 @@ def main(argv: list[str] | None = None) -> int:
                         separate_b_bank=args.separate_b_bank,resident_input_policy=args.resident_input_policy,
                         resident_stripes=args.resident_stripes,source_stride_resident=args.source_stride_resident,source_stride_row_residue=args.source_stride_row_residue,dense_input_policy=args.dense_input_policy,
                         dense_b_slot_policy=args.dense_b_slot_policy,resident_a_load_coalescing=args.resident_a_load_coalescing,
-                        spatial_command_loops=args.spatial_command_loops,dense_accumulator_stripes=args.dense_accumulator_stripes)
+                        spatial_command_loops=args.spatial_command_loops,dense_accumulator_stripes=args.dense_accumulator_stripes,dense_cached_b_capacity=args.dense_cached_b_capacity)
                     print(json.dumps(dict(routes=len(result['bundle']['routes']),
                         object_sha256=result['bundle']['object_sha256'],
                         shared_solver_selected=False,receipt=str(args.workdir/'requant.json'))))

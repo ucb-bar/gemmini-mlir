@@ -60,7 +60,12 @@ class Shape:
     separate_b_bank: bool = False
     prefetch_b: bool = False
 
-    def validate(self, *, prefetch_b_rows: tuple[int, int] | None = None) -> None:
+    def validate(self, *, prefetch_b_rows: tuple[int, int] | None = None,
+                 cached_b_resource_capacity: bool = False) -> None:
+        if type(cached_b_resource_capacity) is not bool:
+            raise ValueError("cached B capacity selection must be boolean")
+        if cached_b_resource_capacity and not self.cache_b:
+            raise ValueError("cached B capacity selection requires cached B")
         if min(self.m, self.n, self.k, self.bm, self.bn) <= 0:
             raise ValueError("all extents and block sizes must be positive")
         if self.output_dtype not in ("i8", "i32"):
@@ -118,8 +123,16 @@ class Shape:
             nt, kt = _ceil_div(self.n, F.DIM), _ceil_div(self.k, F.DIM)
             if nt > self.bn:
                 raise ValueError("cached B needs one output-channel block")
-            if kt * nt > 128 or (a_rows + kt * nt) * F.DIM > F.SPAD_ROWS:
+            # Keep the established compile-size budget unless explicitly
+            # selecting a capacity-proved complete-weight schedule. The
+            # latter still proves the actual placement, including bank gaps.
+            if ((not cached_b_resource_capacity and kt * nt > 128)
+                    or (a_rows + kt * nt) * F.DIM > F.SPAD_ROWS):
                 raise ValueError("cached B panels exceed the static or scratchpad budget")
+            b_base = (2 * F.SPAD_BANK_ROWS if self.banked_m or self.separate_b_bank
+                      else a_rows * F.DIM)
+            if b_base + kt * nt * F.DIM > F.SPAD_ROWS:
+                raise ValueError("placed cached B panels exceed the scratchpad")
         if self.separate_b_bank:
             if self.banked_m:
                 raise ValueError("separate B placement is redundant with banked M")
@@ -155,8 +168,10 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
 
 class GoldenGemm:
     def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
-            resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None):
-        shape.validate(prefetch_b_rows=prefetch_b_rows)
+            resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None,
+            cached_b_resource_capacity: bool = False):
+        shape.validate(prefetch_b_rows=prefetch_b_rows,
+                       cached_b_resource_capacity=cached_b_resource_capacity)
         if type(resident_a_load_tiles) is not int or not 1 <= resident_a_load_tiles <= 4:
             raise ValueError('resident A DMA grouping must be an integer in 1..4')
         if resident_a_load_tiles != 1 and not shape.cache_a:
@@ -175,6 +190,7 @@ class GoldenGemm:
             if input_view.source_elements >= 1 << 63:
                 raise ValueError('input view source extent exceeds signed pointer indexing')
         self.shape = shape
+        self.cached_b_resource_capacity = cached_b_resource_capacity
         self.input_view = input_view
         self.resident_a_load_tiles = resident_a_load_tiles
         # Placement is a target schedule fact, separate from source dimensions

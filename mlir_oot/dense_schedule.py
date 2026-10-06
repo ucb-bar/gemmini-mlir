@@ -11,6 +11,71 @@ from .golden_tuning import estimate
 from .tables import rtl_facts as F
 
 
+def select_capacity_cached_b(control, *, row_tiles=1):
+    """Expose a complete-weight family beyond the old static tile budget.
+
+    Placement and lifetimes establish legality, not profitability. Aligned K
+    panels use coalesced A and disjoint next-M slots; K tails retain the exact
+    one-panel A path. All original numeric fields and increasing K are kept.
+    The existing command policies and their compile-size cap remain unchanged.
+    """
+    if type(control) is not GoldenGemm:
+        raise ValueError('complete-weight capacity choice requires dense GEMM')
+    if type(row_tiles) is not int or row_tiles < 1:
+        raise ValueError('row tile count must be a positive integer')
+    if control.input_view is not None or control.shape.bias:
+        raise ValueError('complete-weight capacity needs dense unseeded operands')
+    s=control.shape
+    mt,nt,kt=(_ceil_div(v,F.DIM) for v in (s.m,s.n,s.k))
+    bm=min(row_tiles,mt)
+    wide=s.k>F.DIM and s.k%F.DIM==0
+    candidate=replace(s,bm=bm,bn=nt,cache_b=True,cache_a=False,
+        wide_a=wide,wide_b=True,wide_store=s.output_dtype=='i8',reuse_b=False,
+        pipeline_m=wide,prefetch_m=wide,banked_m=wide,
+        separate_b_bank=not wide,prefetch_b=False)
+    generator=GoldenGemm(candidate,cached_b_resource_capacity=True)
+    input_span=bm*(kt if wide else 1)*F.DIM
+    input_slots=([0,input_span],[F.SPAD_BANK_ROWS,F.SPAD_BANK_ROWS+input_span]) if wide else ([0,input_span],)
+    weight_begin=2*F.SPAD_BANK_ROWS
+    weight_end=weight_begin+kt*nt*F.DIM
+    if any(end>weight_begin for begin,end in input_slots):
+        raise ValueError('complete-weight live input and B storage overlap')
+    decision=dict(applied=True,automatic_policy=False,performance='UNKNOWN',
+        selection='explicit complete-weight scratchpad capacity proof',
+        legacy_static_tile_budget=128,cached_weight_tiles=kt*nt,
+        input_reserved_intervals=[list(slot) for slot in input_slots],
+        weight_reserved_interval=[weight_begin,weight_end],
+        weight_lifetime='All increasing K and N tiles retained through every M block',
+        next_input_lifetime='Disjoint current/next scratch and accumulator slots' if wide else 'Single current K panel; K tail exact',
+        accumulator_rows=bm*nt*F.DIM*(2 if wide else 1),
+        scratchpad_rows=F.SPAD_ROWS,accumulator_limit=F.ACC_ROWS,
+        source_reduction_order='Increasing K; no reassociation',
+        requested_weight_bytes=s.k*s.n,
+        requested_input_bytes=s.m*s.k,
+        physical_DRAM_bytes='UNKNOWN',
+        real_B_mesh_preloads=_ceil_div(mt,bm)*kt*nt,
+        ABI='Same dense three-pointer kernel; immutable A/B and disjoint fully written C')
+    generator.cached_b_capacity_decision=decision
+    return generator,decision
+
+
+def choose_capacity_cached_b(control):
+    """Keep existing cached operands and admit one explicit larger B family."""
+    refusal=dict(applied=False,automatic_policy=False,performance='UNKNOWN',
+                 selection='explicit complete-weight scratchpad capacity proof')
+    if type(control) is not GoldenGemm:
+        return control,dict(refusal,refusal='Current family is not dense GEMM')
+    s=control.shape
+    if s.cache_a or s.cache_b:
+        return control,dict(refusal,refusal='Existing cached operand lifetime retained')
+    if _ceil_div(s.k,F.DIM)*_ceil_div(s.n,F.DIM)<=128:
+        return control,dict(refusal,refusal='Within the existing cached B tile budget')
+    try:
+        return select_capacity_cached_b(control)
+    except ValueError as failure:
+        return control,dict(refusal,refusal=str(failure))
+
+
 def _full_k_banked_candidate(shape):
     if (shape.output_dtype != 'i8' or shape.bias or shape.cache_a
             or shape.m <= F.DIM or shape.k <= F.DIM or shape.k % F.DIM
