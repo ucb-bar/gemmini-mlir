@@ -66,6 +66,9 @@ def main():
     cli.add_argument("--source-bundle", type=Path, required=True)
     cli.add_argument("--source-route", type=int, default=0)
     cli.add_argument("--sparse-pair-limit", type=int, required=True)
+    cli.add_argument(
+        "--sparse-pair-style", choices=["grouped", "raw_key"], default="grouped"
+    )
     cli.add_argument("--independent-m", type=int)
     cli.add_argument("--independent-proof", type=Path)
     cli.add_argument("--original-a", type=Path)
@@ -156,7 +159,9 @@ def main():
         assert pin(args.original_b)["sha256"] == source_capture["rhs_sha256"]
     proof = route["proof"]
     assert proof == derive(**proof["source"], **proof["predictor"])
-    sparse = derive_sparse_pair_predicate(proof, limit=args.sparse_pair_limit)
+    sparse = derive_sparse_pair_predicate(
+        proof, limit=args.sparse_pair_limit, style=args.sparse_pair_style
+    )
     m, count = route["m"], route["m"] * 64
     old_symbol = route["symbol"] + "_correct"
     old_prefix = emit_correction(proof, old_symbol, output_value_guard=True)
@@ -177,6 +182,7 @@ def main():
             new_symbol,
             output_value_guard=True,
             sparse_pair_limit=args.sparse_pair_limit,
+            sparse_pair_style=args.sparse_pair_style,
         )
         + suffix
     )
