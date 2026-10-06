@@ -176,6 +176,8 @@ components:
   - mlir_oot/dense_schedule.py
   - mlir_oot/b_slot_placement.py
   - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_resident_stripe_gemm.py
+  - mlir_oot/resident_accumulator_policy.py
   - mlir_oot/golden_tuning.py
   - mlir_oot/golden_batched_gemm.py
   - mlir_oot/golden_device_compile.py
@@ -429,3 +431,24 @@ optimization_surfaces:
   emitted_delta: Reuses resident input stripes across bounded accumulator/output groups and changes real operand load traffic.
   validation: Check complete scratchpad intervals, exact padded source contraction, all outputs/guards, strict execution and final no-FSM audit.
   abandonment: Decline a stripe without exact padding, bounds or arithmetic preservation; keep negative timing evidence.
+
+- id: golden_dense_resident_accumulator_admission
+  scope: heuristic
+  path: mlir_oot/resident_accumulator_policy.py
+  symbol: select_resident_accumulator_stripes
+  effects: [tiling, movement, residency]
+  cca_axes: [compute.accumulator_resident, memory.capacity_fit]
+  mechanism: Admit an explicitly requested dense stripe family from existing cached A, narrow stores, complete scratchpad bank extents and accumulator bounds.
+  emitted_delta: Replaces the actual generated kernel with full-A, full-reduction-B and bounded wide output stripes; original source numeric proof and public ABI remain bound.
+  validation: Require default object identity, complete source K order, independent i8/i32 tails, exact original full-model gates and final zero-FSM audit.
+  abandonment: Preserve the existing generator on typed layout/resource refusal; explicit admission is not inferred profitability or a shared-solver decision.
+- id: golden_dense_resident_accumulator_emission
+  scope: codegen
+  path: mlir_oot/golden_resident_stripe_gemm.py
+  symbol: GoldenResidentStripeGemm.build
+  effects: [tiling, movement, residency, issue]
+  cca_axes: [compute.accumulator_resident, memory.onchip_resident, memory.capacity_fit]
+  mechanism: Emit complete input planes and full-K current-channel weights across accumulator-bounded M stripes using primitive instructions.
+  emitted_delta: Changes actual load widths/counts, live storage placement and output store grouping while retaining increasing reduction order.
+  validation: Check all declared reserved extents, emitted and executed primitive multiplicities, exact source outputs, guards and immutable inputs on matched complete capsules.
+  abandonment: Refuse invalid storage or nonzero seed; retain independent negative schedules and never transfer capsule gains to whole-model costs.

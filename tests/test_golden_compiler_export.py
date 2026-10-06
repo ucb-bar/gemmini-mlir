@@ -53,6 +53,9 @@ def test_inventory_uses_actual_new_commands_and_existing_contract_checks():
     result=export_inventory(PACKAGE)
     inventory=result['package_inventory']
     assert not inventory['missing']
+    for path,symbol in [('mlir_oot/resident_accumulator_policy.py','select_resident_accumulator_stripes'),('mlir_oot/golden_resident_stripe_gemm.py','GoldenResidentStripeGemm.build')]:
+        owner=next(row for row in inventory['symbols'] if row['path']==path and row['symbol']==symbol)
+        assert owner['commands']==['export_golden_capture']
     catalog_owner=next(row for row in inventory['symbols']
         if row['path']=='mlir_oot/golden_calibrated_catalog.py'
         and row['symbol']=='compile_calibrated_catalog')
@@ -75,7 +78,7 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     argv=[part.format(tool=str(PACKAGE/'gemmini-opt'),output_json=receipt)
           for part in manifest['commands']['export_golden_inventory']['argv']]
     completed=subprocess.run([sys.executable,*argv],capture_output=True,text=True,check=True)
-    assert json.loads(completed.stdout)['surfaces']==8
+    assert json.loads(completed.stdout)['surfaces']==len(manifest['optimization_surfaces'])
     assert json.loads(receipt.read_text())['compiler_edit_contract']['sha256']
 
 
@@ -89,6 +92,8 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     ['--optimize-golden-contraction','--prefetch-b'],
     ['--export-golden-contraction','--spatial-command-loops'],
     ['--spatial-command-loops'],
+    ['--dense-accumulator-stripes'],
+    ['--export-golden-contraction','--dense-accumulator-stripes'],
 ])
 def test_incompatible_or_inert_cli_options_refuse(args):
     with pytest.raises(SystemExit) as failure:main(args)
