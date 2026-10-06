@@ -56,13 +56,50 @@ def _resident_stripe_choice(control):
     return (candidate if decision['applied'] else control), decision
 
 
+def source_stride_resource_layout(shape):
+    """Choose a legal panel while preserving every source/numeric shape field.
+
+    Keep the supplied panel when it fits. Otherwise bound panels by complete
+    input/weight extents and accumulator row groups, then minimize the actual
+    wide-panel transfer command count. This is legality/command ranking only.
+    """
+    from .golden_resident_conv import GoldenResidentConv
+    shape.validate()
+    if shape.stride != 2 or shape.explicit_halo or shape.ow > F.DIM or shape.cin % F.DIM:
+        raise ValueError('source stride layout needs unpadded stride2, output width<=DIM and aligned Cin')
+    input_rows=(shape.cin//F.DIM)*(shape.h+2)*(shape.w+2)
+    base=_ceil_div(input_rows,F.DIM)*F.DIM
+    rows=min(shape.oh,1+(F.DIM-shape.ow)//(shape.w+2))
+    row_tiles=_ceil_div(shape.oh,rows)
+    max_bn=min(shape.bn,_ceil_div(shape.cout,F.DIM),
+        F.ACC_ROWS//(row_tiles*F.DIM),(F.SPAD_ROWS-base)//F.DIM)
+    if max_bn < 1:
+        raise ValueError('source stride layout has no complete input/weight/accumulator placement')
+    nt=_ceil_div(shape.cout,F.DIM)
+    def transfers(bn):
+        wide_panels=sum(_ceil_div(min(bn,nt-n),4) for n in range(0,nt,bn))
+        return 9*(shape.cin//F.DIM)*wide_panels + shape.oh*(
+            wide_panels if shape.output_dtype=='i8' else nt)
+    bn=shape.bn if shape.bn<=max_bn else min(range(1,max_bn+1),
+        key=lambda n:(transfers(n),-n))
+    candidate=GoldenResidentConv(replace(shape,bn=bn),rows_per_tile=rows,
+        source_stride=True,weight_base=base)
+    decision=dict(input_rows=input_rows,weight_base=base,row_groups=row_tiles,
+        max_resource_bn=max_bn,control_bn=shape.bn,selected_bn=bn,
+        panel_retile=bn!=shape.bn,weight_rows=bn*F.DIM,
+        accumulator_rows=row_tiles*bn*F.DIM,
+        weight_and_output_transfer_commands=transfers(bn),
+        rank='retain legal panel; otherwise minimum wide transfer commands then largest legal panel',
+        timing_claim=False)
+    return candidate,decision
+
+
 def choose_source_stride_resident(control):
     """Rank one admitted source-stride layout by issue and requested traffic.
 
     This serialized score ranks schedules. It does not predict DMA/execute
     overlap, cache behavior, command dispatch or whole-model timing.
     """
-    from .golden_resident_conv import GoldenResidentConv
     decision=dict(applied=False, timing_claim=False,
         cost_unit='padded_DIM_issue_plus_requested_16B_transfer_estimate')
     if not isinstance(control,GoldenFlatConv) or not control.virtual_padding:
@@ -72,11 +109,8 @@ def choose_source_stride_resident(control):
     if s.stride != 2:
         decision['refusal']='existing unit-stride families retain their selection'
         return control,decision
-    input_rows=_ceil_div(s.cin,F.DIM)*(s.h+2)*(s.w+2)
-    base=_ceil_div(input_rows,F.DIM)*F.DIM
-    rows=min(s.oh,1+(F.DIM-s.ow)//(s.w+2))
     try:
-        candidate=GoldenResidentConv(s,rows_per_tile=rows,source_stride=True,weight_base=base)
+        candidate,resource_decision=source_stride_resource_layout(s)
     except ValueError as failure:
         decision['refusal']=str(failure)
         return control,decision
@@ -96,9 +130,9 @@ def choose_source_stride_resident(control):
         score=old['padded_array_issue_cycles']+_ceil_div(old_bytes,16)),
         candidate=dict(padded_issue=computes*F.DIM,requested_bytes=new_bytes,
             score=computes*F.DIM+_ceil_div(new_bytes,16)),
-        resources=dict(input_rows=input_rows,weight_base=base,weight_rows=s.bn*F.DIM,
-            accumulator_rows=len(candidate.row_tiles)*s.bn*F.DIM),
-        compiler_options=dict(source_stride=True,rows_per_tile=rows,weight_base=base))
+        resources=resource_decision,
+        compiler_options=dict(source_stride=True,rows_per_tile=candidate.rows_per_tile,
+            weight_base=candidate.bbase,bn=candidate.conv.bn))
     decision['applied']=decision['candidate']['score'] < decision['control']['score']
     decision['refusal']=None if decision['applied'] else 'source stride residency does not lower issue/traffic estimate'
     return (candidate if decision['applied'] else control),decision

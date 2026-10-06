@@ -26,6 +26,7 @@ from mlir_oot.tables import rtl_facts as F
         (ConvShape(5, 21, 32, 19, stride=2, bn=2), 1, 336),
         (ConvShape(9, 5, 48, 67, stride=2, bn=4), 2, 8192),
         (ConvShape(6, 13, 16, 17, bn=2), 1, 128),
+        (ConvShape(17, 13, 32, 271, stride=2, bn=7), 1, 576),
     ],
 )
 def test_actual_strided_commands_match_scalar_source_and_increasing_k(
@@ -195,3 +196,38 @@ def test_source_stride_selector_consumes_shape_resources_and_ranking_only(tmp_pa
             source_stride_resident=True,
         )
     assert not (tmp_path / "output").exists()
+
+
+def test_resource_retile_uses_complete_extents_and_wide_transfer_counts():
+    from dataclasses import replace
+
+    from mlir_oot.conv_schedule import source_stride_resource_layout
+
+    source = ConvShape(14, 14, 512, 512, stride=2, bn=16, output_dtype="i8")
+    candidate, decision = source_stride_resource_layout(source)
+    assert candidate.conv == replace(source, bn=8)
+    assert decision["max_resource_bn"] == 9
+    assert decision["selected_bn"] == 8
+    assert decision["input_rows"] == decision["weight_base"] == 8192
+    assert decision["accumulator_rows"] == 896
+    assert decision["weight_rows"] == 128
+    assert decision["weight_and_output_transfer_commands"] == 2360
+    assert decision["panel_retile"] and not decision["timing_claim"]
+    from mlir_oot.conv_schedule import select_kernel
+
+    retained, kind = select_kernel(
+        source, flat_spatial=True, virtual_padding=True, source_stride_resident=True
+    )
+    assert retained.conv == replace(source, wide_b=True)
+    assert kind == "spatial_flat_wide_a_separate_b"
+    assert not retained.source_stride_decision["applied"]
+    assert retained.source_stride_decision["resources"]["selected_bn"] == 8
+    # Nine panels fit memory, but create more partial wide transfer commands.
+    source = ConvShape(17, 13, 32, 271, stride=2, bn=16)
+    tail, detail = source_stride_resource_layout(source)
+    assert tail.conv == replace(source, bn=7)
+    assert detail["max_resource_bn"] == 7
+    assert detail["accumulator_rows"] == 1008
+    assert tail.bbase == 576
+    with pytest.raises(ValueError, match="no complete"):
+        source_stride_resource_layout(ConvShape(28, 28, 512, 512, stride=2))

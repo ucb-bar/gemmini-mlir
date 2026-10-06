@@ -1,0 +1,182 @@
+{
+  "schema": "source_stride_bounded_panel_negative_capsule_v1",
+  "timestamp_utc": "2026-10-06T00:33:59.647875+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Reduce the output-channel panel to admit full source-stride input residency within complete ACC/SPAD extents",
+  "original_source_and_numeric_contract": {
+    "h": 14,
+    "w": 14,
+    "cin": 512,
+    "cout": 512,
+    "stride": 2,
+    "bn": 16,
+    "output_dtype": "i8",
+    "scale": 0.0006653686286881566,
+    "relu": true,
+    "wide_b": true,
+    "explicit_halo": false
+  },
+  "control": {
+    "job": 1897,
+    "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "cycles": 774520,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/control/result.json",
+      "sha256": "8737a9d88267c66ca2c1fcfbe1b59b7340669a8232dbb703e019238bd58e1e91"
+    }
+  },
+  "candidate": {
+    "bn": 8,
+    "input_rows": 8192,
+    "weight_rows": 128,
+    "accumulator_rows": 896,
+    "cycles": 1034092,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/resident_bn8/result.json",
+      "sha256": "a51e222237f51e2fd407d215738ec53245ab6628c774175e3c948d1d55790b6a"
+    }
+  },
+  "delta_cycles": 259572,
+  "percent_change": 33.513918297784436,
+  "correctness": {
+    "all25088_original_i8_outputs": true,
+    "all4096_guard_bytes": true,
+    "common_operand_output_addresses": {
+      "captured_a": 2148532224,
+      "captured_b": 2148632576,
+      "captured_box": 2151677952,
+      "captured_expected": 2150991872
+    },
+    "same_fixture_bytes": {
+      "a": "3271269016f40139ba0a7aac48cc4eb159cc6f3e4b36176cca5acaa747355a93",
+      "b": "642aa62ca3dc3a28093f862a622b03ff1032a7ca7e6721f824e1a0ddef453877",
+      "expected": "c07de8e2815db9a07bb7ae7589aa6907797b05646da37e6cbbb041c6855869ff"
+    },
+    "strict_RV64GC_Spike": true,
+    "zero_FSM_final_ELFs": true
+  },
+  "actual_command_trace": {
+    "schema": "source_stride_bounded_bn_actual_command_trace_v1",
+    "arms": {
+      "control": {
+        "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_43/kernel.gemmini.mlir",
+        "target_module_sha256": "558c1fcaf50253352867c9aa99fda3ade9694204a80f897808dc67603d128028",
+        "complete_static_cfg": true,
+        "pointer_index_bits": 64,
+        "mesh_a_stride": 1,
+        "counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 3,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 4064,
+          "gemmini.preload": 36864,
+          "gemmini.compute": 36864,
+          "gemmini.mvout": 32
+        },
+        "requested_input_bytes": {
+          "activation_nonnull": 409600,
+          "activation_zero_fill": 41984,
+          "weight_nonnull": 2359296,
+          "weight_zero_fill": 0
+        },
+        "output_bytes": 25088,
+        "activation_compute_bank_counts": {
+          "0": 36864
+        },
+        "real_weight_preload_bank_counts": {
+          "2": 9216
+        },
+        "command_order_sha256": "79c8883a6004b79bfcebded8aa441013bdcac7380f53ca83dc5cfc8452410a09"
+      },
+      "candidate": {
+        "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/resident_bn8/kernel.gemmini.mlir",
+        "target_module_sha256": "553ff33c3c2eb28bb489076a2fb5701ce96bf2038607d1d8b81f981cd79edfb6",
+        "complete_static_cfg": true,
+        "pointer_index_bits": 64,
+        "mesh_a_stride": 2,
+        "counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 3,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 2656,
+          "gemmini.preload": 64512,
+          "gemmini.compute": 64512,
+          "gemmini.mvout": 56
+        },
+        "requested_input_bytes": {
+          "activation_nonnull": 100352,
+          "activation_zero_fill": 30720,
+          "weight_nonnull": 2359296,
+          "weight_zero_fill": 0
+        },
+        "output_bytes": 25088,
+        "activation_compute_bank_counts": {
+          "0": 32256,
+          "1": 32256
+        },
+        "real_weight_preload_bank_counts": {
+          "2": 9216
+        },
+        "command_order_sha256": "10f7f02960c5d85a55fba0fcf32124e3b013ba0bccc50e0a2dc5e4836d3f83e9"
+      }
+    },
+    "scope": "Actual target-module CFG and requested transfer/coverage proof; no hardware queue dispatch or timing inference"
+  },
+  "trace_pin": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/actual_commands.json",
+    "sha256": "d644cad726afc4828c08ce0a2d0b5dc497676c54d331e36b218ce8b59029c454"
+  },
+  "source_capture": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/capture/receipt.json",
+    "sha256": "418a0a672cc8c287be2e6e6359d2b5128e794458bb599ce6d3ac8c09d880029a"
+  },
+  "independent": {
+    "shape": {
+      "h": 17,
+      "w": 13,
+      "cin": 32,
+      "cout": 271,
+      "stride": 2,
+      "bn": 7,
+      "output_dtype": "i8",
+      "scale": 0.00390625,
+      "relu": true,
+      "wide_b": false,
+      "explicit_halo": false
+    },
+    "all17073_outputs": true,
+    "guard_bytes": 2048,
+    "cycles": 42896,
+    "strict_Spike_and_zeroFSM": true,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/independent_resource_retile_tail/result.json",
+      "sha256": "c9e58ed387f985b23137489bf67435a10a7efb1fef9075ad8e5e5a27cc004559"
+    }
+  },
+  "reference_evidence": {
+    "owned_decode": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_fx45_commands.txt",
+      "sha256": "3725d201f7cf38129ef34df1329f4542e401029deeb56fd66573124046dc5cb9"
+    },
+    "plane_stride": 320,
+    "mesh_stride": 2,
+    "compute_rows_known": 16,
+    "actual_dynamic_compute_commands": 36864,
+    "scope": "Authorized ZIP executable; differing input/weights/quant/readout. Some static addresses unresolved; no source or numeric equivalence claim."
+  },
+  "diagnostic_failure": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/capture_failed_diagnostic_signature",
+    "reason": "First diagnostic native wrapper retained an i32 inner output signature for an i8 source kernel; aborted. Fixed wrapper reproduces source signature and closes original1000 bit gate; failed artifacts retained, excluded from qualified fixture."
+  },
+  "outcome": "REJECT_PERFORMANCE",
+  "production_selection": "Existing issue/traffic ranking rejects candidate; source-stride opt-in keeps the original flat control for this geometry",
+  "whole_target_build": false,
+  "firesim_queue_submission": false,
+  "next_hypothesis": "Deinterleave input rows by source-stride residue so multiple output rows fit one mesh tile, preserving increasing HWIO reduction",
+  "token_usage_available": false,
+  "metric_scope": "Matched kernel GSIM cycles only; no whole-model timing or reference-cycle transfer"
+}
