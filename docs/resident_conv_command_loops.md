@@ -12,6 +12,17 @@ The 54 focused checks pass. Complete source-bound static CFG traces compare ever
 
 The small independent 1,155-output i32 pair takes 4,496 GSIM cycles on both arms. A larger independent tail/prefetch pair is slower: 15,849 to 19,765 cycles. Both are complete, exact, guard/input checked and zero-FSM. This rejects blanket retention as a profitability rule.
 
-The source-bound original H14/C256 candidate has 4,140 executable object bytes versus 153,052 for the exact current control. Its complete 65,328-command sequence and all DMA pointer values are identical. The original control takes 535,667 GSIM cycles; the candidate timing remains pending. Code size and instruction counts are witnesses, not cycle estimates. Hardware overlap and instruction-cache misses are unknown.
+The source-bound original H14/C256 candidate has 4,140 executable object bytes versus 153,052 for the exact current control. Its complete 65,328-command sequence and all DMA pointer values are identical. The complete original pair takes **535,667 to 522,644 GSIM cycles**, saving 13,023 (2.43%). All 50,176 original i8 outputs, 4,096 dirty guard bytes and 640,000 immutable input bytes pass strict and GSIM. Hardware overlap and instruction-cache misses are unknown.
 
-No normal source policy or whole-model object changes are enabled by this implementation. A positive complete original capsule and source/catalog/full original numeric qualification must precede a separate stock comparison. GSIM's memory regime differs from stock FireSim. Portable LLVM loop metadata comes from Merlin's existing `disable_loop_unroll` helper; target resource/address rules remain in OOT.
+No normal source policy or whole-model object changes are enabled by this implementation. The large original body's local gain and the smaller body's loss remain separate profitability evidence. Normal source/catalog/full original numeric qualification must precede a separate stock comparison. GSIM's memory regime differs from stock FireSim. Portable LLVM loop metadata comes from Merlin's existing `disable_loop_unroll` helper; target resource/address rules remain in OOT.
+
+The receipt pins 193 artifacts, including all three complete capsule pairs, emitted target modules, previous/default byte identity and exact sealed typed catalog/source-scale binding. Its recloser also reparses both actual target modules and compares the full encoded command and pointer sequence:
+
+```sh
+PYTHONPATH=/scratch/agustin/tmp/gemmini-resident-command-loops-20261006:/scratch/agustin/tmp/merlin-residual-output-word-20261005/src \
+  /scratch/agustin/projects/oscar-merlin/.venv/bin/python \
+  tests/resident_retained_command_closure_probe.py \
+  docs/perf_records/resident_retained_command_capsules.json
+```
+
+The historical capsule result field `prefetch_b` records the CLI flag. Actual implementation selection is bound by each fixture's `resident_options` and emitted module. The independent prefetched arms both use `prefetch_b=True`. Child token attribution is unavailable; root retains session accounting.

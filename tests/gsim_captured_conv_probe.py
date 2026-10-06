@@ -44,6 +44,7 @@ def main():
             "stride_residue",
             "coalesced_resident_a",
             "mesh_flip",
+            "compact_commands",
         ),
         required=True,
     )
@@ -65,7 +66,7 @@ def main():
     if args.prefetch_b and args.schedule != "compact":
         raise ValueError("weight prefetch requires explicit compact schedule")
     if args.bn is not None:
-        if args.schedule in ("control", "mesh_flip"):
+        if args.schedule in ("control", "mesh_flip", "compact_commands"):
             raise ValueError(
                 "exact control and isolated mesh mode do not accept tile overrides"
             )
@@ -110,7 +111,13 @@ def main():
         }
         resource = None
     else:
-        if args.schedule == "mesh_flip":
+        if args.schedule == "compact_commands":
+            generator = GoldenResidentConv(
+                shape,
+                **source_receipt.get("resident_options", {}),
+                compact_commands=True,
+            )
+        elif args.schedule == "mesh_flip":
             if not shape.cache_a or not shape.reuse_b:
                 raise ValueError(
                     "mesh flip screen needs a complete cached A stationary-reuse control"
@@ -160,7 +167,12 @@ def main():
                 "weight_panel_rows": shape.bn * F.DIM,
                 "accumulator_rows": shape.bm * shape.bn * F.DIM,
             }
-        elif args.schedule in ("compact", "strided_resident", "stride_residue"):
+        elif args.schedule in (
+            "compact",
+            "strided_resident",
+            "stride_residue",
+            "compact_commands",
+        ):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,
                 "weight_rows": shape.bn * F.DIM,
