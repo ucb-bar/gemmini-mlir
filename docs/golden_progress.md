@@ -4,6 +4,18 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 ## Latest verified whole-model results (2026-10-06 UTC)
 
+Dedicated model work now closes CPU21 stock2029 against the identical strict
+Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
+0.260% for FMA with dependency features; stock memory remains38.29% inaccurate.
+This is diagnostic stream evidence, with whole programs and candidate ranking
+still unqualified. [Model status](golden_fast_model_status.md).
+
+Tiny's source-wide8MiB interval-table prototype measures6.531% fewer complete
+section GSIM cycles, despite more instructions. Original outputs/guards/all5FRM
+and input identity pass. Generic default-off promotion and normal full-model
+qualification are in progress; this does not change the whole-model best below.
+[Section evidence](perf_records/tiny_source_interval_table_complete_gsim.json).
+
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes | 30,977,892 (2026) | All 1,000 original output words exact;719,723cycles/2.2706% below2025. Actual2013 diagnostic2021 remains separately bound | [2026](perf_records/stock2026_resident_stripes_current2025_terminal.json) |

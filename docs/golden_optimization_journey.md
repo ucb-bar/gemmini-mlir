@@ -1612,3 +1612,26 @@ All938runtime checks and all1,600original native outputs through48calls pass;
 carrier differences require the complete typed observation closure. Fresh normal
 source binding/reseal and hardware timing remain pending. No instruction-based
 whole5B forecast follows.
+
+## Dedicated model tuning: CPU21 and emitted dependencies (2026-10-06)
+
+Stock2029 closes the identical21-case CPU service ELF used by Spike/GSIM.
+The predeclared small/large training and middle heldout cases show why counts
+alone are inadequate: FMA instruction-only maximum error91.17% falls to0.260%
+with dependent stream demand; DIV reaches0.031%. Memory extent still misses
+38.29% on stock, versus11.60% on GSIM. No engine pooling, pure latency claim,
+Jack fitting or whole-program approval follows. All repeated samples remain.
+
+Added OOT ISA/FP def-use distance producer, delegating graph construction to
+Merlin depgraph; no new shared solver or generic graph algorithm duplicated.
+The actual source-exact Tiny ordering pair has equal operation counts but
+different distances. These partial features retain unknown loop/memory/resource
+dependencies and license no reorder or cycle claim. Nine evidence corruptions
+refuse;15 operand fixtures independently disassemble; unsupported forms and
+signed branch targets pass. [Pilot](perf_records/root_cpu_stream_model_pilot_20261006.json).
+
+The complete Tiny table experiment decreases section GSIM cycles6.531% while
+instructions rise. Its8MiB payload and original source fallback are included.
+This motivates working-set calibration and generic source-DAG/closed-consumer
+promotion; whole-model timing remains unknown.
+[Table](perf_records/tiny_source_interval_table_complete_gsim.json).
