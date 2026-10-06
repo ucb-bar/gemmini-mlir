@@ -1,0 +1,155 @@
+{
+  "scope": "Complete original M256,12head group with current classification provider. Diagnostic Spike retired instructions, NOT hardware cycles.",
+  "elf_sha256": "407de1b50d77678f4246abaa4395d72092ae825728fed8857551f0d12e43b3c5",
+  "qualification": {
+    "scope": "Complete original group actual product+ranked workspace bridge capsule; source refusal deliberately fatal, not normal production fallback qualification",
+    "elf_sha256": "407de1b50d77678f4246abaa4395d72092ae825728fed8857551f0d12e43b3c5",
+    "elapsed_seconds": 116.09462571144104,
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x80000000",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/model.elf"
+    ],
+    "returncode": 0,
+    "status": "pass",
+    "log_sha256": "396a0c367d44b57ed1067058bdadcf8ab1d8f0156eabf95eaf1789e72a627b73",
+    "token_usage_available": false
+  },
+  "stages": [
+    {
+      "id": 0,
+      "instructions": 106878984,
+      "calls": 12,
+      "name": "input_gather"
+    },
+    {
+      "id": 1,
+      "instructions": 293443169,
+      "calls": 96,
+      "name": "radix_preparation"
+    },
+    {
+      "id": 2,
+      "instructions": 3766560,
+      "calls": 480,
+      "name": "product_callbacks"
+    },
+    {
+      "id": 3,
+      "instructions": 246797568,
+      "calls": 672,
+      "name": "integer_degree_reconstruction"
+    },
+    {
+      "id": 4,
+      "instructions": 996115468,
+      "calls": 96,
+      "name": "dot_bounds"
+    },
+    {
+      "id": 5,
+      "instructions": 1310099618,
+      "calls": 12,
+      "name": "source_softmax_intervals"
+    },
+    {
+      "id": 6,
+      "instructions": 444941230,
+      "calls": 1,
+      "name": "consumer_certificate_and_refinement"
+    }
+  ],
+  "outer_instructions": 3508805919,
+  "unattributed_instructions": 106763322,
+  "unprofiled_control_instructions": 3527309706,
+  "instrumentation_net_instruction_delta": -18503787,
+  "instrumentation_caveat": "Counter insertion perturbs compiled code; negative net instruction delta is not a performance gain. Stages are observed instrumented scopes only. Product callback counts do not price hardware stalls.",
+  "physical_terms": {
+    "scope": "Analytical original closed-group source/physical product terms, not predicted runtime. Shapes and grouping are explicit source-bound plan obligations, not model-name routing.",
+    "group_terms": [
+      {
+        "semantic_family": "qk",
+        "heads": 12,
+        "calls_per_head": 2,
+        "M": 256,
+        "N": 512,
+        "K": 64,
+        "source_fma_count": 201326592,
+        "integer_product_mac_count": 1811939328,
+        "grouped_primitive_calls": 120,
+        "i32_readback_bytes": 62914560,
+        "operand_encoding_values": 1179648,
+        "ideal_dim16_issue_floor_cycles": 7077888
+      },
+      {
+        "semantic_family": "pv192",
+        "heads": 12,
+        "calls_per_head": 4,
+        "M": 256,
+        "N": 64,
+        "K": 192,
+        "source_fma_count": 150994944,
+        "integer_product_mac_count": 1358954496,
+        "grouped_primitive_calls": 240,
+        "i32_readback_bytes": 15728640,
+        "operand_encoding_values": 2949120,
+        "ideal_dim16_issue_floor_cycles": 5308416
+      },
+      {
+        "semantic_family": "pv128",
+        "heads": 12,
+        "calls_per_head": 2,
+        "M": 256,
+        "N": 64,
+        "K": 128,
+        "source_fma_count": 50331648,
+        "integer_product_mac_count": 452984832,
+        "grouped_primitive_calls": 120,
+        "i32_readback_bytes": 7864320,
+        "operand_encoding_values": 983040,
+        "ideal_dim16_issue_floor_cycles": 1769472
+      }
+    ],
+    "totals_per_group": {
+      "source_fma_count": 402653184,
+      "integer_product_mac_count": 3623878656,
+      "grouped_primitive_calls": 480,
+      "i32_readback_bytes": 86507520,
+      "operand_encoding_values": 5111808,
+      "ideal_dim16_issue_floor_cycles": 14155776
+    },
+    "groups": 48,
+    "all48_replay_source_fmas_measured_native": 506370304,
+    "old_source_cpu_counter": {
+      "retired_instructions": 232955196,
+      "scope": "Measured original first-head M256 source CPU capsule only; multiplying by12 is analytical scaling, not a measured full-group comparator.",
+      "receipt": "docs/perf_records/smol_quant_frontier_actual_device_slice.json"
+    },
+    "limitations": [
+      "DIM16 issue floor excludes DMA, commands, fences, partial accumulation and host work.",
+      "i32 readback counts stores only; host reads consume those bytes again.",
+      "Logical operand encoding values count repeated Q and probability slices, not unique raw inputs or measured DRAM traffic.",
+      "No whole-model timing forecast from instruction count or these lower bounds."
+    ],
+    "token_usage_available": false,
+    "totals_all48_analytical": {
+      "source_fma_count": 19327352832,
+      "integer_product_mac_count": 173946175488,
+      "grouped_primitive_calls": 23040,
+      "i32_readback_bytes": 4152360960,
+      "operand_encoding_values": 245366784,
+      "ideal_dim16_issue_floor_cycles": 679477248
+    }
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/build.py": "8a4419e12aeb95ee7aa1d9214521a51a3f242066289a0b30c23e93ca19cd4ca8",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/build.json": "5a56d1c339cacb8ae6bae123441cd5388d37faa47d845a9ff42aa3dabb0086c9",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/spike.log": "396a0c367d44b57ed1067058bdadcf8ab1d8f0156eabf95eaf1789e72a627b73",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/spike_receipt.json": "5fd7c08e76d1ef18074d835e733f2fa2a2cf1f9a2eb33b86247888dc6a2e6f32",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/model.nofsm.json": "7c5b8b36a4f181d44ec95aa70f94207bad4f7e8ca104262f163593c26b230b8c",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/production_stage_profile/source_physical_terms.json": "2698b15439db4196209cbc2e81b5d9efa7172915ee5077ccecac9d27b05f9f9f"
+  },
+  "token_usage_available": false
+}
