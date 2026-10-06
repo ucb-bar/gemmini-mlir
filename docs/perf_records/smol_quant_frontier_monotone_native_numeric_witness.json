@@ -1,0 +1,114 @@
+{
+  "source_contract": {
+    "qk_depth": 64,
+    "key_chunks": [
+      512,
+      512
+    ],
+    "pv_segments": [
+      192,
+      192,
+      128
+    ],
+    "denominator_lanes": 8,
+    "score_scale": 0.125,
+    "poly_cutoff": -87.3365478515625,
+    "poly_scale": 1.4426950216293335,
+    "poly_coefficients": [
+      -0.07920423895120621,
+      -0.2243383675813675,
+      0.3035426139831543,
+      0.00010703434963943437
+    ],
+    "poly_bit_multiplier": 8388608.0,
+    "poly_bit_bias": 1065353216.0,
+    "alpha": "f32(exp_f64(f32(oldmax-newmax)))",
+    "all_masked_max": 0,
+    "zero_denominator": 1,
+    "initial_max": "-inf",
+    "initial_denominator": 0,
+    "initial_accumulator": 0,
+    "source_fma": "ordered_f32_rne",
+    "pv_partial_accumulate": "separate_f32_add"
+  },
+  "quant_contract": {
+    "row_axis": "flatten(head,channel)",
+    "scale_divisor_f32": 127.0,
+    "scale_cast": "bf16_rne",
+    "epsilon_bf16_word": 14120,
+    "reciprocal": "bf16_rne",
+    "multiply": "bf16_rne",
+    "round": "ties_even",
+    "zero_point": 0,
+    "clamp": [
+      -127,
+      127
+    ],
+    "result": "signed_i8",
+    "escaping_scale": "bf16"
+  },
+  "numeric_dependency_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/f32_interval_endpoint.h": "6982b0365b9a5341445607d828e973f7734e70eed7320c2b11b030e805d0b075",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/monotone_bit_polynomial.h": "eb062d49a7fb440f196fdb9a683f832d6baffb2104ebbb8a6505044446d9bde6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/native_endpoint_7266d3e06bbcd37a.so": "a287b6822cbbf65f69e10ffa8fe41b52e93b8dfc81ac567bb6ab24023d890e56",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/prepared_bit_polynomial.h": "0bbfdd654817a6985042d3247ea33b1812db1d276c8f56630d8520fbe4951b2c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/prepared_dot_norms.h": "4a33a7e064717878eaf2fe4e37409b3724b0117bdf6a59500f19c8aa54a553c0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frozen/screen_bounded.c": "e3d44fa51ae74e50e67de754eae3ea2719557108ccee6daf9fe1ba23a072950c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/native_evaluator.py": "189c08e15c66e17d23ae52a30d892a22430fe55605fdc6518b69fadd58995283",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/native_frontier_state_frozen.py": "8c3b863df8329e0038f272cf8cd79e8c9ab662835e0a36cf9ce51e037107c3e2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/native_quant_frontier_frozen.py": "bb0fbfe091bf2d8c383e0a2b32a486be7bdbc248a1bc671037907b8912a1972b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/quant_frontier_monotone_screen/numeric/frontier_frozen_reclosure.json": "aeb9bfed1a73154722e4544d7fd27eac01e080f92e0d40bf62e83037ef3fb376"
+  },
+  "native_shared_sha256": "a287b6822cbbf65f69e10ffa8fe41b52e93b8dfc81ac567bb6ab24023d890e56",
+  "compiled_source_quant_proof_sha256": "f35da11025c17d01965ed9585f1f5209de40e2056a137f31b9c468e2ec7c90fa",
+  "full_live_consumer_closure_sha256": "f36a08be116310ddbd15caab5cea8dc346b9af57d1cd58ac45ddc7acb77bc78a",
+  "complete_consumer_semantic_sha256": "8d3422c82de7222db754860ac49f3940915d3fddfca349c8122964a92389c4f4",
+  "numerical_policy": "exact source integer words and escaping BF16scale; selectively refine ambiguous observations",
+  "complete_source_dag_semantic_sha256": "b589e813ac21e23c74c4c742d4c93c73c4acaf1a978b70bc83d1ef6ebc181d10",
+  "superseded_compiler_numeric_witness": {
+    "source_semantic_sha256": "b589e813ac21e23c74c4c742d4c93c73c4acaf1a978b70bc83d1ef6ebc181d10",
+    "raw_source_semantic_sha256": "3ebb455466b6725d84e2553f0a428f6e7d22dea416898fd899fb0593783f7151",
+    "source_reference_sha256": "bbe3c0158bfb62e603f6b63c69a9582dd677526c4223ea13019a2cee1367045e",
+    "normalized_source_reference_sha256": "6d9f8c7b8b3cfb7766f145babad37a3077bce06d1a74469185e0f275e404380f",
+    "exact_uniform_operand_canonicalization_count": 4,
+    "source_contract": {
+      "qk_depth": 64,
+      "key_chunks": [
+        512,
+        512
+      ],
+      "pv_segments": [
+        192,
+        192,
+        128
+      ],
+      "denominator_lanes": 8,
+      "score_scale": 0.125,
+      "poly_cutoff": -87.3365478515625,
+      "poly_scale": 1.4426950216293335,
+      "poly_coefficients": [
+        -0.07920423895120621,
+        -0.2243383675813675,
+        0.3035426139831543,
+        0.00010703434963943437
+      ],
+      "poly_bit_multiplier": 8388608.0,
+      "poly_bit_bias": 1065353216.0,
+      "alpha": "f32(exp_f64(f32(oldmax-newmax)))",
+      "all_masked_max": 0,
+      "zero_denominator": 1,
+      "initial_max": "-inf",
+      "initial_denominator": 0,
+      "initial_accumulator": 0,
+      "source_fma": "ordered_f32_rne",
+      "pv_partial_accumulate": "separate_f32_add"
+    },
+    "native_evaluator_sha256": "4fa5a0539d2436e7def1f1e9da321908ef1ea03b01b215e8ca9d6f3343d30e70",
+    "numeric_source_sha256": "8f665535179f0eb244bf271ed4622a15fd4d4fdd779dcee3bd959604e2769065",
+    "interval_header_sha256": "6982b0365b9a5341445607d828e973f7734e70eed7320c2b11b030e805d0b075",
+    "max_bf16_steps": 1,
+    "qualification": "native functional exact-product stand-in; not a device implementation"
+  },
+  "qualification_scope": "Registered native exact-consumer-observation stand-in; unchanged borrowedBF16 ABI and original typedquant consumer. No target/production contract installed."
+}

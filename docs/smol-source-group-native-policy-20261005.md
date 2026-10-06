@@ -86,3 +86,21 @@ complete scalar-DAG fingerprints before installing an observationally different
 BF16 writer; complete writes, input preservation, borrowed lifetime, original
 source fallback and numeric/effect proof remain required. Actual Gemmini QK/PV
 implementation and timed target qualification are the next separate gate.
+
+## Exact monotone source polynomial screen
+
+The isolated monotone polynomial bound preserves every original 1600 whole output
+word and all independently compiled 9,437,184 signed-i8 words plus 12,288 escaping
+BF16 scales. Every one of the 48 groups' 11 live input hashes matches the exact control. Source
+replay falls from 646,130,688 to 506,370,304 FMAs (21.6304% fewer, 2.6200% of the
+original 19.327B source FMAs). 6,007 BF16 carrier words change while those complete
+consumer observations remain exact.
+
+This screen reuses the immutable original host/bridge/runtime image with a separately
+pinned native integer-product stand-in. It establishes numerical source observation
+qualification, not target execution or cycles. Actual device provider timing remains
+separate. The accepted earlier proof and its receipts are unchanged.
+
+Receipts: `perf_records/smol_quant_frontier_monotone_native_{validation,calls,
+numeric_witness,observations,journey}.json`. Exclusive token allocation is unavailable;
+the parent attaches shared campaign checkpoints.
