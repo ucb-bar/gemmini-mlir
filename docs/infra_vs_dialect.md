@@ -62,7 +62,8 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 
 ## Remaining gap and accounting
 
-Current verified whole-model champions are ResNet36,102,704cycles and Tiny527,255,504cycles.
+Current verified whole-model champions are ResNet35,152,730cycles (1927) and
+Tiny461,389,700cycles (1926). Tiny's user-specified target is now300M.
 Smol stock1906 measures258,621,872,969cycles with full original target correctness. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.
@@ -73,6 +74,39 @@ additive campaign attribution. The [journey](golden_optimization_journey.md) ret
 campaign counters, per-experiment ownership, gains, negative results and remaining abstractions.
 
 ## How these changes generalize
+
+Two new stock measurements qualify general compiler changes. Merlin's typed
+normalization hoist removes repeated source math at a proved smaller affine
+domain: Tiny531,072,370→461,389,700cycles against isolated1880. Merlin's borrowed
+view/ownership proof plus the OOT segmented-input implementation removes copied
+matrices: ResNet36,102,704→35,152,730cycles against isolated1903. These gains are
+not added to different packet/schedule arms.
+
+The source attention executor is portable Merlin runtime infrastructure with
+explicit numerical/consumer closure and retained actual source fallback. A
+shared private workspace pool owns allocation and release; OOT owns device
+products and ranked ABI adaptation. Linking its mixed host helper needs the new
+separate host-provider object hook. Device kernels still have zero unresolved
+symbols. Companion LLVM machine types, imported build identities and final
+symbol closure supplement logical tensor/ownership proofs; they do not replace
+them. Default-disabled ordinary builds preserve prior executable bytes.
+
+Exact binary32 floor, nonnegative multiply and positive-RHS endpoint arithmetic
+belong to Merlin. Fixed RUP/RDN CPU instruction definitions belong to OOT.
+The measured complete-group instruction proxy improves3.529B→3.303B without
+changing196,608 quantized observations or256 scales. Row metadata hoisting
+requires immutable/disjoint typed storage facts. It must not be inferred from
+arbitrary C pointers. The separately qualified production compilation gain
+9.624B→5.709B instructions removes function/bitcopy overhead under unchanged
+normal flags; it is not composed with the row arm or measured whole cycles.
+
+Phase1/2 tooling should expose these real seams: full source/consumer and
+ownership contracts, provider compile capabilities, imported object recipes,
+workspace/lifetime plans, source-view reuse opportunities and attributable
+section costs. The actual emitted link and hardware regime must remain part of
+candidate identity. Unknown costs and unmeasured combinations remain unknown.
+Read-only source-view analysis does not itself grant a physical cache, data
+reuse or an approximation policy.
 
 Recent portable host optimizations prove ownership and representation before
 changing traffic: private uniform buffers can fill their copy destinations

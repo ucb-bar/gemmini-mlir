@@ -1,13 +1,13 @@
 # Primitive-only Gemmini golden: current evidence
 
-The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama as low as possible, all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
+The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama around **300M** (user clarification on 2026-10-06), all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
 
 ## Latest verified whole-model results (2026-10-06 UTC)
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, transfer/banked residual, host quantization packets and exact early-saturation/eight-lane readout | 36,102,704 (1903) | All 1,000 original output words exact; staged ELF/stock hardware pinned. Measured composition, 6.48% below matched1886 control; separate from1897 stripes | [1903](perf_records/firesim1903_resnet_composed_verified.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, host pointwise/adjacent RNE packets, ordered contractions/K2, B-prefetch and fresh writer ownership | 527,255,504 (1902) | All 256,000 original compiled words unchanged; original Torch gate passes. Single-run marginal 0.719% gain versus1880 | [1902](perf_records/firesim1902_tiny_adjacent_rne_verified.json) |
+| ResNet exact52/wide16, transfer/banked residual, host quantization packets, exact early-saturation/eight-lane readout and typed segmented inputs | 35,152,730 (1927) | All 1,000 original output words exact; 2.6313% below isolated1903 control. Stock hardware and pre-teardown staging observations pinned | [1927](perf_records/resnet_segmented_inputs_stock1927.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, source normalization hoist, ordered contractions/K2, B-prefetch and fresh writer ownership | 461,389,700 (1926) | All 256,000 original compiled words unchanged; original Torch gate passes. 13.1211% below isolated1880 control; not composed with1902/1920 | [1926](perf_records/tiny_norm_hoist_stock1926.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -56,6 +56,34 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
+Stock1926 and1927 are the new Tiny and ResNet best measured whole-model arms.
+Tiny still needs about35% below461.390M to reach300M. The isolated constant-clamp
+arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
+than1926. No gains are added across arms.
+
+The complete reentrant Smol attention executor now passes all1,600 original
+native words, every9,437,184 original quantized byte and12,288 escaping scales
+across48 groups. One caller-owned121,963,584-byte workspace replaces mutable
+global numeric state and executor allocation. The normal model builder now
+accepts separately pinned host/provider objects and retained source fallbacks,
+with typed ABI/import/final-link checks; the device catalog still requires
+closed kernels. Default-disabled hook builds are byte-identical. Full new
+pooled whole-target integration remains pending.
+[Native workspace](perf_records/smol_quant_frontier_workspace_native_journey.json).
+
+For the same complete original12-head device group, portable exact floor and
+source multiply/row invariants lower the functional Spike instruction proxy
+3,528,972,523→3,494,086,004→3,303,437,300. All196,608 quantized observations,
+256 scales,4,461,440 replay FMAs and480 product calls remain unchanged.
+These are capsule counters, **not** stock hardware cycles or a5B whole forecast.
+[Reclosed arithmetic receipts](perf_records/smol_exact_row_arithmetic_complete_group.json).
+The next directed-conversion arm further reduces that counter to3,121,235,451
+(5.5155% below the row arm), with all original quantized values/scales exact and
+576 fewer replay FMAs. One additional internal carrier differs; original source
+gold and quantization observations remain fixed. Full new whole-model/production
+qualification is separate.
+[Directed narrowing](perf_records/smol_directed_cast_complete_group.json).
+
 Stock packing job1909 now verifies776,043,123→665,638,655cycles across
 matched complete packing sequences (14.2266% reduction), all12output digests,
 representation metadata and guards exact. This is a packing-section result,
@@ -73,12 +101,16 @@ and onlymodel.o changes. Stock1932is queued versus1880. Its actual-source
 ABBA GSIM capsule is incomplete after the first control interval; candidate
 timing remains unknown. [Qualification](perf_records/tiny_broadcast_packet_whole_qualification.json).
 
-ResNet and Tiny champions remain unchanged. Full Smol stock1906 completed at
+Full Smol stock1906 completed at
 02:57:36Z after submission at22:52:37Z. Engine elapsed was8,918.2seconds
 (about2h29m); submission to completion was about4h5m, including queue/setup.
 Its258.622B forward cycles are51.724times the5B target. Correctness now has
 stock whole-model evidence; the performance target remains unmet. Current-best
-ResNet profile1919 remains queued on stock hardware. The same qualified ELF
+ResNet profile1919 completed on stock hardware:36,138,975 forward cycles conserve
+30,678,196 device-wrapper cycles plus5,460,779 host-gap cycles, all70 events and
+1,000 original outputs exact. This profiles the prior1903 arm, not new1927.
+[Stock profile](perf_records/resnet1903_stock1919_profile.json).
+The same qualified ELF
 completed in the separately pinned GSIM memory regime:33,939,464forward cycles
 conserve29,422,251device-wrapper cycles plus4,517,213host-gap cycles, including
 the73,136tail. All1,000 original words and all70boundary events pass. This is
@@ -95,7 +127,8 @@ not stock1919 and does not repartition the stock13.72M reference gap.
   Capsule allocation/traffic are timed with a small common bump allocator;
   whole frozen allocator/address context needs stock qualification. The full
   model native/Torch/strict/noFSM gates now pass all256,000original words with
-  onlymodel.o changed. Stock1926 is queued versus1880; whole hardware cycles remain unknown.
+  onlymodel.o changed. Stock1926 verifies461,389,700cycles versus1880;
+  this is the current best Tiny result and remains above300M.
   [Source/capsule](tiny-broadcast-math-20261005.md).
 - **ResNet borrowed projection input:** typed Merlin ownership/view acceptance
   and an OOT segmented resident-input schedule remove copied logical matrices.
@@ -103,7 +136,8 @@ not stock1919 and does not repartition the stock13.72M reference gap.
   866,791→538,815GSIMcycles(-37.838%). Unread physical owner cells in that
   isolated fixture are synthetic zeros, not original producer state. The normal
   source/catalog build now binds three accepted views and has passed all1,000
-  original native/strict outputs; frozen1903 comparison is queued as stock1927.
+  original native/strict outputs; frozen1903 comparison stock1927 verifies
+  35,152,730cycles, the current best ResNet result.
   [Measured projection](perf_records/segmented_input_original_projection_gsim.json),
   [normal compiler route](segmented_input_view.md).
 - **Compact ordinary CPU spatial command loops:** the explicit OOT

@@ -9,6 +9,85 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### Whole hardware and production compilation checkpoint (2026-10-06 07:00 UTC)
+
+- **Tiny source normalization hoist — Merlin:** stock1926 preserves all256,000
+  original words/Torch gate and reduces the isolated1880 arm531,072,370→461,389,700
+  cycles (13.1211%). This is the new best; user target is now300M. The527,211,739
+  constant-clamp arm1920 is effectively tied with1902 and is not composed here.
+  [1926](perf_records/tiny_norm_hoist_stock1926.json).
+- **Segmented borrowed inputs — Merlin legality, OOT device view/schedule:**
+  stock1927 preserves all1,000 original words and reduces isolated1903
+  36,102,704→35,152,730 cycles (2.6313%), new ResNet best.
+  [1927](perf_records/resnet_segmented_inputs_stock1927.json).
+- **Current stock attribution:** profile1919 closes all70 boundaries with
+  30,678,196 device and5,460,779 host-gap cycles. The aligned ZIP1876 class
+  comparison retains a host-counter scope mismatch; it does not assign every
+  difference to a compiler cause. This profile belongs to prior1903, not1927.
+- **Smol exact floor and source multiply specialization — Merlin:** portable
+  binary32 floor, nonnegative scalar multiply, positive-RHS interval multiply
+  and proved immutable row-factor/reciprocal hoisting preserve all196,608
+  original quantized values,256 scales and4,461,440 replay FMAs. Complete-group
+  strict Spike instruction proxy3,528,972,523→3,494,086,004→3,303,437,300;
+  row changes improve5.4563% relative to floor. Native elapsed time is functional
+  evidence only.94 distinct mathematical/source/build files and audits of all
+  executable sections are retained and rehashed by the reclosure driver.
+  [Archive](perf_records/smol_exact_row_arithmetic_complete_group.json).
+- **Directed narrowing — Merlin hooks/proofs, OOT CPU encoding:** complete-group
+  instruction proxy3,303,437,300→3,121,235,451 (5.5155% lower); probability stage
+  1,398,679,908→1,216,478,078.13,197 independently derived rational conversion
+  cases pass in all five target rounding modes (65,985 checks), alongside5,316
+  existing directed arithmetic checks. Replay falls by576 source FMAs to
+  4,460,864, with all196,608 original quantized observations and256 scales exact.
+  One additional unobserved internal BF16 carrier changes (126 versus125).
+  The old implementation carrier-reference assertion correctly refused; its
+  failed run is retained. A fresh independent native carrier reference closes
+  target implementation agreement while leaving the original source gold,
+  input data object and quantization oracle unchanged.68 distinct files are
+  rehashed. Full48 new-policy/production/stock qualification remains pending.
+  [Archive](perf_records/smol_directed_cast_complete_group.json).
+- **Reentrant source executor and normal host-provider link — Merlin:** caller
+  owns one121,963,584-byte workspace; all48 groups preserve all1,600 original
+  whole outputs,9,437,184 quantized bytes and12,288 escaping BF16 scales with
+  506,370,304 replay FMAs.23,040 native product callbacks and4,152,360,960 logical
+  i32 readback bytes describe work, not physical traffic or hardware time.
+  Actual O0/O2 source-fallback/ownership and ranked RV64GC final-link gates pass;
+  an inert host-provider hook preserves previous default ELF bytes. Source,
+  companion LLVM, object, compiler/dependency and ordered final-link identities
+  stay explicit; opaque LLVM pointers do not prove logical dtype/rank/ownership.
+  New pooled full-model target execution is pending.
+- **Compilation regression retained:** the new production descriptor executor
+  initially emitted no terminal PASS from its final puts call, so collection
+  refused. A formatted marker relink closed the numeric gate. Broad normal
+  `-fno-builtin` leaves per-value memcpy and fmaf calls, unlike older capsules;
+  fmaf itself is hardware fmadd+return, not a software arithmetic routine.
+  A matched static-helper control/capability pair subsequently measures
+  9,624,336,737→5,709,055,956 instructions (40.68% lower), same device/driver/
+  inputs/counters. Source FMA and fixed bit-copy capabilities are separately
+  admitted, with default bytes unchanged. Exact floor/row changes are not yet
+  composed with this production pair. No5B stock claim follows.
+- **Residual correction compiler recipe:** complete65,536-pair Clang capsule
+  164,399→141,216 GSIMcycles (14.10% lower), independent shape8,143→7,770
+  (4.58% lower). Original802,816-output GCC-inline capsule instead regresses
+  1,995,900→2,052,178 (2.82%); it is rejected. The normal optional three-argument
+  route uses the existing catalog/FreshWriter infrastructure, not model-name
+  selection. Real whole compilation exposed a source-seal ordering bug that
+  synthetic base callbacks had missed; its original failed attempt is retained
+  and the stateful callback fix is being qualified before target admission.
+  [Compiler screens](perf_records/residual_output_guard_compiler_capsules.json).
+- **Typed preparation opportunities — Merlin:**48 source calls request432
+  logical BF16 views; exact root SSA/dtype/static-coordinate identities identify
+  144 unique views and96 groups of four reads.113,246,208 repeated logical input
+  bytes are an opportunity, not measured physical traffic or saved cycles.
+  Different query quarters stay distinct; no pointer cache or physical reuse is
+  enabled by this read-only analysis. Format, numerical/effect, dominance and
+  complete consumer lifetime contracts are still required for emission.
+
+None of these separate capsule, compiler or stock measurements are added to
+form a whole-model prediction. Stock1922 DMA coalescing38,312,898 remains above
+the ResNet champion; stock1924 earlier exact head2,101,389,170 is a scoped head
+result, not the current complete-group or whole Smol measurement.
+
 ### Latest compiler and measurement work (2026-10-06 UTC)
 
 New closed-source attention work belongs in Merlin: ordinary function
@@ -197,7 +276,7 @@ These are historical measured cost locations; they do not causally partition the
 The later1899 profile binds the unchanged1874 model and reconciles its39,235,729
 interior cycles against the same reference. The current1903 best36,102,704 still
 has13,715,255 cycles to remove. Its object-exact70-boundary profile is qualified
-and queued as1919; current hardware section attribution is pending.
+and measured as1919; current stock attribution is recorded above.
 Reference other/uncounted51,717 is time outside printed layer timers, not total
 CPU time. [Current gap and measured historical locations](resnet_current_gap_status.md).
 
@@ -216,7 +295,7 @@ CPU time. [Current gap and measured historical locations](resnet_current_gap_sta
 
 Current1903profile completed in GSIM at33,939,464forward cycles, exactly
 29,422,251device-wrapper+4,517,213host-gap. Original1,000words, all70events
-and final audit pass. Stock1919remainsqueued; memory regimes are distinct.
+and final audit pass. Stock1919 is now complete; memory regimes remain distinct.
 ResNet and Tiny whole-model champions are unchanged; Smol now has its first
 qualified stock baseline above. Source-work counts do not assign measured
 cycles to those operations.
@@ -258,26 +337,26 @@ Receipts: [norm](perf_records/tiny_source_broadcast_math_complete_capsule.json),
 
 ## Token accounting
 
-[Measured snapshot at2026-10-06T04:59:09Z](perf_records/golden_token_usage_20261006T045909Z.json)
+[Measured snapshot at2026-10-06T07:17:03Z](perf_records/golden_token_usage_20261006T071703Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |34,791,974|
-| Cached input reads |1,668,042,880|
-| Output |6,793,313|
-| Reasoning output, already included in output |2,668,712|
-| Raw input+output total, including cached reads once |1,709,628,167|
+| Uncached input |38,184,042|
+| Cached input reads |1,819,432,960|
+| Output |7,567,875|
+| Reasoning output, already included in output |3,015,712|
+| Raw input+output total, including cached reads once |1,865,184,877|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-41,585,287; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is37,952,814; its accounting semantics are not exposed, so it
+45,751,917; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is42,118,654; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since04:22:41Z:
-874,826uncached input,203,269output and37,234,432cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261006T042241Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since05:43:24Z:
+2,225,183uncached input,490,693output and102,475,776cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261006T054324Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating
