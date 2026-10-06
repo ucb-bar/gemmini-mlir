@@ -89,11 +89,12 @@ qualified ELF is also running in the separately pinned GSIM memory regime.
   exact. Complete unchanged-device RTL pairs reduce cycles7.3715% for the
   variable-weight arm and14.4479% for its separate constant-case arm. The
   latter retains30calls/47,185,920readback bytes and all65,536 original words;
-  one complete-head stock comparison is being prepared. Neither result is a
+  one complete-head stock comparison is queued as1924 versus1917. Neither result is a
   full-head or whole-model cycle forecast.
   The earlier composed encoded-zero/support arm was rejected:
   original bounded paired GSIM mean+1.7625%, despite exact outputs and guards.
-  [Negative journey](smol-encoded-zero-groups-20261005.md).
+  [Selected exact head](smol-exact-i64-reconstruction-20261005.md),
+  [negative journey](smol-encoded-zero-groups-20261005.md).
 - **Fast cycle estimation:** shared Merlin validation now requires grouped
   held-out absolute errors and within-workload ranking, with unresolved or
   out-of-domain features remaining unknown. The counter-only independent fit
@@ -102,8 +103,11 @@ qualified ELF is also running in the separately pinned GSIM memory regime.
   PC histogram byte for byte and binds70 actual current entries and54+16
   reference entries. It supplies command geometry and requested payload,
   while physical DRAM traffic and overlap remain unknown. The first additive
-  operand fit also refuses nonnegative terms. CPU opcode classes and command
-  dependencies are the next observations, not a coefficient tuned to22M.
+  operand fit also refuses nonnegative terms. The CPU-role census now closes
+  all70 actual current bodies and24 reference physical groups covering54
+  measured calls, with zero unknown encodings. Stem touched instruction bytes
+  are174,566 current versus24,042 reference. This is observed code footprint,
+  not cache misses or cycles. Command dependencies remain unknown.
   [Counter check](perf_records/counter_only_fast_estimate_reference_check.json),
   [operand fit refusal](perf_records/additive_operand_fast_estimate_fit_rejected.json),
   [telemetry](../support/gemmini_spike_telemetry/README.md).

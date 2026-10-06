@@ -37,6 +37,17 @@ do not establish CPU issue/array overlap, serialized readout cost or physical
 memory services. The next reusable observations are CPU opcode classes and
 declared command dependencies. Reference labels remain evaluation-only.
 
+The CPU-role census now records70 source-bound current bodies and24 physical
+reference groups covering54 measured calls, with zero unknown encodings. It
+conserves body counters plus their separately stated wrapper deltas. Reference
+shared-function counts are never divided into guessed per-call paths. The
+actual stem touched code is174,566bytes current versus24,042reference; the
+whole selected body unions are2,772,286 versus599,496bytes. Unordered PC
+histograms do not establish cache misses, fetch chronology or CPU/array overlap.
+The selected exact constant-case Smol head is queued as stock1924 versus1917.
+[CPU census](executed_feature_census.md),
+[exact head qualification](smol-exact-i64-reconstruction-20261005.md).
+
 | Change and owner | What changed | Matched evidence | Outcome and next gate |
 | --- | --- | --- | --- |
 | Resident/banked transfer policy — OOT | Complete-M A residency; shape/resource/command/traffic comparison | Stock1849→1853:42,269,808→40,479,548 whole forward cycles; original1,000 words exact | Qualified transfer arm;1886 later became best; [receipt](perf_records/resnet_transfer_command_policy_firesim.json) |
