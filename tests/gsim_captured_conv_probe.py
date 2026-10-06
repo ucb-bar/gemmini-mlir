@@ -32,6 +32,8 @@ def sha(path):
 
 
 def main():
+    driver_source = Path(__file__).resolve()
+    driver_source_sha256 = sha(driver_source)
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--fixture-dir", type=Path, required=True)
     ap.add_argument(
@@ -47,6 +49,7 @@ def main():
             "compact_commands",
             "resident_acc_stripes",
             "capacity_cached_b",
+            "resident_weight_packets",
         ),
         required=True,
     )
@@ -54,6 +57,8 @@ def main():
     ap.add_argument("--bm", type=int, help="explicit accumulator stripe tiles")
     ap.add_argument("--row-tiles", type=int, help="explicit complete-B M tile group")
     ap.add_argument("--benchmark-header", type=Path)
+    ap.add_argument("--weight-issue-tiles", type=int)
+    ap.add_argument("--retain-weight-commands", action="store_true")
     ap.add_argument("--prefetch-b", action="store_true")
     ap.add_argument("--llvm-bin", type=Path, required=True)
     ap.add_argument("--workdir", type=Path, required=True)
@@ -83,6 +88,17 @@ def main():
         raise ValueError("weight prefetch requires explicit compact schedule")
     if args.row_tiles is not None and args.schedule != "capacity_cached_b":
         raise ValueError("row tile choice requires complete cached B")
+    if (
+        args.weight_issue_tiles is not None
+        and args.schedule != "resident_weight_packets"
+    ):
+        raise ValueError(
+            "weight packet size requires explicit resident weight packet schedule"
+        )
+    if args.retain_weight_commands and args.schedule != "resident_weight_packets":
+        raise ValueError(
+            "weight loop retention requires explicit resident weight packets"
+        )
     if args.bn is not None:
         if args.schedule in ("control", "mesh_flip", "compact_commands"):
             raise ValueError(
@@ -141,6 +157,18 @@ def main():
                 **source_receipt.get("resident_options", {}),
                 compact_commands=True,
             )
+        elif args.schedule == "resident_weight_packets":
+            options = dict(source_receipt.get("resident_options", {}))
+            options.update(
+                prefetch_b=True,
+                compact_commands=args.retain_weight_commands,
+                weight_issue_tiles=(
+                    args.weight_issue_tiles
+                    if args.weight_issue_tiles is not None
+                    else 2
+                ),
+            )
+            generator = GoldenResidentConv(shape, **options)
         elif args.schedule == "capacity_cached_b":
             from mlir_oot.dense_schedule import select_capacity_cached_b
 
@@ -221,12 +249,14 @@ def main():
             "strided_resident",
             "stride_residue",
             "compact_commands",
+            "resident_weight_packets",
         ):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,
                 "weight_rows": shape.bn * F.DIM,
                 "weight_base_row": generator.bbase,
                 "accumulator_rows": len(generator.row_tiles) * shape.bn * F.DIM,
+                "weight_issue_tiles": generator.weight_issue_tiles,
             }
         else:
             resource = {
@@ -410,8 +440,9 @@ int main(void) {{
         if benchmark_header
         else None,
         "probe_driver": {
-            "path": str(Path(__file__).resolve()),
-            "sha256": sha(Path(__file__)),
+            "path": str(driver_source),
+            "sha256": driver_source_sha256,
+            "digest_stage": "startup before compilation or execution",
         },
         "kernel_cycles": int(cycles[0]) if len(cycles) == 1 else None,
         "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",

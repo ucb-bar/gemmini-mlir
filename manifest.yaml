@@ -462,3 +462,13 @@ optimization_surfaces:
   emitted_delta: The normal capture compiler selects the complete-weight kernel, coalesced disjoint A slots when aligned, and exact single-panel A for K tails; source arithmetic remains unchanged.
   validation: Require default object identity, decoded tensor cell/source-K/lifetime proof, complete matched original and independent tail capsules, original whole-model gate and final zero-FSM audit.
   abandonment: Preserve cached input/weights or refuse incompatible dense/bias/view/resource facts; admission and command counts do not establish timing profitability.
+- id: golden_resident_weight_packet_issue
+  scope: heuristic
+  path: mlir_oot/golden_resident_conv.py
+  symbol: issue_resident_weight_packets
+  effects: [movement, residency, issue]
+  cca_axes: [memory.onchip_resident, memory.capacity_fit, compute.accumulator_resident]
+  mechanism: Explicitly issue smaller next weight packets into alternate scratchpad banks while retaining the same complete input and output panel.
+  emitted_delta: The normal capture command selects bounded ordinary K/spatial loops and packet DMA/compute interleaving without changing any output's source K order or numeric fields.
+  validation: Decode actual emitted source cells and lifetimes, close all outputs/guards/inputs on matched original and independent tail capsules, retain default object identity and original full model gate.
+  abandonment: Refuse incompatible family or placement; retain negative small-shape evidence and unknown timing until the current source-qualified scope is measured.

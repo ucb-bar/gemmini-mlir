@@ -69,6 +69,7 @@ def retain_resident_commands(control):
         source_stride=control.source_stride,
         row_residue=control.row_residue,
         compact_commands=True,
+        weight_issue_tiles=control.weight_issue_tiles,
     )
     for name in ("resident_stripe_decision", "source_stride_decision"):
         if hasattr(control, name):
@@ -87,6 +88,58 @@ def retain_resident_commands(control):
     return selected, decision
 
 
+def issue_resident_weight_packets(control, *, tiles=2):
+    """Choose explicitly requested packet granularity on a proved resident layout."""
+    if type(tiles) is not int or not 1 <= tiles <= 4:
+        raise ValueError("weight issue tiles must be an integer in 1..4")
+    decision = {
+        "applied": False,
+        "automatic_policy": False,
+        "timing_claim": False,
+        "performance": "UNKNOWN",
+        "selection": "explicit weight packet lookahead",
+    }
+    if type(control) is not GoldenResidentConv:
+        return control, dict(
+            decision, refusal="Current family has no proved complete resident input"
+        )
+    try:
+        selected = GoldenResidentConv(
+            control.conv,
+            rows_per_tile=control.rows_per_tile,
+            loop_channels=control.loop_channels,
+            prefetch_b=True,
+            weight_base=control.explicit_weight_base,
+            source_stride=control.source_stride,
+            row_residue=control.row_residue,
+            compact_commands=True,
+            weight_issue_tiles=tiles,
+        )
+    except ValueError as failure:
+        return control, dict(decision, refusal=str(failure))
+    for name in ("resident_stripe_decision", "source_stride_decision"):
+        if hasattr(control, name):
+            setattr(selected, name, getattr(control, name))
+    decision.update(
+        applied=True,
+        refusal=None,
+        weight_issue_tiles=tiles,
+        input_reserved_interval=[0, (control.conv.cin // F.DIM) * control.plane],
+        weight_slots=[
+            [base, base + min(tiles, control.conv.bn) * F.DIM]
+            for base in selected.bases
+        ],
+        accumulator_rows=len(control.row_tiles) * control.conv.bn * F.DIM,
+        output_panel_tiles=control.conv.bn,
+        source_reduction_order="Increasing HWIO K for every output; only N packet interleaving changes",
+        lifetime="Immutable complete A; current and next B packets occupy disjoint banks; same private ACC destinations and stores",
+        CPU_commands="Retained bounded ordinary K and spatial loops",
+        whole_timing="UNKNOWN",
+    )
+    selected.weight_issue_decision = decision
+    return selected, decision
+
+
 class GoldenResidentConv(GoldenGemm):
     def __init__(
         self,
@@ -99,8 +152,16 @@ class GoldenResidentConv(GoldenGemm):
         source_stride=False,
         row_residue=False,
         compact_commands=False,
+        weight_issue_tiles=None,
     ):
         s.validate()
+        if weight_issue_tiles is not None and (
+            type(weight_issue_tiles) is not int or not 1 <= weight_issue_tiles <= 4
+        ):
+            raise ValueError("weight issue tiles must be an integer in 1..4")
+        if weight_issue_tiles is not None and not prefetch_b:
+            raise ValueError("weight packet issue requires bank-prefetched commands")
+        self.weight_issue_tiles = weight_issue_tiles
         if type(compact_commands) is not bool:
             raise ValueError("compact resident commands require a boolean selection")
         self.compact_commands = compact_commands
@@ -573,6 +634,193 @@ class GoldenResidentConv(GoldenGemm):
                             ptr,
                         )
 
+        def packet_prefetched_channel(n0, nr):
+            """Look ahead one disjoint weight packet, preserving K per output.
+
+            A packet contains adjacent N tiles at one source K position. Its
+            successor can be another N packet or the first packet at next K.
+            Current/next slots alternate banks; each packet is consumed across
+            all spatial rows before its slot is reused. Output addresses retain
+            the original full N panel, so stores and accumulator lifetimes do
+            not change when weight DMA granularity changes.
+            """
+            kt = s.cin // F.DIM
+            chunks = tuple(range(0, len(nr), self.weight_issue_tiles))
+            packets = tuple((index, d) for index in range(9 * kt) for d in chunks)
+
+            def load(ordinal):
+                index, d = packets[ordinal]
+                count = min(self.weight_issue_tiles, len(nr) - d)
+                ptr = self._ptr(
+                    self.b, self.fb.const(index * F.DIM), s.cout, self._tile(n0, d)
+                )
+                self._rocc(
+                    "mvin",
+                    {
+                        "local": self.bases[ordinal % 2],
+                        "rows": F.DIM,
+                        "cols": sum(nr[d : d + count]),
+                        "load_id": 1,
+                    },
+                    ptr,
+                )
+
+            load(0)
+            for ordinal, (index, begin) in enumerate(packets):
+                if ordinal + 1 < len(packets):
+                    load(ordinal + 1)
+                kh, kw = divmod(index // kt, 3)
+                ki = index % kt
+                stop = min(begin + self.weight_issue_tiles, len(nr))
+                for d in range(begin, stop):
+                    cols = nr[d]
+                    for tile, (y, count, span) in enumerate(self.row_tiles):
+                        self._rocc(
+                            "preload",
+                            {
+                                "bd": self.bases[ordinal % 2] + (d - begin) * F.DIM
+                                if tile == 0
+                                else isa.GARBAGE_ADDR,
+                                "c": isa.acc_addr(
+                                    (tile * s.bn + d) * F.DIM, accumulate=index != 0
+                                ),
+                                "bd_cols": cols,
+                                "bd_rows": F.DIM,
+                                "c_cols": cols,
+                                "c_rows": span,
+                            },
+                        )
+                        self._rocc(
+                            "compute",
+                            {
+                                "a": ki * self.plane + self.source_offset(y, kh, kw),
+                                "a_cols": F.DIM,
+                                "a_rows": span,
+                                "accumulate": tile != 0,
+                            },
+                        )
+            for tile, (y, count, span) in enumerate(self.row_tiles):
+                for row in range(count):
+                    step = 4 if s.output_dtype == "i8" else 1
+                    for d in range(0, len(nr), step):
+                        ptr = self._ptr(
+                            self.c,
+                            self.fb.const((y + row) * s.ow),
+                            s.cout,
+                            self._tile(n0, d),
+                            4 if s.output_dtype == "i32" else 1,
+                        )
+                        self._rocc(
+                            "mvout",
+                            {
+                                "local": isa.acc_addr(
+                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
+                                    full_row=s.output_dtype == "i32",
+                                ),
+                                "rows": s.ow,
+                                "cols": sum(nr[d : d + step]),
+                            },
+                            ptr,
+                        )
+
+        def compact_packet_prefetched_channel(n0, nr):
+            """Retain bounded K/row loops with the same packet dependency order."""
+            kt = s.cin // F.DIM
+            chunks = tuple(range(0, len(nr), self.weight_issue_tiles))
+
+            def load(tap, ki, begin, bank):
+                count = min(self.weight_issue_tiles, len(nr) - begin)
+                krow = self.fb.add_i(
+                    self.fb.const(tap * s.cin), self.fb.mul_i(ki, self.fb.const(F.DIM))
+                )
+                ptr = self._ptr(self.b, krow, s.cout, self._tile(n0, begin))
+                self._rocc(
+                    "mvin",
+                    {
+                        "local": self.bases[bank],
+                        "rows": F.DIM,
+                        "cols": sum(nr[begin : begin + count]),
+                        "load_id": 1,
+                    },
+                    ptr,
+                )
+
+            def one_k(tap, ki, parity, *, first=False, final=False):
+                kh, kw = divmod(tap, 3)
+                for chunk, begin in enumerate(chunks):
+                    following_bank = (parity + chunk + 1) % 2
+                    if chunk + 1 < len(chunks):
+                        load(tap, ki, chunks[chunk + 1], following_bank)
+                    elif not final:
+                        load(
+                            tap, self.fb.add_i(ki, self.fb.const(1)), 0, following_bank
+                        )
+                    elif tap < 8:
+                        load(tap + 1, self.fb.const(0), 0, following_bank)
+                    for d in range(
+                        begin, min(begin + self.weight_issue_tiles, len(nr))
+                    ):
+                        compact_spatial(
+                            ki,
+                            kh,
+                            kw,
+                            d,
+                            nr[d],
+                            self.bases[(parity + chunk) % 2] - begin * F.DIM,
+                            first,
+                        )
+
+            load(0, self.fb.const(0), 0, 0)
+            for tap in range(9):
+                base = tap * kt * len(chunks)
+                one_k(tap, self.fb.const(0), base % 2, first=tap == 0, final=kt == 1)
+                pairs = max(0, (kt - 2) // 2)
+
+                def pair(ki, tap=tap, base=base):
+                    one_k(tap, ki, (base + len(chunks)) % 2)
+                    one_k(
+                        tap,
+                        self.fb.add_i(ki, self.fb.const(1)),
+                        (base + 2 * len(chunks)) % 2,
+                    )
+
+                if pairs:
+                    self.fb.for_loop(1, 1 + 2 * pairs, 2, pair, retain_loop=True)
+                if kt > 2 and (kt - 2) % 2:
+                    one_k(
+                        tap, self.fb.const(kt - 2), (base + (kt - 2) * len(chunks)) % 2
+                    )
+                if kt > 1:
+                    one_k(
+                        tap,
+                        self.fb.const(kt - 1),
+                        (base + (kt - 1) * len(chunks)) % 2,
+                        final=True,
+                    )
+            for tile, (y, count, span) in enumerate(self.row_tiles):
+                for row in range(count):
+                    step = 4 if s.output_dtype == "i8" else 1
+                    for d in range(0, len(nr), step):
+                        ptr = self._ptr(
+                            self.c,
+                            self.fb.const((y + row) * s.ow),
+                            s.cout,
+                            self._tile(n0, d),
+                            4 if s.output_dtype == "i32" else 1,
+                        )
+                        self._rocc(
+                            "mvout",
+                            {
+                                "local": isa.acc_addr(
+                                    (tile * s.bn + d) * F.DIM + row * self.output_pitch,
+                                    full_row=s.output_dtype == "i32",
+                                ),
+                                "rows": s.ow,
+                                "cols": sum(nr[d : d + step]),
+                            },
+                            ptr,
+                        )
+
         def compact_prefetched_channel(n0, nr):
             """Retain alternating B loads across exact increasing K panels."""
             kt = s.cin // F.DIM
@@ -649,7 +897,11 @@ class GoldenResidentConv(GoldenGemm):
                         )
 
         selected = (
-            compact_prefetched_channel
+            compact_packet_prefetched_channel
+            if self.weight_issue_tiles is not None and self.compact_commands
+            else packet_prefetched_channel
+            if self.weight_issue_tiles is not None
+            else compact_prefetched_channel
             if self.prefetch_b and self.compact_commands
             else prefetched_channel
             if self.prefetch_b
@@ -676,6 +928,10 @@ class GoldenResidentConv(GoldenGemm):
         if self.prefetch_b:
             module.attributes["gemmini.resident_conv_prefetch_b"] = StringAttr(
                 "one panel lookahead; disjoint bank2/bank3 weight lifetimes"
+            )
+        if self.weight_issue_tiles is not None:
+            module.attributes["gemmini.resident_conv_weight_issue_tiles"] = StringAttr(
+                str(self.weight_issue_tiles)
             )
         if self.explicit_weight_base is not None:
             module.attributes["gemmini.resident_conv_weight_base"] = StringAttr(
