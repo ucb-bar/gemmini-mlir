@@ -134,10 +134,13 @@ class ResidualPrefetchPlan:
         }.items()})
 
 
-def _build_prefetch(m,p,q,scale,*,relu=True,banked_accumulators=False):
+def _build_prefetch(m,p,q,scale,*,relu=True,banked_accumulators=False,correction_symbol=None):
     plan = ResidualPrefetchPlan(m, p, q, banked_accumulators)
     if not math.isfinite(scale) or scale <= 0:
         raise ValueError('positive finite readout scale required')
+    if correction_symbol is not None and (not isinstance(correction_symbol,str) or
+            not correction_symbol.isascii() or not correction_symbol.isidentifier()):
+        raise ValueError('explicit correction function identifier required')
     e = GoldenGemm(Shape(m, plan.columns, F.DIM, bn=4))
     e.fb = FnBuilder([PTR] * 4)
     a, b, c, coeff = e.fb.entry.args
@@ -189,28 +192,59 @@ def _build_prefetch(m,p,q,scale,*,relu=True,banked_accumulators=False):
 
     # Static bank slots avoid a dynamic address mux. The final one or two panels
     # are drained separately, so no DMA can read beyond the source tensor.
-    load_panel(e.fb.const(0), 0)
-    paired_rows = ((m // F.DIM - 1) // 2) * 2 * F.DIM
-    def pair(row):
-        next_row = e.fb.add_i(row, e.fb.const(F.DIM))
-        load_panel(next_row, 1)
-        compute_panel(row, 0)
-        load_panel(e.fb.add_i(row, e.fb.const(2 * F.DIM)), 0)
-        compute_panel(next_row, 1)
-    e.fb.for_loop(0, paired_rows, 2 * F.DIM, pair)
-    tail = e.fb.const(paired_rows)
-    if m - paired_rows == 2 * F.DIM:
-        last = e.fb.const(paired_rows + F.DIM)
-        load_panel(last, 1)
-        compute_panel(tail, 0)
-        compute_panel(last, 1)
+    if correction_symbol is None:
+        load_panel(e.fb.const(0), 0)
+        paired_rows = ((m // F.DIM - 1) // 2) * 2 * F.DIM
+        def pair(row):
+            next_row = e.fb.add_i(row, e.fb.const(F.DIM))
+            load_panel(next_row, 1)
+            compute_panel(row, 0)
+            load_panel(e.fb.add_i(row, e.fb.const(2 * F.DIM)), 0)
+            compute_panel(next_row, 1)
+        e.fb.for_loop(0, paired_rows, 2 * F.DIM, pair)
+        tail = e.fb.const(paired_rows)
+        if m - paired_rows == 2 * F.DIM:
+            last = e.fb.const(paired_rows + F.DIM)
+            load_panel(last, 1)
+            compute_panel(tail, 0)
+            compute_panel(last, 1)
+        else:
+            compute_panel(tail, 0)
     else:
-        compute_panel(tail, 0)
+        def correct(row):
+            pointers=[e._ptr(ptr,row,plan.columns,e.fb.const(0)) for ptr in (a,b,c)]
+            e.fb.add(llvm.CallOp(correction_symbol,*pointers,e.fb.const(F.DIM*plan.columns)))
+        # FENCE closes the previous output. The current device panel writes a
+        # disjoint interval while the CPU corrects only that completed panel.
+        load_panel(e.fb.const(0),0)
+        compute_panel(e.fb.const(0),0)
+        e._rocc('fence',{})
+        stop=F.DIM+((m//F.DIM-1)//2)*2*F.DIM
+        def pair(row):
+            load_panel(row,1);compute_panel(row,1)
+            correct(e.fb.sub_i(row,e.fb.const(F.DIM)))
+            e._rocc('fence',{})
+            next_row=e.fb.add_i(row,e.fb.const(F.DIM))
+            load_panel(next_row,0);compute_panel(next_row,0)
+            correct(row)
+            e._rocc('fence',{})
+        e.fb.for_loop(F.DIM,stop,2*F.DIM,pair,retain_loop=True)
+        if (m//F.DIM-1)%2:
+            last=e.fb.const(m-F.DIM)
+            load_panel(last,1);compute_panel(last,1)
+            correct(e.fb.const(m-2*F.DIM))
+            e._rocc('fence',{})
+        correct(e.fb.const(m-F.DIM))
     e._rocc('fence', {})
     fn = llvm.FuncOp('gemmini_golden_wide_resadd', llvm.LLVMFunctionType([PTR] * 4),
         linkage=llvm.LinkageAttr('external'), body=e.fb.finish())
     fn.attributes['gemmini.residual_m_prefetch'] = plan.attributes()
-    module = ModuleOp([fn])
+    functions=[fn]
+    if correction_symbol is not None:
+        functions.insert(0,llvm.FuncOp(correction_symbol,llvm.LLVMFunctionType([PTR]*3+[i64]),
+            linkage=llvm.LinkageAttr('external')))
+        fn.attributes['gemmini.residual_stream_correction']=StringAttr(correction_symbol)
+    module = ModuleOp(functions)
     module.attributes['gemmini.dim'] = IntegerAttr(F.DIM, i64)
     module.attributes['gemmini.golden_wide_resadd'] = StringAttr(
         f'M{m}:N{plan.columns}:p{p}:q{q}:scale{scale}:relu{int(relu)}')
