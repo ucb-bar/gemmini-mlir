@@ -1,0 +1,94 @@
+{
+  "schema": "tiny_normal_constant_fma_norm_complete_model_qualification_v1",
+  "hypothesis": "The paired source-preserving packet4 plus constant-materialization choice reduces whole scalar activation cost when composed with verified norm hoisting.",
+  "ownership": {
+    "Merlin": "Typed source pointwise scheduling/FMA SSA grouping, unchanged normal host hook, source/context/numerical contracts.",
+    "OOT": "Explicit RV64GC scalar FMA emitter/resource constraints; no device object changed."
+  },
+  "emitted_change": "Normal lower_model from frozen complete post-offload source replaces explicit packet2 with packet4; verified constant-FMA callback follows original RNE callback through normal _transform_host_ir. Norm feature retained; original1880 runtime/device/weights/main boundaries fixed.",
+  "current_modules": {
+    "core": "0b613d5b1",
+    "OOT": "69c86da"
+  },
+  "normal_route": {
+    "default_off": true,
+    "normal_lower_model": true,
+    "normal_host_transform_hook": true,
+    "controlled_only_model_object_link": true,
+    "fresh_capture_or_device_codegen": false,
+    "source_bound_device_calls": 155,
+    "device_symbol_reference_counts_conserved": true,
+    "typed_FMA_packets": 176,
+    "packet_modes": {
+      "constant_rhs": 44,
+      "constant_lhs_addend": 22,
+      "constant_addend": 110
+    }
+  },
+  "control": {
+    "verified_stock_job": 1926,
+    "stock_cycles": 461389700,
+    "baseline_ELF": "8dadfe71e3c224e5e16189cd3985101807d21e34490f73b119c083865e7d9c93",
+    "fresh_relink_byte_identical": true,
+    "runtime_boundary": "All original1880 runtime/device/startup/main/weights objects frozen; norm1926 model.o is the control."
+  },
+  "candidate": {
+    "ELF_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-fma-constant-whole-20261006/whole/model.elf",
+    "ELF_sha256": "d721def3a05ec533ffa53fb9dce444542c0898bbc098df7b1d7f5401d758d4f9",
+    "model_object_sha256": "15d812b14ee282722c373cf099774e7066c4f407e5018817cf57a9b645a0644e",
+    "inherited_marker": "37bdf9be0856",
+    "marker_contract": "Nonunique historical marker; exact ELF and ordered object/source hashes identify candidate."
+  },
+  "cheap_actual_GSIM_capsule": {
+    "scope": "First2rows/all5632channels complete11264word scalar stage, allocation/copy/loads/guards included. Coupledpacket4+constant lifetime vs originalpacket2.",
+    "control_mean_cycles": 1611934,
+    "candidate_mean_cycles": 1445874,
+    "saved_percent": 10.30191062413225,
+    "receipt": "docs/perf_records/tiny_fma_constant_lifetime_capsule_cycles.json",
+    "no_whole_projection": true
+  },
+  "original_gate": {
+    "full_checkpoint_layers": 22,
+    "tokens": 8,
+    "f32_outputs": 256000,
+    "native_all_original_bits_exact": true,
+    "strict_all_original_bits_exact": true,
+    "Torch_atol": 0.03125,
+    "Torch_rtol": 0.02,
+    "Torch_pass": true,
+    "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "zero_FSM_all_executable_sections": true,
+    "strict_exit_code": 0,
+    "DONE": true,
+    "rank_mismatch": 0
+  },
+  "whole_functional_instructions_NOT_cycles": {
+    "control_norm1926": 144498799,
+    "candidate": 146491415,
+    "percent_change": 1.3789844716979305,
+    "result": "Instruction count is higher; no hardware improvement inferred."
+  },
+  "promotion": "Qualified isolated stock comparison coordinated with sole queue owner. No winner/enabled whole policy claim before actual hardware receipt.",
+  "actual_candidate_whole_hardware_cycles": null,
+  "artifact_pins": {
+    "build_whole.py": "18bb7bf6e36d6d152de4c18587733b2c2e258fe5267777c518a415a5889be85e",
+    "validate_whole_native.py": "9d8836801b77f4040d6e257adf71974007bf3bace0e9b5dee4cf8e11284cd2f3",
+    "qualify_whole_strict.py": "c353d1a40b247e6a7e8ef71df99fd1d466b70780914bf72507117b7d985ab98e",
+    "build.log": "de8e2940a3b89c2e48cb0f88fa08edf818609fcfb09ac94027f9759a4fe5fcb4",
+    "native.log": "240eb9b5cd414f0fa7dc8fe2a1cbaec0b281bffae6fcbdc6a5b3f1c2eb75e746",
+    "strict.log": "c84ff6342ddbcbca233b76bcf98a1eae8147ac5c9504a33e580065d0c91b77f2",
+    "whole/normal_lower_recipe.json": "2fdce1da939a24f97d70e6e13410e6350ba62be39183d0b957a1503083bafe32",
+    "whole/controlled_link.json": "c58962d6d1c6a0752bc5beae02097976da09769b1862c4a072bdc6a58eafd256",
+    "whole/model.nofsm_audit.json": "aa8d67859ba513ced65455e69de47bc2f71c5e8db953299a71b339176d9ff434",
+    "whole/spike_validation.json": "ef71a14ddd56148b57c24d219b1cbf1a4de00650ccaac7098c8f27dfadf361b6",
+    "whole/reference_validation.json": "299d695d0ecc2090791d32b35c28ea2b3659c2fc97698d42c96685210316982b",
+    "whole/spike.log": "a84a8f3db0d6e7564b0a65fa43ad98b9ebe57284946b9a806514afd2336e49d6",
+    "whole/host/validation.json": "bb621245dc4edaaed4037e2e4815062a302a29a5975a14c7b974f7640cfdd20f",
+    "whole/static_instruction_census.json": "7963e92ea559136fa9ff46eb5d56adca7f7ce21b68a2d9116605c07f636deffd",
+    "whole/lower/lowering_recipe.json": "d8457d313d721031296dc95e929114185c551f88786c0a8ce9778ec58a459d8e",
+    "whole/host_llvm/constant_fma_receipt.json": "4398cf934f76c98ac71f76a68b8a44e569c54873787e56323beb2a0f8bd37d61"
+  },
+  "whole_output_arrays_and_ELF": "Kept in immutable experiment directory; archival JSON pins actual paths/hashes. No binary weights copied into source repo.",
+  "token_usage_available": false,
+  "campaign_checkpoints": "Root owns shared campaign snapshots; per-optimization exclusive token allocation unavailable."
+}
