@@ -2,10 +2,10 @@
 
 Conservative inventory of directly identified implemented change families in the golden compiler integration; related commits counted once. Lower bound, not all repository history, not every detected bug, not a count of commits or performance wins.
 
-**57 implemented families:29 Merlin fixes,20 Merlin reusable improvements,8 model2MLIR fixes.**
+**58 implemented families:29 Merlin fixes,21 Merlin reusable improvements,8 model2MLIR fixes.**
 
-The original55-family inventory is published on main. The two additional
-generic families are reviewed implementations in open PR41/42, with33 tests
+The original55-family inventory is published on main. The three additional
+generic families are reviewed implementations in open PR41/42/43, with54 tests
 independently passed by root; they are not merged main changes or performance
 wins. Source-wide interval-table and prepared-owner prototypes remain outside
 this conservative inventory until separately audited.
@@ -81,3 +81,4 @@ prototypes; this inventory does not silently count them as upstream wins.
 | 55 | model2MLIR | bug_fix | Python scalar precision in half multiplication and division | ba77e6ece |
 | 56 | Merlin | reusable_improvement | Exact sequential logical address-region recurrence census with explicit budgets | fb82cb94e, [PR41 pending review](https://github.com/ucb-bar/merlin/pull/41) |
 | 57 | Merlin | bug_fix | Emulator output destination validated before expensive execution, including nonregular/ELF alias refusals | 6cb907bc3, [PR42 pending review](https://github.com/ucb-bar/merlin/pull/42) |
+| 58 | Merlin | reusable_improvement | Indexed RAW-edge duplicate detection preserves complete graph order while accelerating dependency analysis | f46a5ba66, [PR43 pending review](https://github.com/ucb-bar/merlin/pull/43) |

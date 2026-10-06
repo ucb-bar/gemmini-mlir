@@ -237,7 +237,7 @@ they are not pure device prices or mixed-stripe/whole-model rates. Root reclosed
 107 receipt pins and104 distinct screen artifacts.
 [Matched model review](perf_records/root_b_reuse_model_pilot_20261006.json).
 
-The complete table battery is released as stock2040 after root independently
+The complete table battery finished stock2040 after root independently
 reclosed145+14pins, native336/strict420mode-and-sticky gates, actual readonly
 512KiB/2MiB/8MiB table bytes and27 short-harness rows. M2/M8×16/20-bit corners
 train the two supported no-fixed models; five cases and both repeats are held.
@@ -245,6 +245,41 @@ All three complete source controls are excluded from fitting. The original
 underidentified fixed-term declaration stays rejected. Source control,
 preparation, table certificate, replay, finishing and storage are measured.
 [Root release](perf_records/root_source_interval_calibration_stock_release_20261006.json).
+
+All27 actual hardware rows, original prefix outputs, inputs, guards and flags
+pass. Root independently reparsed the real UART and reclosed11 named source,
+ELF and staging pins. Tables reduce the complete M2 section by3.57–13.24%, but
+increase M4 by8.44–20.94% and M8 by8.54–22.66%. All three table widths regress
+at the actual M8 row extent. Another whole-model table candidate is held.
+The predeclared no-fixed element-count model covers all five withheld cases
+with7.78% maximum mean error; elements plus logical regions reaches10.96%.
+These models cover this first-helper input distribution and table-only cases;
+source controls, later groups, complete variants and whole costs remain
+unqualified. Adding a plausible feature did not improve validation.
+[Root model diagnostic](perf_records/root_lookup_stock2040_model_diagnostic.json),
+[terminal](perf_records/stock2040_lookup_terminal.json).
+
+Binary64 dependency calibration is separately admitted as stock2043 after root reclosed84
+pins, regenerated the exact rational source oracle and all source bytes,
+independently reran strict Spike, and passed10 oracle/parser tests. Twelve
+DIV.D/FMA.D cases cross1/8 independent lanes with1024/4096/16384 source
+operations. All four middle cases and both repeats are withheld before stock
+labels; count-only and count-plus-chain hypotheses have no fixed term.
+All27 windows,24 full64-bit output rows, guards, immutable inputs and exception
+flags pass; final ELF has no custom instructions. FP32 coefficients do not
+transfer to this precision. Full fenced calls include loop and output stores;
+they cannot establish pure FPU latency or SmolVLA whole-model predictions.
+[Root release](perf_records/root_fp64_dependency_stock_release_20261006.json).
+
+Dependency analysis itself is faster in
+[Merlin PR43](https://github.com/ucb-bar/merlin/pull/43). Indexed RAW-edge
+deduplication preserves the complete ordered graph and known/unknown latency
+semantics. Root21 tests pass; seven actual register-feature reports agree.
+An8192-instruction source-pair diagnostic changes host Python construction
+from55.14s to0.069s, one pass per implementation with concurrent host load
+unknown. This is analysis wall time, separate from target model cycles.
+The one-topic main-based commit remains pending review.
+[Publication review](perf_records/root_merlin_depgraph_index_upstream_review_20261006.json).
 
 A lost-output calibration failure also led to
 [Merlin PR42](https://github.com/ucb-bar/merlin/pull/42): validate the emulator

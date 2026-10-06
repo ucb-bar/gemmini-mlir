@@ -9,6 +9,43 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 22:02 UTC: model calibration prevents another whole regression
+
+- Stock2040 closes27 windows and original first-helper inputs/outputs/flags.
+  All16/18/20-bit tables help M2, but all slow M4 and M8. M8 increases8.54%,
+  12.89% and22.66%, so no smaller-table whole candidate is promoted. Root
+  reparses actual UART and rehashes11 named terminal/source pins. The
+  predeclared elements-only hypothesis misses7.78% on five held cases;
+  adding logical regions worsens error to10.96%. Model selection and this
+  one input distribution do not qualify other helpers or whole predictions.
+- Root qualifies a separate FP64 dependency battery:84 pins, byteidentical
+  rational-oracle regeneration, independent strict report and10 tests.
+  Twelve DIV.D/FMA.D cases cross1/8 lanes and three counts; four middle cases
+  and both repeats are held. No FP32 rates transfer to SmolVLA's FP64 code.
+  Stock2043 is admitted with a durable collector; pure unit rates and whole
+  estimates remain unknown.
+- Generic dependence graph construction is published in Merlin PR43 as one
+  clean topic from main7fee. Root21 tests and complete ordered source-pair
+  graphs pass;8192-instruction diagnostic construction changes55.14s to
+  0.069s. This is one host Python wall-time observation per implementation,
+  not an accelerator speedup. Conservative shared inventory is now58
+  implemented families,55 already on main and three pending review.
+- Current ResNet2039 remains30,715,818cycles, all1000 original words exact:
+  ordinary reduction-loop retention saves262,074/0.846% over2026. Current
+  section attribution and Jack's held-out22,387,449 reproduction remain open.
+
+[Lookup diagnostic](perf_records/root_lookup_stock2040_model_diagnostic.json),
+[FP64 release](perf_records/root_fp64_dependency_stock_release_20261006.json),
+[PR43 review](perf_records/root_merlin_depgraph_index_upstream_review_20261006.json).
+
+Phase0 should preserve exact numeric context, emitted helper stage order,
+source-bound input distributions and physical preparation ownership. Phase1
+should expose lazy fallback placement and row-issue schedules only with FENV
+and side-effect legality, plus explicit table storage parameters. Phase2
+should spend small calibration runs on missing precision/dependence/locality
+terms, hold entire source variants out, and prune whole candidates when
+matched complete sections regress. Jack remains independent validation.
+
 ### 2026-10-06 21:17 UTC: additional performance model work
 
 - CPU21/gather3/primitive9 are closed on all three engines,33cases/75windows

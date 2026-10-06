@@ -32,7 +32,11 @@ strict counter windows pass; stock calibration2036 is complete. Its broader
 instruction/region hypothesis misses by up to40.87%. The matched resident-B
 reuse calibration2038 now completes on all three engines: array rows plus
 real-B preload demand gives5.15% maximum error on the two held M64 arms and
-predicts their ordering. Source-table size/prefix calibration is running as2040.
+predicts their ordering. Source-table size/prefix calibration2040 is complete:
+tables help M2 but all measured partitions slow M4/M8, so another table whole
+candidate is held. Five withheld cases miss7.78% with element count; adding
+logical regions worsens this to10.96%. Source-bound FP64 dependency calibration
+has passed independent root review and is released for one stock run.
 No new whole-model prediction or automatic ranking is enabled.
 [Model work](golden_fast_model_status.md).
 
