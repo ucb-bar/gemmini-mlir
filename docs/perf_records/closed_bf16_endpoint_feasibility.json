@@ -1,0 +1,117 @@
+{
+  "schema": "closed_source_bf16_endpoint_feasibility_v1",
+  "token_usage_available": false,
+  "scope": "Native numerical feasibility of actual sourcegroup0 only; not wholemodel gate, target execution, or performance qualification",
+  "core_commit": "d7691c77f",
+  "source_tap_full_original1600_gate": true,
+  "source_contract": {
+    "live_inputs": 11,
+    "source_operations": 50,
+    "heads": 12,
+    "queries": 256,
+    "keys": 1024,
+    "depth": 64,
+    "output_words": 196608,
+    "masks": "Actual taps alltrue; independent mixed/allmasked/zero cases pass and productionmasksemantics remain required"
+  },
+  "source_reference_independence": "SourceC loops match all tappedendpointwords; Tiny independently compiled original extracted50opfunction matches samewords",
+  "source_fmas": 402653184,
+  "exact_policy": {
+    "all_output_bits_match": true,
+    "work": {
+      "pv_dot_replays": 172416,
+      "pv_replay_fmas": 29425664,
+      "denominator_refinement_rows": 1636,
+      "additional_qk_dot_replays": 952138,
+      "interval_denominator_adds": 15539200,
+      "refinement_rounds": 15175,
+      "maximum_qk_replays": 4391,
+      "probability_qk_replays": 53480,
+      "total_source_replay_fmas": 94066240
+    }
+  },
+  "bounded_policy": {
+    "max_adjacent_bf16_steps": 1,
+    "observed_max_steps": 1,
+    "changed_words": 53,
+    "selection": "Actual integerreconstructed PVcenters + deterministic denominatorintervalmidpoint; chosen roundedword must lie within complete provedsourceinterval spanningatmost2adjacentfiniteBF16bins. Wider/unsupported source fallsback. No oracleusedbyselection.",
+    "work": {
+      "pv_dot_replays": 27654,
+      "pv_replay_fmas": 4719616,
+      "denominator_refinement_rows": 0,
+      "additional_qk_dot_replays": 0,
+      "interval_denominator_adds": 0,
+      "refinement_rounds": 0,
+      "full_source_row_fallbacks": 0,
+      "maximum_qk_replays": 4391,
+      "probability_qk_replays": 53480,
+      "total_source_replay_fmas": 8423360
+    }
+  },
+  "analytic_device_terms_only": {
+    "crossplanes": 9,
+    "integer_macs": 3623878656,
+    "dim16_padded_issue_floor": 14155776,
+    "grouped_degree_i32_readback_bytes": 86507520,
+    "scope": "If existing five-degree grouped target schedule implements these8source contractions; not built or timed here. Excludes inputpacking, metadata, certificates, sourcefallback, and providerdispatch."
+  },
+  "validation": [
+    "33newgenericinterval/boundary/refusal tests",
+    "71newpluspriororderedFMA tests",
+    "structure gate PASS",
+    "no-target-name gate PASS",
+    "independent M1/H1zero/allmasked,M3/H2mixedmask,M7/H1tailnative casesPASS"
+  ],
+  "admission": "No hardware. Tiny owns full48group normalnative callback; original whole1600 atol.03125/rtol.02 decides acceptance. Native f64 exactinteger GEMM is functional standin, not devicecoverage.",
+  "implementation_status": "Generic numeric header committedMerlin; specializationnativeevaluator remains generated experiment prototype, not productiondispatch. Fullsourcegrammar/type/lifetime binding and eventual generic hostalgorithmmigration required before promotion.",
+  "pins": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/accepted_taps.json",
+      "sha256": "422f5fdb9e99eac35503bd3dcd2592207931c84610a1e6776b4c7b757d60e3ef"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/source_group_exact.mlir",
+      "sha256": "bbe3c0158bfb62e603f6b63c69a9582dd677526c4223ea13019a2cee1367045e"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/source_binding.json",
+      "sha256": "7f4f58c5b7b6b554d31005961ceada5bf436916569f70c01da2fc18dd795c4f1"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/native_validation.json",
+      "sha256": "f8bb78832f24562984933cbc474cd8c9830ba9ec33b976f14a6cdd417b266dfe"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/screen_adaptive.c",
+      "sha256": "f0b58598dc360b9e6868fbcdedbb474587c7b853da25911dbded0d7563ab9ab7"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/screen_bounded.c",
+      "sha256": "8f665535179f0eb244bf271ed4622a15fd4d4fdd779dcee3bd959604e2769065"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/native_evaluator.py",
+      "sha256": "4fa5a0539d2436e7def1f1e9da321908ef1ea03b01b215e8ca9d6f3343d30e70"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/actual_group_result.json",
+      "sha256": "55269e26927b070bf2630795224eb29cb542ecd9fb9e2e7af6ee5fb4c2987e65"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/actual_group_bounded_result.json",
+      "sha256": "653917dc996945c50a7fcbb1731fe6a3b3e9920150ad2bb1aa6e17639999b21e"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/independent_mask_cases.json",
+      "sha256": "c50c63d2b74741f2c5c76db6f3b5c6dbb91e58b1927e74687ff556488dd00235"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/bounded_evaluator_closure.json",
+      "sha256": "0ca79fb0a51dca84510176a2bb87ad10ebe98f8e79ea6354a4775636b24b9e00"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/bounded_actual_group.npy",
+      "sha256": "73745c4d01d2fd127fef420e104a2d875e2d0c7366cb0581e1fde76b1144bae4"
+    }
+  ]
+}
