@@ -9,8 +9,41 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 23:56 UTC: workload transfer without reference refitting
+
+The isolated OOT Spike observer now distinguishes real stationary-weight
+requests from retaining the previous weights. Six expanded native event cases
+cover zero/positive addresses, the all-ones retained sentinel, unknown mode,
+OS and non-preloads. The independently declared resident calibration matches
+448 real/0 retained requests in its real-weight arms and96 real/352 retained
+in its reuse arms. Original calibration outputs and full histograms are exact.
+The ZIP reference replay preserves its original stdout, PC histogram and all
+legacy telemetry fields, while observing325104 real and830160 retained requests.
+
+Previously frozen independently trained resident-B coefficients, unchanged,
+give a conditional arithmetic projection24,436,060 versus22,387,449 reference
+cycles (9.15% high), compared with27,817,122 (24.25% high) for array work alone.
+This post-label diagnostic does not qualify whole-model prediction: the total
+program is outside the resident-window extent/scope and mixed CPU/DMA/readout
+and overlap are unpriced. Jack labels never enter fitting. The new feature can
+now be extracted quickly from generated schedules; validated domains and held
+ordering remain required before the compiler can use it for elimination.
+[Reference comparison](perf_records/root_frozen_stationary_preload_reference_projection_20261006.json).
+
+ResNet's explicit host8 candidate is independently released after46094 pins,
+56 fresh core tests with the qualified toolchain, original1000 exact words and
+all final executable sections checked. Missing compiler-environment attempts
+are retained. Stock2055 tests the single changed host object versus2039, with
+current2052 kept separate. No addition of isolated map savings to whole gaps.
+[Host release](perf_records/root_resnet_host_quant_eight_stock_release_20261006.json).
+
 ### 2026-10-06 23:40 UTC: actual-source forecasts and implementation bounds
 
+- Actual Smol radius stage stock2054 now closes4,857,792,055→4,731,616,313
+  complete-group cycles,2.5974% lower; original786432 consumer bytes/1024
+  scales/guards/eight counters pass. Four unobserved carrier differences are
+  retained. The separated-endpoint pilot was not used to price this mixed
+  paired-endpoint source loop. This is a group observation, not whole5B.
 - Tiny stock2053 measures the complete M8 lazy continuation at6,073,068→
   5,054,062.5 mean cycles,16.779% lower, with all45056 original bytes exact.
   Frozen executed/regions and near-RAW/regions models chose the correct arm;
@@ -46,7 +79,18 @@ contracts and resources; source IDs identify bindings and experiments only.
 [PR46 publication](perf_records/root_merlin_execution_boundaries_PR46_publication_review_20261006.json),
 [ResNet2052 terminal](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json),
 [Smol instruction bound](perf_records/root_smol_exact_route_lower_bound_review_20261006.json),
+[actual radius result](perf_records/root_actual_radius_stage_stock2054_terminal_review_20261006.json),
 [shared inventory](perf_records/non_oot_change_inventory_followup_v2_20261006.json).
+
+The eight explicitly owned-thread token ledger at23:41:29UTC records
+64,610,276 uncached input,3,023,095,936 cache-read,12,656,632 output and
+5,080,120 reasoning tokens (already a subset of output). Raw input+output is
+3,100,362,844. Since22:59:36UTC, completed counter events add1,718,610 uncached
+input and318,921 output,73,502,848 cache-read and121,042 reasoning subset;
+raw total75,540,379. Exact OOT-only, model-only and per-optimization allocation
+remain unavailable; no proration or billing claim. The separate active goal
+observation is73,631,400 tokens.
+[Owned usage ledger](perf_records/golden_token_usage_20261006T234129Z.json).
 
 For Phase0, preserve declared features, source numerical policy and complete
 execution/memory domains. Phase1 should first rule out implementations whose

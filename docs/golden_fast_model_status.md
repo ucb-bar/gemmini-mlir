@@ -2,6 +2,23 @@
 
 ## Latest results and transfer test: 2026-10-06 23:40 UTC
 
+A new isolated Spike observer separates real stationary-weight preloads from
+retaining existing weights. On the permitted reference it observes325,104 real
+and830,160 retained preloads. Six independent expanded native event cases and
+the six-case original calibration geometry agree; the reference's original
+stdout, complete PC histogram and every old telemetry field are unchanged.
+Production Spike and all target instruction bytes are unchanged.
+
+Applying the previously frozen resident-B coefficients gives a rough conditional
+projection of24,436,060 versus the reference22,387,449 cycles,9.15% high;
+array-only projection was27,817,122,24.25% high. No reference timing entered
+fitting and no coefficients changed. This is a post-label diagnostic, with the
+full program outside the resident-window training domain. Approved prediction
+remains UNKNOWN: host/DMA/readout/overlap and aggregate extent are unqualified.
+Numeric proximity helps identify a useful feature; it does not qualify a whole
+model or enable automatic ranking.
+[Frozen reference comparison](perf_records/root_frozen_stationary_preload_reference_projection_20261006.json).
+
 Stock2053 closes the frozen actual Tiny source-continuation forecast without
 refitting. Complete45056-output M8 ABBA means are6,073,068 control and
 5,054,062.5 lazy,16.779% lower. Executed-instruction/regions and near-RAW/regions
@@ -35,6 +52,15 @@ under that condition, without ruling out other algorithms. Work now examines
 exact high-digit products with source-derived sparse low-digit correction before
 spending hardware time on another small scheduling change.
 [Source-bound audit](perf_records/root_smol_exact_route_lower_bound_review_20261006.json).
+
+Stock2054 now closes the independently scheduled actual Smol radius loop:
+4,857,792,055→4,731,616,313 complete-group cycles,2.5974% lower. All786432
+original consumer i8 words,1024 scales, guards and eight counters pass. Root
+reparses the retained console and recloses ELF/staging/stock bindings. The four
+unobserved carrier differences remain recorded. Separated-endpoint calibration
+rates were not substituted for this actual paired-endpoint source signature;
+this group result does not update the258,621,872,969 whole champion.
+[Actual radius terminal](perf_records/root_actual_radius_stage_stock2054_terminal_review_20261006.json).
 
 ResNet2052 improves the qualified whole observation30,715,818→30,650,056cycles,
 0.2141%, all1000 original words exact. Primitive features tied before timing;

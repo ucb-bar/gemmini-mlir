@@ -4,6 +4,15 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 ## Latest verified whole-model results (2026-10-06 UTC)
 
+Actual-source transfer tests now close: Tiny's frozen dependency forecast chose
+the16.779% faster complete M8 continuation in stock2053; whole2004 remains.
+Smol radius stock2054 measures4,731,616,313 complete-group cycles,2.5974%
+below2024; whole1906 remains. ResNet2052 is the new30,650,056 whole observation.
+Generic call/stack summaries are published as Merlin PR46, while actual-source
+quantizer calibration and exact sparse reconstruction proceed. No qualified
+whole-program cycle predictor is claimed.
+[Model evidence](golden_fast_model_status.md).
+
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
 0.260% for FMA with dependency features; stock memory remains38.29% inaccurate.
@@ -115,8 +124,8 @@ and three named staging pins reclose; all1,000 original words and zero-FSM
 final ELF pass. One observation per arm, with current section attribution
 unknown. [Release](perf_records/root_resnet_current2026_reduction_loops_release_20261006.json).
 
-Smol's best complete12-head group is2024 at4,857,792,055cycles,8.1516%
-below the identical2003driver control. This is not a whole-model5B result;
+Smol's best complete12-head group is2054 at4,731,616,313cycles,2.5974%
+below2024's4,857,792,055. This is not a whole-model5B result;
 whole1906 remains258,621,872,969. Exact finite probability point sharing
 preserves every original consumer byte/scale, inputs, guards and eight stats.
 The generic Merlin implementation is published for review in
@@ -124,6 +133,7 @@ The generic Merlin implementation is published for review in
 remote main remains7fee5cfdac pending normal review.938focused tests,
 fresh installed sdist/wheel qualification and37outside-checkout tests pass.
 [Group stock result](perf_records/stock2024_probability_point_group_terminal.json),
+[radius stock result](perf_records/root_actual_radius_stage_stock2054_terminal_review_20261006.json),
 [root release](perf_records/root_smol_probability_point_spans_release_20261006.json).
 
 Six source-qualified spatial resident stripe kernels are composed over actual2025.
