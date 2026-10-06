@@ -472,3 +472,35 @@ and per-optimization attribution remain unavailable. Goal tracker43,233,797
 is a separate observed metric with unexposed cache semantics. No unrelated
 sessions were read and no elapsed-time proration or dollar cost was inferred.
 [Raw owned-thread ledger](perf_records/golden_token_usage_20261006T074833Z.json).
+
+
+### General numeric min/max and measured promotion, 2026-10-06 09:15 UTC
+
+Merlin1c5b1d1dc adds explicit min/max capabilities with separately proved
+unobserved signed-zero/NaN-payload distinctions; defaults retain library calls.
+The actual general emitter reproduces the measured candidate object and ELF.
+859,360 target operand pairs across five rounding modes pass the declared
+observation contract; all48 original live consumer inputs,9,437,184 i8 values,
+12,288 BF16 scales and1,600 final words remain exact. The complete group saves
+3.764% instructions. Preserving library zero/NaN paths adds6.485%; reject it.
+The282-pin closed receipt preserves both arms. No whole performance follows.
+
+Fresh stage measurements place soft intervals at1.294B of3.250B instrumented
+instructions, dot bounds779M and consumer/refinement422M. Instrumentation adds
+0.196%; nested child scopes must not be double counted. Generic exact-zero-error
+hoisting saves3.307% in a separately qualified complete group; its full48 gate
+is pending. Q-row preparation reuse is rejected: best matched arm adds0.379%.
+
+Phase1/2 tooling should expose interval proof strategy and certificate tightness
+as explicit portable choices, with exact source replay counted as part of cost.
+Prepared producer proofs can remove repeated eligibility checks only when they
+bind actual immutable spans, formats, lifetimes and generations. No unchecked
+boolean, shape equality or model name establishes those facts. Target resources
+and CPU ISA emission remain in OOT. Paired measurement tools must also account
+for optimizer-eliminated harness work before claiming instruction savings.
+
+The new portable exact byte checker passes native and RV64 functional properties,
+but its preliminary cost comparison is invalid: the compiler hoists repeated
+pure byte checks while retaining word checks, and an outlined helper drops
+alignment knowledge. That evidence is retained and the harness/codegen are
+being corrected before promotion; no model-performance gain is claimed.

@@ -753,3 +753,34 @@ The fresh155-boundary profile1901 targets1880; older1837 attribution above remai
 The source-stride resident convolution uses a general layout/stride/resource rule and fixes execute-stride propagation in target lowering. Its original-input paired capsule measures727,070→577,376GSIMcycles (20.59% lower), every50,176 output and4,096guard exact; an independent non-square/tail case also passes. Both normal and controlled whole builds preserve all1,000 original words on native/strict target. Only one of52 device kernels changes, with every original1897 host/runtime object retained in the controlled arm. Stock1914 is queued versus1897; whole-model gain is unknown. [Qualification](perf_records/source_stride_resident_conv_whole_qualification.json).
 
 Three-digit approximate attention also fails the unchanged full Smol gate (121/1,600), despite only27 changed first-head words. A separate zero-encoding-error diagnostic fails144/1,600 when accumulation is widened; exact source-ordered f32 replay at the identical384-route seam reproduces all1,600 bits. This closes integration sanity and proves accumulation rounding alone is sufficient to fail this original gate. No approximate route is promoted. [Precision negative](perf_records/smol_three_digit_full_native_rejected.json), [paired source-seam diagnosis](perf_records/smol_source_replay_vs_wide_accumulation.json).
+
+
+## Checkpoint 2026-10-06 09:15 UTC
+
+Verified stock whole-model bests: ResNet1930 **34,905,135 cycles**,
+Tiny1926 **461,389,700 cycles**, Smol1906 **258,621,872,969 cycles**.
+Targets remain unmet: ResNet about22M, Smol about5B and Tiny300M.
+The newer clarification from Jack concerns Smol single-digit billions and
+Tiny300M; matching token/batch/timer scope has not been supplied.
+
+Smol's general source min/max capability closes282 pins and preserves the full
+original48-call native consumer gate. Its complete12-head group uses
+**3,243,485,384 Spike instructions**,3.764% below the separately qualified ABS
+control. A zero/NaN library guard variant is6.485% slower and rejected.
+These are instruction counts, not stock cycles. Stock1944 separately verifies
+**10,524,980,809 cycles** for the earlier row/floor complete group; it is a
+section result and does not establish new whole-model timing.
+[Min/max proof](perf_records/smol_standard_minmax_complete_group.json).
+
+The retained resident command candidate is released for one stock comparison
+with controlled1903 after independent483-pin reclosure and original1,000-word
+native/strict gates. Five selected resident objects change;52 adapters and47
+other kernels remain byte identical. It is not composed with1930 or1947.
+[Whole qualification](perf_records/resident_commands_normal_whole_qualification.json).
+
+The Tiny norm+packet4+constant-lifetime candidate is released for one stock
+comparison with1926. All256,000 original words and the original Torch gate pass;
+all executable sections are zero-FSM. Its complete two-row scalar section saves
+10.302% GSIM cycles; whole Spike instructions increase1.379%. Whole stock
+performance remains unknown.
+[Whole qualification](perf_records/tiny_fma_constant_whole_qualification.json).
