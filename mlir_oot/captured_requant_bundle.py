@@ -125,7 +125,7 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=
     return declaration
 
 
-def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None):
+def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None,producer_range=None):
     adapter=emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel).replace('int8_t*c)','int32_t*c)').replace('int8_t*,int8_t*,int8_t*','int8_t*,int8_t*,int32_t*')
     adapter=adapter.replace('memref2 *c)', 'memref2 *scratch,memref2 *c)')
     output='(int32_t*)c->aligned+c->offset' if direct else '(int8_t*)c->aligned+c->offset'
@@ -133,12 +133,22 @@ def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None):
     m,n=(schedule.oh*schedule.ow,schedule.cout) if direct else (schedule.m,schedule.n)
     check=f'if(!scratch->aligned || scratch->offset<0 || scratch->sizes[0]!={m} || scratch->sizes[1]!={n} || scratch->strides[0]!={n} || scratch->strides[1]!=1 || ((uintptr_t)((int32_t*)scratch->aligned+scratch->offset)&3))__builtin_trap();'
     adapter=adapter.replace(' if (', ' '+check+'\n if (',1)
+    if producer_range is not None:
+        # This target ABI uses 64-bit descriptors. Bound the regions before
+        # invoking the producer; output writes must not invalidate scratch.
+        guard=f'uintptr_t sp=(uintptr_t)((int32_t*)scratch->aligned+scratch->offset),dp=(uintptr_t)((int8_t*)c->aligned+c->offset); if(sp>UINTPTR_MAX-{m*n*4} || dp>UINTPTR_MAX-{m*n} || !(sp+{m*n*4}<=dp || dp+{m*n}<=sp))__builtin_trap();'
+        needle=f'\n {kernel}('; assert adapter.count(needle)==1
+        adapter=adapter.replace(needle, '\n '+guard+'\n '+kernel+'(',1)
     readout=symbol+'_readout'
     adapter=adapter.replace('*r=*c;',f'{readout}((const int32_t*)scratch->aligned+scratch->offset,(int8_t*)c->aligned+c->offset,{m*n});*r=*c;')
-    return emit_readout(proof,readout,fixedpoint=True,**dict(readout_options or {}))+adapter
+    return emit_readout(proof,readout,fixedpoint=True,producer_range=producer_range,**dict(readout_options or {}))+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False,readout_domain_policy=None):
+    if readout_domain_policy not in (None,'source_proven'):
+        raise ValueError('unknown readout domain policy')
+    if readout_domain_policy is not None and not exact_integer_readout:
+        raise ValueError('source-proven domain policy requires exact integer readout')
     readout_options=dict(readout_options or {})
     if set(readout_options)-{'saturation_first','packet'}:
         raise ValueError('unsupported generic readout schedule options')
@@ -273,11 +283,25 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             schedule=generator.shape
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
-        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout,readout_options=readout_options) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
+        producer_range=None;producer_decision=None
+        if readout is not None and readout_domain_policy is not None:
+            from .readout_producer_binding import bind_readout_producer,ProducerBindingIntegrityError
+            producer_route=dict(region=rid,kernel=kernel,schedule=asdict(schedule),integer_readout=readout,bias_payload_sha256=constant.payload_sha256,compilation=compilation)
+            producer_bundle=dict(source_sha256=source_sha,manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],weights_sha256=pins['weights.safetensors']['sha256'],routes=[producer_route])
+            try:
+                producer_range,producer_receipt=bind_readout_producer(capture,producer_bundle,producer_route)
+                producer_decision=dict(applied=True,proof=producer_receipt,storage='fresh caller-owned scratch/output with adapter range-disjointness guard')
+            except ProducerBindingIntegrityError:
+                raise
+            except ValueError as failure:
+                producer_decision=dict(applied=False,refusal=str(failure))
+        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout,readout_options=readout_options,producer_range=producer_range) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
         (work/'adapter.c').write_text(adapter)
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
         objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
         routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+        if producer_decision is not None:
+            routes[-1]['readout_producer_domain']=producer_decision
         if readout and readout_options:
             routes[-1]['readout_schedule_options']=readout_options
         if rid in resident_input_options:
@@ -313,11 +337,14 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
     audit=audit_elf(linked.read_bytes())
     if audit['status']!='pass':raise ValueError('forbidden device instruction')
     result=dict(schema='gemmini_exact_captured_requant_bundle_v1' if max_output_lsb==0 else 'gemmini_bounded_captured_requant_bundle_v1',selected_max_output_lsb=max_output_lsb,source_sha256=source_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=hashlib.sha256(printed.encode()).hexdigest(),object_sha256=hashlib.sha256(linked.read_bytes()).hexdigest(),routes=routes,refused=refused,nofsm_audit=audit,scope='Specializes only hash-bound captured zero-bias parameters. Runtime input images remain variable. Other weights/bias blobs require recompilation. Explicit local error limits do not establish full-model quality; original goldens must be retained and checked.')
+    if readout_domain_policy is not None:
+        result['readout_domain_policy']=readout_domain_policy
+        result['readout_domain_applications']=sum(bool(r.get('readout_producer_domain',{}).get('applied')) for r in routes)
     (output/'requant.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()
