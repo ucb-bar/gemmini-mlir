@@ -32,7 +32,8 @@ void {kernel}(int8_t*a,int8_t*b,int8_t*c){{
 '''
 
 
-def build(capture,llvm_bin,output):
+def build(capture,llvm_bin,output,*,loop_spatial=False):
+    if type(loop_spatial) is not bool:raise ValueError('spatial CPU loop option requires explicit boolean')
     from merlin.runtime.captured_constants import verify_capture_constant
     capture,llvm_bin,output=map(Path,(capture,llvm_bin,output));output.mkdir(parents=True,exist_ok=False)
     source=capture/'model.mlir';pins=json.loads((capture/'capture_receipt.json').read_text())['artifacts']
@@ -51,7 +52,7 @@ def build(capture,llvm_bin,output):
     biases=np.frombuffer(constant.logical_payload,dtype='<f4');proof=synthesize_bias(chain['scales'],biases,chain['reciprocal'],-147*16384,147*16384,True)
     if proof['accepted_channels']!=binding.shape.cout or np.any(biases!=0) or any(x!=0 for x in proof['integer_bias']):raise ValueError('stem requires completely proved zero bias thresholds')
     shape=StemPoolShape(binding.shape.h,binding.shape.w,binding.shape.cout,proof['scale']);symbol='gemmini_exact_stem_pool';kernel=symbol+'_kernel';declaration=rewrite(binding,chain,shape,symbol)
-    device=GoldenStemPool(shape).build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel);compilation=compile_module(device,llvm_bin,output/'device')
+    device=GoldenStemPool(shape,loop_spatial=loop_spatial).build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel);compilation=compile_module(device,llvm_bin,output/'device')
     adapter=emit_adapter(SimpleNamespace(h=shape.h,w=shape.w,cout=shape.cout,oh=shape.ph,ow=shape.pw),symbol,kernel).replace('int32_t*','int8_t*');(output/'adapter.c').write_text(adapter);(output/'native_oracle.c').write_text(adapter+emit_oracle(shape,kernel))
     subprocess.run([str(llvm_bin/'clang'),'--target=riscv64-unknown-elf','-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin','-c',str(output/'adapter.c'),'-o',str(output/'adapter.o')],check=True,capture_output=True)
     linker=llvm_bin/'ld.lld'
@@ -60,6 +61,7 @@ def build(capture,llvm_bin,output):
     if audit['status']!='pass':raise ValueError('pool object no-FSM audit failed')
     module.verify();printed=serialize(module,[declaration]);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
     result={'schema':'gemmini_exact_stem_pool_bundle_v1','source_sha256':sha(source),'weights_sha256':pins['weights.safetensors']['sha256'],'manifest_sha256':pins['weights.safetensors.manifest.json']['sha256'],'bias_payload_sha256':constant.payload_sha256,'rewritten_sha256':sha(output/'rewritten.mlir'),'object_sha256':sha(obj),'symbol':symbol,'shape':asdict(shape),'scalar_transition_proof':proof,'pool_proof':chain['pool'],'commands':command_counts(shape),'compilation':compilation,'nofsm_audit':audit}
+    if loop_spatial:result['schedule']={'ordinary_spatial_cpu_loops':True,'hardware_loop_commands':False}
     (output/'stem_pool.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 

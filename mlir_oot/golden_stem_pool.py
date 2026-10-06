@@ -38,9 +38,52 @@ class StemPoolShape:
         if self.scale<=0:raise ValueError('positive proven scalar scale required')
 
 class GoldenStemPool(GoldenGemm):
-    def __init__(self,s):
-        s.validate();self.pool=s
+    def __init__(self,s,*,loop_spatial=False):
+        if type(loop_spatial) is not bool:raise ValueError('spatial CPU loop option requires explicit boolean')
+        s.validate();self.pool=s;self.loop_spatial=loop_spatial
         super().__init__(Shape(s.ow,s.cout,21,bm=_ceil_div(s.ow,16),bn=1,output_dtype='i8',scale=s.scale,relu=True))
+
+    def _compact_spatial(self,rows,widths,kh,ki,kr,cols,d,bbase):
+        """Retain ordinary CPU loops over proven resident A/ACC tile addresses.
+
+        Full-width bands are affine in one tile index. A partial final tile
+        instead keeps row and spatial indices separate, so no DMA or compute
+        crosses a logical row. The first real-B preload remains separate.
+        """
+        s=self.pool;mt=len(widths);accumulate=not(kh==0 and ki==0)
+        self._rocc('preload',{'bd':bbase+((kh*2+ki)*_ceil_div(s.cout,16)+d)*16,
+            'c':isa.acc_addr(0,accumulate=accumulate),'bd_cols':cols,'bd_rows':kr,
+            'c_cols':cols,'c_rows':widths[0]})
+        self._rocc('compute',{'a':(kh*rows*mt*2+ki)*16,'a_cols':kr,
+            'a_rows':widths[0],'accumulate':False})
+        cmax=(rows-1)*s.ow+(mt-1)*16
+        amax=((kh*rows+rows-1)*mt+mt-1)*32+ki*16
+        def emit(crow,arow,nrows):
+            self._rocc('preload',{'bd':isa.GARBAGE_ADDR,'c_accumulate':int(accumulate),
+                'c_max':min(cmax,rows*s.ow-nrows),'c_reserved_rows':rows*s.ow,'bd_cols':cols,'bd_rows':kr,
+                'c_cols':cols,'c_rows':nrows},crow)
+            self._rocc('compute',{'a_cols':kr,'a_rows':nrows,'accumulate':True,
+                'a_max':amax,'a_reserved_rows':bbase},arow)
+        if all(width==16 for width in widths):
+            def tile(index):
+                emit(self.fb.mul_i(index,self.fb.const(16)),
+                    self.fb.add_i(self.fb.mul_i(index,self.fb.const(32)),
+                        self.fb.const(kh*rows*mt*32+ki*16)),16)
+            self.fb.for_loop(1,rows*mt,1,tile,retain_loop=True)
+            return
+        full=sum(width==16 for width in widths)
+        def tile(ry,a,nrows):
+            crow=self.fb.add_i(self.fb.mul_i(ry,self.fb.const(s.ow)),self.fb.mul_i(a,self.fb.const(16)))
+            panel=self.fb.add_i(self.fb.mul_i(ry,self.fb.const(mt)),a)
+            arow=self.fb.add_i(self.fb.mul_i(panel,self.fb.const(32)),self.fb.const(kh*rows*mt*32+ki*16))
+            emit(crow,arow,nrows)
+        # Finish row zero before advancing the source reduction's spatial scan.
+        if full>1:self.fb.for_loop(1,full,1,lambda a:tile(self.fb.const(0),a,16),retain_loop=True)
+        if mt>1:tile(self.fb.const(0),self.fb.const(mt-1),widths[-1])
+        def row(ry):
+            self.fb.for_loop(0,full,1,lambda a:tile(ry,a,16),retain_loop=True)
+            tile(ry,self.fb.const(mt-1),widths[-1])
+        self.fb.for_loop(1,rows,1,row,retain_loop=True)
     def build(self):
         s=self.pool;self._emit_config();self._rocc('config_ld',{'stride':6,'load_id':0})
         widths=tuple(min(16,s.ow-x) for x in range(0,s.ow,16));mt=len(widths);nt=_ceil_div(s.cout,16);maxrows=max(end-start for _,_,start,end in s.bands());bbase=maxrows*7*mt*2*16
@@ -68,6 +111,9 @@ class GoldenStemPool(GoldenGemm):
                 cols=min(16,s.cout-d*16)
                 for kh in range(7):
                     for ki,kr in [(0,16),(1,5)]:
+                        if self.loop_spatial:
+                            self._compact_spatial(rows,widths,kh,ki,kr,cols,d,bbase)
+                            continue
                         for ry in range(rows):
                             for a,nrows in enumerate(widths):
                                 first=ry==0 and a==0
@@ -83,7 +129,7 @@ class GoldenStemPool(GoldenGemm):
                 # Stock RS models pooling as reading to the end of its start bank.
                 # A spatial band may cross that bank, so drain before C reuse.
                 self._rocc('fence',{})
-        for start,stop,(count,rows,upad) in groups:self.fb.for_loop(start,stop,s.pooled_rows,lambda p,c=count,r=rows,u=upad:band(p,c,r,u))
+        for start,stop,(count,rows,upad) in groups:self.fb.for_loop(start,stop,s.pooled_rows,lambda p,c=count,r=rows,u=upad:band(p,c,r,u),retain_loop=self.loop_spatial)
         module=self._finish('gemmini_golden_stem_pool');module.attributes['gemmini.stem_pool_shape']=StringAttr(json.dumps(asdict(s),sort_keys=True));return module
 
 
