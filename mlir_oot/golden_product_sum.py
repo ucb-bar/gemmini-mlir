@@ -10,7 +10,7 @@ from .golden_gemm import GoldenGemm, Shape
 class GoldenProductSum(GoldenGemm):
     def __init__(self, shape: Shape, *, pairs: tuple[tuple[int, int], ...],
                  lhs_planes: int, rhs_planes: int, absolute_bound: int,
-                 lhs_magnitude_bound: int = 127, rhs_magnitude_bound: int = 127):
+                 lhs_magnitude_bound: int = 128, rhs_magnitude_bound: int = 128):
         if shape.output_dtype != 'i32' or shape.bias:
             raise ValueError('product sums require unbiased i32 output')
         if any((shape.cache_a, shape.cache_b, shape.wide_a, shape.pipeline_m,
