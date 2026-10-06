@@ -1,0 +1,99 @@
+{
+  "schema": "actual_source_quantized_frontier_v1",
+  "source_sha256": "1056ae3279d19fbfd82f3d9abee376fdf462ba7c4b3b734048c0d42cbfd461a8",
+  "source_groups": 48,
+  "first_rows_groups": 4,
+  "source_quant_operations": 54,
+  "input_type": "tensor<1x12x1024x64xbf16>",
+  "output_types": [
+    "tensor<1x1024x768xi8>",
+    "tensor<1x1024xbf16>"
+  ],
+  "extra_live_escape_types": [
+    "tensor<1x1024xbf16>"
+  ],
+  "source_operation_names": [
+    "tensor.empty",
+    "linalg.transpose",
+    "tensor.collapse_shape",
+    "tensor.expand_shape",
+    "arith.constant",
+    "tensor.splat",
+    "linalg.reduce",
+    "arith.constant",
+    "tensor.splat",
+    "linalg.reduce",
+    "arith.constant",
+    "tensor.empty",
+    "tensor.splat",
+    "linalg.generic",
+    "arith.constant",
+    "tensor.empty",
+    "tensor.splat",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "arith.constant",
+    "tensor.empty",
+    "tensor.splat",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "arith.constant",
+    "tensor.splat",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.collapse_shape",
+    "tensor.expand_shape",
+    "tensor.collapse_shape",
+    "tensor.expand_shape",
+    "tensor.empty",
+    "linalg.generic",
+    "arith.constant",
+    "tensor.empty",
+    "tensor.splat",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic",
+    "tensor.empty",
+    "linalg.generic"
+  ],
+  "frontier_source_sha256": "fa873cee57f36784806d4050858cae08c52ed1eff2153c1e40c7e8de76cd089b",
+  "extra_live_uses": [
+    [
+      "tensor.collapse_shape"
+    ]
+  ],
+  "token_usage_available": false,
+  "same_original_first4_inputs": true,
+  "first4_comparison": [
+    {
+      "index": 0,
+      "type": "tensor<1x1024x768xi8>",
+      "elements": 786432,
+      "changed_words": 9,
+      "changed_rows": 9,
+      "max_integer_difference": 1
+    },
+    {
+      "index": 1,
+      "type": "tensor<1x1024xbf16>",
+      "elements": 1024,
+      "changed_words": 0,
+      "changed_rows": 0,
+      "max_integer_difference": 0
+    }
+  ],
+  "llvm_sha256": "9fde7908f5fcc21d8861d98abb63695c9e610f343926d732428c563e9944a3cb",
+  "library_sha256": "dfa2c1c483e62f96d4f6b964ed59a4b44043c2e96782055cff90991ce5be01d4"
+}

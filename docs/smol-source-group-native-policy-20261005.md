@@ -15,6 +15,7 @@ exist only in experimental diagnostics.
 | --- | --- | --- | --- |
 | Fixed maximum one adjacent BF16 endpoint bin | 113 / 1,600 failures; max absolute error 0.1629244 | 429,497,664 (2.2222%) | Reject whole-model enablement |
 | Exact endpoint control, identical host image and ABI | All 1,600 original words bit exact | 5,507,717,696 (28.4970%) | Accept source closure and native ABI control |
+| Center-only original scalar DAG, identical host image and ABI | 121 / 1,600 failures; max absolute error 0.1676637 | None | Reject whole-model enablement |
 
 The whole criterion remains atol=0.03125 and rtol=0.02. All 48 exact-control
 endpoints were independently compared with the actual compiled original source
@@ -32,13 +33,34 @@ replay counts cannot be substituted for stock FireSim cycles. The actual target
 provider is independently under qualification; neither losing policy nor this
 control enables ordinary production dispatch.
 
-The following single authorized screen keeps the same three signed-digit
+The single authorized center screen kept the same three signed-digit
 products and complete source finalization DAG, rounds reconstructed QK/PV dots
-once to f32, and omits interval/replay. It has no local endpoint error guarantee;
-the unchanged whole output gate decides admission. No precision sweep or target
-admission follows from these control receipts.
+once to f32, and omits interval/replay. It had no local endpoint error guarantee and failed the unchanged whole output
+gate. Both approximation paths first alter group endpoints while groups0–3
+still have the exact original live operands; changed Q/K/V first reach group4,
+after the source row quantization and intervening model operations. No precision
+sweep or target admission follows from these losing screens.
 
 Receipts and complete per-group descriptor/input/output hashes are archived in
 perf_records/smol_source_group_{bounded,exact}_*.json; the journey records source,
 numeric and emitted object pins. Token allocation per optimization is unavailable;
 the parent campaign ledger owns shared usage snapshots.
+
+## Exact integer observation frontier
+
+The typed original source has 12 consumer frontiers covering all 48 attention
+producers. Each joins four query partitions with exact static coordinates, then
+runs the complete 54-operation source quantization DAG. The only live observed
+results are 1,024x768 signed-i8 words and 1,024 BF16 scales. No other raw BF16
+attention value or residual escapes this frontier. Complete source properties,
+scalar block arguments, operand order, typed maps and every observation are
+bound; all 12 instances have the same complete semantic fingerprint. Analysis
+alone supplies no numerical replacement permission.
+
+An independently compiled original source quantization function shows that the
+628 changed first-four center BF16 words change only nine of 786,432 i8 words,
+each by one. All 1,024 original minima, maxima and BF16 scales remain exact.
+These are fixture diagnostics, not an interval proof or performance measurement.
+A separate source interval certificate will refine ambiguous extrema/scale/bin
+values and retain the existing source quantization consumer. The unchanged
+whole model gate still precedes any target admission.
