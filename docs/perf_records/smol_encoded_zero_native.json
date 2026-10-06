@@ -1,0 +1,147 @@
+{
+  "schema": "encoded_zero_original_head_native_qualification_v1",
+  "scope": "One complete originalhead,65536BF16results losslesslywidened f32; neitherfullSmol nor targetcycles.",
+  "control_elf_sha256": "30340439da171819646277c531564003ca0a39117c3ae5f22b7f3f0403afb0a2",
+  "original_tolerances": {
+    "atol": 0.03125,
+    "rtol": 0.02
+  },
+  "arms": [
+    {
+      "name": "original_native_control",
+      "receipt_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/native_receipt.json",
+      "receipt_sha256": "5e156000363e5c52be6561d0da4555e9382599ac7672cc341cddbc89e4eb9747",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/native.log",
+      "log_sha256": "025b4918d3d2ba4d50742d88d4942827246729fe69fc9a9c0845c2c1953ac322",
+      "receipt": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.4205820560455322,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DINLINE_OUTWARD=1",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/native.so"
+        ]
+      },
+      "counts": [
+        "ATTENTION_CERT_COUNTS 58369 4971 47185920 30"
+      ],
+      "source_pins": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/driver.c": "4d359109edea5b0264d85db3cc7cb53a19e4c15f7c5238b58623265b86c92de3",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/native_stub.c": "b4d9dd447f4d0a1fe348c7e81ce29f0a901af0f758278a40d49906e33da3cdb0",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/data.S": "b0b482e4ddc757499e9b2dfbbd1d324f4f206fa98e9116f49deefb22fec03cb3",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/fma_product_norms.h": "26d821480adaff9d7583d88fd8bc2261a76f259b6f38b8d6ec1c1023abc08b9d",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_grouped_full_head/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83"
+      }
+    },
+    {
+      "name": "device_zero_metadata_native",
+      "receipt_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native_receipt.json",
+      "receipt_sha256": "2a202252bc061d05d60d355db595882feb45144faadd67eea25e03f4a384fdd1",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native.log",
+      "log_sha256": "e5da68a85cde5c261e5c5f12799c56dff3de0ee3465947d5fa00575f134aa733",
+      "receipt": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.45499253273010254,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DINLINE_OUTWARD=1",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native.so"
+        ]
+      },
+      "counts": [
+        "ATTENTION_CERT_COUNTS 58369 4971 47185920 30"
+      ],
+      "source_pins": {
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/driver.c": "36ec251e5f5d8690a28747043675b3ab8372ab882fba4c11a9fdb323ee02ad6b",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native_stub.c": "f3c6311fa546510a3dccb373a4bcbb25d2a59feda23c2a19ba7daa2955c9e22c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/data.S": "b0b482e4ddc757499e9b2dfbbd1d324f4f206fa98e9116f49deefb22fec03cb3",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/fma_product_norms.h": "26d821480adaff9d7583d88fd8bc2261a76f259b6f38b8d6ec1c1023abc08b9d",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83"
+      }
+    },
+    {
+      "name": "device_zero_metadata_support_native",
+      "receipt_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/native_receipt.json",
+      "receipt_sha256": "084d701430cd1f036dd789d9d68ebb4f3b7c0a299e632fe81429be60424ec068",
+      "log_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/native.log",
+      "log_sha256": "17d5f7c11f1eef86f15fe488635d2eee10b8d5d00b37f76332cd6c672ce4b06a",
+      "receipt": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.38223862648010254,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DINLINE_OUTWARD=1",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/native.so"
+        ]
+      },
+      "counts": [
+        "ATTENTION_CERT_COUNTS 58369 4971 47185920 30"
+      ],
+      "source_pins": {
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/driver.c": "7bc96ef0298e50b82316aa19c3bb7296c5a55e9fe00f8adf29c4c7f9b23c2c25",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/native_stub.c": "f3c6311fa546510a3dccb373a4bcbb25d2a59feda23c2a19ba7daa2955c9e22c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/data.S": "b0b482e4ddc757499e9b2dfbbd1d324f4f206fa98e9116f49deefb22fec03cb3",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/fma_product_norms.h": "26d821480adaff9d7583d88fd8bc2261a76f259b6f38b8d6ec1c1023abc08b9d",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head_support/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83"
+      }
+    }
+  ],
+  "token_usage_available": false
+}

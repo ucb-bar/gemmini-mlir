@@ -1,0 +1,203 @@
+{
+  "schema": "encoded_zero_group_source_command_census_v1",
+  "scope": "Explicit encoded signed-i8 original head QK panel metadata; counter model follows actual generated schedule. Counts are ANALYTICAL primitive commands, not measured cycles or hardware occupancy. Signed and absolute phases share metadata, so eachQK record executes twice.",
+  "source_pins": {
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/source_q.bin": "c403b7de4be3888dfd38ed10f14023484c57c6e7c20b3a8c259a7f1420b5d427",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/source_k.bin": "cc4c618ec6a696aa7709cb2cb8cf907294b2e0e7104b2e6f8ea28e40336a826b"
+  },
+  "observed_native_log_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/original_head/native.log",
+  "observed_native_log_sha256": "e5da68a85cde5c261e5c5f12799c56dff3de0ee3465947d5fa00575f134aa733",
+  "actual_native_zero_panel_census": {
+    "0": [
+      39,
+      0,
+      0,
+      64
+    ],
+    "1": [
+      8,
+      0,
+      0,
+      64
+    ],
+    "2": [
+      0,
+      0,
+      0,
+      64
+    ],
+    "3": [
+      0,
+      0,
+      0,
+      4
+    ],
+    "4": [
+      0,
+      0,
+      0,
+      64
+    ],
+    "5": [
+      0,
+      0,
+      0,
+      4
+    ]
+  },
+  "qk": [
+    {
+      "exponent": 0,
+      "pairs": [
+        [
+          0,
+          0
+        ]
+      ],
+      "control": {
+        "mvout": 4096,
+        "mvin_a": 1024,
+        "mvin_b": 1024,
+        "preload": 16384,
+        "compute": 16384
+      },
+      "candidate": {
+        "sparse_output_blocks": 64,
+        "summary_byte_reads_logical": 1280,
+        "mvout": 4096,
+        "mvin_zero_acc": 4096,
+        "mvin_a": 400,
+        "mvin_b": 1024,
+        "preload": 5600,
+        "compute": 5600
+      }
+    },
+    {
+      "exponent": 7,
+      "pairs": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "control": {
+        "mvout": 4096,
+        "mvin_a": 2048,
+        "mvin_b": 2048,
+        "preload": 32768,
+        "compute": 32768
+      },
+      "candidate": {
+        "sparse_output_blocks": 64,
+        "summary_byte_reads_logical": 2560,
+        "mvout": 4096,
+        "mvin_zero_acc": 4096,
+        "mvin_a": 1424,
+        "mvin_b": 2048,
+        "preload": 20736,
+        "compute": 20736
+      }
+    },
+    {
+      "exponent": 14,
+      "pairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "control": {
+        "mvout": 4096,
+        "mvin_a": 3072,
+        "mvin_b": 3072,
+        "preload": 49152,
+        "compute": 49152
+      },
+      "candidate": {
+        "sparse_output_blocks": 64,
+        "summary_byte_reads_logical": 3840,
+        "mvout": 4096,
+        "mvin_zero_acc": 4096,
+        "mvin_a": 2448,
+        "mvin_b": 3072,
+        "preload": 37120,
+        "compute": 37120
+      }
+    },
+    {
+      "exponent": 21,
+      "pairs": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "control": {
+        "mvout": 4096,
+        "mvin_a": 2048,
+        "mvin_b": 2048,
+        "preload": 32768,
+        "compute": 32768
+      },
+      "candidate": {
+        "dense_output_blocks": 64,
+        "summary_byte_reads_logical": 2560,
+        "mvout": 4096,
+        "mvin_a": 2048,
+        "mvin_b": 2048,
+        "preload": 32768,
+        "compute": 32768
+      }
+    },
+    {
+      "exponent": 28,
+      "pairs": [
+        [
+          2,
+          2
+        ]
+      ],
+      "control": {
+        "mvout": 4096,
+        "mvin_a": 1024,
+        "mvin_b": 1024,
+        "preload": 16384,
+        "compute": 16384
+      },
+      "candidate": {
+        "dense_output_blocks": 64,
+        "summary_byte_reads_logical": 1280,
+        "mvout": 4096,
+        "mvin_a": 1024,
+        "mvin_b": 1024,
+        "preload": 16384,
+        "compute": 16384
+      }
+    }
+  ],
+  "pv": "BothPV512parts have no allzero16-row encoded panels on anydigit in actualnative producer census. Densepathonly; no compute/load/readback savings inferred. Native guard/replay counts exactly match originalnative baseline.",
+  "cost_unknown": [
+    "summary joins and CPU branches",
+    "zero-ACC DMA latency",
+    "cache/layout/occupancy interactions",
+    "source replay/certificate end-to-end FireSim impact"
+  ],
+  "readback": "All logical groupedoutputs stillwritten;30kernelcalls and47,185,920i32bytes unchanged. Omission onlyremoves provenzero product computation/operand loads.",
+  "token_usage_available": false
+}
