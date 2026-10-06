@@ -1,0 +1,101 @@
+{
+  "schema": "bf16_helper_scope_census_v1",
+  "same_elf_sha256": "55c102af0fde3aa0ba35646201f5b235d93423667aafb0348f4c270f6b8a6793",
+  "helper": "__truncsfbf2",
+  "entry_count": 15738880,
+  "retired_instructions": 236079104,
+  "callsites": [
+    {
+      "pc": "0x80011416",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x80011434",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x800114c4",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x800114e2",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x80011534",
+      "caller": "source_quant_frontier",
+      "count": 2048
+    },
+    {
+      "pc": "0x8001156a",
+      "caller": "source_quant_frontier",
+      "count": 2048
+    },
+    {
+      "pc": "0x8001158a",
+      "caller": "source_quant_frontier",
+      "count": 2048
+    },
+    {
+      "pc": "0x800115be",
+      "caller": "source_quant_frontier",
+      "count": 2048
+    },
+    {
+      "pc": "0x800115d0",
+      "caller": "source_quant_frontier",
+      "count": 2048
+    },
+    {
+      "pc": "0x80011644",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x80011674",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x8001168c",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x8001169e",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x800116b0",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    },
+    {
+      "pc": "0x800116d0",
+      "caller": "source_quant_frontier",
+      "count": 1572864
+    }
+  ],
+  "abi": "Actual helper accepts f32 in fa0, returns NaN-boxed BF16 in fa0; integer RNE rounding with explicit nonfinite classification/NaN quiet bit. Ambient frm not consulted by integer conversion.",
+  "measured_scope": "All calls are in source_quant_frontier, executed twice after provider ROI ends, for original reference and candidate validation. Zero provider-object unresolved __truncsfbf2 symbols.",
+  "decision": "Reject as provider hot-path optimization premise; no new conversion policy, target run or stock arm. Could be separate generic ordinary host lowering study, not this provider ROI.",
+  "provider_conversion": "Existing merlin_interval_bf16 inline integer bit rounding; its cost is separately attributed to provider source, not this helper. Arbitrary NaN/overflow conversion replacement not authorized by this evidence.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/radius_l1_retained_target/candidate/model.elf": "55c102af0fde3aa0ba35646201f5b235d93423667aafb0348f4c270f6b8a6793",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/radius_l1_retained_target/candidate_pc_histogram/spike.log": "6dddf5a0f6be417c641f2e4f600c5e79c57780108334a28ea887368818269757",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/radius_l1_retained_target/candidate/provider.o": "5d413b6881084147069ac70615407320275d0784b24795063b42a35fad92c5a7",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-word-enclosure-20261006/consumer_capsules_printf/control/driver.c": "7c1bad0b0ad589b045dcdb4e068432573d44adc98a0c4f1cb16ceaa3ea1518aa",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/bf16_helper_scope_census/census.py": "33949e2dc5fc78dbfd15d6757c1ae1a166618656e2ba6035cb0accb4136e12d2",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/bf16_helper_scope_census/disassembly.txt": "b2045cdf583fc36876018a484ef64c76ea16a4c476a56f2b1681f81d7b49a660",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/bf16_helper_scope_census/provider_undefined.txt": "3fbb088636c11ca4c6861b8a634db0ae06330d82e9f274c21ba4a8959d69288f",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/composed_provider_source_map/closure.json": "c301eb8454a08948bf47cebebf521bcefc9000b640e4872f3e1fd77a3da06059",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/composed_provider_source_map/attribution.json": "3fdfbda77d684328dc56235a00428e0a41e4d46929609714c53f6fe486cb86c3",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objdump": "1c0a65ea4d86a0fdc57e22a49b777f80881b0a3df9b2ac0634dc651b295c0410"
+  },
+  "token_usage_available": false
+}
