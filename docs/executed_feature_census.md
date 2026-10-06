@@ -49,3 +49,11 @@ instructions, missing/ambiguous/outside symbols, instruction-splitting extents,
 truncated/duplicate/invalid histograms, mismatched execution bindings and dead
 FSM words in the final ELF. The default model build and qualified device objects
 are unchanged.
+
+`perf_records/resnet1874_executed_layer_features.json` independently joins our
+70 conserved ABI boundary intervals from a fresh strict Spike replay with stock
+profile job 1899. The original 1,000-word output digest, complete call order and
+forward conservation pass. Its forward scope is 10,226,219 retired instructions
+and 39,235,729 hardware cycles. Primitive body counts are separately attributed;
+no physical work or transfer bytes are invented before operand telemetry. This
+is historical control 1874, rather than a newer policy or host/runtime candidate.
