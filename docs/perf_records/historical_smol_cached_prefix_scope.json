@@ -1,0 +1,489 @@
+{
+  "schema": "historical_smol_cached_prefix_scope_audit_v1",
+  "token_usage_available": false,
+  "queue_job": 610,
+  "plan": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/plan.json",
+  "plan_sha256": "5a88ba0de07611746369720238e157ea1a03f5fdc5d2e6798fceb3c167d30233",
+  "declared_model": "smolvla_flow_denoise",
+  "current1906_input_image_shape": [
+    1,
+    3,
+    512,
+    512
+  ],
+  "old_plan_image_arguments": [],
+  "old_live_prefix_and_state": [
+    {
+      "tensor": "arg808",
+      "index": 808,
+      "storage": "const",
+      "offset": 502978240,
+      "logical_bytes": 113,
+      "physical_bytes": 128,
+      "dtype": "i1",
+      "shape": [
+        1,
+        113
+      ],
+      "sizing": "row_pitch",
+      "weight": "prefix_pad_masks",
+      "role": "argument"
+    },
+    {
+      "tensor": "arg810",
+      "index": 810,
+      "storage": "const",
+      "offset": 502978368,
+      "logical_bytes": 6400,
+      "physical_bytes": 6400,
+      "dtype": "f32",
+      "shape": [
+        1,
+        50,
+        32
+      ],
+      "sizing": "row_pitch",
+      "weight": "flow_state",
+      "role": "seed"
+    },
+    {
+      "tensor": "arg811",
+      "index": 811,
+      "storage": "const",
+      "offset": 502984768,
+      "logical_bytes": 4,
+      "physical_bytes": 64,
+      "dtype": "f32",
+      "shape": [
+        1
+      ],
+      "sizing": "row_pitch",
+      "weight": "timestep",
+      "role": "seed"
+    },
+    {
+      "tensor": "__seed_prefix_kv_cache",
+      "index": 809,
+      "storage": "const",
+      "offset": 502984832,
+      "logical_bytes": 2314240,
+      "physical_bytes": 2314240,
+      "dtype": "bf16",
+      "shape": [
+        2,
+        16,
+        1,
+        113,
+        5,
+        64
+      ],
+      "sizing": "row_pitch",
+      "weight": "prefix_kv_cache",
+      "role": "seed"
+    }
+  ],
+  "old_carried": [
+    {
+      "state": "prefix_kv_cache",
+      "input_arg": 809,
+      "output_index": 1,
+      "seed_tensor": "__seed_prefix_kv_cache",
+      "output_tensor": "Y1",
+      "dtype": "bf16",
+      "shape": [
+        2,
+        16,
+        1,
+        113,
+        5,
+        64
+      ],
+      "in_place": true,
+      "seed_offset": 502984832,
+      "working_offset": 6400,
+      "output_offset": 6400,
+      "bytes": 2314240
+    },
+    {
+      "state": "flow_state",
+      "input_arg": 810,
+      "output_index": 0,
+      "seed_tensor": "arg810",
+      "output_tensor": "Y0",
+      "dtype": "f32",
+      "shape": [
+        1,
+        50,
+        32
+      ],
+      "seed_offset": 502978368,
+      "working_offset": 158456320,
+      "output_offset": 0,
+      "bytes": 6400
+    },
+    {
+      "state": "timestep",
+      "input_arg": 811,
+      "output_index": 2,
+      "seed_tensor": "arg811",
+      "output_tensor": "Y2",
+      "dtype": "f32",
+      "shape": [
+        1
+      ],
+      "seed_offset": 502984768,
+      "working_offset": 158462720,
+      "output_offset": 2320640,
+      "bytes": 64
+    }
+  ],
+  "mutable_shape_census": [
+    {
+      "shape": [
+        1,
+        50,
+        32
+      ],
+      "dtype": "f32",
+      "count": 2
+    },
+    {
+      "shape": [
+        2,
+        16,
+        1,
+        113,
+        5,
+        64
+      ],
+      "dtype": "bf16",
+      "count": 1
+    },
+    {
+      "shape": [
+        1
+      ],
+      "dtype": "f32",
+      "count": 2
+    },
+    {
+      "shape": [
+        1,
+        113,
+        5,
+        64
+      ],
+      "dtype": "bf16",
+      "count": 32
+    },
+    {
+      "shape": [
+        32,
+        720
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        32
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        720
+      ],
+      "dtype": "f32",
+      "count": 3
+    },
+    {
+      "shape": [
+        50,
+        720
+      ],
+      "dtype": "i32",
+      "count": 35
+    },
+    {
+      "shape": [
+        1440,
+        720
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        1440
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        720,
+        720
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        720
+      ],
+      "dtype": "i8",
+      "count": 66
+    },
+    {
+      "shape": [
+        1,
+        50,
+        720
+      ],
+      "dtype": "f32",
+      "count": 1
+    },
+    {
+      "shape": [
+        1,
+        50,
+        163
+      ],
+      "dtype": "i1",
+      "count": 1
+    },
+    {
+      "shape": [
+        1,
+        50
+      ],
+      "dtype": "i64",
+      "count": 1
+    },
+    {
+      "shape": [
+        1,
+        50,
+        720
+      ],
+      "dtype": "bf16",
+      "count": 55
+    },
+    {
+      "shape": [
+        720,
+        960
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        960
+      ],
+      "dtype": "bf16",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        960
+      ],
+      "dtype": "i32",
+      "count": 16
+    },
+    {
+      "shape": [
+        1,
+        50,
+        15,
+        64
+      ],
+      "dtype": "bf16",
+      "count": 16
+    },
+    {
+      "shape": [
+        720,
+        320
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        320
+      ],
+      "dtype": "bf16",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        320
+      ],
+      "dtype": "i32",
+      "count": 16
+    },
+    {
+      "shape": [
+        1,
+        50,
+        5,
+        64
+      ],
+      "dtype": "bf16",
+      "count": 8
+    },
+    {
+      "shape": [
+        960,
+        720
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        960
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        720
+      ],
+      "dtype": "bf16",
+      "count": 32
+    },
+    {
+      "shape": [
+        720,
+        2048
+      ],
+      "dtype": "i8",
+      "count": 32
+    },
+    {
+      "shape": [
+        50,
+        2048
+      ],
+      "dtype": "bf16",
+      "count": 32
+    },
+    {
+      "shape": [
+        50,
+        2048
+      ],
+      "dtype": "i32",
+      "count": 32
+    },
+    {
+      "shape": [
+        1,
+        50,
+        2048
+      ],
+      "dtype": "bf16",
+      "count": 16
+    },
+    {
+      "shape": [
+        2048,
+        720
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        50,
+        2048
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        320,
+        320
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        113,
+        320
+      ],
+      "dtype": "i8",
+      "count": 16
+    },
+    {
+      "shape": [
+        113,
+        320
+      ],
+      "dtype": "f32",
+      "count": 16
+    },
+    {
+      "shape": [
+        113,
+        320
+      ],
+      "dtype": "i32",
+      "count": 16
+    },
+    {
+      "shape": [
+        1,
+        113,
+        5,
+        64
+      ],
+      "dtype": "f32",
+      "count": 8
+    },
+    {
+      "shape": [
+        720,
+        32
+      ],
+      "dtype": "i8",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        32
+      ],
+      "dtype": "f32",
+      "count": 1
+    },
+    {
+      "shape": [
+        50,
+        32
+      ],
+      "dtype": "i32",
+      "count": 1
+    }
+  ],
+  "mutable_shapes_with_1024_or_768": [],
+  "interpretation": "Declared cached-prefix flow-denoising trajectory with prefix cache113 tokens and50 action tokens. Retained vision weights in broad ABI are not evidence that vision executes. No image argument or1024/768 mutable intermediate appears in this actual job plan. This is not established equivalent to current image-consuming forward.",
+  "limitations": "Plan evidence, not fresh dynamic trace. Separate near4B Exo implementation remains unresolved and is not invalidated by this scope distinction."
+}
