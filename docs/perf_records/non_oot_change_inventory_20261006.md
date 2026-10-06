@@ -8,6 +8,14 @@ Merlin owned changes were published as13 squashed topic commits to main at7fee5c
 
 Related exact integer mean/readout work remains grouped with reusable exact readout/guarded decoding family46; rejected numerical prototypes and target-specific changes are excluded.
 
+The scalar LLVM AND/OR/XOR tracer fix is a follow-up to existing family39,
+so it does not inflate the55-family count. It is now published for review in
+[PR40](https://github.com/ucb-bar/merlin/pull/40), clean topic `dafe64a4f`
+based on main7fee5cfdac. Declared widths1/8/17/64/129 and disjoint/vector
+refusals pass27core tests. Main remains unchanged pending review. Source-wide
+interval tables and shared prepared-view ownership remain separately qualified
+prototypes; this inventory does not silently count them as upstream wins.
+
 | # | Owner | Kind | Change family | Source commits |
 | --- | --- | --- | --- | --- |
 | 1 | Merlin | bug_fix | Packaged runtime dependencies and paths | 014dd7fdf, b807bdefd |
