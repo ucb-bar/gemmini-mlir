@@ -1,0 +1,61 @@
+{
+  "schema": "constant_fma_packet_full_original_capsule_qualification_v1",
+  "status": "pass",
+  "source_shape": [
+    1,
+    8,
+    5632
+  ],
+  "original_i8_words": 45056,
+  "native_exact": true,
+  "strict_target_exact": true,
+  "percall_dirty_destination": true,
+  "halo_guard_bytes": 128,
+  "all_input_bytes_unchanged": 405504,
+  "source_FMA_steps": 8,
+  "independent_packet_width": 4,
+  "source_FMA_input_order_preserved": true,
+  "no_FSM": true,
+  "actual_GSIM_promotion_receipt_sha256": "c6a71a9ef1b81c29ef6a25411fa9cddf7a9e9cde678226c3fadba68ec14085ef",
+  "target_compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "--target=riscv64-unknown-elf",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-mcmodel=medany",
+    "-O3",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-ffp-contract=off",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/fma-constant-lifetime-20261006/full45056/target.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/fma-constant-lifetime-20261006/full45056/model.o"
+  ],
+  "native_compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-O3",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/fma-constant-lifetime-20261006/full45056/native.ll",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/fma-constant-lifetime-20261006/full45056/model.so"
+  ],
+  "pins": {
+    "source.mlir": "d9c310f3c061c2e348f7aeb06f210b63df06aafed312c43b362feb9bad3e22ae",
+    "target.ll": "e4f4a3a9311fa29407e846662cb726e46d0bc8a884dca63a1170c5854785999a",
+    "native.ll": "683bad5997c2430c0d493712eb17978472b262eae48ac7497332e366a2a7b9ce",
+    "model.o": "3cc9c4488691ab322a5a2a330ecab1dad24fe63f0a84c6d5917ecf01c364ce73",
+    "model.so": "628907694080e5946dd0608486c0114d3921494e99e2643852e8f853648de07e",
+    "rewrite.json": "510b095a1357c519768a7f75bf833066418fe11bb7c10c1f2eda29811f5cdc78",
+    "main.c": "939e0cf5b3fb600715a7fbe6d4afa08af2b14084ffcfa3e84399e655ad0a1ec5",
+    "main.o": "976f501cea67b4c5e82016d39ee05c66497dbb3fec9fc320dfe7c3d9c82be292",
+    "spike.stdout": "1cb651561df1c89a867090f091859a8f9fa5f6e3a9e1a67531e9c35a294c167b",
+    "spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build/layer.elf": "d9019d85c928d8fb6363a3691392c345ee998405330c5533b7153cd9abfb77ed"
+  },
+  "source_capture_receipt_sha256": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+  "scope": "Full original45056word first preDown host stage only; original full256000model/Torch gate and stockFireSim remain required. SpikeROI is retiredinstructions, notcycles. Generic draft stillprivate.",
+  "token_usage_available": false
+}
