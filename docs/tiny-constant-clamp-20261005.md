@@ -51,8 +51,8 @@ Round zero is retained as a cold measurement. Warm means use rounds one through
 three; every revised warm round saves 1.79–2.03%. The first arm reached only
 67 current-source quantization pairs and missed all 44 braided activation
 pairs. The revised matcher reaches 111 quantization plus 44 activation pairs
-in the actual original 1880 host LLVM. That selected whole LLVM assembles; its
-whole numeric/target/performance gates are pending.
+in the actual original 1880 host LLVM. At this screen checkpoint the selected
+whole LLVM assembled; whole numeric/target/performance gates were still pending.
 
 One immutable synthetic capsule was measured. It is not captured model operands,
 addresses or cache/full-program context. Full-model savings remain **UNKNOWN**;
@@ -89,9 +89,70 @@ after unchanged original 1880 pointwise/RNE/expanded-writer preparation. Whole
 qualification will reproduce baseline linking byte-exactly and freeze original
 runtime/device/startup/weights/main objects while changing the selected host
 object. Original Torch atol=0.03125/rtol=0.02 and all 256,000 compiled words remain
-mandatory before Recovery may submit a stock comparison. No whole candidate is
-currently admitted, and no composition with adjacent-RNE1902 or family1911/1912
-is claimed.
+mandatory before Recovery may submit a stock comparison. At the initial
+screen checkpoint no whole candidate was admitted. No composition with
+adjacent-RNE1902 or family1911/1912 is claimed.
+
+## Final generic legality and whole qualification
+
+Two general source-semantics corrections followed the initial screen. Commit
+`4e704627e` freezes the helper input before its guard and uses that value on
+both paths. Defined float values are unchanged; undef/poison are lawfully
+refined, and a source pair that merely propagates poison cannot become a branch
+on poison. Commit `4abe2c9b0` distinguishes LLVM unnamed numeric slots from
+quoted numeric names, such as `%0` and `%"0"`. The adversarial pair is conforming
+IR, independently accepted by `llvm-as`. Ordinary quoted/unquoted named aliases
+still match. Fourteen focused generic tests pass.
+
+The final frontend reproduces all frozen numeric/capsule/whole LLVM/proofs byte
+for byte. Poison-safe IEEE target/native executables differed, so all 57,876
+native raw outputs, 165,360 strict cases across five rounding modes/fflags, and
+1,520 directed actual GSIM cases were freshly requalified. Complete capsule
+target/native binaries and whole target/native model objects are byte-identical
+to the prior candidate. Those unchanged executable gates and the measured
+capsule timings are reused through explicit object hashes. Earlier generation
+frontends are preserved as immutable snapshots with their original hashes;
+the current snapshot hash is
+`9361646412fb8cb7bad8b80eca11ffa1c380235c57972ada6c519cabba546b65`.
+
+The original stock1880 ELF was actually relinked and reproduced byte-exactly,
+then retained as a hardlink to avoid duplicating 2.34GB of immutable weights.
+The initial O2 control reconstruction failed object equality and was retained
+as a refused diagnostic. Historic `device/catalog_binding.json` supplies O3
+flags; recompilation with those flags reproduces the original target `model.o`
+byte-exactly. The selected normal `_transform_host_ir` hook then runs on the
+immutable original composed upstream/pointwise/RNE/expanded-writer LLVM and
+native companion. This is a normal hook followed by a controlled whole link,
+**not a fresh whole upstream pipeline run**. Original raw catalog source,
+upstream-prepared IR and expanded-writer ABI IR are distinct pinned stages.
+All 155 original source/type/ordinal bindings and five physical kernels remain.
+
+Only `model.o` changes at final linking. All original1880 runtime, startup,
+main, weights, kernel and shim objects remain frozen. Original runtime compiler
+consistency fixes remain enabled in normal builds; this experiment introduces
+no default rollback. Fresh native full-model execution passes all 256,000
+compiled words and the original Torch gate. Final full strict RV64GC Spike
+passes the same digest, rank0/DONE/exit0 and every executable-section no-FSM
+audit. It retires 164,623,233 instructions; that is not a hardware cycle result.
+
+The final ELF is
+`f7f898565bf5e1df12c93b1e07c6021a043cb268b8140b46964ba7fff8cbba42`.
+Marker `37bdf9be0856` is intentionally inherited from frozen1880 main and is
+nonunique. Exact final ELF and component hashes identify this candidate.
+[The full qualification receipt](perf_records/tiny_constant_clamp_whole_qualification.json)
+pins the source/ABI closure, current frontend and snapshots, normal hook/actual
+argv, object equality, rejected control flags, fresh IEEE and whole-model gates.
+All 119 artifacts from the first screen archive were independently rechecked
+unchanged. Full generated qualification is retained under
+`out/artifacts/probes/tiny-constant-clamp-whole1880-20261005`.
+
+Recovery independently reclosed full original reference/digest/Torch/console
+and final-audit pins and admitted one stock FireSim job **1920** against 1880,
+with detached collector PID1576977. It is queued behind the correct SmolVLA
+baseline1906. [The admission record](perf_records/tiny_constant_clamp_stock1920_admission.json)
+preserves this transition separately from immutable qualification receipts.
+Actual whole-model cycles and performance promotion remain pending; no gain or
+composition with adjacent-RNE1902 or device-family1911/1912 is inferred.
 
 `token_usage_available=false`: child exact token allocation is unavailable.
 Root records shared campaign checkpoints; exclusive per-optimization billing
