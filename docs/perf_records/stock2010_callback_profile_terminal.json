@@ -1,0 +1,62 @@
+{
+  "schema": "complete_workspace_group_stock_v1",
+  "job_id": 2010,
+  "state": "DONE",
+  "phase": "DONE",
+  "exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/model.elf",
+  "elf_sha256": "10e5fa46dccef27628603a0411c435292bb964fffffc49538b957028d4c9bd7c",
+  "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "uart": "/scratch/firesim_queue/jobs/2010/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "9100a400b4113bb357359e88f5c3f7f0be84375c2dbe8d2473f8d7199e2eb224",
+  "kernel_cycles": 5285673388,
+  "raw_metric_label": "WORKSPACE_GROUP_INSTRUCTIONS",
+  "metric_semantics": "Frozen driver tick reads mcycle; stock hardware counter is cycles despite historical Spike label",
+  "numeric_pass": "original compiled54op consumer:786432 i8 words and1024 BF16 scales exact, guards/descriptors/inputbytes PASS; all8 counters match strictSpike",
+  "scope": "Complete original12head group/provider-only ROI, original compiled54op consumer observed after ROI. No whole-model or production fallback qualification. Historical INSTRUCTIONS label reads actual mcycle on stock hardware. Diagnostic exact2003 callback profile:480 nonoverlapping fence-inclusive callbacks and conserved outside time; instrumentation overhead remains included. Not pure array utilization or whole-model timing.",
+  "token_usage_available": false,
+  "callback_profile_cycles": [
+    [
+      0,
+      120,
+      18866823
+    ],
+    [
+      1,
+      240,
+      12452889
+    ],
+    [
+      2,
+      120,
+      4280666
+    ]
+  ],
+  "conserved_cycles": {
+    "roi": 5285673388,
+    "callbacks": 35600378,
+    "outside": 5250073010,
+    "count": 480
+  },
+  "callback_percent": 0.6735258762076202,
+  "outside_percent": 99.32647412379238,
+  "attribution_limit": "Callbacks include CPU dispatch/issue, DMA, array work, readback and fence wait. Outside includes allocation/init, host arithmetic and diagnostic bookkeeping. Pure array occupancy remains unknown.",
+  "paired_scope": "exact2003 diagnostic callback timing; original compiled consumer; allocation-aware conserved mcycle ROI",
+  "archive_uart": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2010_callback_profile_uart.txt",
+  "archived_utc": "2026-10-06T16:55:54.274864+00:00",
+  "control_job": 2003,
+  "uninstrumented_control_cycles": 5288926830,
+  "profiling_delta_cycles": -3253442,
+  "pins": {
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job2010_verified.json": "fb6abf380aaf1927362f00ba02e28a074f4ee393acfc353cb5b8ca4236f7e57f",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2010_callback_profile_uart.txt": "9100a400b4113bb357359e88f5c3f7f0be84375c2dbe8d2473f8d7199e2eb224",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/model.elf": "10e5fa46dccef27628603a0411c435292bb964fffffc49538b957028d4c9bd7c",
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job2010_expected_elf.json": "7f46d66b6c9cf99cfdc4144d55efe0c1d55c05538f6027bda7d113b9dc79e82b",
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job2010_staged_elf_check.json": "e278079bbb9ec81b4451ac12d8140ae86f0a5f7726fc6ddc94b86eb35965e3b0",
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job2010_staged_bitstream_check.json": "91d99344e9b49fae845843fa7f1db6fe7273a79160d19a5599d8e3ad674f3f3b"
+  },
+  "performance_claim": "Diagnostic partition only; code placement and timers perturb total. No speedup claim.",
+  "staging_reclosure": "Retained independent pre-teardown collector staging observations; original ELF and UART independently rehashed at archive."
+}
