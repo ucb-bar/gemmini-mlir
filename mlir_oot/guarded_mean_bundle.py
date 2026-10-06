@@ -128,21 +128,28 @@ void _mlir_ciface_{symbol}({symbol}_memref2 *result,{symbol}_memref2 *a,{symbol}
 '''
 
 
-def packed_nhwc_route(route):
+def packed_nhwc_route(route, *, require_word_lanes=True):
     """Prove the named transpose and preserve each channel's H/W order."""
     view = route['input'].owner
     b, c, h, w = route['shape']
     if (not isinstance(view, Operation) or view.name != 'linalg.transpose'
             or tuple(view.permutation.get_values()) != (0, 3, 1, 2)
             or tuple(view.inputs[0].type.get_shape()) != (b, h, w, c)
-            or c % 8 or not isinstance(view.inputs[0].type.encoding, NoneAttr)):
+            or (require_word_lanes and c % 8) or not isinstance(view.inputs[0].type.encoding, NoneAttr)):
         raise ValueError('packed mean requires an exact NHWC to BCHW transpose and channels divisible by8')
     view.verify()
     return route | dict(input=view.inputs[0], input_matrix_shape=[b*h*w, c], physical_layout='NHWC',
                         transpose_permutation=[0, 3, 1, 2])
 
 
-def build_and_apply(capture, llvm_bin, directory, *, packed_nhwc=False):
+def build_and_apply(capture, llvm_bin, directory, *, packed_nhwc=False, device_integer_sum=False):
+    if type(device_integer_sum) is not bool:
+        raise ValueError('device integer sum selection must be boolean')
+    if device_integer_sum:
+        if not packed_nhwc:
+            raise ValueError('device integer sum requires proved physical NHWC input')
+        from .device_mean_bundle import build_and_apply as build_device
+        return build_device(capture, llvm_bin, directory)
     capture, llvm_bin, directory = map(Path, (capture, llvm_bin, directory))
     directory.mkdir(parents=True, exist_ok=False)
     receipt = json.loads((capture/'capture_receipt.json').read_text())
@@ -189,6 +196,9 @@ def merlin_callbacks(llvm_bin, directory, base_callbacks):
     llvm_bin, directory = map(Path, (llvm_bin, directory))
     prepare, compile_base = base_callbacks
     record = json.loads((directory/'mean.json').read_text())
+    if record['schema'] == 'device_integer_sum_mean_bundle_v1':
+        from .device_mean_bundle import merlin_callbacks as device_callbacks
+        return device_callbacks(llvm_bin, directory, base_callbacks)
     pin = sha(directory/'mean.json')
     symbols = {r['symbol']: r for r in record['routes']}
     def check(source):
@@ -245,8 +255,9 @@ def main():
     parser.add_argument('--llvm-bin', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--packed-nhwc', action='store_true')
+    parser.add_argument('--device-integer-sum', action='store_true')
     args = parser.parse_args()
-    record = build_and_apply(args.derived_capture, args.llvm_bin, args.output, packed_nhwc=args.packed_nhwc)
+    record = build_and_apply(args.derived_capture, args.llvm_bin, args.output, packed_nhwc=args.packed_nhwc, device_integer_sum=args.device_integer_sum)
     print(json.dumps({'routes': len(record['routes']),
                       'manifest': str(args.output / 'mean.json'),
                       'object_sha256': record['object_sha256']}))
