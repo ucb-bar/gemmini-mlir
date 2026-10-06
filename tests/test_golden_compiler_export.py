@@ -94,6 +94,8 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     ['--spatial-command-loops'],
     ['--resident-weight-issue-tiles','2'],
     ['--export-golden-contraction','--resident-weight-issue-tiles','2'],
+    ['--flat-resident-planes'],
+    ['--export-golden-contraction','--flat-resident-planes'],
     ['--dense-cached-b-capacity'],
     ['--export-golden-contraction','--dense-cached-b-capacity'],
     ['--dense-accumulator-stripes'],

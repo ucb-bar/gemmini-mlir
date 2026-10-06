@@ -50,6 +50,8 @@ def main():
             "resident_acc_stripes",
             "capacity_cached_b",
             "resident_weight_packets",
+            "flat_resident_planes",
+            "flat_control_loops",
         ),
         required=True,
     )
@@ -157,6 +159,20 @@ def main():
                 **source_receipt.get("resident_options", {}),
                 compact_commands=True,
             )
+        elif args.schedule == "flat_control_loops":
+            from mlir_oot.golden_flat_conv import GoldenFlatConv
+
+            generator = GoldenFlatConv(
+                shape,
+                wide_a=True,
+                separate_b_bank=True,
+                virtual_padding=True,
+                loop_spatial=True,
+            )
+        elif args.schedule == "flat_resident_planes":
+            generator = GoldenResidentConv(
+                shape, flat_spatial_planes=True, compact_commands=True
+            )
         elif args.schedule == "resident_weight_packets":
             options = dict(source_receipt.get("resident_options", {}))
             options.update(
@@ -236,6 +252,12 @@ def main():
                 "full_reduction_weight_lifetime": "all increasing K panels retained across M stripes for current N group",
                 "input_lifetime": "complete A reserved through every N group; immutable caller storage",
             }
+        elif args.schedule == "flat_control_loops":
+            resource = {
+                "band_rows": generator.band_rows,
+                "input_panel_rows": generator.shape.bm * 4 * F.DIM,
+                "accumulator_rows": generator.shape.bm * shape.bn * F.DIM,
+            }
         elif dense:
             resource = {
                 "input_rows": shape.bm * ((shape.k + F.DIM - 1) // F.DIM) * F.DIM,
@@ -250,6 +272,7 @@ def main():
             "stride_residue",
             "compact_commands",
             "resident_weight_packets",
+            "flat_resident_planes",
         ):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,

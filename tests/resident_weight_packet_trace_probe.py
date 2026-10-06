@@ -18,7 +18,7 @@ def prove(generator):
     fn = generator.build().body.block.first_op
     scratch, accumulator, strides, blocks = {}, {}, {}, {}
     counts, requested = Counter(), Counter()
-    written = set()
+    written, input_written = set(), set()
     weights = destination = None
     for step in trace_static_function(
         fn,
@@ -50,6 +50,9 @@ def prove(generator):
                 for col in range(op.a("cols")):
                     cell = (local + row + col // F.DIM * blocks[state], col % F.DIM)
                     assert 0 <= cell[0] < F.SPAD_ROWS
+                    if generator.flat_spatial_planes and state == 0:
+                        assert cell not in input_written
+                        input_written.add(cell)
                     if zero:
                         scratch[cell] = None
                     else:
@@ -92,8 +95,12 @@ def prove(generator):
             output_y = generator.row_tiles[tile][0]
             for row in range(op.a("a_rows")):
                 oy, ox = (
-                    output_y + row // generator.output_pitch,
-                    row % generator.output_pitch,
+                    divmod(output_y + row, s.ow)
+                    if generator.flat_spatial_planes
+                    else (
+                        output_y + row // generator.output_pitch,
+                        row % generator.output_pitch,
+                    )
                 )
                 valid = oy < s.oh and ox < s.ow
                 for k in range(op.a("a_cols")):
@@ -132,6 +139,8 @@ def prove(generator):
                     written.add(offset)
             requested["store_bytes"] += op.a("rows") * op.a("cols") * width
     assert written == set(range(s.oh * s.ow * s.cout))
+    if generator.flat_spatial_planes:
+        assert len(input_written) == s.cin * generator.plane
     return {
         "commands": dict(counts),
         "requested_payload": dict(requested),

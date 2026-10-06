@@ -472,3 +472,13 @@ optimization_surfaces:
   emitted_delta: The normal capture command selects bounded ordinary K/spatial loops and packet DMA/compute interleaving without changing any output's source K order or numeric fields.
   validation: Decode actual emitted source cells and lifetimes, close all outputs/guards/inputs on matched original and independent tail capsules, retain default object identity and original full model gate.
   abandonment: Refuse incompatible family or placement; retain negative small-shape evidence and unknown timing until the current source-qualified scope is measured.
+- id: golden_flat_resident_kw_planes
+  scope: heuristic
+  path: mlir_oot/golden_resident_conv.py
+  symbol: select_flat_resident_planes
+  effects: [movement, residency, issue]
+  cca_axes: [memory.onchip_resident, memory.capacity_fit, compute.accumulator_resident]
+  mechanism: Reserve three horizontal-tap input planes with only valid output columns, allowing complete resident input to feed flat output tiles across logical row boundaries.
+  emitted_delta: The opt-in normal capture route removes repeated input panel loads while preserving increasing source K, accumulator destinations, typed stores and bounded CPU command loops.
+  validation: Prove every emitted source cell, disjoint input DMA partitions and live extents; qualify default object identity, independent non-square/tail cases and unchanged original whole-model accuracy.
+  abandonment: Preserve the previous generator on unproved padding, incompatible source stride, paired readout or declared storage capacity refusal; no profitability or physical traffic claim follows from fewer requested input bytes.

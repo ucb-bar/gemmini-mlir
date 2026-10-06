@@ -70,6 +70,7 @@ def retain_resident_commands(control):
         row_residue=control.row_residue,
         compact_commands=True,
         weight_issue_tiles=control.weight_issue_tiles,
+        flat_spatial_planes=control.flat_spatial_planes,
     )
     for name in ("resident_stripe_decision", "source_stride_decision"):
         if hasattr(control, name):
@@ -114,6 +115,7 @@ def issue_resident_weight_packets(control, *, tiles=2):
             row_residue=control.row_residue,
             compact_commands=True,
             weight_issue_tiles=tiles,
+            flat_spatial_planes=control.flat_spatial_planes,
         )
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
@@ -140,6 +142,58 @@ def issue_resident_weight_packets(control, *, tiles=2):
     return selected, decision
 
 
+def select_flat_resident_planes(control):
+    """Explicitly replace a proved virtual-pad flat band with complete A.
+
+    Horizontal-tap planes remove halo lanes from the mesh row sequence. The
+    capacity proof covers all three immutable copies, live weight storage and
+    the complete output accumulator panel. No timing estimate selects shapes.
+    """
+    from .golden_flat_conv import GoldenFlatConv
+
+    decision = {
+        "applied": False,
+        "automatic_policy": False,
+        "performance": "UNKNOWN",
+        "timing_claim": False,
+        "selection": "explicit flat kw-plane residency",
+    }
+    if type(control) is not GoldenFlatConv or not control.virtual_padding:
+        return control, dict(
+            decision, refusal="Requires proved virtual-pad flat convolution"
+        )
+    if control.store_plan is not None:
+        return control, dict(
+            decision,
+            refusal="Paired readout ABI is not supported by this resident family",
+        )
+    try:
+        selected = GoldenResidentConv(
+            control.conv, flat_spatial_planes=True, compact_commands=True
+        )
+    except ValueError as failure:
+        return control, dict(decision, refusal=str(failure))
+    decision.update(
+        applied=True,
+        refusal=None,
+        input_reserved_interval=[0, control.conv.cin // F.DIM * selected.plane],
+        kw_plane_rows=(control.conv.h + 2) * control.conv.w,
+        channel_plane_rows=selected.plane,
+        weight_reserved_interval=[
+            selected.bbase,
+            selected.bbase + control.conv.bn * F.DIM,
+        ],
+        accumulator_rows=len(selected.row_tiles) * control.conv.bn * F.DIM,
+        flat_output_tiles=len(selected.row_tiles),
+        source_reduction_order="Original increasing HWIO K for every output",
+        lifetime="Disjoint partitioned immutable A planes remain live through all N panels; B is reloaded per increasing K; completed ACC is stored before reuse",
+        layout="source cell(ki,kw,padded_y,x)=NHWC(padded_y-1,x+kw-1,ki*DIM+lane) or static zero",
+        requested_DMA="Payload only; physical DRAM and overlap UNKNOWN",
+    )
+    selected.flat_resident_decision = decision
+    return selected, decision
+
+
 class GoldenResidentConv(GoldenGemm):
     def __init__(
         self,
@@ -153,6 +207,7 @@ class GoldenResidentConv(GoldenGemm):
         row_residue=False,
         compact_commands=False,
         weight_issue_tiles=None,
+        flat_spatial_planes=False,
     ):
         s.validate()
         if weight_issue_tiles is not None and (
@@ -181,12 +236,28 @@ class GoldenResidentConv(GoldenGemm):
         ):
             raise ValueError("resident row residue layout requires source stride2")
         self.row_residue = row_residue
+        if type(flat_spatial_planes) is not bool or (
+            flat_spatial_planes
+            and (source_stride or row_residue or s.stride != 1 or rows_per_tile != 1)
+        ):
+            raise ValueError(
+                "flat resident planes require stride1 and no row grouping/residue"
+            )
+        self.flat_spatial_planes = flat_spatial_planes
         self.conv = s
-        if not source_stride and (s.stride != 1 or s.w + 2 > F.DIM):
+        if (
+            not source_stride
+            and not flat_spatial_planes
+            and (s.stride != 1 or s.w + 2 > F.DIM)
+        ):
             raise ValueError(
                 "compact resident convolution needs stride1 and width+halo<=DIM"
             )
-        if s.explicit_halo or s.ow > F.DIM or s.cin % F.DIM:
+        if (
+            s.explicit_halo
+            or (s.ow > F.DIM and not flat_spatial_planes)
+            or s.cin % F.DIM
+        ):
             raise ValueError(
                 "resident convolution needs unpadded input, output width<=DIM and aligned Cin"
             )
@@ -197,6 +268,9 @@ class GoldenResidentConv(GoldenGemm):
         self.plane = (
             self.residue_rows * self.input_pitch * (s.stride if row_residue else 1)
         )
+        if flat_spatial_planes:
+            self.input_pitch = s.w
+            self.plane = 3 * (s.h + 2) * s.w
         self.output_pitch = (
             self.input_pitch // s.stride if row_residue else self.input_pitch
         )
@@ -205,7 +279,10 @@ class GoldenResidentConv(GoldenGemm):
         if (
             type(rows_per_tile) is not int
             or not 1 <= rows_per_tile <= s.oh
-            or (rows_per_tile - 1) * self.output_pitch + s.ow > F.DIM
+            or (
+                not flat_spatial_planes
+                and (rows_per_tile - 1) * self.output_pitch + s.ow > F.DIM
+            )
         ):
             raise ValueError(
                 "resident row group must fit its padded spatial span in DIM"
@@ -219,9 +296,17 @@ class GoldenResidentConv(GoldenGemm):
             )
             for y in range(0, s.oh, rows_per_tile)
         )
+        if flat_spatial_planes:
+            self.output_pitch = F.DIM
+            self.row_tiles = tuple(
+                (m, 1, min(F.DIM, s.oh * s.ow - m))
+                for m in range(0, s.oh * s.ow, F.DIM)
+            )
         self.spatial_step = (
             rows_per_tile * (1 if row_residue else s.stride) * self.input_pitch
         )
+        if flat_spatial_planes:
+            self.spatial_step = F.DIM
         if compact_commands and any(
             self.source_offset(y, kh, kw)
             != self.source_offset(0, kh, kw) + tile * self.spatial_step
@@ -266,6 +351,8 @@ class GoldenResidentConv(GoldenGemm):
                         start = ki * self.plane + self.source_offset(y, kh, kw)
                         stop = start + (span - 1) * s.stride + 1
                         end = (ki + 1) * self.plane
+                        if flat_spatial_planes:
+                            end = ki * self.plane + (kw + 1) * (s.h + 2) * s.w
                         if self.row_residue:
                             end = (
                                 ki * self.plane
@@ -302,7 +389,55 @@ class GoldenResidentConv(GoldenGemm):
         return padded_y
 
     def source_offset(self, output_y, kh, kw):
+        if self.flat_spatial_planes:
+            return kw * (self.conv.h + 2) * self.conv.w + kh * self.conv.w + output_y
         return self.input_row(output_y * self.conv.stride + kh) * self.input_pitch + kw
+
+    def output_pixel(self, start, row):
+        return start if self.flat_spatial_planes else (start + row) * self.conv.ow
+
+    def _load_flat_input(self, zero):
+        """Disjoint kw-shifted planes with no inter-row halo lanes.
+
+        Each row owns exactly W cells, corresponding to x+kw-1. The three
+        planes duplicate immutable source pixels; only statically out-of-bounds
+        cells are zero. Flattened mesh rows may cross source row boundaries.
+        """
+        s = self.conv
+        for ci in range(0, s.cin, 4 * F.DIM):
+            cols = min(4 * F.DIM, s.cin - ci)
+            base = (ci // F.DIM) * self.plane
+            for kw in range(3):
+                for y in range(s.h + 2):
+                    row = base + (kw * (s.h + 2) + y) * s.w
+                    lo, hi = max(0, 1 - kw), min(s.w, s.w + 1 - kw)
+                    segments = (
+                        [(0, s.w, True)]
+                        if y in (0, s.h + 1)
+                        else [(0, lo, True), (lo, hi, False), (hi, s.w, True)]
+                    )
+                    for start, stop, is_zero in segments:
+                        for x in range(start, stop, F.DIM):
+                            ptr = (
+                                zero
+                                if is_zero
+                                else self._ptr(
+                                    self.a,
+                                    self.fb.const((y - 1) * s.w + x + kw - 1),
+                                    s.cin,
+                                    self.fb.const(ci),
+                                )
+                            )
+                            self._rocc(
+                                "mvin",
+                                {
+                                    "local": row + x,
+                                    "rows": min(F.DIM, stop - x),
+                                    "cols": cols,
+                                    "load_id": 0,
+                                },
+                                ptr,
+                            )
 
     def build(self):
         s = self.conv
@@ -319,7 +454,9 @@ class GoldenResidentConv(GoldenGemm):
         )
         zero = self.fb.add(llvm.IntToPtrOp(self.fb.const(0))).results[0]
         # These loads partition the scratch input exactly: no overwrite races.
-        for ci in range(0, s.cin, 4 * F.DIM):
+        if self.flat_spatial_planes:
+            self._load_flat_input(zero)
+        for ci in range(0, 0 if self.flat_spatial_planes else s.cin, 4 * F.DIM):
             cols = min(4 * F.DIM, s.cin - ci)
             base = (ci // F.DIM) * self.plane
             padded_rows = self.residue_rows * s.stride if self.row_residue else s.h + 2
@@ -378,8 +515,12 @@ class GoldenResidentConv(GoldenGemm):
             tiles retain it. A and C addresses use proved affine row bounds;
             a final short row group remains a separate exact static command.
             """
-            full = s.oh // self.rows_per_tile
-            span = (self.rows_per_tile - 1) * self.output_pitch + s.ow
+            full = (
+                s.oh * s.ow // F.DIM
+                if self.flat_spatial_planes
+                else s.oh // self.rows_per_tile
+            )
+            span = self.row_tiles[0][2]
             offset = self.source_offset(0, kh, kw)
             a_extent = (s.cin // F.DIM) * self.plane
 
@@ -442,7 +583,11 @@ class GoldenResidentConv(GoldenGemm):
                 self.fb.for_loop(
                     1, full, 1, lambda tile: spatial(tile, span), retain_loop=True
                 )
-            if s.oh % self.rows_per_tile:
+            if (
+                (s.oh * s.ow % F.DIM and full > 0)
+                if self.flat_spatial_planes
+                else s.oh % self.rows_per_tile
+            ):
                 spatial(None, self.row_tiles[-1][2], False, len(self.row_tiles) - 1)
 
         def channel(n0, nr):
@@ -538,7 +683,7 @@ class GoldenResidentConv(GoldenGemm):
                         step = 4 if s.output_dtype == "i8" else 1
                         ptr = self._ptr(
                             self.c,
-                            self.fb.const((y + row) * s.ow),
+                            self.fb.const(self.output_pixel(y, row)),
                             s.cout,
                             self._tile(n0, d),
                             4 if s.output_dtype == "i32" else 1,
@@ -550,7 +695,7 @@ class GoldenResidentConv(GoldenGemm):
                                     (tile * s.bn + d) * F.DIM + row * self.output_pitch,
                                     full_row=s.output_dtype == "i32",
                                 ),
-                                "rows": s.ow,
+                                "rows": span if self.flat_spatial_planes else s.ow,
                                 "cols": sum(nr[d : d + step]),
                             },
                             ptr,
@@ -616,7 +761,7 @@ class GoldenResidentConv(GoldenGemm):
                         step = 4 if s.output_dtype == "i8" else 1
                         ptr = self._ptr(
                             self.c,
-                            self.fb.const((y + row) * s.ow),
+                            self.fb.const(self.output_pixel(y, row)),
                             s.cout,
                             self._tile(n0, d),
                             4 if s.output_dtype == "i32" else 1,
@@ -628,7 +773,7 @@ class GoldenResidentConv(GoldenGemm):
                                     (tile * s.bn + d) * F.DIM + row * self.output_pitch,
                                     full_row=s.output_dtype == "i32",
                                 ),
-                                "rows": s.ow,
+                                "rows": span if self.flat_spatial_planes else s.ow,
                                 "cols": sum(nr[d : d + step]),
                             },
                             ptr,
@@ -705,7 +850,7 @@ class GoldenResidentConv(GoldenGemm):
                     for d in range(0, len(nr), step):
                         ptr = self._ptr(
                             self.c,
-                            self.fb.const((y + row) * s.ow),
+                            self.fb.const(self.output_pixel(y, row)),
                             s.cout,
                             self._tile(n0, d),
                             4 if s.output_dtype == "i32" else 1,
@@ -717,7 +862,7 @@ class GoldenResidentConv(GoldenGemm):
                                     (tile * s.bn + d) * F.DIM + row * self.output_pitch,
                                     full_row=s.output_dtype == "i32",
                                 ),
-                                "rows": s.ow,
+                                "rows": span if self.flat_spatial_planes else s.ow,
                                 "cols": sum(nr[d : d + step]),
                             },
                             ptr,
@@ -803,7 +948,7 @@ class GoldenResidentConv(GoldenGemm):
                     for d in range(0, len(nr), step):
                         ptr = self._ptr(
                             self.c,
-                            self.fb.const((y + row) * s.ow),
+                            self.fb.const(self.output_pixel(y, row)),
                             s.cout,
                             self._tile(n0, d),
                             4 if s.output_dtype == "i32" else 1,
@@ -815,7 +960,7 @@ class GoldenResidentConv(GoldenGemm):
                                     (tile * s.bn + d) * F.DIM + row * self.output_pitch,
                                     full_row=s.output_dtype == "i32",
                                 ),
-                                "rows": s.ow,
+                                "rows": span if self.flat_spatial_planes else s.ow,
                                 "cols": sum(nr[d : d + step]),
                             },
                             ptr,
@@ -878,7 +1023,7 @@ class GoldenResidentConv(GoldenGemm):
                     for d in range(0, len(nr), step):
                         ptr = self._ptr(
                             self.c,
-                            self.fb.const((y + row) * s.ow),
+                            self.fb.const(self.output_pixel(y, row)),
                             s.cout,
                             self._tile(n0, d),
                             4 if s.output_dtype == "i32" else 1,
@@ -890,7 +1035,7 @@ class GoldenResidentConv(GoldenGemm):
                                     (tile * s.bn + d) * F.DIM + row * self.output_pitch,
                                     full_row=s.output_dtype == "i32",
                                 ),
-                                "rows": s.ow,
+                                "rows": span if self.flat_spatial_planes else s.ow,
                                 "cols": sum(nr[d : d + step]),
                             },
                             ptr,
@@ -917,6 +1062,10 @@ class GoldenResidentConv(GoldenGemm):
         module.attributes["gemmini.resident_conv_layout"] = StringAttr(
             "channel-tile-major padded spatial planes; disjoint input DMA partitions"
         )
+        if self.flat_spatial_planes:
+            module.attributes["gemmini.resident_conv_flat_spatial_planes"] = StringAttr(
+                "three kw-shifted halo-free planes per channel tile; flat output panels"
+            )
         if self.rows_per_tile != 1:
             module.attributes["gemmini.resident_conv_rows_per_tile"] = StringAttr(
                 str(self.rows_per_tile)
