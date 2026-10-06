@@ -1,0 +1,4284 @@
+{
+  "scope": "Read-only source/view/format census, not installed physical reuse or cycle prediction",
+  "source_sha256": "1056ae3279d19fbfd82f3d9abee376fdf462ba7c4b3b734048c0d42cbfd461a8",
+  "original_full_source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+  "per_group_encode_calls": {
+    "Q": 24,
+    "K": 24,
+    "probability_parts": 72,
+    "V_parts": 72,
+    "total": 192
+  },
+  "per_group_encoded_words": {
+    "Q": 393216,
+    "K": 786432,
+    "probability_parts": 3145728,
+    "V_parts": 786432,
+    "total": 5111808
+  },
+  "cross_group_KV": {
+    "equivalent_view_groups": 96,
+    "encode_calls_before": 4608,
+    "encode_calls_unique": 1152,
+    "potential_calls_removed": 3456,
+    "input_words_before": 75497472,
+    "unique_words": 18874368,
+    "potential_repeated_words_removed": 56623104,
+    "potential_repeated_f32_bytes_removed": 226492416,
+    "potential_repeated_original_bf16_bytes": 113246208,
+    "conservative_peak_prepared_payload_bytes": 30036480,
+    "payload_terms": "19 bytes/element = source f32 + reconstructed f32/f64 + three i8 planes;9 bytes/row = f64 step + equality flag. Excludes alignment, handles and optional norm metadata; scope one four-consumer owner group.",
+    "physical_lifetime_installed": false
+  },
+  "local_Q": {
+    "potential_calls_removed_per_group": 12,
+    "potential_words_removed_per_group": 196608,
+    "decision": "Do not repeat prior negative local-query preparation experiment."
+  },
+  "probability_parts": "72 distinct source-produced probability subviews per group; no cross-query reuse proof",
+  "requirements": [
+    "typed immutable source owner and static view identity, not pointer or value equality",
+    "explicit head-first transposed B physical format and exact encoding operation identity",
+    "prepared source/reconstructed/planes/steps/flags owners dominate all four consumers and survive their synchronous callbacks",
+    "fresh owner epoch, alias exclusion, no writes/invalidation until final consumer",
+    "existing scratch-bound equality proof cannot be reused after w->b/w->br overwrite; prepared-handle proof and consumer binding required",
+    "full allocation/gather/format/lifetime costs must be measured"
+  ],
+  "rows": [
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 1030,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 1030,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 1037,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 2733,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 2733,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 2740,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 4436,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 4436,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 4443,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 6139,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 6139,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 6146,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 7842,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 7842,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 7849,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 9545,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 9545,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 9552,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 11248,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 11248,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 11255,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 12951,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 12951,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 12958,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 14654,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 14654,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 14661,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 16357,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 16357,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 16364,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        36,
+        37,
+        38,
+        39
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 18060,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 18060,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 18067,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        40,
+        41,
+        42,
+        43
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 19763,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        192,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        384,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    },
+    {
+      "family": "K",
+      "source_root_ordinal_trace_only": 19763,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 6144,
+      "vector_length": 64,
+      "words": 393216,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 7526400
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        512,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        704,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 192,
+      "words": 147456,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 2808576
+    },
+    {
+      "family": "V",
+      "source_root_ordinal_trace_only": 19770,
+      "offsets": [
+        0,
+        0,
+        896,
+        0
+      ],
+      "sizes": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "strides": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "consumer_calls": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "heads": 12,
+      "rows": 768,
+      "vector_length": 128,
+      "words": 98304,
+      "encode_calls_before": 48,
+      "encode_calls_unique": 12,
+      "physical_format": {
+        "planes": "[head,plane,k,column]",
+        "radix": 128,
+        "digits": 3,
+        "row_step": "source-derived exact power of two",
+        "source_and_reconstructed": "[head,column,k]",
+        "equality": "numeric source/reconstruction equality; does not prove source FMA exactness",
+        "rounding": "stable source RNE"
+      },
+      "prepared_bytes_conservative": 1874688
+    }
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/preparation_census.json": "93154022f17c4b82b37fdcedd6ac2175b1110acb6f4938b4be77f0f3dfa2e397",
+    "/scratch/agustin/tmp/gemmini-polynomial-outline-20261006/out/polynomial_outline/candidate_target/provider.c": "01192f5129c910dff1c3e340ed011de9cc5dbd54b10613e4ba38ae95f9361ecd",
+    "/scratch/agustin/tmp/gemmini-polynomial-outline-20261006/out/polynomial_outline/candidate_target/encoded_row_equality.h": "b123afd629a20009b334f84f9a90438a78447a77b06982be353d86f583c1c303",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/bounded_native/build/device_prepared/source_control/source_group_calls.json": "a36c6c54ccfd3345353d6d180b6859f88267e283f20db3b715d507a6aa55b5b4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/bounded_native/build/device_prepared/source_control/source_groups.mlir": "1056ae3279d19fbfd82f3d9abee376fdf462ba7c4b3b734048c0d42cbfd461a8",
+    "/scratch/agustin/tmp/gemmini-polynomial-outline-20261006/docs/perf_records/source_snapshots/encoder_reuse_census.py": "b582dd988a7d05d735bef4c1513d72a11db67e0abc564a4b43282c9d6b57b14a"
+  },
+  "cycles_saved": "unknown",
+  "fraction_of_355M_encoder_instructions_saved": "unknown; no per-family current PC attribution",
+  "token_usage_available": false
+}
