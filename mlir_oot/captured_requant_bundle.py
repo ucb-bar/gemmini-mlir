@@ -46,8 +46,11 @@ void _mlir_ciface_{symbol}(memref2 *r,memref2 *a,memref2 *b,memref2 *c) {{
 '''
 
 
-def scalar_oracle(s,kernel,direct):
+def scalar_oracle(s,kernel,direct,*,input_view=None):
     scale=s.scale.hex()+'f';low=0 if s.relu else -128
+    if input_view is not None:
+        if direct:raise ValueError('segmented matrix input cannot enter direct convolution')
+        GoldenGemm(s,input_view=input_view)
     if direct:
         loops=f'''for(int y=0;y<{s.oh};y++) for(int x=0;x<{s.ow};x++) for(int n=0;n<{s.cout};n++) {{
  uint32_t acc=0;
@@ -57,8 +60,10 @@ def scalar_oracle(s,kernel,direct):
  acc+=(uint32_t)((int32_t)a[(iy*{s.w+(2 if s.explicit_halo else 0)}+ix)*{s.cin}+ci]*(int32_t)b[((ky*3+kx)*{s.cin}+ci)*{s.cout}+n]); }}
  int index=(y*{s.ow}+x)*{s.cout}+n;'''
     else:
+        address=(f'{input_view.origin}+(m/{input_view.segment_rows})*{input_view.segment_stride}+(m%{input_view.segment_rows})*{input_view.row_stride}+k'
+                 if input_view is not None else f'm*{s.k}+k')
         loops=f'''for(int m=0;m<{s.m};m++) for(int n=0;n<{s.n};n++) {{
- uint32_t acc=0;for(int k=0;k<{s.k};k++)acc+=(uint32_t)((int32_t)a[m*{s.k}+k]*(int32_t)b[k*{s.n}+n]);
+ uint32_t acc=0;for(int k=0;k<{s.k};k++)acc+=(uint32_t)((int32_t)a[{address}]*(int32_t)b[k*{s.n}+n]);
  int index=m*{s.n}+n;'''
     if s.output_dtype == 'i32':
         return f'''#include <stdint.h>\nvoid {kernel}(int8_t*a,int8_t*b,int32_t*c) {{{loops} c[index]=(int32_t)acc; }} }}\n'''

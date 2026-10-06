@@ -64,3 +64,36 @@ source allocation cells are synthetic zeros. GSIM has a different memory
 system from stock FireSim. The result admits the typed consumer binding work;
 it does not establish a whole-model or stock speedup. See
 `perf_records/segmented_input_original_projection_gsim.json`.
+
+## Explicit normal-build consumer binding
+
+`segmented_input_binding.merlin_callbacks` wraps the existing source-bound
+catalog callbacks. It derives maps from the prepared typed IR and checks that
+the reconstructed control has the exact target IR hash recorded by the current
+catalog. It requires a complete resident-A layout and the existing zero-error
+numeric contract. Symbol names identify artifacts and do not choose eligibility.
+
+The provider supplies explicit `FreshTensorWriterContract` entries for dense
+producer storage and the consumer output. Merlin validates the same contracts
+on a clone, proves every accepted map, and changes the consumer input to the
+unchanged owner SSA value. A new declaration preserves all numeric attributes
+and the output ABI. The target emits a separate segmented kernel, ranked owner
+descriptor adapter, and scalar oracle. Their hashes enter the actual selected
+catalog, whose source snapshot is the accepted IR. Original objects remain
+available under their original symbols.
+
+The returned third callback supplies the updated fresh-writer contracts; the
+host ABI stage must pass those to `rewrite_fresh_tensor_writers` before upstream
+bufferization. That stage retains a read-only reference to the dense owner,
+owns a fresh output, and delegates allocation lifetime to upstream MLIR. The
+provider may neither write nor retain the input. The binding helper removes no
+view operations; upstream canonicalization handles dead views after the
+consumer accepts the owner.
+
+The option defaults to false and returns the original preparation/build
+callbacks without I/O. All 52 default scalar oracle sources remain byte
+identical (`perf_records/segmented_input_default_oracle_identity.json`). The
+independent normal-build test compiles both target implementations, selects the
+new source/object/adapter/oracle, preserves a live producer output, checks every
+result repeatedly, and verifies the adapter traps on an invalid owner shape.
+Whole-model accuracy and stock timing remain unknown until separately checked.
