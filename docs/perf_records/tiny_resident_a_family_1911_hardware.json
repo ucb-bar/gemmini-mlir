@@ -1,0 +1,77 @@
+{
+  "schema": "tiny_resident_a_family_stock_archive_v1",
+  "token_usage_available": false,
+  "receipt_path": "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job1911_verified.json",
+  "receipt_sha256": "554508563e1add4f50b1d9e01573f59a505936cf2efd7b97924f0541ce57b0f3",
+  "result": {
+    "schema": "golden_firesim_verified_probe_v1",
+    "job_id": 1911,
+    "state": "DONE",
+    "phase": "DONE",
+    "exit_code": 0,
+    "elf": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-family-20261005/whole_family_selected/build/model.elf",
+    "elf_sha256": "035b0458e0f899cd3e4406d525c950e7a72f72a63371c4786db0551b56ea673a",
+    "actual_simulated_elf": "/scratch/firesim_queue/jobs/1911/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+    "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+    "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+    "uart": "/scratch/firesim_queue/jobs/1911/simulation/sim_slot_0/uartlog",
+    "uart_sha256": "175248d6c1a6e69a990c089111f91c20bc8f36817a2ac1a61e4deb47f421e75d",
+    "marker_kind": "WHOLE_MODEL",
+    "kernel_cycles": 529006294,
+    "numeric_pass": "full f32le SHA256 match: 256000 outputs versus /scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-family-20261005/whole_family_selected/host/output.npy",
+    "output_digest_evidence": {
+      "elements": 256000,
+      "bytes": 1024000,
+      "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+      "reference": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-family-20261005/whole_family_selected/host/output.npy",
+      "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+      "validation": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-calibrated-resident-a-family-20261005/whole_family_selected/reference_validation.json",
+      "validation_sha256": "98a9240aa98a531c201c8c2e6ea15ee092b3322aa83f1ad447cf31291e1f5b97"
+    },
+    "control_job": 1880,
+    "token_usage_available": false
+  },
+  "independent_reclosure": {
+    "elf": "035b0458e0f899cd3e4406d525c950e7a72f72a63371c4786db0551b56ea673a",
+    "uart": "175248d6c1a6e69a990c089111f91c20bc8f36817a2ac1a61e4deb47f421e75d"
+  },
+  "staged_evidence": {
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job1911_staged_elf_check.json": {
+      "sha256": "ae256fc80fe4b9807ee17f7a86979c296ba4cbbdfd091a379b0c4f688b6894a8",
+      "record": {
+        "job_id": 1911,
+        "elf_sha256": "035b0458e0f899cd3e4406d525c950e7a72f72a63371c4786db0551b56ea673a",
+        "observation": "actual simulator-staged ELF hash compared before teardown"
+      }
+    },
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job1911_staged_bitstream_check.json": {
+      "sha256": "e9098b1cdc24e45e01172ef7fde5cece9876edd296d7c9ee18bb01e7272b81e4",
+      "record": {
+        "job_id": 1911,
+        "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+        "observation": "actual staged firesim.bit hash compared before teardown"
+      }
+    },
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job1911_attribution_note.json": {
+      "sha256": "536b91b782b294291af4b12ce5fd813d9a406008a81e8366c79a447d81154878",
+      "record": {
+        "job_id": 1911,
+        "control_job": 1880,
+        "qualification_unchanged": true,
+        "caveat": "Owner reports mlir_rt.o additionally differs: candidate runtime compiled with modelClang ABI vsoldGCC. Hostmodel/native+targetLLVM/call/weights/malloc/libc/console/crt match; markerobject differs. Whole outputgate valid; not pure device-schedule-only attribution. No additivecausalclaim.",
+        "source": "tiny_performance handoff before jobexecution"
+      }
+    }
+  },
+  "postcollection_limit": "Queue already removed staged ELF before independent terminal rehash. Durable live staged checks and terminal collector pins retained. Current original ELF, UART, reference and validation freshly rehashed.",
+  "comparison": {
+    "control_job": 1880,
+    "control_cycles": 531072370,
+    "candidate_cycles": 529006294,
+    "best_job": 1902,
+    "best_cycles": 527255504
+  },
+  "attribution": "Normal source-calibrated resident-A family plus runtime compiler consistency change. Device-only controlled arm1912 remains pending. Same original256000 output words and Torch gate; no isolated schedule attribution or champion change."
+}
