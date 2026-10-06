@@ -10,4 +10,15 @@ The existing ranked adapter requires two complete disjoint byte buffers, both di
 
 Normal compilation composes the existing explicit `flat_resident_planes=True` option with `readout_pair_policy='source_proven'`. Selection uses typed padding/stride/resource facts. Unsupported shapes or absent proofs retain the prior schedule. No workload or symbol selects the compiler strategy.
 
+Weight-packet selection can independently constrain its admitted input layouts.
+`issue_resident_weight_packets(..., include_flat_planes=False)` and normal
+`build(..., resident_weight_issue_flat_planes=False)` retain an already selected
+flat spatial-plane schedule. Channel-plane schedules still receive the requested
+packet transform. The CLI spelling is
+`--resident-weight-issue-channel-planes-only`. The default remains `True`, with
+the same emitted code and manifest fields as before. This is an explicit plan
+constraint; exclusion does not imply that the flat packet schedule is illegal
+or slower. Measured profitability and whole-model composition remain separate
+gates.
+
 `test_resident_paired_stores.py` and the shared resident CFG probe prove non-square shapes, spatial/channel tails, both output extents, source cells, increasing K, accumulator lifetimes, final fence, conservative range refusal and unchanged default IR. `gsim_paired_resident_conv_probe.py` measures the complete producer, both stores and exact decoder, then compares every output byte, the complete second primitive output, both buffers' guards and all input bytes at common addresses. GSIM timing is a capsule metric, not a whole FireSim prediction.

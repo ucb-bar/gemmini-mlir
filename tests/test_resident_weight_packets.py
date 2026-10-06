@@ -97,3 +97,55 @@ def test_normal_packet_option_rejects_untyped_or_unproved_selection(tmp_path):
                 resident_weight_issue_tiles=value,
             )
     assert not (tmp_path / "output").exists()
+
+
+@pytest.mark.parametrize("h,w,cin,cout", [(3, 5, 32, 67), (1, 17, 16, 19)])
+def test_packet_layout_policy_preserves_flat_plan_without_claiming_illegality(
+    h, w, cin, cout
+):
+    from merlin.xdsl_dialects._common import text
+
+    from mlir_oot.golden_resident_conv import issue_resident_weight_packets
+
+    shape = ConvShape(h, w, cin, cout, bn=4, output_dtype="i32")
+    control = GoldenResidentConv(shape, flat_spatial_planes=True, compact_commands=True)
+    unchanged, refusal = issue_resident_weight_packets(
+        control, include_flat_planes=False
+    )
+    assert unchanged is control
+    assert not refusal["applied"] and refusal["performance"] == "UNKNOWN"
+    assert "layout policy" in refusal["refusal"]
+    assert proof.prove(unchanged)["all_output_cells_written_once"] == h * w * cout
+
+    default, default_decision = issue_resident_weight_packets(
+        GoldenResidentConv(shape, flat_spatial_planes=True, compact_commands=True)
+    )
+    explicit, explicit_decision = issue_resident_weight_packets(
+        GoldenResidentConv(shape, flat_spatial_planes=True, compact_commands=True),
+        include_flat_planes=True,
+    )
+    assert default_decision == explicit_decision and default_decision["applied"]
+    assert text(default.build(), generic=True) == text(explicit.build(), generic=True)
+
+
+def test_packet_layout_policy_retains_channel_plane_choice_and_type_gate(tmp_path):
+    from mlir_oot.captured_requant_bundle import build
+    from mlir_oot.golden_resident_conv import issue_resident_weight_packets
+
+    shape = ConvShape(5, 3, 32, 67, bn=4, output_dtype="i32")
+    selected, decision = issue_resident_weight_packets(
+        GoldenResidentConv(shape, rows_per_tile=2), include_flat_planes=False
+    )
+    assert decision["applied"] and not selected.flat_spatial_planes
+    assert proof.prove(selected)["all_output_cells_written_once"] == 1005
+    for value in [None, 0, 1, "channel_planes"]:
+        with pytest.raises(ValueError, match="flat-plane"):
+            issue_resident_weight_packets(selected, include_flat_planes=value)
+        with pytest.raises(ValueError, match="flat-plane"):
+            build(
+                tmp_path / "missing",
+                tmp_path / "tools",
+                tmp_path / "output",
+                resident_weight_issue_flat_planes=value,
+            )
+    assert not (tmp_path / "output").exists()

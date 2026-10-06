@@ -90,10 +90,12 @@ def retain_resident_commands(control):
     return selected, decision
 
 
-def issue_resident_weight_packets(control, *, tiles=2):
+def issue_resident_weight_packets(control, *, tiles=2, include_flat_planes=True):
     """Choose explicitly requested packet granularity on a proved resident layout."""
     if type(tiles) is not int or not 1 <= tiles <= 4:
         raise ValueError("weight issue tiles must be an integer in 1..4")
+    if type(include_flat_planes) is not bool:
+        raise ValueError("flat-plane packet admission must be boolean")
     decision = {
         "applied": False,
         "automatic_policy": False,
@@ -104,6 +106,11 @@ def issue_resident_weight_packets(control, *, tiles=2):
     if type(control) is not GoldenResidentConv:
         return control, dict(
             decision, refusal="Current family has no proved complete resident input"
+        )
+    if control.flat_spatial_planes and not include_flat_planes:
+        return control, dict(
+            decision,
+            refusal="Flat spatial planes excluded by explicit packet layout policy",
         )
     try:
         selected = GoldenResidentConv(
