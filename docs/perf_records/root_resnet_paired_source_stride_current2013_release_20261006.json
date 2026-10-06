@@ -1,0 +1,38 @@
+{
+  "schema": "golden_root_paired_source_stride_release_v1",
+  "status": "pass",
+  "qualification": "/scratch/agustin/tmp/gemmini-paired-source-stride-20261006/docs/perf_records/resnet_paired_source_stride_current2013_qualified.json",
+  "qualification_sha256": "d80f6313ca796b8d6d69294c76e159abe834d156205305e54ecc602d47339a5f",
+  "pin_count": 7306,
+  "pins_rehashed": true,
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-paired-source-stride-20261006/out/paired_source_stride/normal_source/controlled2013/candidate/model.elf",
+    "elf_sha256": "04044f0bde47ab2a358bc77bd8de7c00e333fe3a640a2d0e06885a40ba3b66ab"
+  },
+  "control": {
+    "job": 2013,
+    "cycles": 32553639,
+    "elf": "/scratch/agustin/tmp/gemmini-paired-source-stride-20261006/out/paired_source_stride/normal_source/controlled2013/control/model.elf",
+    "elf_sha256": "2757df664036fd2c9c4dc86951ac69c1b042af62f12cbba66984cff8c540411e"
+  },
+  "capsule_evidence": {
+    "original_control_cycles": 1038114,
+    "original_candidate_cycles": 893198,
+    "scope": "GSIM complete producer, both stores, final fence and decoder; ranked descriptors/allocation excluded",
+    "independent_control_cycles": 13343,
+    "independent_candidate_cycles": 14913,
+    "independent_result": "Negative; no automatic profitability promotion"
+  },
+  "original_outputs": 1000,
+  "atol": 0,
+  "rtol": 0,
+  "fresh_whole_elf_zero_FSM": true,
+  "unchanged_2013_control_byte_reproduced": true,
+  "changed_kernels": [
+    "gemmini_exact_requant_24"
+  ],
+  "scope": "One paired producer kernel changes to source-stride resident A. All 52 adapters, other 51 kernels, paired-flat, five resident weight packets, three segmented-A consumers, old39 residual, stem, CPU mean, host, runtime and weights unchanged in controlled arm.",
+  "normal_and_controlled_qualification": "PASS; separate runtime identity retained",
+  "whole_stock_cycles": "UNKNOWN",
+  "default_enabled": false
+}

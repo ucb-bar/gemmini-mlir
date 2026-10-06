@@ -223,8 +223,10 @@ class GoldenResidentConv(GoldenGemm):
 
             if type(store_plan) is not PairedReadoutPlan:
                 raise ValueError("typed paired readout plan required")
-            if not flat_spatial_planes:
-                raise ValueError("paired resident stores require flat spatial planes")
+            if not (flat_spatial_planes or source_stride):
+                raise ValueError(
+                    "paired resident stores require flat spatial or source-stride planes"
+                )
             store_plan.require_conv_producer(s)
         self.store_plan = store_plan
         if weight_issue_tiles is not None and (
