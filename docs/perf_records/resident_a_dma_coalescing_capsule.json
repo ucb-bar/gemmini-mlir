@@ -1,0 +1,853 @@
+{
+  "schema": "resident_a_dma_coalescing_capsule_v1",
+  "timestamp_utc": "2026-10-06T01:19:36.543245+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Combine adjacent K input packets into the same complete resident layout to reduce commandissue and transfer granularity overhead without changing increasingK arithmetic or Bbank lifetimes",
+  "selected_option": {
+    "resident_a_load_coalescing": true,
+    "resident_a_load_tiles": 4
+  },
+  "default_policy": "disabled; explicit single-tile constructor default preserves compiledbytes",
+  "legal_rule": "Typed dense row-major input, completeAresident allocation, supported<=4DIM packet width and DIMlocalblockstride; exactMandKtails, sameexistingresourceproofs",
+  "source_contract": "Exact original capture/weights/orderedreduction/scales/rounding; zero-tolerance all1000word gate retained",
+  "experiments": [
+    {
+      "source_fixture": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/capture/receipt.json",
+        "sha256": "654be3ec592676049cd476039cc99f4c69f8b22682f29c0a7508734aace4f2b2"
+      },
+      "shape": {
+        "m": 196,
+        "n": 256,
+        "k": 1024,
+        "output_dtype": "i8",
+        "bm": 13,
+        "bn": 4,
+        "bias": false,
+        "scale": 0.0018832574132829905,
+        "relu": true,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "arms": {
+        "control": {
+          "result": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control/result.json",
+            "sha256": "d165aca97ba191338c90151136bf1d8e54a8efbfca02eff54e590769430ec895"
+          },
+          "elf": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control/layer.elf",
+            "sha256": "2ddfbcf14dfb7ed1f46e6cafff9e2bd5d6a8933b1144124dcf777c1c7bbd93f9"
+          },
+          "audit": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control/nofsm_audit.json",
+            "sha256": "39fef33b6950f8f22ad4ba70185a5285d2e2decd6193cd0bf272259493e818de"
+          },
+          "strict_spike_stdout": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control/spike.stdout",
+            "sha256": "f503c7612a94b007e77a15b726ad0e5bff1ef9358ab46efb9de8bcfa7405ed05"
+          },
+          "strict_spike_stderr": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control/spike.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "gsim": {
+            "schema": "gemmini_captured_dense_capsule_v1",
+            "status": "pass",
+            "schedule": "control",
+            "prefetch_b": false,
+            "shape": {
+              "m": 196,
+              "n": 256,
+              "k": 1024,
+              "output_dtype": "i8",
+              "bm": 13,
+              "bn": 4,
+              "bias": false,
+              "scale": 0.0018832574132829905,
+              "relu": true,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "source_shape": {
+              "m": 196,
+              "n": 256,
+              "k": 1024,
+              "output_dtype": "i8",
+              "bm": 13,
+              "bn": 4,
+              "bias": false,
+              "scale": 0.0018832574132829905,
+              "relu": true,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "fixture_receipt_sha256": "654be3ec592676049cd476039cc99f4c69f8b22682f29c0a7508734aace4f2b2",
+            "fixture_pins": {
+              "a": "0ce824426e1a809f4067f61d7054ce283ebd807deeb3df9aa436131c5e2577a6",
+              "b": "5afd18278b752809bda9ae63dd15e14ba64c9b81806cfbc3f125692239f36b31",
+              "expected": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c"
+            },
+            "compilation": {
+              "status": "exact_original_object",
+              "object_sha256": "73fb5f259c3a120857ad4c5593065457c6602a3f42a1a3e3f91e28a68fd2805e",
+              "original_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_27/kernel.o"
+            },
+            "resource": null,
+            "common_operand_addresses": {
+              "captured_a": 2148532224,
+              "captured_b": 2148732928,
+              "captured_box": 2149580800,
+              "captured_expected": 2148995072
+            },
+            "elf_sha256": "2ddfbcf14dfb7ed1f46e6cafff9e2bd5d6a8933b1144124dcf777c1c7bbd93f9",
+            "source_c_sha256": "45b3cbd66b694146f776eb8818fec767efb251f325412a1cb844750400c1158d",
+            "kernel_cycles": 288847,
+            "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+            "run_completed": true,
+            "run_returncode": 0,
+            "outputs_checked": 50176,
+            "guards_checked": 4096,
+            "nofsm_status": "pass",
+            "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "stdout": "CAPTURED_CONV_CYCLES 288847\nCAPTURED_CONV_PASS N=50176 SCHEDULE=control\n",
+            "stderr": "(SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=3000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80005f80\n[gsim-ar] #7 addr=0x8022d400\n[gsim-ar] #8 addr=0x80005fc0\n[gsim-ar] #9 addr=0x80005f00\n[gsim-ar] #10 addr=0x80005f40\n[gsim-ar] #11 addr=0x8020d440\n[gsim-ar] #12 addr=0x8020d480\n[gsim-ar] #13 addr=0x80006000\n[gsim-ar] #14 addr=0x80005e40\n[gsim-ar] #15 addr=0x80006140\n[gsim-ar] #16 addr=0x8022d380\n[gsim-ar] #17 addr=0x8022d340\n[gsim-ar] #18 addr=0x8017d400\n[gsim-ar] #19 addr=0x80006180\n[gsim-ar] #20 addr=0x80200800\n[gsim-ar] #21 addr=0x80200840\n[gsim-ar] #22 addr=0x80200880\n[gsim-ar] #23 addr=0x802008c0\n[gsim-ar] #24 addr=0x80200900\n[gsim-ar] #25 addr=0x80200940\n[gsim-ar] #26 addr=0x80200980\n[gsim-ar] #27 addr=0x802009c0\n[gsim-ar] #28 addr=0x80200a00\n[gsim-ar] #29 addr=0x80200a40\n[gsim-ar] #30 addr=0x80200a80\n[gsim-ar] #31 addr=0x80200ac0\n[gsim-ar] #32 addr=0x80200b00\n[gsim-ar] #33 addr=0x80200b40\n[gsim-ar] #34 addr=0x80200b80\n[gsim-ar] #35 addr=0x80200bc0\n[gsim-ar] #36 addr=0x80200c00\n[gsim-ar] #37 addr=0x80200c40\n[gsim-ar] #38 addr=0x80200c80\n[gsim-ar] #39 addr=0x80200cc0\n[link-probe] ticks=200000 in_fires=16096 out_fires=6434 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=32432 out_fires=12975 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=49347 out_fires=19741 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=741197 wall=104.14s (7117 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=633 dram_w=5064 dram_ar=9289 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80205dc0 last_ar=0x80005dc0 max_ar=0x8022d400 r_fires=74312 b_fires=633 cvfpu_accepts=0 uart_chars=0\n"
+          }
+        },
+        "coalesced": {
+          "result": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/result.json",
+            "sha256": "95236e60c7388ab1cd0a04db143dae3cdbfbd5d79b7f7472ea854ca9141671ac"
+          },
+          "elf": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/layer.elf",
+            "sha256": "016bfff8850b1b0cc1ff8cd5ccc1eb6abb2cb1c7a1c337a5cc4e407b35cef52c"
+          },
+          "audit": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/nofsm_audit.json",
+            "sha256": "069bc7bf00da89f46351f9ccf0c4ad315ec721c9495abb72a3ef3efadf7d32c4"
+          },
+          "strict_spike_stdout": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/spike.stdout",
+            "sha256": "e1523c1a8f962e0ce2f2b3631de7cad750ea01ec1301b3f1f56b125d0d4fc44b"
+          },
+          "strict_spike_stderr": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/spike.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "gsim": {
+            "schema": "gemmini_captured_dense_capsule_v1",
+            "status": "pass",
+            "schedule": "coalesced_resident_a",
+            "prefetch_b": false,
+            "shape": {
+              "m": 196,
+              "n": 256,
+              "k": 1024,
+              "output_dtype": "i8",
+              "bm": 13,
+              "bn": 4,
+              "bias": false,
+              "scale": 0.0018832574132829905,
+              "relu": true,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "source_shape": {
+              "m": 196,
+              "n": 256,
+              "k": 1024,
+              "output_dtype": "i8",
+              "bm": 13,
+              "bn": 4,
+              "bias": false,
+              "scale": 0.0018832574132829905,
+              "relu": true,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "fixture_receipt_sha256": "654be3ec592676049cd476039cc99f4c69f8b22682f29c0a7508734aace4f2b2",
+            "fixture_pins": {
+              "a": "0ce824426e1a809f4067f61d7054ce283ebd807deeb3df9aa436131c5e2577a6",
+              "b": "5afd18278b752809bda9ae63dd15e14ba64c9b81806cfbc3f125692239f36b31",
+              "expected": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c"
+            },
+            "compilation": {
+              "schema": "gemmini_golden_device_compile_v1",
+              "target_ir_sha256": "5f1c7fcc0e57f7220a27807c2aa258dd00d2678671a1870f6c3c44ac76b52430",
+              "llvm_mlir_sha256": "c4a254ab9c34e35390036a02028a43d6056f9f8811bb243edba5503c077acad3",
+              "llvm_ir_sha256": "c4a8f3c7a74b821bfcd926ce0daf7ac7da4b050d962b22bfa9dec069f2cabb62",
+              "object_sha256": "a3c67ddcb277f584474829e96d38330b1ceda59f40cf0e8b709137fb29cfedd3",
+              "object_nofsm_status": "pass",
+              "compiler_sha256": {
+                "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+                "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+              },
+              "compiler_argv": [
+                [
+                  "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                  "--mlir-to-llvmir",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/kernel.llvm.mlir",
+                  "-o",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/kernel.ll"
+                ],
+                [
+                  "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                  "--target=riscv64-unknown-elf",
+                  "-march=rv64gc",
+                  "-mabi=lp64d",
+                  "-mcmodel=medany",
+                  "-O2",
+                  "-c",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/kernel.ll",
+                  "-o",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/kernel.o"
+                ]
+              ]
+            },
+            "resource": {
+              "input_rows": 13312,
+              "resident_a_load_tiles": 4,
+              "prefetch_b_rows": null,
+              "weight_panel_rows": 64,
+              "accumulator_rows": 832
+            },
+            "common_operand_addresses": {
+              "captured_a": 2148532224,
+              "captured_b": 2148732928,
+              "captured_box": 2149580800,
+              "captured_expected": 2148995072
+            },
+            "elf_sha256": "016bfff8850b1b0cc1ff8cd5ccc1eb6abb2cb1c7a1c337a5cc4e407b35cef52c",
+            "source_c_sha256": "ddf6259304ede5ba23a7b2747e23e18f6f48de08f4a422df576a841c90df8ae6",
+            "kernel_cycles": 277410,
+            "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+            "run_completed": true,
+            "run_returncode": 0,
+            "outputs_checked": 50176,
+            "guards_checked": 4096,
+            "nofsm_status": "pass",
+            "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "stdout": "CAPTURED_CONV_CYCLES 277410\nCAPTURED_CONV_PASS N=50176 SCHEDULE=coalesced_resident_a\n",
+            "stderr": "(SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=3000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80003a00\n[gsim-ar] #7 addr=0x8022d400\n[gsim-ar] #8 addr=0x80003a40\n[gsim-ar] #9 addr=0x80003980\n[gsim-ar] #10 addr=0x800039c0\n[gsim-ar] #11 addr=0x8020d440\n[gsim-ar] #12 addr=0x8020d480\n[gsim-ar] #13 addr=0x800038c0\n[gsim-ar] #14 addr=0x80003b80\n[gsim-ar] #15 addr=0x8022d380\n[gsim-ar] #16 addr=0x8022d340\n[gsim-ar] #17 addr=0x80003bc0\n[gsim-ar] #18 addr=0x8017d400\n[gsim-ar] #19 addr=0x80200800\n[gsim-ar] #20 addr=0x80200840\n[gsim-ar] #21 addr=0x80200880\n[gsim-ar] #22 addr=0x802008c0\n[gsim-ar] #23 addr=0x80200900\n[gsim-ar] #24 addr=0x80200940\n[gsim-ar] #25 addr=0x80200980\n[gsim-ar] #26 addr=0x802009c0\n[gsim-ar] #27 addr=0x80200a00\n[gsim-ar] #28 addr=0x80200a40\n[gsim-ar] #29 addr=0x80200a80\n[gsim-ar] #30 addr=0x80200ac0\n[gsim-ar] #31 addr=0x80200b00\n[gsim-ar] #32 addr=0x80200b40\n[gsim-ar] #33 addr=0x80200b80\n[gsim-ar] #34 addr=0x80200bc0\n[gsim-ar] #35 addr=0x80200c00\n[gsim-ar] #36 addr=0x80200c40\n[gsim-ar] #37 addr=0x80200c80\n[gsim-ar] #38 addr=0x80200cc0\n[gsim-ar] #39 addr=0x80200d00\n[link-probe] ticks=200000 in_fires=15501 out_fires=6196 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=31862 out_fires=12747 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=48787 out_fires=19517 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=733714 wall=102.95s (7127 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=628 dram_w=5024 dram_ar=9149 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80203a80 last_ar=0x80003840 max_ar=0x8022d400 r_fires=73192 b_fires=628 cvfpu_accepts=0 uart_chars=0\n"
+          }
+        }
+      },
+      "control_cycles": 288847,
+      "candidate_cycles": 277410,
+      "cycles_saved": 11437,
+      "percent_reduction": 3.9595356711338527,
+      "metric_scope": "Whole device primitive on identical original ABI fixture/common dataaddresses; no surrounding CPU or fullmodel cost transfer"
+    },
+    {
+      "source_fixture": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/capture_bank3/receipt.json",
+        "sha256": "71a67074b84bccbc5ca4b8ad4cc13ee9e589a5799cebd926124aa0f2766772a4"
+      },
+      "shape": {
+        "m": 784,
+        "n": 512,
+        "k": 256,
+        "output_dtype": "i8",
+        "bm": 49,
+        "bn": 1,
+        "bias": false,
+        "scale": 0.0028477373998612165,
+        "relu": false,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "arms": {
+        "control": {
+          "result": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/completed_result.json",
+            "sha256": "00ff7c01cbe1da4e759efaff3195e12877dee6f8d37528bdbef18eec80321e82"
+          },
+          "elf": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/layer.elf",
+            "sha256": "b3a4ff6741ebad98f3851f310f1e2255f3b9e1d4b86659b0dd3618c389656e9d"
+          },
+          "audit": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/nofsm_audit.json",
+            "sha256": "2ca69923a1f1d58467cc46544a4921632900326010c27e01d3631abfe8c199e4"
+          },
+          "strict_spike_stdout": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/spike.stdout",
+            "sha256": "288f81878a43c6d920693ef5e0bb69201d88d4c08d505411601b735978ec4c3d"
+          },
+          "strict_spike_stderr": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/spike.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "gsim": {
+            "schema": "gemmini_captured_dense_capsule_v1",
+            "status": "pass",
+            "schedule": "control",
+            "prefetch_b": false,
+            "shape": {
+              "m": 784,
+              "n": 512,
+              "k": 256,
+              "output_dtype": "i8",
+              "bm": 49,
+              "bn": 1,
+              "bias": false,
+              "scale": 0.0028477373998612165,
+              "relu": false,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "source_shape": {
+              "m": 784,
+              "n": 512,
+              "k": 256,
+              "output_dtype": "i8",
+              "bm": 49,
+              "bn": 1,
+              "bias": false,
+              "scale": 0.0028477373998612165,
+              "relu": false,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "fixture_receipt_sha256": "71a67074b84bccbc5ca4b8ad4cc13ee9e589a5799cebd926124aa0f2766772a4",
+            "fixture_pins": {
+              "a": "a1171741081f3c75327fed75fa1d66c50474fc72f6172232bddb8305331957a8",
+              "b": "e598d5a1ec4da7dc8306f7d1435ba8e104cd4968fc052209c0047837281e88a1",
+              "expected": "a2bc81bfb7c0b9de209f2a3c3a51d5673cffe459c507e4704451cf63a41cc18d"
+            },
+            "compilation": {
+              "status": "exact_original_object",
+              "object_sha256": "5f14c3cc34b2e3a5b8d87620b6badbec0db95eaf9f201a974e9786375b5b7c24",
+              "original_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_13/kernel.o"
+            },
+            "resource": null,
+            "common_operand_addresses": {
+              "captured_a": 2148532224,
+              "captured_b": 2148732928,
+              "captured_box": 2149580800,
+              "captured_expected": 2148864000
+            },
+            "elf_sha256": "b3a4ff6741ebad98f3851f310f1e2255f3b9e1d4b86659b0dd3618c389656e9d",
+            "source_c_sha256": "11195aaebddc3a3735e49654e8cd36b89a6049375d96e03dd024815df0d9c78d",
+            "kernel_cycles": 563901,
+            "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+            "run_completed": true,
+            "run_returncode": 0,
+            "outputs_checked": 401408,
+            "guards_checked": 4096,
+            "nofsm_status": "pass",
+            "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "stdout": "CAPTURED_CONV_CYCLES 563901\nCAPTURED_CONV_PASS N=401408 SCHEDULE=control\n",
+            "stderr": "plete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n[link-probe] ticks=2200000 in_fires=182712 out_fires=73087 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=2400000 in_fires=199632 out_fires=79855 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=2500000 in_reset=14 done=0\n[link-probe] ticks=2600000 in_fires=216552 out_fires=86623 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=2800000 in_fires=233472 out_fires=93391 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=3000000 in_reset=14 done=0\n[gsim-emu] 3000000 cycles, 416.6s, 7200 cyc/s\n[link-probe] ticks=3000000 in_fires=250387 out_fires=100157 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3200000 in_fires=267307 out_fires=106925 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3400000 in_fires=284227 out_fires=113693 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=3500000 in_reset=14 done=0\n[link-probe] ticks=3600000 in_fires=301147 out_fires=120461 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3800000 in_fires=318067 out_fires=127229 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=4000000 in_reset=14 done=0\n[gsim-emu] 4000000 cycles, 541.6s, 7386 cyc/s\n[link-probe] ticks=4000000 in_fires=334987 out_fires=133997 in_valid=0 in_ready=0 out_valid=0 out_ready=1\nPacked deps: Vec(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\nUtilization ld q: 0\nUtilization st q: 0\nUtilization ex q: 0\nUtilization ex q (incomplete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n\n[gsim-emu] FINISHED: cycles=4033759 wall=546.17s (7386 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=14768 dram_w=118144 dram_ar=33450 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80205dc0 last_ar=0x80005dc0 max_ar=0x80283000 r_fires=267600 b_fires=14768 cvfpu_accepts=0 uart_chars=0\n",
+            "initial_truncated_result_sha256": "1b66ce141c19a2babacfec8d1f556027f5b87c484d4455fc0a3714838da1ec0e",
+            "rerun_reason": "Initial3.5Mcyclebudget completed kernel timer but cut off complete400Koutput verification; retained unchangedELF/addresses,6Mbudget completes originalnumericgate"
+          }
+        },
+        "coalesced": {
+          "result": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/completed_result.json",
+            "sha256": "7aaac34b5ac14f5746f098f82c161e4b082e8a8c9240093765ab77492f49fe29"
+          },
+          "elf": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/layer.elf",
+            "sha256": "b795c3af3e6174599fbd2f18acf825eb21f7ea035607ea6719b8f0e7d2b0ec48"
+          },
+          "audit": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/nofsm_audit.json",
+            "sha256": "68ff40492db9a725c59ddaea21ed2da59bf2ece36043bff39a645f3a5c39a352"
+          },
+          "strict_spike_stdout": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/spike.stdout",
+            "sha256": "37590525232bf8fa485a10d0651ccf9a5b889bed6da9a2aef13c2c145c5e141f"
+          },
+          "strict_spike_stderr": {
+            "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/spike.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "gsim": {
+            "schema": "gemmini_captured_dense_capsule_v1",
+            "status": "pass",
+            "schedule": "coalesced_resident_a",
+            "prefetch_b": false,
+            "shape": {
+              "m": 784,
+              "n": 512,
+              "k": 256,
+              "output_dtype": "i8",
+              "bm": 49,
+              "bn": 1,
+              "bias": false,
+              "scale": 0.0028477373998612165,
+              "relu": false,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "source_shape": {
+              "m": 784,
+              "n": 512,
+              "k": 256,
+              "output_dtype": "i8",
+              "bm": 49,
+              "bn": 1,
+              "bias": false,
+              "scale": 0.0028477373998612165,
+              "relu": false,
+              "wide_store": true,
+              "reuse_b": true,
+              "cache_b": false,
+              "cache_a": true,
+              "pipeline_m": false,
+              "prefetch_m": false,
+              "banked_m": false,
+              "wide_a": false,
+              "wide_b": true,
+              "separate_b_bank": false,
+              "prefetch_b": false
+            },
+            "fixture_receipt_sha256": "71a67074b84bccbc5ca4b8ad4cc13ee9e589a5799cebd926124aa0f2766772a4",
+            "fixture_pins": {
+              "a": "a1171741081f3c75327fed75fa1d66c50474fc72f6172232bddb8305331957a8",
+              "b": "e598d5a1ec4da7dc8306f7d1435ba8e104cd4968fc052209c0047837281e88a1",
+              "expected": "a2bc81bfb7c0b9de209f2a3c3a51d5673cffe459c507e4704451cf63a41cc18d"
+            },
+            "compilation": {
+              "schema": "gemmini_golden_device_compile_v1",
+              "target_ir_sha256": "9bdc5416f8c3094bf5b03cbbbf8e9d62ba0e408f7b05bb205a2acc2b5e8e0034",
+              "llvm_mlir_sha256": "200a406f3d7214ea5d4bef5b1008316f8c82bba3bb55e0c7e7cdc52f83a4ccd4",
+              "llvm_ir_sha256": "b08a0eb9768d451e93db75ff4e09f9a3b412ea216a63a186731a9b10bc57ab65",
+              "object_sha256": "425e805176e1616fe17f7126d3e4c9e554e5085aafbf7e34f211487d30da76c1",
+              "object_nofsm_status": "pass",
+              "compiler_sha256": {
+                "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+                "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+              },
+              "compiler_argv": [
+                [
+                  "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                  "--mlir-to-llvmir",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/kernel.llvm.mlir",
+                  "-o",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/kernel.ll"
+                ],
+                [
+                  "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                  "--target=riscv64-unknown-elf",
+                  "-march=rv64gc",
+                  "-mabi=lp64d",
+                  "-mcmodel=medany",
+                  "-O2",
+                  "-c",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/kernel.ll",
+                  "-o",
+                  "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/kernel.o"
+                ]
+              ]
+            },
+            "resource": {
+              "input_rows": 12544,
+              "resident_a_load_tiles": 4,
+              "prefetch_b_rows": null,
+              "weight_panel_rows": 16,
+              "accumulator_rows": 784
+            },
+            "common_operand_addresses": {
+              "captured_a": 2148532224,
+              "captured_b": 2148732928,
+              "captured_box": 2149580800,
+              "captured_expected": 2148864000
+            },
+            "elf_sha256": "b795c3af3e6174599fbd2f18acf825eb21f7ea035607ea6719b8f0e7d2b0ec48",
+            "source_c_sha256": "1569ca5ebd88cd6b93f5a2d169baa433b5e4d6985c50ee2f577af941aa8d6deb",
+            "kernel_cycles": 552245,
+            "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+            "run_completed": true,
+            "run_returncode": 0,
+            "outputs_checked": 401408,
+            "guards_checked": 4096,
+            "nofsm_status": "pass",
+            "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+            "stdout": "CAPTURED_CONV_CYCLES 552245\nCAPTURED_CONV_PASS N=401408 SCHEDULE=coalesced_resident_a\n",
+            "stderr": "plete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n[link-probe] ticks=2200000 in_fires=182477 out_fires=72993 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=2400000 in_fires=199397 out_fires=79761 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=2500000 in_reset=14 done=0\n[link-probe] ticks=2600000 in_fires=216317 out_fires=86529 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=2800000 in_fires=233232 out_fires=93295 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=3000000 in_reset=14 done=0\n[gsim-emu] 3000000 cycles, 415.2s, 7225 cyc/s\n[link-probe] ticks=3000000 in_fires=250151 out_fires=100063 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n[link-probe] ticks=3200000 in_fires=267067 out_fires=106829 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3400000 in_fires=283992 out_fires=113599 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=3500000 in_reset=14 done=0\n[link-probe] ticks=3600000 in_fires=300917 out_fires=120369 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3800000 in_fires=317827 out_fires=127133 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=4000000 in_reset=14 done=0\n[gsim-emu] 4000000 cycles, 542.1s, 7379 cyc/s\n[link-probe] ticks=4000000 in_fires=334750 out_fires=133903 in_valid=1 in_ready=1 out_valid=0 out_ready=1\nPacked deps: Vec(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\nUtilization ld q: 0\nUtilization st q: 0\nUtilization ex q: 0\nUtilization ex q (incomplete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n\n[gsim-emu] FINISHED: cycles=4022477 wall=545.10s (7379 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=14781 dram_w=118248 dram_ar=33372 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80233040 last_ar=0x80003a00 max_ar=0x80283000 r_fires=266976 b_fires=14781 cvfpu_accepts=0 uart_chars=0\n",
+            "initial_truncated_result_sha256": "29d6aba4f5f5f7b4943342cb50d3a0946f1773e46582d66befc513245747964d",
+            "rerun_reason": "Initial3.5Mcyclebudget completed kernel timer but cut off complete400Koutput verification; retained unchangedELF/addresses,6Mbudget completes originalnumericgate"
+          }
+        }
+      },
+      "control_cycles": 563901,
+      "candidate_cycles": 552245,
+      "cycles_saved": 11656,
+      "percent_reduction": 2.067029496312296,
+      "metric_scope": "Whole device primitive on identical original ABI fixture/common dataaddresses; no surrounding CPU or fullmodel cost transfer"
+    }
+  ],
+  "independent_tail": {
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/tail/result.json",
+      "sha256": "5616ee2c55a5136a0650e10bcdb653fa698b7817dd4288ea40ca4ebd71ff6dd8"
+    },
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/tail/layer.elf",
+      "sha256": "8a336c8f8960d62123772cf713e3183879814004783408492e1785c01cdc514d"
+    },
+    "audit": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/tail/nofsm_audit.json",
+      "sha256": "19bf225638b647343b00ca85a2fceb5ec1b12d65d6e838c91042a0619c5580ea"
+    },
+    "strict_spike_stdout": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/tail/spike.stdout",
+      "sha256": "cc92868e2d1043096e500fb1b62e308315e8e08c9ed47f9ffce122bae5e17b98"
+    },
+    "strict_spike_stderr": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/tail/spike.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "shape": [
+      33,
+      73,
+      65
+    ],
+    "amplitude": 21,
+    "outputs_checked": 2409,
+    "prefetch_b_rows": [
+      3072,
+      4096
+    ]
+  },
+  "actual_emitted_delta": {
+    "schema": "resident_a_dma_coalescing_actual_command_trace_v1",
+    "fixtures": {
+      "fixture": {
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0018832574132829905,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "arms": {
+          "control": {
+            "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_27/kernel.gemmini.mlir",
+            "target_module_sha256": "9bb308f000358c6567e9090b10f8d77d4e2cf63269f8a94c977b71e96255dfcc",
+            "complete_static_cfg": true,
+            "pointer_index_bits": 64,
+            "counts": {
+              "gemmini.fence": 2,
+              "gemmini.flush": 1,
+              "gemmini.config_ex": 1,
+              "gemmini.config_ld": 2,
+              "gemmini.config_st": 1,
+              "gemmini.mvin": 1088,
+              "gemmini.preload": 13312,
+              "gemmini.compute": 13312,
+              "gemmini.mvout": 52
+            },
+            "requested_operand_bytes": {
+              "a": 200704,
+              "b": 262144
+            },
+            "input_dma_width_counts": {
+              "16": 832
+            },
+            "input_loaded_rows": 12544,
+            "input_reserved_rows": 13312,
+            "output_bytes": 50176,
+            "noninput_command_order_sha256": "5b83ac264356098319644a64a279ebf9d6886872beba78652320eeb9aa9fbe0b"
+          },
+          "candidate": {
+            "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced/kernel.gemmini.mlir",
+            "target_module_sha256": "5f1c7fcc0e57f7220a27807c2aa258dd00d2678671a1870f6c3c44ac76b52430",
+            "complete_static_cfg": true,
+            "pointer_index_bits": 64,
+            "counts": {
+              "gemmini.fence": 2,
+              "gemmini.flush": 1,
+              "gemmini.config_ex": 1,
+              "gemmini.config_ld": 2,
+              "gemmini.config_st": 1,
+              "gemmini.mvin": 464,
+              "gemmini.preload": 13312,
+              "gemmini.compute": 13312,
+              "gemmini.mvout": 52
+            },
+            "requested_operand_bytes": {
+              "a": 200704,
+              "b": 262144
+            },
+            "input_dma_width_counts": {
+              "64": 208
+            },
+            "input_loaded_rows": 12544,
+            "input_reserved_rows": 13312,
+            "output_bytes": 50176,
+            "noninput_command_order_sha256": "5b83ac264356098319644a64a279ebf9d6886872beba78652320eeb9aa9fbe0b"
+          }
+        },
+        "loaded_input_partition_identical": true,
+        "all_noninput_command_order_identical": true
+      },
+      "fixture_bank3": {
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.0028477373998612165,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "arms": {
+          "control": {
+            "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_13/kernel.gemmini.mlir",
+            "target_module_sha256": "d1b1f93fd1e026945ed29a4fb32da2e6be6ecb6be97160225926e4aeafab9d9e",
+            "complete_static_cfg": true,
+            "pointer_index_bits": 64,
+            "counts": {
+              "gemmini.fence": 2,
+              "gemmini.flush": 1,
+              "gemmini.config_ex": 1,
+              "gemmini.config_ld": 2,
+              "gemmini.config_st": 1,
+              "gemmini.mvin": 1296,
+              "gemmini.preload": 25088,
+              "gemmini.compute": 25088,
+              "gemmini.mvout": 1568
+            },
+            "requested_operand_bytes": {
+              "a": 200704,
+              "b": 131072
+            },
+            "input_dma_width_counts": {
+              "16": 784
+            },
+            "input_loaded_rows": 12544,
+            "input_reserved_rows": 12544,
+            "output_bytes": 401408,
+            "noninput_command_order_sha256": "9dc836e7cd0fe18fcb93053e58b18d57230743ce9736a91040493b6891df412e"
+          },
+          "candidate": {
+            "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/kernel.gemmini.mlir",
+            "target_module_sha256": "9bdc5416f8c3094bf5b03cbbbf8e9d62ba0e408f7b05bb205a2acc2b5e8e0034",
+            "complete_static_cfg": true,
+            "pointer_index_bits": 64,
+            "counts": {
+              "gemmini.fence": 2,
+              "gemmini.flush": 1,
+              "gemmini.config_ex": 1,
+              "gemmini.config_ld": 2,
+              "gemmini.config_st": 1,
+              "gemmini.mvin": 708,
+              "gemmini.preload": 25088,
+              "gemmini.compute": 25088,
+              "gemmini.mvout": 1568
+            },
+            "requested_operand_bytes": {
+              "a": 200704,
+              "b": 131072
+            },
+            "input_dma_width_counts": {
+              "64": 196
+            },
+            "input_loaded_rows": 12544,
+            "input_reserved_rows": 12544,
+            "output_bytes": 401408,
+            "noninput_command_order_sha256": "9dc836e7cd0fe18fcb93053e58b18d57230743ce9736a91040493b6891df412e"
+          }
+        },
+        "loaded_input_partition_identical": true,
+        "all_noninput_command_order_identical": true
+      }
+    },
+    "scope": "Actual target-module CFG input-cell partition and other-command order proof; requested bytes are not actualDRAMtraffic or timing"
+  },
+  "actual_cfg_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/actual_commands.json",
+    "sha256": "0925d35eea2d69c07a6c290cc83f1d7f767b29506e53cbf275e907de1fb03f86"
+  },
+  "source52_binding": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/bundle_source_closure.json",
+    "sha256": "0e160c74c7bd23176bbaf8f6ad874002bcc402d24b8f1527618010a95e187c05"
+  },
+  "default_object_identity": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/default_parity/parity.json",
+    "sha256": "7ae1e1c5fb6a465386e7650999f642045cb217be17a2ea7f74fadd73a5372774"
+  },
+  "reference_zip": {
+    "path": "/scratch/agustin/projects/oscar-merlin/tmp/resnet50_nofsm_q1013.zip",
+    "sha256": "b7ab59d9b5dcdbc1fb33484142f76bb70f7e200a2c5bdf670bb0784e7c05c844"
+  },
+  "reference_static_decode": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/reference_fx45_static_commands.txt",
+    "sha256": "6cdcddae1497a99e9476847453f2c778dbe88b8e397ee2d3369206f9b51a4d87"
+  },
+  "reference_scope": "Owned permittedZIP static64columnload example; different geometry/padding/input/weights/quantization and unresolved pointers/paths. Not an exactsame-numeric schedule or timingbaseline.",
+  "verification_logs": {
+    "focused79": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/focused_tests.log",
+      "sha256": "4decfc196af4fd8cbc1c51519dbadbb0ef6f28791c16f99f8712cce169fa9d5e"
+    },
+    "mutation_and_grouping15": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/mutation_tests.log",
+      "sha256": "51f9ec27565c677e627b85d8737c1b9b3f556829be17a407ec35752850b90f8f"
+    }
+  },
+  "retained_unqualified_budget_runs": [
+    {
+      "result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_bank3/result.json",
+        "sha256": "1b66ce141c19a2babacfec8d1f556027f5b87c484d4455fc0a3714838da1ec0e"
+      },
+      "reason": "3.5Mbudget ended afterkernel timer but beforecompleteoutputverification; finalmatched evidence is sameELF6Mbudgetcompleted_result.json"
+    },
+    {
+      "result": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/coalesced_bank3/result.json",
+        "sha256": "29d6aba4f5f5f7b4943342cb50d3a0946f1773e46582d66befc513245747964d"
+      },
+      "reason": "3.5Mbudget ended afterkernel timer but beforecompleteoutputverification; finalmatched evidence is sameELF6Mbudgetcompleted_result.json"
+    }
+  ],
+  "outcome": "Positive fullnumeric/noFSM matchedcapsules; source52ordinarycompile closure passes. Wholemodeltargetqualification and stockhardware timing are separate gates.",
+  "hardware_status": "not submitted at capsule checkpoint",
+  "token_usage_available": false,
+  "token_scope": "Parent tracks cumulativeownedthread counters; no exclusiveperoptimization attribution",
+  "owned_recipe_pins": {
+    "capture.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/capture.py",
+      "sha256": "c6ee0d341b8f5cdb073d2135d801a4a25ad4ccb0e80f29856096cc1504bf8925"
+    },
+    "capture_general.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/capture_general.py",
+      "sha256": "e791e1fa5a03f6006b25d0ea128c5b413aa240ced4ecaca81939a5f928c186d4"
+    },
+    "trace.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/trace.py",
+      "sha256": "fe638fd1424e1da70c4e0e295638e1e430e7cfa3e85139175fa107b455c4f2c9"
+    },
+    "default_parity.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/default_parity.py",
+      "sha256": "478c6ec1ce991665597b0e96549847ca556649c02efa57e49367f8521641fc18"
+    },
+    "complete_gsim.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/complete_gsim.py",
+      "sha256": "d634f6fd221e024211d70b54450e5f67983ea838de479ec98d2104e66f1dd648"
+    },
+    "prepare_bundle.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/prepare_bundle.py",
+      "sha256": "69d2c22cd0d6e97a3ca5c55bc9c07cc17ba962bd6a79ec34b612922feefafa3c"
+    },
+    "write_capsule_receipt.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/write_capsule_receipt.py",
+      "sha256": "b9718650a0f4996a39ed29b2078b19831be7c4e1ff6c41f2499895430cffca03"
+    }
+  }
+}

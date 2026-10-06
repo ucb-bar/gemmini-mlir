@@ -77,6 +77,8 @@ def main() -> int:
     ap.add_argument("--reuse-b", action="store_true")
     ap.add_argument("--cache-b", action="store_true")
     ap.add_argument("--cache-a", action="store_true")
+    ap.add_argument("--resident-a-load-tiles", type=int, default=1,
+                    help="adjacent DIM tiles per cached A DMA, preserving its layout")
     ap.add_argument("--pipeline-m", action="store_true")
     ap.add_argument("--prefetch-m", action="store_true")
     ap.add_argument("--banked-m", action="store_true")
@@ -113,6 +115,8 @@ def main() -> int:
     workdir = args.workdir.resolve()
     workdir.mkdir(parents=True, exist_ok=False)
     if args.prebuilt_object:
+        if args.resident_a_load_tiles != 1:
+            ap.error("resident A grouping requires a freshly compiled object")
         if args.prefetch_b_rows is not None:
             ap.error("explicit B row placement requires a freshly compiled object")
         obj = args.prebuilt_object.resolve(strict=True)
@@ -134,7 +138,8 @@ def main() -> int:
     else:
         obj = workdir / "kernel.o"
         placement = tuple(args.prefetch_b_rows) if args.prefetch_b_rows is not None else None
-        compilation = compile_module(GoldenGemm(shape,prefetch_b_rows=placement).build(), args.llvm_bin, workdir)
+        compilation = compile_module(GoldenGemm(shape,prefetch_b_rows=placement,
+            resident_a_load_tiles=args.resident_a_load_tiles).build(), args.llvm_bin, workdir)
 
     source = Path(__file__).with_name("gemm_probe.c")
     cflags = [f"-DM={args.m}", f"-DN={args.n}", f"-DK={args.k}",
@@ -193,6 +198,7 @@ def main() -> int:
         "reuse_b": args.reuse_b,
         "cache_b": args.cache_b,
         "cache_a": args.cache_a,
+        "resident_a_load_tiles": args.resident_a_load_tiles,
         "pipeline_m": args.pipeline_m,
         "prefetch_m": args.prefetch_m,
         "banked_m": args.banked_m,

@@ -59,7 +59,8 @@ class SourceContractionEmitter:
         self.alternative=alternative
         self.generator=generator
         self.primitive_module=(primitive_module if primitive_module is not None else generator.build()).clone()
-        self.schedule_binding=(asdict(generator.shape),generator.prefetch_b_rows)
+        self.schedule_binding=(asdict(generator.shape),generator.prefetch_b_rows,
+                               generator.resident_a_load_tiles)
         self.llvm_bin=Path(llvm_bin)
         self.workdir=Path(workdir)
         self.compilation=None
@@ -73,7 +74,8 @@ class SourceContractionEmitter:
             raise ValueError('contraction emission source or logical dispatch binding changed')
         if plan.transitions or plan.selected!=(self.alternative,):
             raise ValueError('contraction export requires its exact bound singleton alternative')
-        if (asdict(self.generator.shape),self.generator.prefetch_b_rows)!=self.schedule_binding:
+        if (asdict(self.generator.shape),self.generator.prefetch_b_rows,
+                self.generator.resident_a_load_tiles)!=self.schedule_binding:
             raise ValueError('selected generator schedule changed after binding')
         from merlin.xdsl_dialects._common import text
         if hashlib.sha256(text(self.primitive_module,generic=True).encode()).hexdigest()!=self.implementation_ir_sha256:

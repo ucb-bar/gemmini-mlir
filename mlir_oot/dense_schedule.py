@@ -112,7 +112,43 @@ def resident_a_prefetch(shape):
     return candidate
 
 
-def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False, resident_a_prefetch_policy=False):
+def select_coalesced_resident_a(control):
+    """Group resident input DMA packets without changing allocation or work.
+
+    A dense row-major source and complete cached A layout prove consecutive
+    K tiles. CONFIG_LD.block_stride=DIM places each block at the established
+    local address; the four-block target bound admits exact M/K tails.
+    This ranks transfer command count only, never predicts cycle savings.
+    """
+    shape=control.shape
+    shape.validate(prefetch_b_rows=control.prefetch_b_rows)
+    decision=dict(applied=False,policy='resident_a_load_coalescing',
+                  timing_claim=False,cost_unit='input_dma_commands_not_cycles')
+    if not shape.cache_a:
+        decision['refusal']='requires the complete resident A layout'
+        return control,decision
+    if control.resident_a_load_tiles != 1:
+        decision['refusal']='existing explicit A grouping retained'
+        return control,decision
+    kt,mt=_ceil_div(shape.k,F.DIM),_ceil_div(shape.m,F.DIM)
+    if kt <= 1:
+        decision['refusal']='input DMA command count does not decrease'
+        return control,decision
+    candidate=GoldenGemm(shape,prefetch_b_rows=control.prefetch_b_rows,
+                         resident_a_load_tiles=4)
+    decision.update(applied=True,refusal=None,resident_a_load_tiles=4,
+                    control_input_dma_commands=mt*kt,
+                    candidate_input_dma_commands=mt*_ceil_div(kt,4),
+                    input_requested_bytes=shape.m*shape.k,
+                    input_reserved_rows=shape.bm*kt*F.DIM,
+                    block_stride_rows=F.DIM,
+                    emitted_delta='Adjacent K input packets coalesce; source pointers, resident cells, B ordering, increasing K compute and stores are unchanged')
+    return candidate,decision
+
+
+def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False, resident_a_prefetch_policy=False,resident_a_load_coalescing=False):
+    if type(resident_a_load_coalescing) is not bool:
+        raise ValueError('resident A load coalescing requires a boolean selection')
     policies_selected=(banked_command_policy,resident_a_command_policy,transfer_command_policy,resident_a_prefetch_policy)
     if full_k_banked and any(policies_selected):
         raise ValueError('banked compiler policy cannot mix with explicit full-K selection')
@@ -168,4 +204,10 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
             pass  # A legal original schedule remains the fallback.
         else:
             selected=candidate;policies.append('separate_b_bank')
-    return GoldenGemm(selected),'dense_gemm'+(':'+','.join(policies) if policies else '')
+    generator=GoldenGemm(selected)
+    if resident_a_load_coalescing:
+        generator,decision=select_coalesced_resident_a(generator)
+        generator.resident_a_load_decision=decision
+        if decision['applied']:
+            policies.append('resident_a_load_coalescing')
+    return generator,'dense_gemm'+(':'+','.join(policies) if policies else '')

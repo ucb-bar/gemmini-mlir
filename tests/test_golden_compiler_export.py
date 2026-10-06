@@ -143,6 +143,10 @@ def test_selected_schedule_changes_object_and_shared_emission_rejects_mutation(t
     changed=replace(plan,selected=(replace(plan.selected[0],implementation='other_kernel'),))
     with pytest.raises(ValueError,match='exact bound singleton'):
         emitter.emit_global_plan(program,changed)
+    emitter.generator.resident_a_load_tiles=4
+    with pytest.raises(ValueError,match='schedule changed'):
+        emitter.emit_global_plan(program,plan)
+    emitter.generator.resident_a_load_tiles=1
     emitter.generator.shape=replace(emitter.generator.shape,n=74)
     with pytest.raises(ValueError,match='schedule changed'):
         emitter.emit_global_plan(program,plan)

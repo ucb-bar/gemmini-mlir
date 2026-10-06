@@ -1,4 +1,4 @@
-"""Compare a pinned convolution object with complete reduction residency.
+"""Compare a pinned contraction object with an explicit target schedule.
 
 An explicit fixture receipt owns geometry, numeric policy and operand bytes.
 The control uses its exact original object. Both arms align data to common
@@ -19,6 +19,7 @@ from merlin.perf.layer_bench import build_program, run_on_gsim
 from xdsl.dialects.builtin import StringAttr
 
 from mlir_oot.golden_conv import ConvShape
+from mlir_oot.golden_gemm import GoldenGemm, Shape
 from mlir_oot.golden_device_compile import compile_module
 from mlir_oot.golden_resident_conv import GoldenResidentConv
 from mlir_oot.golden_resident_stripe_conv import GoldenResidentStripeConv
@@ -34,7 +35,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--fixture-dir", type=Path, required=True)
     ap.add_argument(
-        "--schedule", choices=("control", "compact", "full_reduction", "strided_resident", "stride_residue"), required=True
+        "--schedule", choices=("control", "compact", "full_reduction", "strided_resident", "stride_residue", "coalesced_resident_a"), required=True
     )
     ap.add_argument("--bn", type=int)
     ap.add_argument("--prefetch-b", action="store_true")
@@ -45,7 +46,12 @@ def main():
     args = ap.parse_args()
     fixture = args.fixture_dir.resolve()
     source_receipt = json.loads((fixture / "receipt.json").read_text())
-    shape = ConvShape(**source_receipt["shape"])
+    dense = "m" in source_receipt["shape"]
+    shape = (Shape if dense else ConvShape)(**source_receipt["shape"])
+    if dense and args.schedule not in ("control", "coalesced_resident_a"):
+        raise ValueError("dense fixture requires an explicit dense schedule")
+    if not dense and args.schedule == "coalesced_resident_a":
+        raise ValueError("resident A DMA grouping requires a dense fixture")
     if args.prefetch_b and args.schedule != "compact":
         raise ValueError("weight prefetch requires explicit compact schedule")
     if args.bn is not None:
@@ -53,9 +59,10 @@ def main():
             raise ValueError("exact control does not accept a tile override")
         shape = replace(shape, bn=args.bn)
     shape.validate()
-    if shape.explicit_halo:
+    if not dense and shape.explicit_halo:
         raise ValueError("this paired resident probe requires unpadded inputs")
-    counts = {
+    counts = {"a": shape.m * shape.k, "b": shape.k * shape.n,
+              "expected": shape.m * shape.n} if dense else {
         "a": shape.h * shape.w * shape.cin,
         "b": 9 * shape.cin * shape.cout,
         "expected": shape.oh * shape.ow * shape.cout,
@@ -88,7 +95,11 @@ def main():
         }
         resource = None
     else:
-        if args.schedule == "stride_residue":
+        if args.schedule == "coalesced_resident_a":
+            placement = source_receipt.get("prefetch_b_rows")
+            generator = GoldenGemm(shape, resident_a_load_tiles=4,
+                                   prefetch_b_rows=tuple(placement) if placement else None)
+        elif args.schedule == "stride_residue":
             from mlir_oot.conv_schedule import source_stride_resource_layout
             generator,resource_choice=source_stride_resource_layout(shape,row_residue=True)
             shape=generator.conv
@@ -104,7 +115,15 @@ def main():
         module = generator.build()
         module.body.block.first_op.properties["sym_name"] = StringAttr(symbol)
         compilation = compile_module(module, args.llvm_bin, w)
-        if args.schedule in ("compact", "strided_resident", "stride_residue"):
+        if dense:
+            resource = {
+                "input_rows": shape.bm * ((shape.k + F.DIM - 1) // F.DIM) * F.DIM,
+                "resident_a_load_tiles": generator.resident_a_load_tiles,
+                "prefetch_b_rows": generator.prefetch_b_rows,
+                "weight_panel_rows": shape.bn * F.DIM,
+                "accumulator_rows": shape.bm * shape.bn * F.DIM,
+            }
+        elif args.schedule in ("compact", "strided_resident", "stride_residue"):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,
                 "weight_rows": shape.bn * F.DIM,
@@ -217,7 +236,7 @@ int main(void) {{
     passed = bool(run.completed and run.returncode == 0 and marker in run.stdout_tail)
     cycles = re.findall(r"^CAPTURED_CONV_CYCLES (\d+)$", run.stdout_tail, re.MULTILINE)
     result = {
-        "schema": "gemmini_captured_convolution_capsule_v1",
+        "schema": "gemmini_captured_dense_capsule_v1" if dense else "gemmini_captured_convolution_capsule_v1",
         "status": "pass" if passed else "fail",
         "schedule": args.schedule,
         "prefetch_b": args.prefetch_b,

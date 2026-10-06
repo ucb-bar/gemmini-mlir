@@ -147,9 +147,15 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
 
 
 class GoldenGemm:
-    def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None):
+    def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
+            resident_a_load_tiles: int = 1):
         shape.validate(prefetch_b_rows=prefetch_b_rows)
+        if type(resident_a_load_tiles) is not int or not 1 <= resident_a_load_tiles <= 4:
+            raise ValueError('resident A DMA grouping must be an integer in 1..4')
+        if resident_a_load_tiles != 1 and not shape.cache_a:
+            raise ValueError('resident A DMA grouping requires the complete cached A layout')
         self.shape = shape
+        self.resident_a_load_tiles = resident_a_load_tiles
         # Placement is a target schedule fact, separate from source dimensions
         # and numeric semantics. The default retains the established banks2/3.
         self.prefetch_b_rows = prefetch_b_rows
@@ -417,8 +423,12 @@ class GoldenGemm:
             kt=_ceil_div(s.k,F.DIM)
             for a in range(_ceil_div(s.m,F.DIM)):
                 rows=min(F.DIM,s.m-a * F.DIM)
-                for ki in range(kt):
-                    kr = min(F.DIM, s.k - ki * F.DIM)
+                # CONFIG_LD uses DIM block stride: widening the DRAM packet
+                # fills the same consecutive K tiles in the proved complete
+                # resident A allocation. Partial K packets preserve exact
+                # extents; later execute addresses and reduction order stay.
+                for ki in range(0,kt,self.resident_a_load_tiles):
+                    kr = min(F.DIM*self.resident_a_load_tiles, s.k - ki * F.DIM)
                     ptr = self._ptr(self.a, self.fb.const(a * F.DIM), s.k,
                                     self.fb.const(ki * F.DIM))
                     self._rocc("mvin", {"local": (a * kt + ki) * F.DIM,
@@ -507,6 +517,8 @@ class GoldenGemm:
         if self.prefetch_b_rows is not None:
             module.attributes["gemmini.prefetch_b_rows"] = StringAttr(
                 ",".join(str(row) for row in self.prefetch_b_rows))
+        if self.resident_a_load_tiles != 1:
+            module.attributes["gemmini.resident_a_load_tiles"] = IntegerAttr(self.resident_a_load_tiles,i64)
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
