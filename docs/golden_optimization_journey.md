@@ -92,32 +92,33 @@ These are historical measured cost locations; they do not causally partition the
 
 The later1899 profile binds the unchanged1874 model and reconciles its39,235,729
 interior cycles against the same reference. The current1903 best36,102,704 still
-has13,715,255 cycles to remove. Its current section attribution is pending.
+has13,715,255 cycles to remove. Its object-exact70-boundary profile is qualified
+and queued as1919; current hardware section attribution is pending.
 Reference other/uncounted51,717 is time outside printed layer timers, not total
 CPU time. [Current gap and measured historical locations](resnet_current_gap_status.md).
 
 ## Token accounting
 
-[Measured snapshot at2026-10-05T23:58:49Z](perf_records/golden_token_usage_20261005T235849Z.json)
+[Measured snapshot at2026-10-06T00:52:08Z](perf_records/golden_token_usage_20261006T005208Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |25,653,177|
-| Cached input reads |1,280,198,656|
-| Output |4,931,343|
-| Reasoning output, already included in output |1,884,279|
-| Raw input+output total, including cached reads once |1,310,783,176|
+| Uncached input |26,882,132|
+| Cached input reads |1,351,353,344|
+| Output |5,235,441|
+| Reasoning output, already included in output |2,001,139|
+| Raw input+output total, including cached reads once |1,383,470,917|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-30,584,520; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is26,960,347; its accounting semantics are not exposed, so it
+32,117,573; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is28,477,551; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since23:11:24Z:
-1,511,881 uncached input,288,924 output and60,884,864 cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261005T231124Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since23:58:49Z:
+1,228,955 uncached input,304,098 output and71,154,688 cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261005T235849Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating

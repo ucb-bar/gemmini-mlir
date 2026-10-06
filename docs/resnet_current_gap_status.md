@@ -85,9 +85,12 @@ Source-stride resident convolution and the residue-grouped input layout have
 independent original-input capsule evidence:20.59% and7.98% respectively. Their
 whole-model timing is pending; those gains are not predictions for job1903.
 
-The hardware owner is qualifying a70-boundary profile of the actual1903 objects,
-with a byte-identical uninstrumented control, original outputs, all-executable
-section zero-FSM audit and stock hardware identity. Named CPU-stage attribution
+The hardware owner qualified a70-boundary profile of the actual1903 objects,
+with a byte-identical uninstrumented control, all1,000 original output bits,
+call conservation, all-executable-section zero-FSM audit and stock hardware
+identity. It is queued as **job1919**, with hardware timing pending.
+[Qualification](perf_records/resnet1903_profile_qualification.json),
+[admission](perf_records/firesim1919_admission.json). Named CPU-stage attribution
 will be recorded only when the instrumentation separates that stage. Remaining
 unknowns are transfer/execute overlap inside a device interval and the exact
 split of combined host intervals.
