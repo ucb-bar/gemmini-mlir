@@ -92,7 +92,7 @@ def _replay_layouts(value,layouts):
     return operations,value
 
 
-def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=None,source_sha=None,virtual_input=None):
+def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=None,source_sha=None,virtual_input=None,paired_readout=None):
     dims=chain['dimensions'];operations=[]
     if direct:
         if direct.orientation!='spatial_first':raise ValueError('fused captured direct path needs spatial-first contraction')
@@ -103,7 +103,7 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=
         inputs=[activation,weight.result]
     else:inputs=list(op.operands[:2])
     if integer_readout is not None:
-        scratch=tensor.EmptyOp([],TensorType(i32,[dims.m,dims.n]));operations.append(scratch);inputs.append(scratch.tensor)
+        scratch=tensor.EmptyOp([],TensorType(i8 if paired_readout is not None else i32,[dims.m,dims.n]));operations.append(scratch);inputs.append(scratch.tensor)
     ct=TensorType(i8,[dims.m,dims.n]);empty=tensor.EmptyOp([],ct);operations.append(empty)
     call=func.CallOp(symbol,[*inputs,empty.tensor],[ct]);operations.append(call)
     views,result=_replay_layouts(call.results[0],chain['layouts']);operations+=views
@@ -126,7 +126,9 @@ def rewrite_path(op,chain,symbol,direct,*,numeric_contract=None,integer_readout=
             'proof_domain':StringAttr('complete signed-int8 contraction accumulator interval'),
         })
     if integer_readout is not None:
-        declaration.attributes['gemmini.integer_readout']=DictionaryAttr({'proof_sha256':StringAttr(hashlib.sha256(json.dumps(integer_readout,sort_keys=True).encode()).hexdigest()),'source_sha256':StringAttr(source_sha),'scratch_bytes':IntegerAttr(dims.m*dims.n*4,i64),'scratch_ownership':StringAttr('caller_owned_unique')})
+        declaration.attributes['gemmini.integer_readout']=DictionaryAttr({'proof_sha256':StringAttr(hashlib.sha256(json.dumps(integer_readout,sort_keys=True).encode()).hexdigest()),'source_sha256':StringAttr(source_sha),'scratch_bytes':IntegerAttr(dims.m*dims.n*(1 if paired_readout is not None else 4),i64),'scratch_ownership':StringAttr('caller_owned_unique')})
+    if paired_readout is not None:
+        declaration.attributes['gemmini.paired_readout']=StringAttr(json.dumps(paired_readout,sort_keys=True))
     return declaration
 
 
@@ -149,9 +151,11 @@ def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None,p
     return emit_readout(proof,readout,fixedpoint=True,producer_range=producer_range,**dict(readout_options or {}))+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False,readout_domain_policy=None,spatial_command_loops=False):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False,readout_domain_policy=None,spatial_command_loops=False,readout_pair_policy=None):
     if type(spatial_command_loops) is not bool or (spatial_command_loops and not flat_spatial):
         raise ValueError('spatial command loops require boolean selection and flat spatial scheduling')
+    if readout_pair_policy not in (None,'source_proven') or (readout_pair_policy is not None and not exact_integer_readout):
+        raise ValueError('paired readout requires explicit source_proven policy and exact integer readout')
     if readout_domain_policy not in (None,'source_proven'):
         raise ValueError('unknown readout domain policy')
     if readout_domain_policy is not None and not exact_integer_readout:
@@ -242,8 +246,6 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         symbol=f'gemmini_{"exact" if error==0 else "bounded"}_requant_{len(routes)}';kernel=symbol+'_kernel';work=output/symbol
         bias_index=chain['bias'].index
         numeric_contract=dict(max_output_lsb_error=error,selected_policy_limit=max_output_lsb,source_region=rid)
-        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract,integer_readout=readout,source_sha=source_sha,virtual_input=virtual_input);declarations.append(declaration)
-        if pad_proof is not None:declaration.attributes['gemmini.virtual_padding']=StringAttr(json.dumps(pad_proof,sort_keys=True))
         if direct:
             policy_options=None;policy_refusal=None;generator=None
             if rid in resident_input_regions:
@@ -289,10 +291,14 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                 if resident_a_load_decision['applied']:
                     schedule_kind+=',resident_a_load_coalescing'
             schedule=generator.shape
+        pair_plan=None;pair_decision=None
+        if readout is not None and readout_pair_policy is not None:
+            from .paired_readout_binding import choose
+            generator,pair_plan,pair_decision=choose(generator,readout)
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         producer_range=None;producer_decision=None
-        if readout is not None and readout_domain_policy is not None:
+        if readout is not None and (readout_domain_policy is not None or pair_plan is not None):
             from .readout_producer_binding import bind_readout_producer,ProducerBindingIntegrityError
             producer_route=dict(region=rid,kernel=kernel,schedule=asdict(schedule),integer_readout=readout,bias_payload_sha256=constant.payload_sha256,compilation=compilation)
             producer_bundle=dict(source_sha256=source_sha,manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],weights_sha256=pins['weights.safetensors']['sha256'],routes=[producer_route])
@@ -302,12 +308,23 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             except ProducerBindingIntegrityError:
                 raise
             except ValueError as failure:
+                if pair_plan is not None:raise ValueError('paired producer source closure refused') from failure
                 producer_decision=dict(applied=False,refusal=str(failure))
-        adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout,readout_options=readout_options,producer_range=producer_range) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
+        declaration=rewrite_path(op,chain,symbol,direct,numeric_contract=numeric_contract,integer_readout=readout,source_sha=source_sha,virtual_input=virtual_input,paired_readout=pair_plan.certificate() if pair_plan is not None else None);declarations.append(declaration)
+        if pad_proof is not None:declaration.attributes['gemmini.virtual_padding']=StringAttr(json.dumps(pad_proof,sort_keys=True))
+        if pair_plan is not None:
+            from .paired_readout_binding import adapter as pair_adapter,native_oracle as pair_native
+            adapter=pair_adapter(schedule,symbol,kernel,pair_plan)
+            native_kernel=pair_native(schedule,kernel,pair_plan,scalar_oracle)
+        else:
+            adapter=integer_adapter(schedule,symbol,kernel,bool(direct),readout,readout_options=readout_options,producer_range=producer_range) if readout else (emit_c_adapter(schedule,symbol,kernel) if direct else dense_adapter(schedule,symbol,kernel))
+            native_kernel=scalar_oracle(schedule,kernel,bool(direct))
         (work/'adapter.c').write_text(adapter)
         adapter_compilation=compile_adapter(work/'adapter.c',work/'adapter.o',llvm_bin)
-        objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+scalar_oracle(schedule,kernel,bool(direct)))
+        objects.extend([work/'kernel.o',work/'adapter.o']);native.append(adapter+native_kernel)
         routes.append(dict(region=rid,symbol=symbol,kernel=kernel,direct_conv=bool(direct),schedule_kind=schedule_kind,schedule=asdict(schedule),virtual_padding_proof=pad_proof,virtual_padding_refusal=pad_refusal,bias_argument=bias_index,bias_payload_sha256=constant.payload_sha256,numeric_contract=numeric_contract,proof=proof,integer_readout=readout,adapter_compilation=adapter_compilation,compilation=compilation))
+        if pair_decision is not None:
+            routes[-1]['paired_readout']=pair_decision
         if producer_decision is not None:
             routes[-1]['readout_producer_domain']=producer_decision
         if spatial_command_loops:
@@ -351,6 +368,9 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
     audit=audit_elf(linked.read_bytes())
     if audit['status']!='pass':raise ValueError('forbidden device instruction')
     result=dict(schema='gemmini_exact_captured_requant_bundle_v1' if max_output_lsb==0 else 'gemmini_bounded_captured_requant_bundle_v1',selected_max_output_lsb=max_output_lsb,source_sha256=source_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=hashlib.sha256(printed.encode()).hexdigest(),object_sha256=hashlib.sha256(linked.read_bytes()).hexdigest(),routes=routes,refused=refused,nofsm_audit=audit,scope='Specializes only hash-bound captured zero-bias parameters. Runtime input images remain variable. Other weights/bias blobs require recompilation. Explicit local error limits do not establish full-model quality; original goldens must be retained and checked.')
+    if readout_pair_policy is not None:
+        result['readout_pair_policy']=readout_pair_policy
+        result['readout_pair_applications']=sum(bool(r.get('paired_readout',{}).get('applied')) for r in routes)
     if readout_domain_policy is not None:
         result['readout_domain_policy']=readout_domain_policy
         result['readout_domain_applications']=sum(bool(r.get('readout_producer_domain',{}).get('applied')) for r in routes)
@@ -358,7 +378,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--spatial-command-loops',action='store_true');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,spatial_command_loops=a.spatial_command_loops,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--readout-pair-policy',choices=('source_proven',));p.add_argument('--spatial-command-loops',action='store_true');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,readout_pair_policy=a.readout_pair_policy,spatial_command_loops=a.spatial_command_loops,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()

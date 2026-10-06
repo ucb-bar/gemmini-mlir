@@ -27,3 +27,21 @@ stride/tail cases pass actual strict Gemmini Spike against original ordered f32
 readout, all outputs and 2048-byte guards, with final executable zero-FSM audit.
 These are functional gates, not a whole-model performance result. The matched
 original-accumulator readout-only GSIM screen is tracked separately.
+
+## Normal source-bound route
+
+`captured_requant_bundle.build(..., exact_integer_readout=True,
+readout_pair_policy='source_proven')` tries a fixed ULP ladder derived solely
+from the ordered source scales. Unsupported producer families or ambiguous pair
+decoders retain the existing exact i32 readout and report refusal. Immutable
+source/weight/compiled producer closure is required before selecting a pair;
+source-integrity errors fail the build. Existing `readout_domain_policy` is
+independent and unchanged.
+
+Selected calls keep the established two read/two write descriptor contract,
+with a fresh **i8** second-output scratch rather than i32 scratch. The adapter
+checks byte extents and disjointness against the first output and both input
+regions before invoking the four-pointer kernel. Both outputs remain live until
+the portable decoder completes, and the returned descriptor is the first output.
+Native stand-ins reproduce both primitive scaled stores plus that decoder;
+normal whole-model native/target and original-golden gates remain mandatory.
