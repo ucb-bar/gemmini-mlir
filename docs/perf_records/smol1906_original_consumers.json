@@ -1,0 +1,610 @@
+{
+  "schema": "original_ordered_fma_source_consumer_census_v1",
+  "source_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_source_sum_fma_bundle/model.mlir",
+  "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+  "source_ordinals_are_binding_identifiers_only": true,
+  "matched_contractions": 384,
+  "source_macs": 19327352832,
+  "shapes": [
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "sites": 192
+    },
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        512
+      ],
+      "rhs_transposed": true,
+      "sites": 96
+    },
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        128
+      ],
+      "rhs": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "sites": 96
+    }
+  ],
+  "consumer_families": [
+    {
+      "operation": "linalg.generic",
+      "output_element_types": [
+        "f32"
+      ],
+      "scalar_operations": [
+        "arith.addf",
+        "linalg.yield"
+      ],
+      "sites": 288
+    },
+    {
+      "operation": "linalg.generic",
+      "output_element_types": [
+        "f32"
+      ],
+      "scalar_operations": [
+        "arith.constant",
+        "arith.mulf",
+        "linalg.yield"
+      ],
+      "sites": 96
+    }
+  ],
+  "first_examples": [
+    {
+      "source_ordinal": 1050,
+      "lhs": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        512
+      ],
+      "rhs_transposed": true,
+      "source_macs": 100663296,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x512xf32>",
+            "tensor<1x12x256x512xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x512xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.constant",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "arith.mulf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1153,
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 37748736,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1166,
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 37748736,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1179,
+      "lhs": [
+        1,
+        12,
+        256,
+        128
+      ],
+      "rhs": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 25165824,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1192,
+      "lhs": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        512
+      ],
+      "rhs_transposed": true,
+      "source_macs": 100663296,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x512xf32>",
+            "tensor<1x12x256x512xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x512xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.constant",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "arith.mulf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1295,
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 37748736,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1308,
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 37748736,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1321,
+      "lhs": [
+        1,
+        12,
+        256,
+        128
+      ],
+      "rhs": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 25165824,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1355,
+      "lhs": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        512
+      ],
+      "rhs_transposed": true,
+      "source_macs": 100663296,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x512xf32>",
+            "tensor<1x12x256x512xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x512xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.constant",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "arith.mulf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "source_ordinal": 1458,
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs_transposed": false,
+      "source_macs": 37748736,
+      "result_users": [
+        {
+          "operation": "linalg.generic",
+          "operand_index": 0,
+          "input_types": [
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>",
+            "tensor<1x12x256x64xf32>"
+          ],
+          "output_types": [
+            "tensor<1x12x256x64xf32>"
+          ],
+          "scalar_body": [
+            [
+              "arith.addf",
+              [
+                "f32"
+              ]
+            ],
+            [
+              "linalg.yield",
+              []
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Typed source operation matches and direct SSA consumers; no route or physical-cost claim.",
+  "token_usage_available": false
+}
