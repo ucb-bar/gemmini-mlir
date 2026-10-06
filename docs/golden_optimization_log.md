@@ -1,5 +1,27 @@
 # Golden Gemmini optimization log
 
+## Exact joint residual predictor feasibility
+
+The first source-derived residual contract admits two independent byte predictions
+with73/61 and523/437 coefficients. The complete65,536 signed-byte pair certificate
+has zero conflicting prediction tuples despite53 and10 individual errors. A512-byte
+joint decoder reconstructs every original ordered binary32 source output. The
+bounded nearby-rational search rejects all424 second two-chunk candidates; this
+does not establish global optimality. Coefficient chunks fall from39 to11, while
+two readouts and a full decoder scan add work.
+
+The paired complete-domain GSIM capsule measures164,367cycles for the exact
+39-chunk control and160,949 for two complete predictor calls plus packed decoding
+(−2.079%). Both target prediction tables, original source outputs,8,192 dirty guard
+bytes and unchanged inputs pass full-domain strictRV64GC Spike and GSIM checks;
+final ELFs contain zero FSM instructions and differ only one selector byte.
+This includes repeated input DMA/configuration/fences and both stores. The
+immutable original captured-layer screen and fused resident-input screen remain
+pending. Normal policies and the original whole-model zero-tolerance gate remain
+unchanged. Merlin owns the certificate/decoder; OOT owns diagonal decomposition,
+resources and target execution. See the pinned
+[feasibility receipt](perf_records/residual_joint_predictor_feasibility.json).
+
 This log records changes that the later automatic lowering must reproduce. A result is called **measured** only when a numeric probe or model run completed on the named engine. GSIM kernel cycles, FireSim full-model cycles, analytical floors and inferred class gains are different quantities. The device target is `FireSimGemminiRocketConfig`; every final linked ELF must contain zero Gemmini hardware `LOOP_*` instructions, including unused linked code.
 
 ## Reference and comparison contract
