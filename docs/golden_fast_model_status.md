@@ -130,3 +130,86 @@ screen. Spend FireSim on calibration gaps and shortlisted complete programs.
 
 The model currently licenses diagnostic arithmetic stream screening only.
 Whole-model targets and automatic ranking remain unmet.
+
+## Additional model effort after user steering
+
+The12-case crossed gather battery completed stock FireSim2036. Its27 windows use the original byte-identical
+gather and common fenced counter source. Read counts1024/4096/16384 cross
+64KiB/512KiB/8MiB extents; a second seed supplies three additional independent
+streams. Only four primary-seed corners train; eight middle-axis/second-seed
+cases, including both repeats, remain withheld. Two-term instruction/region
+and payload/region hypotheses were committed before new timing labels. Root
+reclosed83pins and independently regenerated every index, expected accumulator
+and checksum. Spike establishes correctness and instruction counts; hardware
+timing is complete. Another full GSIM run is unnecessary
+for this CPU fixture.
+
+[Declaration](perf_records/gather_crossed_model_hypotheses_20261006.json),
+[root release](perf_records/root_gather_crossed_stock_release_20261006.json),
+[root model review](perf_records/root_gather_crossed_model_pilot_20261006.json).
+
+All eight held cases resolve, but the broader test fails: requested-region
+bytes alone reach40.76% maximum error and instructions plus regions40.87%.
+Instructions alone reach80.75%; initialized extent alone174.31%. The earlier
+fixed4096-read2.83% result does not establish transfer across read counts and
+index streams. Both repeats remain visible, including differences exceeding
+2x. No cache-state or confidence claim follows. Root independently reclosed
+89 qualified artifacts and nine terminal pins; every original output/checksum,
+actual staged ELF and stock bitstream agrees.
+
+The next generic feature is exact sequential logical-region recurrence:
+first touches and distinct intervening regions between repeated requests, with
+explicit address granule and resource limits. This belongs in Merlin and is
+not a cache-miss census. Any new gather hypothesis after these labels is
+exploratory until independent validation. The matched table and resident-B
+reuse batteries retain their own predeclared held cases.
+
+The real Tiny table candidate has now passed full normal/native/strict-target
+qualification and completed stock job2033 at424,921,379cycles, versus
+422,018,733for2004:2,902,646cycles/0.6878%higher in one observation each.
+Root reclosed298qualification pins, both
+immutable measured-core snapshot resolutions, all256000original words and the
+unchanged Torch gate, controlled host-object link, actual readonly/aligned8MiB
+table bytes and final executable noFSM. No whole savings are projected from the
+6.531% M2 GSIM gain. Root also reclosed nine terminal pins and reparsed the
+original256000-word digest, DONE and rank0, including named actual staged
+ELF/bitstream receipts. Keep2004champion; the table remains default off.
+Cache cause and statistical significance are unknown.
+
+The emitted-feature adjunct reuses the exact OOT FP producer and shared Merlin
+RAW graph; root reclosed its18artifact and7implementation pins. Actual normal
+helper static counts include retained fallback paths and cannot substitute for
+dynamic counts. Mixed chains/branches, whole memory requests, cache misses and
+cross-block dependencies remain unknown. A separate small matched table
+calibration is being prepared across source section sizesM2/M4/M8 and explicit
+16/18/20-bit partitions. Four corners train; five middle-axis cases are withheld
+before timing, alongside complete source controls. All preparation/table/
+certification/replay/finishing costs stay inside the common window. The Tiny
+variant labels remain withheld from fitting.
+
+[Whole release](perf_records/root_tiny_source_interval_whole_release_20261006.json),
+[terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json),
+[actual helper features](perf_records/tiny_source_interval_model_features.json).
+
+Untimed generic partition analysis preserves every original first45056i8
+word at16/17/18/19/20bits. Their tables span512KiB to8MiB; first-source replays
+are216/98/50/27/13, and requested64B regions432/794/1446/2602/4632. All22
+actual source quant factors were checked on that same first input fixture;
+later groups' operand distributions were not measured. Root reclosed34pins.
+The unchanged allocator has a fixed absolute arena; table insertion moves
+bss/stack VMAs, not that arena base. Dynamic pointers and physical misses
+remain unknown. No new partition is selected from these untimed counts.
+
+[Parameter/layout analysis](perf_records/source_interval_partition_layout_untimed.json).
+
+Typed resident-B/K loops are also being checked on complete original and
+independent tail capsules. Exact command/DMA/reuse features will validate whether
+the primitive screen can distinguish their schedules. Root reclosed239pins
+and used Merlin's existing feature-collision analyzer: unchanged primitive/
+array/requestedDMA/reuse features imply point-error floors0.882%onH28 and
+7.184%on independent tails. Retired-count ordering misranks the tail pair,
+which has11.8%more instructions and13.4%fewer measured GSIMcycles. CPU issue,
+address/dependency/spill and overlap pricing remain needed. Pure text reductions
+did not yield proportional cycles; no unmeasured overlap coefficient is introduced.
+
+[Source-equivalent variant check](perf_records/root_resident_source_variant_model_validation_20261006.json).

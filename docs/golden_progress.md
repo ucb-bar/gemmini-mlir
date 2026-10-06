@@ -17,10 +17,22 @@ with one held case per new family and substantial memory repeat differences;
 whole-model predictions remain unknown. [Operational pilot](perf_records/root_operational_service_model_pilot_20261006.json).
 
 Tiny's source-wide8MiB interval-table prototype measures6.531% fewer complete
-section GSIM cycles, despite more instructions. Original outputs/guards/all5FRM
-and input identity pass. Generic default-off promotion and normal full-model
-qualification are in progress; this does not change the whole-model best below.
-[Section evidence](perf_records/tiny_source_interval_table_complete_gsim.json).
+section GSIM cycles, despite more instructions. The explicit generic normal
+route now passes all256000native/strict original words and the unchanged Torch
+gate; root reclosed298pins and exact physical table/object/ELF identity.
+Stock2033 finishes424,921,379cycles,2,902,646/0.6878%above2004 in one
+observation each. Original all256000outputs pass; root reclosed nine terminal
+pins. Keep2004champion and hold performance/default promotion. Cache cause
+remains unknown; smaller source-wide partitions are being calibrated.
+[Terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
+
+More modeling work now crosses gather read counts/address extents and a second
+stream seed, with four training corners/eight withheld cases. All12cases/27
+strict counter windows pass; stock calibration2036 is running. Matched
+source-table size/prefix calibration and source-equivalent resident-B reuse
+checks continue.
+No new whole-model prediction or automatic ranking is enabled.
+[Model work](golden_fast_model_status.md).
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
@@ -73,6 +85,16 @@ the new whole arm. Whole-model hardware qualification is separate.
 fixes, portable host performance and target scheduling, with matched measurements for each gain.
 
 ### Latest integration checkpoint (2026-10-06 UTC)
+
+Stock2036 completes the crossed gather calibration. The predeclared
+instruction/region model resolves all eight held cases but misses by up to
+40.87%; the earlier fixed-count2.83% result does not transfer broadly.
+Generic address-region recurrence features and matched complete table/reuse
+batteries are the next modeling work. Tiny table2033 is also a whole-model
+regression at424,921,379cycles; keep2004 at422,018,733. No model-based whole
+prediction or automatic ranking is enabled.
+[Model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
+[Tiny terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
 
 Stock2004 and2026 are the current Tiny and ResNet whole-model bests.
 ResNet2026 measures30,977,892cycles,8,590,443 above the permitted ZIP1876

@@ -9,6 +9,72 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 21:17 UTC: additional performance model work
+
+- CPU21/gather3/primitive9 are closed on all three engines,33cases/75windows
+  per engine. Shared Merlin fitting handles predeclared partitions, unknown
+  domains and condition checks. Held arithmetic stream errors reach0.031%for
+  DIV and0.260%for FMA; ordinary memory remains38.29%inaccurate. Additional
+  stock operational means miss2.83%gather,1.88%compute,8.98%loads and6.59%
+  readback on limited held middle cases. These are stream diagnostics, not
+  whole prediction or physical resource rates.
+- New crossed gather source12cases/27windows varies read counts, extents and
+  seed. Four source corners train; eight middle-axis/second-seed cases and
+  both repeats stay withheld. Root reclosed83pins, original kernel/timer source
+  equality and every index/expected accumulator/checksum. Hypotheses were
+  committed before timing labels; stock2036 is running. No second whole GSIM
+  campaign is needed for this functional CPU fixture.
+- Tiny's normal source-wide8MiB table passes all256000original native/strict
+  words, unchanged Torch gate, all155bindings, FENV fallback, controlled link
+  and actual readonly/aligned data identity. Root closes298qualification pins
+  and two exact measured-source snapshots. Stock2033 costs424,921,379versus
+  actual2004's422,018,733:0.6878%higher in one observation each, all outputs
+  exact. Nine terminal pins reclosed. Keep2004champion; reject performance
+  promotion. The6.531%M2GSIM local gain remains separately scoped. Whole cache
+  cause and statistical significance are unknown.
+- Untimed generic source partitions16/17/18/19/20bits ship512KiB/1/2/4/8MiB,
+  with216/98/50/27/13source replays out of45056first-section observations.
+  All original first i8 words and22actual quant factors on the SAME first
+  input fixture pass. Requested64B regions432/794/1446/2602/4632are not cache
+  misses. Root closes34pins; allocator absolute arena is unchanged while
+  bss/stack VMAs shift. No partition is selected from untimed counts. A matched
+  M2/M4/M8×16/18/20bit calibration is being built, with four training corners,
+  five withheld middle-axis cases, full source controls and all costs inROI.
+- Source-equivalent retained K loops keep exact primitive/DMA/reuse order.
+  H28 measured512059→503106GSIMcycles; independent tails34368→29761while
+  instructions rise11.8%. Root closes239pins and reuses the shared feature
+  collision analyzer: primitive-only features imply point-error floors0.882%
+  and7.184%. CPU counts misrank tails; text reduction cannot price stalls or
+  overlap. H56's new neutral check and whole normal qualification remain
+  separate ongoing evidence. A matched resident-B reuse fixture is planned.
+- Generic scalarLLVMAnd/Or/XOr tracing at declared widths is a clean shared
+  compiler topic in Merlin PR40, based on unchanged main7fee. Root27tests
+  pass. Disjoint poison promises, vectors and unsupported widths refuse;
+  target operand/schedules remain OOT. It extends inventory family39, not a
+  new double-counted family. Source interval/owner prototypes remain distinct.
+- Smol's first prepared-owner normal attempt preserves all1600outputs but
+  falls back on all48calls and executes zero products: performance refused.
+  Typed immutable ABI-view materialization fixes actual prepare/consumer
+  pointer identity without weakening guards. New full normal native gate
+  reports48calls/23040products/12prepares/zero fallback plus original outputs
+  and retained-source fallback; root packet review and hardware costs pending.
+  The96typed copies represent eight existing source ABI views perepoch;
+  nominal source payload is not actual dynamic allocation/traffic.
+
+[Model status](golden_fast_model_status.md),
+[Tiny terminal](perf_records/root_tiny_source_interval_terminal_review_20261006.json),
+[crossed gather release](perf_records/root_gather_crossed_stock_release_20261006.json),
+[variant validation](perf_records/root_resident_source_variant_model_validation_20261006.json),
+[Merlin PR40](https://github.com/ucb-bar/merlin/pull/40).
+
+Phase0 should retain semantic readonly views through actual physical
+materialization/ABI ownership and include all allocation/copy/prepare costs.
+Phase1 should expose source-wide table partition/storage choices as explicit
+compiler parameters and prune identical objects. Phase2 should validate joined
+memory/dependency/replay costs and candidate ordering on independent complete
+callers before using local prices or enabling a default. Preserve engine,
+layout, timer scope and first/second repeats; keep Jack's reference held out.
+
 ### 2026-10-06 19:10 UTC: whole/group winners and model calibration
 
 - ResNet stock2025:31,697,615cycles,110,779below actual2023. All1,000
@@ -1666,3 +1732,50 @@ completed requests add1,336,334uncached input and341,663output tokens. Raw
 exact OOT-only attribution remain unavailable. Separate active-goal observation
 is66,210,958tokens; the22M/5B/300M whole targets remain unmet.
 [Ledger](perf_records/golden_token_usage_20261006T202329Z.json).
+
+### Broader model validation and whole-table regression (2026-10-06)
+
+Crossed gather2036 varies read count, extent and seed with four training
+corners and eight predeclared held cases. All predictions resolve, but maximum
+held error is40.76% for requested-region bytes and40.87% for instructions plus
+regions. The fixed4096-read2.83% result therefore fails broad transfer. All27
+windows and their large repeat differences remain;89 qualified artifacts and
+nine terminal pins are independently reclosed. New generic sequential address
+recurrence features will expose locality/order, without claiming physical
+cache misses. Further gather hypotheses are exploratory after these labels.
+
+Tiny's source-complete table improved the matched M2 GSIM section6.531%, but
+whole stock2033 regresses from422,018,733 to424,921,379cycles (+0.6878%). All
+256000 original words and the Torch gate still pass. Keep2004 champion.
+Untimed16–20-bit partitions remain exact on the first input and reduce storage
+from8MiB to512KiB at the cost of more source replay; later groups are unmeasured.
+A single matched M2/M4/M8 by16/18/20-bit calibration will measure that tradeoff
+before another whole build. All prep, replay and finishing stay in the window;
+fixed-term hypotheses that violate identifiability remain rejected.
+
+Exact retained K/row loops preserve every accelerator command, yet H28 cycles
+fall1.748% and independent tail cycles13.404% while the tail instruction count
+rises11.8%. Primitive/requested-byte features collide; count-only ordering is
+wrong for the tail. A matched real-B/GARBAGE reuse battery will separate
+operand reuse from CPU issue and completion cost. These remain operational
+streams, not pure device service rates or additive whole forecasts.
+
+Generic width-exact scalar LLVM AND/OR/XOR tracing is published in Merlin
+[PR40](https://github.com/ucb-bar/merlin/pull/40), head dafe64a4, based on
+main7fee5cfdac. Root independently passes27 focused tests. The change belongs
+to existing inventory family39; it is not another counted family or merged
+main change. Target packed-operand decoding remains in OOT.
+
+Owned token observation at21:17:31UTC covers the same eight explicitly owned
+threads:60,114,187 uncached input,2,828,431,488 cache-read and11,747,071 output.
+The4,722,444 reasoning tokens are included in output. Since20:23:29, completed
+requests add1,680,787 uncached input,78,622,208 cache-read and330,357 output.
+Raw2,900,292,746 is token traffic. Exact OOT-only/per-optimization attribution
+and monetary cost remain unavailable; no proportional allocation is invented.
+The whole22M/5B/300M targets remain unmet.
+
+[Crossed model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
+[Tiny regression](perf_records/root_tiny_source_interval_terminal_review_20261006.json),
+[Source-variant collision check](perf_records/root_resident_source_variant_model_validation_20261006.json),
+[Bitwise upstream review](perf_records/root_merlin_static_bitwise_review_publication_20261006.json),
+[Token ledger](perf_records/golden_token_usage_20261006T211731Z.json).
