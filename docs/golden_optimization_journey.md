@@ -504,3 +504,31 @@ but its preliminary cost comparison is invalid: the compiler hoists repeated
 pure byte checks while retaining word checks, and an outlined helper drops
 alignment knowledge. That evidence is retained and the harness/codegen are
 being corrected before promotion; no model-performance gain is claimed.
+
+## 2026-10-06 scratch recovery and resumed optimization
+
+User requested scratch space and continuation of the performance goal. Retained all
+historical artifact paths and contents with hash-verified same-filesystem hardlinks
+for frozen identical completed copies. Root deduplicated 24 Tiny weight/object/capture
+copies (42.524 GiB); Tiny deduplicated one completed baseline ELF
+(another was already linked, no double attribution); reference deduplicated five
+owned historical simulator copies. Total physically reclaimed by these actions:
+48896086016 bytes (45.538 GiB). Scratch available at root closure: approximately
+58 GiB. No model data, goldens, ZIP, proof content or useful live process was deleted.
+New builds resumed. Historical hardlinked artifacts are immutable; use fresh output
+directories for later builds, or copy before changing a shared file.
+
+Generic infrastructure follow-up: compilation artifacts should support immutable
+content-addressed weight/capture storage and independent writable build outputs,
+with physical-storage accounting and safe retention manifests. This belongs in
+Merlin orchestration, independently of target. These storage savings are unrelated
+to model runtime cycle performance. Receipts: root_frozen_tiny_storage_dedup.json,
+tiny_frozen_baseline_storage_dedup.json, owned_reference_spike_space_dedup.json.
+
+Performance work resumed: reference has a local M784/N256/K512 full-K weight-cache
+GSIM win (599,463 to 434,406 cycles, original output/guards/inputs exact), pending
+independent shape/tail/resource/default checks before normal binding; Tiny has a
+local actual hoisted normalization pure-f32 multiplication packet win (~26.33%),
+pending whole-model validation. Neither is a whole-model FireSim performance claim.
+Stock ResNet job 1957 remains queued and the ordinary minmax SmolVLA whole-model
+functional target remains live, with their existing owners and collectors.
