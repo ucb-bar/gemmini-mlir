@@ -21,19 +21,25 @@ from mlir_oot.tables import rtl_facts as F
 
 
 @pytest.mark.parametrize(
-    "shape,group,base",
+    "shape,group,base,residue",
     [
-        (ConvShape(5, 21, 32, 19, stride=2, bn=2), 1, 336),
-        (ConvShape(9, 5, 48, 67, stride=2, bn=4), 2, 8192),
-        (ConvShape(6, 13, 16, 17, bn=2), 1, 128),
-        (ConvShape(17, 13, 32, 271, stride=2, bn=7), 1, 576),
+        (ConvShape(5, 21, 32, 19, stride=2, bn=2), 1, 336, False),
+        (ConvShape(9, 5, 48, 67, stride=2, bn=4), 2, 8192, False),
+        (ConvShape(6, 13, 16, 17, bn=2), 1, 128, False),
+        (ConvShape(17, 13, 32, 271, stride=2, bn=7), 1, 576, False),
+        (ConvShape(9, 5, 48, 67, stride=2, bn=4), 3, 288, True),
+        (ConvShape(17, 13, 32, 271, stride=2, bn=12), 2, 640, True),
     ],
 )
 def test_actual_strided_commands_match_scalar_source_and_increasing_k(
-    shape, group, base
+    shape, group, base, residue
 ):
     generator = GoldenResidentConv(
-        shape, rows_per_tile=group, weight_base=base, source_stride=True
+        shape,
+        rows_per_tile=group,
+        weight_base=base,
+        source_stride=True,
+        row_residue=residue,
     )
     module = generator.build()
     module.verify()
@@ -126,6 +132,9 @@ def test_actual_strided_commands_match_scalar_source_and_increasing_k(
                         index = (y * shape.ow + x) * shape.cout
                         expected[index : index + shape.cout] += left @ weights
     assert np.array_equal(output, expected)
+    # The allocated row map is a bijection, including added zero padding.
+    height = generator.plane // generator.input_pitch
+    assert {generator.input_row(y) for y in range(height)} == set(range(height))
 
 
 @pytest.mark.parametrize("stride", [0, -1, 65536])
@@ -203,7 +212,9 @@ def test_resource_retile_uses_complete_extents_and_wide_transfer_counts():
 
     from mlir_oot.conv_schedule import source_stride_resource_layout
 
-    source = ConvShape(14, 14, 512, 512, stride=2, bn=16, output_dtype="i8")
+    source = ConvShape(
+        14, 14, 512, 512, stride=2, bn=16, output_dtype="i8", wide_b=True
+    )
     candidate, decision = source_stride_resource_layout(source)
     assert candidate.conv == replace(source, bn=8)
     assert decision["max_resource_bn"] == 9
@@ -231,3 +242,58 @@ def test_resource_retile_uses_complete_extents_and_wide_transfer_counts():
     assert tail.bbase == 576
     with pytest.raises(ValueError, match="no complete"):
         source_stride_resource_layout(ConvShape(28, 28, 512, 512, stride=2))
+
+
+def test_residue_layout_groups_output_rows_without_source_retile(tmp_path):
+    from mlir_oot.captured_requant_bundle import build
+    from mlir_oot.conv_schedule import select_kernel, source_stride_resource_layout
+
+    source = ConvShape(
+        14, 14, 512, 512, stride=2, bn=16, output_dtype="i8", wide_b=True
+    )
+    candidate, decision = source_stride_resource_layout(source, row_residue=True)
+    assert candidate.conv == source
+    assert candidate.row_tiles == ((0, 2, 15), (2, 2, 15), (4, 2, 15), (6, 1, 7))
+    assert decision["input_rows"] == decision["weight_base"] == 8192
+    assert decision["accumulator_rows"] == 1024
+    assert candidate.output_pitch == 8 and candidate.residue_rows == 8
+    selected, kind = select_kernel(
+        source,
+        flat_spatial=True,
+        virtual_padding=True,
+        source_stride_resident=True,
+        source_stride_row_residue=True,
+    )
+    assert kind == "resident_source_stride_planes"
+    assert selected.conv == source and selected.row_residue
+    assert selected.source_stride_decision["applied"]
+    assert not selected.source_stride_decision["timing_claim"]
+    # The previous 28-wide arm retains its byte-preserving source row order.
+    retained, _ = select_kernel(
+        ConvShape(28, 28, 256, 256, stride=2),
+        flat_spatial=True,
+        virtual_padding=True,
+        source_stride_resident=True,
+        source_stride_row_residue=True,
+    )
+    assert not retained.row_residue
+    with pytest.raises(ValueError, match="requires source stride"):
+        build(
+            tmp_path / "missing",
+            tmp_path / "tools",
+            tmp_path / "output",
+            source_stride_row_residue=True,
+        )
+    for y, count, span in candidate.row_tiles:
+        for row in range(count):
+            for kh in range(3):
+                for x in range(source.ow):
+                    assert candidate.source_offset(y, kh, 0) + (row * 8 + x) * 2 == (
+                        candidate.source_offset(y + row, kh, x * 2)
+                    )
+    with pytest.raises(ValueError, match="row residue"):
+        GoldenResidentConv(source, row_residue=True)
+    with pytest.raises(ValueError, match="row residue"):
+        GoldenResidentConv(
+            ConvShape(5, 5, 16, 16), source_stride=True, row_residue=True
+        )

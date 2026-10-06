@@ -1,0 +1,254 @@
+{
+  "schema": "source_stride_residue_layout_capsule_v1",
+  "timestamp_utc": "2026-10-06T00:41:20.620772+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Deinterleave padded source rows by stride residue, allowing multiple valid output rows per mesh tile while retaining the original HWIO reduction and one-time input loading",
+  "control": {
+    "job": 1897,
+    "object": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/control/kernel.o",
+      "sha256": "d070b39c3a595d28505ee3902442cbea1ff3202964eee0d2cadda83179defa2b"
+    },
+    "cycles": 774520,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/control/result.json",
+      "sha256": "8737a9d88267c66ca2c1fcfbe1b59b7340669a8232dbb703e019238bd58e1e91"
+    }
+  },
+  "candidate": {
+    "object": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/resident/kernel.o",
+      "sha256": "daa1dfc934271983802e4dea868dd99d55fd7b688691df55185452c970967208"
+    },
+    "cycles": 712682,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/resident/result.json",
+      "sha256": "29417da30ea40915633c448763855843db173c4506a90bbd9879740cd982b6a0"
+    },
+    "rows_per_tile": 2,
+    "mesh_rows": 15,
+    "input_pitch": 16,
+    "output_pitch": 8,
+    "residue_rows": 8,
+    "plane_rows": 256,
+    "input_rows": 8192,
+    "weight_base": 8192,
+    "weight_rows": 256,
+    "accumulator_rows": 1024,
+    "bn": 16
+  },
+  "delta_cycles": -61838,
+  "percent_change": -7.984041729070908,
+  "correctness": {
+    "all25088_original_i8_outputs": true,
+    "all4096_guards": true,
+    "common_addresses": {
+      "captured_a": 2148532224,
+      "captured_b": 2148632576,
+      "captured_box": 2151677952,
+      "captured_expected": 2150991872
+    },
+    "same_fixture": {
+      "a": "3271269016f40139ba0a7aac48cc4eb159cc6f3e4b36176cca5acaa747355a93",
+      "b": "642aa62ca3dc3a28093f862a622b03ff1032a7ca7e6721f824e1a0ddef453877",
+      "expected": "c07de8e2815db9a07bb7ae7589aa6907797b05646da37e6cbbb041c6855869ff"
+    },
+    "strict_RV64GC_Spike": true,
+    "zero_FSM_final_ELFs": true,
+    "source_K_order": "increasing HWIO kh/kw/ci"
+  },
+  "source_capture": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_bounded_bn/capture/receipt.json",
+    "sha256": "418a0a672cc8c287be2e6e6359d2b5128e794458bb599ce6d3ac8c09d880029a"
+  },
+  "actual_command_trace": {
+    "schema": "source_stride_residue_actual_command_trace_v1",
+    "arms": {
+      "control": {
+        "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/gemmini_exact_requant_43/kernel.gemmini.mlir",
+        "target_module_sha256": "558c1fcaf50253352867c9aa99fda3ade9694204a80f897808dc67603d128028",
+        "complete_static_cfg": true,
+        "pointer_index_bits": 64,
+        "mesh_a_stride": 1,
+        "counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 3,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 4064,
+          "gemmini.preload": 36864,
+          "gemmini.compute": 36864,
+          "gemmini.mvout": 32
+        },
+        "requested_input_bytes": {
+          "activation_nonnull": 409600,
+          "activation_zero_fill": 41984,
+          "weight_nonnull": 2359296,
+          "weight_zero_fill": 0
+        },
+        "output_bytes": 25088,
+        "activation_compute_bank_counts": {
+          "0": 36864
+        },
+        "real_weight_preload_bank_counts": {
+          "2": 9216
+        },
+        "command_order_sha256": "79c8883a6004b79bfcebded8aa441013bdcac7380f53ca83dc5cfc8452410a09"
+      },
+      "candidate": {
+        "target_module": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/resident/kernel.gemmini.mlir",
+        "target_module_sha256": "10554cabd0d7d1e0bc0b9bfc366885465a2311aff86d69a993f563ec19c4d295",
+        "complete_static_cfg": true,
+        "pointer_index_bits": 64,
+        "mesh_a_stride": 2,
+        "counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 3,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 2656,
+          "gemmini.preload": 36864,
+          "gemmini.compute": 36864,
+          "gemmini.mvout": 56
+        },
+        "requested_input_bytes": {
+          "activation_nonnull": 100352,
+          "activation_zero_fill": 30720,
+          "weight_nonnull": 2359296,
+          "weight_zero_fill": 0
+        },
+        "output_bytes": 25088,
+        "activation_compute_bank_counts": {
+          "0": 18432,
+          "1": 18432
+        },
+        "real_weight_preload_bank_counts": {
+          "2": 9216
+        },
+        "command_order_sha256": "c19339aa024052a69bfbcee4b046c1d15b6baa5079ad37ec72c05fa5c23d795d"
+      }
+    },
+    "scope": "Actual target-module CFG and requested transfer/coverage proof; no hardware queue dispatch or timing inference"
+  },
+  "actual_command_trace_pin": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/actual_commands.json",
+    "sha256": "2b40cb4401e7a5b8dd3b5f556df608babca1c6c80ff44eeab5aec13dea39ac0b"
+  },
+  "selector": {
+    "applied": true,
+    "timing_claim": false,
+    "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+    "control": {
+      "padded_issue": 589824,
+      "requested_bytes": 2793984,
+      "score": 764448
+    },
+    "candidate": {
+      "padded_issue": 589824,
+      "requested_bytes": 2484736,
+      "score": 745120
+    },
+    "resources": {
+      "input_rows": 8192,
+      "weight_base": 8192,
+      "row_groups": 4,
+      "max_resource_bn": 16,
+      "control_bn": 16,
+      "selected_bn": 16,
+      "panel_retile": false,
+      "weight_rows": 256,
+      "accumulator_rows": 1024,
+      "row_residue": true,
+      "input_pitch": 16,
+      "output_pitch": 8,
+      "weight_and_output_transfer_commands": 2360,
+      "rank": "retain legal panel; otherwise minimum wide transfer commands then largest legal panel",
+      "timing_claim": false,
+      "layout_refusals": []
+    },
+    "compiler_options": {
+      "source_stride": true,
+      "rows_per_tile": 2,
+      "weight_base": 8192,
+      "bn": 16,
+      "row_residue": true
+    },
+    "refusal": null
+  },
+  "selector_pin": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/selector.json",
+    "sha256": "30c9fc75140e40ed0a1c20770ebbef9b35ba0c34d55a479843e54d8bacbe6894"
+  },
+  "independent": {
+    "shape": {
+      "h": 9,
+      "w": 5,
+      "cin": 48,
+      "cout": 67,
+      "stride": 2,
+      "bn": 4,
+      "output_dtype": "i8",
+      "scale": 0.00390625,
+      "relu": true,
+      "wide_b": false,
+      "explicit_halo": false
+    },
+    "rows_per_tile": 3,
+    "input_pitch": 8,
+    "residue_rows": 6,
+    "weight_base": 288,
+    "output_pitch": 4,
+    "all1005_i8_outputs": true,
+    "guard_bytes": 2048,
+    "cycles": 13577,
+    "strict_RV64GC_and_zeroFSM": true,
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/independent/result.json",
+      "sha256": "982921da8a5e84e81ee203bd539479854fdb0b628db03ebad838df2e5f58a565"
+    }
+  },
+  "layout_proof": {
+    "input_partition": "Allocated row permutation is a bijection; source DMA/zero partitions write each input row/column slice once; all input fills precede compute",
+    "source_address": "row=(padded_y % stride)*ceil(padded_height/stride)+floor(padded_y/stride); output_y*stride+kh maps into one residue slab; mesh stride advances x then the next output row",
+    "padding": "Pitch is a multiple of source stride; added horizontal/vertical cells are zero-filled; dummy output gaps are never stored",
+    "lifetime": "Whole input remains live and immutable throughout increasing source K; streamed weight panel has a disjoint complete SPAD extent; ACC group+channel extents fit the target",
+    "endpoint": "Constructor bounds every full compute span inside the proper channel/residue slab; decoded CFG tests compare independent scalar source and prove exact K-order/output coverage"
+  },
+  "default_parity": {
+    "compact": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/default_parity_matmul_29/kernel.o",
+      "sha256": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2"
+    },
+    "previous_source_stride": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/default_parity_matmul_25/kernel.o",
+      "sha256": "ae3abd0925febd58af6c9e3d7e462b1886faa6f9a85f189f69e12801bb382765"
+    },
+    "byte_identical_prior_objects": true
+  },
+  "negative_predecessor": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/docs/perf_records/source_stride_bounded_bn_rejected.json",
+    "sha256": "c0afd9c93704e8cff678e1d2b19f1b17595cf67138a79747ebce47c72cb89a52"
+  },
+  "reference_scope": "Owned reference has A_stride2, plane320 and36,864computes. New affine residue rule independently proves current source semantics; unresolvedreferenceaddresses/differentnumerics remain distinct.",
+  "outcome": "ADMIT_SOURCE_BOUND_WHOLE_COMPILATION",
+  "whole_model_hardware_gain": "UNKNOWN",
+  "firesim_queue_submission": false,
+  "token_usage_available": false,
+  "metric_scope": "Matched kernel GSIM cycles; analytical ranking is not hardware timing prediction and no additive or whole-model gain claim",
+  "tests": {
+    "residue_and_source_address_tests": 13,
+    "existing_resident_flat_conv_export_checks": 72,
+    "all_pass_after_test_expectation_fix": true,
+    "full_run_log": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/tests_final.log",
+      "sha256": "657f271de3c6e614d92deff6e57f06708928a960b6c40cb129451c9f51d6504a"
+    },
+    "corrected_source_stride_run_log": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/source_stride_residue/stride_tests_final.log",
+      "sha256": "d4a59eae954bd5416ef011ed802ca1fd0722447bc2386dd31ae009f98a4ca7ef"
+    },
+    "scope": "Full run passed84/85; one test incorrectly assumed flat selector would retain wide_b=False, although existing flat selector enables wideB. Corrected fixture expectation only; all13 source-stride tests then pass against same production code."
+  }
+}

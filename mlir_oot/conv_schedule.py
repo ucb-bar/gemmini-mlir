@@ -56,7 +56,7 @@ def _resident_stripe_choice(control):
     return (candidate if decision['applied'] else control), decision
 
 
-def source_stride_resource_layout(shape):
+def source_stride_resource_layout(shape, *, row_residue=False):
     """Choose a legal panel while preserving every source/numeric shape field.
 
     Keep the supplied panel when it fits. Otherwise bound panels by complete
@@ -67,9 +67,14 @@ def source_stride_resource_layout(shape):
     shape.validate()
     if shape.stride != 2 or shape.explicit_halo or shape.ow > F.DIM or shape.cin % F.DIM:
         raise ValueError('source stride layout needs unpadded stride2, output width<=DIM and aligned Cin')
-    input_rows=(shape.cin//F.DIM)*(shape.h+2)*(shape.w+2)
+    if type(row_residue) is not bool:
+        raise ValueError('source stride row residue selection must be boolean')
+    pitch=_ceil_div(shape.w+2,shape.stride)*shape.stride if row_residue else shape.w+2
+    height=_ceil_div(shape.h+2,shape.stride)*shape.stride if row_residue else shape.h+2
+    output_pitch=pitch//shape.stride if row_residue else pitch
+    input_rows=(shape.cin//F.DIM)*height*pitch
     base=_ceil_div(input_rows,F.DIM)*F.DIM
-    rows=min(shape.oh,1+(F.DIM-shape.ow)//(shape.w+2))
+    rows=min(shape.oh,1+(F.DIM-shape.ow)//output_pitch)
     row_tiles=_ceil_div(shape.oh,rows)
     max_bn=min(shape.bn,_ceil_div(shape.cout,F.DIM),
         F.ACC_ROWS//(row_tiles*F.DIM),(F.SPAD_ROWS-base)//F.DIM)
@@ -83,23 +88,26 @@ def source_stride_resource_layout(shape):
     bn=shape.bn if shape.bn<=max_bn else min(range(1,max_bn+1),
         key=lambda n:(transfers(n),-n))
     candidate=GoldenResidentConv(replace(shape,bn=bn),rows_per_tile=rows,
-        source_stride=True,weight_base=base)
+        source_stride=True,weight_base=base,row_residue=row_residue)
     decision=dict(input_rows=input_rows,weight_base=base,row_groups=row_tiles,
         max_resource_bn=max_bn,control_bn=shape.bn,selected_bn=bn,
         panel_retile=bn!=shape.bn,weight_rows=bn*F.DIM,
         accumulator_rows=row_tiles*bn*F.DIM,
+        row_residue=row_residue,input_pitch=pitch,output_pitch=output_pitch,
         weight_and_output_transfer_commands=transfers(bn),
         rank='retain legal panel; otherwise minimum wide transfer commands then largest legal panel',
         timing_claim=False)
     return candidate,decision
 
 
-def choose_source_stride_resident(control):
+def choose_source_stride_resident(control, *, row_residue=False):
     """Rank one admitted source-stride layout by issue and requested traffic.
 
     This serialized score ranks schedules. It does not predict DMA/execute
     overlap, cache behavior, command dispatch or whole-model timing.
     """
+    if type(row_residue) is not bool:
+        raise ValueError('source stride row residue selection must be boolean')
     decision=dict(applied=False, timing_claim=False,
         cost_unit='padded_DIM_issue_plus_requested_16B_transfer_estimate')
     if not isinstance(control,GoldenFlatConv) or not control.virtual_padding:
@@ -109,11 +117,15 @@ def choose_source_stride_resident(control):
     if s.stride != 2:
         decision['refusal']='existing unit-stride families retain their selection'
         return control,decision
-    try:
-        candidate,resource_decision=source_stride_resource_layout(s)
-    except ValueError as failure:
-        decision['refusal']=str(failure)
+    legal=[];refusals=[]
+    for packed in (False,True) if row_residue else (False,):
+        try:legal.append(source_stride_resource_layout(s,row_residue=packed))
+        except ValueError as failure:refusals.append(dict(row_residue=packed,reason=str(failure)))
+    if not legal:
+        decision['refusal']=refusals
         return control,decision
+    candidate,resource_decision=min(legal,key=lambda item:len(item[0].row_tiles))
+    resource_decision['layout_refusals']=refusals
     from .golden_flat_conv import command_counts as flat_counts
     old=flat_counts(s,wide_a=control.wide_a,band_rows=control.band_rows,
         virtual_padding=control.virtual_padding)
@@ -132,26 +144,28 @@ def choose_source_stride_resident(control):
             score=computes*F.DIM+_ceil_div(new_bytes,16)),
         resources=resource_decision,
         compiler_options=dict(source_stride=True,rows_per_tile=candidate.rows_per_tile,
-            weight_base=candidate.bbase,bn=candidate.conv.bn))
+            weight_base=candidate.bbase,bn=candidate.conv.bn,row_residue=candidate.row_residue))
     decision['applied']=decision['candidate']['score'] < decision['control']['score']
     decision['refusal']=None if decision['applied'] else 'source stride residency does not lower issue/traffic estimate'
     return (candidate if decision['applied'] else control),decision
 
 
 def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_stripes=False,
-        source_stride_resident=False):
+        source_stride_resident=False, source_stride_row_residue=False):
     if type(resident_stripes) is not bool:
         raise ValueError('resident stripe policy selection must be boolean')
     if virtual_padding and (not flat_spatial or shape.explicit_halo):
         raise ValueError("virtual padding requires unpadded spatial schedule")
     if type(source_stride_resident) is not bool:
         raise ValueError('source stride residency selection must be boolean')
+    if type(source_stride_row_residue) is not bool or (source_stride_row_residue and not source_stride_resident):
+        raise ValueError('source stride row residue selection needs source stride residency')
     if source_stride_resident:
         if not flat_spatial or not virtual_padding:
             raise ValueError('source stride residency needs spatial scheduling and proved virtual padding')
         control,kind=select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding,
             resident_stripes=resident_stripes)
-        selected,decision=choose_source_stride_resident(control)
+        selected,decision=choose_source_stride_resident(control,row_residue=source_stride_row_residue)
         selected.source_stride_decision=decision
         return selected,'resident_source_stride_planes' if decision['applied'] else kind
     if resident_stripes:

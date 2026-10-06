@@ -42,7 +42,7 @@ def choose_compact_resident(conv, *, prefetch_b=False):
 
 class GoldenResidentConv(GoldenGemm):
     def __init__(self, s, *, rows_per_tile=1, loop_channels=False, prefetch_b=False,
-            weight_base=None, source_stride=False):
+            weight_base=None, source_stride=False, row_residue=False):
         s.validate()
         if type(loop_channels) is not bool:
             raise ValueError('resident channel-loop selection must be boolean')
@@ -55,19 +55,26 @@ class GoldenResidentConv(GoldenGemm):
         if type(source_stride) is not bool:
             raise ValueError('source stride residency selection must be boolean')
         self.source_stride = source_stride
+        if type(row_residue) is not bool or (row_residue and (not source_stride or s.stride != 2)):
+            raise ValueError('resident row residue layout requires source stride2')
+        self.row_residue = row_residue
+        self.conv = s
         if not source_stride and (s.stride != 1 or s.w + 2 > F.DIM):
             raise ValueError('compact resident convolution needs stride1 and width+halo<=DIM')
         if s.explicit_halo or s.ow > F.DIM or s.cin % F.DIM:
             raise ValueError('resident convolution needs unpadded input, output width<=DIM and aligned Cin')
-        self.plane = (s.h+2)*(s.w+2)
+        self.input_pitch = _ceil_div(s.w+2,s.stride)*s.stride if row_residue else s.w+2
+        self.residue_rows = _ceil_div(s.h+2,s.stride) if row_residue else s.h+2
+        self.plane = self.residue_rows*self.input_pitch*(s.stride if row_residue else 1)
+        self.output_pitch = self.input_pitch//s.stride if row_residue else self.input_pitch
         if self.plane >= 1 << 16:
             raise ValueError('resident input plane stride exceeds ISA field')
         if (type(rows_per_tile) is not int or not 1 <= rows_per_tile <= s.oh or
-                (rows_per_tile-1)*(s.w+2)+s.ow > F.DIM):
+                (rows_per_tile-1)*self.output_pitch+s.ow > F.DIM):
             raise ValueError('resident row group must fit its padded spatial span in DIM')
         self.rows_per_tile = rows_per_tile
         self.row_tiles = tuple((y, min(rows_per_tile, s.oh-y),
-            (min(rows_per_tile, s.oh-y)-1)*(s.w+2)+s.ow)
+            (min(rows_per_tile, s.oh-y)-1)*self.output_pitch+s.ow)
             for y in range(0, s.oh, rows_per_tile))
         if weight_base is not None and (type(weight_base) is not int or
                 weight_base < 0 or weight_base % F.DIM):
@@ -88,16 +95,28 @@ class GoldenResidentConv(GoldenGemm):
             for y,_,span in self.row_tiles:
                 for kh in range(3):
                     for kw in range(3):
-                        start=ki*self.plane+(y*s.stride+kh)*(s.w+2)+kw
+                        start=ki*self.plane+self.source_offset(y,kh,kw)
                         stop=start+(span-1)*s.stride+1
-                        if stop > (ki+1)*self.plane:
+                        end=(ki+1)*self.plane
+                        if self.row_residue:
+                            end=ki*self.plane+(kh%s.stride+1)*self.residue_rows*self.input_pitch
+                        if stop > end:
                             raise ValueError('strided resident compute crosses its input plane')
         self.conv=s
         super().__init__(Shape(s.oh*s.ow,s.cout,s.cin,bm=len(self.row_tiles),bn=s.bn,
             output_dtype=s.output_dtype,scale=s.scale,relu=s.relu,wide_store=True,reuse_b=True))
 
+    def input_row(self, padded_y):
+        """Bijection from allocated source rows into stride-residue slabs."""
+        if self.row_residue:
+            return (padded_y%self.conv.stride)*self.residue_rows+padded_y//self.conv.stride
+        return padded_y
+
+    def source_offset(self, output_y, kh, kw):
+        return self.input_row(output_y*self.conv.stride+kh)*self.input_pitch+kw
+
     def build(self):
-        s=self.conv;pw=s.w+2
+        s=self.conv;pw=self.input_pitch
         self._emit_config()
         if s.stride != 1:
             from .ir.gemmini_dialect import ConfigExOp
@@ -109,9 +128,10 @@ class GoldenResidentConv(GoldenGemm):
         # These loads partition the scratch input exactly: no overwrite races.
         for ci in range(0,s.cin,4*F.DIM):
             cols=min(4*F.DIM,s.cin-ci);base=(ci//F.DIM)*self.plane
-            for y in range(s.h+2):
-                row=base+y*pw
-                if y in (0,s.h+1):
+            padded_rows=self.residue_rows*s.stride if self.row_residue else s.h+2
+            for y in range(padded_rows):
+                row=base+self.input_row(y)*pw
+                if not 1<=y<=s.h:
                     for x in range(0,pw,F.DIM):
                         self._rocc('mvin',{'local':row+x,'rows':min(F.DIM,pw-x),'cols':cols,'load_id':0},zero)
                 else:
@@ -119,7 +139,7 @@ class GoldenResidentConv(GoldenGemm):
                     for x in range(0,s.w,F.DIM):
                         ptr=self._ptr(self.a,self.fb.const((y-1)*s.w+x),s.cin,self.fb.const(ci))
                         self._rocc('mvin',{'local':row+x+1,'rows':min(F.DIM,s.w-x),'cols':cols,'load_id':0},ptr)
-                    self._rocc('mvin',{'local':row+s.w+1,'rows':1,'cols':cols,'load_id':0},zero)
+                    self._rocc('mvin',{'local':row+s.w+1,'rows':pw-s.w-1,'cols':cols,'load_id':0},zero)
         def channel(n0,nr):
             for kh in range(3):
                 for kw in range(3):
@@ -134,7 +154,7 @@ class GoldenResidentConv(GoldenGemm):
                                 self._rocc('preload',{'bd':self.bbase+d*F.DIM if tile==0 else isa.GARBAGE_ADDR,
                                     'c':isa.acc_addr((tile*s.bn+d)*F.DIM,accumulate=not first),
                                     'bd_cols':cols,'bd_rows':F.DIM,'c_cols':cols,'c_rows':span})
-                                offset=(y*s.stride+kh)*pw+kw
+                                offset=self.source_offset(y,kh,kw)
                                 attrs={'a_cols':F.DIM,'a_rows':span,'accumulate':tile!=0}
                                 if static_ci is not None:
                                     attrs['a']=(static_ci//F.DIM)*self.plane+offset
@@ -161,7 +181,7 @@ class GoldenResidentConv(GoldenGemm):
                     for d in range(0,len(nr),4 if s.output_dtype=='i8' else 1):
                         step=4 if s.output_dtype=='i8' else 1
                         ptr=self._ptr(self.c,self.fb.const((y+row)*s.ow),s.cout,self._tile(n0,d),4 if s.output_dtype=='i32' else 1)
-                        self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*pw,full_row=s.output_dtype=='i32'),
+                        self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*self.output_pitch,full_row=s.output_dtype=='i32'),
                             'rows':s.ow,'cols':sum(nr[d:d+step])},ptr)
         def prefetched_channel(n0,nr):
             kt=s.cin//F.DIM
@@ -183,14 +203,14 @@ class GoldenResidentConv(GoldenGemm):
                         self._rocc('preload',{'bd':self.bases[index%2]+d*F.DIM if tile==0 else isa.GARBAGE_ADDR,
                             'c':isa.acc_addr((tile*s.bn+d)*F.DIM,accumulate=index!=0),
                             'bd_cols':cols,'bd_rows':F.DIM,'c_cols':cols,'c_rows':span})
-                        self._rocc('compute',{'a':ki*self.plane+(y*s.stride+kh)*pw+kw,
+                        self._rocc('compute',{'a':ki*self.plane+self.source_offset(y,kh,kw),
                             'a_cols':F.DIM,'a_rows':span,'accumulate':tile!=0})
             for tile,(y,count,span) in enumerate(self.row_tiles):
                 for row in range(count):
                     for d in range(0,len(nr),4 if s.output_dtype=='i8' else 1):
                         step=4 if s.output_dtype=='i8' else 1
                         ptr=self._ptr(self.c,self.fb.const((y+row)*s.ow),s.cout,self._tile(n0,d),4 if s.output_dtype=='i32' else 1)
-                        self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*pw,full_row=s.output_dtype=='i32'),
+                        self._rocc('mvout',{'local':isa.acc_addr((tile*s.bn+d)*F.DIM+row*self.output_pitch,full_row=s.output_dtype=='i32'),
                             'rows':s.ow,'cols':sum(nr[d:d+step])},ptr)
         self._for_groups(_groups(s.cout,s.bn),prefetched_channel if self.prefetch_b else channel)
         module=self._finish('gemmini_golden_resident_conv')
@@ -206,6 +226,10 @@ class GoldenResidentConv(GoldenGemm):
             module.attributes['gemmini.resident_conv_weight_base']=StringAttr(str(self.bbase))
         if self.source_stride:
             module.attributes['gemmini.resident_conv_source_stride']=StringAttr(str(s.stride))
+        if self.row_residue:
+            module.attributes['gemmini.resident_conv_row_residue']=StringAttr(json.dumps(dict(
+                stride=s.stride,input_pitch=self.input_pitch,residue_rows=self.residue_rows,
+                output_pitch=self.output_pitch,allocated_plane_rows=self.plane),sort_keys=True))
         return module
 
 

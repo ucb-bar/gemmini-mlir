@@ -34,7 +34,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--fixture-dir", type=Path, required=True)
     ap.add_argument(
-        "--schedule", choices=("control", "compact", "full_reduction", "strided_resident"), required=True
+        "--schedule", choices=("control", "compact", "full_reduction", "strided_resident", "stride_residue"), required=True
     )
     ap.add_argument("--bn", type=int)
     ap.add_argument("--prefetch-b", action="store_true")
@@ -88,7 +88,11 @@ def main():
         }
         resource = None
     else:
-        if args.schedule == "strided_resident":
+        if args.schedule == "stride_residue":
+            from mlir_oot.conv_schedule import source_stride_resource_layout
+            generator,resource_choice=source_stride_resource_layout(shape,row_residue=True)
+            shape=generator.conv
+        elif args.schedule == "strided_resident":
             input_rows=(shape.cin//F.DIM)*(shape.h+2)*(shape.w+2)
             generator=GoldenResidentConv(shape, weight_base=((input_rows+F.DIM-1)//F.DIM)*F.DIM, source_stride=True)
         else:
@@ -100,7 +104,7 @@ def main():
         module = generator.build()
         module.body.block.first_op.properties["sym_name"] = StringAttr(symbol)
         compilation = compile_module(module, args.llvm_bin, w)
-        if args.schedule in ("compact", "strided_resident"):
+        if args.schedule in ("compact", "strided_resident", "stride_residue"):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,
                 "weight_rows": shape.bn * F.DIM,
