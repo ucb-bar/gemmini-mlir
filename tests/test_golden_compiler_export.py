@@ -87,6 +87,8 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     ['--export-golden-contraction','--emit-target-artifact'],
     ['--export-golden-contraction','--calibration','unused.json'],
     ['--optimize-golden-contraction','--prefetch-b'],
+    ['--export-golden-contraction','--spatial-command-loops'],
+    ['--spatial-command-loops'],
 ])
 def test_incompatible_or_inert_cli_options_refuse(args):
     with pytest.raises(SystemExit) as failure:main(args)

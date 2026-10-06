@@ -128,6 +128,7 @@ def test_long_loop_has_one_resident_weight_load_and_bounded_destinations():
     module = build(
         shape, compact=True, virtual_padding=True, wide_a=True, separate_b_bank=True
     )
+
     dynamic = [op for op in module.walk() if isinstance(op, PreloadOp) and op.operands_]
     assert dynamic and all(op.a("bd") == 0xFFFFFFFF for op in dynamic)
     assert all(
@@ -146,5 +147,43 @@ def test_long_loop_has_one_resident_weight_load_and_bounded_destinations():
                 separate_b_bank=True,
             ).body.block.first_op,
             pointer_index_bits=64,
+        )
+    )
+
+
+@pytest.mark.parametrize("selection", [None, 1, "yes", True])
+def test_normal_source_policy_refuses_unknown_or_inert_selection_before_io(selection):
+    from pathlib import Path
+
+    from mlir_oot.captured_requant_bundle import build as build_capture
+
+    with pytest.raises(ValueError, match="boolean selection and flat spatial"):
+        build_capture(
+            Path("absent"),
+            Path("absent"),
+            Path("absent"),
+            spatial_command_loops=selection,
+        )
+
+
+def test_normal_source_policy_emits_the_exact_same_primitive_stream():
+    from mlir_oot.conv_schedule import select_kernel
+
+    shape = ConvShape(5, 9, 33, 73, bn=4)
+    original, compact = [
+        select_kernel(
+            shape, flat_spatial=True, virtual_padding=True, spatial_command_loops=choice
+        )[0]
+        for choice in (False, True)
+    ]
+    assert not original.loop_spatial and compact.loop_spatial
+    assert original.conv == compact.conv
+    assert list(
+        commands_from_function(
+            original.build().body.block.first_op, pointer_index_bits=64
+        )
+    ) == list(
+        commands_from_function(
+            compact.build().body.block.first_op, pointer_index_bits=64
         )
     )

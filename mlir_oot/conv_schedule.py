@@ -151,7 +151,9 @@ def choose_source_stride_resident(control, *, row_residue=False):
 
 
 def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_stripes=False,
-        source_stride_resident=False, source_stride_row_residue=False):
+        source_stride_resident=False, source_stride_row_residue=False, spatial_command_loops=False):
+    if type(spatial_command_loops) is not bool or (spatial_command_loops and not flat_spatial):
+        raise ValueError('spatial command loops require boolean selection and flat spatial scheduling')
     if type(resident_stripes) is not bool:
         raise ValueError('resident stripe policy selection must be boolean')
     if virtual_padding and (not flat_spatial or shape.explicit_halo):
@@ -164,14 +166,15 @@ def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_
         if not flat_spatial or not virtual_padding:
             raise ValueError('source stride residency needs spatial scheduling and proved virtual padding')
         control,kind=select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding,
-            resident_stripes=resident_stripes)
+            resident_stripes=resident_stripes,spatial_command_loops=spatial_command_loops)
         selected,decision=choose_source_stride_resident(control,row_residue=source_stride_row_residue)
         selected.source_stride_decision=decision
         return selected,'resident_source_stride_planes' if decision['applied'] else kind
     if resident_stripes:
         if not flat_spatial or not virtual_padding:
             raise ValueError('resident stripe policy requires proved virtual padding and spatial scheduling')
-        control,kind = select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding)
+        control,kind = select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding,
+            spatial_command_loops=spatial_command_loops)
         selected,decision = _resident_stripe_choice(control)
         selected.resident_stripe_decision = decision
         return selected, 'resident_full_k_stripes' if decision['applied'] else kind
@@ -185,8 +188,10 @@ def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_
         if bn >= 4:
             bn = bn // 4 * 4
         shape = replace(shape, bn=bn, wide_b=True)
-        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,virtual_padding=virtual_padding), 'spatial_flat_wide_a_separate_b'
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,virtual_padding=virtual_padding,
+            loop_spatial=spatial_command_loops), 'spatial_flat_wide_a_separate_b'
     if flat_spatial and (shape.explicit_halo or virtual_padding):
         rows = choose_band_rows(shape,virtual_padding=virtual_padding)
-        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,band_rows=rows,virtual_padding=virtual_padding), 'spatial_banded_wide_a_separate_b'
+        return GoldenFlatConv(shape,wide_a=True,separate_b_bank=True,band_rows=rows,virtual_padding=virtual_padding,
+            loop_spatial=spatial_command_loops), 'spatial_banded_wide_a_separate_b'
     return GoldenConv(shape), 'output_row'
