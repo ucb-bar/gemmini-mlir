@@ -1,0 +1,350 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "recorded_utc": "2026-10-06T11:53:17.139377+00:00",
+  "hypothesis": "Interleave independent conversion/two-multiply/residual chains to expose scalar instruction latency.",
+  "ownership": "Typed schedule and materialization in Merlin; target ISA legality, executable audit and GSIM qualification in OOT.",
+  "core_commit": "a94a520b484dcea4d9578a7026267083b0de0b85",
+  "core_tree": "dcb8e3f4f05f3bf8c9922600346e393ff4f95464",
+  "emitted_change": "Explicit separate four-lane exactly-two-f32-multiplication selector before upstream bufferization. Existing >=3 multiplication selector and default pipeline are unchanged. Each cast, multiply and addition retains its original rounding/order.",
+  "source_typed_witness": {
+    "schema": "complete_typed_dequant_residual_extraction_witness_v1",
+    "status": "pass",
+    "source_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny1880-host-classes-20261005/prebuffer.mlir",
+    "source_sha256": "04a9a3eccb4578c446d51ad6ed23694911936bbbcc0bf00efd57b8c65f43a518",
+    "source_capsule_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "selected_original_source_ordinal": 0,
+    "matching_original_source_ops": 44,
+    "source_and_capsule_semantic_fingerprint": "9d7a3db200a0120ed66750812cba0ddbdb2be882a43ceab33b272758873ed1d6",
+    "exact_complete_ssa_maps_types_constant_and_attribute_match": true,
+    "typed_witness": {
+      "body": [
+        {
+          "name": "arith.sitofp",
+          "operands": [
+            [
+              "argument",
+              1,
+              "i32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {}
+        },
+        {
+          "name": "arith.mulf",
+          "operands": [
+            [
+              "result",
+              0,
+              0,
+              "f32"
+            ],
+            [
+              "constant",
+              "f32",
+              {
+                "value": "6.85257779E-4 : f32"
+              }
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>"
+          }
+        },
+        {
+          "name": "arith.mulf",
+          "operands": [
+            [
+              "result",
+              1,
+              0,
+              "f32"
+            ],
+            [
+              "argument",
+              2,
+              "f32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>"
+          }
+        },
+        {
+          "name": "arith.addf",
+          "operands": [
+            [
+              "argument",
+              0,
+              "f32"
+            ],
+            [
+              "result",
+              2,
+              0,
+              "f32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>",
+            "prov.origin_node_ids": "[\"g:original:root:n292\", \"g:quantized:root:n758\"]",
+            "prov.source_node_ids": "[\"g:prepared:root:n809\"]",
+            "prov.trace_role": "\"lowering\""
+          }
+        },
+        {
+          "name": "linalg.yield",
+          "operands": [
+            [
+              "result",
+              3,
+              0,
+              "f32"
+            ]
+          ],
+          "result_types": [],
+          "attributes": {}
+        }
+      ],
+      "block_arguments": [
+        "f32",
+        "i32",
+        "f32",
+        "f32"
+      ],
+      "operand_types": [
+        "tensor<1x8x2048xf32>",
+        "tensor<1x8x2048xi32>",
+        "tensor<2048xf32>",
+        "tensor<1x8x2048xf32>"
+      ],
+      "result_types": [
+        "tensor<1x8x2048xf32>"
+      ],
+      "attributes": {
+        "indexing_maps": "[affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>]",
+        "iterator_types": "[#linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>]",
+        "operandSegmentSizes": "array<i32: 3, 1>"
+      }
+    },
+    "older_exact_original_body_field": "The extraction receipt field is a diagnostic Python Region repr. This file supplies the executable canonical SSA/constant witness; neither field selects production policy."
+  },
+  "capture_scope": "Read-only before/after taps in the accepted complete 22-layer eight-token native image, preserving all 256000 compiled output bits and the original Torch gate. The capsule uses original 1x8x2048 dequant/residual operands, not a recapture or substituted golden.",
+  "before": {
+    "complete_gsim_cycles": [
+      492115,
+      488297
+    ],
+    "mean": 490206.0,
+    "spike_retired_instructions_per_roi": 213115
+  },
+  "after": {
+    "complete_gsim_cycles": [
+      591132,
+      590128
+    ],
+    "mean": 590630.0,
+    "slower_percent": 20.48608136171324,
+    "spike_retired_instructions_per_roi": 479407
+  },
+  "gate": {
+    "original_native_capsule_words_exact": 16384,
+    "five_frm_raw_output_comparisons": 81920,
+    "sticky_fp_flags_match": true,
+    "independent_target_corner_tail_comparisons": 1260,
+    "immutable_inputs_bytes": 139264,
+    "dirty_output_guards_bytes": 128,
+    "dirty_private_allocator": true,
+    "zero_FSM": true,
+    "DONE": true,
+    "gsim_rc": 0
+  },
+  "materialization_evidence": {
+    "control": {
+      "static_malloc_calls": 0,
+      "constant_malloc_requests_bytes": [],
+      "static_llvm_memcpy_calls": 0,
+      "final_output_copy_logical_bytes": 0,
+      "source_output_words": 16384
+    },
+    "packet": {
+      "static_malloc_calls": 6,
+      "constant_malloc_requests_bytes": [
+        65600,
+        16,
+        2,
+        0,
+        2,
+        0
+      ],
+      "static_llvm_memcpy_calls": 1,
+      "final_output_copy_logical_bytes": 65536,
+      "source_output_words": 16384
+    }
+  },
+  "scope": "Complete original dequant/residual body: i32-to-f32 conversion, source constant scale, two separately rounded f32 multiplications, source residual addition, all input reads/stores, temporary allocation and final output copy. Exact1967 source data/control; no source reciprocal or precision change. GSIM capsule allocator/memory regime is separately scoped, not stock whole-model timing.",
+  "result": "Rejected. No full-model candidate compilation or stock admission. The actual complete paired capsule loses 20.4861%; the packet IR also exposes an avoidable destination-forwarding problem worth a separate general compiler experiment.",
+  "harness_refusals_retained": [
+    "missing_ciface_attempt: original entry lacked llvm.emit_c_interface; no arithmetic failure",
+    "independent_target: all checks passed but required DONE was absent; independent_target_v1 adds DONE in a fresh directory"
+  ],
+  "hardware_whole_prediction": null,
+  "instruction_counter_is_not_hardware_cycles": true,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-objdump": "0f01943653ded3633801b474fa712f60ef105147dec81830fac90b30a0bdca45",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt": "c82b34f2100784f6191c496e3406c79db9cdbcca4cd279646565e5fb56d07d7a",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt": "260411170915c2f30ecce065d96711c901cab1ec01e59e31c65a6872dc05c06c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host/validation.json": "224dfb88e05b87b13031719d3294334728808f8226c0be9635a8a47d4bc4aa85",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/accumulation.bin": "62cdd5169887654765e571f65cc5c150ef772a3ab56d11c244a6cc0d810fd251",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/archive_negative.py": "42412dfa75bf46d51c5fa545db3706f983c1e092c74723990c0197112d5447f3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/build.log": "5444f944f945cd57217b7a6bda76b1faa4ca4982f1a11f1e557a576960b4faf0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/build_capsule.py": "587464dd825f05488e94f661a2503b63b14aaaa594987abf429319076dcbe324",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capsule_abi.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capsule_qualification.json": "329440998136c307fb6651a05c89c2722769586280fb89421a7454336dd483a9",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capsule_result.json": "4f915eefcab7968d35626ab993bb3c375784ebe33cf5edd1043520a8a16cb69b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/accumulation.npy": "f9db18e9317f43dbb7718bd9c34feb9b2c634843492b38481bf78ef181199f17",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/expected.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.native.ll": "190bf934576f1735fae5b799a123541e5e9f907f236f2f2a9e94e089c0b07195",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o": "24149878b529a184430eb12ec3dffa88e056789d5c6150486bd7d3b8f28bba79",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.so": "a0096b8f2ce61c8c896f34382da0a65eedeb83598c29ad5568201b21a1014782",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/receipt.json": "8847316fcdf1ee5012478fb14d0c908d35c18abae6e334c53399e82759e684d5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/residual.npy": "2b237ec7edbfe063877c5f0863809b892f3a04ba9493e73e85aa0580d4f58cbf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/scale.npy": "18900830fe34f1fe33dcc08d4c9d485d839630c1ec62af93962fa4aa725d8068",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c": "9605f8830d286326aba042e39915885e9d28dcfc48c1f74d61d5f60b9ddb01ce",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture.log": "95cde5f0577a328137a8ef739c5e6248ff01b248ece656b6893fdf451529f625",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture_native.py": "3a39e5a6a5b01221c20c86d9d365f2f5bc2afc17aba478490d2ce0fe19b86a9b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.disassembly.txt": "238ebc1a57ebd6b89903a3757b8cf44bd7a21fcbea8cc2b4c465b41e382b19a7",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.ll": "f3864e76311af4dd3923955a7ae25bc4c50c2255c7d9339aaeea4074b7188b65",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.o": "5de693747a7585da91b641eb08e19df92bcae472501625c249a2afd76efb79f0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.so": "f328eb154a55c2b17069ea000d6e63acd7dd6d5fae0af51f64d0384d5a1c0ab7",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control_lower/lowering_recipe.json": "d1efcc5ed919ade08f623eae61c044c4f9665920a3d67e691b228e7443d4a14a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control_lower/model.ll": "e948fd63edde8d684f541b764d11690cc690640bd61fc78564a0240673ce339c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control_lower/model.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/data.S": "ebc91263457512c15487c0e7b6a77bc906f0563c0de4110b1746200c6bb71d04",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/data.o": "4d9fc67a4669790b7798d19b5eefbad38fc5545f5888fe895d09b1f1dcec09e0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/expected.bin": "619186d0d5807c655213c676b23a6b2eeab2988f9f8e61780b5f59bd50fcb56f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/extract.log": "fc8f807ce74363e76a38387940e6ac9add03161da5e0a8cd24dad101684a783b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/extract_source.py": "9d700c098a5d892ef6f620d1ebc329ffacbbce07ffd498562b2dc9e801f94d3e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/gsim.stdout": "2951f108f050537cfe92f578dd9a382d86a09a632afbafcd7c3ad9f15a6a2eab",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/gsim_receipt.json": "a8f44a612ef096c2abfddddfc3f6d511f534f685a2d97e0e9f860fe159e1b786",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/build/layer.elf": "95fb448b8ff0b58cce31093ecc513952a8d5763511da8ecc5c4f2a3ac5fa9b41",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control.ll": "7a5ea40c4acac906f5d229ae663278ff2033b0f3e27bd4eeb4e2ebe858984ff4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control.o": "0111c0f890d576633e7598ccc95357f45c6b57d6321cae9fd76829a1930930f2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control_lower/lowering_recipe.json": "21c08399200cc32f913cf7dac45084bf13f9909de3f7dd0acbe7711dc9698fdd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control_lower/model.ll": "9037626fdf53e8bbc60b0bed4888d6655a871fe6fdfb13d1e9a9090a369bf1a6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet.ll": "dfed77dbbcbcf92d5c3831145efe3b6e8b9215f0f3b23ba3adfa6c7830bfd0d0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet.o": "b63c0e3f9b33cd033e87e4497d5e6d183e799822153d702f0d6c5f6da7ceb3ba",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/lowering_recipe.json": "7667acd9517518d7859e48b0bd8520d32f2485773c224e3ae1236312c162f261",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/model.ll": "b894934d69bdcdd2f5f12fdd239acbfd0a18d9e697459699d7cac0eb71d29385",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/main.c": "a256fd8fe8245d7b76f40178ae080be8cdfece1bbeb556dffade8afa5574156c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/main.o": "6e08a59ffd9b48eb1cc90e42d153cc51295c470cc271e40c4982e6a6b5f30468",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/original_runner.py": "063c9b53828a5a151b404beba6bae2f1200a47f9c0a60d494b0ae2b690fa0dae",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/runner.log": "a813401006437a7152b747a55c5a5e8d0bb38066bcf5a57e7b33c446d9f80693",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/source.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/spike.log": "51f1797d6cf4564b94eb0dd412030c6257eebbe48f602e8b516d5f638c70405a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target.log": "a813401006437a7152b747a55c5a5e8d0bb38066bcf5a57e7b33c446d9f80693",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target.py": "c2e2afa9919fde752867949537332de0d02c8015fd3dd807b58e8908016cb65c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/build/layer.elf": "b25579d1427fc72109894214b8f9035abd995cc0ff2fd04a36824b6af1cbc05c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control.ll": "7a5ea40c4acac906f5d229ae663278ff2033b0f3e27bd4eeb4e2ebe858984ff4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control.o": "0111c0f890d576633e7598ccc95357f45c6b57d6321cae9fd76829a1930930f2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control_lower/lowering_recipe.json": "85d0a7ac6be8af100c915061d2e36a0268fb58c9568d618a066054716408718e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control_lower/model.ll": "9037626fdf53e8bbc60b0bed4888d6655a871fe6fdfb13d1e9a9090a369bf1a6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet.ll": "dfed77dbbcbcf92d5c3831145efe3b6e8b9215f0f3b23ba3adfa6c7830bfd0d0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet.o": "b63c0e3f9b33cd033e87e4497d5e6d183e799822153d702f0d6c5f6da7ceb3ba",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet_lower/lowering_recipe.json": "cf1eb50d38663ee4645ea721512ad5f773e623eb9641b5941c58fd772f30626d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet_lower/model.ll": "b894934d69bdcdd2f5f12fdd239acbfd0a18d9e697459699d7cac0eb71d29385",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/edge_packet_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/main.c": "6f6367fc58fcead5f0534ae94c1044161ea166cc04ab85a7fc290baf257b5e34",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/main.o": "18e4e2309697773735ccaf270d0e50ee12d89df21028b48e08de2fcfa8d61164",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/qualification.json": "f65d0858c8bb50cf5c5f95e4c95380271402ad2bb4c2ee1900d1c4727a9da5f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/source.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1/spike.log": "591f8fce4b6dd1a73ae384cb299ae9bc440feae67c68fe06ba131840cd2b15e8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target_v1.log": "1f2ca32fca469c1839f3c90e0696795676e8f463d6e7362f46f4fbb8256760dd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/build.log": "2a1c5c8aff9fb0ca3336f080d88103abacb04c4ed2d94622c2b3fad3b449751f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/build_capsule.py": "43bb2bc84f8ca9a53c36575150ed810b02e11c4f8d8341a5cc7e303940ba82f1",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control.ll": "8eb9af6b073344c4660d0982f6426dbce401e9808eae0e091a5b574c7446f620",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control.so": "99d24cb50477d29137c9b81f2d46ca2615a9f02c8d4a984b7a95b34ce1334a45",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control_lower/lowering_recipe.json": "20c56b7db95943bd7465827bc84e81498b6dee03e899378e8cdb300c3d656b70",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control_lower/model.ll": "3c710465967e982324668b618106f138890759af2dbb2e0ee717c71d1492cdca",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control_lower/model.mlir": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/missing_ciface_attempt/control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.disassembly.txt": "40c9cdff9310b97a827f2feff5a3c9d21343f0a8beae6c7c60a4e0ec02fca613",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.ll": "46a6fa7604d8cd2492f54d483bb648ec3ce1fcdd151f652eea5d0b7aadcdfcf2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.o": "c12214fd740b6ee09d65abf086d10493b1bf6b3250ae9e785e2b37d15ec90dd5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.so": "c4c28e51014f72cc0e021b5befb8ee961775251c389b483464d53f30d2ddca45",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet_lower/lowering_recipe.json": "23c79c5c318b4a20e3dd17983cd81e986e311f1e1daa691deff38a4306c86758",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet_lower/model.ll": "d1e651a587a39965f45f12f77e4340f91ec967b45316b20a6df4c72c20a73a0b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet_lower/model.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/residual.bin": "5404bdaeeff2a833a52a27ba8d6ffc941006c09ebddab40c001c0493e2d318c8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/run_extract.py": "a48957dc7c991ddea7b6948e676fbdb804b934d7877d6e8c951c8087bf1c8e46",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/run_typed_source_witness.py": "b4d255444246c32fe5b3c6f640d2550cf8786dc14a69cd78d0e98a487c098f08",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/scale.bin": "b00b3b189c47c6545819cb5d75f4ca5aa7bb87b55cb7a7cf224bf76249bc889f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/source_capsule.mlir": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/source_receipt.json": "141d63e2032e2e596a6f1b62842c6835174217f862e2f8ecdfcf17092aee4c6f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_audit.json": "03c5faea9e55c44f575fb7506abad2ac0be617e0cffcfaf70becff2f70f53456",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_build/layer.elf": "5f4fded585a75b845179e286e45ff40af7e6ce6b2325f085b49fb23c583b62da",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_main.c": "7e0c1ad8e2ec77f6b28bbe24e68a9bf3bbe7f216ccf2034825c9d9ec0f87f4ea",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_main.o": "005e6085b38dff3e989b1ecde360f1d3b7d83dde3f1633b3f9918000ecc72126",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/strict_spike.log": "7b113d6b0298717ccd386d90a7ec8423014acab03940bd2b71cd5745f40ae5f3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_audit.json": "c023d3b0263a48596ad9181f2268d7e141b9aae89d8f26b0f089289d119d1a97",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_build/layer.elf": "f3dcb02559338d74939d070e77e72119e504877cb63e33c5fba04874b4b1d5a8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_main.c": "eec94a8130d6b9656ea2f488b0c015cea2a4149474f21e23d93a8835bde1efd5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_main.o": "9dce1165f2368eb710f2bdc8bc6452bc2a5d9198fa47821c008983e3ab5ff6f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/timing_spike.log": "21eb4a7faaeb1efab9f5a440320cfe0817aa3c69092bc3ccb2925f8ce1f53a0c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/typed_source_witness.json": "0b0159f81cce22fb75ab3accd79d337546a56532c4b5396812520326e3a44308",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/typed_source_witness.log": "10ba31c8194f1d2b6028bdf097e98412b2e9389c39af5e86bb38064d732606d5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/typed_source_witness.py": "dc168f4297fbd4490ef89b7328cf31d8f274f1cae95eb8adc2b01e104f4312c2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny1880-host-classes-20261005/prebuffer.mlir": "04a9a3eccb4578c446d51ad6ed23694911936bbbcc0bf00efd57b8c65f43a518",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/merlin/tests/ir/test_scalar_pointwise_packet.py": "71156f2945b953b7c902847c7e30ea9c827a05969a05777358f019a8e5590fb5",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/AGENT.md": "2b5164803da2d22fa0fbfe562b32848947a2621675bd0c18b9138baa7ca60e9e",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/abi.py": "2d80eba136e491b77a7ac4658a9f2803dcb408b89b9b6f76ecbe657582f03a6f",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/impr_features.py": "9ce733cb8c7c3a7ae1a2d098097d75af72a7b8c548a5396b106665b1ac14c69e",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/pipeline.py": "b7db32ca01c2b2439b3146533be3feca8d28dfe41e8f0d5402e79a269627793e",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/scalar_pointwise_packet.py": "1f093cd5e6d6e3ad0184cfc2ce00fa4a5e1e27b995eb894922212ccb55a7e89a",
+    "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/perf/layer_bench/__init__.py": "33e7981e2402a4c2f1e2899b6e03b3704de93f2ed91c89f635c429a4ba72457e",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4",
+    "/tmp/tiny-two-mul-tests-20261006.log": "702a5298e4a2e83a1d139ec57007c797f12c0301b86a30c74cdd2d71a9c715f4"
+  }
+}
