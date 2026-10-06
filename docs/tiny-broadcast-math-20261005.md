@@ -107,6 +107,24 @@ link changes only `model.o`; all original 1880 runtime, device, startup, weights
 and other host objects stay frozen. There is no whole-cycle projection or
 composition claim with adjacent-RNE, resident-A or constant-clamp candidates.
 
+The controlled whole candidate now closes every required accuracy gate. Normal
+source lowering, original RNE and the original writer bridge produce ELF
+`8dadfe71e3c224e5e16189cd3985101807d21e34490f73b119c083865e7d9c93`.
+The actual original baseline link recipe reproduces the original ELF byte for
+byte. Only `model.o` changes; every original source-bound device call and all
+other boundary objects remain identical. A fresh native execution matches all
+256,000 original compiled words and passes the Torch elementwise gate. A fresh
+strict target execution matches the complete raw digest, rank zero and DONE
+with exit code zero. All executable ELF sections pass the no-FSM audit.
+
+The target run retires 144,498,799 instructions; this does not measure hardware
+cycles. The complete receipt is
+[tiny_source_broadcast_math_full_model_qualification.json](perf_records/tiny_source_broadcast_math_full_model_qualification.json).
+The sole queue owner has the independent collector adapter for one stock
+comparison against 1880. Admission and actual whole-model hardware performance
+remain pending. The inherited historical marker is nonunique; exact source,
+component object and final ELF hashes identify this candidate.
+
 Token allocation per experiment is unavailable. The root records shared
 campaign checkpoints; receipts mark `token_usage_available=false` and retain
 source, LLVM, object and timing scopes.
