@@ -103,3 +103,16 @@ float up(double x){return MERLIN_F32_OUTWARD_FROM_F64_UP(x);}
             encoded.append((int(fields[1], 16) >> 12) & 7)
     assert encoded == [2, 3]
     assert 'csr' not in listing
+
+
+def test_exact_bound_provider_is_distinct_from_generic_outward():
+    text=emit_fixed_outward_f64_header(name='proof',host_isa='rv64gc',exact_bound_f32=True)
+    assert 'MERLIN_F32_EXACT_FLOOR_FROM_F64' in text
+    assert 'MERLIN_F32_EXACT_CEIL_FROM_F64' in text
+    assert '#define MERLIN_F32_OUTWARD_FROM_F64' not in text
+
+
+@pytest.mark.parametrize('value',[None,0,1,'yes'])
+def test_exact_bound_requires_explicit_bool(value):
+    with pytest.raises(ValueError,match='boolean exact'):
+        emit_fixed_outward_f64_header(name='proof',host_isa='rv64gc',exact_bound_f32=value)

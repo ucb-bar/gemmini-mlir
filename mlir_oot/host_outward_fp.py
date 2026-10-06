@@ -8,7 +8,8 @@ from __future__ import annotations
 
 
 def emit_fixed_outward_f64_header(*, name: str, host_isa: str,
-                                narrow_f32: bool = False) -> str:
+                                narrow_f32: bool = False,
+                                exact_bound_f32: bool = False) -> str:
     if (not isinstance(name, str) or not name or name[0].isdigit()
             or any(not (c.isascii() and (c.isalnum() or c == '_')) for c in name)):
         raise ValueError('explicit C identifier required')
@@ -16,6 +17,8 @@ def emit_fixed_outward_f64_header(*, name: str, host_isa: str,
         raise ValueError('explicit supported host CPU capability required')
     if type(narrow_f32) is not bool:
         raise ValueError('explicit boolean narrowing capability required')
+    if type(exact_bound_f32) is not bool:
+        raise ValueError('explicit boolean exact bound capability required')
     guard = name.upper() + '_OUTWARD_F64_H'
     lines = [
         f'#ifndef {guard}',
@@ -48,7 +51,7 @@ def emit_fixed_outward_f64_header(*, name: str, host_isa: str,
         f'#define MERLIN_F64_OUTWARD_ADD_DOWN(a,b) {name}_add_down((a),(b))',
         f'#define MERLIN_F64_OUTWARD_MUL_UP(a,b) {name}_mul_up((a),(b))',
     ])
-    if narrow_f32:
+    if narrow_f32 or exact_bound_f32:
         lines.extend([
             '#if defined(MERLIN_F32_OUTWARD_FROM_F64_DOWN) || defined(MERLIN_F32_OUTWARD_FROM_F64_UP)',
             '#error "outward narrowing capability already selected"',
@@ -62,8 +65,17 @@ def emit_fixed_outward_f64_header(*, name: str, host_isa: str,
                 '  return result;',
                 '}',
             ])
-        lines.extend([
-            f'#define MERLIN_F32_OUTWARD_FROM_F64_DOWN(value) {name}_cast_down((value))',
-            f'#define MERLIN_F32_OUTWARD_FROM_F64_UP(value) {name}_cast_up((value))',
-        ])
+        if narrow_f32:
+            lines.extend([
+                f'#define MERLIN_F32_OUTWARD_FROM_F64_DOWN(value) {name}_cast_down((value))',
+                f'#define MERLIN_F32_OUTWARD_FROM_F64_UP(value) {name}_cast_up((value))',
+            ])
+        if exact_bound_f32:
+            lines.extend([
+                '#if defined(MERLIN_F32_EXACT_FLOOR_FROM_F64) || defined(MERLIN_F32_EXACT_CEIL_FROM_F64)',
+                '#error "exact bound narrowing capability already selected"',
+                '#endif',
+                f'#define MERLIN_F32_EXACT_FLOOR_FROM_F64(value) {name}_cast_down((value))',
+                f'#define MERLIN_F32_EXACT_CEIL_FROM_F64(value) {name}_cast_up((value))',
+            ])
     return '\n'.join([*lines, '#endif', ''])
