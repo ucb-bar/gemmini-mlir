@@ -2,14 +2,20 @@
 
 Conservative inventory of directly identified implemented change families in the golden compiler integration; related commits counted once. Lower bound, not all repository history, not every detected bug, not a count of commits or performance wins.
 
-**55 families:28 Merlin fixes,19 Merlin reusable improvements,8 model2MLIR fixes upstream.**
+**57 implemented families:29 Merlin fixes,20 Merlin reusable improvements,8 model2MLIR fixes.**
+
+The original55-family inventory is published on main. The two additional
+generic families are reviewed implementations in open PR41/42, with33 tests
+independently passed by root; they are not merged main changes or performance
+wins. Source-wide interval-table and prepared-owner prototypes remain outside
+this conservative inventory until separately audited.
 
 Merlin owned changes were published as13 squashed topic commits to main at7fee5cfdac. Historical source commit hashes below remain provenance; they are not claimed as ancestors after squashing. The [publication manifest](merlin_main_upstream_topics_20261006.json) records actual published topic commits and files. model2MLIR's eight listed fixes are verified ancestors of main3a5acb8fd4c. Fresh whole-model hardware qualification of the new Merlin head remains unknown. Many improvements are explicit alternatives; passing tests do not establish automatic enablement or a measured whole-model gain.
 
 Related exact integer mean/readout work remains grouped with reusable exact readout/guarded decoding family46; rejected numerical prototypes and target-specific changes are excluded.
 
 The scalar LLVM AND/OR/XOR tracer fix is a follow-up to existing family39,
-so it does not inflate the55-family count. It is now published for review in
+so it does not add another family. It is now published for review in
 [PR40](https://github.com/ucb-bar/merlin/pull/40), clean topic `dafe64a4f`
 based on main7fee5cfdac. Declared widths1/8/17/64/129 and disjoint/vector
 refusals pass27core tests. Main remains unchanged pending review. Source-wide
@@ -73,3 +79,5 @@ prototypes; this inventory does not silently count them as upstream wins.
 | 53 | model2MLIR | bug_fix | GELU approximation mode and half opmath precision | e9aa9085d |
 | 54 | model2MLIR | bug_fix | Half convolution and bias f32 accumulation | b0979bbb7 |
 | 55 | model2MLIR | bug_fix | Python scalar precision in half multiplication and division | ba77e6ece |
+| 56 | Merlin | reusable_improvement | Exact sequential logical address-region recurrence census with explicit budgets | fb82cb94e, [PR41 pending review](https://github.com/ucb-bar/merlin/pull/41) |
+| 57 | Merlin | bug_fix | Emulator output destination validated before expensive execution, including nonregular/ELF alias refusals | 6cb907bc3, [PR42 pending review](https://github.com/ucb-bar/merlin/pull/42) |
