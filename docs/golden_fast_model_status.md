@@ -36,6 +36,34 @@ Evidence: [root model pilot](perf_records/root_cpu_stream_model_pilot_20261006.j
 [three-engine closure](perf_records/rv64gc_cpu_service_battery_three_engines_qualified.json),
 [stock terminal](perf_records/stock2029_cpu21_terminal.json).
 
+Stock2030 and2031 also completed the identical gather and primitive ELFs used
+by strict Spike and GSIM. Original outputs, guards, inputs, exception state,
+protocol and per-window retired instructions agree across all three engines.
+The33 cases across CPU21/gather3/primitive9 retain75 separate windows per engine.
+
+| Additional stock stream | Hypothesis | Withheld mean error |
+|---|---|---:|
+| Indexed gather | Requested distinct64B address-region bytes |2.83%|
+| Resident compute | Source padded array rows |1.88%|
+| Requested loads | Requested payload bytes |8.98%|
+| Raw i32 readback | Requested payload bytes |6.59%|
+
+Each row has one middle-size case withheld, with its two repeats averaged
+before fitting. First/second samples stay separate in the evidence; gather and
+load differences are substantial. No confidence interval or cold-cache claim
+follows. Gather extent alone misses92.41%; the requested-region hypothesis
+misses1.07% on GSIM. Regions do not mean physical cache lines or misses.
+The new hypotheses were committed before root inspected stock labels; gather
+GSIM results had already been observed. Independent variant validation remains
+necessary. Accelerator windows contain CPU issue and fenced completion, so
+these fitted terms are not pure array/DMA/DDR rates. Constant gather count
+features and all two-term hypotheses refuse for insufficient distinct training
+points; the shared fitter's gate remains intact.
+
+Evidence: [operational model pilot](perf_records/root_operational_service_model_pilot_20261006.json),
+[gather terminal](perf_records/stock2030_gather3_terminal.json),
+[primitive terminal](perf_records/stock2031_primitive9_terminal.json).
+
 ## Features needed to rank actual compiler changes
 
 The source-exact Tiny DIV/up pair has identical opcode counts but different
@@ -63,11 +91,12 @@ Evidence: [ordering adjunct](perf_records/tiny_source_exact_ordering_heldout_pc_
 
 ## Next calibration and compiler work
 
-1. Close random gather observations over64KiB,512KiB and8MiB working sets.
-   Preserve initialization, requested-region counts and timing scope; do not
-   convert requested regions into physical misses. Middle size stays withheld.
-2. Close primitive load, resident compute and accumulator readback service
-   fixtures. Finish/CPU issue costs remain part of each operational measurement.
+1. Validate the gather screen on independent index streams, read counts and
+   source-equivalent table/caller variants. Preserve requested-region counts,
+   initialization and timing scope; physical misses remain unknown.
+2. Measure source-equivalent primitive variants with resident B reuse and
+   changed issue order. The ordinary preload/compute calibration does not
+   automatically price those schedules. Finish/CPU issue costs stay included.
 3. Validate predictions and ordering on independent source-equivalent variants
    and complete callers. Changed ISA counts, spills, dependencies, storage,
    dispatch and finishing costs must all be covered.

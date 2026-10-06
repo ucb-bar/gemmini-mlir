@@ -1635,3 +1635,34 @@ instructions rise. Its8MiB payload and original source fallback are included.
 This motivates working-set calibration and generic source-DAG/closed-consumer
 promotion; whole-model timing remains unknown.
 [Table](perf_records/tiny_source_interval_table_complete_gsim.json).
+
+### Stock memory and accelerator calibration (2026-10-06)
+
+Gather2030 and primitive2031 finish with all original checks and identical
+per-window instruction counts across strict Spike, GSIM and stock. Root
+independently rehashes94/104 qualification refs and six named terminal refs for
+each job, reparses actual consoles and rechecks staged hardware domains.
+The existing Merlin fitter yields withheld mean errors2.83% for requested
+gather regions,1.88% for padded resident array work,8.98% for requested loads
+and6.59% for raw readback. Gather address extent alone fails92.41%.
+Constant count features and every two-term fit refuse insufficient distinct
+training points. Repetitions are averaged only under the declared experiment
+policy, and every raw sample remains. No physical misses, pure unit rates,
+automatic ranking or whole-model forecast follows.
+[Operational pilot](perf_records/root_operational_service_model_pilot_20261006.json).
+
+Next model validation is source-equivalent compiler alternatives: table reads
+with their complete callers, resident B reuse and changed issue order. The
+neutral inner-stripe-row experiment reduces emitted text54.65% and instructions
+4.72% but complete GSIM cycles only0.10%, so text/count savings alone cannot
+price the compiler change. Typed dynamic B addressing is the next compact-loop
+experiment; the neutral arm is held from whole promotion.
+
+Owned token observation at20:23:29UTC covers the same eight explicitly owned
+threads:58,433,400uncached input,2,749,809,280cache-read and11,416,714output;
+4,591,662reasoning tokens are already included in output. Since19:22:38,
+completed requests add1,336,334uncached input and341,663output tokens. Raw
+2,819,659,394 is traffic, not billing or an OOT allocation. Per-optimization and
+exact OOT-only attribution remain unavailable. Separate active-goal observation
+is66,210,958tokens; the22M/5B/300M whole targets remain unmet.
+[Ledger](perf_records/golden_token_usage_20261006T202329Z.json).

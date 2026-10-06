@@ -10,6 +10,12 @@ Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
 This is diagnostic stream evidence, with whole programs and candidate ranking
 still unqualified. [Model status](golden_fast_model_status.md).
 
+Stock2030 gather and2031 primitive calibration also pass on the same three-engine
+ELFs. New withheld mean errors: gather requested regions2.83%, resident compute
+1.88%, loads8.98%, raw readback6.59%. These are limited operational streams,
+with one held case per new family and substantial memory repeat differences;
+whole-model predictions remain unknown. [Operational pilot](perf_records/root_operational_service_model_pilot_20261006.json).
+
 Tiny's source-wide8MiB interval-table prototype measures6.531% fewer complete
 section GSIM cycles, despite more instructions. Original outputs/guards/all5FRM
 and input identity pass. Generic default-off promotion and normal full-model
