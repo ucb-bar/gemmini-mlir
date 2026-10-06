@@ -86,8 +86,17 @@ Its8MiB table traffic, fallback and finishing work are included. This is a usefu
 future held experiment for memory-sensitive ranking, not training proof or a
 whole-model result. Generic source-DAG/closed-consumer promotion is in progress.
 
+The source-equivalent inner-stripe-row variant retains the exact primitive
+and operand order, but reduces instructions4.72% and touched code54.65%.
+Complete common-address source-capsule GSIM cycles change512,059 to511,541,
+only0.1012% lower. Root reclosed all127 evidence pins. This is a held validation
+case for instruction-footprint/overlap sensitivity; it is not new training or
+a stock whole result. The experimental compiler option stays isolated.
+
 Evidence: [ordering adjunct](perf_records/tiny_source_exact_ordering_heldout_pc_adjunct.json),
 [complete table experiment](perf_records/tiny_source_interval_table_complete_gsim.json).
+
+[Compact-loop validation](perf_records/root_resident_inner_row_model_review_20261006.json).
 
 ## Next calibration and compiler work
 
