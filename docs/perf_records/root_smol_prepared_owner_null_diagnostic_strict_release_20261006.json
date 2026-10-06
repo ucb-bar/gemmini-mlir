@@ -1,0 +1,122 @@
+{
+  "schema": "root_smol_owner_null_diagnostic_release_v1",
+  "status": "released_one_bounded_strict_whole",
+  "successor_pins": 73,
+  "historical_pins": 74,
+  "diagnostic_elf": "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/out/normal_diagnostic/model.elf",
+  "diagnostic_elf_sha256": "7b77fdb64c19d55d550415e6440477764bd68d323c6d831c0f92958506b66e97",
+  "native_O0_O2_fresh": true,
+  "strict_wrapper_all_fields_fresh": true,
+  "original_NULL_callback_and_opaque_preserved": true,
+  "allocator_allocated_sections_independently_identical": true,
+  "final_bridge_calls_inspected": true,
+  "actual_LOAD_ranges": [
+    {
+      "address": 2147483648,
+      "size": 2331580,
+      "flags": 5
+    },
+    {
+      "address": 2149818368,
+      "size": 3497840,
+      "flags": 6
+    },
+    {
+      "address": 2218786816,
+      "size": 499712288,
+      "flags": 6
+    }
+  ],
+  "physical_memory_map": "0x80000000:0x240000000",
+  "noFSM": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "7b77fdb64c19d55d550415e6440477764bd68d323c6d831c0f92958506b66e97",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 136,
+      "1": 864,
+      "2": 545,
+      "3": 2136,
+      "4": 1190,
+      "5": 3850,
+      "6": 5040,
+      "7": 34
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "command": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=30s",
+    "3600s",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--isa=rv64gc",
+    "--extension=gemmini",
+    "-m0x80000000:0x240000000",
+    "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/out/normal_diagnostic/model.elf"
+  ],
+  "wall_cap_seconds": 3600,
+  "auto_retry": false,
+  "auto_extend": false,
+  "whole_target_executed": false,
+  "expected_fastpath": {
+    "groups": 48,
+    "prepares": 12,
+    "products": 23040,
+    "workspace_bytes": 123012928,
+    "owner_bytes": 30048924,
+    "fallbacks": 0
+  },
+  "original_native_root_review": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_smol_prepared_owner_normal_preliminary_review_20261006.json",
+  "scope": "Diagnostic only; no FireSim or performance admission. Requires 1600 original words,48groups,12prepares,23040products,zero fallback/errors and actual allocator closure at completion.",
+  "commands": [
+    {
+      "argv": [
+        "cc",
+        "-O0",
+        "-I/scratch/agustin/tmp/gemmini-prepared-rhs-owner-20261006/out/prepared_rhs_normal_materialized/target_numeric",
+        "-DMERLIN_DIAG_GROUP_CAPACITY=4",
+        "-DMERLIN_DIAG_ARENA_BASE=0x1000",
+        "-DMERLIN_DIAG_ARENA_BYTES=0x4000",
+        "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/tests/prepared_owner_diagnostic_test.c",
+        "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/tests/prepared_owner_diagnostic_calls.c",
+        "-Wl,--wrap=group_provider_with_rhs",
+        "-Wl,--wrap=group_provider_rhs_prepare",
+        "-Wl,--wrap=_mlir_ciface_source_attention_frontier_fallback",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-owner-root-review-20261006/diagnostic_fresh/native0"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "cc",
+        "-O2",
+        "-I/scratch/agustin/tmp/gemmini-prepared-rhs-owner-20261006/out/prepared_rhs_normal_materialized/target_numeric",
+        "-DMERLIN_DIAG_GROUP_CAPACITY=4",
+        "-DMERLIN_DIAG_ARENA_BASE=0x1000",
+        "-DMERLIN_DIAG_ARENA_BYTES=0x4000",
+        "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/tests/prepared_owner_diagnostic_test.c",
+        "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/tests/prepared_owner_diagnostic_calls.c",
+        "-Wl,--wrap=group_provider_with_rhs",
+        "-Wl,--wrap=group_provider_rhs_prepare",
+        "-Wl,--wrap=_mlir_ciface_source_attention_frontier_fallback",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-owner-root-review-20261006/diagnostic_fresh/native1"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    }
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/docs/perf_records/prepared_owner_target_diagnostic_null_successor.json": "6330f166293e69b0395898487d3fbd14609e631f417f14d9c38cb3f246b69aba",
+    "/scratch/agustin/tmp/gemmini-prepared-owner-diagnostic-20261006/docs/perf_records/prepared_owner_target_diagnostic_preflight.json": "79fd211423bd0aa01cbedd6355f528171f738ea7e09fbd5f51bd96ab46d2ce74",
+    "/scratch/agustin/tmp/gemmini-prepared-owner-null-diagnostic-20261006/out/normal_diagnostic/model.elf": "7b77fdb64c19d55d550415e6440477764bd68d323c6d831c0f92958506b66e97",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-owner-root-review-20261006/diagnostic_review.py": "e23a866750f876178a9880ae8912f3b88ea8235aa9faf4480e3b7628f76df3fb",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-owner-root-review-20261006/diagnostic_fresh/strict.stdout": "fced0eb9ad85a66b926f604caa4e4e8059117e94219300c3dc036a845a9ff15b",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-owner-root-review-20261006/diagnostic_fresh/strict.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
