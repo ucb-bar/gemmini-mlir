@@ -93,7 +93,10 @@ class Emitter:
         elif ins.kind == "config_ex":
             f, rs1, rs2 = isa.config_ex(dataflow=a["dataflow"], sys_act=a["act"],
                                         acc_scale=a["acc_scale"], a_stride=a["a_stride"],
-                                        c_stride=a["c_stride"])
+                                        c_stride=a["c_stride"], sys_shift=a.get("sys_shift", 0),
+                                        a_transpose=bool(a.get("a_transpose", False)),
+                                        b_transpose=bool(a.get("b_transpose", False)),
+                                        set_only_strides=bool(a.get("set_only_strides", False)))
         elif ins.kind == "config_ld":
             f, rs1, rs2 = isa.config_ld(stride=a["stride"], scale=a.get("scale", 1.0),
                                         shrunk=a.get("shrunk", False),

@@ -117,6 +117,14 @@ class FlushOp(_GemminiOp):
 
     name = "gemmini.flush"
 
+    def verify_(self) -> None:
+        if self.operands_ or self.res is not None:
+            raise VerifyException("gemmini.flush: no operands or results are supported")
+        if type(self.a("skip", 0)) is not int or self.a("skip", 0) not in (0, 1):
+            raise VerifyException("gemmini.flush: skip must be a one-bit integer")
+        if set(self.attributes) - {"skip"}:
+            raise VerifyException("gemmini.flush: unsupported command attribute")
+
 
 @irdl_op_definition
 class ConfigExOp(_GemminiOp):
@@ -125,10 +133,31 @@ class ConfigExOp(_GemminiOp):
     name = "gemmini.config_ex"
 
     def verify_(self) -> None:
-        if self.a("dataflow") not in (0, 1):
+        if self.operands_ or self.res is not None:
+            raise VerifyException("gemmini.config_ex: no operands or results are supported")
+        supported = {"dataflow", "act", "sys_shift", "acc_scale", "a_stride", "c_stride",
+                     "a_transpose", "b_transpose", "set_only_strides"}
+        if set(self.attributes) - supported:
+            raise VerifyException("gemmini.config_ex: unsupported command attribute")
+        if type(self.a("dataflow")) is not int or self.a("dataflow") not in (0, 1):
             raise VerifyException("gemmini.config_ex: `dataflow` must be 0 or 1")
         if type(self.a("a_stride", 1)) is not int or not 1 <= self.a("a_stride", 1) <= 65535:
             raise VerifyException("gemmini.config_ex: a_stride must fit positive16bits")
+        if type(self.a("c_stride", 1)) is not int or not 1 <= self.a("c_stride", 1) <= 65535:
+            raise VerifyException("gemmini.config_ex: c_stride must fit positive16bits")
+        if type(self.a("act", 0)) is not int or self.a("act", 0) not in (isa.NO_ACTIVATION, isa.RELU):
+            raise VerifyException("gemmini.config_ex: act must be NO_ACTIVATION or RELU")
+        if type(self.a("sys_shift", 0)) is not int or not 0 <= self.a("sys_shift", 0) < 2**32:
+            raise VerifyException("gemmini.config_ex: sys_shift must fit unsigned32bits")
+        if "acc_scale" in self.attributes and not isinstance(self.attributes["acc_scale"], (FloatAttr, IntegerAttr)):
+            raise VerifyException("gemmini.config_ex: acc_scale must be a numeric attribute")
+        try:
+            isa.f32_bits(self.a("acc_scale", 1.0))
+        except (OverflowError, ValueError):
+            raise VerifyException("gemmini.config_ex: acc_scale must encode as binary32")
+        for key in ("a_transpose", "b_transpose", "set_only_strides"):
+            if type(self.a(key, 0)) is not int or self.a(key, 0) not in (0, 1):
+                raise VerifyException(f"gemmini.config_ex: {key} must be a one-bit integer")
 
 
 @irdl_op_definition

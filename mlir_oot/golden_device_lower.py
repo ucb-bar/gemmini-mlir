@@ -21,9 +21,16 @@ def _encoded(op: G._GemminiOp) -> tuple[int, int | None, int] | None:
     if isinstance(op, G.FenceOp):
         return None
     if isinstance(op, G.FlushOp):
-        return isa.flush()
+        return isa.flush(op.a("skip", 0))
     if isinstance(op, G.ConfigExOp):
-        return isa.config_ex(dataflow=a("dataflow"), a_stride=a("a_stride", 1))
+        return isa.config_ex(
+            dataflow=a("dataflow"), sys_act=a("act", isa.NO_ACTIVATION),
+            sys_shift=a("sys_shift", 0), acc_scale=a("acc_scale", 1.0),
+            a_stride=a("a_stride", 1), c_stride=a("c_stride", 1),
+            a_transpose=bool(a("a_transpose", 0)),
+            b_transpose=bool(a("b_transpose", 0)),
+            set_only_strides=bool(a("set_only_strides", 0)),
+        )
     if isinstance(op, G.ConfigLdOp):
         return isa.config_ld(stride=a("stride"), scale=a("scale", 1.0),
                              load_id=a("load_id"), block_stride=a("block_stride",isa.DIM),
