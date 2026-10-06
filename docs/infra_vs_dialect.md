@@ -169,6 +169,15 @@ remain separate. OOT should bind
 the proved group to actual device partials/ABI/resources. Live f32max, source
 exp, denominator and ordered PV paths prevent an early BF16-only substitution.
 This is a compiler coverage/integration task, not a new accuracy allowance.
+The same-image exact native control now closes all48groups and all1,600
+original outputs. The one-bin bounded and center-only policies fail113and121
+outputs respectively; both remain disabled under the unchanged elementwise
+gate. Actual OOT integer-product/readout checks succeed, while host certificate
+cost and source replay still prevent a profitable whole attention replacement.
+Generic tighter arithmetic bounds, consumer-frontier proofs and immutable
+SSA/lifetime preparation commoning belong in Merlin. Packed representations,
+device resources and primitive schedules belong in OOT; pointer-value caches
+or model-name selectors do not supply compiler legality.
 Recovering the user's earlier approximately4B route now also requires an audit
 of source/workload, timing boundary, numerical criterion and emitted ISA. The
 current qualified build is not a claim about the best historical implementation.

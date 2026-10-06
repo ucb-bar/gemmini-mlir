@@ -15,22 +15,53 @@ New closed-source attention work belongs in Merlin: ordinary function
 partition/binding retains48groups/384roots. Generic interval primitives now
 pass35boundary/refusal tests, including a discovered signed-zero bin mismatch.
 Actualgroup0 independent compiled source closes196,608BF16words. The fixed
-≤1BF16step policy changes53local words and reduces source fallback from23.36%
-to2.09%; the original whole1,600output gate and target implementation remain
-pending. [Feasibility](perf_records/closed_bf16_endpoint_feasibility.json).
+≤1BF16step policy changes53local words and reduces local source fallback from23.36%
+to2.09%, but fails113of1,600whole outputs under the original gate. An exact
+endpoint control reuses the identical host image/ABI, closes all48endpoints
+against independently compiled original source, and preserves all1,600words.
+It replays28.497%of19.327Bsource FMAs; the rejected whole bounded arm replays
+2.222%. One center-only source-DAG arm also fails121outputs. No numerical
+policy is promoted. [Paired controls](perf_records/smol_source_group_bounded_exact_journey.json).
+Actual M256/head0 device products/readouts are independently exact; prepared
+source-polynomial interval evaluation reduces target instructions6.90%, but
+still retires456.10Mversus232.96Msource CPU instructions. Dynamic interval
+sign specialization instead regresses4.91%and is rejected. Neither count is
+a hardware cycle prediction. Tighter exact bounds, closed quantized consumer
+frontiers and immutable source-operand preparation commoning are concrete next
+compiler opportunities; legality and cost remain obligations.
+Prepared rigorous L2 row norms now preserve all196,608original group0words
+while reducing exact source replay94,066,240→69,035,648FMAs(26.61%lower).
+The generic header passes13independent exact-rational bound/refusal tests;
+this is replay-work evidence, not hardware cycles or a whole-model result.
+[Bound screen](perf_records/prepared_l2_exact_group_screen.json).
 
 The two-predictor residual prototype shares resident input panels in OOT;
 Merlin supplies the complete tuple proof and512-byte decoder. All65,536signed
 source pairs pass, with complete both-readout+decoder GSIM164,367→153,249cycles
 (6.764% reduction),15resource/order/refusal tests and8,192guards. Original
-802,816-byte captured-layer cost and ordinary scratch/result binding remain
-pending. [Receipt](perf_records/residual_joint_resident_input_capsule.json).
+802,816-byte captured-layer independent11chunk implementation instead
+regresses16.69%; the resident-input large follow-up is incomplete. Both remain
+disabled. A source-derived two-scale bracket shares a five-chunk integer
+producer and reduces the common-address full-domain capsule23.32%, with an
+independent three-panel drain case20.05%lower. The original full-layer pair is
+still running. Merlin proves the joint relation and optional first-output
+ambiguity predicate; OOT owns the unchanged accumulator and both stores.
+Existing private fresh writer storage can represent the second output without
+global workspace. [Shared producer](perf_records/residual_shared_affine_bracket_capsule.json),
+[large negative](perf_records/residual_joint_large_footprint_rejected.json).
 
 The optional Merlin broadcast-axis packet pass shares identical tensor extracts
 across two rows while retaining scalar operation order.25native/refusal/default
 tests pass. An actual original1880 read-only tap preserves all256,000words and
 captures the first45,056-byte gate output and its input tensors. Actual-source
-capsule timing is in progress; no speedup is claimed. Shape/name selection is
+capsule passes native/strict/128guards with all45,056outputs exact. Its full
+ABBA GSIM run times out at1800seconds after only the first control interval
+(5,828,044cycles); candidate timing is unknown. The normal/frozen whole
+qualification now passes all256,000original compiled words/Torch/native/strict,
+with a byte-exact control relink,155device bindings preserved and onlymodel.o
+changed. The isolated stock1932experiment is queued versus1880 to resolve timing, with no
+local speedup claim. [Whole qualification](perf_records/tiny_broadcast_packet_whole_qualification.json).
+Shape/name selection is
 confined to this source-binding experiment, outside production pass policy.
 
 Stock1909 confirms integer packing776,043,123→665,638,655cycles,14.2266%lower,
@@ -39,6 +70,11 @@ all12digests/metadata/guards exact. This is a section result.
 Stock1910 compact weight-prefetch measures38,332,743cycles,0.3540%below its
 1897control but above current1903=36,102,704. The champion remains unchanged.
 [1910](perf_records/resnet_compact_weight_prefetch_1910_hardware.json).
+Stock1911normal resident-A family measures529,006,294cycles. The controlled
+1912device-only arm measures529,440,142versus531,072,370for1880(0.307%lower).
+Both retain all256,000original words and are slower than1902=527,255,504;
+the current Tiny choice stays unchanged.
+[Controlled hardware](perf_records/tiny_resident_a_controlled_1912_hardware.json).
 
 | Change and owner | Complete evidence | Decision |
 | --- | --- | --- |
@@ -95,7 +131,7 @@ The selected exact constant-case Smol head is queued as stock1924 versus1917.
 | Smol suffix diagnosis — experiment only | Derive original source suffix, supply captured post-vision state, freeze original failing runtime objects | Actual target all1,600 suffix final bits exact against original golden; older complete models failed89/1,600 | Vision prefix localized further: first4 isolated target blocks exact; fifth native-exact/target failure causally restored by native expf oracle and optional float-exp-via-double; full-target math-policy gate now passes; lookup remains diagnostic-only; [causality](perf_records/smol_block4_expf_causality.json); next block/postLN exact; [localization](perf_records/smol_later_vision_block_localization.json) |
 | Explicit portable libm precision policy — Merlin | Default native emits nothing; opt-in expf-via-double adds a normally hashed runtime object and linker interception | Full original native/actual RV64GC target all1,600 bits exact, zero gate failures; normal API entire loaded image equivalent except diagnostic marker | Stock1906 is the single qualified full baseline, cycles pending. No universal correctly-rounded libm or errno/fenv claim; [full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [admission](perf_records/smol_first_exact_stock_baseline_admission.json) |
 | Shared calibrated selection — existing Merlin planner; OOT generation/emission | Prices exact source-bound alternatives from pinned full-fixture GSIM receipts; solver winner controls actual compiled object | Independent17×73×65:3,234→2,357GSIMcycles; all1,241outputs+2,048guards exact, strict target/noFSM | Normal model build now compiles actual selected object into its catalog, all1,241 original i32 outputs/finalELF closed; [normal-path qualification](perf_records/golden_calibrated_normal_model_qualification.json);27.1% fixture gain; complete measured ranking, physical floor/internal engine occupancy/whole-model costs UNKNOWN; [receipt](perf_records/golden_calibrated_source_selection_qualification.json) |
-| Explicit resident-A/B-prefetch alternative — OOT; normal equal-shape implementation dispatch — Merlin | Shape/resource-legal overlap alternative enters shared measured selector and actual normal model catalog; same tensor shapes retain distinct selected implementations | Common-address synthetic int8/amplitude21 GSIM111,885→76,456cycles(31.67%); native/strict single-selected full model all256,000 original words/Torch gate/noFSM pass | Expanded44-selected native and strict-target gates pass with155calls/five bodies. Stock1911 normal and1912 all1880host/runtime-controlled arms are queued; hardware outcomes remain unknown. A single fixture price reused across equivalent physical code is a calibration assumption, not measured model operands/address/cache/full-program cost; [capsule](perf_records/tiny_resident_a_prefetch_gsim.json), [single-selected full gate](perf_records/tiny_resident_a_prefetch_whole_spike.json), [journey](tiny-calibrated-resident-a-20261005.md) |
+| Explicit resident-A/B-prefetch alternative — OOT; normal equal-shape implementation dispatch — Merlin | Shape/resource-legal overlap alternative enters shared measured selector and actual normal model catalog; same tensor shapes retain distinct selected implementations | Common-address synthetic int8/amplitude21 GSIM111,885→76,456cycles(31.67%); native/strict single-selected full model all256,000 original words/Torch gate/noFSM pass | Expanded44-selected native and strict-target gates pass with155calls/five bodies. Stock1911 normal measures529,006,294cycles;1912 freezes all1880host/runtime and measures529,440,142cycles(0.307%below1880), both above1902best. No champion change. A single fixture price reused across equivalent physical code is a calibration assumption, not measured model operands/address/cache/full-program cost; [capsule](perf_records/tiny_resident_a_prefetch_gsim.json), [single-selected full gate](perf_records/tiny_resident_a_prefetch_whole_spike.json), [journey](tiny-calibrated-resident-a-20261005.md) |
 | Bounded compact-convolution weight lookahead — OOT | Alternate disjoint bank2/bank3 panels; preserve increasing-K and all arithmetic/transfer counts | Original-input common-address535,839→499,034GSIMcycles(6.87%), all50,176outputs+4,096guards exact; independent grouped/tail475outputs pass;47focusedtests pass | Explicit default-off general option, full original model gates/hardware separate; rejected full-K/BN2 variants retained; [capsule](perf_records/compact_weight_prefetch_capsule.json), [schedule](compact_weight_prefetch_schedule.md) |
 | Explicit compiler policy precedence — Merlin | Apply caller compiler flags after recipe defaults in compilation and linking | Real native executable checks fast-math macro and actual subnormal result;20 focused build/math/runtime/catalog tests pass(2 capability skips) | Correctness/infrastructure fix, no cycle-gain claim. Link-time compiler options also select startup floating-point behavior;1bc88bf28 |
 | Early saturation and scalar readout packets — Merlin; ABI binding OOT | Test exact source transitions before estimation, retain input-load/output-store order in bounded8lane packets | Full50,176/25,088 readouts:1,546,262→1,130,840 and756,032→560,759GSIMcycles; allvalues+guards exact; whole original1,000 words exact and unchanged1874 control link byte-identical | Stock1874→1900:39,201,279→37,946,541cycles(3.20% lower), all1,000 original words exact and staged stock pins closed. Then best; separate from1897 stripes. No capture selector or numeric relaxation; [hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json), [qualification](perf_records/resnet_exact_readout_packets_qualification.json) |
@@ -222,26 +258,26 @@ Receipts: [norm](perf_records/tiny_source_broadcast_math_complete_capsule.json),
 
 ## Token accounting
 
-[Measured snapshot at2026-10-06T04:22:41Z](perf_records/golden_token_usage_20261006T042241Z.json)
+[Measured snapshot at2026-10-06T04:59:09Z](perf_records/golden_token_usage_20261006T045909Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |33,917,148|
-| Cached input reads |1,630,808,448|
-| Output |6,590,044|
-| Reasoning output, already included in output |2,569,243|
-| Raw input+output total, including cached reads once |1,671,315,640|
+| Uncached input |34,791,974|
+| Cached input reads |1,668,042,880|
+| Output |6,793,313|
+| Reasoning output, already included in output |2,668,712|
+| Raw input+output total, including cached reads once |1,709,628,167|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-40,507,192; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is36,871,684; its accounting semantics are not exposed, so it
+41,585,287; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is37,952,814; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since03:35:04Z:
-1,547,936 uncached input,315,852 output and63,965,824 cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261006T033504Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since04:22:41Z:
+874,826uncached input,203,269output and37,234,432cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261006T042241Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating

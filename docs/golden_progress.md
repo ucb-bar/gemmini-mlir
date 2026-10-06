@@ -32,9 +32,13 @@ resource-legal contractions is being qualified before hardware submission.
 
 The expanded normal native and strict-target builds preserve all256,000 original words and the Torch gate,
 with44 selected source bindings,111 unchanged bindings and five shared implementation bodies.
-Stock1911 is admitted with hardware timing pending. Its normal build also uses the current
-runtime compiler, so its comparison with1880 includes that runtime change. A separate device-only
-comparison is being qualified with every original1880 host/runtime object retained.
+Stock1911 completes at529,006,294cycles. Its normal build also uses the current
+runtime compiler, so its comparison with1880 includes that runtime change.
+The device-only1912comparison retains every original1880 host/runtime object
+and completes at529,440,142cycles, a0.307%single-run improvement versus1880.
+Both preserve all256,000original words and remain slower than1902. No champion
+change or causal attribution to the small runtime difference follows.
+[Controlled stock receipt](perf_records/tiny_resident_a_controlled_1912_hardware.json).
 Reusing the one synthetic fixture price across those
 source-equivalent implementations is a calibration assumption; actual model operands, addresses,
 cache state and full-program timing have not been independently timed by that fixture.
@@ -59,8 +63,15 @@ not a whole attention or model speedup.
 [Hardware receipt](perf_records/smol_integer_packing_1909_hardware.json).
 Compact weight-prefetch job1910 completes at38,332,743cycles, only0.3540%
 below its1897control and above the36,102,704current ResNet best. It does not
-change the selected implementation. Job1911 is now running on stock hardware.
+change the selected implementation. Jobs1911and1912are now complete; both
+remain above the selected Tiny result.
 [1910](perf_records/resnet_compact_weight_prefetch_1910_hardware.json).
+
+Tiny broadcast-axis pointwise sharing now passes all256,000original native,
+Torch and strict target words. The normal compiler control/relink is byteexact
+and onlymodel.o changes. Stock1932is queued versus1880. Its actual-source
+ABBA GSIM capsule is incomplete after the first control interval; candidate
+timing remains unknown. [Qualification](perf_records/tiny_broadcast_packet_whole_qualification.json).
 
 ResNet and Tiny champions remain unchanged. Full Smol stock1906 completed at
 02:57:36Z after submission at22:52:37Z. Engine elapsed was8,918.2seconds
@@ -169,9 +180,21 @@ not stock1919 and does not repartition the stock13.72M reference gap.
   from94,066,240to8,423,360FMAs (23.36%to2.09%of402,653,184sourceFMAs),
   with53local word changes inside the proved bound. Exact-policy control is
   retained. Independent random/mixed/all-masked full-shape source checks pass.
-  The original whole-model atol=.03125/rtol=.02 gate for all48groups is still
-  pending. No whole accuracy or hardware speedup is inferred from this local
-  result. Main QK/PV products are intended for integer-plane device execution;
+  The original whole-model atol=.03125/rtol=.02 gate now rejects this policy:
+  113of1,600outputs fail. The identical compiled image and writer ABI with
+  exact endpoint reconstruction passes all1,600original words bitexact;
+  all48endpoints also match independently compiled original groups. This
+  isolates numerical propagation, rather than a grouping or ABI error.
+  Exact reconstruction replays5,507,717,696source FMAs(28.497%); the rejected
+  bounded policy replays429,497,664(2.222%). A single separate center-only
+  reconstruction retaining the full source DAG also fails121of1,600outputs.
+  Neither approximation is enabled and the gate remains unchanged.
+  [Paired control and rejection](perf_records/smol_source_group_bounded_exact_journey.json).
+  Main QK/PV products have independent actual target integer-plane checks;
+  this does not establish whole-model target dispatch or profitability.
+  The M256/head0 target screen verifies1,802,240i32readout words, but its
+  prepared-polynomial path retires456,096,296instructions versus232,955,195
+  for source CPU code. These are instruction counts, not FireSim cycles.
   actual plane packing, readouts, certificate scans, source replay and host
   softmax must be timed together before promotion.
   [Local feasibility](perf_records/closed_bf16_endpoint_feasibility.json),

@@ -1,0 +1,97 @@
+{
+  "schema": "original_tiny1880_readonly_gate_tap_v1",
+  "started_utc": "2026-10-06T04:17:56.379858+00:00",
+  "source_llvm_sha256": "368ada7c2223b6d2975ddcd89f947f23290b9d681e6631873cdf6f364597efb0",
+  "selected_llvm_sha256": "4edc8ba1826361e13d1a3da28755f5435b8d8a2e2fc296ef0d67f490c1984441",
+  "compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-O2",
+    "-fPIC",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/model.native.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/model.o"
+  ],
+  "link_argv": [
+    "cc",
+    "-O3",
+    "-march=native",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/model.o",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/tap.c",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/model.so"
+  ],
+  "boundary_pins": {
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/tap.c": "3d739f52b787a8f3628944bf051c188295e253b00f53ce2b46acc72fd8ce9eff"
+  },
+  "source_capsule_sha256": "e55f45b4728856a581726e8c2ce3e8132d6b0f4ee225f844f8e1e4974b2481b7",
+  "modification": "One read-only five-pointer tap after original first gate result before next dispatch. Original source arithmetic, inputs, weights, runtime and native integer device standins unchanged.",
+  "accuracy_atol": 0.03125,
+  "accuracy_rtol": 0.02,
+  "status": "pass",
+  "finished_utc": "2026-10-06T04:19:50.429419+00:00",
+  "outputs": 256000,
+  "original_compiled_bits_exact": true,
+  "torch_original_gate_pass": true,
+  "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "tap_calls": 1,
+  "captured_tensors": {
+    "a": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/a.npy",
+      "sha256": "a6046b8140b798c7dcdffed6f949d36b0c353d964a3b78ce0da509da108e5b55",
+      "shape": [
+        1,
+        8,
+        5632
+      ],
+      "dtype": "int32"
+    },
+    "scale_a": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_a.npy",
+      "sha256": "7beb9d772a92e984f661bd13d20929d5430174ff7d05583fd671ef07dd8e598a",
+      "shape": [
+        5632
+      ],
+      "dtype": "float32"
+    },
+    "b": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/b.npy",
+      "sha256": "3d37692e836389e2fc64798e6aba2f4ea4f0506f58ff7df05d36cfbdfee99865",
+      "shape": [
+        1,
+        8,
+        5632
+      ],
+      "dtype": "int32"
+    },
+    "scale_b": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_b.npy",
+      "sha256": "1cdb4423dc8addaad48c17757f227b92562c055f6b2f561063f85643f6ce6d64",
+      "shape": [
+        5632
+      ],
+      "dtype": "float32"
+    },
+    "expected": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/expected.npy",
+      "sha256": "9fc384d7615da056f86e1ba672afc1ea501fba28bb12506d1877bf17c5a505f7",
+      "shape": [
+        1,
+        8,
+        5632
+      ],
+      "dtype": "int8"
+    }
+  },
+  "model_object_sha256": "25562907794b0ded5501a7cb16c30c4d582325d1f6004ef0288468c8b8dc88b4",
+  "shared_object_sha256": "639eb9c13007c4c0ed2fcc6af0224f7cb03284da751f5565239e7af5a5c1abac"
+}
