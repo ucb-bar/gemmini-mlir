@@ -97,3 +97,30 @@ independent normal-build test compiles both target implementations, selects the
 new source/object/adapter/oracle, preserves a live producer output, checks every
 result repeatedly, and verifies the adapter traps on an invalid owner shape.
 Whole-model accuracy and stock timing remain unknown until separately checked.
+
+## Whole source qualification against frozen 1903
+
+The ordinary callback build now selects all three typed source views. The
+actual host LLVM consumer descriptor equals the actual fresh producer result
+descriptor at each site; the original materialized consumer calls are absent.
+Merlin's existing lexer checks the emitted descriptor operands, while the
+typed acceptance and fresh-writer contracts establish source order and lifetime.
+The three logical temporaries total 351,232 bytes. Physical DRAM savings remain
+unknown because request shape and cache behavior also change.
+
+The controlled image reproduces the original 1903 ELF byte for byte before
+changing the host model object and adding the three source-selected primitive
+implementations. All original 1903 runtime, startup, weights, shim and device
+objects remain pinned. Both the full native model and strict RV64GC Gemmini
+Spike replay pass the original 1,000-word binary32 gate, including the complete
+output digest. The final image passes the no-FSM audit. Its SHA is
+`8c825fd00eb618c8139d09f8c96afa2500156a45a058d836848083f0fe9aeff5`.
+The inherited build marker is nonunique; the final ELF SHA identifies this arm.
+
+This core revision produces no generic compilation recipe file. An independent
+recompilation of the pinned host LLVM with explicit compiler/flags produces the
+exact host object bytes; that reproduction is recorded without claiming it is
+an observation log of the initial compiler invocation. The fresh ordinary ELF
+is retained separately and has not been target replayed. Stock performance is
+pending independent admission. Full closure and 79 artifact pins are in
+`perf_records/segmented_input_whole1903_qualification.json`.
