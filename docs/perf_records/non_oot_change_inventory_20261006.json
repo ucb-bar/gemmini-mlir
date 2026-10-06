@@ -1,0 +1,855 @@
+{
+  "schema": "non_oot_change_inventory_v1",
+  "observed_utc": "2026-10-06T18:01:25.167902+00:00",
+  "scope": "Conservative inventory of directly identified implemented change families in the golden compiler integration; related commits counted once. Lower bound, not all repository history, not every detected bug, not a count of commits or performance wins.",
+  "counts": {
+    "Merlin_bug_families": 28,
+    "Merlin_reusable_improvement_families": 19,
+    "model2MLIR_bug_families_upstream": 8,
+    "total_families": 55
+  },
+  "excluded": [
+    "OOT target changes",
+    "documentation-only and test-only commits",
+    "rejected-only numerical/schedule prototypes",
+    "unattributed changes from other sessions",
+    "claims that every feature is enabled or improves whole-model performance"
+  ],
+  "Merlin_branch": "/scratch/agustin/tmp/merlin-golden-integration-20261004",
+  "Merlin_main_upstream_claim": true,
+  "model2MLIR_reference": "authoritative main 3a5acb8fd4c2e39204425e805dc599ef74e0d0f9",
+  "rows": [
+    {
+      "id": 1,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Packaged runtime dependencies and paths",
+      "commits": [
+        {
+          "commit": "014dd7fdfc0a4889f28f925a5a19bc9fdcd54029",
+          "subject": "fix(runtime): package complete source certificate dependencies"
+        },
+        {
+          "commit": "b807bdefd2207da63af596f20b7a4dd0ae3bc711",
+          "subject": "Resolve attention runtime through canonical packaged data paths"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 2,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Conflicting numerical provider build/workspace identities",
+      "commits": [
+        {
+          "commit": "90fd4b66c502536d0205007234e73b0ae3b985f6",
+          "subject": "Validate numerical provider workspace and compile evidence consistency"
+        },
+        {
+          "commit": "ff6f87455f01afc5611f82b69f09c5f73fe02cf5",
+          "subject": "Refuse all colliding authoritative provider identities"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 3,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Translation-unit and imported-object filename collisions",
+      "commits": [
+        {
+          "commit": "fd30692206fe96229245700518f62e2e51c191ad",
+          "subject": "Keep target build translation units and imported objects distinct"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 4,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Helper and dependent-library link order",
+      "commits": [
+        {
+          "commit": "6162c3f6ea962c32d02e4c1185a92ddcabc6e277",
+          "subject": "fix(runtime): preserve helper object link order after early compilation"
+        },
+        {
+          "commit": "61e2628dcccb32532b07698a34cf533bfede89d4",
+          "subject": "fix(perf): place explicit link libraries after dependencies"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 5,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Equal shapes collapsing different device implementations",
+      "commits": [
+        {
+          "commit": "fd4816a6061b55893bfd815988a50b88e6dd06ba",
+          "subject": "Preserve source-bound device implementation identities for equal shapes"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 6,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Flush-to-zero detection from computed IEEE bits",
+      "commits": [
+        {
+          "commit": "53e97343b37f9dffc1173a3ffffd15caf3699886",
+          "subject": "fix(runtime): detect flushed subnormals from computed IEEE bits"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 7,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Unsupported quantization-certificate rounding modes",
+      "commits": [
+        {
+          "commit": "9005fc13e47a2137ec1f2ccd3632a7b5b351a664",
+          "subject": "runtime: refuse quant frontier under unsupported rounding modes"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 8,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Signed-zero endpoint bins",
+      "commits": [
+        {
+          "commit": "05f756c7737845d9ac6be01c0852964b216e78d3",
+          "subject": "fix(runtime): preserve signed zero in bounded endpoint bins"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 9,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Conflicting inline/noinline LLVM attributes",
+      "commits": [
+        {
+          "commit": "24b1e233c2fea4a11da5cc3068af45a98291e40a",
+          "subject": "fix(llvmlower): remove inline attributes before adding noinline"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 10,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Scalar helper compilation ABI mismatch",
+      "commits": [
+        {
+          "commit": "28c80129895f82e76621572bccc04a948d8126ca",
+          "subject": "fix(runtime): compile MLIR scalar helpers with model compiler ABI"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 11,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Missing linked/compiler/helper bytes in build identity",
+      "commits": [
+        {
+          "commit": "795d5378edd015c8337c4479651b577278ceea68",
+          "subject": "fix(runtime): bind compiler and scalar helper object bytes in build identity"
+        },
+        {
+          "commit": "0068b4b7926600e707b442ccc8699887a2f6526a",
+          "subject": "fix(runtime): hash linked device and matrix objects before harness build"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 12,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Bare-metal MLIR assertion runtime support",
+      "commits": [
+        {
+          "commit": "e5961684c7b595e368cbde086323128654aba0fe",
+          "subject": "fix(runtime): support bare-metal MLIR assertion failures"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 13,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Lost strict floating-point function scopes",
+      "commits": [
+        {
+          "commit": "a146cbe535a53f145fd5542745ce8d9174aa2b36",
+          "subject": "fix(host): retain strict floating point function scopes"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 14,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Outlining dropping declared catalog calls",
+      "commits": [
+        {
+          "commit": "71bba42b00d3de17ca9c46e3810348b1675a7953",
+          "subject": "fix(outlining): preserve explicitly declared catalog calls"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 15,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Compiler policy lost between benchmark compile and link",
+      "commits": [
+        {
+          "commit": "1bc88bf284b82210ed9bc23214c4b4dda104a0b3",
+          "subject": "Honor explicit compiler policy in both layer-bench build phases"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 16,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Stale success after a refused lowering recipe",
+      "commits": [
+        {
+          "commit": "e531045cabe694911a56150385683fd9db84fa1e",
+          "subject": "fix(lowering): discard prior success before recipe validation"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 17,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Poison inputs in conditional clamp guards",
+      "commits": [
+        {
+          "commit": "8ead5e46b0212994f3676227dff43a824af221c7",
+          "subject": "fix(codegen): freeze clamp inputs before conditional guards"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 18,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Numeric LLVM slots versus quoted numeric identifiers",
+      "commits": [
+        {
+          "commit": "0829f35cb92f3ab7bedd1f3d01aa8c7a33a01a09",
+          "subject": "Distinguish LLVM numeric slots from quoted numeric names in clamps"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 19,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Uniform matrix-view row-segment coalescing",
+      "commits": [
+        {
+          "commit": "d43298ff517035e2fc48349274cb6310d7196e2e",
+          "subject": "fix(lowering): coalesce uniform matrix view row segments"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 20,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Profiling missing typed effects or generic entry interfaces",
+      "commits": [
+        {
+          "commit": "b5b3664ef6a1c83f3b9b2e7b14119d0963f2cef6",
+          "subject": "fix(profiling): cover typed host stages and generic entry interfaces"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 21,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Fresh writer symbol collisions",
+      "commits": [
+        {
+          "commit": "1d55b7a738e99b5c2dad797101e97ac430518dfa",
+          "subject": "fix(llvmlower): reserve all top-level writer symbols before mutation"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 22,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Standard bufferized writer parsing",
+      "commits": [
+        {
+          "commit": "b6b8a4495ad0289561bbe80ab0e46dd6b5db458c",
+          "subject": "fix(frontends): parse standard bufferized source writers"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 23,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Enclosing numerical and ownership context binding",
+      "commits": [
+        {
+          "commit": "0986976352b224e7a9261be4791c412feb844379",
+          "subject": "fix(llvmlower): bind enclosing numeric and ownership context"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 24,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Invalid frontier storage and workspace byte-count overflow",
+      "commits": [
+        {
+          "commit": "8948aab929133c74512a0340d350e335a0fef85f",
+          "subject": "runtime: reject invalid frontier storage and byte-count overflow"
+        },
+        {
+          "commit": "39d6db1fde414daada9d21c2b7d808a6b0640e57",
+          "subject": "Reject pooled workspace maxima overflow before source replacement"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 25,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Source helper symbols leaking across providers",
+      "commits": [
+        {
+          "commit": "be1a6d56404232fc79a9aa9f70284fe31b58da40",
+          "subject": "Keep source attention helper symbols private to each provider"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 26,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Combined workspace and retained fallback descriptor ownership",
+      "commits": [
+        {
+          "commit": "ba02bae6573c1b610bd2e4ddedd173001a88bdeb",
+          "subject": "Validate workspace ownership before combined producer installation"
+        },
+        {
+          "commit": "93cad1c32ed7a9b58dc44054b286af0b1c3802f7",
+          "subject": "Check retained source fallback descriptor ownership after native calls"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 27,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "Incomplete live-consumer witness admitted for writer binding",
+      "commits": [
+        {
+          "commit": "4db3183c2f9143727e29692160bbe6c3feac7780",
+          "subject": "Require complete live consumer witnesses before observed writer binding"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 28,
+      "owner": "Merlin",
+      "kind": "bug_fix",
+      "family": "CCA analyzer facets lost in MLIR serialization",
+      "commits": [
+        {
+          "commit": "150f2af09bd23dc2b8b81710b2e45070064dd22c",
+          "subject": "fix(cca): Preserve every analyzer facet in MLIR artifacts"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 29,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Scalable LLVM loop outlining and exact helper merging",
+      "commits": [
+        {
+          "commit": "1287f7b50269571442083e6febc98f2d4f4fa033",
+          "subject": "perf(llvmlower): outline LLVM loops with preserved helper calls"
+        },
+        {
+          "commit": "f93e22c0446d6f597e188e3adf4901672b7082bc",
+          "subject": "Add explicit exact LLVM loop outlining and function merging policy"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 30,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Fresh output contracts and final lowered-owner witnesses",
+      "commits": [
+        {
+          "commit": "3455418f969e67de6480192f21ee30b167d6b84c",
+          "subject": "feat(lowering): own fresh tensor writer allocation contracts"
+        },
+        {
+          "commit": "8c0f2cc8a3c00d68405f9c294ccb639ab54359b1",
+          "subject": "feat(llvmlower): witness final fresh writer result owners"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 31,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Ordered FMA contraction scheduling without reassociation",
+      "commits": [
+        {
+          "commit": "b1a4e9001d094cea12dcd061fa44f678901f7ea8",
+          "subject": "feat(lower): schedule independent outputs without reassociating ordered FMA"
+        },
+        {
+          "commit": "efc2ca1518b0b576ef04e469ab420feda2690b14",
+          "subject": "perf(lowering): schedule structurally proved ordered FMA contractions"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 32,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Independent scalar pointwise packets and broadcast sharing",
+      "commits": [
+        {
+          "commit": "a22c9d27f07e622ad9b261dfef9257d45e8030c5",
+          "subject": "perf(host): interleave independent tensor pointwise arithmetic lanes"
+        },
+        {
+          "commit": "83677314f71a22c02d197319f583e5853666594b",
+          "subject": "feat(llvmlower): share source extracts across broadcast lane packets"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 33,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Proved bounded RNE packets and exact host readout legalization",
+      "commits": [
+        {
+          "commit": "27be364d6e064668f94ef7c38ea7bc5433999dc9",
+          "subject": "feat(codegen): Own exact bounded host RNE legalization in Merlin"
+        },
+        {
+          "commit": "09fae6ebb634745be0d6a3b92a01f84f2444568c",
+          "subject": "perf(host): Lower proved bounded RNE tensor packets"
+        },
+        {
+          "commit": "37e0f503138bf71a4f82a07a0536f0785c175fbc",
+          "subject": "perf(host): group adjacent independently proved rounding results"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 34,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Source broadcast reciprocal-square-root hoisting",
+      "commits": [
+        {
+          "commit": "0a5fcec61fe4ccd40684e44067161b452f48a141",
+          "subject": "feat(lowering): hoist proved source broadcast rsqrt chains"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 35,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Borrowed segmented tensor inputs with ownership proof",
+      "commits": [
+        {
+          "commit": "a8b20d95bbf488906c83022a110a07f80317dec6",
+          "subject": "feat(lowering): prove typed segmented matrix input views"
+        },
+        {
+          "commit": "f9e72262dba1a9f575a66651cc85be5962be99af",
+          "subject": "feat(lowering): bind accepted segmented inputs to fresh owners"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 36,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Buffer identity exposed before output conversion",
+      "commits": [
+        {
+          "commit": "efbf3374b359343170713f274734cc1f402e543e",
+          "subject": "perf: expose bufferized result identities before output conversion"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 37,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Contiguous and strided byte-copy specialization",
+      "commits": [
+        {
+          "commit": "5586d188df547436b0410b2aa2ab371c1b632d40",
+          "subject": "perf(runtime): Coalesce disjoint contiguous memref copy spans"
+        },
+        {
+          "commit": "281f6ec7367cfbb497a8856087e059ea46370ae0",
+          "subject": "Specialize disjoint strided copies into contiguous suffix transfers"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 38,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Proved uniform fill-copy folding and exterior initialization",
+      "commits": [
+        {
+          "commit": "c743ceeaa19fdf60adc20817456c7a61c9f712f5",
+          "subject": "Fold private uniform buffer copies into proved destination fills"
+        },
+        {
+          "commit": "615323b85cfdbbee5c44ec03b383d4d72d50984c",
+          "subject": "Initialize only proved exterior of overwritten tensor destinations"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 39,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Statically resolvable LLVM control-flow tracing",
+      "commits": [
+        {
+          "commit": "d27dca7cdb317387d40adb6121ab05c94ee79e30",
+          "subject": "feat(lowering): trace statically resolvable LLVM control flow"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 40,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Byte-identical debug companions for PC attribution",
+      "commits": [
+        {
+          "commit": "e8efe0a6f4823b822eda7cecaf3cd643afd5c251",
+          "subject": "feat(perf): verify debug companions before PC source attribution"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 41,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Effective lowering and compilation recipe recording",
+      "commits": [
+        {
+          "commit": "e39059379d7e430156f02ffa400dbac74ca39015",
+          "subject": "feat(lowering): record effective upstream recipe on ordinary builds"
+        },
+        {
+          "commit": "7fb0fec7d9a9a4e9351f17e1f5674bd840ca8181",
+          "subject": "feat(build): record effective model compilation and link inputs"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 42,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Closed source groups and complete consumer observation DAGs",
+      "commits": [
+        {
+          "commit": "9fb517dec79a496699c83f812dc8c0bfa3ab50ab",
+          "subject": "feat(llvmlower): partition and bind closed source contraction groups"
+        },
+        {
+          "commit": "8d73df233ebae67c972f5dedb74d1793dfc935bd",
+          "subject": "feat(llvmlower): bind complete source groups to explicit fresh writers"
+        },
+        {
+          "commit": "119229b8f1eea13c206e7ae63899cfe5221bbfe6",
+          "subject": "Fingerprint complete live consumer DAG without alternate IR"
+        },
+        {
+          "commit": "db70580b640399d71f6a42ce87e510a784cec83f",
+          "subject": "Discover consumer frontiers from explicit SSA dependencies"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 43,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Caller-owned reusable and pooled provider workspaces",
+      "commits": [
+        {
+          "commit": "fe3c0751ad999c7d2c11e09fb6553bec73143977",
+          "subject": "Own private writer workspace and pool sequential storage"
+        },
+        {
+          "commit": "219bcfd41c6dbc1536811293b0deb308f184c983",
+          "subject": "Execute source attention certificates with explicit reusable workspace"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 44,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Exact signed BF16 radix packing",
+      "commits": [
+        {
+          "commit": "d9980988bb33bd403c0f3bf93e59aa0bb2716d37",
+          "subject": "feat(runtime): pack signed BF16 radix rows through exact bit decoding"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 45,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Exact signed-i64 radix reconstruction and initialization",
+      "commits": [
+        {
+          "commit": "0b477b892ca243a598e63767d3264129a6ad0383",
+          "subject": "feat(numerics): reconstruct exact radix groups in signed i64"
+        },
+        {
+          "commit": "d24a2c64ab180f226c28bbc7a0af1de810b53830",
+          "subject": "feat(numerics): initialize fresh radix scratch from first group"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 46,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Portable paired readout enclosures and guarded exact decoding",
+      "commits": [
+        {
+          "commit": "4ef27178bfadd7b58dd7e0d72d957f0bca83e61e",
+          "subject": "Prove exact two-readout enclosures and emit portable packet decoder"
+        },
+        {
+          "commit": "cd6a46edae91915b7e5978ef5f35ff33f6d6c18b",
+          "subject": "feat(requant): derive exact affine readout brackets"
+        },
+        {
+          "commit": "9cd9c70484b55d5a3ae795cd437176b8b63ee324",
+          "subject": "perf(requant): guard joint decoding by proved output values"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 47,
+      "owner": "Merlin",
+      "kind": "reusable_improvement",
+      "family": "Source-proved preparation metadata, probability reuse and encoder fusion",
+      "commits": [
+        {
+          "commit": "f19d3cfc1c9d55e2dd5dd3fa82586af8103a3074",
+          "subject": "Bind immutable exact encoder rows to shared norm preparation"
+        },
+        {
+          "commit": "10df0ef11e34b5895c6fd4fbc9d164f94207a8f9",
+          "subject": "Carry private finite ordered bound coverage into softmax admission"
+        },
+        {
+          "commit": "2bc211070c17b9849342c2224e3242ee9a5e0602",
+          "subject": "Prepare exact BF16 probability bins across source replay"
+        },
+        {
+          "commit": "a93dda580efaf59e086ec0c0f08742652368abaf",
+          "subject": "Fuse canonical reconstruction and private equality witness"
+        }
+      ],
+      "integration_status": "integrated_branch"
+    },
+    {
+      "id": 48,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Half SDPA f32 opmath intermediates",
+      "commits": [
+        {
+          "commit": "050009e02410cde27129bbfc09e8d5b82ee7692b",
+          "subject": "Retain f32 intermediates throughout half precision SDPA"
+        }
+      ],
+      "integration_status": "reachable_from_origin_main"
+    },
+    {
+      "id": 49,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "SDPA scale, causal options and unsupported-mode refusal",
+      "commits": [
+        {
+          "commit": "69c03705240bfbcf5f7d3f9804e478589fb6859f",
+          "subject": "fix(sdpa): preserve scale and causal options and refuse unsupported modes"
+        }
+      ],
+      "integration_status": "reachable_from_origin_main"
+    },
+    {
+      "id": 50,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Half matmul f32 accumulation and initialized outputs",
+      "commits": [
+        {
+          "commit": "46851eaf88e663aff1d2d44cd6154301ea396a20",
+          "subject": "fix(matmul): accumulate half contractions in f32 and initialize outputs"
+        }
+      ],
+      "integration_status": "reachable_from_origin_main"
+    },
+    {
+      "id": 51,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Half layer normalization f32 intermediates",
+      "commits": [
+        {
+          "commit": "a472fef681955a7cc437b476ede62215b3eef96a",
+          "subject": "Compute half precision layer normalization with f32 intermediates"
+        }
+      ],
+      "integration_status": "verified_ancestor_of_remote_main",
+      "verified_main_head": "3a5acb8fd4c2e39204425e805dc599ef74e0d0f9"
+    },
+    {
+      "id": 52,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Half softmax f32 intermediates",
+      "commits": [
+        {
+          "commit": "d82f4aa9d07b7c0b1c18c50461bdcfa7f1db39a0",
+          "subject": "Compute half precision softmax with f32 intermediates"
+        }
+      ],
+      "integration_status": "verified_ancestor_of_remote_main",
+      "verified_main_head": "3a5acb8fd4c2e39204425e805dc599ef74e0d0f9"
+    },
+    {
+      "id": 53,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "GELU approximation mode and half opmath precision",
+      "commits": [
+        {
+          "commit": "e9aa9085ddc40b6d0364c579df23a14f18af3c63",
+          "subject": "Preserve GELU approximation mode and half opmath precision"
+        }
+      ],
+      "integration_status": "verified_ancestor_of_remote_main",
+      "verified_main_head": "3a5acb8fd4c2e39204425e805dc599ef74e0d0f9"
+    },
+    {
+      "id": 54,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Half convolution and bias f32 accumulation",
+      "commits": [
+        {
+          "commit": "b0979bbb76f49138b15129b11eb3ea66cb851e57",
+          "subject": "Evaluate half convolution and bias with f32 accumulation"
+        }
+      ],
+      "integration_status": "verified_ancestor_of_remote_main",
+      "verified_main_head": "3a5acb8fd4c2e39204425e805dc599ef74e0d0f9"
+    },
+    {
+      "id": 55,
+      "owner": "model2MLIR",
+      "kind": "bug_fix",
+      "family": "Python scalar precision in half multiplication and division",
+      "commits": [
+        {
+          "commit": "ba77e6ecef8f8d28c168adf1111a9673ab89d609",
+          "subject": "Preserve Python scalar precision in half multiplication and division"
+        }
+      ],
+      "integration_status": "verified_ancestor_of_remote_main",
+      "verified_main_head": "3a5acb8fd4c2e39204425e805dc599ef74e0d0f9"
+    }
+  ],
+  "Merlin_main_publication": {
+    "head": "7fee5cfdaca653b4104cb0999c0a397e0ec51ddc",
+    "topic_commits": 13,
+    "manifest": "merlin_main_upstream_topics_20261006.json",
+    "verification": "merlin_main_upstream_release_20261006.json",
+    "scope": "Owned changes published as squashed topics; historical source commit hashes below remain provenance. Per-family old-hash ancestry is not claimed for squashed publication. Fresh whole-model hardware qualification of this compiler head remains UNKNOWN."
+  },
+  "counting_note": "Related exact integer mean/readout work remains grouped with reusable exact readout/guarded decoding family46; rejected numerical prototypes and target-specific changes are excluded."
+}

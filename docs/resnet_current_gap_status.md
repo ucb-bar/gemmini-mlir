@@ -2,20 +2,78 @@
 
 ## Current whole-model result
 
-The original-source compiler model's best qualified stock result is job1982:
-**34,792,010 cycles**, with all1,000 original output words exact and the final
+The original-source compiler model's best qualified stock result is job2023:
+**31,808,394 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876
 reproduces **22,387,449 cycles**. The measured whole-model difference is
-**12,404,561 cycles**, or **55.41% above the reference**.
-[Current result](perf_records/stock1982_paired_flat_terminal.json),
+**9,420,945 cycles**, or **42.08% above the reference**.
+[Current result](perf_records/stock2023_segmented_mean_full_k_terminal.json),
 [reference result](perf_records/q1013_diagnostic_reference_firesim.json).
 
-Current1982 section attribution is **UNKNOWN**. The latest completed stock
-profile1919 binds1903; diagnostic1990 now queues a conserved70-boundary profile
-of1974's resident-weight arm with all1000originalwords/noFSM closed. It does not
-profile1982. The historical comparisons below retain their actual object and
-timer scopes; their differences cannot be reassigned to the current champion.
-[1974 profile qualification](perf_records/root_resnet1974_leaf_profile_qualification.json).
+Current2023 section attribution is **UNKNOWN**. The following diagnostic
+profiles actual2013, before its mean/full-K composition. This profile is
+qualified from the actual winning frozen recipe: the unprofiled ELF reproduces
+byte for byte, all1,000 original words remain exact,70 active primitive
+callbacks occur once each and intervals conserve. Three obsolete original
+primitive objects remain linked and audited, but are not active boundaries.
+Stock2021 completed with32,600,719forward cycles:29,338,102callbacks and
+3,262,617host gaps. Its47,080cycle instrumentation delta is not a speed claim. The profiler
+reconstructs original link leaves from their hash-bound manifest separately
+from selected semantic routes, fixing a catalog interpretation error.
+[Current profile release](perf_records/root_resnet_current2013_profile_release_20261006.json),
+[actual current alignment](perf_records/q1013_current2013_stock2021_profile_alignment.json).
+
+| Current2021 interval | Reference1876 cycles | Current2021 cycles | Difference |
+| --- | ---: | ---: | ---: |
+| Outside timers/callbacks |51,717|3,262,617|3,210,900|
+| Residual callbacks |2,192,393|5,471,507|3,279,114|
+| Spatial convolution callbacks |8,723,089|10,553,446|1,830,357|
+| Pointwise convolution callbacks |9,907,412|11,390,982|1,483,570|
+| Stem and pool callback |1,083,057|1,443,413|360,356|
+| Classifier callback |429,781|478,754|48,973|
+| Total |22,387,449|32,600,719|10,213,270|
+
+The largest current host intervals are before stem2,197,344, matmul26
+361,018, classifier343,752 and matmul49 177,084cycles. These are measured
+combined preparation/readout intervals; no isolated stage cost is inferred.
+Reference outside timers is not totalCPU time. Callback intervals include CPU
+issue, transfers and synchronization; these differences locate work and do
+not prove a causal saving from any substitution.
+
+Independent integer mean2018 measures33,230,295cycles and full-K weight
+residency2020 measures33,026,561cycles, each against frozen1992
+33,500,256. They save269,961 and473,695cycles respectively, but do not replace
+segmented2013. Their qualified composition with2013 now measures31,808,394cycles in2023,
+745,245below2013. Source-stride2022 independently measures32,444,367; it is
+not included in2023. Combining these measured strategies is a new experiment.
+
+Stock1999 profiles1988's
+nonflat paired/packet implementation with its uninstrumented control reproduced
+byte for byte and all1,000 outputs exact. It conserves33,671,936interior cycles
+as29,365,948primitive callbacks+4,305,988outside intervals. Its outer33,672,428
+is39,319above the uninstrumented1988 control. The older1990 diagnostic binds1974;
+its costs cannot be reassigned to1988 or1992.
+[Exact1988 terminal](perf_records/stock1999_exact1988_profile_terminal.json),
+[Source/geometry alignment](perf_records/q1013_exact1988_stock1999_profile_alignment.json).
+
+| Interval | Reference1876 cycles | Exact1988 profile1999 cycles | Difference |
+| --- | ---: | ---: | ---: |
+| Outside layer timers / outside primitive callbacks |51,717|4,305,988|4,254,271|
+| Residual callbacks |2,192,393|5,466,355|3,273,962|
+| Spatial convolution callbacks |8,723,089|10,676,947|1,953,858|
+| Pointwise convolution callbacks |9,907,412|11,298,231|1,390,819|
+| Stem and pool callback |1,083,057|1,444,192|361,135|
+| Classifier callback |429,781|480,223|50,442|
+| Total inside model |22,387,449|33,671,936|11,284,487|
+
+All70newsource-bound events and54reference geometries reconcile. The largest
+current outside intervals precede stem2,193,677, matmul14 614,595, matmul26
+377,397, classifier339,189, matmul27 285,467, matmul49 185,169 and matmul46
+137,414cycles. These are combined preparation/readout/glue intervals, not
+isolated operation measurements. Callback times include CPU command issue.
+Reference51,717outside layer timers is **not total referenceCPU time**. Numeric,
+input and timing boundaries differ; these locations are not isolated causal
+savings claims. Latest1992 needs its own profile before exact section attribution.
 
 The reference supplies useful scheduling evidence. Its numerical coefficients,
 input representation and output epilogue differ from the immutable source model.
@@ -85,7 +143,7 @@ in the ZIP and no Jack directory was inspected.
 Job1903 combines exact host quantization packets, banked residual scheduling and
 exact early-saturation/eight-lane readout. It measures3,098,575 fewer cycles than
 the unprofiled1874 control. This whole difference cannot be redistributed into
-the historical section rows without a current profile. Job1903 does not contain
+the historical section rows without a matching profile. Job1903 does not contain
 the independently measured1897 convolution-stripe arm.
 
 Source-stride resident convolution and the residue-grouped input layout have

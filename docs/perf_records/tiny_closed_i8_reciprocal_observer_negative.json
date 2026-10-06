@@ -1,0 +1,110 @@
+{
+  "schema": "tiny_closed_i8_reciprocal_observer_negative_v1",
+  "created_utc": "2026-10-06T18:23:30.442938+00:00",
+  "core_base": "7fee5cfdaca653b4104cb0999c0a397e0ec51ddc",
+  "hypothesis": "Use one Newton correction plus an integer/f32 closed-i8 margin certificate, retain all three ordered source rounded multiplications and source FDIV fallback.",
+  "generic_owner": "Merlin source/range/observation/numeric policy; prototype only, no production pass",
+  "target_owner": "OOT actual RV64GC/GSIM execution and instruction qualification",
+  "measurement_scope": "Current2004 actual complete first pre-down helper, original first two of eight rows, 11264 outputs. Source polynomial, FDIV fallback, input loads, row-shared mode/weight scan, every original rounded multiplication, clamp/RNE, stores and guards included. Shared input/output addresses, ABBA after both-arm warmup. No whole-model prediction.",
+  "source_binding": "Actual first gate is outlined .531, not reverse-ordered .6; names are experimental extraction identities only. Inherited original capture used, not a fresh2004 recapture.",
+  "actual_gsim_cycles": {
+    "control_mean": 1601432.5,
+    "candidate_mean": 2141498.0,
+    "candidate_percent_change": 33.7239003204943,
+    "samples": [
+      [
+        0,
+        0,
+        1601474
+      ],
+      [
+        1,
+        1,
+        2141551
+      ],
+      [
+        2,
+        1,
+        2141445
+      ],
+      [
+        3,
+        0,
+        1601391
+      ]
+    ]
+  },
+  "gates": {
+    "original11264_i8_exact": true,
+    "guards128": true,
+    "immutable_inputs": true,
+    "native_and_strict_spike": true,
+    "zero_FSM": true,
+    "gsim_DONE_rc0": true,
+    "typed_sole_i8_consumer_no_floating_escape": true,
+    "independent_fraction_certificate": true,
+    "independent_native_cases": 55536,
+    "unsupported_raw_fallback_cases": 44,
+    "fenv_policy": "RNE, nontrapping, flags unobserved; nonRNE/unsupported original source fallback"
+  },
+  "emitted_consequences": {
+    "source_FDIV_preserved_on_refusal": true,
+    "source_3rounded_FMUL_preserved": true,
+    "timed_instructions_control": 568974,
+    "timed_instructions_candidate": 953520,
+    "FP_hot_spills": "none observed; static FP stack sites are prologue/epilogue saves/restores; GPR sites not converted to dynamic spill claim",
+    "ABI": "unchanged five pointers; original fresh output allocation"
+  },
+  "decision": "REJECTED: 33.7239% complete-capsule cycle loss. No production pass, full model or hardware candidate; no further reciprocal variants.",
+  "saturation_screen": "0/45056 original first-gate values meet proposed positive-source saturation shortcut; no strategy implemented.",
+  "token_usage_available": false,
+  "token_note": "Root records shared campaign checkpoints; per-agent allocation is unavailable.",
+  "pins": {
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/gsim.stdout": "70eec3043bebff23bfa28bd51e44d6658686c05b648875be54fa7889c2a78d0a",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/target.linked.ll": "13dd7bde61d27d9292ff3c83db9b8cd74b7975e374744dcec27774c4c27f428d",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/native.source.ll": "1c5a55bfab111f365e392c37ec616e62597dde42307d84fe39cf552b21c18bd5",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/data.S": "91b7e74520b914f5c5323612c7e1ce6638adcc5fc0fd25e4cf3b706d6339c6d5",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/native.helper.ll": "aefc96fe07c0f5e50c671f0d5cd0734ab06d316e979a25f3edc072458b4a6719",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/b.bin": "2b599b3f3dd413d47269c6afe2c268f9486be2e22093107363d4aada9d0ac24c",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/native.so": "0df8af6dd8b695605983433e2e9d0dba46aebb2ea1f7a2e8775bfc4eb0f1f2ef",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/emitted_classes.json": "1171976f2c0ed968ced538ff54b34e85ec5df2b3689c4359e89eb8909991ae02",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/target.ll": "347692c622886828fbf03fbb31c52bc9a4f48b719e3fc506046c90067d0800cd",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/target.helper.ll": "9fc88c2ead38e6ee3a3fc66e87d91e733ecb2307b4433b8d12b3c1bbb47b9be7",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/scale_b.bin": "568b8eb895bef20f19ae571786ef3dbdceab0fc9a026383f267827110d8ca404",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/main.c": "4d9d6198a5a95d0b499e7c74910758b153dbc09b9b58406ae246b9b1fb9eb5b1",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/qualification.json": "1842634b7c377d11c7cfe37e53017aab41c93c95b56427284b0a442c23ec2c1f",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/gsim_receipt.json": "addb5ae176d851bb325c04b9762bae15f9f2c1ef14b95559736f6d9b6b9dfb94",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/disassembly.txt": "12fababce8c515c95c3a2156695e089b31601e160733685678a93eca61840a2a",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/expected.bin": "d71efd107972b086c1911d2eccd6171882c542ac77f88d0e220c70d53b89ff1f",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/nofsm_audit.json": "6a5692801f6956f941be2051bed5ded5ea62d4b73ba2b02e59426084971853cf",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/baseline.npy": "d1d2c3ea325a210cad880db4388a61f3268057b1838d06753b8d4250e099d35f",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/native.linked.ll": "59602f0db2e545bef773b1cba0bfc4e73c3ddbc8d4cf9b14fb056527f74c5826",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/main.o": "ecc7ed65faa1c6506821979f362868d68df1b7b565500b7e82ca9b8049b44a77",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/candidate.npy": "d1d2c3ea325a210cad880db4388a61f3268057b1838d06753b8d4250e099d35f",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/data.o": "757505e248b1b3b1a49246a9118fc611bca515fddcc16ffa16f09881e05dc4e1",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/spike.stdout": "afe4fc6a15a1454e9c91a52e3138dcd20527285a8d2aa8db550ced3ab2cf3572",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/helper.c": "2283004fbdbb006e51db38616ed3db31830892f9f49686c742fdec0fffcbe1ce",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/target.source.ll": "04257b62f8deaa8e87ececc26977c990434fe2023e1a5054057fd232e68cf508",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/target.o": "352084a7b8d3b47b4f57e6b96bfbff51c4d51665742638c7a6b4e7517dcc879a",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/a.bin": "404c163a23e53a4ec7ef62fab8a62c652981d4b243a03217eef9a37f73c8ac3b",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/native.ll": "818fb2a12feaeca418d2c0dde92def939bfcf9ab7886b0e86a3f3abfb926a971",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/scale_a.bin": "46522b257cdd708003a9284ae299bd6d75ee1b263f3180edb342856cd901fa0d",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/build/layer.elf": "d4d989175c1480c1743f25cfd0ca40b4e1ec4939c1a0a3897e2c518afb04fb9c",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/complete_m2_observer/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/prepare_observer_native.py": "a88cb2a086e0546c09fffe48d478eebb3b6d86f6b2ff1ae3ff9c9e627621053a",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/prove_observer_bound.py": "55333fa8146b5263475113b4c8b75a8f493a6f215a5542c9cff8d79b16aeafd0",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/observer_fraction_bound.json": "edc04aad7ca3c4aead0625354348bdacebffb54e764cf850eee96e7233e17f80",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/record_typed_observer.py": "297c84d9f0bb47765d3368b14be1187299c158634d79ba6653c4958581d60222",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/typed_observer_binding.json": "cf21e4fc3af00adfd6149b2d195e8793886c0a6d901242a63853706ba9c61765",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/build_observer_pair.py": "8cdf748197c83a2e071e96b240f3619911ba1ec9d88103bdecf41d993ab271e7",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/run_observer_gsim.py": "13bddfa85292170e8b1ef800d8d2a12902e39a35e19de51b918ca25b7f27ce4e",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/positive_saturation_opportunity.json": "d0357e1d18498811dd55ac1f63a9d786a045ad6a7411d4c311798bc1625780c8",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/observer_native/receipt.json": "b3101444a57e57997bd9000309f0c06bd25d63472c4cf19c1659d6c1f2c9205d",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/observer_native/native.so": "d41aa1684d79b2e755fa583aeff894d100207ffdf253de067477b45cef6b0e3c",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/observer_native/native.c": "26c7555e886d59edba6ac1156bad64d5c9409bf1c0fa5ed5c951c0312a16a689",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/positive-reciprocal-certificate-20261006/observer_native/observer.h": "f45e152db82f79c30f106a3d87ba3d692051d1cf7090dc48add59ca85c69750e"
+  }
+}

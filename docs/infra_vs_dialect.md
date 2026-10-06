@@ -62,8 +62,8 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 
 ## Remaining gap and accounting
 
-Current verified whole-model champions are ResNet34,830,614cycles (1974) and
-Tiny450,035,885cycles (1975). Tiny's user-specified target is300M.
+Current verified whole-model champions are ResNet33,500,256cycles (1992) and
+Tiny422,018,733cycles (2004). Tiny's user-specified target is300M.
 Smol stock1906 measures258,621,872,969cycles with full original target correctness. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.
@@ -72,6 +72,33 @@ There is no defensible overall infrastructure-versus-dialect percentage of effor
 Requests and threads mix both kinds of work, and the controlled performance arms are not an
 additive campaign attribution. The [journey](golden_optimization_journey.md) retains measured
 campaign counters, per-experiment ownership, gains, negative results and remaining abstractions.
+
+The latest numerical-provider consistency gate is Merlin infrastructure: it
+refuses stale workspace queries, native library/compile identities, incomplete
+dependency coverage and conflicting duplicate pins before an opaque proof hash
+enters dispatch. Exact squared-sum scalar accumulation and probability-bin reuse
+are portable Merlin performance alternatives. Physical B-panel addressing,
+Gemmini resource scheduling and disjoint DMA/correction overlap belong in OOT.
+Every alternative remains explicit and source-qualified; a passing numeric proof
+does not establish profitability. Normal packed-parameter binding needs a generic
+representation contract if measured target cost supports that route.
+[Current normal seal](perf_records/root_smol_normal_word_integer_sealed_reclosure.json),
+[squared-sum](perf_records/tiny_scalar_squared_sum_whole_qualification.json),
+[probability reuse](perf_records/prepared_probability_bins_qualification.json).
+
+Encoder equality and private bound-producer coverage are Merlin proofs about
+unchanged source values, effects, owner lifetime and source numerical order.
+They save complete measured CPU work; they grant no ISA capability. Sparse
+affine relation predicates are also Merlin alternatives, with complete-domain
+equivalence and preserved source replay. The current original ResNet cost
+regresses despite a separate signed-domain fixture win, so no automatic
+selection follows. Target disassembly and DMA/cacheline scheduling stay in OOT.
+The one-endpoint polynomial enclosure similarly stays disabled: a faster local
+section increases complete replay cost. These results require phase 1/2 tooling
+to price the full consumer, keep proof flow and dependencies explicit, and prune
+compiler alternatives that emit identical actual code before hardware runs.
+[Complete negative](perf_records/smol_one_endpoint_word_negative_journey.json),
+[sparse source and costs](perf_records/residual_sparse_predicate_initial_checkpoint.json).
 
 ## How these changes generalize
 
@@ -272,3 +299,62 @@ of code and content-addressed payload could avoid this storage cost, but require
 explicit load/relocation/address/alignment/lifetime contracts and fresh execution
 qualification. Loader and ELF layout implementations remain target-owned. No
 loader change or payload movement is part of the current performance candidates.
+
+## Source compilation and numerical proofs added at the latest checkpoint
+
+Generic exact binary64-to-binary32 floor/ceil permission and finite domain
+proofs are Merlin. Static RISC-V rounding fields are OOT. Four-cell polynomial
+scheduling and rectangular tensor contraction scheduling are Merlin; CPU
+register/ISA cost and hardware evidence remain OOT. Whole gains require
+source-compatible compositions, including allocation, copying and replay.
+
+The installed compiler now carries the transitive source-runtime headers and
+templates in its resource manifest. Baseline and optimized provider emission
+compile from the declared installed resources alone. Producer-bound coverage
+uses C identifier/punctuation tokens, with no shared-library regex dependency.
+These fixes generalize to every backend that consumes the portable source
+certificate and do not change its numeric gate.
+
+The exact absolute-product experiment is also portable Merlin math and private
+workspace orchestration. It can trade an extra exact integer product for tighter
+source-FMA bounds; the provider supplies primitive resources/costs. Its first
+complete cost is negative in instructions, so no automatic policy is enabled.
+The readback/MAC ratio is only a priced diagnostic hypothesis, not a promoted
+shape threshold. Different timer/CPI regimes remain separate.
+
+
+Independent finite source FMA batch scheduling is split at the numeric contract:
+Merlin supplies the lane, source arithmetic/effects, finite prefix and private
+owner obligations; OOT supplies early-clobber register constraints and explicit
+RV64GC instruction order. Default behavior is unchanged. Complete original
+group and all48native gates pass, but measured0.411%instruction gain is not
+a hardware latency claim. Redundant producer/result validation is the next
+generic proof-flow opportunity; it must preserve checked public paths.
+
+
+## Current measured scope and additional integration lessons
+
+Merlin owned changes are published as13squashed main topics; model2MLIR
+eight fixes are verified upstream. The conservative family count is55
+(28Merlin fixes,19reusable improvements,8model2MLIR fixes), not55performance
+wins. Optional alternatives still need explicit selection and full-model gates.
+
+Exact integer mean splits at a reusable Merlin source certificate and guarded
+integer-sum finishing API; OOT emits the typed matrix-by-ones reduction and its
+resource/fence contract. Full-K weight residency and paired source-stride are
+OOT physical schedules. Stock2018/2020/2022 are measured controlled wins; their
+composition is a new stock experiment rather than an additive forecast.
+
+The current profile exposes selected semantic routes versus original stored
+partial-link leaves as different entities. Preserve both in generic compilation
+recipes and emitted-work/CCA witnesses. A renamed selected route cannot safely
+reconstruct the old component from its selected objects. All executable bytes,
+including unused original leaves, remain subject to final instruction audit.
+
+Complete diagonal polynomial, denominator and reciprocal cost screens reject
+legal alternatives. A valid numerical certificate and more accelerator calls
+do not establish a useful implementation. Phase1 must price full preparation,
+readback and refinement; phase2 must retain compatible accepted options or
+report the exact source/resource/cost reason for omission. Current2013's
+residual/spatial/outside costs are actually measured; new2023 section costs
+remain unknown.
