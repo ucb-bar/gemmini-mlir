@@ -1,0 +1,480 @@
+{
+  "schema": "qualified_stem_spatial_command_loop_capsules_v1",
+  "timestamp_utc": "2026-10-06T03:31:31.423944+00:00",
+  "owner": "reference_parity",
+  "implementation_commit": "48a94c3",
+  "supersedes_pending_timing_checkpoint": "stem_spatial_command_loop_checkpoint.json",
+  "hypothesis": "Ordinary CPU loops over a statically proved resident operand grid can reduce code/constant materialization costs without changing target command order.",
+  "actual_emitted_delta": "Affine complete-width tile-index loop; row and spatial loops with separate static first-B issue and bounded partial tiles otherwise. Outer band loop retention is explicit Merlin metadata. No input/weight/accumulator placement, K order, pool configuration, transfer, fencing, ABI or numeric change.",
+  "policy": "Explicit defaultFalse loop_spatial; no workload/source IDs, no automatic selection",
+  "original_capture": {
+    "shape": {
+      "h": 224,
+      "w": 224,
+      "cout": 64
+    },
+    "control_cycles": 1335580,
+    "candidate_cycles": 1294977,
+    "delta_cycles": -40603,
+    "fraction_change": -0.030401024274098187,
+    "metric": "One complete kernel invocation GSIM mcycle difference at a common call wrapper and common immutable input/output addresses",
+    "output_bytes": 200704,
+    "input_bytes_checked_unchanged": 168108,
+    "guards": 4096,
+    "strict_rv64gc": true,
+    "zero_fsm": true,
+    "complete_ordered_commands_equal": true,
+    "commands_per_call": 104427,
+    "selector_byte_changes": 1
+  },
+  "independent_geometry": {
+    "shape": [
+      17,
+      35,
+      19
+    ],
+    "control_cycles": 17435,
+    "candidate_cycles": 15425,
+    "fraction_change": -0.11528534556925729,
+    "outputs": 855,
+    "guards": 4096,
+    "partial_row_and_channel_tail": true,
+    "strict_rv64gc": true,
+    "zero_fsm": true
+  },
+  "body_features": {
+    "control": {
+      "executed_instructions": 405306,
+      "unique_executed_pcs": 58831,
+      "touched_instruction_bytes": 174566
+    },
+    "candidate": {
+      "executed_instructions": 324495,
+      "unique_executed_pcs": 6304,
+      "touched_instruction_bytes": 21332
+    },
+    "scope": "Exact functional Spike function-PC census; wrapper instruction multiplicity/issue overlap/instruction cache misses remain UNKNOWN"
+  },
+  "normal_source_binding": {
+    "stage_source_sha256": "68c3a454dd3701adc98135c351e3467d2f85690a4a27176516c92b8c0795192a",
+    "source_weight_bias_quant_pool_rewrite_command_fields_equal": true,
+    "adapter_object_and_native_oracle_byte_identical": true,
+    "api": "stem_pool_bundle.build(loop_spatial=True)",
+    "normal_driver_option": "--stem-loop-spatial",
+    "bundle_manifest_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/stem_pool.json"
+  },
+  "original_whole_accuracy_gate": {
+    "words": 1000,
+    "criterion": "all original binary32 output words exact",
+    "atol": 0.0,
+    "rtol": 0.0,
+    "original_fixture_native_gate_pass": true,
+    "whole_candidate_strict_gate": "PENDING"
+  },
+  "outcome": "Positive complete original and independent capsules; proceed isolated frozen1903 whole-model qualification, no flat/stem composition or stock performance claim.",
+  "limitations": [
+    "GSIM memory regime differs from stock FireSim; no inferred whole-model savings",
+    "Footprint decreased87.8% and body retired instructions19.94%, while original kernel cycles decreased3.04%; counts/code-size are not timing predictors",
+    "Reference ZIP stem24,042B/1,083,057stock cycles has separate pool and different source numerics; not matched timing control",
+    "Original fused band schedule recomputes13convolutionrows and retains49,000computes; no new array-work reduction",
+    "Initial independent build lacked memcmp in the minimal test runtime; probe uses an explicit byte-comparison loop and fno-builtin. This was a harness linking failure, not a timed candidate"
+  ],
+  "token_accounting": {
+    "token_usage_available": false,
+    "parent_tracks_owned_thread_usage": true
+  },
+  "artifact_pins": {
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/b.bin": {
+      "sha256": "0e3cff3900df36ed30a34ada823a991593ec36b0ba0e4b1720ba3506c1d23013",
+      "bytes": 9408
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/receipt.json": {
+      "sha256": "e2bd324ad83d85335ea9a0ae54beb2cb5cd10c28eab0357c59e976951b2a059d",
+      "bytes": 6594
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/model.so": {
+      "sha256": "603e538f88a88e59be4964b5589a7b620991bbf930e764ea9d45e5fd8a95a08a",
+      "bytes": 328120
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/expected.bin": {
+      "sha256": "bc3bd164aae537058a4ac1e07654a63d1698657bf5cb4601818f4bece36dc7ce",
+      "bytes": 200704
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/instrumented_oracle.c": {
+      "sha256": "65f9e1a0ef8bc749a779c3aa88bd12b4b6926117bc5e267ac47373496837955f",
+      "bytes": 2286
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/output.npy": {
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "bytes": 4128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_fixture/a.bin": {
+      "sha256": "2ca4efbb88d4b29811b8e98e7f18a549b6ca44718b751a784bd761c1837bf682",
+      "bytes": 158700
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/probe.c": {
+      "sha256": "9097185c113e47a64bb95acde38eca0869e16ce1f24fe23d466d7a131e068421",
+      "bytes": 1493
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/fixture.S": {
+      "sha256": "d35fa137623c79f4e081c6f47d0020b664681b433361d89dcb30b40911a2a8ce",
+      "bytes": 812
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/recipe.json": {
+      "sha256": "9d8d8a98d8de4525a8ff0b4443959477f3e2dfea847461077e90443c76973112",
+      "bytes": 5510
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/result.json": {
+      "sha256": "90ef7d82cc70ebc482f2d05344b120f9226a0fea5a9889cd3e091f50cf54e989",
+      "bytes": 12401
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/gsim.stdout": {
+      "sha256": "afe7f520070acba29aef8b8eeca285b6e8b09c871698f5d781a87a9b56985b34",
+      "bytes": 81
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/spike.stderr": {
+      "sha256": "41f6770d390f5c2c4208755337d8bfd38b72a615a63a26c7d6261dca0ebc1ea1",
+      "bytes": 77773
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/syscalls.o": {
+      "sha256": "de55f7d69b9c11db783f60f427790fc5c319406e1aeee9132dfa861e1118cea9",
+      "bytes": 19072
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/layer.elf": {
+      "sha256": "6c3d8342088fb8cbd583725da44df3bcb158d357037550cf9112ac072df6d684",
+      "bytes": 751824
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/features.json": {
+      "sha256": "398322cc29e086e3c5bd3565666aa2f8e64a8bbd36ee7cfa049a358278641ac4",
+      "bytes": 36998
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/probe.o": {
+      "sha256": "3867c6130fddd94f86b3e084cc7985f1eb778ac06df9b7ba309336c9b26e7408",
+      "bytes": 7128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/link.derived.ld": {
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/fixture.o": {
+      "sha256": "be56dffa5985a1762f0531a9c0138a33eb89d94eac179444ec5bab2f193487e6",
+      "bytes": 538096
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/spike.stdout": {
+      "sha256": "5a18cd9769d130baff65326577e856fc13b94c096a8ba32172f381c77f820838",
+      "bytes": 128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/result.json": {
+      "sha256": "d60de7e86f6fb7d490a051ea9e25c5a6186070d3f76d80948fbbe4d591ba4b7b",
+      "bytes": 5723
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm1/crt.o": {
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/kernel.ll": {
+      "sha256": "923709a55ac00bd27a54a17b0926241d41a0d713b321dcd20dbc6bad58017eb3",
+      "bytes": 1798478
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/device_compile.json": {
+      "sha256": "7798a2cabeb28f6490a5d46ce6c38bc7b53015108283be958809edc538119c02",
+      "bytes": 1525
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/kernel.gemmini.mlir": {
+      "sha256": "5a4cbd54bc194e8a453b57f22aaa28501eb1fcec16d26695fd15669d10e12f39",
+      "bytes": 2061101
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/kernel.llvm.mlir": {
+      "sha256": "19d87899800f14b2dd9fce657bd3d007f5fc0764a7b73afaffd72295b2e48d52",
+      "bytes": 3591093
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/kernel.o": {
+      "sha256": "949072f3dc02d4f5e2c5ea370ee492cfacb86f4a2891949cb751832968964533",
+      "bytes": 176336
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device0/object_nofsm_audit.json": {
+      "sha256": "5134346e4b1d549261513d29a039402a9d9f95011643b79ab19ca72933c8d41e",
+      "bytes": 353
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/gsim.stdout": {
+      "sha256": "7219414c0dc95455481de69566cfbb1f1c69e73e9230af7f762ab6ef891d00d7",
+      "bytes": 81
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/spike.stderr": {
+      "sha256": "8d86e9187baee876e97376c7dcd2713c64c10dc049527d1d9621d5dceb1a5b4a",
+      "bytes": 680961
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/syscalls.o": {
+      "sha256": "de55f7d69b9c11db783f60f427790fc5c319406e1aeee9132dfa861e1118cea9",
+      "bytes": 19072
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/layer.elf": {
+      "sha256": "40f0a3fd81617f372886c52414653f9091befe9b989b898dc7a7c1a311ad723d",
+      "bytes": 751824
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/features.json": {
+      "sha256": "0cd16ad03e52307378f623b003f4d6a3bfa2e07e733174ef8932989ccb02233c",
+      "bytes": 37000
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/probe.o": {
+      "sha256": "b0b8a3c9eacbcfb76a9713afbbb946da08898587b4da984bb89b09fb72a52ce7",
+      "bytes": 7128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/link.derived.ld": {
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/fixture.o": {
+      "sha256": "be56dffa5985a1762f0531a9c0138a33eb89d94eac179444ec5bab2f193487e6",
+      "bytes": 538096
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/spike.stdout": {
+      "sha256": "35697feca3aecab20acb54a2e51a33a22b9aceedfdcc73f6821a57a0f6cb723d",
+      "bytes": 128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/result.json": {
+      "sha256": "03e1826d5d24129a91bf9d8c6cea900b027b570dafe9d2db9b5fb39662483a5b",
+      "bytes": 5726
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/arm0/crt.o": {
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/kernel.ll": {
+      "sha256": "a90ab2e96eb5862beb78d4751b8f460c28f27a8a44b16ddf0549ac30e860a94a",
+      "bytes": 379176
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/device_compile.json": {
+      "sha256": "987af29400e19b693fb7f01ca6f849d8388e64a0e4e697442e7caa38e23ffec8",
+      "bytes": 1525
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/kernel.gemmini.mlir": {
+      "sha256": "7bf836d42947f9b9911032999784b89670a7b3306899b82e1326917bf551e8db",
+      "bytes": 431188
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/kernel.llvm.mlir": {
+      "sha256": "f18ccc7f0b63d6a11360a94c92980fc99e5ee8d2c582a795d44f57e67c9a862a",
+      "bytes": 573739
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/kernel.o": {
+      "sha256": "bbf49fa5174b92175ddfaf5c74a2dfc0685f628002683773301a4b30a23ea0a9",
+      "bytes": 23104
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/original_pair/device1/object_nofsm_audit.json": {
+      "sha256": "67e7724623b19a7f87b80bc92382cc2558501fba510e51887a710ee01cacdeca",
+      "bytes": 351
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/probe.c": {
+      "sha256": "5241baee94dc0eae08f9541dc8d1dd9d9feb780a78d583f5f52a165c2d756b62",
+      "bytes": 1470
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/fixture.S": {
+      "sha256": "89ecf9d3b889855a1f5230a8730f5c049e978376d2b1596bee3add98b0bc7c37",
+      "bytes": 867
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/recipe.json": {
+      "sha256": "9e85a3ed8d04be107fd53ab9bd61ab4833cda46e7a9c2ab93621e2829b0c6693",
+      "bytes": 5373
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/result.json": {
+      "sha256": "a0fd5c9c18d816c18261af6cbf8bd6f5c53d71b226b3c17e28d2f7148c82343a",
+      "bytes": 12014
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/gsim.stdout": {
+      "sha256": "3a310f836a3e2e70a60c93e20671f83dfc55f1e132133cc29818d13606062b6d",
+      "bytes": 74
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/spike.stderr": {
+      "sha256": "d02cefb0bb91613d01d81010f277e8fc28461e1310e59aad6cfe2267fbdee40b",
+      "bytes": 30586
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/syscalls.o": {
+      "sha256": "de55f7d69b9c11db783f60f427790fc5c319406e1aeee9132dfa861e1118cea9",
+      "bytes": 19072
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/layer.elf": {
+      "sha256": "cb438db4872e0598a7fd7a729135a5e27a628a70094ebfc10c015cbca842acd6",
+      "bytes": 51816
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/features.json": {
+      "sha256": "501f0489b44bcb473aaa33aa46cc358b7958d68f34df920cb10f80cab0a2f78b",
+      "bytes": 36980
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/probe.o": {
+      "sha256": "9e3fe5faca2cba6b4eed05840df919b9005be6fdf6b18c55e0cd1e7fafc05918",
+      "bytes": 6536
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/link.derived.ld": {
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/fixture.o": {
+      "sha256": "32d759472a8eb97a4791d2384c9cca40a08caa2ab71de2b4cfb91c86f607d4cf",
+      "bytes": 13400
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/spike.stdout": {
+      "sha256": "d6c5c3a10bd37eddf19af3fe20859f14029f30dbc79d4199cd66bd57e2646bbc",
+      "bytes": 121
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/result.json": {
+      "sha256": "053a568a59449796b5d3b0eeaa668b7eb9d5dc60e047cb9f3ceb4b7a7f59cb3a",
+      "bytes": 5529
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm1/crt.o": {
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/kernel.ll": {
+      "sha256": "225ab068dcfa9eda11063b337c91c4df40215240024bdffbef9ffe5db8b56661",
+      "bytes": 179670
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/device_compile.json": {
+      "sha256": "3e62e04cddfaed854084ff917cd35157420303bed399434b05fe0559c53cde61",
+      "bytes": 1549
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/kernel.gemmini.mlir": {
+      "sha256": "287d28a7beff1c1d9e820eb80b34a22e5bb6fcc7cb3eacffec61ee4387149fe3",
+      "bytes": 208675
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/kernel.llvm.mlir": {
+      "sha256": "6e8b4f4b16e568c7ebb6066fabae7891903d05dfa36de606d82afb3e59c840de",
+      "bytes": 345580
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/kernel.o": {
+      "sha256": "80167898da66ebf6368fc30a0ce4aeb1f91efe3312ff27d8d39282d2d19fba31",
+      "bytes": 14376
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device0/object_nofsm_audit.json": {
+      "sha256": "a9c4c420f8e90c77d3d64b2e780873a44d1a70250be163d10febc9a557ba64ae",
+      "bytes": 349
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/gsim.stdout": {
+      "sha256": "ab113982a9fceca0b58dae7b58658db4273d03eb7589776c97153980dbb55a98",
+      "bytes": 74
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/spike.stderr": {
+      "sha256": "d288d2ca2fda4965af77377e735641fda38c23b7ba35de4df21353283aa4ffd6",
+      "bytes": 44534
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/syscalls.o": {
+      "sha256": "de55f7d69b9c11db783f60f427790fc5c319406e1aeee9132dfa861e1118cea9",
+      "bytes": 19072
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/layer.elf": {
+      "sha256": "3a2afc8c8a8924ee6011647738badab9f3788854ebe3408b8ec15e00c755b1fb",
+      "bytes": 51816
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/features.json": {
+      "sha256": "a8482b3252e7bba73257204e99826890839a4e95d57d6855bf808f4c61af0c19",
+      "bytes": 36981
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/probe.o": {
+      "sha256": "6b418d3ab33fe324cfde445c24e20e1d66b5ea70c9d874488d34d46d7f23c3a3",
+      "bytes": 6536
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/link.derived.ld": {
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/fixture.o": {
+      "sha256": "32d759472a8eb97a4791d2384c9cca40a08caa2ab71de2b4cfb91c86f607d4cf",
+      "bytes": 13400
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/spike.stdout": {
+      "sha256": "6108b19c34cd71d099ba9040b7202a872b8be0917a8e786c24a0c01d6d3ff154",
+      "bytes": 121
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/result.json": {
+      "sha256": "c51a619dba9068dc8678678a8bd0a353adfbcd56d220c34aa744250bb342d8bc",
+      "bytes": 5529
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/arm0/crt.o": {
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/kernel.ll": {
+      "sha256": "60c361dac8cb18eab9474deca9ea79b5016a93c8d7ae0e1b599a034aaa09dcb5",
+      "bytes": 175530
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/device_compile.json": {
+      "sha256": "55cbeb92391812c45c2c662c3e47cc1e7f9b51b2c1bd69725e7bce4a27001251",
+      "bytes": 1549
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/kernel.gemmini.mlir": {
+      "sha256": "3674d5f59f95389b750ec4fb296cb58430f1ec3f5958ef84fddf018c52d5279b",
+      "bytes": 216810
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/kernel.llvm.mlir": {
+      "sha256": "57be12e82ccdbc552e51c23b19bef164776b22dc92d815a89e8439aebdf08400",
+      "bytes": 281023
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/kernel.o": {
+      "sha256": "9b4bfc9aba1a0b17b93a23fd9667dc13ea08391760871d8ed552b29ac73f16c9",
+      "bytes": 9632
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/device1/object_nofsm_audit.json": {
+      "sha256": "b4a88ef1dae38f4fc9662ffa71c0f77f67f9f2808f0b881edc17df416222c887",
+      "bytes": 349
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/fixture/b.bin": {
+      "sha256": "d182ead31abae5692bf57733f2e1cf8d9b49dfe8bf5971a1f1f5e4ed54921522",
+      "bytes": 2793
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/fixture/expected.bin": {
+      "sha256": "063632a89382736ff144697d7d08dd0d6ad51929db1f25a888e646ebbec7dd3c",
+      "bytes": 855
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/independent_pair_v2/fixture/a.bin": {
+      "sha256": "533fea3ce467c8958757d526915946ee0f13a28123487c89f825ea729f1d7485",
+      "bytes": 2829
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/adapter.c": {
+      "sha256": "d89c39579742128ada8674f0ad1cf6c0e115c3d4b96907eb0f1e2f9368a0b974",
+      "bytes": 990
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/stem_pool.o": {
+      "sha256": "d55ad9470335e830348e9807b98625e2fbf12582dbad60d086a22c043b6a0367",
+      "bytes": 24624
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/stem_pool.json": {
+      "sha256": "8124126cef5bb2a8811ac6f7e9f7a690e4ecab94452e620586923a2a78c4c22d",
+      "bytes": 4648
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/rewritten.mlir": {
+      "sha256": "a5880bd222c4cb78ae7d7d1c8cc03ba53ab627ea00b5a199b7f932b5ceb57f8f",
+      "bytes": 1138865
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/adapter.o": {
+      "sha256": "3e60d8bbf2871f0dcf66e9da280441cd5b3fc51b483aefadf5e297e8167e2541",
+      "bytes": 2160
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/native_oracle.c": {
+      "sha256": "dc0a114845ad7b99321bc8b97f8310308ce34ced6286c5264415daffcea652bb",
+      "bytes": 1569
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/kernel.ll": {
+      "sha256": "35a492f34aff5ff7b9b0afe1842b506385828bb1eaadc8810fd8faab23869e4f",
+      "bytes": 379197
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/device_compile.json": {
+      "sha256": "7477e1df03fffbe313e0a166d6758f320fad52b4837d3c12dafe54a569d39219",
+      "bytes": 1321
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/kernel.gemmini.mlir": {
+      "sha256": "d0f179e2d7a14d6ee1101f7dc3333f32d4f81b3a2c45fdd5233de75c7bd36c94",
+      "bytes": 431209
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/kernel.llvm.mlir": {
+      "sha256": "43808e621d3cb3125b19cd1de672b95d34c394789f30f44be7d3059a7ea265e4",
+      "bytes": 573760
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/kernel.o": {
+      "sha256": "2f49a01d4399ea94bbfcb856895dbb3b4608e05f15b54d3df09780982cb3c677",
+      "bytes": 23128
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/stem_spatial_loops/normal_loop_bundle/device/object_nofsm_audit.json": {
+      "sha256": "e5326c674c16b74a6a0ad9e940adebe80d926a0df7657dde3fb1d04b5d40931b",
+      "bytes": 351
+    }
+  }
+}
