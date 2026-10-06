@@ -1,0 +1,114 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "recorded_utc": "2026-10-06T10:53:29.158841+00:00",
+  "hypothesis": "Exact loop extraction and function commoning can reduce large scalar host code while retaining source order, effects and public symbols.",
+  "ownership": "Generic source/LLVM organization and normal compiler policy Merlin; actual target capsule/audit/receipts OOT. No target ISA implementation added.",
+  "core_commit": "058a86465",
+  "emitted_change": "LLVM loop-extract, new-helper-only noinline, mergefunc and verification; explicit default-off normal feature. Original scalar arithmetic and tensor/writer ABI unchanged.",
+  "before_after_cycles": {
+    "scope": "Complete original first2rows/all5632preDown channels,11264i8results, all input reads/dequant/poly/reciprocal/three rounded products/quant/stores/temporary allocation/finalcopy. Warm ABBA, validation outside ROI. Pinned GSIM memory regime, not stock FireSim or whole model.",
+    "paired_cycles": [
+      [
+        0,
+        0,
+        1612108
+      ],
+      [
+        1,
+        1,
+        1597549
+      ],
+      [
+        2,
+        1,
+        1597203
+      ],
+      [
+        3,
+        0,
+        1611687
+      ]
+    ],
+    "control_mean": 1611897.5,
+    "candidate_mean": 1597376.0,
+    "saved_percent": 0.9008947529231852
+  },
+  "before_after_code": {
+    "scope": "Separate unchanged1926whole host IR code-only screen.18\u2192588\u2192248 functions, original frozen host/runtime/device objects untouched. Function extraction afterRNE+bridge for this code-size screen; whole normal feature uses its actual pipeline placement and needs fresh gates.",
+    "objects": [
+      {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/whole/model.o",
+        "sha256": "7d0d85aa9797f8a537a26b65790c739b7b6c40a64793d2421dd2d6247bd1c949",
+        "text_bytes": 878794,
+        "meaning": "Object text includes all compiled functions and readonly text contents; not executed working set or cycles."
+      },
+      {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/whole_merged.o",
+        "sha256": "257d110ca18601dee7bea1b92de3237c9e8b415b07eacfe339af853f28ff8393",
+        "text_bytes": 330520,
+        "meaning": "Object text includes all compiled functions and readonly text contents; not executed working set or cycles."
+      }
+    ],
+    "text_reduction_percent": 62.38936542579945
+  },
+  "gate": {
+    "native_original_i8_words": 11264,
+    "target_five_rounding_modes_compared_words": 56320,
+    "matching_sticky_flags": true,
+    "dirty_guard_bytes": 128,
+    "immutable_input_bytes": 405504,
+    "native_input_arrays_unchanged": true,
+    "no_FSM": true,
+    "normal_feature_measured_object_byteidentical": true,
+    "original_whole256000_native_strict": "PENDING separate whole qualification",
+    "GSIM_DONE": true
+  },
+  "result": "Weak positive0.900895% local capsule. Proceed independent normal full-source qualification; no whole-cycle prediction or hardware admission.",
+  "no_whole_speed_projection": true,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/build_capsule.py": "2d00387f719cb74b548ff510236e0a03c5c963b745f12401f7e724b362997648",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/archive.py": "8c22458b0d35ebbedeb513c82c2556631fc1f9420252a8ad67c38c6845cbffad",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/capsule_qualification.json": "829aab4318759065cba7d38530bc8eb70af425076aa3c6388a3228ff6f20b3de",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/capsule_result.json": "420386603f7029c5745341af39daffb13c8b9e5bdfef8fd5936147b67aba51bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/gsim_receipt.json": "caa6a75e63fd0d331e788880fdfa6d4e4c205e16b71b1d592d749a0c822844db",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/gsim.stdout": "9aa7e280ac97e87a25364542ce8dca0d9628d5381750870799e08e3545a1dc3a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/strict_spike.log": "6376c2f0ab0d1776e3fbf03b68e0e3d8867ee4d99597711e86a12fa7bceb1dab",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/timing_spike.log": "6511988cf52aff04e74c9539e511d5fc9102088cde8e42fec1246dbcf25add44",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/strict_audit.json": "d137213386ebf078963dc11dd7c3b2e5b69487e158145c092e0504a42e55aa8a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/timing_audit.json": "02f596df0ea09221f061c36703781332c94677ed582efb7e7f6763507232e59f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/strict_main.c": "b844fe437a5248d41d8e8445477589f91a4aacef150717a07dac9960adecc7d4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/timing_main.c": "d10603f9ed675fd2743a3da1a2cdd92a9c7b55719778f9bb9832b1449bb6f4cc",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/normal_feature_reclosure/receipt.json": "f64bf4eec10b23a74c20e593a22190c6c43ea7c001967eb74e6574f31c3020f7",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/normal_feature_reclosure/model.ll": "6b76a9872b24c5cf24beeced9fa49bdbc2af55cf466346897c4f5307e81d5780",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/normal_feature_reclosure/model.o": "82fc3fcb56b580a3e09ec0fd66594da3de571696851b31b27ba8163c4254b146",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/timing_build/layer.elf": "d311fca7af508c061eefb44e38cd7682187ecb19593cd8c8b50f7f72e64fbdff",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/strict_build/layer.elf": "97e24cc67f6c77fac1182bbfbbc4117b09ab4078ef30142510c0ad438b09cbe3",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/receipt.json": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/source_receipt.json": "97f2477f64a618978d06d1e69460a63748e31708ef5377e3e0705cefdd79c4e5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/source_capsule.mlir": "e55f45b4728856a581726e8c2ce3e8132d6b0f4ee225f844f8e1e4974b2481b7",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/data.o": "05afcd9c3449b276ff1aae926ea863d697d2cde57290afb6c7df491ad0264411",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/a.npy": "a6046b8140b798c7dcdffed6f949d36b0c353d964a3b78ce0da509da108e5b55",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_a.npy": "7beb9d772a92e984f661bd13d20929d5430174ff7d05583fd671ef07dd8e598a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/b.npy": "3d37692e836389e2fc64798e6aba2f4ea4f0506f58ff7df05d36cfbdfee99865",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_b.npy": "1cdb4423dc8addaad48c17757f227b92562c055f6b2f561063f85643f6ce6d64",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/expected.npy": "9fc384d7615da056f86e1ba672afc1ea501fba28bb12506d1877bf17c5a505f7",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.o": "08d8633cc95736d8a98a48299236c011aa066758db278e1bbb43415ef7f76011",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.native.ll": "924c2cba8be59fde6b89e52df2aac04a96a586164c2ebcd4f325a67519687d26",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.target.ll": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.so": "d100d73ac104f72b3d591fca1b81ca4e86c45c04898aa00033a677d2f4137abd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.npy": "729b1d91fde4965c64e68496e23cb7bde104b0c86c00eb98485ddbea7801986e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.o": "82fc3fcb56b580a3e09ec0fd66594da3de571696851b31b27ba8163c4254b146",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.native.ll": "d336a8c624c74b84116f5c31bbb6eb4b60249c045221dd12c54c686cddaa5c19",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.target.ll": "04591f3dd567c4d001d46832b96535683a87c2baff6213bdd4631df78f44ed63",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.so": "03d1be38fb59987de2e92ff9d210c1189bad319bdb5fa2e8cb7b1cc1703529bc",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.npy": "729b1d91fde4965c64e68496e23cb7bde104b0c86c00eb98485ddbea7801986e",
+    "/scratch/agustin/tmp/merlin-tiny-loop-organization-20261006/src/merlin/llvmlower/llvm_loop_outline.py": "224c42a74216e59f8f8c9da246dfc21d2aae9a6bb1eb051995e6f674500b862f",
+    "/scratch/agustin/tmp/merlin-tiny-loop-organization-20261006/src/merlin/llvmlower/pipeline.py": "b7db32ca01c2b2439b3146533be3feca8d28dfe41e8f0d5402e79a269627793e",
+    "/scratch/agustin/tmp/merlin-tiny-loop-organization-20261006/merlin/tests/ir/test_llvm_loop_outline.py": "bdfcbb5a3137a9ff5af4193883d82adc665cf3591344bef7b9fa7e75490ed882",
+    "/scratch/agustin/tmp/merlin-tiny-loop-organization-20261006/docs/reference/llvm_loop_organization.md": "32ee4162144f834d31cbc6eda28e9212a3edaaaf33a648dd14a9e270e7055ef8",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt": "260411170915c2f30ecce065d96711c901cab1ec01e59e31c65a6872dc05c06c",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-nm": "850a65c50aecd44031786de2f9c240125ab7b3292818cc9e3ad13553bf112803"
+  }
+}

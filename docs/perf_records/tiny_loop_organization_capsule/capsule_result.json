@@ -1,0 +1,94 @@
+{
+  "schema": "generic_source_exact_loop_outline_capsule_v1",
+  "shape": [
+    1,
+    2,
+    5632
+  ],
+  "original_native_i8_words": 11264,
+  "strict_compared_words": 56320,
+  "all5_frm_and_sticky_flags_match": true,
+  "dirty_guard_bytes": 128,
+  "immutable_inputs_bytes": 405504,
+  "cases": [
+    {
+      "name": "control",
+      "native_words_exact": 11264,
+      "native_sha256": "d100d73ac104f72b3d591fca1b81ca4e86c45c04898aa00033a677d2f4137abd",
+      "target_object_sha256": "08d8633cc95736d8a98a48299236c011aa066758db278e1bbb43415ef7f76011",
+      "target_llvm_sha256": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/control.o"
+      ]
+    },
+    {
+      "name": "outlined",
+      "native_words_exact": 11264,
+      "native_sha256": "03d1be38fb59987de2e92ff9d210c1189bad319bdb5fa2e8cb7b1cc1703529bc",
+      "target_object_sha256": "82fc3fcb56b580a3e09ec0fd66594da3de571696851b31b27ba8163c4254b146",
+      "target_llvm_sha256": "04591f3dd567c4d001d46832b96535683a87c2baff6213bdd4631df78f44ed63",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-pointwise-outline-20261006/outlined.o"
+      ]
+    }
+  ],
+  "source_sha256": "24f61771bba418f7a3375b29578124f772136a4c673d222402dec7ba88376ba1",
+  "control_raw_llvm_sha256": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+  "scope": "Complete original two-row preDown packet2 body incl dequantization/polynomial/reciprocal/three rounded multiplies/quantization/loads/stores/allocated temporary/final copy. Existing RNE policy identical in both arms; only generic loop-extract/noinline and exact mergefunc alter code organization.",
+  "whole_hardware_prediction": null,
+  "zero_FSM": true,
+  "elf_sha256": "d311fca7af508c061eefb44e38cd7682187ecb19593cd8c8b50f7f72e64fbdff",
+  "token_usage_available": false,
+  "paired_complete_gsim_cycles": [
+    [
+      0,
+      0,
+      1612108
+    ],
+    [
+      1,
+      1,
+      1597549
+    ],
+    [
+      2,
+      1,
+      1597203
+    ],
+    [
+      3,
+      0,
+      1611687
+    ]
+  ],
+  "before_mean": 1611897.5,
+  "after_mean": 1597376.0,
+  "saved_percent": 0.9008947529231852,
+  "DONE": true,
+  "console_sha256": "9aa7e280ac97e87a25364542ce8dca0d9628d5381750870799e08e3545a1dc3a",
+  "decision": "Retain positive local code-organization screen for full qualification."
+}
