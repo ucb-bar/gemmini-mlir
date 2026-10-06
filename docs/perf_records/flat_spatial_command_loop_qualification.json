@@ -410,8 +410,194 @@
   "limitations": [
     "Qualified timing is complete independent i32 convolution GSIM, not stock FireSim or a whole-model improvement",
     "Current geometry object text bytes are compiled size facts, not executed fetch chronology, cache misses or cycles",
-    "The larger current stride2 geometry has passed strict full50176output/guards/input and noFSM gates; its GSIM result remains pending",
-    "The original source and all original whole-model gates remain unchanged; normal source/provider qualification is separate"
+    "The original source and all original whole-model gates remain unchanged; normal source/provider qualification is separate",
+    "Both independent tail and current stride2 geometry capsule GSIM gains are measured; full-source and frozen1903 whole-model qualification are separate"
   ],
-  "token_usage_available": false
+  "token_usage_available": false,
+  "current_stride2_geometry_capsule": {
+    "fixture_kind": "independent deterministic signed inputs at current source-bound geometry; not original captured operands",
+    "shape": {
+      "h": 28,
+      "w": 28,
+      "cin": 256,
+      "cout": 256,
+      "stride": 2,
+      "bn": 4,
+      "output_dtype": "i32",
+      "scale": 1.0,
+      "relu": false,
+      "wide_b": true,
+      "explicit_halo": false
+    },
+    "options": {
+      "virtual_padding": true,
+      "wide_a": true,
+      "separate_b_bank": true,
+      "band_rows": 14
+    },
+    "elements_per_call": 50176,
+    "calls": 4,
+    "guards_per_call": 4096,
+    "inputs": "Every A/B byte reread after all four calls",
+    "strict_rv64gc": "PASS",
+    "cycles": [
+      [
+        0,
+        0,
+        727093
+      ],
+      [
+        0,
+        1,
+        716175
+      ],
+      [
+        1,
+        1,
+        711970
+      ],
+      [
+        1,
+        0,
+        726232
+      ]
+    ],
+    "paired_mean_fraction_change": -0.017325787418505878,
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "final_nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "997982a5531450f4339cae25f56802f355d9193ba308e1d67873309d82005027",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 10,
+        "1": 144,
+        "2": 1064,
+        "3": 104,
+        "4": 576,
+        "5": 4032,
+        "6": 4608,
+        "7": 2
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "compiled": [
+      {
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "13474e26083e4d7323213b45c96435b4c50c875ca59604866176312feeee93da",
+          "llvm_mlir_sha256": "4590cbb459645d667bd7b3bfe388b2215b4bca5b8341b43a8fc24ae86661ce27",
+          "llvm_ir_sha256": "bd8f88551aa2431e53d5d26e211912d32bde63b271455e7e2efb8b23b1b863f4",
+          "object_sha256": "e3fd2291d32569c94e020b688ab841d431d8eda246990b06f6fa5e2a9e37d0ce",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm0/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm0/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm0/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm0/kernel.o"
+            ]
+          ]
+        },
+        "object": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm0/kernel.o"
+      },
+      {
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "01498b0b64d73d16ad288e30dd96f0ab9b307adf587ba7b2b9f6f4fbb5043ffb",
+          "llvm_mlir_sha256": "108f914497aa3057aec4ab434972918e7a76009db731b4377ac5873e2f8f33f4",
+          "llvm_ir_sha256": "731176ea4f241be7081d05dcfaa6cfe28b0c4a79b2ca0e539ebef6436b40f0b8",
+          "object_sha256": "d686fcb35a947114d2dfaecd01ce1592834861b6bddfea7938e275ebfa37bfef",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm1/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm1/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm1/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm1/kernel.o"
+            ]
+          ]
+        },
+        "object": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/arm1/kernel.o"
+      }
+    ],
+    "artifact_pins": {
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/layer.elf": "997982a5531450f4339cae25f56802f355d9193ba308e1d67873309d82005027",
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/recipe.json": "e75a327e706bea436bc412db6ce8f5fafc7ea809cc4a511299c6cb2046185ce2",
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/result.json": "9c74769db9702ec463f922c929cc7b01463695f3eff5775a38f0a97aae354d9b",
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/spike.log": "a584d00dc4b2da8312186c0eae880ac89e7ac90a06224f1649eab176b939b407",
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/probe.c": "d862a4da44bbedf6541d7fa22718cfb755bd6d003f1341a873bf2ae11e774d9c",
+      "out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/driver_snapshot.py": "7663edd72e18b7b40aef0ab45f784c062268392389c913626e393ae0fa55a751"
+    },
+    "fixture_pins": {
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/lhs.bin": "f3e72e63055c018c75f5523888534aa62cd40cc104a7733691a61dacc49e640a",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/rhs.bin": "a6aef32776f8d2cd923b63dd570481e341763d979ffd47cfeee41004b6d9106f",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/full_current_stride2_geometry/expected.bin": "3065c5ef86d18fcdc8a8a00f10cbede9ffb7d72ef9ecd0e050d66d261d5c807c"
+    },
+    "scope": "Complete primitive convolution ROI common-address AB/BA; GSIM memory timing, not stock/whole prediction"
+  }
 }

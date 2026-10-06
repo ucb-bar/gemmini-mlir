@@ -9,7 +9,7 @@ from mlir_oot.tables import isa
 @pytest.mark.parametrize('loop',[False,True])
 @pytest.mark.parametrize('shape',[ConvShape(5,7,16,19,output_dtype='i32',explicit_halo=False),ConvShape(7,7,32,64,output_dtype='i8',scale=.125,explicit_halo=False),ConvShape(14,14,64,64,output_dtype='i32',explicit_halo=False)])
 def test_default_program_byte_identity(loop,shape):
-    baseline=subprocess.check_output(['git','show','0bd83b0:mlir_oot/golden_flat_conv.py'],text=True)
+    baseline=subprocess.check_output(['git','show','eefe844:mlir_oot/golden_flat_conv.py'],text=True)
     namespace=dict(__name__='mlir_oot._paired_store_baseline',__package__='mlir_oot')
     exec(compile(baseline,'baseline.py','exec'),namespace)
     opts=dict(virtual_padding=True,loop_spatial=loop)
