@@ -1,0 +1,113 @@
+{
+  "schema": "source_stationary_transpose_wave_scenarios_v1",
+  "facts": {
+    "dimension": 16,
+    "inactive_a_rows": 1,
+    "inactive_b_rows": 1,
+    "minimum_resident_rows": 4,
+    "rtl_sha256": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+    "rule": "WS/no transposer/effective D garbage"
+  },
+  "records": {
+    "dense": {
+      "raw_command_counts": {
+        "fence": 2,
+        "flush": 1,
+        "config_ex": 1,
+        "config_ld": 2,
+        "config_st": 1,
+        "mvin": 11392,
+        "preload": 45056,
+        "compute": 45056,
+        "mvout": 352
+      },
+      "compute_records": [],
+      "complete_static_trace": true,
+      "geometry_histogram": [
+        {
+          "rows_min_possible": 8,
+          "rows_conservative": 8,
+          "weight_residency_proved": true,
+          "wave_classifications": [
+            "variable_ws_rows"
+          ],
+          "count": 1
+        },
+        {
+          "rows_min_possible": 8,
+          "rows_conservative": 16,
+          "weight_residency_proved": true,
+          "wave_classifications": [
+            "variable_ws_rows",
+            "fixed_dimension"
+          ],
+          "count": 45055
+        }
+      ],
+      "padded_compute_geometry": 720896,
+      "possible_compute_rows": 360448,
+      "conservative_compute_rows": 720888,
+      "dispatch_mode_resolved": false,
+      "scope": "Per-compute feed geometry under source execute order. Unresolved following-preload availability retained; totals exclude standalone preload waves and all CPU/DMA/stall/startup/drain costs."
+    },
+    "transposed": {
+      "raw_command_counts": {
+        "fence": 2,
+        "flush": 1,
+        "config_ex": 1,
+        "config_ld": 2,
+        "config_st": 1,
+        "mvin": 11392,
+        "preload": 45056,
+        "compute": 45056,
+        "mvout": 352
+      },
+      "compute_records": [],
+      "complete_static_trace": true,
+      "geometry_histogram": [
+        {
+          "rows_min_possible": 16,
+          "rows_conservative": 16,
+          "weight_residency_proved": true,
+          "wave_classifications": [
+            "variable_ws_rows"
+          ],
+          "count": 1
+        },
+        {
+          "rows_min_possible": 16,
+          "rows_conservative": 16,
+          "weight_residency_proved": true,
+          "wave_classifications": [
+            "variable_ws_rows",
+            "fixed_dimension"
+          ],
+          "count": 22527
+        },
+        {
+          "rows_min_possible": 16,
+          "rows_conservative": 16,
+          "weight_residency_proved": true,
+          "wave_classifications": [
+            "variable_ws_rows",
+            "variable_ws_rows"
+          ],
+          "count": 22528
+        }
+      ],
+      "padded_compute_geometry": 720896,
+      "possible_compute_rows": 720896,
+      "conservative_compute_rows": 720896,
+      "dispatch_mode_resolved": false,
+      "scope": "Per-compute feed geometry under source execute order. Unresolved following-preload availability retained; totals exclude standalone preload waves and all CPU/DMA/stall/startup/drain costs."
+    }
+  },
+  "scope": "RTL-source geometry scenarios only, not mesh/CPU/DMA/whole timing. Source command order does not reveal actual cmd.valid/hazard dispatch or preload-only latency. Same mathematical MAC/active area does not establish equal executed feed-wave geometry. Existing target complete costs remain authoritative.",
+  "pins": {
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.gemmini.mlir": "c5b0cb2f40a2786b1a206b0df41dcadaf06c581a0cbe64ca91554f35e9ae6f59",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.gemmini.mlir": "11043fba42ba932ab9359c9fbd9a86901d6e80470c4fbbf7b528813a08e2d196",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/wave_census.py": "7f271964987eb4beef1eac44f7a7c43d6e19579e75fc6fec4edcb188cabf4851"
+  },
+  "token_usage_available": false
+}

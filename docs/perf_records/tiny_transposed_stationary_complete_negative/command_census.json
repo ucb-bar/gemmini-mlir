@@ -1,0 +1,110 @@
+{
+  "schema": "exact_current_transposed_stationary_command_census_v1",
+  "arms": [
+    {
+      "arm": "dense",
+      "command_counts": {
+        "gemmini.fence": 2,
+        "gemmini.flush": 1,
+        "gemmini.config_ex": 1,
+        "gemmini.config_ld": 2,
+        "gemmini.config_st": 1,
+        "gemmini.mvin": 11392,
+        "gemmini.preload": 45056,
+        "gemmini.compute": 45056,
+        "gemmini.mvout": 352
+      },
+      "command_total": 101863,
+      "requested_input_readout_bytes": {
+        "0": 16384,
+        "1": 11534336,
+        "2": 180224
+      },
+      "DMA_row_requests": {
+        "0": 1024,
+        "1": 180224,
+        "2": 2816
+      },
+      "complete_exact_once_input_byte_partitions": {
+        "0": 16384,
+        "1": 11534336
+      },
+      "stationary_operand_source": {
+        "reload_operand_commands": 45056,
+        "logical_stationary_operand_bytes": 11534336
+      },
+      "exact_command_trace_sha256": "842f58fc264c40e0a80076321e4b6b1e8a99dd162241a87e2cd5fe4084cf662e"
+    },
+    {
+      "arm": "transposed",
+      "command_counts": {
+        "gemmini.fence": 2,
+        "gemmini.flush": 1,
+        "gemmini.config_ex": 1,
+        "gemmini.config_ld": 2,
+        "gemmini.config_st": 1,
+        "gemmini.mvin": 11392,
+        "gemmini.preload": 45056,
+        "gemmini.compute": 45056,
+        "gemmini.mvout": 352
+      },
+      "command_total": 101863,
+      "requested_input_readout_bytes": {
+        "1": 16384,
+        "0": 11534336,
+        "2": 180224
+      },
+      "DMA_row_requests": {
+        "1": 2048,
+        "0": 180224,
+        "2": 5632
+      },
+      "complete_exact_once_input_byte_partitions": {
+        "0": 11534336,
+        "1": 16384
+      },
+      "stationary_operand_source": {
+        "reload_operand_commands": 22528,
+        "logical_stationary_operand_bytes": 2883584,
+        "keep_operand_commands": 22528
+      },
+      "exact_command_trace_sha256": "1808dfdb113a80ddb370c0b366e8cec6172ed2a3cfe049089a414518a3ba9850"
+    }
+  ],
+  "logical_weight_parameter_bytes": 11534336,
+  "runtime_permutation_bytes": {
+    "activation_read_and_write": 32768,
+    "output_read_and_write": 360448
+  },
+  "resource_proof": {
+    "DIM": 16,
+    "SPAD_ROWS": 16384,
+    "SPAD_BANK_ROWS": 4096,
+    "ACC_ROWS": 1024,
+    "ACC_BANK_ROWS": 512,
+    "A_slot0_range_rows": [
+      0,
+      4096
+    ],
+    "A_slot1_range_rows": [
+      4096,
+      8192
+    ],
+    "cachedB_range_rows": [
+      8192,
+      10240
+    ],
+    "ACC_slot0_row_extent": [
+      0,
+      32
+    ],
+    "ACC_slot1_row_extent": [
+      512,
+      544
+    ],
+    "disjoint_scratch_slots_and_B": true,
+    "sequential_existing_schedule_dependency_authority": true
+  },
+  "scope": "Exact source command counts and requested byte/row ranges only. Garbage BD retains same cached operand for next independent A row tile; logical reload bytes do not imply physical mesh latency or DRAM savings. SameMAC count/gridoccupancy; runtime copies/readout row requests/issue costs can offset reuse. Actual hardware cost unknown; whole model prediction absent.",
+  "token_usage_available": false
+}

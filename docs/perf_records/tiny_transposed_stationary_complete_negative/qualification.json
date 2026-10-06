@@ -1,0 +1,218 @@
+{
+  "schema": "current_exact_transposed_stationary_complete_capsule_v1",
+  "status": "pass",
+  "dimensions_original": [
+    8,
+    5632,
+    2048
+  ],
+  "dimensions_primitive": [
+    5632,
+    8,
+    2048
+  ],
+  "original_full_signed_i8_range_int32_prefix_bound": 33554432,
+  "all45056_original_i32_outputs_exact": true,
+  "poisoned_scratch_output_tails": 128,
+  "immutable_inputs_preserved": true,
+  "same_executable_bytes_and_all_symbol_addresses": true,
+  "source_permutation_ownership": "Generic exact memref copy permutations lowered upstream; output/activation private scratch explicit. Offline readonly parameter transpose exact reversible permutation, no public output layout change. No production transform/route yet.",
+  "source_arithmetic": "Every output sums same original signed-i8 products in increasingK, no bias/requantization. Int32 prefix range proved for full i8domain; no overflow/reassociation needed.",
+  "resources": {
+    "cached_B_rows": 2048,
+    "A_rows_per_slot": 4096,
+    "SPAD_banks_A": [
+      0,
+      1
+    ],
+    "SPAD_bank_B": 2,
+    "accumulator_rows_two_slots": 64
+  },
+  "source_schedule": {
+    "m": 5632,
+    "n": 8,
+    "k": 2048,
+    "output_dtype": "i32",
+    "bm": 2,
+    "bn": 1,
+    "bias": false,
+    "scale": 1.0,
+    "relu": false,
+    "wide_store": false,
+    "reuse_b": true,
+    "cache_b": true,
+    "cache_a": false,
+    "pipeline_m": true,
+    "prefetch_m": true,
+    "banked_m": true,
+    "wide_a": true,
+    "wide_b": false,
+    "separate_b_bank": false,
+    "prefetch_b": false
+  },
+  "target_compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "11043fba42ba932ab9359c9fbd9a86901d6e80470c4fbbf7b528813a08e2d196",
+    "llvm_mlir_sha256": "fc5997bd7cf735ad8e9446d590ae19e0de32f9714dc092aba0bf157c8c5fb07d",
+    "llvm_ir_sha256": "caae308f54e8fb9e625cf82f16f3a59079fa53fb034ea11124c51e870c391e63",
+    "object_sha256": "73b110cb34d72ea042bc259a0e4620206a207ea11d888020ed6717c44e62981c",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.o"
+      ]
+    ]
+  },
+  "runtime_copy_mlir_sha256": "1c6e528547cf317e5d77f28745c0a4a495c9df549ebc0ef3a82726d8bce41689",
+  "actual_build_commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.S",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.o"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+      "--only-section=.text",
+      "-O",
+      "binary",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/layer.elf",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/text.bin"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.S",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.o"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+      "--only-section=.text",
+      "-O",
+      "binary",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/layer.elf",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/text.bin"
+    ]
+  ],
+  "baseline_object_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+  "captured_original_inputs": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/b.bin": "14aa4e6ce43720513c3a8d7b346b138d88056b44bc786d56709d33dff552246d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/expected.bin": "448fd0cb116f3993c3a3e5574a2fc998ccc7af1afea9ed838779bfdef8ec839f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/a.bin": "c3e46bdd186176986276e7fb9b7a56268b15b10b6063be7ad7d291ecd347cf63"
+  },
+  "audits": {
+    "dense": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 24,
+        "1": 440,
+        "2": 994,
+        "3": 328,
+        "4": 1760,
+        "5": 512,
+        "6": 2272,
+        "7": 6
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "transposed": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 24,
+        "1": 440,
+        "2": 994,
+        "3": 328,
+        "4": 1760,
+        "5": 512,
+        "6": 2272,
+        "7": 6
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "elfs": {
+    "dense": {
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/layer.elf",
+      "sha256": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961"
+    },
+    "transposed": {
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/layer.elf",
+      "sha256": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136"
+    }
+  },
+  "ROI": "Complete original contraction including runtime A transpose, primitive config/DMA/CPUissue/compute/readout/fence, restoring dense C and ABI calls. Readonly parameter permutation offline. All checker/poison/printing outsideROI, scratch guard and original45056i32 check afterward.",
+  "performance": null,
+  "token_usage_available": false
+}
