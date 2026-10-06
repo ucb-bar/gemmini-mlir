@@ -92,6 +92,8 @@ def test_inventory_command_runs_from_manifest(tmp_path):
     ['--optimize-golden-contraction','--prefetch-b'],
     ['--export-golden-contraction','--spatial-command-loops'],
     ['--spatial-command-loops'],
+    ['--resident-weight-issue-tiles','2'],
+    ['--export-golden-contraction','--resident-weight-issue-tiles','2'],
     ['--dense-cached-b-capacity'],
     ['--export-golden-contraction','--dense-cached-b-capacity'],
     ['--dense-accumulator-stripes'],

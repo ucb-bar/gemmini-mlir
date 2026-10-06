@@ -43,7 +43,7 @@ pinned GSIM memory regime and are not whole-model FireSim predictions.
 An independent H5/W5/C32/N67 i32 case, with output-channel and grouped-row tails,
 passes every output, guard, and input check but regresses from 6,359 to 7,858
 cycles. This negative result prohibits a universal performance claim. Complete
-source-cell/K-order/lifetime proofs also cover one-, two-, and four-tile packets,
+source-cell/K-order/lifetime proofs also cover all one- through four-tile packets,
 odd/even K loops, and odd/even N packet groups. Normal whole-model accuracy and
 controlled hardware qualification are separate gates.
 
