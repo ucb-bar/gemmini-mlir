@@ -378,3 +378,62 @@ An OOT catalog does not establish shared whole-program search. Declared optimiza
 resolve to real reachable compiler owners, and a selected plan must account for emitted executable
 work. Host/global transformations require explicit Merlin edit grants. Numerical gates, source
 inputs, hardware identity and trusted grading remain fixed.
+
+
+## 2026-10-06: production host compilation and new stock results
+
+ResNet1930 exact paired readout is the current stock champion at34,905,135cycles,
+with all1,000 original outputs exact:3.3171% below frozen1903 and0.7043% below the
+separate segmented-input1927 arm. Stock1928 spatial command loops35,722,259 and
+1929 stem command loops35,966,658 remain slower than the champion. These arms
+are not composed and gains are not additive. The original Clang residual guard
+capsule did not reach the candidate timer or terminal marker within1,800seconds;
+its candidate cycles remain unknown. The unchanged candidate is being replayed
+with a longer budget; completed GCC negatives remain rejected.
+
+For SmolVLA, actual ordinary compiler FMA/copy capabilities reduce the matched
+complete12-head group9.624B→5.709B retired instructions. Endpoint row invariants
+plus exact floor reduce it to5.0345B, with all48 original live inputs,1,600 outputs,
+9,437,184i8 values and12,288 escaping scales exact in independent native gates.
+No normal whole-model hardware performance follows from those functional gates.
+
+Merlin05e119b95 adds a separately selected standard finite-classification builtin
+contract. Ordinary no-builtin compilation had emitted costly library classifiers
+for eligibility checks. The choice requires standard classification, unobserved
+interposition and exception flags, and nontrapping execution; prior FMA/copy
+permission does not imply it. Defaults preserve library semantics and reproduce
+this production control object byteexact. The full original target group uses
+3,527,309,706instructions versus5,034,507,191(−29.9373%), all196,608 accepted
+carriers and guards exact, same8 refinement counters and4,461,440source FMAs.
+Only provider.o changes; device, driver, bridge and original data stay fixed.
+565,925 independent target checks cover all BF16 patterns and F32/F64 exponent,
+mantissa and random boundaries under five ambient rounding modes.194live pins
+are rehashed and every executable ELF section is audited for forbidden/unknown
+accelerator instructions. Five old NaN-classification imports remain; their cost
+has not been isolated. The native SO is byteidentical to accepted full48row/floor,
+so its independent original consumer qualification is reused by actual identity,
+without another execution or wall-time claim. All counters here are functional
+Spike retired instructions, not FireSim cycles. WholeSmol remains258.622B stock
+and the5B target is unmet.
+
+The Tiny division census also refused a tempting incorrect optimization:
+991,232 dominant pre-down reciprocal results pass through three separately
+rounded products beforei8 observation. A direct quotient-to-integer threshold
+cannot preserve this DAG. An optional bounded reciprocal/refinement experiment
+retains every source multiply and replays the original division when the final
+bin is ambiguous. It has no production selection or hardware result yet.
+
+
+### Owned token observation2026-10-06T07:48:33Z
+
+Eight explicitly owned threads: uncached input39,152,925, cache
+input1,860,482,560, output7,716,380, reasoning
+3,073,691(already included in output). Raw input+output is
+1,907,351,865; uncached input+output is46,869,305.
+Since07:17:03Z completed-request window: uncached input968,883,
+output148,505, cache input41,049,600. These counters
+cover mixed compiler, target, correctness and orchestration work; exact OOT-only
+and per-optimization attribution remain unavailable. Goal tracker43,233,797
+is a separate observed metric with unexposed cache semantics. No unrelated
+sessions were read and no elapsed-time proration or dollar cost was inferred.
+[Raw owned-thread ledger](perf_records/golden_token_usage_20261006T074833Z.json).

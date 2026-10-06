@@ -221,3 +221,26 @@ held-out reference physical groups and has64.53%maximum resolved section error.
 Whole prediction and ranking are unknown. Fitting the reference labels or
 extrapolating repeated groups would not qualify it.
 [Negative screen](perf_records/cpu_footprint_fast_estimate_partial_check.json).
+
+
+### 2026-10-06: measured compiler capability boundary
+
+Merlin's `SourceNumericContract` now treats standard finite classification as an
+independent default-off compiler choice, alongside FMA and object copies. It
+owns numeric observations, refusal and the portable executor hooks; OOT pins the
+actual compiler/header/LLVM/object and executes the target representation and
+complete device-product capsule. Classification alone removes29.9373% of the
+matched production group's retired instructions, without changing a target
+kernel, source math, original input, accepted carrier or consumer observation.
+The native helper is byteidentical to the accepted full48 release. This is a
+host compiler improvement; it is not a whole FireSim result.
+
+Phase1 should expose explicit numeric/effect/interposition obligations and
+actual component compilation receipts through the normal host-provider seam.
+Phase2 should offer separately priced compiler capabilities and stage-cost
+census, preserving complete source-consumer and fallback proofs. A library import
+or smaller object is evidence for a hypothesis, never a dynamic price. Retain
+static source opportunity, logical traffic, physical traffic, instruction proxy
+and hardware cycles as separate fields. Reuse a prior correctness gate only
+when the actual compiled object, complete inputs, contracts and observations
+are proven identical; do not infer identity from shape or API alone.

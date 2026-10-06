@@ -6,7 +6,7 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, transfer/banked residual, host quantization packets, exact early-saturation/eight-lane readout and typed segmented inputs | 35,152,730 (1927) | All 1,000 original output words exact; 2.6313% below isolated1903 control. Stock hardware and pre-teardown staging observations pinned | [1927](perf_records/resnet_segmented_inputs_stock1927.json) |
+| ResNet exact52/wide16, transfer/banked residual, host quantization packets and exact paired readout | 34,905,135 (1930) | All 1,000 original output words exact; 3.3171% below isolated1903 control. Stock hardware and retained pre-teardown staging observations pinned; segmented inputs are a separate arm | [1930](perf_records/resnet_paired_readout_stock1930.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, source normalization hoist, ordered contractions/K2, B-prefetch and fresh writer ownership | 461,389,700 (1926) | All 256,000 original compiled words unchanged; original Torch gate passes. 13.1211% below isolated1880 control; not composed with1902/1920 | [1926](perf_records/tiny_norm_hoist_stock1926.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
@@ -56,7 +56,9 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
-Stock1926 and1927 are the new Tiny and ResNet best measured whole-model arms.
+Stock1926 and1930 are the new Tiny and ResNet best measured whole-model arms.
+ResNet1930 exact paired readout measures34,905,135cycles,0.7043% below the
+separate segmented-input1927 arm35,152,730; these gains are not added.
 Tiny still needs about35% below461.390M to reach300M. The isolated constant-clamp
 arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
 than1926. No gains are added across arms.
@@ -70,6 +72,28 @@ with typed ABI/import/final-link checks; the device catalog still requires
 closed kernels. Default-disabled hook builds are byte-identical. Full new
 pooled whole-target integration remains pending.
 [Native workspace](perf_records/smol_quant_frontier_workspace_native_journey.json).
+
+The actual normal-compiler provider now has separately closed FMA/copy, endpoint
+row preparation and exact-floor capabilities. The complete original12-head
+production capsule drops9,624,336,737→5,709,055,956→5,034,507,191 functional
+Spike retired instructions. Full48 native execution preserves all1,600 original
+words,9,437,184 compiled quantized bytes and12,288 escaping BF16scales.
+[Production row/floor](perf_records/attention_prepared_rows_floor_target.json),
+[full48 original consumer gate](perf_records/smol_numeric_rows_floor_full48_journey.json).
+
+The next explicit standard finite-classification capability reduces that same
+production capsule5,034,507,191→3,527,309,706instructions(29.9373%), with all
+196,608 accepted carriers and guards exact, the same refinement/replay counters,
+480 product calls and86,507,520logical readbackbytes. All device/driver/bridge/data
+objects are unchanged. An independent565,925-check target representation gate
+covers signed zeros, subnormals, infinities and both NaNclasses in five rounding
+modes. Disabling the new choice reproduces the prior provider object byteexact.
+The native compiled helper remains byteidentical to the accepted full48row/floor
+SO; independent identity/consumer reuse is closed. These are section instruction
+savings, not stock cycles or a5B whole-model claim. Normal pooled whole-target
+integration is running; performance admission remains separate.
+[Classification proof and matched measurement](perf_records/smol_standard_classification_complete_group.json).
+
 
 For the same complete original12-head device group, portable exact floor and
 source multiply/row invariants lower the functional Spike instruction proxy
