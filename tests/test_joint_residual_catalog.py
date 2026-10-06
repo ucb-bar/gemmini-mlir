@@ -11,6 +11,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 from merlin.llvmlower.quantized_affine_joint import derive_joint
+from merlin.llvmlower.quantized_affine_pair import derive as derive_pair
 from merlin.llvmlower.quantized_affine_pair import predictor_table, source_table
 from xdsl.dialects import func, tensor
 from xdsl.dialects.builtin import ArrayAttr, DictionaryAttr, StringAttr
@@ -39,7 +40,7 @@ def proof():
     )
 
 
-def fixture(m=48, name="test_residual"):
+def fixture(m=48, name="test_residual", *, single_output_guard=False):
     old = {
         "symbol": name,
         "m": m,
@@ -70,6 +71,16 @@ def fixture(m=48, name="test_residual"):
         "result_argument": 2,
         "fully_written_arguments": [2, 3],
     }
+    if single_output_guard:
+        pair = derive_pair(**SOURCE, p=298, q=249, scale=0.0032446938566863537)
+        joint.update(
+            symbol=name + "__output_guard",
+            kernel=name + "__output_guard_kernel",
+            proof=pair,
+            proof_sha256=hashlib.sha256(canonical(pair).encode()).hexdigest(),
+            fully_written_arguments=[2],
+            single_output_guard=True,
+        )
     module = parse_module(f"""module {{
 func.func @forward(%a:tensor<{m}x64xi8>,%b:tensor<{m}x64xi8>) -> (tensor<{m}x64xi8>,tensor<{m}x64xi8>,tensor<{m}x64xi8>) attributes {{llvm.emit_c_interface}} {{
  %out=tensor.empty():tensor<{m}x64xi8>
@@ -123,11 +134,59 @@ def test_typed_private_second_output_and_source_binding():
     module.verify()
 
 
+def test_typed_single_output_preserves_three_argument_ownership():
+    module, original, record = fixture(single_output_guard=True)
+    rewrite(module, original, record)
+    route = record["routes"][0]
+    call = next(o for o in module.walk() if isinstance(o, func.CallOp))
+    assert len(call.arguments) == 3
+    assert sum(o.name == "tensor.empty" for o in module.walk()) == 1
+    decl = module.body.block.last_op
+    assert [a.data["bufferization.access"].data for a in decl.arg_attrs] == [
+        "read",
+        "read",
+        "write",
+    ]
+    assert (
+        decl.attributes["gemmini.output_guard_proof_sha256"].data
+        == route["proof_sha256"]
+    )
+    assert "gemmini.joint_residual_workspace_bytes" not in decl.attributes
+    assert route["proof"]["mismatched_pairs"] == 1
+    assert route["proof"]["correction_exact_for_all_pairs"]
+    assert route["original_route"]["numeric_policy"]["max_output_lsb"] == 0
+    writers = transform(module, [DescriptorWriterContract(route["symbol"], 2, (2,))])
+    assert writers[0]["fresh_writers"] == [2]
+    assert sum(o.name == "memref.alloc" for o in module.walk()) == 1
+    module.verify()
+
+
 @pytest.mark.parametrize(
-    "fault", ["source", "effect", "type", "live", "collision", "proof", "writer"]
+    "guard,expected",
+    [
+        (False, "37907a7019013a62c256d12c5b107621dbdab6252da722cdda4bfc95a8b7e1d1"),
+        (True, "8d096007a47a478502072c3109f56900f682f3757231f6ff7d27ee7a51be7179"),
+    ],
 )
-def test_invalid_selection_refuses_before_any_edit(fault):
-    module, original, record = fixture()
+def test_default_joint_emitted_c_bytes_preserved(guard, expected):
+    # Pinned from the independently qualified four-argument provider before the
+    # explicit single-output mode was introduced; includes its native oracle.
+    route = fixture()[2]["routes"][0]
+    assert (
+        hashlib.sha256(
+            (adapter(route, first_output_guard=guard) + oracle(route)).encode()
+        ).hexdigest()
+        == expected
+    )
+
+
+@pytest.mark.parametrize("single", [False, True])
+@pytest.mark.parametrize(
+    "fault",
+    ["source", "effect", "type", "live", "collision", "proof", "writer", "mode"],
+)
+def test_invalid_selection_refuses_before_any_edit(fault, single):
+    module, original, record = fixture(single_output_guard=single)
     decl = module.body.block.last_op
     if fault == "source":
         decl.attributes["gemmini.source_sha256"] = StringAttr("changed")
@@ -149,9 +208,13 @@ def test_invalid_selection_refuses_before_any_edit(fault):
         module.body.block.add_op(clone)
     elif fault == "proof":
         record = copy.deepcopy(record)
-        record["routes"][0]["proof"]["predictors"][0]["scale"] *= 2
+        route_proof = record["routes"][0]["proof"]
+        predictor = route_proof["predictor"] if single else route_proof["predictors"][0]
+        predictor["scale"] *= 2
     elif fault == "writer":
-        record["routes"][0]["fully_written_arguments"] = [2]
+        record["routes"][0]["fully_written_arguments"] = [2, 3] if single else [2]
+    elif fault == "mode":
+        record["routes"][0]["single_output_guard"] = "true"
     before = str(module)
     with pytest.raises(ValueError):
         rewrite(module, original, record)
@@ -166,9 +229,21 @@ def test_route_name_does_not_select_numeric_strategy():
     assert record["routes"][0]["proof"] == other["routes"][0]["proof"]
 
 
-@pytest.mark.parametrize("guard", [False, True])
-def test_native_ranked_abi_all65536_pairs_and_dirty_guards(tmp_path, guard):
-    _, _, record = fixture(m=1024)
+def test_single_output_rejects_joint_decoder_option():
+    route = fixture(single_output_guard=True)[2]["routes"][0]
+    with pytest.raises(ValueError, match="no second decoder input"):
+        adapter(route, first_output_guard=True)
+
+
+@pytest.mark.parametrize("single,guard", [(False, False), (False, True), (True, False)])
+@pytest.mark.parametrize("first_offset", [0, 3])
+def test_native_ranked_abi_all65536_pairs_and_dirty_guards(
+    tmp_path,
+    guard,
+    single,
+    first_offset,
+):
+    _, _, record = fixture(m=1024, single_output_guard=single)
     route = record["routes"][0]
     source = tmp_path / "joint.c"
     source.write_text(adapter(route, first_output_guard=guard) + oracle(route))
@@ -203,8 +278,8 @@ def test_native_ranked_abi_all65536_pairs_and_dirty_guards(tmp_path, guard):
     first = np.full(65536 + 17, 0x55, dtype=np.int8)
     second = np.full(65536 + 17, 0x66, dtype=np.int8)
     # Nonzero odd offsets exercise the scalar decoder fallback and descriptor offsets.
-    arrays = (a, b, first, second)
-    offsets = (0, 0, 3, 5)
+    arrays = (a, b, first) if single else (a, b, first, second)
+    offsets = (0, 0, first_offset) if single else (0, 0, first_offset, 5)
     descriptors = [
         Memref(v.ctypes.data, v.ctypes.data, off, (1024, 64), (64, 1))
         for v, off in zip(arrays, offsets, strict=True)
@@ -213,31 +288,41 @@ def test_native_ranked_abi_all65536_pairs_and_dirty_guards(tmp_path, guard):
     call = getattr(ctypes.CDLL(str(lib)), "_mlir_ciface_" + route["symbol"])
     call(*map(ctypes.byref, (result, *descriptors)))
     expected = source_table(**SOURCE).ravel()
-    np.testing.assert_array_equal(first[3 : 3 + 65536], expected)
-    np.testing.assert_array_equal(
-        second[5 : 5 + 65536], predictor_table(**proof()["predictors"][1]).ravel()
+    np.testing.assert_array_equal(first[first_offset : first_offset + 65536], expected)
+    if not single:
+        np.testing.assert_array_equal(
+            second[5 : 5 + 65536], predictor_table(**proof()["predictors"][1]).ravel()
+        )
+    assert np.all(first[:first_offset] == 0x55) and np.all(
+        first[first_offset + 65536 :] == 0x55
     )
-    assert np.all(first[:3] == 0x55) and np.all(first[3 + 65536 :] == 0x55)
     assert np.all(second[:5] == 0x66) and np.all(second[5 + 65536 :] == 0x66)
     np.testing.assert_array_equal(
         a, np.repeat(np.arange(-128, 128, dtype=np.int8), 256)
     )
     np.testing.assert_array_equal(b, np.tile(np.arange(-128, 128, dtype=np.int8), 256))
-    assert result.aligned == first.ctypes.data and result.offset == 3
+    assert result.aligned == first.ctypes.data and result.offset == first_offset
 
 
 @pytest.mark.parametrize("optimization", ["-O0", "-O2"])
-def test_actual_upstream_private_lifetime_and_live_inputs(tmp_path, optimization):
+@pytest.mark.parametrize("single", [False, True])
+def test_actual_upstream_private_lifetime_and_live_inputs(
+    tmp_path, optimization, single
+):
     from merlin.llvmlower.abi import HostModel
     from merlin.llvmlower.codegen import mlir_runtime_c
     from merlin.llvmlower.pipeline import lower_to_llvm_ir
     from merlin.llvmlower.toolchain import clang
     from merlin.xdsl_dialects._common import text
 
-    module, original, record = fixture()
+    module, original, record = fixture(single_output_guard=single)
     rewrite(module, original, record)
     route = record["routes"][0]
-    writers = transform(module, [DescriptorWriterContract(route["symbol"], 2, (2, 3))])
+    writers = transform(
+        module,
+        [DescriptorWriterContract(route["symbol"], 2, (2,) if single else (2, 3))],
+    )
+    assert sum(o.name == "memref.alloc" for o in module.walk()) == (1 if single else 2)
     source = tmp_path / "model.ll"
     source.write_text(
         lower_to_llvm_ir(
@@ -245,7 +330,7 @@ def test_actual_upstream_private_lifetime_and_live_inputs(tmp_path, optimization
         )
     )
     adapter_c, bridge = tmp_path / "adapter.c", tmp_path / "bridge.c"
-    adapter_c.write_text(adapter(route, first_output_guard=True) + oracle(route))
+    adapter_c.write_text(adapter(route, first_output_guard=not single) + oracle(route))
     bridge.write_text(shim(writers))
     obj, lib = tmp_path / "model.o", tmp_path / f"model{optimization}.so"
     subprocess.run(
@@ -288,7 +373,8 @@ def test_actual_upstream_private_lifetime_and_live_inputs(tmp_path, optimization
         np.testing.assert_array_equal(results[2], expected)
 
 
-def test_actual_target_catalog_compilation_and_binding_checks(tmp_path):
+@pytest.mark.parametrize("single", [False, True])
+def test_actual_target_catalog_compilation_and_binding_checks(tmp_path, single):
     from mlir_oot.captured_residual_bundle import sha
     from mlir_oot.direct_conv_binding import serialize
     from mlir_oot.joint_residual_catalog import build
@@ -299,7 +385,7 @@ def test_actual_target_catalog_compilation_and_binding_checks(tmp_path):
     )
     if not (llvm_bin / "clang").is_file():
         pytest.skip("owned LLVM toolchain unavailable")
-    module, original, _ = fixture()
+    module, original, selection = fixture(single_output_guard=single)
     original_bundle = tmp_path / "original"
     original_bundle.mkdir()
     dummy = original_bundle / "native_oracle.c"
@@ -326,10 +412,15 @@ def test_actual_target_catalog_compilation_and_binding_checks(tmp_path):
         json.dumps(original, indent=2) + "\n"
     )
     certificate = tmp_path / "proof.json"
-    certificate.write_text(json.dumps(proof(), indent=2) + "\n")
+    certificate.write_text(json.dumps(selection["routes"][0]["proof"], indent=2) + "\n")
     selected = tmp_path / "selected"
     result = build(
-        original_bundle, [certificate], llvm_bin, selected, first_output_guard=True
+        original_bundle,
+        [certificate],
+        llvm_bin,
+        selected,
+        first_output_guard=not single,
+        single_output_guard=single,
     )
     assert result["nofsm_audit"]["status"] == "pass"
     assert result["routes"][0]["original_route"] == original["routes"][0]
@@ -370,9 +461,9 @@ def test_actual_target_catalog_compilation_and_binding_checks(tmp_path):
     prepared = prepare(source, work)
     parsed = parse_module(prepared.read_text())
     parsed.verify()
-    assert (
-        len(next(o for o in parsed.walk() if isinstance(o, func.CallOp)).arguments) == 4
-    )
+    assert len(
+        next(o for o in parsed.walk() if isinstance(o, func.CallOp)).arguments
+    ) == (3 if single else 4)
     # Use a distinct empty base object; the ordinary provider's original object
     # is deliberately linked only once, just as in a real composed catalog.
     empty = tmp_path / "empty.c"
@@ -401,7 +492,9 @@ def test_actual_target_catalog_compilation_and_binding_checks(tmp_path):
     catalog, obj = compile_catalog(prepared, work)
     manifest = json.loads(catalog.read_text())
     assert obj.is_file() and manifest["compilation"]["object_nofsm_status"] == "pass"
-    assert manifest["residual_additions"][0]["fully_written_arguments"] == [2, 3]
+    assert manifest["residual_additions"][0]["fully_written_arguments"] == (
+        [2] if single else [2, 3]
+    )
     assert manifest["total_device_contractions"] == 1
     assert len(manifest["native_oracle_sources"]) == 2
     certificate.write_text(certificate.read_text() + " ")
