@@ -18,7 +18,7 @@ def choose(generator, proof):
         virtual_padding=generator.virtual_padding,pingpong_b=generator.pingpong_b,
         loop_spatial=generator.loop_spatial,store_plan=plan)
     return candidate, plan, dict(applied=True, proof=p, synthesis_radius=result['radius'],
-        storage='fresh caller-owned byte scratch and byte output, guarded disjointness, stable through exact decoder')
+        host_copy_policy='compiler_builtin',storage='fresh caller-owned byte scratch and byte output, guarded disjointness, stable through exact decoder')
 
 
 def adapter(schedule,symbol,kernel,plan):
@@ -46,7 +46,7 @@ def adapter(schedule,symbol,kernel,plan):
     text=text.replace(tail,'(int8_t*)c->aligned+c->offset,(int8_t*)scratch->aligned+scratch->offset);')
     decoder=symbol+'_pair_decode'
     text=text.replace('*r=*c;',f'{decoder}((unsigned char*)c->aligned+c->offset,(const unsigned char*)scratch->aligned+scratch->offset,{out_bytes});*r=*c;')
-    return emit_pair_scan(plan.certificate(),decoder)+text
+    return emit_pair_scan(plan.certificate(),decoder,copy_policy='compiler_builtin')+text
 
 
 def native_oracle(schedule,kernel,plan,scalar_oracle):
