@@ -45,6 +45,23 @@ NULL-callback/allocator/ABI/noFSM review; it checks whole target functionality,
 not hardware performance. Tiny's supported first-M8 lazy pair is separately
 qualified for timing; its special-input source conversion refusals are retained.
 
+The actual Tiny lazy-continuation pair is admitted as stock2053, with a frozen
+pre-timing model packet. Existing elements/regions screens predict an exact
+tie. An exploratory dependency/regions fit predicts6,166,110 control versus
+5,171,461 candidate cycles, but approved ranking remains UNKNOWN because of
+216 new cold calls, a128→224-byte frame and32→110 executed stack accesses per
+call. Grouped old validation resolves only three of nine table variants and
+refuses its coverage/slice gate. Root rehashes305pins and reproduces all fitted
+fields using the original qualified NumPy2.5.3 environment. A first replay with
+the ordinary root interpreter differed in least-squares last bits and fit hashes;
+neither replay replaces the frozen forecast. Stock2052 separately holds the
+current ResNet flat-loop whole candidate; its primitive features tie and CPU
+issue/footprint costs remain unpriced. Both are prospective transfer tests.
+
+[Actual Tiny forecast replay](perf_records/root_tiny_lazy_prospective_model_review_20261006.json),
+[frozen prelabel packet](perf_records/source_continuation_prospective_model.json),
+[ResNet source-bound release](perf_records/root_resnet_flat_current2039_stock_release_20261006.json).
+
 Tiny's complete original M8 immutable-base pair2047 improves from6,073,417 to
 5,927,830.5 mean cycles,2.397%, in four ABBA samples. All45,056 original outputs,
 guards, inputs and instruction counts pass. This is a section result; the
