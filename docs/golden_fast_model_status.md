@@ -1,6 +1,6 @@
 # Faster performance screening
 
-## Latest results and transfer test: 2026-10-06 23:00 UTC
+## Latest results and transfer test: 2026-10-06 23:12 UTC
 
 The stock binary64 DIV/FMA battery2043 completes all four held middle cases
 and both repeats. The predeclared count-plus-chain model has0.490% maximum
@@ -10,15 +10,40 @@ Both added-chain fits refuse negative coefficients. No coefficients are clipped
 or exported as pure FPU latencies. The DIV/FMA stream does not price Smol's
 dominant directed multiply/add/narrowing loops or ResNet's input quantization.
 
-The matched scalar/stage battery2049 is queued behind foreign2048. It retains
+The matched scalar/stage battery2049 completed on stock FireSim. It retains
 eight identical per-lane arithmetic DAGs, operands, rounding, final flags and
 opcode counts, while multiply-to-consumer spacing changes1→8 without stack
 traffic. Root independently regenerated its source and exact words, reclosed
 98pins, ran16 legality tests,12 native cases and27 strict target windows.
 Middle sizes are held for within-battery fitting. A separate prediction uses
 only the original2044 training cases and holds every new executable case out.
-The original ELF-bound model correctly refuses transfer; the separately stated
-hardware/signature transfer hypothesis remains falsifiable until labels arrive.
+The original ELF-bound model correctly refuses transfer. The separately stated
+hardware/signature count transfer fails:111.62% lower and170.85% upper maximum
+error across the six new cases in each signature. Those frozen predictions
+and failures remain unchanged. Within2049, count alone misses57.67%/88.44%;
+adding emitted ordered dependency spacing reduces held mean errors to
+0.0475%/0.0717%. Complete4096-operation scalar/stage calls change
+128,040→59,434 lower and112,171→40,490 upper,53.58%/63.90% reductions.
+Root reparses all27 hardware windows and24 output/flag rows, checks strict
+instruction identity, and reproduces every shared-fit/scoring field.
+
+A separate post-label diagnostic uses the existing Merlin grouped validator
+with unchanged declared features. Both schedule variants of each input/size
+are held together. Count features cannot decide any of three pairs. Ordered
+dependence correctly decides the middle pair in each signature; both endpoint
+folds refuse extrapolation. The complete ranking gate remains refused for
+insufficient coverage and slices. A small interpolation error does not approve
+a general ranker. Actual source loops must now supply the missing transfer test.
+
+Next candidates use that evidence directly: eight independent columns of the
+actual Smol bounds loop, explicit eight-lane ResNet host quantization, and Tiny
+source-continuation placement. Predictions/features are frozen before timing.
+Loads, stores, paired endpoints, new calls/spills and memory domains that lack
+calibration remain UNKNOWN. No saved-instruction cycle rate is substituted.
+One bounded3600s strict Smol normal-owner diagnostic is running after fresh
+NULL-callback/allocator/ABI/noFSM review; it checks whole target functionality,
+not hardware performance. Tiny's supported first-M8 lazy pair is separately
+qualified for timing; its special-input source conversion refusals are retained.
 
 Tiny's complete original M8 immutable-base pair2047 improves from6,073,417 to
 5,927,830.5 mean cycles,2.397%, in four ABBA samples. All45,056 original outputs,
@@ -47,7 +72,11 @@ Whole prediction and a held-out reproduction of ZIP22.39M remain unqualified.
 [FP64 terminal/model review](perf_records/root_fp64_stock2043_terminal_model_review_20261006.json),
 [directed review](perf_records/root_fp64_directed_bounds_stock2044_terminal_review_20261006.json),
 [cross-executable release](perf_records/root_fp64_matched_stage_stock_release_20261006.json),
+[matched terminal/model replay](perf_records/root_fp64_matched_stage_stock2049_terminal_review_20261006.json),
+[grouped ordering/coverage diagnostic](perf_records/root_fp64_stage_grouped_rank_diagnostic_20261006.json),
 [Tiny stock pair](perf_records/root_tiny_stock2047_base_pair_terminal_review_20261006.json),
+[Tiny lazy supported-fixture release](perf_records/root_tiny_source_continuation_lazy_short_release_20261006.json),
+[bounded Smol strict release](perf_records/root_smol_prepared_owner_null_diagnostic_strict_release_20261006.json),
 [current ResNet role accounting](perf_records/q1013_current2039_stock2046_profile_alignment.json).
 
 ## Current evidence: 2026-10-06

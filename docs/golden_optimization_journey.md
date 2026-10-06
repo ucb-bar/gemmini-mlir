@@ -9,6 +9,49 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 23:12 UTC: model tuning moves to actual compiler candidates
+
+- Root independently replays stock2049: identical directed operation counts
+  hide53.58%/63.90% complete-call schedule gains. Frozen2044 count transfer
+  misses111.62%/170.85% on the new executable. Adding actual producer/consumer
+  spacing gives0.0475%/0.0717% maximum held-size error within2049. All failures,
+  predictions and raw repeats are retained; no post-label transfer refit.
+- Existing Merlin grouped rank validation holds every schedule variant of an
+  input/size together. Count decides zero pairs. Ordered dependence decides
+  the middle pair correctly, but endpoint extrapolation is UNKNOWN. The full
+  three-size ranking gate remains refused; no production model is enabled.
+- The next transfer experiment is eight independent coordinates in the actual
+  Smol bounds loop. Exact per-coordinate arithmetic, directed rounding,
+  source plan, tails and fallback are retained. Real paired endpoints, loads,
+  stores and spills are explicitly unpriced. ResNet's explicit eight-lane host
+  quantization and Tiny's lazy continuation also freeze features before timing.
+- Root qualifies Tiny's262-pin supported-fixture lazy pair: source-DAG/header
+  placement replay exact, fresh native library byteexact,28 native mode/sticky
+  cases and fresh strictABBA original45056i8/guards/input gates. The cold
+  continuation changes emitted frame/register consequences; its retired-count
+  savings do not predict cycles. NaN conversion-domain refusals remain; no
+  whole-model promotion or universal numerical claim.
+- Root catches and closes a NULL-callback forwarding bug in diagnostic code.
+  Fresh nativeO0/O2 and strict wrapper checks preserve original NULL/opaque;
+  73 successor and74 historical pins, malloc allocated bytes, final bridge
+  call interception and actual LOAD ranges pass. One3600s bounded strict Smol
+  whole diagnostic starts23:09:25UTC; no automatic retry/extension. The new
+  owner's original native1600words/48groups/12prepares/23040products already
+  pass; target completion and hardware timing remain pending.
+
+[Matched model/terminal](perf_records/root_fp64_matched_stage_stock2049_terminal_review_20261006.json),
+[grouped rank diagnostic](perf_records/root_fp64_stage_grouped_rank_diagnostic_20261006.json),
+[Tiny lazy release](perf_records/root_tiny_source_continuation_lazy_short_release_20261006.json),
+[Smol diagnostic release](perf_records/root_smol_prepared_owner_null_diagnostic_strict_release_20261006.json).
+
+Phase0 should retain numerical/effect and source-signature identity alongside
+emitted dependency, spill and memory features. Phase1 should prioritize actual
+variants that reveal current feature collisions, storing pre-timing predictions
+and their unknown terms. Phase2 should validate held ordering across source
+signatures and compose measured sections with explicit uncovered work. Shared
+validation/statistics and host transformations belong in Merlin; ISA/resource
+feature extraction belongs in OOT. Jack's22.39M implementation stays held out.
+
 ### 2026-10-06 22:02 UTC: model calibration prevents another whole regression
 
 - Stock2040 closes27 windows and original first-helper inputs/outputs/flags.
