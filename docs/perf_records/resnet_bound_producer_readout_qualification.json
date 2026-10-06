@@ -116,7 +116,8 @@
     "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/reproduced_control.elf": "7ee47ff7c904053c680200bb2ef2bfa207c081ef43f6711ba38d8d07c3e30d97",
     "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/check_bindings.py": "c60ef1abd0ca4a836676dcf6cde8b2201ef0fd8df3e43cef96b1617683d2dbb9",
     "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/check_bindings.json": "4e7da56eb71f62017145394d48aeb2965c529c336ad7c57b15b7978c84e5559e",
-    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/exact_source_diff.json": "8c83aff0adb4a1e87d469d5c1242a58c0bfee8503ca9259369af275191c61693"
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/exact_source_diff.json": "8c83aff0adb4a1e87d469d5c1242a58c0bfee8503ca9259369af275191c61693",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/storage_binding.json": "b6613f2cdc32953a8f37790031d88dea41ea649356d4a32c16c21e13db63be67"
   },
   "unchanged_host_runtime_objects": {
     "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model_call.o": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
@@ -131,5 +132,51 @@
     "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/weights_blob.o": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
     "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/device/device_catalog_shim.o": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62"
   },
-  "token_usage_available": false
+  "token_usage_available": false,
+  "storage_binding": {
+    "schema": "readout_storage_binding_v1",
+    "fresh_source": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/fresh.mlir",
+    "fresh_source_sha256": "aa1996398bbf274309b70ff37431301e2df0ba7d7e151e01463703cae60dff12",
+    "fresh_receipt": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/fresh_receipt.json",
+    "fresh_receipt_sha256": "4f5b91aec72ab1e5e65f10421064ccfd4f4eecb4a4224c4ae262a567ccc847df",
+    "actual_unchanged_model_object_sha256": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
+    "routes": [
+      {
+        "symbol": "gemmini_exact_requant_24",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_24__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_47",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_47__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      }
+    ],
+    "contract": "Prequalified current adapters fully write and return the passed descriptor; all writable call operands are sole-use tensor.empty; fresh memref.alloc owns every writer; borrowed void shim suppresses duplicate return ownership",
+    "scope": "Existing explicit writer transform proves both writable arguments are sole-use tensor.empty and allocates fresh distinct memrefs; compiled host model.o is byte-identical control1903. No caller-range certificate alone establishes this."
+  }
 }
