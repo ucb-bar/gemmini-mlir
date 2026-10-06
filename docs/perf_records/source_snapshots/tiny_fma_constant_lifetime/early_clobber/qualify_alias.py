@@ -1,0 +1,44 @@
+from pathlib import Path
+import hashlib,json,subprocess,os
+from merlin.perf.layer_bench import build_program
+from mlir_oot.no_fsm_audit import audit_elf
+W=Path(__file__).resolve().parent;P=W.parent;L=Path('/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin')
+flags=json.loads((P/'prepared.json').read_text())['flags']
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+# Sharing source SSA across lanes exposes destructive-output constraints; loads
+# and original FMA operand order remain identical in source and selected probes.
+for label in ['source','selected']:
+ s=(P/f'primitive_{label}.ll').read_text()
+ for i in range(4):s=s.replace(f'float %b{i}',f'float %a{(i+1)%4}')
+ if label=='selected':s=s.replace('"=f,=f,=f,=f,','"=&f,=&f,=&f,=&f,')
+ (W/f'primitive_{label}.ll').write_text(s)
+ subprocess.run([str(L/'clang'),*flags,'-c',str(W/f'primitive_{label}.ll'),'-o',str(W/f'primitive_{label}.o')],check=True,capture_output=True)
+prefix=(P/'main.c').read_text().split('static int check_primitives(void)')[0]
+# An actual compiled opaque call boundary prevents floating operations moving
+# across the explicit rounding mode and sticky exception-flag observation.
+main=prefix+r'''
+static int check(void){
+ typedef void(*fn)(float*,float*,float*);
+ fn source[8]={source_probe0,source_probe1,source_probe2,source_probe3,source_probe4,source_probe5,source_probe6,source_probe7};fn selected[8]={selected_probe0,selected_probe1,selected_probe2,selected_probe3,selected_probe4,selected_probe5,selected_probe6,selected_probe7};
+ const unsigned directed[]={0,0x80000000,1,0x80000001,0x007fffff,0x807fffff,0x00800000,0x80800000,0x3f000000,0xbf000000,0x3f800000,0xbf800000,0x3f800001,0x3f7fffff,0x7f7fffff,0xff7fffff,0x7f800000,0xff800000,0x7fc12345,0xffc12345,0x7f812345,0xff812345};
+ unsigned rng=0x49e613a7,sa[4],sb[4],outa[4],outb[4],words=0;float a[4],b[4],oa[4],ob[4];
+ for(unsigned frm=0;frm<5;frm++)for(unsigned op=0;op<8;op++)for(unsigned trial=0;trial<534;trial++){
+  for(unsigned j=0;j<4;j++){rng=rng*1664525+1013904223;sa[j]=trial<22?directed[(trial+j)%22]:rng;rng=rng*1664525+1013904223;sb[j]=trial<22?directed[(trial+2*j)%22]:rng;__builtin_memcpy(a+j,sa+j,4);__builtin_memcpy(b+j,sb+j,4);}
+  unsigned f0,f1;asm volatile("csrw frm,%0;csrw fflags,%1"::"r"(frm),"r"(8):"memory");source[op](a,b,oa);asm volatile("csrr %0,fflags":"=r"(f0)::"memory");
+  asm volatile("csrw fflags,%0"::"r"(8):"memory");selected[op](a,b,ob);asm volatile("csrr %0,fflags":"=r"(f1)::"memory");
+  for(unsigned j=0;j<4;j++){__builtin_memcpy(outa+j,oa+j,4);__builtin_memcpy(outb+j,ob+j,4);if(outa[j]!=outb[j]){printf("FMA_ALIAS_BITS_FAIL %u %u %u %u %x %x\n",frm,op,trial,j,outa[j],outb[j]);return 1;}words++;}
+  if(f0!=f1){printf("FMA_ALIAS_FLAGS_FAIL %u %u %u %u %u\n",frm,op,trial,f0,f1);return 2;}
+ }
+ asm volatile("csrw frm,zero;csrw fflags,zero":::"memory");printf("FMA_ALIAS PASS %u fivefrm stickyflags directed_specials\n",words);return 0;
+}
+int main(void){return check();}
+'''
+# Strip unrelated capsule routines to avoid unresolved model/data symbols.
+start=main.index('extern void source_probe0');main='#include <stdint.h>\nextern int printf(const char*,...);\n'+main[start:]
+(W/'main.c').write_text(main);subprocess.run([str(L/'clang'),*flags,'-c',str(W/'main.c'),'-o',str(W/'main.o')],check=True,capture_output=True)
+b=build_program([W/'primitive_source.o',W/'primitive_selected.o',W/'main.o'],W/'build',target='gemmini',max_loaded_bytes=None)
+a=audit_elf(b.elf.read_bytes());assert a['status']=='pass';(W/'nofsm_audit.json').write_text(json.dumps(a,indent=2)+'\n')
+s=subprocess.run(['/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike','--isa=rv64gc','--extension=gemmini',str(b.elf)],capture_output=True,text=True,timeout=120)
+(W/'spike.stdout').write_text(s.stdout);(W/'spike.stderr').write_text(s.stderr);assert s.returncode==0 and 'FMA_ALIAS PASS 85440' in s.stdout+s.stderr,s.stdout+s.stderr
+r=dict(schema='constant_fma_early_clobber_alias_qualification_v1',status='pass',source_shared_ssa='For every lane i, second variable operand is source SSA a[(i+1)%4]; source FMA operand order retained.',directed_raw_patterns=22,random_patterns_per_operation=512,operations=8,rounding_modes=5,independently_compiled_words=85440,sticky_flags_exact=True,no_FSM=True,object_reclosure=json.loads((W/'object_reclosure.json').read_text()),pins={str(p.relative_to(W)):sha(p)for p in [W/'primitive_source.ll',W/'primitive_selected.ll',W/'primitive_source.o',W/'primitive_selected.o',W/'main.c',W/'main.o',W/'spike.stdout',W/'spike.stderr',b.elf]},scope='Actual compiled generic cross-lane SSA alias and directed special-value primitive gate; actual capsule hardened object reproduced byteidentical. No production matcher/full-model/hardware promotion.',token_usage_available=False)
+(W/'qualification.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r,indent=2),flush=True)
