@@ -1,0 +1,55 @@
+{
+  "schema": "root_polynomial_table_shift_experiment_v1",
+  "status": "original_compiled_consumer_pass_unpromoted",
+  "complete_original_group": {
+    "retired_instructions_control": 3243485384,
+    "retired_instructions_table_division": 3263954378,
+    "retired_instructions_table_shift": 3282802400,
+    "shift_fraction_vs_control": 0.012121841582499293,
+    "shift_fraction_vs_table_division": 0.005774597257560021,
+    "original_compiled_i8_outputs_exact": 786432,
+    "original_scales_exact": 1024,
+    "old_unobserved_carrier_differences": 3,
+    "source_input_bytes_and_guards": "unchanged",
+    "nofsm": "pass",
+    "stock_cycles": null
+  },
+  "mechanism": {
+    "scope": "512 synthetic legal intervals with original polynomial plan,1024applications/ROI; preparation excluded. Complete original-source samples and old/new outputs/guards exact. Not actual attention interval distribution.",
+    "gsim_control_pair": [
+      337488,
+      337139
+    ],
+    "gsim_shift_pair": [
+      333152,
+      332114
+    ],
+    "pair_mean_fraction": -0.013875815821187132,
+    "native_source_samples": 9216,
+    "signed_division_in_provider_after": 0,
+    "unsigned_divisions_in_provider_after": 5,
+    "unsigned_divisions_scope": "Once-call view-overflow checks, not interpolation"
+  },
+  "proof": "Signed int32-knot difference times residual bounded strictly below2^48; unsigned magnitude shift implements exact signed truncation. Curvature/source rounding/consumer contract unchanged.",
+  "decision": "Do not promote table. Actual complete-group instruction diagnostic regresses1.212%; small synthetic helper GSIM win1.388% does not establish group or stock gain. Preserve both results.",
+  "core_prototype_promoted": false,
+  "core_link_fix": "61e2628dc;9testsPASS and byteexact14370ff9 generic/manual RV64GC helper ELF",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/spike_receipt.json": "47148a2ce70945c014befb498d3094adb4eb1ea13877d30d07163f03443be307",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/test_monotone_polynomial_table.py": "0851c1f189bdd6a0c95a3580e2e315b22bdbb827261bfa52a88453da312034c2",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/build.json": "2ce5696a983c7ef0f42ce33075011a5a17aecbeb676ebf2c1c9aa6c8b49f92e9",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/spike.log": "905a5a14d2d7dd90a4b6ceeb32509f0cdfaaa327e71694f4649ea2bacd3a60f6",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/monotone_polynomial_table.h": "3fe99e3dc22848208fb3514e2558fdebad86eb59eb980281b3b6d35fdfdefebb",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/prepare.py": "5738857d1ede5382747125b4bc3918cdda3f6d0a7b73d11bfcd2f9007d273945",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/prepare_shift.py": "edcda4da6eb1b1a2f5b11b5eb489b29385c4b6e9d6dbf19fee5f92674249e8ae",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/native_tests.log": "594cd3e5298ca6c344e41e30205fbc2091f70b03bfae1b18a6ac404b9a3b3ccc",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/provider.c": "0b48ea3c78aa72c9b3194ab2bb9c1682139f0fb881f84c521720832bcc32a848",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/gsim.stdout": "1108703242ae8866afd05d7c23de15e3716ac36325b2e54bcb75f1e8b2e8b7bc",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/build.json": "b9f930999831c4d1794249ce597024c4bcfce719fcf520909b3afc324c235dc3",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/generic_link_receipt.json": "d7fc2a9f7de8017ae42a82f02eba558c91579b16be4add8dbd1ef39d147d041b",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/first_link_failure.json": "03f0aadae128cd1a5cf93f2666b0cef25a5d758bb354b7f728ee7efcf0600016",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/first_link_recipe.py": "3c104602ad5cacdba28270c562a0cbdde8cee25b239e83bf360c199ee324ef69",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/result.json": "5fbd255585ed64229fd8ea6c535f8f871cb1e13df5e0eda14d46e4bc4246ed70",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/smol_table_shift_experiment/latency/qualified_recipe.py": "e2348901dbc33e7a184056d760a7ef3a0b4998cb9f29367208b1e044dd4a6e5c"
+  }
+}
