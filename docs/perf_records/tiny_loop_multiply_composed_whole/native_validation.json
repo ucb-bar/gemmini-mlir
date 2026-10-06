@@ -1,0 +1,63 @@
+{
+  "schema": "tiny_loop_multiply_composition_full_native_gate_v1",
+  "status": "pass",
+  "started_utc": "2026-10-06T11:03:34.128854+00:00",
+  "selected_llvm_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host_llvm/expanded.native.ll",
+  "selected_llvm_sha256": "a6a9588d4d565edb9c6caa86a927663c03e990266f6496755ca4eb79de729eba",
+  "original_llvm_sha256": "368ada7c2223b6d2975ddcd89f947f23290b9d681e6631873cdf6f364597efb0",
+  "original_native_gate_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/validation.json",
+  "original_native_gate_sha256": "fd22361b3faed480f8d41bf03881fe96939e0297e4104e564b85a6c4b3f0a901",
+  "compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-O2",
+    "-fPIC",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host_llvm/expanded.native.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host/model.o"
+  ],
+  "link_argv": [
+    "cc",
+    "-O3",
+    "-march=native",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host/model.o",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host/model.so"
+  ],
+  "native_boundary_sources": {
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3"
+  },
+  "original_quant_plan_sha256": "d8443f70fbeac5059b3f9b34e783d1588f283ea7ff93648f182f3e788495a744",
+  "torch_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "scope": "Fresh changed native host object, original scalar int8/i32 device stand-ins/source-bound shim and frozen runtime C; full original22-layer/eight-token inputs and output, no new capture/weights/scales/golden.",
+  "token_usage_available": false,
+  "finished_utc": "2026-10-06T11:03:55.346321+00:00",
+  "outputs": 256000,
+  "shape": [
+    1,
+    8,
+    32000
+  ],
+  "dtype": "float32",
+  "allclose": true,
+  "original_compiled_bits_exact": true,
+  "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "reference_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-loop-multiply-composed-whole-20261006/whole/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "max_abs_error": 9.5367431640625e-06,
+  "relative_l2": 2.1918432935308374e-07,
+  "finite": true,
+  "model_object_sha256": "d726b8fcede753c97a3329b6177dce6d773cb1d1a6fb627ee35df8359898de58",
+  "shared_object_sha256": "46896b915d60931b64c8f857bfd3ab325dc649967d4d88151b45df5ae83e00da"
+}
