@@ -1,0 +1,259 @@
+{
+  "schema": "resnet_current_host_device_coverage_scope_v1",
+  "recorded_utc": "2026-10-06T16:42:13.371527+00:00",
+  "owner": "/root/reference_parity",
+  "latest_whole_champion": {
+    "job": 1992,
+    "cycles": 33500256,
+    "section_profile": "UNKNOWN"
+  },
+  "measured_split": {
+    "profile_job": 1999,
+    "exact_control_job": 1988,
+    "forward_denominator": 33671936,
+    "primitive_callback_cycles": 29365948,
+    "primitive_callback_percent": 87.21193815526378,
+    "outside_wrapper_cycles": 4305988,
+    "outside_wrapper_percent": 12.788061844736223,
+    "tail_cycles": 79209,
+    "instrumentation_delta_cycles": 39319,
+    "scope": "Raw primitive function wrappers, not ranked adapters. Both intervals can contain CPU command issue/glue/waits/device service. Pure accelerator utilization and pure CPU share UNKNOWN."
+  },
+  "reference": {
+    "job": 1876,
+    "full_model_cycles": 22387449,
+    "bracketed_cycles": 22347798,
+    "unbracketed_cycles": 39651,
+    "unbracketed_percent": 0.17711263127835603,
+    "other_cycles": 12066,
+    "other_definition": "Timed glue_gap -> fx_gap accelerator global average pool including setup and final fence; NOT pure host work.",
+    "sum_other_plus_unbracketed": 51717,
+    "pure_cpu_share": "UNKNOWN"
+  },
+  "reference_address_witness": {
+    "start_rdcycle": "0x8009e586",
+    "call_glue_gap": "0x8009e5a4",
+    "final_fence": "0x8009e5a8",
+    "end_rdcycle": "0x8009e5ac",
+    "difference": "0x8009e5b0",
+    "printf_other_argument": "0x8009e800",
+    "printf_format_address": "0x800a0960",
+    "glue_gap": "0x8009c794",
+    "call_fx_gap": "0x8009c7b4",
+    "fx_gap": "0x80096c16",
+    "fx_gap_static_custom_funct_counts": {
+      "0": 4,
+      "14": 1,
+      "1": 20,
+      "6": 68,
+      "4": 68,
+      "3": 10
+    },
+    "scope": "Address/register dataflow and actual custom primitive instructions from permitted owned ZIP ELF disassembly. Static counts are not dynamic cycles."
+  },
+  "projection_intervals": [
+    {
+      "call_index": 17,
+      "symbol_id": 4,
+      "symbol": "gemmini_exact_requant_13_kernel",
+      "region": "matmul_14",
+      "category": "pointwise",
+      "actual_callback_cycles": 578877,
+      "preceding_host_gap_cycles": 614595,
+      "shape": {
+        "m": 784,
+        "n": 512,
+        "k": 256,
+        "output_dtype": "i8",
+        "bm": 49,
+        "bn": 1,
+        "bias": false,
+        "scale": 0.0028477373998612165,
+        "relu": false,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "cpu_integer_readout_after": false,
+      "scope": "Source-bound callback includes command issue; outside intervals include CPU readout/glue. No pure accelerator/host attribution."
+    },
+    {
+      "call_index": 34,
+      "symbol_id": 18,
+      "symbol": "gemmini_exact_requant_26_kernel",
+      "region": "matmul_27",
+      "category": "pointwise",
+      "actual_callback_cycles": 463343,
+      "preceding_host_gap_cycles": 285467,
+      "shape": {
+        "m": 196,
+        "n": 1024,
+        "k": 512,
+        "output_dtype": "i8",
+        "bm": 13,
+        "bn": 4,
+        "bias": false,
+        "scale": 0.002148456173017621,
+        "relu": false,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "cpu_integer_readout_after": false,
+      "scope": "Source-bound callback includes command issue; outside intervals include CPU readout/glue. No pure accelerator/host attribution."
+    },
+    {
+      "call_index": 59,
+      "symbol_id": 39,
+      "symbol": "gemmini_exact_requant_45_kernel",
+      "region": "matmul_46",
+      "category": "pointwise",
+      "actual_callback_cycles": 549295,
+      "preceding_host_gap_cycles": 137414,
+      "shape": {
+        "m": 49,
+        "n": 2048,
+        "k": 1024,
+        "output_dtype": "i8",
+        "bm": 4,
+        "bn": 16,
+        "bias": false,
+        "scale": 0.0014519140822812915,
+        "relu": false,
+        "wide_store": true,
+        "reuse_b": true,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "cpu_integer_readout_after": false,
+      "scope": "Source-bound callback includes command issue; outside intervals include CPU readout/glue. No pure accelerator/host attribution."
+    }
+  ],
+  "projection_interval_sum": 1037476,
+  "projection_copy_elements": 351232,
+  "remaining_cpu_work": [
+    {
+      "operation": "Input quantization + NCHW-to-padded-NHWC packing",
+      "source_shape": [
+        1,
+        3,
+        224,
+        224
+      ],
+      "source_dtype": "f32",
+      "destination_shape": [
+        1,
+        230,
+        230,
+        3
+      ],
+      "destination_dtype": "i8",
+      "preceding_stem_interval": 2193677,
+      "eligibility": "No declared native f32-input Gemmini quantize primitive. CPU ordered source multiply/clamp/RNE retained; transform scope includes padding/layout/ABI and allocator work, not a pure CPU attribution."
+    },
+    {
+      "operation": "Three stride2 projection input copies",
+      "physical_dtype": "i8",
+      "source_geometry": "Typed NHWC stride2 view collapsed to MxK",
+      "candidate": "Current1992 generic segmented-A consumer normal route qualified; no CPU materialization needed after accepted device ABI.",
+      "whole_cycles": "UNKNOWN pending stock"
+    },
+    {
+      "operation": "Global average reduction",
+      "physical_input_shape": [
+        49,
+        2048
+      ],
+      "physical_dtype": "i8",
+      "semantic_input_shape": [
+        1,
+        2048,
+        7,
+        7
+      ],
+      "current": "CPU exact integer sums + complete conservative source sum certificate + original ordered f32 replay for ambiguous sums.",
+      "source_proof_count": 49,
+      "source_proof_ambiguous_sums": 8,
+      "preceding_classifier_interval": 339189,
+      "eligibility": "Exact i8-to-i32 device sum fits typed overflow bound; separate provider and unchanged source decoder/replay proof required.",
+      "wrapper_interval_attribution": "Includes other boundary work; not GAP-only cycles."
+    },
+    {
+      "operation": "Paired integer readout decoder",
+      "current": "Device primitive producer + Merlin source-exact CPU decoder where native single store cannot preserve source table.",
+      "eligibility": "Preserve complete source numeric proof; no direct blanket offload."
+    },
+    {
+      "operation": "Final classifier logit materialization",
+      "input_dtype": "i32",
+      "output_dtype": "f32",
+      "elements": 1000,
+      "current": "Original ordered binary32 scaling and bias on host.",
+      "eligibility": "No declared native device f32 output arithmetic proof; original all1000-word gate remains exact."
+    },
+    {
+      "operation": "Ranked adapters / allocation / dispatch / waits",
+      "current": "Mixed host/runtime/device boundary work",
+      "eligibility": "Requires operation-specific ownership/effect/ABI proof; no elapsed-gap-only target attribution."
+    }
+  ],
+  "pins": {
+    "reference_elf": {
+      "path": "/scratch/agustin/tmp/exo_q1013/exo-nofsm-t3-f.elf",
+      "sha256": "5d01bb246765ce2a10b10aae7e8ad1e954e239c75e9ac2cf724eda9778f749e6"
+    },
+    "owned_disassembly": {
+      "path": "/scratch/agustin/tmp/exo_q1013/work/full.dis",
+      "sha256": "34eb4cea3a73d3930c9d35b8cb47050b6fc58ac7edd00aad83dde66190516137"
+    },
+    "owned_witness": {
+      "path": "/scratch/agustin/tmp/gemmini-segmented-current-20261006/out/segmented_current/q1013_gap_address_witness.dis",
+      "sha256": "17b84b12c658f094fe233d2c81c8df2b03ebf3b214bffeb41a2c0ac4cbc20785"
+    },
+    "reference_receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/q1013_diagnostic_reference_firesim.json",
+      "sha256": "df6c85403f375cb96b7f35e7edb47c6e2883b1ced92524e971eee0900262106b"
+    },
+    "reference_uart": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/q1013_diagnostic_reference_firesim.uart",
+      "sha256": "86b2faa325a2965dd1e7bdb161f74251575d3457f923318ec9c1246d8b1ac233"
+    },
+    "measured_profile": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/stock1999_exact1988_profile_terminal.json",
+      "sha256": "78494fe2e3fb9bcd9ea41b6a629a7d836f6385b7d884da49d304c3041137583c"
+    },
+    "historical_alignment": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/q1013_exact1988_stock1999_profile_alignment.json",
+      "sha256": "fe9814b2fc529b5007d0d07ee1a9262564dda3529ac3f9abce0d8fd558032b67"
+    },
+    "current1992_source": {
+      "path": "/scratch/agustin/tmp/gemmini-paired-flat-packets-20261006/out/paired_flat_packets/normal_source_v2/whole_normal/fresh.mlir",
+      "sha256": "148a1328a1afd68c0694deb019770db564e3019ee537a1714681d9b341bb528e"
+    }
+  },
+  "causal_savings_claim": false,
+  "token_usage_available": false
+}
