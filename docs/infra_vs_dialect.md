@@ -57,7 +57,7 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 ## Remaining gap and accounting
 
 Current verified whole-model champions are ResNet36,102,704cycles and Tiny527,255,504cycles.
-Smol has full original target correctness; stock1906baseline cycles are pending. These do not
+Smol stock1906 measures258,621,872,969cycles with full original target correctness. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.
 
@@ -109,3 +109,66 @@ explicit invariant in [AGENTS.md](../AGENTS.md).
 Measured performance is narrower than applicability. A legal shared transform can lose on another
 shape, blocking factor or composition. The normal calibrated selection path retains actual measured
 costs and unknowns so those choices can be evaluated independently.
+
+
+## Source-level redundancy, physical views and exact store alternatives
+
+Merlin's typed broadcast-source math pass moves a pure smaller-domain DAG
+outside its broadcast consumer before bufferization. It preserves source
+operation order, casts, precision and live uses and refuses unknown effects,
+dynamic/empty domains and strict scopes. The actual complete first source
+normalization has a64.6175%paired GSIM mean reduction with all16,384outputs;
+full256,000word native/Torch/strict gates pass, but whole stock cycles remain
+pending. Allocation and traffic are part of the capsule timing; its small
+allocator differs from the frozen whole allocator.
+
+Merlin also owns static matrix-view proof and source consumer acceptance under
+explicit full-write producer and read-only consumer contracts. OOT owns the
+physical segmented DMA strategy, rank/byte ABI and emitted device code.
+The matched original-consumed projection measures37.838%less complete GSIM
+cost; the full normal source/provider route passes all1,000original words.
+This is an actual compiler rewrite, not an address substitution in a bespoke
+benchmark. Full stock timing remains separate.
+
+Preserving an ordinary CPU command loop uses a reusable Merlin LLVM metadata
+helper. Dynamic accumulator-row encoding and resource/range closure belong in
+OOT. An explicit compiler/export option now emits the strategy through the
+normal source route. Its independent complete convolution capsule improves
+4.0067%; a complete current stride2geometry with independent inputs improves
+1.7326%. Both normal upstream compilation and an arm retaining the actual1903
+host/runtime pass all original words. The larger object-size reductions are
+compiled byte counts rather than cache-miss/cycle evidence; stock1928 is pending.
+
+Complete-domain exact multiple-readout certificates and portable packed pair
+scanning belong in Merlin. Target scale/store implementation, accumulator
+lifetimes and a distinct two-output device ABI belong in OOT. Numerical proof
+covers every reachable output pair; actual sample disagreement counts are cost
+evidence and never eligibility. Both stores, extra storage, final scan and
+correction must be timed together. The complete compiler-copy readout capsules
+reduce their ROIs by71.41%/70.40%. Normal preparation now proves a fresh,
+sole-use uninitialized scratch producer and rewrites its actual type and
+allocation to i8 before lowering. The inherited oversized-i32 diagnostic
+remains separate. Actual byte extents, ownership, host/device ABI and full
+original native/strict output close in the normal and frozen1903 builds;
+stock1930 is queued. Generic
+compiler byte-copy selection stays in Merlin; target catalog dependency and
+storage guards stay in OOT.
+
+Full Smol stock1906 now measures258.622B cycles with all original words exact.
+Its384CPU BF16 contractions represent19.327B ordered f32 source FMAs; separate
+head experiments are not whole-model device coverage. Merlin's generic source
+analysis now closes48original groups at BF16 endpoints without live f32 escapes,
+retaining each original eight-contraction/50-operation DAG. Numerical obligations
+remain separate. OOT should bind
+the proved group to actual device partials/ABI/resources. Live f32max, source
+exp, denominator and ordered PV paths prevent an early BF16-only substitution.
+This is a compiler coverage/integration task, not a new accuracy allowance.
+Recovering the user's earlier approximately4B route now also requires an audit
+of source/workload, timing boundary, numerical criterion and emitted ISA. The
+current qualified build is not a claim about the best historical implementation.
+
+The CPU-footprint additive fast screen is also disabled. It resolves only12of24
+held-out reference physical groups and has64.53%maximum resolved section error.
+Whole prediction and ranking are unknown. Fitting the reference labels or
+extrapolating repeated groups would not qualify it.
+[Negative screen](perf_records/cpu_footprint_fast_estimate_partial_check.json).

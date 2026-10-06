@@ -136,28 +136,83 @@ and queued as1919; current hardware section attribution is pending.
 Reference other/uncounted51,717 is time outside printed layer timers, not total
 CPU time. [Current gap and measured historical locations](resnet_current_gap_status.md).
 
+
+## Source, storage and command-loop checkpoint (2026-10-06)
+
+| Change | Owner | Complete measured evidence | Whole qualification |
+| --- | --- | --- | --- |
+| Hoist repeated source row math from broadcast | Merlin typed pass; OOT capsule/binding | First original16,384-output normalization mean2,369,163→838,269GSIMcycles(-64.6175%); five rounding modes/sticky flags and128guards exact; allocator caveat retained | All256,000 original words/Torch/native/strict/noFSM; frozen1880model.o-only stock1926 queued |
+| Borrow segmented projection input | Merlin view/ownership/acceptance; OOT DMA/ABI | Original consumed401,408bytes+4,096guards; common-address866,791→538,815GSIMcycles(-37.838%); unread owner cells disclosed synthetic | Three accepted views through normal source/catalog, all1,000original native/strict words; frozen1903stock1927 queued |
+| Retain ordinary CPU spatial command loops | Merlin no-unroll metadata; OOT exact bounded address/schedule | Independent15,257i32outputs mean-4.0067%; complete50,176-output current stride2geometry with independent inputs mean-1.7326%; first automatic-unroll attempt retained negative | Normal and frozen1903 all1,000original words pass;11kernels change/all52adapters and original host/runtime retained; stock1928 queued |
+| Source-bound exact readout range | Merlin numeric proof; OOT producer binding/ABI guards | Both complete original capsules15–24%reductions by pair/context; native/strict1,000words pass normal route | Normal runtime change disclosed; no isolated whole stock claim |
+| Two exact i8readouts with decoder | Merlin complete-domain certificate/portable scan; OOT store plan/accumulator lifetime and preparation ABI | Original75,264bytes+2,048guards/eightABBAcalls exact; complete compiler-copy readout ROIs improve71.41%/70.40%; independent convolution tails pass | Normal preparation now allocates actual i8 scratch; selected allocations50,240/25,152bytes including alignment; normal/frozen1903 all1,000 original words/native/strict/noFSM pass; stock1930 queued |
+| Retain stem ordinary CPU command loops | Merlin no-unroll metadata; OOT exact stem/pool schedule and address proof | Original200,704output bytes+4,096guards exact;1,335,580→1,294,977GSIMcycles(-3.0401%); independent shape-11.53%;87.8%text reduction is not cycle evidence | Normal upstream and stem-only frozen1903 all1,000 original native/strict words/noFSM pass; stock1929 queued |
+| First exact full Smol hardware baseline | Merlin ordered source arithmetic/explicit host math policy; OOT catalog | Stock1906:258,621,872,969 forward cycles; all1,600original words bitexact;8,918.2seconds engine elapsed | Performance51.724times5B goal; optimized head capsules remain separate from whole route;384BF16 CPU contractions/19.327B source FMAs motivate coverage work |
+
+Current1903profile completed in GSIM at33,939,464forward cycles, exactly
+29,422,251device-wrapper+4,517,213host-gap. Original1,000words, all70events
+and final audit pass. Stock1919remainsqueued; memory regimes are distinct.
+ResNet and Tiny whole-model champions are unchanged; Smol now has its first
+qualified stock baseline above. Source-work counts do not assign measured
+cycles to those operations.
+
+Generic Merlin analysis now retains the original DAG through 48 BF16 attention
+endpoints, with eight contractions and 50 operations per group and no live f32
+escape. Source, uses, maps, ancestor context and ordered-FMA contracts are
+revalidated before extraction. Numerical certification, actual provider call
+coverage and whole-model profitability remain separate obligations. The user's
+earlier approximately4B Smol result is being audited to recover its fast route;
+258.622B is the current qualified implementation, not a historical-best claim.
+The retained owned job610 audit closes the actual ELF/UART/gate/plan identities
+and finds FSM instructions plus an older numerical gate. Its declared ten-step
+trajectory does not establish a separately measured3.31B step. The separate
+near4B Exo implementation remains an open provenance comparison, without
+reading private reference folders. [Audit](perf_records/historical_smol_job610_audit.json).
+
+The CPU-footprint fast-model diagnostic retains a negative result: only12of24
+reference physical groups resolve, with64.53%maximum section error. Repeated
+physical groups outside the training domain and missing host/residual costs
+leave whole prediction and ranking unknown. The screen is disabled. No
+reference labels were used to fit its coefficients. Compact-code candidates
+are therefore timed rather than selected from this rejected model.
+
+Receipts: [norm](perf_records/tiny_source_broadcast_math_complete_capsule.json),
+[projection](perf_records/segmented_input_original_projection_gsim.json),
+[loops](perf_records/flat_spatial_command_loop_qualification.json),
+[normal readout](perf_records/resnet_normal_producer_domain_qualification.json),
+[pair](perf_records/exact_pair_readout_matched_gsim.json),
+[pair compiler-copy](perf_records/exact_pair_readout_builtin_matched_gsim.json),
+[paired typed whole](perf_records/resnet_paired_readout_typed_whole_qualification.json),
+[stem](perf_records/stem_spatial_command_loop_capsules.json),
+[stem whole](perf_records/stem_spatial_command_loop_whole_qualification.json),
+[normal spatial loops](perf_records/resnet_spatial_cpu_loops_normal_whole_qualification.json),
+[Smol stock](perf_records/smol1906_stock_hardware.json),
+[Smol source revalidation](perf_records/smol1906_source_group_parent_reclosure.json),
+[profile](perf_records/resnet1903_gsim_conserved_profile.json),
+[screen](perf_records/cpu_footprint_fast_estimate_partial_check.json).
+
 ## Token accounting
 
-[Measured snapshot at2026-10-06T02:01:19Z](perf_records/golden_token_usage_20261006T020119Z.json)
+[Measured snapshot at2026-10-06T03:35:04Z](perf_records/golden_token_usage_20261006T033504Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |29,179,689|
-| Cached input reads |1,438,001,408|
-| Output |5,670,036|
-| Reasoning output, already included in output |2,188,131|
-| Raw input+output total, including cached reads once |1,472,851,133|
+| Uncached input |32,369,212|
+| Cached input reads |1,566,842,624|
+| Output |6,274,192|
+| Reasoning output, already included in output |2,432,020|
+| Raw input+output total, including cached reads once |1,605,486,028|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-34,849,725; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is31,213,052; its accounting semantics are not exposed, so it
+38,643,404; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is35,008,589; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since00:52:08Z:
-2,297,557 uncached input,434,595 output and86,648,064 cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261006T005208Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since02:01:19Z:
+3,189,523 uncached input,604,156 output and128,841,216 cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261006T020119Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating

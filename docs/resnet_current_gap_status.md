@@ -99,3 +99,47 @@ Reusable host-stage instrumentation, layout/readout fusion, packing, ownership
 and numeric algorithms belong in Merlin. Instruction scheduling, target layouts,
 bank/resource legality and target timing providers belong in OOT. Production
 rules remain semantic and resource based, independent of workload names.
+
+
+## Current exact profile in a separate RTL regime
+
+The actual1903 profile ELF completed in GSIM with all1,000 original words,
+70events and complete conservation. The stock1919 job remains queued.
+These GSIM costs have a different memory regime from stock FireSim and cannot
+be subtracted from reference1876stock costs to assign causal savings.
+
+| Current GSIM interval | Cycles |
+| --- | ---: |
+| Pointwise wrappers |11,107,859|
+| Spatial wrappers |10,989,417|
+| Residual wrappers |5,512,622|
+| Stem/pool wrapper |1,344,602|
+| Classifier wrapper |467,751|
+| All device wrappers |29,422,251|
+| Intervening host gaps, including final73,136tail |4,517,213|
+| Complete forward |33,939,464|
+
+Host gaps include entry1,776,646, after-readout1,060,273/530,513,
+projection420,292/188,349/87,734 and classifier preparation329,339.
+These boundaries include other CPU work; they do not isolate individual copies,
+quantization or arithmetic. The paired original projection capsule qualifies a
+borrowed-input alternative, and both readout families have complete range-bound
+paired cost evidence. Compact ordinary CPU command loops have an independent
+full-output timing result and original schedule geometry object-size evidence.
+Its complete current stride2geometry with independent inputs improves1.7326%
+in GSIM. The normal source build and device-only frozen1903 arm both pass all
+original1,000words; stock1928 is queued. The borrowed-input arm is queued as1927.
+The complete two-readout epilogue with compiler-copy decoding improves71.41%
+and70.40% in its two ROIs. Normal preparation now allocates actual i8 scratch;
+normal and frozen1903 all-output/native/strict/noFSM gates pass. Its typed
+allocation candidate is queued as1930. Stem CPU loops also pass the original
+complete capsule with3.0401%lower cycles and full normal/frozen output gates;
+stock1929 is queued. The87.8%stem text reduction is not a cycle reduction.
+Each still needs a controlled whole stock result before assigning gap reduction.
+[Profile](perf_records/resnet1903_gsim_conserved_profile.json),
+[projection](perf_records/segmented_input_original_projection_gsim.json),
+[readout](perf_records/resnet_bound_readout_paired_gsim.json),
+[paired typed whole](perf_records/resnet_paired_readout_typed_whole_qualification.json),
+[paired complete cost](perf_records/exact_pair_readout_builtin_matched_gsim.json),
+[stem](perf_records/stem_spatial_command_loop_capsules.json),
+[loops](perf_records/flat_spatial_command_loop_qualification.json).

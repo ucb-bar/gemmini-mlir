@@ -2,13 +2,13 @@
 
 The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama as low as possible, all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
 
-## Latest verified whole-model results (2026-10-05)
+## Latest verified whole-model results (2026-10-06 UTC)
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, transfer/banked residual, host quantization packets and exact early-saturation/eight-lane readout | 36,102,704 (1903) | All 1,000 original output words exact; staged ELF/stock hardware pinned. Measured composition, 6.48% below matched1886 control; separate from1897 stripes | [1903](perf_records/firesim1903_resnet_composed_verified.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, host pointwise/adjacent RNE packets, ordered contractions/K2, B-prefetch and fresh writer ownership | 527,255,504 (1902) | All 256,000 original compiled words unchanged; original Torch gate passes. Single-run marginal 0.719% gain versus1880 | [1902](perf_records/firesim1902_tiny_adjacent_rne_verified.json) |
-| Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | Qualified baseline admitted as stock1906; hardware cycles pending | Native and actual RV64GC target **all1,600 original words bitexact**, zero gate failures. Original atol=0.03125/rtol=0.02 unchanged. Normal API rebuild has an identical complete loaded image except its diagnostic marker | [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [1906 admission](perf_records/smol_first_exact_stock_baseline_admission.json) |
+| Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
 stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
@@ -52,12 +52,122 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
-The whole-model champions in the table remain unchanged. Full Smol stock1906 is
-running; its heartbeat at01:56:55Z records5,352 seconds of active simulation.
-It was submitted at22:52:37Z and began infrastructure setup at00:25:13Z.
-Heartbeat target cycles are elapsed simulation progress, not the forward ROI.
-Current-best ResNet profile1919 is still queued on stock hardware; the same
-qualified ELF is also running in the separately pinned GSIM memory regime.
+ResNet and Tiny champions remain unchanged. Full Smol stock1906 completed at
+02:57:36Z after submission at22:52:37Z. Engine elapsed was8,918.2seconds
+(about2h29m); submission to completion was about4h5m, including queue/setup.
+Its258.622B forward cycles are51.724times the5B target. Correctness now has
+stock whole-model evidence; the performance target remains unmet. Current-best
+ResNet profile1919 remains queued on stock hardware. The same qualified ELF
+completed in the separately pinned GSIM memory regime:33,939,464forward cycles
+conserve29,422,251device-wrapper cycles plus4,517,213host-gap cycles, including
+the73,136tail. All1,000 original words and all70boundary events pass. This is
+not stock1919 and does not repartition the stock13.72M reference gap.
+[Completed profile](perf_records/resnet1903_gsim_conserved_profile.json).
+
+- **Tiny typed source math:** Merlin's explicit
+  `hoist_broadcast_source_rsqrt` feature proves a smaller affine iteration domain
+  before bufferization, retaining source casts, arithmetic order and live uses.
+  Actual control code repeats737,280 logical rsqrt calls for360row inputs.
+  The complete original first-normalization capsule measures paired means
+  2,369,163→838,269GSIMcycles(-64.6175%), all16,384outputs/128guards exact.
+  Five rounding modes and identical sticky flags are independently qualified.
+  Capsule allocation/traffic are timed with a small common bump allocator;
+  whole frozen allocator/address context needs stock qualification. The full
+  model native/Torch/strict/noFSM gates now pass all256,000original words with
+  onlymodel.o changed. Stock1926 is queued versus1880; whole hardware cycles remain unknown.
+  [Source/capsule](tiny-broadcast-math-20261005.md).
+- **ResNet borrowed projection input:** typed Merlin ownership/view acceptance
+  and an OOT segmented resident-input schedule remove copied logical matrices.
+  The matched original consumed401,408bytes+4,096guards measure
+  866,791→538,815GSIMcycles(-37.838%). Unread physical owner cells in that
+  isolated fixture are synthetic zeros, not original producer state. The normal
+  source/catalog build now binds three accepted views and has passed all1,000
+  original native/strict outputs; frozen1903 comparison is queued as stock1927.
+  [Measured projection](perf_records/segmented_input_original_projection_gsim.json),
+  [normal compiler route](segmented_input_view.md).
+- **Compact ordinary CPU spatial command loops:** the explicit OOT
+  `spatial_command_loops` compiler/export option preserves the exact primitive
+  sequence, first weight flip, stationary reuse, accumulator initialization and
+  bounded tails. Shared Merlin loop metadata prevents LLVM from undoing the
+  choice. The complete independent15,257-i32-output AB/BA capsule reduces
+  paired mean4.0067%; current schedule geometries compile from120,366→39,744,
+  211,352→63,498and82,490→28,850text bytes. Bytes are not cache misses or
+  measured cycle savings. The complete50,176-output current stride2geometry
+  capsule now measures727,093/726,232→716,175/711,970GSIMcycles(-1.7326%),
+  using independent deterministic inputs. Normal upstream and frozen1903
+  builds both pass all1,000original words/native/strict/noFSM. All52adapters,
+  41unselected requant kernels and original host/runtime/weights are retained
+  in the controlled arm;11source-derived kernels change. Fresh normal host
+  bytes differ from1903 and are disclosed separately. Stock1928 is queued
+  versus1903; no whole cycle gain is established.
+  [Capsules](perf_records/flat_spatial_command_loop_qualification.json),
+  [normal/frozen full gates](perf_records/resnet_spatial_cpu_loops_normal_whole_qualification.json).
+- **Exact readout:** source-proven domain selection is now an ordinary OOT
+  provider option backed by Merlin numeric proofs and explicit storage guards.
+  Both actual readout families pass complete AB/BA RTL capsules and the normal
+  full-source build passes all1,000original native/strict words. The normal
+  runtime differs from historical1903 and is disclosed; no isolated whole
+  hardware result is inferred. A further complete-domain pair proof permits
+  two scaled i8stores plus a full decoder, avoidingi32readback and dot replay.
+  Original75,264outputs and independent boundary/tie/conversion cases pass on
+  the target. Complete readout capsules including both stores and full decoding
+  reduce the two families by about71.0%/70.6%; independent convolution tails
+  also pass. The normal preparation now proves the fresh, sole-use scratch
+  producer before changing its actual allocation from i32 to i8. The two
+  selected host allocations are 50,240 and 25,152 bytes including alignment.
+  Normal and frozen1903 builds pass all1,000 original native/strict words and
+  the complete zero-FSM audit. The earlier oversized-scratch build remains a
+  diagnostic. Explicit compiler byte-copy selection also passes its own
+  complete RTL pairs: 71.41% and 70.40% reductions for the two readout ROIs.
+  The qualified typed allocation candidate is queued as stock1930; a whole
+  cycle improvement remains unknown.
+  [Normal domain](perf_records/resnet_normal_producer_domain_qualification.json),
+  [pair proof](perf_records/resnet_exact_pair_readout_feasibility.json),
+  [target store contract](paired_readout_store.md),
+  [complete measured decoder](perf_records/exact_pair_readout_matched_gsim.json),
+  [compiler-copy RTL](perf_records/exact_pair_readout_builtin_matched_gsim.json),
+  [actual typed whole route](perf_records/resnet_paired_readout_typed_whole_qualification.json).
+
+- **Stem ordinary CPU command loops:** the normal upstream option retains the
+  original primitive schedule, pooling, input traversal, initialization and
+  bounded tails. The complete original 200,704-byte output capsule improves
+  1,335,580 to 1,294,977 GSIM cycles (3.0401%), with all output bytes and
+  4,096 guards exact. An independent shape improves 11.53%. Compiled text
+  shrinks 87.8%; that is not a measured cycle reduction. The normal build and
+  stem-only frozen1903 build pass all1,000 original native/strict words and
+  the zero-FSM audit. Stock1929 is queued.
+  [Capsules](perf_records/stem_spatial_command_loop_capsules.json),
+  [whole qualification](perf_records/stem_spatial_command_loop_whole_qualification.json).
+
+- **Smol source coverage:** the current whole route leaves384BF16 contractions
+  as ordered CPU f32 FMA loops, totaling19,327,352,832 source FMAs. This is an
+  exact source-work census, not an attributed cycle total. Optimized complete
+  attention-head capsules are separate experiments and are not enabled in1906.
+  The source QK result remains live through f32max, source polynomial exp and
+  denominator reductions; PV retains ordered f32 partial additions and scaling
+  before BF16 conversion. A narrower early BF16 rounding substitution is
+  therefore refused. Generic Merlin source analysis now closes 48 groups,
+  each retaining eight contractions and 50 original operations, through a
+  BF16 endpoint with no live f32 escape. Parent revalidation on the immutable
+  original source passes all 48 groups. Group closure does not establish a
+  numerical certificate, profitable implementation or whole-model speedup.
+  Actual source extraction and provider qualification remain in progress.
+  [Parent revalidation](perf_records/smol1906_source_group_parent_reclosure.json).
+
+The user reported an earlier approximately4B Smol implementation. Recovering its
+provenance and fast route is now a priority. The 258.622B result describes the
+current qualified build and does not claim the best historical Smol result.
+Separate earlier cycle reports require workload, timing boundary, accuracy and
+ISA comparison before their performance can be transferred to this build. The
+original atol=.03125/rtol=.02 gate remains fixed; bitexact whole output is beyond
+that required criterion.
+The retained owned job610 reports33.085B cycles and declares a ten-step
+trajectory with an older atol=.06/rtol=.05 gate. Its actual ELF contains FSM
+instructions. Dividing by ten gives an arithmetic average, not a separately
+measured step; the sibling harness's ELF differs, so exact linked timing scope
+is not established by that harness. This artifact is not a drop-in replacement
+for1906. The separate near4B Exo reference source and gate remain unclosed in
+permitted owned copies. [Historical audit](perf_records/historical_smol_job610_audit.json).
 
 - **Merlin host copies:** optional private uniform-fill copying removes four
   copies and two temporaries under a complete ownership/order proof. Frozen1903
