@@ -64,3 +64,25 @@ These are fixture diagnostics, not an interval proof or performance measurement.
 A separate source interval certificate will refine ambiguous extrema/scale/bin
 values and retain the existing source quantization consumer. The unchanged
 whole model gate still precedes any target admission.
+
+## Full exact consumer-observation result
+
+The full 48-group native source model passes all 1,600 original output words
+bit exact, with zero whole-group source exception fallbacks. Every current live
+input hash matches the accepted exact control at all 48 calls. Independently
+compiled original quantization confirms all 9,437,184 int8 observation words and
+12,288 escaping BF16 scales exactly, despite 6,008 changed BF16 producer words.
+
+The source replay count falls from 5,507,717,696 FMAs for exact BF16 endpoints to
+646,130,688 FMAs for exact integer/scale observations: 28.4970% to 3.3431% of the
+19.327B original source FMAs, an 88.27% replay reduction. These full-fixture counts
+replace any first-group replay extrapolation. They are functional source counts,
+not actual target instructions, hardware cycles or a 5B whole-model forecast.
+
+The new runtime has frozen complete C/header/compiler/flag identities, with a
+fresh shared object independently reclosed to the earlier qualified candidate.
+The normal compiler binder must validate all retained live consumer-context and
+complete scalar-DAG fingerprints before installing an observationally different
+BF16 writer; complete writes, input preservation, borrowed lifetime, original
+source fallback and numeric/effect proof remain required. Actual Gemmini QK/PV
+implementation and timed target qualification are the next separate gate.
