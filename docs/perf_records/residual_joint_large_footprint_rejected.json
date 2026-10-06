@@ -1,0 +1,135 @@
+{
+  "schema": "residual_joint_large_footprint_screen_v1",
+  "recorded_at_utc": "2026-10-06T04:44:46.451131+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Two separately emitted small-coefficient predictors plus packed joint decoder reduce full39chunk exact source arithmetic.",
+  "source": {
+    "lhs_scale": 0.011258588172495365,
+    "rhs_scale": 0.00940733402967453,
+    "output_scale": 0.011643771082162857,
+    "relu": true
+  },
+  "elements": 802816,
+  "source_capture": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/capture/receipt.json",
+    "sha256": "57dc53e33c3c030954782fb07aaab3f724ff1b0ff31e928eef68fc7bbcc20671"
+  },
+  "control_cycles": 1996069,
+  "candidate_cycles": 2329170,
+  "delta_cycles": 333101,
+  "fraction_change": 0.166878499691143,
+  "metric_scope": "Complete captured original layer, two full predictor calls/stores plus whole-output decoder, paired GSIM common addresses; harness warmup and checks excluded from ROI.",
+  "engine": {
+    "target": "gemmini",
+    "engine": "gsim",
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+    "available": true,
+    "refused": false,
+    "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+    "flavour": "binary",
+    "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "receipt_status": "bound",
+    "receipt": {
+      "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+      "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+      "schema_version": "merlin.gsim-model-build.v2",
+      "status": "complete",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+      "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+      "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+      "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+      "provenance": null,
+      "tools": {
+        "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+        "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+      }
+    }
+  },
+  "all_source_output_bytes_exact": true,
+  "both_target_readouts_exact": true,
+  "strict_RV64GC": true,
+  "zero_FSM": true,
+  "dirty_guards": 8192,
+  "input_bytes_preserved": 1605632,
+  "status": "Rejected large-footprint performance; no normal enablement.",
+  "lesson": "Small65536-byte complete-domain positive2.08% did not transfer to802816-byte original capture. Additional DMA/readout and CPU full-output scan must be included at the actual footprint. Physical DRAM and overlap attribution UNKNOWN.",
+  "fused_followup": {
+    "status": "INCOMPLETE; wall timeout after candidate ROI, before full final numeric/input marker; no performance admission.",
+    "candidate_unqualified_ROI_cycles": 2257850,
+    "strict_both_predictors_and_source_outputs": "PASS in both strictSpike replays, actual GSIM candidate postROI closure missing",
+    "pins": {
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/recipe.json": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/recipe.json",
+        "sha256": "fd7dd31b0b2b4a1184e3e1d745abaf85bb18b7f8ccd9b91f9ecb44adb6e2f5aa"
+      },
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm0/result.json": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm0/result.json",
+        "sha256": "045181f028a3dc0eacf369ea00b163322b3691cccd655562c7e9cfc55eee6e25"
+      },
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm1/gsim.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm1/gsim.stdout",
+        "sha256": "7cb5e4f9bbf4787259b18d3a9be7bbdbd83db8fa0e590f7a2118fb0a45674574"
+      },
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm1/spike.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture/arm1/spike.stdout",
+        "sha256": "196349f6b952046a9ceeb3fb3f11978f2ef932059530e41a82e5a63236fc5e77"
+      },
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture.log": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/fused_original_capture.log",
+        "sha256": "6b90963ad12199e86f66ad0f574d2fc4055df2d5e9696885887cbfe202fb8a4a"
+      }
+    }
+  },
+  "normal_selection_enabled": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/recipe.json": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/recipe.json",
+      "sha256": "931e901c3b8e2e22d9baedde931cbfb195ef407f16dd30f077f5ee2a74d4d1f2"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/result.json": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/result.json",
+      "sha256": "83234f53fa779b5ffe87d4ba28d7d88bb1314a3db08d9969abb00b6f8d7c53a3"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/probe.c": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/probe.c",
+      "sha256": "6e19d8958f3ed7a5b940cadd5ac2a8b81cfe7a4e60b4a24f6663d29d3770394c"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/layer.elf": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/layer.elf",
+      "sha256": "b729cefb68b73940c873ea8ed2906dad8c364c216f4b767f3047c1652f7fe55b"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/spike.stdout": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/spike.stdout",
+      "sha256": "0640336058adb95377ef7c9d563132c1f31be6fb266f4f88457e7062ca4ef15a"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/spike.stderr": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/spike.stderr",
+      "sha256": "4b0cd7f36b2399f2ddcb4196353d481f7e870169e634b9f6b7b7b101faab6e1f"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/gsim.stdout": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm0/gsim.stdout",
+      "sha256": "1db634e92e4187e687c4fa1008cf22c3b93b16e70d79c0ee234f655c78308b2f"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/layer.elf": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/layer.elf",
+      "sha256": "29dfff63937a595693e68e36fa6fcae6c9dfebdad58d90f6751ffd6d8e4caf29"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/spike.stdout": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/spike.stdout",
+      "sha256": "309228164a2b8ade3ac788a5ce5e68aec601aae3af327ffd664959d8188f9b2a"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/spike.stderr": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/spike.stderr",
+      "sha256": "eda10dd12d9ce057f36111bb90d61cfd074da2851ac55463592527396d58d0f0"
+    },
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/gsim.stdout": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/arm1/gsim.stdout",
+      "sha256": "7ce4787e44834054ed34e510d8b8c7baf5aa35459dd9f3ef72b29639e78683bd"
+    }
+  },
+  "token_usage_available": false
+}

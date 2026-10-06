@@ -24,8 +24,11 @@ from .tables import rtl_facts as F
 class JointResidualPlan:
     m: int
     coefficients: tuple[tuple[int, int], tuple[int, int]]
+    share_affine: bool = False
 
     def __post_init__(self):
+        if type(self.share_affine) is not bool:
+            raise ValueError("explicit shared-affine boolean required")
         if not isinstance(self.coefficients, tuple) or len(self.coefficients) != 2:
             raise ValueError("two explicit coefficient pairs required")
         for pair in self.coefficients:
@@ -34,10 +37,20 @@ class JointResidualPlan:
                     "two explicit integer coefficients per prediction required"
                 )
             ResidualPrefetchPlan(self.m, *pair, True)
-        if 5 * F.DIM > F.SPAD_BANK_ROWS or 2 * self.panel_rows > F.ACC_BANK_ROWS:
+        if self.share_affine and self.coefficients[0] != self.coefficients[1]:
+            raise ValueError(
+                "shared producer requires identical integer affine coefficients"
+            )
+        if self.weight_rows > F.SPAD_BANK_ROWS or (
+            not self.share_affine and 2 * self.panel_rows > F.ACC_BANK_ROWS
+        ):
             raise ValueError(
                 "joint coefficients or disjoint readout slots exceed resources"
             )
+
+    @property
+    def weight_rows(self):
+        return (3 if self.share_affine else 5) * F.DIM
 
     @property
     def panel_rows(self):
@@ -55,14 +68,19 @@ class JointResidualPlan:
     def accumulator_base(self, prediction, slot):
         if prediction not in (0, 1) or slot not in (0, 1):
             raise ValueError("bounded prediction/panel slot required")
-        return prediction * F.ACC_BANK_ROWS + slot * self.panel_rows
+        return (
+            slot * F.ACC_BANK_ROWS
+            if self.share_affine
+            else prediction * F.ACC_BANK_ROWS + slot * self.panel_rows
+        )
 
     def attributes(self):
         values = {
             "operand_slot_rows": 2 * self.panel_rows,
             "weight_base": self.weight_base,
-            "weight_rows": 5 * F.DIM,
-            "accumulator_reserved_rows": 4 * self.panel_rows,
+            "weight_rows": self.weight_rows,
+            "accumulator_reserved_rows": (2 if self.share_affine else 4)
+            * self.panel_rows,
             "panel_count": self.m // F.DIM,
         }
         for prediction, pair in enumerate(self.coefficients):
@@ -73,20 +91,23 @@ class JointResidualPlan:
                 values[f"accumulator{prediction}_slot{slot}"] = self.accumulator_base(
                     prediction, slot
                 )
+        if self.share_affine:
+            values["shared_affine_producer"] = 1
+            values["physical_chunks_per_panel"] = values["chunks0_per_panel"]
         return DictionaryAttr(
             {key: IntegerAttr(value, i64) for key, value in values.items()}
         )
 
 
-def tables(predictors):
+def tables(predictors, *, share_affine=False):
     """One shared127 diagonal plus each predictor's two remainder diagonals."""
     pairs = tuple((row["p"], row["q"]) for row in predictors)
-    JointResidualPlan(F.DIM, pairs)
+    JointResidualPlan(F.DIM, pairs, share_affine)
     first, second = [single_tables(*pair) for pair in pairs]
-    return first + second[F.DIM * F.DIM :]
+    return first if share_affine else first + second[F.DIM * F.DIM :]
 
 
-def build(m, predictors):
+def build(m, predictors, *, share_affine=False):
     """Emit a fused pair only; caller retains full-domain proof/decoder obligations."""
     if not isinstance(predictors, (list, tuple)) or len(predictors) != 2:
         raise ValueError("two explicit predictor contracts required")
@@ -104,7 +125,9 @@ def build(m, predictors):
         if not math.isfinite(supplied["scale"]) or supplied["scale"] <= 0:
             raise ValueError("positive finite readout scale required")
         contracts.append(dict(supplied))
-    plan = JointResidualPlan(m, tuple((row["p"], row["q"]) for row in contracts))
+    plan = JointResidualPlan(
+        m, tuple((row["p"], row["q"]) for row in contracts), share_affine
+    )
     e = GoldenGemm(Shape(m, plan.panel_rows, F.DIM, bn=4))
     e.fb = FnBuilder([PTR] * 5)
     a, b, c0, c1, coeff = e.fb.entry.args
@@ -114,7 +137,7 @@ def build(m, predictors):
     for lid in (0, 1):
         e._rocc("config_ld", {"stride": plan.panel_rows, "load_id": lid})
     e._rocc("config_ld", {"stride": F.DIM, "load_id": 2})
-    for index in range(5):
+    for index in range(plan.weight_rows // F.DIM):
         ptr = e._ptr(coeff, e.fb.const(0), 1, e.fb.const(index * F.DIM * F.DIM))
         e._rocc(
             "mvin",
@@ -145,7 +168,12 @@ def build(m, predictors):
             zip(contracts, (c0, c1), strict=True)
         ):
             acc_base, first = plan.accumulator_base(prediction, slot), True
-            for operand, value in enumerate((contract["p"], contract["q"])):
+            operands = (
+                ()
+                if plan.share_affine and prediction == 1
+                else enumerate((contract["p"], contract["q"]))
+            )
+            for operand, value in operands:
                 full, remainder = divmod(value, 127)
                 base = plan.operand_base(slot, operand)
 

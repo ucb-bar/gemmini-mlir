@@ -10,8 +10,10 @@ import json
 import subprocess
 from pathlib import Path
 
+import numpy as np
 from gsim_joint_affine_pair_probe import pin
-from merlin.llvmlower.quantized_affine_joint import derive_joint
+from merlin.llvmlower.quantized_affine_joint import derive_joint, emit_joint_decoder
+from merlin.llvmlower.quantized_affine_pair import predictor_table
 from merlin.perf.layer_bench import build_program, run_on_gsim
 
 from mlir_oot.golden_device_compile import compile_module
@@ -22,6 +24,8 @@ from mlir_oot.no_fsm_audit import audit_elf
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prepared", type=Path, required=True)
+    parser.add_argument("--certificate", type=Path)
+    parser.add_argument("--share-affine", action="store_true")
     parser.add_argument("--llvm-bin", type=Path, required=True)
     parser.add_argument("--workdir", type=Path, required=True)
     parser.add_argument("--max-cycles", type=int, default=18000000)
@@ -35,18 +39,57 @@ def main():
     assert pin(original["certificate"]["path"]) == original["certificate"]
     for fixture in original["fixture_pins"].values():
         assert pin(fixture["path"]) == fixture
-    proof = json.loads(Path(original["certificate"]["path"]).read_text())
+    original_proof = json.loads(Path(original["certificate"]["path"]).read_text())
+    proof_path = (
+        args.certificate.resolve()
+        if args.certificate
+        else Path(original["certificate"]["path"])
+    )
+    proof = json.loads(proof_path.read_text())
     assert proof == derive_joint(**proof["source"], predictors=proof["predictors"])
     assert proof["decoder_exact_for_all_pairs"]
+    assert proof["source"] == original_proof["source"]
     n = original["elements"]
-    module = build(n // 64, proof["predictors"])
+    module = build(n // 64, proof["predictors"], share_affine=args.share_affine)
     compilation = compile_module(module, args.llvm_bin, work / "fused")
+    coefficients = tables(proof["predictors"], share_affine=args.share_affine)
     (work / "joint_tables.h").write_text(
-        "static const int8_t joint_coefficients[1280] __attribute__((aligned(64)))={"
-        + ",".join(map(str, tables(proof["predictors"])))
+        f"static const int8_t joint_coefficients[{len(coefficients)}] __attribute__((aligned(64)))={{"
+        + ",".join(map(str, coefficients))
         + "};\n"
     )
     old = Path(original["source"]["path"]).read_text()
+    fixture_assembly = prepared / "fixture.S"
+    if args.certificate:
+        marker = "#include <stdio.h>"
+        assert old.count(marker) == 1
+        old = (
+            emit_joint_decoder(proof, "decode_joint", packed=True)
+            + old[old.index(marker) :]
+        )
+        a, b = [
+            np.fromfile(prepared / "fixture" / (name + ".bin"), np.int8)
+            for name in ("a", "b")
+        ]
+        indices = a.astype(np.int16) + 128, b.astype(np.int16) + 128
+        for index, predictor in enumerate(proof["predictors"]):
+            predictor_table(**predictor)[indices].tofile(work / f"pred{index}.bin")
+        fixture_assembly = work / "fixture.S"
+        fixture_assembly.write_text(
+            ".section .rodata\n"
+            + "".join(
+                f'.balign 64\n.globl fixture_{name}\nfixture_{name}:\n.incbin "{path}"\n'
+                for name, path in [
+                    ("a", prepared / "fixture" / "a.bin"),
+                    ("b", prepared / "fixture" / "b.bin"),
+                    ("check_a", prepared / "fixture" / "a.bin"),
+                    ("check_b", prepared / "fixture" / "b.bin"),
+                    ("expected", prepared / "fixture" / "expected.bin"),
+                    ("pred0", work / "pred0.bin"),
+                    ("pred1", work / "pred1.bin"),
+                ]
+            )
+        )
     warmup = " joint_kernel1(fixture_a,fixture_b,first.output,coefficients1);\n joint_kernel2(fixture_a,fixture_b,second.output,coefficients2);"
     timed = "joint_kernel1(fixture_a,fixture_b,first.output,coefficients1);joint_kernel2(fixture_a,fixture_b,second.output,coefficients2);"
     call = "gemmini_golden_joint_resadd(fixture_a,fixture_b,first.output,second.output,joint_coefficients);"
@@ -61,7 +104,7 @@ def main():
     objects.append(work / "fused" / "kernel.o")
     for arm in (0, 1):
         built[arm] = build_program(
-            [*objects, source, prepared / "fixture.S"],
+            [*objects, source, fixture_assembly],
             work / f"arm{arm}",
             target="gemmini",
             extra_cflags=[
@@ -87,13 +130,19 @@ def main():
     recipe = {
         "schema": "resident_input_joint_readout_pair_v1",
         "prepared_recipe": pin(prepared / "recipe.json"),
-        "certificate": original["certificate"],
+        "certificate": pin(proof_path),
+        "share_affine": args.share_affine,
         "compilation": compilation,
         "driver": pin(__file__),
         "source": pin(source),
         "coefficient_header": pin(work / "joint_tables.h"),
         "objects": [pin(path) for path in objects],
-        "fixture_assembly": pin(prepared / "fixture.S"),
+        "fixture_assembly": pin(fixture_assembly),
+        "predictor_expected_outputs": [
+            pin(work / f"pred{index}.bin") for index in (0, 1)
+        ]
+        if args.certificate
+        else None,
         "selector_byte_ledger": [
             {"offset": i, "before": lhs[i], "after": rhs[i]} for i in differences
         ],

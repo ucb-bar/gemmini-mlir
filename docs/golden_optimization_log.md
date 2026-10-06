@@ -1274,3 +1274,34 @@ output words and actual stagedELF/stockbitstream pins match. This single-run
 result is1.36% below priorbest1897; neither localcapsule gains nor independent
 stripe/packet gains are added. Originalsource arithmetic/numericproof remains.
 [Strict hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json).
+
+### Exact residual joint readouts and shared integer producer
+
+Two nearby affine predictions can jointly recover every original separately
+rounded binary32 source result even when neither byte is individually exact.
+Merlin now refuses any predictor tuple with conflicting source outputs over all
+65,536 signed-byte pairs. The target uses explicit diagonal primitive commands,
+private independent readouts, and a shared portable decoder; no FSM operations.
+
+A first 11-chunk implementation improved the 65,536-byte capsule by 2.08%, but
+regressed on the original 802,816-byte layer from 1,996,069 to 2,329,170 GSIM
+cycles (+16.69%). Its resident-input follow-up timed out after the ROI before
+complete final GSIM checks. Both remain disabled. These results demonstrate why
+full readout traffic, decoder scanning, and actual working-set size belong in
+candidate screening. [Negative receipt](perf_records/residual_joint_large_footprint_rejected.json).
+
+A stronger general rule computes one exact integer affine producer and stores
+it at two independently proved binary32 scales. Source-derived threshold
+intervals for coefficients 298/249 need two scales; the complete joint table has
+zero conflicts. The OOT resource/lifetime plan reuses the same unchanged
+accumulator for both stores, with five coefficient chunks instead of 39.
+Default kernels remain byte-identical. Complete-domain target replay verifies
+both actual predictions, source results, input immutability and 8,192 dirty
+boundary bytes under strict RV64GC Spike and pinned GSIM, with zero FSM.
+
+The common-address capsule falls from 164,374 to 126,045 GSIM cycles (23.32%).
+An independent 48-row, three-panel drain case falls from 8,061 to 6,445 cycles
+(20.05%), with every output and boundary check passing. These are capsule
+measurements in the GSIM memory regime. The original full layer, ordinary
+source binding, caller-owned workspace, and whole-model gate remain required
+before enabling this family. [Qualified capsule](perf_records/residual_shared_affine_bracket_capsule.json).
