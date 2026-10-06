@@ -1,0 +1,117 @@
+{
+  "scope": "Complete original first attention head, native functional screen only, no hardware claim",
+  "policy": "explicit stable RNE, gradual underflow, nontrapping arithmetic; errno/sticky exception flags unobserved",
+  "bound_derivation": "For zero-seeded increasing-K FMA, reconstructed sum S and absolute product sum A bound every real prefix by (abs(S)+A)/2. Add representation bound E for original operands. Outward gamma_n times this magnitude plus gradual-underflow eta bounds accumulated source rounding, then add E and enclose original f32 result. Existing merlin_fma_zero_gamma_prepare/apply implements validation and outward rounding; ambiguous source outputs still replay.",
+  "baseline_difference": "Unlike1895, retain independent device absolute-product planes instead of Holder bound. PV bound and all source softmax/denominator/partial grouping unchanged.",
+  "arms": {
+    "attention_absnorm_control": {
+      "native": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.3116343021392822,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/native.so"
+        ]
+      },
+      "pins": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/driver.c": "2ab418773213cf8f2bbc5b8daf8c09b82c7182fc945607ed61c5c0935355d972",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/fma_product_norms.h": "d397c08c8bbceafd965bb243f2effdc8335f379e99860fe13e66bc2139b3dccf",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/ordered_fma_bounds.h": "33ac4b63a0ded24b901212e76aa811945a15c099d4cced5808ece6ff3b460f8d",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/native.log": "41a65b3c6827c81cbae9682bda482393a6cf77cf52bee4165b72772e37b07c54",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_control/output.npy": "b02868769b5bd2db203c33f8a10ed709262b190c06c51105b365d3ae215d13f9"
+      }
+    },
+    "attention_absnorm_four_fields": {
+      "native": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.4445948600769043,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/native.so"
+        ]
+      },
+      "pins": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/driver.c": "b85a18e7f3397470307709773929de6278583c94d46f69c2c7680ef2fe7ebf3d",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/fma_product_norms.h": "26d821480adaff9d7583d88fd8bc2261a76f259b6f38b8d6ec1c1023abc08b9d",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/native.log": "b3471f3851772270a75775a2cf53c0d7c8e61a9c88433e9903696838aba418b2",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_four_fields/output.npy": "b02868769b5bd2db203c33f8a10ed709262b190c06c51105b365d3ae215d13f9"
+      }
+    },
+    "attention_absnorm_signed_gamma": {
+      "native": {
+        "all65536originalbits": true,
+        "rc": 0,
+        "seconds_functional_only": 0.29491209983825684,
+        "digest": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e",
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-shared",
+          "-fPIC",
+          "-DHEADS=1",
+          "-DVARIANT=0",
+          "-DNATIVE=1",
+          "-DBUILD_HASH=\"native_functional_only\"",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/driver.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/native_stub.c",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/data.S",
+          "-lblas",
+          "-lm",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/native.so"
+        ]
+      },
+      "pins": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/driver.c": "dbb0e8506798699dbb9ebbb518e17d39e479b84b8dc2244d0d191fd0417a6ac9",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/reference_guard.c": "f0957c6de201bb8f2d1704f18ff7b5c0b441468136f3d26f1a61167bac169bf4",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/fma_product_norms.h": "26d821480adaff9d7583d88fd8bc2261a76f259b6f38b8d6ec1c1023abc08b9d",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/native.log": "0126a4b4d131e0634673b1756940591658c935fd82f5d58c7e9fda7736d2746c",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_absnorm_signed_gamma/output.npy": "b02868769b5bd2db203c33f8a10ed709262b190c06c51105b365d3ae215d13f9"
+      }
+    }
+  },
+  "token_usage_available": false
+}
