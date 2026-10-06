@@ -19,8 +19,8 @@ from merlin.perf.layer_bench import build_program, run_on_gsim
 from xdsl.dialects.builtin import StringAttr
 
 from mlir_oot.golden_conv import ConvShape
-from mlir_oot.golden_gemm import GoldenGemm, Shape
 from mlir_oot.golden_device_compile import compile_module
+from mlir_oot.golden_gemm import GoldenGemm, Shape
 from mlir_oot.golden_resident_conv import GoldenResidentConv
 from mlir_oot.golden_resident_stripe_conv import GoldenResidentStripeConv
 from mlir_oot.no_fsm_audit import audit_elf
@@ -35,7 +35,17 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--fixture-dir", type=Path, required=True)
     ap.add_argument(
-        "--schedule", choices=("control", "compact", "full_reduction", "strided_resident", "stride_residue", "coalesced_resident_a"), required=True
+        "--schedule",
+        choices=(
+            "control",
+            "compact",
+            "full_reduction",
+            "strided_resident",
+            "stride_residue",
+            "coalesced_resident_a",
+            "mesh_flip",
+        ),
+        required=True,
     )
     ap.add_argument("--bn", type=int)
     ap.add_argument("--prefetch-b", action="store_true")
@@ -48,25 +58,30 @@ def main():
     source_receipt = json.loads((fixture / "receipt.json").read_text())
     dense = "m" in source_receipt["shape"]
     shape = (Shape if dense else ConvShape)(**source_receipt["shape"])
-    if dense and args.schedule not in ("control", "coalesced_resident_a"):
+    if dense and args.schedule not in ("control", "coalesced_resident_a", "mesh_flip"):
         raise ValueError("dense fixture requires an explicit dense schedule")
-    if not dense and args.schedule == "coalesced_resident_a":
-        raise ValueError("resident A DMA grouping requires a dense fixture")
+    if not dense and args.schedule in ("coalesced_resident_a", "mesh_flip"):
+        raise ValueError("selected dense schedule requires a dense fixture")
     if args.prefetch_b and args.schedule != "compact":
         raise ValueError("weight prefetch requires explicit compact schedule")
     if args.bn is not None:
-        if args.schedule == "control":
-            raise ValueError("exact control does not accept a tile override")
+        if args.schedule in ("control", "mesh_flip"):
+            raise ValueError(
+                "exact control and isolated mesh mode do not accept tile overrides"
+            )
         shape = replace(shape, bn=args.bn)
     shape.validate()
     if not dense and shape.explicit_halo:
         raise ValueError("this paired resident probe requires unpadded inputs")
-    counts = {"a": shape.m * shape.k, "b": shape.k * shape.n,
-              "expected": shape.m * shape.n} if dense else {
-        "a": shape.h * shape.w * shape.cin,
-        "b": 9 * shape.cin * shape.cout,
-        "expected": shape.oh * shape.ow * shape.cout,
-    }
+    counts = (
+        {"a": shape.m * shape.k, "b": shape.k * shape.n, "expected": shape.m * shape.n}
+        if dense
+        else {
+            "a": shape.h * shape.w * shape.cin,
+            "b": 9 * shape.cin * shape.cout,
+            "expected": shape.oh * shape.ow * shape.cout,
+        }
+    )
     dtype = np.int8 if shape.output_dtype == "i8" else np.int32
     data = {}
     for name, count in counts.items():
@@ -95,17 +110,39 @@ def main():
         }
         resource = None
     else:
-        if args.schedule == "coalesced_resident_a":
+        if args.schedule == "mesh_flip":
+            if not shape.cache_a or not shape.reuse_b:
+                raise ValueError(
+                    "mesh flip screen needs a complete cached A stationary-reuse control"
+                )
+            shape = replace(shape, reuse_b=False)
             placement = source_receipt.get("prefetch_b_rows")
-            generator = GoldenGemm(shape, resident_a_load_tiles=4,
-                                   prefetch_b_rows=tuple(placement) if placement else None)
+            generator = GoldenGemm(
+                shape,
+                resident_a_load_tiles=source_receipt.get("resident_a_load_tiles", 1),
+                prefetch_b_rows=tuple(placement) if placement else None,
+            )
+        elif args.schedule == "coalesced_resident_a":
+            placement = source_receipt.get("prefetch_b_rows")
+            generator = GoldenGemm(
+                shape,
+                resident_a_load_tiles=4,
+                prefetch_b_rows=tuple(placement) if placement else None,
+            )
         elif args.schedule == "stride_residue":
             from mlir_oot.conv_schedule import source_stride_resource_layout
-            generator,resource_choice=source_stride_resource_layout(shape,row_residue=True)
-            shape=generator.conv
+
+            generator, _resource_choice = source_stride_resource_layout(
+                shape, row_residue=True
+            )
+            shape = generator.conv
         elif args.schedule == "strided_resident":
-            input_rows=(shape.cin//F.DIM)*(shape.h+2)*(shape.w+2)
-            generator=GoldenResidentConv(shape, weight_base=((input_rows+F.DIM-1)//F.DIM)*F.DIM, source_stride=True)
+            input_rows = (shape.cin // F.DIM) * (shape.h + 2) * (shape.w + 2)
+            generator = GoldenResidentConv(
+                shape,
+                weight_base=((input_rows + F.DIM - 1) // F.DIM) * F.DIM,
+                source_stride=True,
+            )
         else:
             generator = (
                 GoldenResidentConv(shape, prefetch_b=args.prefetch_b)
@@ -142,7 +179,8 @@ def main():
                 * F.DIM,
             }
     assembly = []
-    for i, (name, array) in enumerate(data.items()):
+    arrays = dict(data, check_a=data["a"], check_b=data["b"])
+    for i, (name, array) in enumerate(arrays.items()):
         array.tofile(w / (name + ".bin"))
         assembly.append(
             ".section .data\n.balign "
@@ -178,6 +216,7 @@ def main():
 #include <stdio.h>
 #define N {n}
 extern int8_t captured_a[{counts["a"]}], captured_b[{counts["b"]}];
+extern const int8_t captured_check_a[{counts["a"]}], captured_check_b[{counts["b"]}];
 extern const {ctype} captured_expected[N];
 struct output_box {{uint8_t before[2048];{ctype} output[N];uint8_t after[2048];}};
 struct output_box captured_box __attribute__((aligned(1048576)));
@@ -194,6 +233,8 @@ int main(void) {{
   printf("CAPTURED_CONV_FAIL i%d got%d want%d\\n",i,captured_box.output[i],captured_expected[i]);return 1;}}
  for(int i=0;i<2048;i++)if(captured_box.before[i]!=0x5a||captured_box.after[i]!=0x5a){{
   printf("CAPTURED_CONV_GUARD_FAIL i%d\\n",i);return 2;}}
+ for(int i=0;i<{counts["a"]};i++)if(captured_a[i]!=captured_check_a[i])return 3;
+ for(int i=0;i<{counts["b"]};i++)if(captured_b[i]!=captured_check_b[i])return 4;
  printf("CAPTURED_CONV_PASS N={n} SCHEDULE={args.schedule}\\n");return 0;
 }}
 """
@@ -224,6 +265,23 @@ int main(void) {{
     }
     if len(addresses) != 4:
         raise ValueError("operand/output addresses missing from linked ELF")
+    spike = Path("/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike")
+    spike_argv = [
+        str(spike),
+        "-g",
+        "--extension=gemmini",
+        "--isa=rv64gc",
+        "-m0x80000000:0x80000000",
+        str(built.elf),
+    ]
+    spike_run = subprocess.run(
+        spike_argv, capture_output=True, timeout=900, check=False
+    )
+    (w / "spike.stdout").write_bytes(spike_run.stdout)
+    (w / "spike.stderr").write_bytes(spike_run.stderr)
+    marker = f"CAPTURED_CONV_PASS N={n} SCHEDULE={args.schedule}"
+    if spike_run.returncode or marker not in spike_run.stdout.decode():
+        raise ValueError("complete strict target capsule failed")
     run = run_on_gsim(
         built.elf,
         target="gemmini",
@@ -236,7 +294,9 @@ int main(void) {{
     passed = bool(run.completed and run.returncode == 0 and marker in run.stdout_tail)
     cycles = re.findall(r"^CAPTURED_CONV_CYCLES (\d+)$", run.stdout_tail, re.MULTILINE)
     result = {
-        "schema": "gemmini_captured_dense_capsule_v1" if dense else "gemmini_captured_convolution_capsule_v1",
+        "schema": "gemmini_captured_dense_capsule_v1"
+        if dense
+        else "gemmini_captured_convolution_capsule_v1",
         "status": "pass" if passed else "fail",
         "schedule": args.schedule,
         "prefetch_b": args.prefetch_b,
@@ -249,12 +309,24 @@ int main(void) {{
         "common_operand_addresses": addresses,
         "elf_sha256": built.elf_sha256,
         "source_c_sha256": sha(source),
+        "probe_driver": {
+            "path": str(Path(__file__).resolve()),
+            "sha256": sha(Path(__file__)),
+        },
         "kernel_cycles": int(cycles[0]) if len(cycles) == 1 else None,
         "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
         "run_completed": run.completed,
         "run_returncode": run.returncode,
         "outputs_checked": n if passed else None,
         "guards_checked": 4096 if passed else None,
+        "immutable_input_bytes_checked": counts["a"] + counts["b"] if passed else None,
+        "strict_target": {
+            "status": "pass",
+            "spike_argv": spike_argv,
+            "engine_sha256": sha(spike),
+            "stdout_sha256": sha(w / "spike.stdout"),
+            "stderr_sha256": sha(w / "spike.stderr"),
+        },
         "nofsm_status": audit["status"],
         "engine_sha256": run.engine.get("binary_sha256"),
         "stdout": run.stdout_tail,
