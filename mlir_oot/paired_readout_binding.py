@@ -64,3 +64,72 @@ def native_oracle(schedule,kernel,plan,scalar_oracle):
  for(size_t i=0;i<{count};i++){{{stores}}}free(acc);
 }}
 '''
+
+
+def prepare_paired_scratch(module, manifest):
+    """Rebind legacy fresh scratch to the selected provider's byte-write ABI.
+
+    Validate every selected declaration and all caller ownership before mutation.
+    This changes only an uninitialized private tensor.empty's element type;
+    it never reinterprets a live value or an external allocation.
+    """
+    import hashlib
+    import json
+    from xdsl.dialects import tensor
+    from xdsl.dialects.builtin import DictionaryAttr, FunctionType, IntegerAttr, StringAttr, TensorType, i8, i64
+    from xdsl.rewriter import Rewriter
+
+    pending = []
+    for route in manifest['routes']:
+        selection = route.get('paired_readout', {})
+        if not selection.get('applied'):
+            continue
+        proof = selection['proof']
+        plan = PairedReadoutPlan(tuple(proof['source_scales']), tuple(proof['store_scales']), proof['lo'], proof['hi'], proof['relu'])
+        original = route['integer_readout']
+        if (list(plan.source_scales) != original['source_scales'] or plan.accumulator_min != original['accumulator_min'] or plan.accumulator_max != original['accumulator_max'] or plan.relu != (original['output_min'] == 0)):
+            raise ValueError('paired scratch source numeric contract changed')
+        if plan.certificate() != proof:
+            raise ValueError('paired scratch certificate changed')
+        declarations = [op for op in module.walk() if op.name == 'func.func' and op.sym_name.data == route['symbol']]
+        calls = [op for op in module.walk() if op.name == 'func.call' and op.callee.root_reference.data == route['symbol']]
+        if len(declarations) != 1 or len(calls) != 1:
+            raise ValueError('paired scratch requires one bound declaration and call')
+        declaration, call = declarations[0], calls[0]
+        types = declaration.function_type.inputs.data
+        if len(types) != 4 or tuple(value.type for value in call.operands) != tuple(types):
+            raise ValueError('paired scratch call ABI differs from declaration')
+        if not all(isinstance(t, TensorType) for t in types) or types[2].get_shape() != types[3].get_shape() or str(types[3].get_element_type()) != 'i8':
+            raise ValueError('paired scratch tensor geometry differs')
+        dtype = str(types[2].get_element_type())
+        if dtype not in ('i8', 'i32'):
+            raise ValueError('unsupported paired scratch element type')
+        count = 1
+        for dim in types[2].get_shape():
+            if dim <= 0:
+                raise ValueError('paired scratch must have positive static shape')
+            count *= dim
+        attr = declaration.attributes.get('gemmini.integer_readout')
+        expected_sha = hashlib.sha256(json.dumps(route['integer_readout'], sort_keys=True).encode()).hexdigest()
+        if attr is None or attr.data['proof_sha256'].data != expected_sha or attr.data['source_sha256'].data != manifest['source_sha256'] or attr.data['scratch_bytes'].value.data != count * (4 if dtype == 'i32' else 1) or attr.data['scratch_ownership'].data != 'caller_owned_unique':
+            raise ValueError('paired scratch source/proof/extent changed')
+        for index in (2, 3):
+            value = call.operands[index]
+            uses = list(value.uses)
+            if not isinstance(value.owner, tensor.EmptyOp) or len(uses) != 1 or uses[0].operation is not call:
+                raise ValueError('paired scratch/output requires sole-use fresh tensor.empty')
+        if call.operands[2].owner is call.operands[3].owner:
+            raise ValueError('paired scratch aliases output')
+        existing = declaration.attributes.get('gemmini.paired_readout')
+        if existing is not None and json.loads(existing.data) != proof:
+            raise ValueError('paired scratch store proof changed')
+        pending.append((declaration, call, types, count, proof, dtype))
+    for declaration, call, types, count, proof, dtype in pending:
+        new_type = TensorType(i8, types[2].get_shape())
+        if dtype == 'i32':
+            Rewriter.replace_op(call.operands[2].owner, tensor.EmptyOp([], new_type))
+            declaration.properties['function_type'] = FunctionType.from_lists([types[0], types[1], new_type, types[3]], declaration.function_type.outputs.data)
+        attr = declaration.attributes['gemmini.integer_readout']
+        declaration.attributes['gemmini.integer_readout'] = DictionaryAttr({**attr.data, 'scratch_bytes': IntegerAttr(count, i64)})
+        declaration.attributes['gemmini.paired_readout'] = StringAttr(json.dumps(proof, sort_keys=True))
+    return len(pending)
