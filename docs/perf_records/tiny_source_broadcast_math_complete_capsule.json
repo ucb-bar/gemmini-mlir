@@ -1,0 +1,219 @@
+{
+  "schema": "tiny_source_broadcast_math_complete_capsule_experiment_v1",
+  "finished_utc": "2026-10-06T03:01:37.776092+00:00",
+  "hypothesis": "Typed affine/SSA row invariance lets source reciprocal-square-root dependency chains execute once per row instead of once per channel, retaining original scalar operations and precision.",
+  "ownership": {
+    "Merlin": "Typed source numeric/effect proof, smaller tensor producer and normal pre-bufferization pass.",
+    "OOT": "Original source capsule extraction, target builds, no-FSM audit, fixed runtime/object pins and actual complete GSIM timing."
+  },
+  "merlin_commit": "564bbba77",
+  "feature": "hoist_broadcast_source_rsqrt",
+  "actual_emitted_change": "Complete source linalg dependency DAG cloned onto its exact static nonempty projected domain; consumer reads the unchanged typed value. Smaller scratch allocation/read/write included. No external name-based purity or arithmetic approximation.",
+  "complete_capsule": {
+    "schema": "source_bound_broadcast_math_complete_timing_capsule_v1",
+    "elf_sha256": "0564345031ebf0446f3f3161eb8184b3932990990672f8bbf5546ccd06238b81",
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "0564345031ebf0446f3f3161eb8184b3932990990672f8bbf5546ccd06238b81",
+      "executable_sections": 9,
+      "custom_funct_counts": {},
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "source_pins": {
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/source.mlir": "61237fb6f737fa1b5aed69524fba3755224b3fcb502c72678bc65f19db7b2ddf",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/weight.bin": "5a1b3fea19a3c45363b83168115ecdfdfef2f8cad5bcf5b48b255c6a12bcf561",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/activation.bin": "5404bdaeeff2a833a52a27ba8d6ffc941006c09ebddab40c001c0493e2d318c8",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/expected.bin": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/short_roi/main.c": "e3d86592950e2e9ad2818f0ae695062684979532ce98e09addccfb952c79ed3e"
+    },
+    "objects": {
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/control/model.o": "5127fd1fd463035ed75e24475be88a14740945ed66e943f667c621192de8b7ee",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/hoisted/model.o": "b0e55c16bb7790d66477e663ecc473ac1559a5f4f08ac80d9224b06d43082d09",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/short_roi/main.o": "168e0edd52c300b4181f5cfae019069e210821e18127cc5102adde29d361a178",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/data.o": "b382a32b2fe68a838e190a838071164fa69d949c8b7230e0876ffeb77481f4a2",
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51"
+    },
+    "strict_outputs_and_dirty_guards_pass": true,
+    "five_mode_strict_qualification_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/qualification.json",
+    "five_mode_strict_qualification_sha256": "a3b38690824f603f5916250e889ed1c0bf95b582bcfa359460d2960d6a8e7eae",
+    "five_mode_model_runtime_data_objects_identical": true,
+    "scope": "Same immutable control/candidate model objects, original1880 runtime and original operand/data objects. Timing harness omits already qualified untimed five-mode screening; four complete AB/BA normalization calls include reductions, exact source scalar arithmetic, all allocation/output traffic. Cold/warm context is this common timing-only harness, not the earlier untimed-screen layout.",
+    "token_usage_available": false,
+    "complete_gsim_pair_pass": true,
+    "rows_round_arm_actual_cycles": [
+      [
+        0,
+        0,
+        2351622
+      ],
+      [
+        0,
+        1,
+        838846
+      ],
+      [
+        1,
+        1,
+        837692
+      ],
+      [
+        1,
+        0,
+        2386704
+      ]
+    ],
+    "comparison": {
+      "control_mean_cycles": 2369163.0,
+      "candidate_mean_cycles": 838269.0,
+      "saved_cycles_mean": 1530894.0,
+      "saved_percent": 64.61750415653123,
+      "warm_saved_percent": 64.9017222076973
+    },
+    "gsim_receipt": {
+      "records": [],
+      "finish": {
+        "cycles": 7329223,
+        "wall_seconds": 466.44,
+        "done": true,
+        "exit_code": 0
+      },
+      "wall_seconds": 466.4518990770448,
+      "returncode": 0,
+      "stdout_sha256": "00f198f84f222e738c5218b6633ab81b2bf149242c0408b00f84b1d5d64b9da6",
+      "engine": {
+        "target": "gemmini",
+        "engine": "gsim",
+        "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+        "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+        "available": true,
+        "refused": false,
+        "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+        "flavour": "binary",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "receipt_status": "bound",
+        "receipt": {
+          "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+          "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+          "schema_version": "merlin.gsim-model-build.v2",
+          "status": "complete",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+          "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+          "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+          "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+          "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+          "provenance": null,
+          "tools": {
+            "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+            "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+          }
+        }
+      },
+      "command_sha256": "ca02e2ca3a43b55813c39e34e05661b10c09989d682efec441bf8d37cbb73bc7",
+      "stdout_tail": "NORM_COMPLETE_CYCLES 0 0 2351622\nNORM_COMPLETE_CYCLES 0 1 838846\nNORM_COMPLETE_CYCLES 1 1 837692\nNORM_COMPLETE_CYCLES 1 0 2386704\nSOURCE_NORM_COMPLETE PASS\n",
+      "stderr_tail": "] ticks=5200000 in_fires=440148 out_fires=176077 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=5400000 in_fires=457098 out_fires=182857 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=5500000 in_reset=14 done=0\n[link-probe] ticks=5600000 in_fires=474043 out_fires=189635 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=5800000 in_fires=490988 out_fires=196415 in_valid=0 in_ready=0 out_valid=1 out_ready=1\n[tsi-probe] calls=6000000 in_reset=14 done=0\n[gsim-emu] 6000000 cycles, 382.1s, 15704 cyc/s\n[link-probe] ticks=6000000 in_fires=507936 out_fires=203193 in_valid=1 in_ready=1 out_valid=0 out_ready=1\nPacked deps: Vec(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\nUtilization ld q: 0\nUtilization st q: 0\nUtilization ex q: 0\nUtilization ex q (incomplete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n[link-probe] ticks=6200000 in_fires=524883 out_fires=209971 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=6400000 in_fires=541828 out_fires=216749 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=6500000 in_reset=14 done=0\n[link-probe] ticks=6600000 in_fires=558776 out_fires=223529 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n[link-probe] ticks=6800000 in_fires=575723 out_fires=230307 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=7000000 in_reset=14 done=0\n[gsim-emu] 7000000 cycles, 445.4s, 15717 cyc/s\n[link-probe] ticks=7000000 in_fires=592668 out_fires=237085 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=7200000 in_fires=609616 out_fires=243865 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=7329223 wall=466.44s (15713 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=42 dram_w=336 dram_ar=1881 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8005e000 last_ar=0x80003540 max_ar=0x8007e080 r_fires=15048 b_fires=42 cvfpu_accepts=0 uart_chars=0\n",
+      "load_path": "backdoor"
+    },
+    "gsim_console_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/short_roi/gsim.stdout",
+    "gsim_console_sha256": "00f198f84f222e738c5218b6633ab81b2bf149242c0408b00f84b1d5d64b9da6",
+    "decision": "Positive complete source capsule; full original256000word/Torch/strict/noFSM required before stock admission.",
+    "full_model_cycles": null
+  },
+  "immutable_five_mode_qualification": {
+    "schema": "source_bound_broadcast_math_norm_capsule_v1",
+    "scope": "Exact first normalization extracted through typed dependencies; pinned original8x2048embedding/weights; complete reduction/divide/epsilon/rsqrt/weight multiplication/quant RNE/output includes allocations/traffic, unchanged1880runtime object. Five strict rounding modes and matching sticky flags, all16384i8 results plus128 dirtyguards.",
+    "native_all_exact": true,
+    "strict_all_exact": true,
+    "strict_all5_rounding_modes_and_flags": true,
+    "original_runtime_object": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/mlir_rt.o",
+    "original_runtime_object_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+    "elf_sha256": "620afc0a754149df6bd89c74f682caa7d4c9699b41a7691114a23f4af436bbd1",
+    "proofs": [
+      {
+        "arm": "control",
+        "target_rne_sites": 1,
+        "llvm_sha256": "307f69d4f4bf2663eaf1bfa1cf91e319f3670570eb4a3a9d847851b4c0a45eab",
+        "target_llvm_sha256": "c87ae51b8e76bfaeb90f82e6a640f08a7ee82789f8a2391ec0821e37aa458c66",
+        "native_output_sha256": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98"
+      },
+      {
+        "arm": "hoisted",
+        "target_rne_sites": 1,
+        "llvm_sha256": "b7f4fb8a2f8ec4ccd8245280a3db9692d983ded95d30666b1a50794408b135bb",
+        "target_llvm_sha256": "031b44ce4e3f13154274cb0d2c7ab7ce12ccd3b52e1dca98562b30d428a3c500",
+        "native_output_sha256": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98"
+      }
+    ],
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "620afc0a754149df6bd89c74f682caa7d4c9699b41a7691114a23f4af436bbd1",
+      "executable_sections": 9,
+      "custom_funct_counts": {},
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "token_usage_available": false
+  },
+  "source_operation_and_actual_census_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/docs/perf_records/tiny1880_host_classes_and_broadcast_math_census.json",
+  "source_operation_and_actual_census_sha256": "e36f66cd4986d148a3ce16cdd9c946252e075287cff74200127bb798e7804ee8",
+  "untimed_environment_harness_abort": {
+    "status": "terminated_without_timing_claim",
+    "reason": "Five untimed rounding-mode control/candidate pairs already qualified in strictSpike dominated simulator setup. Retain original strict ELF and all five-mode evidence; separate matched timing harness uses identical model/runtime/data objects.",
+    "pid": 2536089,
+    "elapsed_approx_seconds": 930,
+    "actual_model_or_capsule_cycles": null,
+    "token_usage_available": false
+  },
+  "normal_control_identity": {
+    "source_sha256": "9b40fddfd8494ffc8f24a7d377609cd1a4cd5074b6183c7d8324c1bd4b089cbb",
+    "returned_llvm_sha256": "0749b01c8f2d4cada25fd1a42fba8070e958b455e6f5d4afb4ae23a268274fcb",
+    "frozen_llvm_sha256": "0749b01c8f2d4cada25fd1a42fba8070e958b455e6f5d4afb4ae23a268274fcb",
+    "identical": true,
+    "stats": {
+      "dead_tensor_ops_pruned": 2193,
+      "quant_ext_lowered": 0,
+      "c_interface_funcs": 11,
+      "ciface_boundary_inline": {
+        "schema": "wide_ciface_inline_v1",
+        "max_flattened_arguments": 256,
+        "inlined": [
+          {
+            "implementation": "forward",
+            "wrapper": "_mlir_ciface_forward",
+            "flattened_arguments": 3973
+          }
+        ],
+        "count": 1
+      }
+    },
+    "source_seam": "Frozen complete post-offload host ABI source; normal Merlin lower_model with original feature set. Capture/preparation/catalog remain frozen."
+  },
+  "allocation_scope": "Both arms use a common 64-byte-aligned bump malloc/free supplied by the small harness. The exact original1880 mlir_rt.o supplies sqrtf/rsqrt/float ABI. Allocation calls and intermediate memory traffic are timed; original whole allocator/address layout remain a separate controlled whole-link gate.",
+  "frozen_whole_control": {
+    "stock_job": 1880,
+    "actual_cycles": 531072370,
+    "model_elf_sha256": "d0a2aaa939fdbe1ffd7d2931901cb49b37c6cbf0f00250d9ea7cc38c8c54de70"
+  },
+  "whole_model_candidate_cycles": null,
+  "whole_model_prediction": null,
+  "promotion_result": "Source capsule positive; prepare original full native/strict/Torch/no-FSM controlled qualification.",
+  "token_usage_available": false,
+  "token_attribution": "Exact per-agent/per-optimization attribution is unavailable; root records shared campaign snapshots.",
+  "five_mode_and_source_identity_evidence": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/build/layer.elf": "620afc0a754149df6bd89c74f682caa7d4c9699b41a7691114a23f4af436bbd1",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/main.c": "5ae229981c976fce4bb240f3226c54481c34ecfc32e521f727c6d5b41271900f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/spike.log": "cbe005392f94001a7db44b0a3742cbf10060e968092ccc500dbbbb6d6b0c007e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/qualification.json": "a3b38690824f603f5916250e889ed1c0bf95b582bcfa359460d2960d6a8e7eae",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/current_commit_source_check/source_equivalence.json": "eef9376f7a9a92f9b9aa30ffdbdf26271bdc77f24d241e7a91197ca6f4124b39",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/control/native.ll": "11aa159e7c96c2fd774ad079c4edb72606015475748e411a482542fa3aea11ed",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/control/target.ll": "c87ae51b8e76bfaeb90f82e6a640f08a7ee82789f8a2391ec0821e37aa458c66",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/hoisted/native.ll": "b14cee281b33842fc332eb8ac890e99bc44229b8cf2d7bed5364713d8eed71a3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/hoisted/target.ll": "031b44ce4e3f13154274cb0d2c7ab7ce12ccd3b52e1dca98562b30d428a3c500",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/normal_whole_control/control_identity.json": "2794e6e3fb43b96b7c6239a97fc49de80bb94c9da7ddacd5a21ca0b3d4b3ed50"
+  },
+  "five_mode_timing_separation": "The original complete strict ELF independently checks all five rounding modes and sticky flags. The shorter actual timing ELF reuses the identical model/runtime/data objects; it checks every original output and dirty guard in four complete mode0 AB/BA calls. Its common allocator, startup and cache context are separately pinned."
+}
