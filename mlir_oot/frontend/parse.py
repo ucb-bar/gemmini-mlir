@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 
 from xdsl.context import Context
-from xdsl.dialects import arith, builtin, cf, func, math, memref, scf, tensor
+from xdsl.dialects import arith, bufferization, builtin, cf, func, math, memref, scf, tensor
 from xdsl.dialects.builtin import ModuleOp
 from xdsl.parser import Parser
 
@@ -20,7 +20,7 @@ class GrammarError(Exception):
     """The module is well-formed MLIR but not a grammar version this backend implements."""
 
 _DIALECTS = (builtin.Builtin, func.Func, LINALG_WITH_MIXED_MATMUL, tensor.Tensor, arith.Arith,
-             math.Math, scf.Scf, memref.MemRef, cf.Cf)
+             math.Math, scf.Scf, memref.MemRef, cf.Cf, bufferization.Bufferization)
 
 # xDSL's current linalg.generic printer emits a parenthesized type list for
 # multiple results, but its parser consumes an unparenthesized list.  Large
