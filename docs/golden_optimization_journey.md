@@ -11,6 +11,35 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ### Latest compiler and measurement work (2026-10-06 UTC)
 
+New closed-source attention work belongs in Merlin: ordinary function
+partition/binding retains48groups/384roots. Generic interval primitives now
+pass35boundary/refusal tests, including a discovered signed-zero bin mismatch.
+Actualgroup0 independent compiled source closes196,608BF16words. The fixed
+≤1BF16step policy changes53local words and reduces source fallback from23.36%
+to2.09%; the original whole1,600output gate and target implementation remain
+pending. [Feasibility](perf_records/closed_bf16_endpoint_feasibility.json).
+
+The two-predictor residual prototype shares resident input panels in OOT;
+Merlin supplies the complete tuple proof and512-byte decoder. All65,536signed
+source pairs pass, with complete both-readout+decoder GSIM164,367→153,249cycles
+(6.764% reduction),15resource/order/refusal tests and8,192guards. Original
+802,816-byte captured-layer cost and ordinary scratch/result binding remain
+pending. [Receipt](perf_records/residual_joint_resident_input_capsule.json).
+
+The optional Merlin broadcast-axis packet pass shares identical tensor extracts
+across two rows while retaining scalar operation order.25native/refusal/default
+tests pass. An actual original1880 read-only tap preserves all256,000words and
+captures the first45,056-byte gate output and its input tensors. Actual-source
+capsule timing is in progress; no speedup is claimed. Shape/name selection is
+confined to this source-binding experiment, outside production pass policy.
+
+Stock1909 confirms integer packing776,043,123→665,638,655cycles,14.2266%lower,
+all12digests/metadata/guards exact. This is a section result.
+[Hardware](perf_records/smol_integer_packing_1909_hardware.json).
+Stock1910 compact weight-prefetch measures38,332,743cycles,0.3540%below its
+1897control but above current1903=36,102,704. The champion remains unchanged.
+[1910](perf_records/resnet_compact_weight_prefetch_1910_hardware.json).
+
 | Change and owner | Complete evidence | Decision |
 | --- | --- | --- |
 | Typed source-bound profiler ABI — Merlin | Ordinary LLVM lowering and RV64GC/Spike compiled five f32 output events without the previous diagnostic ABI mismatch | Measurement infrastructure, not a performance gain |
@@ -193,26 +222,26 @@ Receipts: [norm](perf_records/tiny_source_broadcast_math_complete_capsule.json),
 
 ## Token accounting
 
-[Measured snapshot at2026-10-06T03:35:04Z](perf_records/golden_token_usage_20261006T033504Z.json)
+[Measured snapshot at2026-10-06T04:22:41Z](perf_records/golden_token_usage_20261006T042241Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |32,369,212|
-| Cached input reads |1,566,842,624|
-| Output |6,274,192|
-| Reasoning output, already included in output |2,432,020|
-| Raw input+output total, including cached reads once |1,605,486,028|
+| Uncached input |33,917,148|
+| Cached input reads |1,630,808,448|
+| Output |6,590,044|
+| Reasoning output, already included in output |2,569,243|
+| Raw input+output total, including cached reads once |1,671,315,640|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-38,643,404; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is35,008,589; its accounting semantics are not exposed, so it
+40,507,192; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is36,871,684; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since02:01:19Z:
-3,189,523 uncached input,604,156 output and128,841,216 cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261006T020119Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since03:35:04Z:
+1,547,936 uncached input,315,852 output and63,965,824 cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261006T033504Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating

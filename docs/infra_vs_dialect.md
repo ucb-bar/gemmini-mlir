@@ -32,6 +32,7 @@ fixture, not a whole-model speedup.
 | Merlin adjacent independently proved RNE packets | Stock1880→1902, Tiny whole model |531,072,370→527,255,504|3,816,866;0.719% single-run marginal|
 | Merlin/OOT qualified host/readout/residual composition | Stock1886→1903, ResNet whole model |38,603,949→36,102,704|2,501,245;6.479%|
 | OOT resident-A/B-prefetch alternative | Tiny-shaped synthetic int8/amplitude21 common-address GSIM capsule |111,885→76,456|35,429;31.67%|
+| Merlin integer attention packing | Stock1909, complete packing section |776,043,123→665,638,655|110,404,468;14.2266%|
 
 Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.json),
 [Tiny host](perf_records/tiny_pointwise_packet_firesim.json),
@@ -43,6 +44,11 @@ Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.js
 [Tiny device capsule](perf_records/tiny_resident_a_prefetch_gsim.json),
 [adjacent RNE](perf_records/firesim1902_tiny_adjacent_rne_verified.json),
 [measured composition](perf_records/firesim1903_resnet_composed_verified.json).
+
+The packing hardware result includes complete representation planes, steps,
+reconstruction and norm metadata. It does not measure the attention contraction,
+softmax, certificate or whole model.
+[Packing receipt](perf_records/smol_integer_packing_1909_hardware.json).
 
 The Tiny device alternative also passes the normal full-model original-output and zero-FSM gates.
 Its first build selects one contraction. The expanded44-binding normal and controlled builds

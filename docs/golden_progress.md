@@ -52,6 +52,16 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
+Stock packing job1909 now verifies776,043,123→665,638,655cycles across
+matched complete packing sequences (14.2266% reduction), all12output digests,
+representation metadata and guards exact. This is a packing-section result,
+not a whole attention or model speedup.
+[Hardware receipt](perf_records/smol_integer_packing_1909_hardware.json).
+Compact weight-prefetch job1910 completes at38,332,743cycles, only0.3540%
+below its1897control and above the36,102,704current ResNet best. It does not
+change the selected implementation. Job1911 is now running on stock hardware.
+[1910](perf_records/resnet_compact_weight_prefetch_1910_hardware.json).
+
 ResNet and Tiny champions remain unchanged. Full Smol stock1906 completed at
 02:57:36Z after submission at22:52:37Z. Engine elapsed was8,918.2seconds
 (about2h29m); submission to completion was about4h5m, including queue/setup.
@@ -151,12 +161,31 @@ not stock1919 and does not repartition the stock13.72M reference gap.
   BF16 endpoint with no live f32 escape. Parent revalidation on the immutable
   original source passes all 48 groups. Group closure does not establish a
   numerical certificate, profitable implementation or whole-model speedup.
-  Actual source extraction and provider qualification remain in progress.
+  Ordinary source-exact partitioning/binding is now integrated in Merlin;
+  the full-source control preserves384roots and48typed calls. An actual group0
+  read-only tap preserves every original1,600full-model output word, and its
+  extracted50-op source helper matches all196,608BF16words independently.
+  A fixed one-adjacent-BF16-bin interval policy reduces local source fallback
+  from94,066,240to8,423,360FMAs (23.36%to2.09%of402,653,184sourceFMAs),
+  with53local word changes inside the proved bound. Exact-policy control is
+  retained. Independent random/mixed/all-masked full-shape source checks pass.
+  The original whole-model atol=.03125/rtol=.02 gate for all48groups is still
+  pending. No whole accuracy or hardware speedup is inferred from this local
+  result. Main QK/PV products are intended for integer-plane device execution;
+  actual plane packing, readouts, certificate scans, source replay and host
+  softmax must be timed together before promotion.
+  [Local feasibility](perf_records/closed_bf16_endpoint_feasibility.json),
+  [independent reclosure](perf_records/closed_bf16_endpoint_independent_reclosure.json).
   [Parent revalidation](perf_records/smol1906_source_group_parent_reclosure.json).
 
 The user reported an earlier approximately4B Smol implementation. Recovering its
 provenance and fast route is now a priority. The 258.622B result describes the
 current qualified build and does not claim the best historical Smol result.
+The owned historical610plan has cached prefix KV/masks, flow state and timestep
+inputs, with no image input; it represents a cached-prefix denoising trajectory.
+Its arithmetic3.3B-per-step average does not establish image-forward equivalence.
+Separate Exo3.22–3.72B reports remain unresolved in permitted owned artifacts.
+[Historical scope](perf_records/historical_smol_cached_prefix_scope.json).
 Separate earlier cycle reports require workload, timing boundary, accuracy and
 ISA comparison before their performance can be transferred to this build. The
 original atol=.03125/rtol=.02 gate remains fixed; bitexact whole output is beyond
