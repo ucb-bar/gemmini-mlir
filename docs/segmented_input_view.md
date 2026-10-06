@@ -48,3 +48,19 @@ Normal call/declaration and native-oracle binding is pending. Host copies remain
 enabled. The original model source, inputs, weights, numeric proofs and all-1,000-word
 exact accuracy gate are retained. Next admission requires a matched original-input
 capsule, explicit borrowed owner ABI and full native/strict target qualification.
+## Matched original projection screen
+
+The pinned GSIM capsule checked every original consumed input and all 401,408
+output bytes plus 4,096 guard bytes. Both strict RV64GC Spike replays passed and
+both final ELFs contain no FSM instructions. The copied dense arm took 866,791
+cycles; the segmented borrowed arm took 538,815, a reduction of 327,976 cycles
+(37.838%). Both ELFs contain the same code and storage at the same addresses;
+their only differing byte selects the arm.
+
+This timer includes a generated portable CPU copy followed by the current dense
+device implementation. It does not establish identity with the whole-model
+host LLVM copy. All consumed values are the original capture, while unread
+source allocation cells are synthetic zeros. GSIM has a different memory
+system from stock FireSim. The result admits the typed consumer binding work;
+it does not establish a whole-model or stock speedup. See
+`perf_records/segmented_input_original_projection_gsim.json`.
