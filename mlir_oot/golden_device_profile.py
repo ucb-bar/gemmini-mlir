@@ -96,9 +96,16 @@ def leaf_kernel_profile(catalog: dict, build_dir: Path, work: Path, llvm_bin: Pa
     before replacing it with its leaves. This is necessary because --wrap does
     not intercept already-resolved calls inside a merged relocatable object.
     """
-    link_nodes={}
+    link_nodes={}; segmented_routes=[]; requant_manifest_hashes=set()
     def visit(value):
         if isinstance(value,dict):
+            if 'requant_manifest_sha256' in value:
+                requant_manifest_hashes.add(value['requant_manifest_sha256'])
+            accepted=value.get('segmented_bindings')
+            if accepted is not None:
+                if accepted.get('schema')!='gemmini_segmented_input_bindings_v1':
+                    raise ValueError('unsupported segmented profile binding')
+                segmented_routes.extend(accepted['routes'])
             argv=value.get('linker_argv')
             if argv and '-r' in argv:
                 out=Path(argv[argv.index('-o')+1]);inputs=[Path(x) for x in argv[argv.index('-r')+1:argv.index('-o')]]
@@ -111,7 +118,7 @@ def leaf_kernel_profile(catalog: dict, build_dir: Path, work: Path, llvm_bin: Pa
     components={}
     for inputs,_ in link_nodes.values():
         for path in inputs:
-            if path.name in ('requant.o','residual.o','stem_pool.o'):components[path.name]=path
+            if path.name in ('requant.o','residual.o','stem_pool.o','segmented_inputs.o'):components[path.name]=path
     linker=llvm_bin/'ld.lld'
     if not linker.is_file():
         import shutil
@@ -132,16 +139,78 @@ def leaf_kernel_profile(catalog: dict, build_dir: Path, work: Path, llvm_bin: Pa
         subprocess.run(argv,check=True,capture_output=True)
         if digest(target)!=digest(component):raise ValueError('leaf objects do not reproduce original partial-link bytes')
         leaf_map[component]=leaves;receipt.append(dict(component=str(component),sha256=digest(component),leaves={str(p):digest(p) for p in leaves},argv=argv))
+    original_fused_routes=None
     for group,component_name,category in [('fused_requantizations','requant.o','unary'),('residual_additions','residual.o','residual')]:
         routes=catalog.get(group,[])
         if not routes:continue
+        stored_routes=routes
+        manifest_path=None
+        if group=='fused_requantizations' and segmented_routes:
+            # Semantic routes name the selected implementations. The stored
+            # original component still contains the old leaves, including the
+            # now-unused ones; its hash-bound manifest is the reconstruction
+            # authority. Neither those leaves nor the component are rebuilt.
+            manifest_path=components[component_name].parent/'requant.json'
+            if not manifest_path.is_file() or digest(manifest_path) not in requant_manifest_hashes:
+                raise ValueError('original requant manifest identity mismatch')
+            original=json.loads(manifest_path.read_text())
+            if (original.get('schema')!='gemmini_exact_captured_requant_bundle_v1' or
+                    original.get('object_sha256')!=digest(components[component_name])):
+                raise ValueError('original requant manifest component mismatch')
+            original_fused_routes=stored_routes=original['routes']
+            old_symbols=[r['symbol'] for r in stored_routes]
+            selected_sources=[r.get('source_symbol',r['symbol']) for r in routes]
+            if (len(set(old_symbols))!=len(old_symbols) or
+                    len(set(selected_sources))!=len(selected_sources) or
+                    set(old_symbols)!=set(selected_sources)):
+                raise ValueError('selected requant route coverage differs from original')
         leaves=[]
-        for route in routes:
+        for route in stored_routes:
             leaves.extend([object_path(route['compilation'],components[component_name].parent),object_path(route['adapter_compilation'],components[component_name].parent)])
+        for route in routes:
             arity=4 if category=='residual' and 'coefficients' in route['proof'] else 5 if category=='residual' else 3
             if arity==5:raise ValueError('leaf profiler currently requires wide residual ABI')
             boundaries.append(dict(symbol=route['kernel'],pointer_arity=arity,category=category,source_region=route.get('region'),shape=route.get('schedule',route.get('shape')),cpu_integer_readout_after=bool(route.get('integer_readout'))))
         reproduce(components[component_name],leaves)
+        if manifest_path is not None:
+            receipt[-1]['original_manifest']=str(manifest_path)
+            receipt[-1]['original_manifest_sha256']=digest(manifest_path)
+    if segmented_routes:
+        accepted=catalog.get('segmented_input_acceptance',{})
+        rewrites=accepted.get('source_rewrites',[])
+        if len({r['source_symbol'] for r in segmented_routes})!=len(segmented_routes):
+            raise ValueError('duplicate segmented profile source')
+        if sorted((r['source_symbol'],r['accepted_symbol']) for r in segmented_routes)!=sorted(
+                (r['source_symbol'],r['accepted_symbol']) for r in rewrites):
+            raise ValueError('segmented profile source coverage differs')
+        source=Path(catalog['source_snapshot'])
+        if digest(source)!=accepted['selected_source_snapshot_sha256']:
+            raise ValueError('segmented profile source identity changed')
+        from .frontend.parse import parse_module
+        calls=Counter(op.callee.root_reference.data for op in parse_module(source.read_text()).walk()
+                      if op.name=='func.call')
+        if any(type(r['calls']) is not int or r['calls']<=0 or
+               calls[r['accepted_symbol']]!=r['calls'] or calls[r['source_symbol']] for r in rewrites):
+            raise ValueError('segmented profile source call coverage differs')
+        original={r['symbol']:r for r in original_fused_routes or []}
+        selected={r.get('source_symbol',r['symbol']):r for r in catalog.get('fused_requantizations',[])}
+        component=components['segmented_inputs.o']; leaves=[]
+        for route in segmented_routes:
+            old=original.get(route['source_symbol'])
+            active=selected.get(route['source_symbol'])
+            indices=[i for i,row in enumerate(boundaries) if active and row['symbol']==active['kernel']]
+            if (old is None or active is None or len(indices)!=1 or
+                    active['symbol']!=route['accepted_symbol'] or active['kernel']!=route['accepted_kernel'] or
+                    any(active[key]['object_sha256']!=route[key]['object_sha256']
+                        for key in ('compilation','adapter_compilation'))):
+                raise ValueError('segmented profile requires one replaced primitive boundary')
+            leaves.extend([object_path(route['compilation'],component.parent),
+                           object_path(route['adapter_compilation'],component.parent)])
+            boundaries[indices[0]]=dict(boundaries[indices[0]],symbol=route['accepted_kernel'],
+                                       source_symbol=route['source_symbol'],
+                                       accepted_symbol=route['accepted_symbol'],
+                                       accepted_address=route['address'])
+        reproduce(component,leaves)
     pool=catalog.get('pooled_stem')
     if pool:
         component=components['stem_pool.o'];leaves=[object_path(pool['compilation'],component.parent),component.parent/'adapter.o']
