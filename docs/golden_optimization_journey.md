@@ -1044,3 +1044,75 @@ Owned8-thread ledger13:07:34UTC records47079926uncachedinput,2249336832cache-rea
 tokens remainUNAVAILABLE and are not prorated. Activegoal tracker is a separate
 observation; all22M/5B/300M performance targets remain unmet.
 [Ledger](perf_records/golden_token_usage_20261006T130734Z.json).
+
+## 2026-10-06 13:36 UTC — section timing and evidence consistency
+
+The generic scalar squared-sum pass improves the complete original 8x2048
+normalization section from a mean 571,893.5 to 506,537.5 GSIM cycles (11.4280%).
+Independent raw special values, source order, live aliases, seeds, empty K,
+rounding modes and guards pass. Root's 20 focused tests pass. The fresh normal
+whole build preserves all 256,000 outputs, the original Torch gate, 155 bindings
+and all-executable zero-FSM audit. Root independently recloses 109 pins and
+releases stock1997 against1983. Its 0.54245% retired-instruction reduction is
+not a whole hardware estimate. No outline or broadcast choice is composed.
+[Section evidence](perf_records/tiny_scalar_squared_sum_norm_capsule_journey.json),
+[whole evidence](perf_records/root_tiny_squared_sum_whole_reclosure.json).
+
+The distinct prepared word-space softmax proof reduces the original 1,024-cell
+section from 361,964.5 to 229,251 GSIM cycles (36.6648%). Its complete allocation
+and replay-aware group reduces 2,726,638,089 to 2,537,394,919 retired instructions
+(6.9405%). All original 786,432 quantized words, 1,024 scales, guards and input
+bytes pass; full 48-call native execution preserves all 1,600 outputs. Additional
+replay and changed internal carriers are retained in the receipt. Root recloses
+124 pins, both executable audits and the actual one-object link change, then
+releases the matched pair as stock1993/1994. These are separately measured scopes.
+[Word-domain section](perf_records/word_soft_domain_matched_interval_qualification.json),
+[complete group](perf_records/word_soft_i64_complete_group_qualification.json).
+
+Stock1984/1985 closes the preceding floor/private-soft composition at
+6,289,524,223 to 6,135,861,060 cycles (2.44316%). All original observations,
+statistics, staged ELF and stock bitstream pass. Root rechecks its nine immutable
+terminal pins. The historical INSTRUCTIONS label reads mcycle on this hardware.
+The result prices one complete provider group, not the full model. Whole bests
+remain ResNet34,792,010, Tiny427,815,474 and Smol258,621,872,969 cycles.
+[Stock pair](perf_records/stock1985_soft_floor_candidate_terminal.json).
+
+An evidence audit finds inherited authoritative workspace/native identities and
+compile commands/dependency maps in experiment manifests. The generic dispatch
+contracts consume opaque proof hashes and explicit workspace contracts, so these
+were not the allocation values used by the passing normal execution. Nevertheless
+the conflicting seals are invalid evidence. Merlin's new numerical-provider
+identity validator checks actual queried workspace, current library, compiler,
+compile argv, dependency file, complete dependency coverage and every duplicate
+identity. Root review catches silent duplicate overwrites; the follow-up refuses
+them and all 22 focused tests pass. Historical records stay unchanged. A fresh
+normal word build uses a normalized current manifest and independently closed
+85-dependency seal; its final normal qualification is still running.
+
+A sufficient exact BF16 dyadic-prefix screen admits only 7,547 of 3,145,728
+original QK cells (0.2399%). It is not implemented as a fast path: zero-sign and
+fenv proof would still be required, and no hardware saving is observed. Refusal
+of this conservative bound does not prove the source arithmetic is inexact.
+[Negative screen](perf_records/smol_exact_lattice_screen.json).
+
+The previously archived complete 48-call reconstructed-center alternative
+already tests removal of source-order certification and replay under the unchanged
+whole accuracy gate. It fails 121 of 1,600 outputs at atol0.03125/rtol0.02, with
+maximum absolute error0.1676637 and no source fallback. Its exact control uses
+the same host LLVM/object/native bridge and passes all 1,600 outputs. No equivalent
+screen is repeated. Tiny endpoint errors propagate through dynamic quantization;
+relaxing internal exactness did not meet the permitted whole gate.
+[Complete center-only rejection](perf_records/smol_source_group_center_journey.json).
+
+Next work prices read-only weight-panel layout on the actual Tiny first-gate
+projection and streamed exact residual correction on the original ResNet
+footprint. Bare-metal M mode means the proposed packing must not claim eliminated
+TLB walks. Its minimum logical weight bytes remain unchanged. The first small
+residual streaming pair is slower than serial correction; the complete footprint
+must decide promotion. No synthetic capsule price becomes a whole-model forecast.
+
+Phase1/2 should expose proof-format consistency validation, immutable current
+compile recipes, source-order reductions, read-only layout permutations, and
+asynchronous disjoint-buffer lifetimes as reusable compiler surfaces. Cost models
+must price proof execution and source replay as well as device arithmetic. Failed
+accuracy gates and contradictory evidence seals are separate refusals.

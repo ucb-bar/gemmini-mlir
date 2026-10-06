@@ -62,12 +62,20 @@ reference22,387,449. Five resident weight packet kernels are being composed
 with this exact paired/flat arm under fresh normal source closure; gains are
 not added. Tiny needs29.8763% below427.815M to reach300M. Its next default-off
 generic squared-sum reduction retains source F32 order while eliminating
-per-element accumulator stores; independent/source accuracy passes and matched
-section timing is running before whole-model promotion.
+per-element accumulator stores. Its complete original normalization section
+improves 11.4280% in matched GSIM runs. Fresh native and strict-target whole
+execution preserves all 256,000 outputs and the original Torch gate; root
+recloses 109 pins. Stock1997 is queued against1983, without outline composition.
+[Squared-sum section](perf_records/tiny_scalar_squared_sum_norm_capsule_journey.json),
+[whole closure](perf_records/root_tiny_squared_sum_whole_reclosure.json).
 
-Recovery owns queued stock1984/1985 matched Smol complete-group control and
-floor/private-soft composition,1988 paired/resident ResNet,1989 Tiny outline
-composition, and1990 conserved ResNet diagnostic profile. The1990 profile binds
+Stock1984/1985 completes the matched original 12-head Smol provider comparison
+at 6,289,524,223 and 6,135,861,060 cycles: a 2.4432% section reduction, with all
+786,432 quantized words, 1,024 scales, guards and input bytes exact. This is
+not a whole-model result. Recovery owns queued1988 paired/resident ResNet,
+1989 Tiny outline composition,1990 conserved ResNet diagnostic profile,
+1992 paired/flat ResNet plus five packet leaves,1993/1994 the new matched
+Smol word-domain composition, and1997 Tiny squared-sum. The1990 profile binds
 the exact1974 compute objects and70 source-aligned boundaries; it cannot assign
 current1982 section costs. Its instrumented strict-target gate preserves all
 1000words and the all-executable zero-FSM audit. The normal Smol integer-product
@@ -81,6 +89,21 @@ Smol stock result or5B forecast follows from its small section instruction gain.
 [Tiny composition closure](perf_records/root_tiny_two_product_outline_whole_reclosure.json),
 [integer section cost](perf_records/source_frontier_integer_reconstruction_complete_group.json),
 [normal i64 whole compilation](perf_records/smol_normal_integer_workspace_qualification.json).
+
+The new distinct word-domain proof makes prepared softmax and encoded-word
+enclosures safely composable. The original 1,024-interval section improves
+36.6648% in matched GSIM runs. Complete-group retired instructions, including
+allocation and additional replay, drop 2,726,638,089 to 2,537,394,919 (6.9405%).
+The full 48-call native composition preserves all 1,600 original outputs.
+Hardware timing remains pending for this composition. A fresh normal build is
+being resealed after an audit found inherited workspace and compile-manifest
+identity conflicts in prior experiment metadata. Actual execution observations
+remain recorded separately; those old seals are not internally consistent.
+Merlin now has a reusable consistency validator with 22 focused tests covering
+stale workspace, library, recipe, dependency and duplicate identity conflicts.
+[Matched stock pair](perf_records/stock1985_soft_floor_candidate_terminal.json),
+[word proof](perf_records/word_soft_domain_matched_interval_qualification.json),
+[complete composition](perf_records/word_soft_i64_complete_group_qualification.json).
 The isolated constant-clamp
 arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
 than1926. No gains are added across arms.

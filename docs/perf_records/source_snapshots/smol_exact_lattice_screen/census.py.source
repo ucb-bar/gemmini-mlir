@@ -1,0 +1,78 @@
+"""Read-only sufficient binary32 exact-prefix screen of owned BF16 source rows.
+
+This is an experiment, not a compiler selector or a performance measurement.
+Original input words are never changed. All row summaries use Python integers.
+"""
+from pathlib import Path
+import hashlib
+import json
+import numpy as np
+
+ROOT = Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+SOURCE = Path('/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005')
+OUT = ROOT / 'out/artifacts/probes/smol-exact-lattice-census-20261006'
+
+
+def summary(row):
+    terms = []
+    for raw in row:
+        word = int(raw)
+        exponent, fraction = (word >> 7) & 255, word & 127
+        if exponent == 255:
+            return None
+        mantissa = fraction | (128 if exponent else 0)
+        if mantissa:
+            unit = exponent - 134 if exponent else -133
+            trailing = (mantissa & -mantissa).bit_length() - 1
+            terms.append((mantissa, unit, unit + trailing))
+    if not terms:
+        return (0, 0, 0)
+    unit = min(x[2] for x in terms)
+    integers = [m << (e - unit) if e >= unit else m >> (unit - e)
+                for m, e, _ in terms]
+    assert all((i << (unit - e) if unit >= e else i >> (e - unit)) == m
+               for i, (m, e, _) in zip(integers, terms))
+    return unit, max(integers), sum(integers)
+
+
+qpath = SOURCE / 'input_0.npy'
+q = np.load(qpath)
+assert q.dtype == np.uint16 and q.shape == (1, 12, 256, 64)
+pins = {str(qpath): hashlib.sha256(qpath.read_bytes()).hexdigest()}
+results = []
+for number in (1, 6):
+    path = SOURCE / f'input_{number}.npy'
+    k = np.load(path)
+    assert k.dtype == np.uint16 and k.shape == (1, 12, 512, 64)
+    pins[str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
+    admitted = total = nonfinite = 0
+    bit_lengths = {}
+    for head in range(12):
+        qs = [summary(row) for row in q[0, head]]
+        ks = [summary(row) for row in k[0, head]]
+        for left in qs:
+            for right in ks:
+                total += 1
+                if left is None or right is None:
+                    nonfinite += 1
+                    continue
+                unit = left[0] + right[0]
+                bound = min(left[1] * right[2], left[2] * right[1])
+                bits = bound.bit_length()
+                bit_lengths[bits] = bit_lengths.get(bits, 0) + 1
+                # Every signed real product and source partial is a multiple of
+                # 2**unit with absolute integer <=bound. These sufficient limits
+                # place every partial in exactly representable finite binary32.
+                # Signed-zero results still need a separate source-sign witness.
+                admitted += int(unit >= -149 and bound <= 2**24 and unit + bits <= 128)
+    results.append(dict(input_index=number, dot_cells=total,
+                        sufficient_value_exact_cells=admitted,
+                        nonfinite_cells=nonfinite, bound_integer_bit_lengths=bit_lengths))
+pins[str(Path(__file__))] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+receipt = dict(schema='owned_source_bf16_lattice_screen_v1',
+    scope='Complete original group0 QK inputs, sufficient per-row dyadic grid bound only; not masks or a source-sign certificate, not a compiler choice',
+    proof='A integer maximum times B integer L1 and vice versa bound every signed prefix. Bound<=2**24 and finite representable common grid suffice for value exactness; zero-sign and fenv admission are additional obligations.',
+    results=results, pins=pins, hardware_cycles='UNKNOWN',
+    input_mutations=False, golden_or_workload_compiler_selector=False)
+(OUT / 'census.json').write_text(json.dumps(receipt, indent=2) + '\n')
+print(json.dumps(results, indent=2))
