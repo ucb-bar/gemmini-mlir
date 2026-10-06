@@ -1,0 +1,105 @@
+{
+  "schema": "source_exact_host_copy_composition_v1",
+  "core_commit": "e2cea0df1",
+  "core_worktree": "/scratch/agustin/tmp/merlin-border-initialization-20261005",
+  "optional_features": [
+    "initialize_tensor_border_only",
+    "fold_uniform_fill_copy",
+    "specialize_contiguous_copy"
+  ],
+  "default_changed": false,
+  "control_job": 1903,
+  "control_reproduced_byte_exact": true,
+  "only_changed_linked_object": "model.o",
+  "all_original_1000_native_and_strict_bits": true,
+  "raw_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "final_zero_fsm": true,
+  "control_spike_instructions": 9246562,
+  "candidate_spike_instructions": 9156449,
+  "delta_instructions": -90113,
+  "instruction_not_hardware": true,
+  "hardware_admission": "held; <1% instruction-only improvement; no cycle projection",
+  "final_elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/build_direct/model.elf",
+  "final_elf_sha256": "5896a2585611c1c3c64e7a63df3ec8798ec728b1e1c17a57afd5a4962acbabb8",
+  "marker": "273e514ef18f inherited, nonunique; final ELF/component hashes are authority",
+  "generic_proof": "Trace known views to distinct fresh memref.alloc roots; positive static equal shapes and strides determine longest common contiguous suffix. Source-lexicographic outer loops retain rank-reduced inner memref.copy; disjointness rules out overlap. Runtime retains alignment and byte-tail handling.",
+  "tests": "28 focused contiguous-suffix and uniform-copy tests PASS; structure/target-name/regex checks PASS",
+  "physical_transfers": [
+    {
+      "element_type": "i8",
+      "elements": 256,
+      "bytes": 256,
+      "llvm_memcpy_line": 264
+    },
+    {
+      "element_type": "i8",
+      "elements": 512,
+      "bytes": 512,
+      "llvm_memcpy_line": 367
+    },
+    {
+      "element_type": "i8",
+      "elements": 1024,
+      "bytes": 1024,
+      "llvm_memcpy_line": 474
+    }
+  ],
+  "unit_scope": "Actual selected post-bufferization LLVM uses i8 GEP and literal byte lengths. Earlier semantic f32 tensor views are a distinct scope and not authority for direct i8 device loads.",
+  "broader_expansion_negative": "resnet_expand_memref_copy_negative.json: +15.92% instructions; scalar expansion loses runtime word copy",
+  "composition": "Explicit composition; separate uniform and suffix controls preserved; no additive hardware claim",
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/controlled_link.json": "fc09b6a3731076edfb94b9fde9bd3541125ae956b9ab0a2f7ce7a712b8000a0a",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/native_validation.json": "4970927c56584c407e86f1de7245a9512501a2882f158032fb33a1f7acccf785",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/spike_validation.json": "e511b23bcb7fa684c21f657ed694f54f7706c360e683a0a2ca6b80ecf2bdd3ed",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/spike.log": "b9bae76c2803983173d145f25851f2f2de17896c5b2f33d8aed8d0898b193e79",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/host/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/build_direct/model.elf": "5896a2585611c1c3c64e7a63df3ec8798ec728b1e1c17a57afd5a4962acbabb8",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_controlled1903/build_direct/model.nofsm_audit.json": "50341918b46a1ae8b85bbe73fadbb5e42ff3befafa835bb00ae22c63bf0e155d",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/compilation_recipe.json": "19fca5ed421fbe9cb74690f3bc7aff9e8a4c02306dfa7003c6070b18d441b301",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/lower/lowering_recipe.json": "4b3f6406f3699fec6fbfd287ae5d65406dfc7cc58378c5ef50d1de6b77d45cfd",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/lower/contiguous_suffix_copy.json": "cd7692eb3cb9ebea95c1610e83336f1ba5aaf746efb6782b393b29ccab6bdb6a",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/lower/uniform_fill_copy.json": "52b6fc452b7f6e8b0cd7b9f72b6c897215b7d5afdb32e9bf43c57ac8d1d022f4",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/host_llvm/model.ll": "0b71f28ec55905f946ed9199f8ab879c7e9a635f4302b8a926329a52e2c12a9e",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/host_llvm/model.linked.ll": "363513c42ac3d672dfb8f60fb9ade0e407e385ce14ee32a14f3e2b2b3cd0c109",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed/build_direct/model.o": "900583534571ec370ac56c0186c1da675ef8949d540d7c126a5fd3a935f1de80",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed.py": "1546fd311d2b065037526700f26fe399a7a1ca628f6c2e5e089990a50b264f93",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/qualify_composed.py": "ba765044b8266239458599ecb665a41bebbe55d943603215321beacf59995606",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed_model.dis": "4f99d0d2e5b07251828911b613632d725f3cfbff20446934216d6a07fe1aca0a",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_composed.log": "4d35c1bcaedbe0195e2b68460cf01837431464e25f7a4dbc8e3f4d21f2754526"
+  },
+  "token_usage_available": false,
+  "applications": {
+    "destination_reuse": 2,
+    "uniform_fill_copy": 4,
+    "contiguous_suffix_copy": 3
+  },
+  "emitted_memset": {
+    "top_bottom": {
+      "bytes_per_call": 2070,
+      "calls": 2
+    },
+    "left_border": {
+      "inline_bytes_per_row": 9,
+      "rows": 224
+    },
+    "right_border": {
+      "bytes_per_call": 9,
+      "calls": 224
+    }
+  },
+  "emitted_memcpy": [
+    {
+      "bytes_per_call": 256,
+      "dynamic_calls": 784
+    },
+    {
+      "bytes_per_call": 512,
+      "dynamic_calls": 196
+    },
+    {
+      "bytes_per_call": 1024,
+      "dynamic_calls": 49
+    }
+  ],
+  "remaining_host_packing": "Entry: one fused H,C,W/4 traversal, four contiguous f32 loads, original boundedRNE, four stride3 i8 stores directly into padded allocation. No intermediate quantization/transpose buffer. Remaining3projection gather copies require an explicit typed consumer capability to remove; no earlier f32 root reinterpretation."
+}
