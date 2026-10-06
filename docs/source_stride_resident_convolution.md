@@ -57,3 +57,20 @@ No new whole model FireSim gain is established by this capsule. Exact receipts,
 reference scope, source bindings, emitted deltas, hardware pins and independent
 checks are recorded in
 [source_stride_resident_conv_capsule.json](perf_records/source_stride_resident_conv_capsule.json).
+
+The ordinary 52 route bundle selects one new source-stride kernel. The other
+51 kernel objects, all 52 adapters, source/readout proofs and rewritten source
+remain byte identical to the qualified 1897 control. The normal whole-model
+compiler builds the selected catalog and passes all 1,000 original output words
+in native and strict RV64GC Spike execution, with zero FSM instructions.
+
+The isolated hardware arm retains the exact 1897 host, runtime, weights and
+harness objects, and links the actual newly compiled catalog. Re-linking the
+control reproduces its ELF byte for byte. The resulting candidate ELF is
+`29979d5e3a40072b67d2dbe0bf04e27a093d499367cac81f53a7abb66d91a91c`;
+it also passes the full original native and strict Spike gates. The retained
+harness build marker identifies the control harness; the complete final ELF
+SHA and object pins identify this candidate. The fresh normal build and its
+changed host code are preserved separately. Stock FireSim timing is pending.
+The complete qualification is
+[source_stride_resident_conv_whole_qualification.json](perf_records/source_stride_resident_conv_whole_qualification.json).
