@@ -1,0 +1,20 @@
+from pathlib import Path
+old=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_frontier_composed')
+w=Path('/scratch/agustin/tmp/gemmini-probability-point-20261006/out/normal_attention_provider_probability_points')
+source=Path('/scratch/agustin/tmp/gemmini-probability-point-20261006/out/probability_points')
+oldsource='/scratch/agustin/tmp/gemmini-frontier-composed-20261006/out/frontier_composed'
+s=(old/'prepare.py').read_text().replace(oldsource,str(source)).replace("prior=w.parent/'normal_attention_provider_word_soft_i64_sealed'",'prior=Path('+repr(str(old))+')').replace('old=source/name;',"old=source/('candidate_numeric' if name=='numeric_frozen' else name);")
+s=s.replace('Fresh actual encoded rows, producer spans, exact casts, probability bins and four-cell scheduling implementation, not inherited identity','Fresh exact probability point sharing implementation, original encoding/source error proofs retained; independently qualified current full48 native')
+s=s.replace('Encoded rows, producer spans, exact casts, probability bins and four-cell scheduling independent target and complete original group/full48 native numeric gate; fresh normal integration pending','Exact probability point sharing complete original group and full48 native numeric gate; fresh ordinary binding pending')
+s=s.replace('"core_commit":"973a944f9"','"prepare_probability_points":True,"core_commit":"0b8e10631"')
+(w/'prepare.py').write_text(s)
+s=(old/'build.py').read_text().replace(oldsource,str(source))
+s=s.replace("BASE=HERE.parent/'closed_group_endpoint'", "BASE=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint')")
+s=s.replace("d=HERE.parent/'artifacts/probes/closed-group-target-20261005/m256_h1'", "d=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1')")
+(w/'build.py').write_text(s)
+s=(old/'run.sh').read_text().replace('/scratch/agustin/tmp/merlin-polynomial-four-cell-20261006/src','/scratch/agustin/tmp/merlin-probability-point-20261006/src').replace('out/normal_attention_provider_frontier_composed/build.py','out/normal_attention_provider_probability_points/build.py')
+(w/'run.sh').write_text(s)
+for name in ['validate_native.py','check_source_fallback.py','close_normal.py','watch_normal.py','archive.py']:
+ s=(old/name).read_text().replace(str(old),str(w)).replace(oldsource,str(source))
+ s=s.replace("BASE=HERE.parent/'closed_group_endpoint'", "BASE=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint')")
+ (w/name).write_text(s)
