@@ -1,5 +1,29 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-06 19:10 UTC ownership and modeling checkpoint
+
+Generic finite BF16 source-point preparation sharing is a Merlin runtime/source
+optimization, published for review in [PR39](https://github.com/ucb-bar/merlin/pull/39).
+It improves the complete original Smol group8.1516%on stock2024; whole cycles
+remain unknown. It extends the existing preparation family; the conservative
+change inventory remains55families, including47Merlin and8model2MLIR.
+Target products, ISA encodings and resource/layout facts stay in OOT.
+
+Six source-qualified resident spatial stripe schedules are OOT; the normal
+compiler propagates the existing resource-checked option. Root releases their
+whole composition over actual2025with37,015rehashed pins. Stock2026finishes
+30,977,892cycles,2.2706%below2025. ResNet latest whole2026 is30,977,892cycles; Tiny2004
+422,018,733 and Smol whole1906 258,621,872,969 remain the other bests.
+
+Model calibration now has dedicated work. Merlin's existing target-free fitter,
+grouped validation, unknown-domain handling and ranking gate are exercised on
+actual same-ELF GSIM/FireSim evidence; OOT owns the source/ISA/scope join.
+Geometry holdouts give3.88%median/11.85%maximum callback error but inaccurate
+host costs. A short independent primitive benchmark is being built. Physical
+rates, traffic, dependencies, program generalization and variant ranking must
+be qualified before automatic phase1/2loops use these prices. Jack remains held out.
+[Diagnostics](perf_records/paired_engine_geometry_screen_diagnostic_20261006.json).
+
 ## What has been fixed
 
 The work falls into three groups. Portable host performance is compiler optimization in Merlin,

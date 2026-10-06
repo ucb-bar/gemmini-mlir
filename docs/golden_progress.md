@@ -6,7 +6,7 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs and exact integer mean | 31,808,394 (2023) | All 1,000 original output words exact;745,245cycles/2.2893% below2013. Source-stride2022 is separate; actual2013 diagnostic2021 remains separately bound | [2023](perf_records/stock2023_segmented_mean_full_k_terminal.json) |
+| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes | 30,977,892 (2026) | All 1,000 original output words exact;719,723cycles/2.2706% below2025. Actual2013 diagnostic2021 remains separately bound | [2026](perf_records/stock2026_resident_stripes_current2025_terminal.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, exact squared-sum, multiplication packets, source 2×4 contractions/K2, B-prefetch, canonical buffer identity and generic outlining | 422,018,733 (2004) | All 256,000 original compiled words unchanged; original Torch gate passes. 0.4277% below2002 in one matched single run. Collector staging/output pinned | [2004](perf_records/stock2004_tiny_rectangular_terminal.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
@@ -56,10 +56,48 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
-Stock2004 and2023 are the current Tiny and ResNet whole-model bests.
-ResNet2023 measures31,808,394cycles,9,420,945 above the permitted ZIP1876
+Stock2004 and2026 are the current Tiny and ResNet whole-model bests.
+ResNet2026 measures30,977,892cycles,8,590,443 above the permitted ZIP1876
 reference. The actual current2013 comparison and its matching profile follow;
-those sections are not reassigned to2023.
+those sections are not reassigned to2026.
+
+Smol's best complete12-head group is2024 at4,857,792,055cycles,8.1516%
+below the identical2003driver control. This is not a whole-model5B result;
+whole1906 remains258,621,872,969. Exact finite probability point sharing
+preserves every original consumer byte/scale, inputs, guards and eight stats.
+The generic Merlin implementation is published for review in
+[PR39](https://github.com/ucb-bar/merlin/pull/39), local main3fbe047833;
+remote main remains7fee5cfdac pending normal review.938focused tests,
+fresh installed sdist/wheel qualification and37outside-checkout tests pass.
+[Group stock result](perf_records/stock2024_probability_point_group_terminal.json),
+[root release](perf_records/root_smol_probability_point_spans_release_20261006.json).
+
+Six source-qualified spatial resident stripe kernels are composed over actual2025.
+Root independently recloses37,015pins, both whole-model native/strict exact
+gates, final noFSM, all52adapters and46unchanged kernels. Original complete
+kernel GSIM pairs improve15.8%/19.1%; no whole savings are inferred. Candidate
+stock2026 finishes30,977,892cycles with all1,000words exact; seven terminal
+pins independently rehashed by root. Latest section attribution remains unknown.
+[Release](perf_records/root_resnet_current2025_resident_stripes_release_20261006.json).
+
+Performance modeling is now a dedicated root workstream. A new same-ELF1903
+GSIM/stock geometry holdout study predicts68/70callback intervals with3.88%
+median and11.85%maximum error; host intervals still reach41.90%error.
+Spike instruction/array/footprint proxies remain inaccurate. None is licensed
+for whole predictions or matched-variant ranking. A short21-case CPU dependency,
+memory and instruction-footprint calibration battery is being qualified, with
+middle sizes withheld before measurement. Jack timing remains held out.
+[Calibration diagnostics](perf_records/paired_engine_geometry_screen_diagnostic_20261006.json).
+
+The current2024Smol same-image instruction census independently recloses54pins
+and all102allocated ELF sections of its diagnostic relink. Actual ordered
+source-dot replay contributes90.72M/2,165.15MROIinstructions (4.19%). Encoding
+costs355.32M; soft/max/denominator/alpha388.36M; polynomial340.40M. These are
+instruction counts, not cycle fractions. The polynomial has93.55Mexecuted
+stack-based flw sites; an explicit source-owned outline screen is positive
+in instructions but its complete cycle cost remains unmeasured. Optimizing
+replay alone cannot remove the current whole gap.
+[Census](perf_records/current_point2024_provider_pc_census.json).
 ResNet2013 measures32,553,639cycles,10,166,190 above the permitted ZIP1876
 reference22,387,449. Its actual conserved diagnostic2021 measures32,600,719
 forward cycles:29,338,102primitive callbacks+3,262,617host gaps. All70active

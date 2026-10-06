@@ -9,6 +9,101 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 19:10 UTC: whole/group winners and model calibration
+
+- ResNet stock2025:31,697,615cycles,110,779below actual2023. All1,000
+  original words and noFSM pass. Gap to permitted ZIP1876 is9,310,166cycles;
+  latest section attribution unknown. Adds source-stride24 over the frozen
+  mean/fullK/segmented3composition;29,611qualification and eight terminal
+  pins independently reclosed by root.
+- Smol complete12-head group2024:4,857,792,055cycles versus2003
+  5,288,926,830,8.1516%lower. Generic exact-point preparation/reuse is Merlin;
+  target products and encodings remain OOT. Original786,432i8consumer outputs,
+  1,024scales, guards, inputs and eight stats pass. This is not a whole model.
+  Merlin review PR39 at3fbe047833 passes938focused tests, fresh installed
+  sdist/wheel qualification and37external tests. Remote main stays7fee pending review.
+- Six spatial resident stripes over actual2025:37,015root-rehashed pins,
+  normal/controlled whole native/strict0/0 and final noFSM. Complete original
+  source capsules improve15.8%/19.1%GSIM;52adapters/46other kernels unchanged.
+  Root release ef384fe; stock2026 finishes30,977,892cycles,719,723/2.2706%
+  below actual2025, original1,000words exact. Root rehashes all seven terminal
+  pins. New whole best; gap to permitted ZIP1876 is8,590,443cycles.
+- Tiny exact DIV/up issue packet:100,200independent cases across five FRM,
+  original11,264i8outputs/guards/inputs exact. Complete GSIM ABBA median
+  1,601,725.5→1,595,639cycles,0.38%lower, unchanged568,974ROIinstructions.
+  Experimental only. Larger source-closed SiLU interval lookup feasibility active.
+- Smol deferred probability costs7.88%more complete instructions. Separating
+  reconstruction/point proofs still costs2,421,190,842versus eager2,288,221,154;
+  integer uncertainty product costs2,818,286,606,23.16%more. Original consumer,
+  guards and noFSM pass; none goes to full48or stock. Exact interval memoization
+  census finds only0.19366%ideal reuse and is rejected before target timing.
+- Root forced quant helper inlining gives identical model.o/ELF and8,651,421
+  forward instructions. The actual hot caller already inlines it; retained
+  standalone helper does not execute. Earlier stack-return-cost hypothesis
+  disproved, no pass promoted. Resident outer-loop retention similarly yields
+  identical final object/512,059GSIMcycles. Phase2should prune object-identical
+  alternatives before simulation.
+- Modeling is now a dedicated root workstream. Same-ELF1903GSIM/stock1919
+  consoles rehashed/reparsed, all70intervals conserved,29geometries held out
+  together. Callback correction resolves68/70intervals with3.88%median and
+  11.85%maximum error; host correction reaches41.90%. Spike issue/compute max
+  and footprint proxies still fail, maximum65.60%/68.13%. Adding store bytes
+  cannot identify nonnegative terms. No provider is exposed: independent
+  program predictions/matched-variant ranking remain unknown. Jack labels
+  never fitted. A21-case CPU DIV/FMA dependency, memory stride and footprint
+  battery is being built, middle sizes predeclared held-out, same immutable ELF
+  across Spike/GSIM/stock. Timer overhead measured separately. Shared fitting
+  and validation remain Merlin; ISA fixtures and engine bindings remain OOT.
+- Current2024Smol PC census:2,165,148,233ROIinstructions, replay90.72M
+  (4.19%), encoding355.32M, soft/max/denominator/alpha388.36M, polynomial
+  340.40M. All102allocated sections match the diagnostic relink;54pins root
+  rehashed. Explicit source-polynomial outline screen removes real executing
+  stack references but adds ABI saves/loads; instruction gain0.9881%, cycles
+  unknown. This evidence redirects work from replay-only hypotheses.
+- Tiny20-bit immutable source-expression table numerically certifies45,043/
+  45,056original i8consumers with13source replays.8MiBtable generation derives
+  only from the actual source DAG and fixed raw-bit partition. Full first2-row
+  target original11,264i8/guards/inputs/five FRMs (nonRNEfallback) passes;
+  complete instructions rise10.9%, GSIM still running. Random table reads
+  need measurement. The calibration battery now includes a separate indexed
+  gather working-set study; no extrapolation from contiguous memory prices.
+
+[2025](perf_records/stock2025_source_stride_current2023_terminal.json),
+[2026](perf_records/stock2026_resident_stripes_current2025_terminal.json),
+[2024](perf_records/stock2024_probability_point_group_terminal.json),
+[Six-stripe release](perf_records/root_resnet_current2025_resident_stripes_release_20261006.json),
+[Model diagnostics](perf_records/paired_engine_geometry_screen_diagnostic_20261006.json).
+
+The owned eight-thread counter snapshot at19:22:38UTC records57,097,066uncached
+input tokens,2,678,661,120cache-read tokens and11,075,051output tokens;
+4,444,968reasoning tokens are already included in output. Since18:09:07,
+completed request counters add1,613,344uncached input and389,477output tokens.
+These are mixed compiler/runtime/target/orchestration counters. Exact OOT-only
+or per-optimization allocation remains unavailable; raw cache traffic is not
+billing and goal usage is a separate metric. The source driver reads only the
+eight explicitly owned session files. An initial future-cutoff snapshot was
+rejected and retained outside the committed ledger; current cutoff is observed.
+[Counter ledger](perf_records/golden_token_usage_20261006T192238Z.json).
+
+Target-agnostic tooling priorities from this checkpoint:
+
+- Phase0: retain actual executed function/PC/opcode/stack census and distinct
+  kernel/callback/host timer scopes. A retained dead helper must not create a
+  host-cost hypothesis. Keep source/DAG/consumer/FENV/lifetime proof beside a
+  generated immutable expression table and include table memory in the build.
+- Phase1: source-owned outlining and independent expression scheduling belong
+  on ordinary generic passes. Semantic view/format/epoch identity should drive
+  shared preparations. Existing normal options must be carried by the actual
+  experiment recipe; supported winning families omitted from a recipe are
+  measured separately when composed.
+- Phase2: prune object-identical alternatives before simulation. Use measured
+  CPU dependency, memory working-set and primitive complete-finish services;
+  requested bytes and code footprint do not supply cache misses or DDR traffic.
+  Preserve separate engine regimes, repeated-measurement aggregation, held-out
+  geometries/sizes/programs and numerical-alternative ranking. Reject narrow
+  stage improvements when complete costs lose. Price random expression-table
+  traffic using its actual access stream, without assuming target cache capacity.
+
 ### Absolute values and ordinary physical compilation (2026-10-06 08:20 UTC)
 
 - **Absolute values — Merlin capability, OOT actual ISA proof:** the same

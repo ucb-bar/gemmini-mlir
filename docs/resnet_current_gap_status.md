@@ -2,15 +2,15 @@
 
 ## Current whole-model result
 
-The original-source compiler model's best qualified stock result is job2023:
-**31,808,394 cycles**, with all1,000 original output words exact and the final
+The original-source compiler model's best qualified stock result is job2026:
+**30,977,892 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876
 reproduces **22,387,449 cycles**. The measured whole-model difference is
-**9,420,945 cycles**, or **42.08% above the reference**.
-[Current result](perf_records/stock2023_segmented_mean_full_k_terminal.json),
+**8,590,443 cycles**, or **38.37% above the reference**.
+[Current result](perf_records/stock2026_resident_stripes_current2025_terminal.json),
 [reference result](perf_records/q1013_diagnostic_reference_firesim.json).
 
-Current2023 section attribution is **UNKNOWN**. The following diagnostic
+Current2026 section attribution is **UNKNOWN**. The following diagnostic
 profiles actual2013, before its mean/full-K composition. This profile is
 qualified from the actual winning frozen recipe: the unprofiled ELF reproduces
 byte for byte, all1,000 original words remain exact,70 active primitive
@@ -45,7 +45,24 @@ residency2020 measures33,026,561cycles, each against frozen1992
 33,500,256. They save269,961 and473,695cycles respectively, but do not replace
 segmented2013. Their qualified composition with2013 now measures31,808,394cycles in2023,
 745,245below2013. Source-stride2022 independently measures32,444,367; it is
-not included in2023. Combining these measured strategies is a new experiment.
+not included in2023. Their actual composition2025 retains the frozen2023
+host/runtime and source-stride24 leaf from2022, measuring31,697,615cycles.
+Only route24 changes; the independent root probe recloses29,611pins.
+
+Six additional resident spatial stripes now close over actual2025, with37,015
+root-rehashed pins. Original source capsules at common addresses pass all903,168
+outputs per arm and improve15.8%/19.1% in GSIM. Stock2026 measures30,977,892,
+719,723cycles/2.2706%below2025. The unchanged46kernels,52adapters, source/numeric proofs,
+host/runtime/weights and current winning strategies are retained.
+[Six-stripe release](perf_records/root_resnet_current2025_resident_stripes_release_20261006.json).
+
+The new model calibration study pairs the identical1903profile ELF across
+GSIM and stock1919 and reparses both retained consoles. Complete geometry
+holdouts predict68of70callback intervals with3.88%median/11.85%maximum error.
+Host correction remains inaccurate; this does not qualify a whole-model estimate
+or independently demonstrate variant ranking. A dedicated primitive benchmark
+is now being built. Jack1876timing is excluded from all fitting.
+[Model diagnostics](perf_records/paired_engine_geometry_screen_diagnostic_20261006.json).
 
 Stock1999 profiles1988's
 nonflat paired/packet implementation with its uninstrumented control reproduced
