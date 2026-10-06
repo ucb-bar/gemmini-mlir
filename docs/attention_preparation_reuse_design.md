@@ -153,3 +153,25 @@ must distinguish head/plane ordering and V orientation. Refuse stale generation,
 wrong format, partial failure and overlapping mutable readout. Only after these
 checks should a complete original group and ordinary full48 route be measured;
 logical reuse counts cannot establish a whole-model speedup.
+
+## Current composed-provider repetition and cost census
+
+The qualified radius/L1/certified-row source has **no RHS preparation inside
+refinement**. All 96 RHS encodes and metadata preparations occur during the
+initial two QK and six PV calls per head. A proposed cache across refinement
+would therefore remove no such work.
+
+An explicit diagnostic split preserves the original compiled consumer outputs,
+scales, guards and all eight provider counters. Nested machine-counter scopes
+measure 92,951,781 RHS encoding and 68,195,232 RHS metadata instruction ticks:
+5.574% of its 2,890,952,429-tick provider ROI. The diagnostic changes codegen and
+adds counters; its ROI is 0.403% above the uninstrumented composed provider.
+These figures bound the scope worth investigating and are not projected savings.
+The first unavailable `rdinstret` probe is retained; the successful fresh probe
+uses the existing machine-cycle counter under Spike's instruction-tick model.
+
+Four-query typed K/V sharing remains a real source opportunity. Its proposed
+30,830,592-byte retained region, generation/lifetime checks, additional pointer
+loads and fallback/preparation costs must be measured before enabling it. Most
+current provider instructions lie elsewhere. See
+`perf_records/attention_rhs_preparation_cost_census.json` for immutable evidence.
