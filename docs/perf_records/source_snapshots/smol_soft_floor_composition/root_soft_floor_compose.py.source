@@ -1,0 +1,73 @@
+from pathlib import Path
+import hashlib,json,shutil,subprocess,sys,time
+
+oot=Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+owned=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out')
+work=oot/'out/artifacts/probes/smol-soft-floor-composition-20261006'
+work.mkdir(parents=True,exist_ok=False)
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+pins={}
+for filename in ('prepared_softmax_interval_qualification.json','smol_builtin_floor_qualification.json'):
+ p=oot/'docs/perf_records'/filename;receipt=json.loads(p.read_text())
+ for name,digest in receipt['pins'].items():
+  assert sha(name)==digest,name
+  pins[name]=digest
+ pins[str(p)]=sha(p)
+(work/'admitted_inputs.json').write_text(json.dumps(pins,indent=2)+'\n')
+old=owned/'private_soft_domain_target/candidate'
+build=json.loads((old/'build.json').read_text())
+prefix=oot/'out/artifacts/probes/smol-builtin-floor-20261006/candidate/numeric_capability.h'
+from mlir_oot.no_fsm_audit import audit_elf
+for arm in ('control','candidate'):
+ d=work/arm;d.mkdir()
+ for p in old.glob('*.h'):shutil.copyfile(p,d/p.name)
+ shutil.copyfile(old/'provider.c',d/'provider.c')
+ if arm=='candidate':shutil.copyfile(prefix,d/'numeric_capability.h')
+ compiled=[]
+ for cmd in build['compile']:
+  cmd=[x.replace(str(old),str(d))for x in cmd]
+  subprocess.run(cmd,check=True);compiled.append(cmd)
+ if arm=='control':assert sha(d/'provider.o')==sha(old/'provider.o')
+ link=[x.replace(str(old/'provider.o'),str(d/'provider.o'))for x in build['link']]
+ link[link.index('-o')+1]=str(d/'model.elf');subprocess.run(link,check=True)
+ if arm=='control':assert sha(d/'model.elf')==sha(old/'model.elf')
+ audit=audit_elf((d/'model.elf').read_bytes());assert audit['status']=='pass'
+ (d/'nofsm.json').write_text(json.dumps(audit,indent=2)+'\n')
+ arm_pins={str(p):sha(p)for p in [*d.glob('*.h'),d/'provider.c',d/'provider.o',d/'provider.ll',d/'model.elf']}
+ for arg in link:
+  if Path(arg).is_file():arm_pins[arg]=sha(arg)
+ (d/'build.json').write_text(json.dumps(dict(compile=compiled,link=link,pins=arm_pins,elf_sha256=sha(d/'model.elf')),indent=2)+'\n')
+d=work/'candidate'
+argv=['/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike','--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(d/'model.elf')]
+start=time.time()
+with(d/'spike.log').open('w')as log:r=subprocess.run(argv,stdout=log,stderr=subprocess.STDOUT,timeout=600)
+text=(d/'spike.log').read_text()
+assert r.returncode==0 and 'WORKSPACE_GROUP ORIGINAL_COMPILED_CONSUMER AND GUARDS PASS'in text
+stat=lambda p:[x for x in Path(p).read_text().splitlines()if x.startswith('WORKSPACE_STAT ')]
+assert stat(d/'spike.log')==stat(old/'spike.log')
+(d/'execution.json').write_text(json.dumps(dict(status='pass',command=argv,elf_sha256=sha(d/'model.elf'),returncode=r.returncode,elapsed_seconds=time.time()-start,metrics=[x for x in text.splitlines()if 'WORKSPACE_'in x],scope='Complete original12head group provider ROI retired instructions; original consumer validates after ROI; hardware cycles UNKNOWN'),indent=2)+'\n')
+print(text[-2500:],flush=True)
+# Fresh full48 native provider; preserve the actual accepted normal model and input bindings.
+w=work/'normal_native';w.mkdir();f=w/'numeric_frozen';f.mkdir()
+prior=owned/'private_soft_domain_native';native_old=prior/'numeric_frozen'
+manifest=json.loads((native_old/'manifest.json').read_text())
+for name,digest in manifest['local_pins'].items():assert sha(native_old/name)==digest,name
+for p in native_old.glob('*.h'):shutil.copyfile(p,f/p.name)
+for name in ('provider.c','workspace_frontier_adapter.py'):shutil.copyfile(native_old/name,f/name)
+shutil.copyfile(prefix,f/'numeric_capability.h')
+cmd=[x.replace(str(native_old),str(f))for x in manifest['compile']];subprocess.run(cmd,check=True)
+manifest['compile']=cmd;manifest['inline_floor']=True
+manifest['local_pins']={p.name:sha(p)for p in [*f.glob('*.h'),f/'provider.c',f/'provider.so',f/'workspace_frontier_adapter.py']}
+(f/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+for name in ('build/lower/model.ll','build/device_signatures.json'):
+ p=w/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(prior/name,p)
+source=(prior/'validate_native.py').read_text()
+source=source.replace("base=w.parent/'closed_group_endpoint'",f"base=Path({str(owned/'closed_group_endpoint')!r})")
+source=source.replace("prior=w.parent/'normal_attention_provider/native'",f"prior=Path({str(owned/'normal_attention_provider/native')!r})")
+source=source.replace("prior_ir=w.parent/'normal_attention_provider/build/lower/model.ll'",f"prior_ir=Path({str(owned/'normal_attention_provider/build/lower/model.ll')!r})")
+(w/'validate_native.py').write_text(source)
+with(w/'execution.log').open('w')as log:r=subprocess.run([sys.executable,str(w/'validate_native.py')],stdout=log,stderr=subprocess.STDOUT,timeout=300)
+assert r.returncode==0,(w/'execution.log').read_text()[-2500:]
+native=json.loads((w/'native/validation.json').read_text())
+assert native['bitwise_mismatches']==0 and native['allclose'] and native['calls'][:3]==[48,0,0] and native['product_calls']==23040 and not native['callback_errors']
+print('SOFT_FLOOR_COMPOSITION_COMPLETE_ORIGINAL_GROUP_AND_FULL48_NATIVE_PASS',flush=True)

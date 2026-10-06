@@ -1,0 +1,33 @@
+from pathlib import Path
+import hashlib,json,shutil,subprocess,sys
+
+oot=Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+owned=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out')
+work=oot/'out/artifacts/probes/smol-builtin-floor-20261006'
+w=work/'normal_native';w.mkdir(exist_ok=False);f=w/'numeric_frozen';f.mkdir()
+old=owned/'radius_l1_retained_native/numeric_frozen'
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+manifest=json.loads((old/'manifest.json').read_text())
+for name,digest in manifest['local_pins'].items():assert sha(old/name)==digest,name
+for p in old.glob('*.h'):shutil.copyfile(p,f/p.name)
+for name in ('provider.c','workspace_frontier_adapter.py'):shutil.copyfile(old/name,f/name)
+shutil.copyfile(work/'candidate/numeric_capability.h',f/'numeric_capability.h')
+cmd=[x.replace(str(old),str(f))for x in manifest['compile']]
+subprocess.run(cmd,check=True)
+manifest['compile']=cmd;manifest['inline_floor']=True
+manifest['local_pins']={p.name:sha(p)for p in [*f.glob('*.h'),f/'provider.c',f/'provider.so',f/'workspace_frontier_adapter.py']}
+(f/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+for name in ('build/lower/model.ll','build/device_signatures.json'):
+ p=w/name;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(owned/'radius_l1_retained_native'/name,p)
+source=(owned/'radius_l1_retained_native/validate_native.py').read_text()
+source=source.replace("base=w.parent/'closed_group_endpoint'",f"base=Path({str(owned/'closed_group_endpoint')!r})")
+source=source.replace("prior=w.parent/'normal_attention_provider/native'",f"prior=Path({str(owned/'normal_attention_provider/native')!r})")
+source=source.replace("prior_ir=w.parent/'normal_attention_provider/build/lower/model.ll'",f"prior_ir=Path({str(owned/'normal_attention_provider/build/lower/model.ll')!r})")
+source=source.replace('New producer-domain numeric executor','Explicit source-floor numeric executor')
+(w/'validate_native.py').write_text(source)
+with (w/'execution.log').open('w')as log:result=subprocess.run([sys.executable,str(w/'validate_native.py')],stdout=log,stderr=subprocess.STDOUT,timeout=300)
+print((w/'execution.log').read_text()[-2500:])
+assert result.returncode==0,result.returncode
+d=json.loads((w/'native/validation.json').read_text())
+assert d['bitwise_mismatches']==0 and d['allclose'] and d['calls'][:3]==[48,0,0] and d['product_calls']==23040
+print('FULL48_NATIVE_ORIGINAL1600_PASS')

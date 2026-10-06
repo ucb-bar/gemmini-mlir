@@ -842,3 +842,118 @@ eligibility/default. New56native/default/refusal testsPASS; actualsource16384F32
 outputs and81920five-FRM/flags comparisons, plus independent3×7+tail1260rawspecial
 cases close. Actual source GSIM complete-cost pair is still live; no fullmodel
 composition or hardware release for this prospective policy.
+
+## 2026-10-06 12:23 UTC — stock results and generic buffering repair
+
+ResNet1974 resident weight issue packet2 completes at34,830,614stockcycles,
+all1000originalwords exact, stagedELF/hardware/UART pins closed. This is3.5235%
+below1903 and a marginal0.2135% below1930. It changes five resident leaves and
+does not compose1930 paired readout. FullK capacity1971 completes35,623,567cycles
+(1.3272% below1903) and remains above the best. Latest section attribution is
+UNKNOWN: the conserved1903 profile cannot assign1974's remaining12.44M gap
+against the permitted ZIP1876 reference22,387,449cycles.
+[1974](perf_records/stock1974_resident_weight_terminal.json),
+[1971](perf_records/stock1971_full_k_capacity_terminal.json).
+
+Tiny1975 generic loop organization composed with1967 completes450,035,885cycles,
+all256000original compiled words/Torch gate exact, staged stock hardware pins
+closed. The0.2627% marginal single-run gain is not a variance estimate. Broadcast
+arm1976 and flat-resident ResNet1980 remain separate queue arms. Root freshly
+reclosed1196 owned capsule/terminal/whole pins, including complete945-pin paired
+flat normal qualification plus249-pin original/independent capsule qualification.
+Paired-flat changes47 paired producer and50 directi8 producer; actual1930 paired
+routes are24/47, with24capacity-refused and unchanged. All52adapter/source/numeric
+bindings and other50kernels remain unchanged; control1930ELF byte reproduced.
+Root explicitly released one controlled4abec57c...150af0 stock arm to Recovery.
+An initial1903-only recloser correctly refused this1930 control; the existing
+explicit-control pointwise recloser passes. No correctness gate was weakened.
+[1975](perf_records/stock1975_tiny_outline_multiply_terminal.json),
+[paired whole](perf_records/resident_paired_stores_normal_whole_qualification.json),
+[reclosure](perf_records/root_paired_flat_tiny1975_reclosure.json).
+
+The separate exactly-two-multiply packet initially loses20.4861% complete-source
+GSIM cycles despite exact outputs. Emitted code reveals a65,600-byte allocation,
+65,536-byte final copy and small metadata allocations. A loop-carried memref
+identity obstructs output forwarding. Merlin efbf3374b inserts ordinary upstream
+canonicalization before buffer-results-to-out-params under explicit unique
+pipeline anchors; upstream alias/ownership analysis retains authority. No pointer
+no-alias promise or relaxed FP contract is added. With packet4, actual complete
+sourceABBA means489282→232454.5GSIMcycles (52.4907% lower), zero allocation/copy,
+all16384source values/81920five-FRM checks and1260independent special/tail values
+pass. This is a section result. Full normal1967-controlled qualification closes
+all256000native/strict words/Torch gate and155bindings; hardware release awaits
+immutable archive/root review. Both the losing and repaired candidates are saved.
+Root56packet integration tests PASS with explicit real upstream tool paths;
+the initial inherited dummy-path failures remain observed environment failures.
+[Negative](perf_records/tiny_two_multiplications_negative_journey.json),
+[repair](perf_records/tiny_two_products_direct_destination_journey.json).
+
+Smol private prepared softmax intervals are admitted in Merlin a718557b1 using
+source-derived finite score/difference/polynomial/prefix bounds and original
+runtime endpoint/alpha checks. SignedPV remains checked. Original consumer,
+48nativegroups/1600words and default provider/ELF byte identity pass. Complete
+group2,879,340,410→2,818,251,584retiredinstructions (2.1216% lower). A separate
+finite floor capability in Merlin7ba9df600 preserves signedzero and original
+library nonfinite calls, explicitly requires unobserved interposition/errno/FP
+flags.74native cases and470600target checks across five rounding modes pass;
+complete group drops2,879,340,410→2,804,104,382instructions (2.6130% lower), with
+the unchanged compiled54-op consumer786432i8words/1024BF16scales exact, same eight
+statistics/480devicecalls/86507520logicalreadbackbytes. Fresh48native/1600original
+outputs pass; old unobserved carrier differences are retained, no rebaseline.
+Fresh floor+private-soft composition is being checked, not inferred additively.
+Hardware cycles for these changes remain UNKNOWN.
+[Private intervals](perf_records/prepared_softmax_interval_qualification.json),
+[floor](perf_records/smol_builtin_floor_qualification.json),
+[355-pin reclosure](perf_records/root_soft_floor_stock1971_1974_reclosure.json).
+
+The apparently hot BF16 trunc helper is outside the measured provider ROI:
+all236079104instructions/15738880calls belong to post-ROI original consumer
+validation. Actualprovider.o has zero undefined trunc calls. Whole-program
+callee totals cannot price provider opportunities. Root unchanged1930 census
+separately conserves9335007whole-program instructions and8755275forward metric;
+active_mlir_ciface_forward has1118490instructions, deadpublicforward has zero.
+SHAupdate421452 occurs afterforward; sharedmemcpy300352 is not wholly forward.
+22030unknown instructions remain visible; current1974 section cycles UNKNOWN.
+[ROI scope correction](perf_records/bf16_helper_scope_census.json),
+[unchanged ResNet census](perf_records/root_resnet1930_pc_census.json).
+
+Phase1/2 should expose ordered pipeline anchors, typed buffer identity/ownership,
+and emitted allocation/copy evidence as generic editable/compiler cost surfaces.
+Compiler capability contracts should carry errno/interposition/nonfinite/signedzero
+and rounding obligations. Scope-labelled PC evidence must separate production ROI
+from validation and preserve unknowns. Actual CPU issue order/dependencies require
+emission evidence and matched timing: generic two-FMA math belongs in Merlin;
+literal CPUISA/ABI hooks belong in OOT. Search must measure fresh compositions,
+retain negative interactions and exact source-compatible controls. No workload
+name or golden hash becomes a compiler profitability predicate.
+
+Owned8-thread ledger12:23:14UTC:46024771uncachedinput,2190221440cache-read,
+9068021output,3637175reasoning (subsetoutput),2245314232rawinput+output or
+55092792uncached+output. Since11:19:48UTC,1504878uncachedinput+312472output
+(1817350),78106496cache-read and135452reasoningsubset. ExactOOT-only/per-change
+allocation remains UNAVAILABLE, no proration. Separate activegoal tracker51453684.
+[Ledger](perf_records/golden_token_usage_20261006T122314Z.json).
+
+At12:27UTC, the complete normal two-product/bufferidentity Tiny arm independently
+recloses107pins,256000originalnative/strict words, originalTorchgate and final
+all-executable noFSM audit. Strict135853970vs1967's142343799instructions is4.5593%
+lower, not a stock estimate. Root releases one stock arm b52cb58c...1fb1f against
+1967, without outline/broadcast composition. Source-compatible outline addition
+is the next independently qualified composition. Paired-flat ResNet is admitted
+once as1982,1976 runs and1980 queues; Recovery is the sole queue owner.
+[Tiny whole](perf_records/tiny_two_products_direct_destination_whole_qualification.json),
+[root closure](perf_records/root_tiny_two_product_whole_reclosure.json).
+
+Root fresh floor+private-soft composition completes the original12head group and
+full48native1600originalwords. All786432i8observations/1024scales, guards, inputbytes,
+eightstatistics and480devicecalls/86507520logicalreadbackbytes remain unchanged.
+Control prepared-soft provider.o/ELF reproduce db4e5b39...4ff77 exactly; candidate
+643ccd32...03f8c lowers completeROIinstructions2818251584→2739859187 (2.782%
+below prepared-soft alone),4.846% below2879340410composednumericcontrol.442pins
+include frozen numerical dependencies and all fresh native/target artifacts.
+These are observed composition counts, not added isolated percentages. Native
+firstcommandsentry remains inherited model-object compile evidence; actual fresh
+compile/link commands and reused object hashes are disclosed. Hardware cycles
+remain UNKNOWN. A matched stockgroup comparison is being prepared, not a slow
+wholeSmol release or5Bforecast.
+[Actual composition](perf_records/smol_private_soft_floor_composition_qualification.json).

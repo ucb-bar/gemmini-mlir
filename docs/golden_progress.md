@@ -6,8 +6,8 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, transfer/banked residual, host quantization packets and exact paired readout | 34,905,135 (1930) | All 1,000 original output words exact; 3.3171% below isolated1903 control. Stock hardware and retained pre-teardown staging observations pinned; segmented inputs are a separate arm | [1930](perf_records/resnet_paired_readout_stock1930.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, pure multiplication packet4, ordered contractions/K2, B-prefetch and fresh writer ownership | 451,221,105 (1967) | All 256,000 original compiled words unchanged; original Torch gate passes. 2.2039% below verified1926 control; stock staging/output pinned. Outline and broadcast compositions remain separate queued arms | [1967](perf_records/stock1967_tiny_pure_multiply_terminal.json) |
+| ResNet exact52/wide16, transfer/banked residual, host quantization packets and resident weight issue packet2 | 34,830,614 (1974) | All 1,000 original output words exact; 3.5235% below isolated1903 control, 0.2135% below prior1930 best. This arm does not compose paired readout. Stock hardware and pre-teardown staging observations pinned | [1974](perf_records/stock1974_resident_weight_terminal.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, pure multiplication packet4, ordered contractions/K2, B-prefetch, fresh writer ownership and generic loop organization | 450,035,885 (1975) | All 256,000 original compiled words unchanged; original Torch gate passes. Marginal single-run 0.2627% below verified1967 control; stock staging/output pinned. Broadcast and new two-multiply buffering arms remain separate | [1975](perf_records/stock1975_tiny_outline_multiply_terminal.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -56,10 +56,11 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
-Stock1926 and1930 are the new Tiny and ResNet best measured whole-model arms.
-ResNet1930 exact paired readout measures34,905,135cycles,0.7043% below the
-separate segmented-input1927 arm35,152,730; these gains are not added.
-Tiny still needs about35% below461.390M to reach300M. The isolated constant-clamp
+Stock1975 and1974 are the current Tiny and ResNet best measured whole-model arms.
+ResNet1974 measures34,830,614cycles; paired-readout1930 remains a separate
+34,905,135cycle arm. Their changes are being composed under fresh source closure;
+these gains are not added. Tiny still needs about33.34% below450.036M to reach300M.
+The isolated constant-clamp
 arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
 than1926. No gains are added across arms.
 

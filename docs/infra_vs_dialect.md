@@ -62,8 +62,8 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 
 ## Remaining gap and accounting
 
-Current verified whole-model champions are ResNet35,152,730cycles (1927) and
-Tiny461,389,700cycles (1926). Tiny's user-specified target is now300M.
+Current verified whole-model champions are ResNet34,830,614cycles (1974) and
+Tiny450,035,885cycles (1975). Tiny's user-specified target is300M.
 Smol stock1906 measures258,621,872,969cycles with full original target correctness. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.
@@ -244,3 +244,31 @@ static source opportunity, logical traffic, physical traffic, instruction proxy
 and hardware cycles as separate fields. Reuse a prior correctness gate only
 when the actual compiled object, complete inputs, contracts and observations
 are proven identical; do not infer identity from shape or API alone.
+
+### 2026-10-06: output materialization and cost scope
+
+The Tiny two-product experiment exposes a generic compiler pipeline problem:
+an unchanged loop-carried memref hides the caller's destination from public
+result conversion. Merlin now offers ordinary upstream canonicalization at the
+proved unique bufferization/result-conversion boundary. The exact source packet
+goes from20.49% slower to52.49% faster in complete GSIM after eliminating its
+65,600-byte temporary and65,536-byte output copy. This is a portable ownership
+and materialization improvement; the target provides measurement and ELF audits.
+Full original256000-word native/strict/Torch gates pass; hardware timing is pending.
+
+Phase1/2 edit surfaces should include ordered pipeline anchors, buffer identity,
+public destination forwarding and emitted allocation/copy costs. The alias and
+ownership proof remains upstream, with explicit refusal for ambiguous anchors.
+Numeric capabilities independently state interposition, errno, FP flags,
+nonfinite and signedzero obligations. Merlin owns these algorithms and contracts;
+OOT owns literal CPU instructions, ABI and hardware resource facts. Provider-ROI
+costs must exclude post-ROI validation: the236M-instruction BF16 trunc helper
+was entirely in the validation oracle, and is not a provider optimization target.
+
+Unique Tiny ELFs duplicate about2.2GB of immutable weight payload even when
+only host code changes. Baseline duplicates already share immutable inodes;
+different final executable bytes cannot be hardlinked. A future generic split
+of code and content-addressed payload could avoid this storage cost, but requires
+explicit load/relocation/address/alignment/lifetime contracts and fresh execution
+qualification. Loader and ELF layout implementations remain target-owned. No
+loader change or payload movement is part of the current performance candidates.
