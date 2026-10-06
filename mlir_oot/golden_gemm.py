@@ -309,14 +309,9 @@ class GoldenGemm:
         if self.prefetch_b_rows is not None:
             return self.prefetch_b_rows[slot] // F.DIM
         return (2 + slot) * F.SPAD_BANK_ROWS // F.DIM
-    def _output_block(self, m0: SSAValue, n0: SSAValue,
-                      mr: tuple[int, ...], nr: tuple[int, ...],
-                      slot: int = 0, *, prepared: bool = False,
-                      prefetch: Callable[[], None] | None = None) -> None:
+
+    def _reduce_output_block(self, m0, n0, mr, nr, slot=0, prefetch=None):
         s = self.shape
-        acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
-        if not prepared:
-            self._prepare_output_block(m0, n0, mr, nr, slot)
         if s.prefetch_b:
             panels = _ceil_div(s.k, F.DIM)
             def load(ki, bank, kr=F.DIM):
@@ -364,6 +359,16 @@ class GoldenGemm:
             if s.k % F.DIM and s.k > F.DIM:
                 self._k_tile(m0, n0, self.fb.const(full_k), mr, nr,
                              s.k % F.DIM, False, slot=slot)
+
+    def _output_block(self, m0: SSAValue, n0: SSAValue,
+                      mr: tuple[int, ...], nr: tuple[int, ...],
+                      slot: int = 0, *, prepared: bool = False,
+                      prefetch: Callable[[], None] | None = None) -> None:
+        s = self.shape
+        acc_base = slot * (F.ACC_BANK_ROWS // F.DIM if s.banked_m else s.bm * s.bn) if s.pipeline_m else 0
+        if not prepared:
+            self._prepare_output_block(m0, n0, mr, nr, slot)
+        self._reduce_output_block(m0, n0, mr, nr, slot, prefetch)
         out_bytes = 4 if s.output_dtype == "i32" else 1
         for a, rows in enumerate(mr):
             mrow = self._tile(m0, a)
