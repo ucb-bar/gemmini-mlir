@@ -20,6 +20,7 @@ from pathlib import Path
 
 from merlin.targetgen.elf_lanes import executable_sections, instruction_words
 
+from .cpu_opcode_census import CLASSES, classify
 from .no_fsm_audit import AuditError, _instruction_bytes, audit_elf
 from .tables import rtl_facts as F
 
@@ -108,6 +109,7 @@ def census(
     hist = parse_pc_histogram(histogram.read_text())
     sections = executable_sections(data)
     words = {}
+    encodings = {}
     starts = set()
     for _, offset, size, address in sections:
         pos = 0
@@ -116,7 +118,12 @@ def census(
             if pc in starts:
                 raise ValueError("executable ELF instruction ranges overlap")
             starts.add(pc)
-            pos += _instruction_bytes(struct.unpack_from("<H", data, offset + pos)[0])
+            width = _instruction_bytes(struct.unpack_from("<H", data, offset + pos)[0])
+            encodings[pc] = (
+                int.from_bytes(data[offset + pos : offset + pos + width], "little"),
+                width,
+            )
+            pos += width
         for pc, word in instruction_words(data[offset : offset + size], address):
             if pc in words:
                 raise ValueError("executable ELF instruction ranges overlap")
@@ -154,9 +161,12 @@ def census(
     primitive = Counter(
         {name: 0 for funct, name in F.FUNCT_NAMES.items() if funct in F.LEGAL_FUNCTS}
     )
+    cpu_classes = Counter({name: 0 for name in CLASSES})
     unknown = Counter()
     mapped = 0
     for pc, count in selected.items():
+        encoding = encodings.get(pc)
+        cpu_classes[classify(*encoding) if encoding else "outside_elf_unknown"] += count
         if any(address <= pc < address + size for _, _, size, address in sections):
             mapped += count
         word = words.get(pc)
@@ -201,12 +211,35 @@ def census(
         "features": {
             "executed_instructions": sum(selected.values()),
             "primitive_commands": dict(sorted(primitive.items())),
+            "cpu_opcode_classes": dict(sorted(cpu_classes.items())),
+            "unique_executed_pcs": len(selected),
+            "touched_instruction_bytes": (
+                sum(encodings[pc][1] for pc in selected)
+                if all(pc in encodings for pc in selected)
+                else None
+            ),
             "array_work": None,
             "requested_dma_bytes": None,
         },
         "feature_status": {
             "/features/executed_instructions": observed,
             "/features/primitive_commands": command_status,
+            "/features/cpu_opcode_classes": dict(observed, unit="instruction"),
+            "/features/unique_executed_pcs": dict(observed, unit="unique_pc"),
+            "/features/touched_instruction_bytes": (
+                dict(observed, unit="instruction_byte")
+                if all(pc in encodings for pc in selected)
+                else dict(
+                    unavailable,
+                    reason="Scoped PCs outside ELF have unknown encoding widths",
+                )
+            ),
+            **{
+                "/features/cpu_opcode_classes/" + name: dict(
+                    observed, unit="instruction"
+                )
+                for name in cpu_classes
+            },
             **{
                 "/features/primitive_commands/" + name: dict(command_status)
                 for name in primitive
@@ -220,6 +253,8 @@ def census(
             "bank_hazards": "UNKNOWN",
             "accelerator_dispatch_overlap": "UNKNOWN",
             "hardware_cycles": "UNKNOWN",
+            "instruction_cache_line_footprint": "UNKNOWN: cache geometry not pinned",
+            "instruction_cache_misses": "UNKNOWN: unordered histogram has no fetch chronology",
         },
         "scope": {
             "id": scope_id,

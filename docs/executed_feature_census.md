@@ -57,3 +57,37 @@ forward conservation pass. Its forward scope is 10,226,219 retired instructions
 and 39,235,729 hardware cycles. Primitive body counts are separately attributed;
 no physical work or transfer bytes are invented before operand telemetry. This
 is historical control 1874, rather than a newer policy or host/runtime candidate.
+
+## Observed CPU roles and code footprint
+
+`mlir_oot.cpu_opcode_census` decodes RV64GC encoding classes, including compressed
+instructions, FP conversions/arithmetic, integer multiply/divide, memory, branch,
+CSR and custom commands. It records weighted retired counts, unique executed PCs
+and their actual encoded bytes. These are observed features; they imply neither
+opcode latency, instruction-cache misses nor CPU/accelerator overlap. Cache-line
+footprints remain unknown without a pinned cache geometry.
+
+`perf_records/resnet1874_cpu_operand_features.json` joins all 70 unique source
+body invocations to the existing operand and stock timing dataset. CPU-class
+counts conserve 6,624,960 body instructions; their measured wrapper intervals
+include another 173 instructions whose hardware cost is unknown.
+
+`perf_records/q1013_reference_grouped_cpu_operand_features.json` groups all 54
+reference intervals by their 24 physical functions. This conserves 11,858,233
+body instructions and the 1,624-instruction wrapper difference. An aggregate PC
+histogram cannot attribute data-dependent paths separately to repeated calls;
+their per-invocation CPU classes remain unknown. Every reference timing label
+remains held out of coefficient fitting. `tests/cpu_feature_probe.py` re-closes
+all replay, scope and source-dataset pins before exporting these records.
+
+The stem bodies illustrate the code-footprint distinction: our historical body
+touches 58,831 PCs / 174,566 instruction bytes, compared with reference stem
+7,551 PCs / 24,042 bytes. Different input/numeric contracts and schedules prevent
+causal attribution. Smaller code or fewer instructions alone does not establish
+lower cycles; the rejected loop schedule remains negative evidence.
+
+Validation: 88 focused tests and six subtests pass, covering encoding roles,
+compressed boundaries, weighted conservation, exact footprint bytes, source
+scope refusals and no-FSM gates. The exporter observes zero unknown CPU encodings
+in both qualified model datasets. Qualified default model/device bytes remain
+unchanged.
