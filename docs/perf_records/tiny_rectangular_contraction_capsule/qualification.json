@@ -1,0 +1,81 @@
+{
+  "schema": "source_exact_original_contraction_rectangular_complete_capsule_v1",
+  "status": "pass",
+  "proofs": [
+    {
+      "family": "qk",
+      "arm": "control",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "scalar_contraction_accumulator_8_outputs",
+        "unroll_scalar_contraction_reduction_by_2"
+      ],
+      "llvm_sha256": "848ff332bdb5163a06945fd44f23d7649f780e9a6ec7a805ecb886a6c4a8a341",
+      "object_sha256": "b3f0a421ed4b402ac530137a3ca13abd3c4ab0ca5b370382ff49a3f069fe6785",
+      "source_sha256": "01b77bbebe8d549f35e9edfa4085cc0c7f539db2704eada1e8f595b60f1c03b9",
+      "native_all_original_words": true,
+      "native_output_sha256": "673a8f534523d8460c507707fc77c0471f0de52cbdc103b8d820596b41ab72b3"
+    },
+    {
+      "family": "qk",
+      "arm": "rectangular",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "scalar_contraction_accumulator_2x4_outputs",
+        "unroll_scalar_contraction_reduction_by_2"
+      ],
+      "llvm_sha256": "59dd2f7849f6e51a077850802959660eb6e5167a4008eb20a5c8555d1176f09a",
+      "object_sha256": "c0f852c0b5dad14ec6ac5494261a56be6aa1755be0df2f30e8cc7cf40113ddfa",
+      "source_sha256": "01b77bbebe8d549f35e9edfa4085cc0c7f539db2704eada1e8f595b60f1c03b9",
+      "native_all_original_words": true,
+      "native_output_sha256": "673a8f534523d8460c507707fc77c0471f0de52cbdc103b8d820596b41ab72b3"
+    },
+    {
+      "family": "pv",
+      "arm": "control",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "scalar_contraction_accumulator_8_outputs",
+        "unroll_scalar_contraction_reduction_by_2"
+      ],
+      "llvm_sha256": "3211a21ed42a29a49621ddc6f74f14ba734fd1b9862b4c90b758cccef915d423",
+      "object_sha256": "d6f5a8d7f619ebd8143161d5ce1330632b3dfb8083b5539f601ae2774a9148fa",
+      "source_sha256": "797f1e8e77afdb18ff407e446f2a0ec293e97202021e52b95bfebce307482e7e",
+      "native_all_original_words": true,
+      "native_output_sha256": "307e4fd8002ca024a9b7831453560e3571cfa669d31a36b04f46daec05cb9bc6"
+    },
+    {
+      "family": "pv",
+      "arm": "rectangular",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "scalar_contraction_accumulator_2x4_outputs",
+        "unroll_scalar_contraction_reduction_by_2"
+      ],
+      "llvm_sha256": "a8e803d47791b35daa78547e76fb8679ec61c357d290be635c0a3846c49ac814",
+      "object_sha256": "fe950c8508da51f1815e06861242ca76fabe1194846e95a74cdc272513b15c92",
+      "source_sha256": "797f1e8e77afdb18ff407e446f2a0ec293e97202021e52b95bfebce307482e7e",
+      "native_all_original_words": true,
+      "native_output_sha256": "307e4fd8002ca024a9b7831453560e3571cfa669d31a36b04f46daec05cb9bc6"
+    }
+  ],
+  "source_witness_sha256": "0e34d867a0ff4ba49c415e5c5c7a8ccadd7ae4afb8dfa427e959bae80a3a3301",
+  "original_whole_native_capture_sha256": "5252b4112910d5a4d083938b73f943c4cdcedba328d6c2cb3ef4c4da72015d28",
+  "all_original_qk2048_and_pv16384_words_exact": true,
+  "all_five_target_rounding_modes_and_stickyflags_match": true,
+  "poisoned_destination_tails": 128,
+  "original_inputs_preserved": true,
+  "timing_elf_sha256": "55c1373cefff356752185ae08faa21f1cb35db0e75d7299cedabecbd96e1f526",
+  "runtime_object_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+  "compile_flags": [
+    "--target=riscv64-unknown-elf",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-mcmodel=medany",
+    "-O3",
+    "-ffreestanding",
+    "-fno-builtin"
+  ],
+  "scope": "Complete first original32head/QK8x8x64 andPV8x64x8 strict separate-multiply/add contractions, sourcepositivezero seed initialization/public result ABI/allocation/copy/output included. Both sourceexact objects present in same timedELF, same operands/destination/allocator addresses. Reference/hash checks outsideROI; no fullmodel cycleprediction. Original1989 native capture all256000 words+Torch gate retained.",
+  "token_usage_available": false
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "source_exact_typed_contraction_capsule_v1",
+  "original_source_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_host_abi/model.mlir",
+  "original_source_sha256": "9b40fddfd8494ffc8f24a7d377609cd1a4cd5074b6183c7d8324c1bd4b089cbb",
+  "contractions": [
+    {
+      "name": "qk",
+      "experimental_occurrence": 0,
+      "same_shape_contractions": 22,
+      "operand_types": [
+        "tensor<32x8x64xf32>",
+        "tensor<32x64x8xf32>",
+        "tensor<32x8x8xf32>"
+      ],
+      "raw_original_op": "%439 = linalg.generic {indexing_maps = [affine_map<(d0, d1, d2, d3) -> (d0, d1, d3)>, affine_map<(d0, d1, d2, d3) -> (d0, d3, d2)>, affine_map<(d0, d1, d2, d3) -> (d0, d1, d2)>], iterator_types = [\"parallel\", \"parallel\", \"parallel\", \"reduction\"]} ins(%expanded_118, %expanded_120 : tensor<32x8x64xf32>, tensor<32x64x8xf32>) outs(%splat_122 : tensor<32x8x8xf32>) attrs =  {prov._pattern_hint = \"batch_matmul\", prov.aten = \"aten.bmm.default\", prov.family = \"contraction\", prov.fqn = \"lm.model.layers.0.self_attn\", prov.module = \"lm\", prov.op = \"batch_matmul\", prov.orig_dtype = \"float32\", prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.region_id = \"matmul_4\", prov.source_node_ids = [\"g:prepared:root:n787\"], prov.trace_role = \"lowering\"} {\n^bb0(%in: f32, %in_4331: f32, %out: f32):\n  %4065 = arith.mulf %in, %in_4331 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n787\"], prov.trace_role = \"lowering\"} : f32\n  %4066 = arith.addf %out, %4065 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n787\"], prov.trace_role = \"lowering\"} : f32\n  linalg.yield %4066 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n787\"], prov.trace_role = \"lowering\"} : f32\n} -> tensor<32x8x8xf32>",
+      "raw_original_op_sha256": "09bbc70d239acd99e35c4ecccab275d3f6f91103b108c35599a7fdcb85408c72",
+      "capsule_source_path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/qk_source.mlir",
+      "capsule_source_sha256": "01b77bbebe8d549f35e9edfa4085cc0c7f539db2704eada1e8f595b60f1c03b9",
+      "source_arithmetic_cloned": true,
+      "initializer_source_positive_zero_proven": true
+    },
+    {
+      "name": "pv",
+      "experimental_occurrence": 0,
+      "same_shape_contractions": 22,
+      "operand_types": [
+        "tensor<32x8x8xf32>",
+        "tensor<32x8x64xf32>",
+        "tensor<32x8x64xf32>"
+      ],
+      "raw_original_op": "%456 = linalg.generic {indexing_maps = [affine_map<(d0, d1, d2, d3) -> (d0, d1, d3)>, affine_map<(d0, d1, d2, d3) -> (d0, d3, d2)>, affine_map<(d0, d1, d2, d3) -> (d0, d1, d2)>], iterator_types = [\"parallel\", \"parallel\", \"parallel\", \"reduction\"]} ins(%expanded_140, %expanded_142 : tensor<32x8x8xf32>, tensor<32x8x64xf32>) outs(%splat_144 : tensor<32x8x64xf32>) attrs =  {prov._pattern_hint = \"batch_matmul\", prov.aten = \"aten.bmm.default\", prov.family = \"contraction\", prov.fqn = \"lm.model.layers.0.self_attn\", prov.module = \"lm\", prov.op = \"batch_matmul\", prov.orig_dtype = \"float32\", prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.region_id = \"matmul_5\", prov.source_node_ids = [\"g:prepared:root:n798\"], prov.trace_role = \"lowering\"} {\n^bb0(%in: f32, %in_4331: f32, %out: f32):\n  %4065 = arith.mulf %in, %in_4331 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n798\"], prov.trace_role = \"lowering\"} : f32\n  %4066 = arith.addf %out, %4065 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n798\"], prov.trace_role = \"lowering\"} : f32\n  linalg.yield %4066 {prov.origin_node_ids = [\"g:original:root:n288\", \"g:quantized:root:n752\"], prov.source_node_ids = [\"g:prepared:root:n798\"], prov.trace_role = \"lowering\"} : f32\n} -> tensor<32x8x64xf32>",
+      "raw_original_op_sha256": "ccd6063e5c5485af0ac62db8ff018b0bb8d837ff0d21ca9135c65d5e79e73721",
+      "capsule_source_path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/pv_source.mlir",
+      "capsule_source_sha256": "797f1e8e77afdb18ff407e446f2a0ec293e97202021e52b95bfebce307482e7e",
+      "source_arithmetic_cloned": true,
+      "initializer_source_positive_zero_proven": true
+    }
+  ],
+  "scope": "Actual originalpostoffload generic operation bodies/properties/provenance cloned unchanged; only actual source positivezero tensor initialization localized, complete source inputs and endpoints retained. Experimental occurrence binds capture only; production rectangle legality uses projections/types/tileextents."
+}
