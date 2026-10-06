@@ -1,0 +1,156 @@
+{
+  "schema": "source_interval_matched_calibration_declaration_v1",
+  "declared_utc": "2026-10-06T21:18:48.810477+00:00",
+  "cases": [
+    {
+      "id": 0,
+      "rows": 2,
+      "bits": null,
+      "kernel": "control_M2",
+      "role": "source_control_only",
+      "elements": 11264
+    },
+    {
+      "id": 1,
+      "rows": 2,
+      "bits": 16,
+      "kernel": "selected_M2_b16",
+      "role": "training",
+      "elements": 11264,
+      "table_bytes": 524288
+    },
+    {
+      "id": 2,
+      "rows": 2,
+      "bits": 18,
+      "kernel": "selected_M2_b18",
+      "role": "heldout",
+      "elements": 11264,
+      "table_bytes": 2097152
+    },
+    {
+      "id": 3,
+      "rows": 2,
+      "bits": 20,
+      "kernel": "selected_M2_b20",
+      "role": "training",
+      "elements": 11264,
+      "table_bytes": 8388608
+    },
+    {
+      "id": 4,
+      "rows": 4,
+      "bits": null,
+      "kernel": "control_M4",
+      "role": "source_control_only",
+      "elements": 22528
+    },
+    {
+      "id": 5,
+      "rows": 4,
+      "bits": 16,
+      "kernel": "selected_M4_b16",
+      "role": "heldout",
+      "elements": 22528,
+      "table_bytes": 524288
+    },
+    {
+      "id": 6,
+      "rows": 4,
+      "bits": 18,
+      "kernel": "selected_M4_b18",
+      "role": "heldout",
+      "elements": 22528,
+      "table_bytes": 2097152
+    },
+    {
+      "id": 7,
+      "rows": 4,
+      "bits": 20,
+      "kernel": "selected_M4_b20",
+      "role": "heldout",
+      "elements": 22528,
+      "table_bytes": 8388608
+    },
+    {
+      "id": 8,
+      "rows": 8,
+      "bits": null,
+      "kernel": "control_M8",
+      "role": "source_control_only",
+      "elements": 45056
+    },
+    {
+      "id": 9,
+      "rows": 8,
+      "bits": 16,
+      "kernel": "selected_M8_b16",
+      "role": "training",
+      "elements": 45056,
+      "table_bytes": 524288
+    },
+    {
+      "id": 10,
+      "rows": 8,
+      "bits": 18,
+      "kernel": "selected_M8_b18",
+      "role": "heldout",
+      "elements": 45056,
+      "table_bytes": 2097152
+    },
+    {
+      "id": 11,
+      "rows": 8,
+      "bits": 20,
+      "kernel": "selected_M8_b20",
+      "role": "training",
+      "elements": 45056,
+      "table_bytes": 8388608
+    }
+  ],
+  "repetitions": 2,
+  "empty_windows": 3,
+  "scope": "Actual first source helper, originalfirst8rows; common fixed input/output buffers; independently compiled original source retained perMprefix. Completehelper call/frame, 4sourceconversion+multiply preparation chains, lookup/mode/addressing/certificate, originalsourcefallback, unchanged2roundedFMUL/clamp/RNE/store insideROI.",
+  "training": "Fourcorners M2/M8\u00d716/20bits only; sourcecontrols excluded; five M4/18bit variantsheldout beforelabels.",
+  "excluded_labels": "Prior firstM2 warmpair and whole2033 negative NEVER training. No wholeGSIM or proposedwholeprediction.",
+  "hypotheses": [
+    {
+      "id": "element_only",
+      "columns": [
+        "elements"
+      ],
+      "fit_intercept": true,
+      "scope": "Two fitted parameters fromfourtrain points; deliberately tests whether memoryvariation remains unexplained."
+    },
+    {
+      "id": "element_region",
+      "columns": [
+        "elements",
+        "requested_distinct_64B_regions"
+      ],
+      "fit_intercept": true,
+      "scope": "Three fitted parameters fromfourtrain points; allfiveheldout predictions/repeats retained. Source replaycount is an explicit residual diagnostic, not a silently fitted fourthterm."
+    }
+  ],
+  "additional_features": "Source replay8FMA+1DIV/sourceexpressionopcounts, actual requested tablecells/64B/4KiBregions, FPsource graph/code footprints and instruction counts retained. Shared CPU/gather calibrations may apply only with declared domain; no desired-target fit.",
+  "setup": "Input fixture and allthree compiler-produced readonlytables shippedinELF; buffer clearing, sourceoracle/guards/inputhash validation outsideROI. No lazygeneration/capture dictionary; no copiedruntime table prep excluded fromROI.",
+  "table_addresses": "Eachdifferent immutabletable has actualdistinct aligned64 VMA retained; all sourceinput/outputaddresses common. Cachewarmth/miss/physicaltraffic UNKNOWN. Initial correctness execution warms tables; this packet measures that declared operational regime, notcoldstart/wholecache.",
+  "fenv": "Once/helper actual targetFRMguard; onlyRNElookup, otherscompleteoriginalsource. Nontrapping/RNEgradual/flagsandsignedzero-unobserved optimization permission unchanged. All5targetFRMs and7sticky presets validate bytes/guards; nonRNE flags exact.",
+  "target": "StockRV64GC, noFSM. Target ISA/memory/link facts onlyOOT.",
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/tests/source_interval_calibration_probe.py": "c09144f37306de37e060818dde9f230f8de2b2adc31f6f822b3403f71a0071a5",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/source-expression-interval-promotion-20261006/normal_source_generic/typed_prepacket.generic.mlir": "26d545529a5dc5c4f6f16fe36269f0d76191e06466b883966cd354a06cb37f9b",
+    "/scratch/agustin/tmp/merlin-tiny-quant-consumer-main-20261006/out/artifacts/probes/source-expression-interval-promotion-20261006/normal_source_generic/census.json": "1830e454f62422044bd6ba8518d147f2aa36efaadc7f8945f71bdd0d47e99ec7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-whole-20261006/whole/lower/model.ll": "e07d1eb89b7d07205aff0892c65af8efd01022c6db588fa00dc4ea502f185e39",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-partition-analysis-20261006/parameter_analysis.json": "05951c5b745510518826f22f8d5755ba9e0587458f7715ff170d3c728b66b50f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-partition-analysis-20261006/table_16.bin": "c9a337725a3fd042457ff63014b4ebd6d534271f97085ee545931d78c3a10e0b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-partition-analysis-20261006/table_18.bin": "3ca0ee320445562dcd51875b5dd6268a3020504b4d207909189daed3c48b2ecb",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-partition-analysis-20261006/table_20.bin": "bf15734c7cb2d89bf5d1744c015ec66d03b5acdb227672520b2cabea81efac21",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/a.npy": "a6046b8140b798c7dcdffed6f949d36b0c353d964a3b78ce0da509da108e5b55",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_a.npy": "7beb9d772a92e984f661bd13d20929d5430174ff7d05583fd671ef07dd8e598a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/b.npy": "3d37692e836389e2fc64798e6aba2f4ea4f0506f58ff7df05d36cfbdfee99865",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_b.npy": "1cdb4423dc8addaad48c17757f227b92562c055f6b2f561063f85643f6ce6d64",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/expected.npy": "9fc384d7615da056f86e1ba672afc1ea501fba28bb12506d1877bf17c5a505f7"
+  }
+}
