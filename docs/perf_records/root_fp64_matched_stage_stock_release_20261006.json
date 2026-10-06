@@ -1,0 +1,57 @@
+{
+  "schema": "root_fp64_matched_stage_stock_release_v1",
+  "status": "released_matched_stream_only",
+  "packet_pins_reclosed": 98,
+  "envelope_pins_reclosed": 98,
+  "source_and_rational_words_regenerated_byteexact": true,
+  "core_effect_projection_tests": 16,
+  "fresh_native_cases": 12,
+  "fresh_strict_rows": 27,
+  "full_fp64_rows": 24,
+  "strict_all_report_fields_equal": true,
+  "opcode_counts_collide": true,
+  "no_stack_accesses_in_bound_kernels": true,
+  "noFSM_all_executable_sections": true,
+  "custom_instructions": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/build/layer.elf",
+  "elf_sha256": "90e3666fd03e53700697c28ad269467da7e323a51e1adce28e39780fedc3dfee",
+  "manifest": "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/generated/manifest.json",
+  "manifest_sha256": "2376d3397ab827959c3e9aa1a327a6dd64a9c83c697a57845a94fbfae84edf8a",
+  "parser": "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/source_snapshot/bound_skeleton_service.py",
+  "parser_sha256": "8fbf3bfd64999c358574626ddfd3005800a983fe9585a25a6ae2f36b26d22bd3",
+  "service_contract": {
+    "counter_rows": 27,
+    "fp_rows": 24,
+    "checksum": "a65deaede687cb45"
+  },
+  "cross_executable_predictions": "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/cross_executable_predictions.json",
+  "cross_executable_predictions_sha256": "8546db3aaa01852ea8bd83835fcfef7528c1010a2572fcc1385a893a4f43dea6",
+  "scope": "Eight independent lanes; identical per-lane directed multiply/add/add/narrow/widen and operands, final sticky flags, no memory/intermediate flag/trap effects. Timing includes loop/entry/stores/visible extra moves. Cross-executable transfer is a prelabel falsifiable hypothesis, not equivalence of domains. No source hot-loop or whole-model speed claim.",
+  "commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "merlin/tests/ir/test_independent_lane_schedule.py"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--isa=rv64gc",
+      "--extension=gemmini",
+      "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/build/layer.elf"
+    ]
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/docs/perf_records/fp64_stage_schedule_qualified.json": "3539a57c0be619d7ac32471dcb81ee63ff9ba6138fd01494398ea73b91b6a411",
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/qualified.json": "458a13262ae8ae372f2a4c0d69e04ce60f395a6abc28fb71956a5daeee2efc8c",
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/build/layer.elf": "90e3666fd03e53700697c28ad269467da7e323a51e1adce28e39780fedc3dfee",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/no_fsm_audit.json": "f21823b9dc628d271eb274ccb17f81c6551c6813a93f312e3022fad1f2a69e0a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/core_tests.log": "d7bdabb3e3edbfb67ad5bec5f31715a2491c085d687c3885395e58b8c2dc44be",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/native_validation.json": "5a603c33f14c1d380aafce34a21c346017c0bfee106bd87a1d43bf8789c5c7bb",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/spike.stdout": "20b21a23039b1f239d4f6277e0d924c78b9a796bd36d4b1073143186f4d2657f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/cross_executable_predictions.json": "8546db3aaa01852ea8bd83835fcfef7528c1010a2572fcc1385a893a4f43dea6",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/fp64-stage-root-review-20261006/review.py": "f3927cac50f3c2fa38d07a5fd284d09385ceda100e49b41ba750b6b5acb4644a"
+  }
+}
