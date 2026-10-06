@@ -1311,3 +1311,22 @@ before enabling this family. [Qualified capsule](perf_records/residual_shared_af
 The unchanged802,816-byte first residual now closes on strictRV64GC Spike and pinned GSIM, including both actual scaled readouts, the complete source output,8192 dirty guards and1,605,632 immutable input bytes. The shared298/249 producer uses5chunks and two certified stores; its portable full decoder preserves every ordered binary32 source result. Common-address paired ELFs differ one selector byte. The control takes1,996,004cycles and the new family1,928,741, a67,263cycle reduction (3.3699%) including both stores and decoding.
 
 This remains a layer capsule, with normal selection off and no new whole-model or stock FireSim claim. The earlier23.318% full-domain reduction did not extrapolate to the larger footprint; the old11chunk separate-predictor family remains rejected at+16.688%. All numeric gates stay exact. A separately proved first-output guard is the next default-off screen. [Full captured-layer receipt](perf_records/residual_shared_affine_bracket_original_capsule.json).
+
+### Bounded source-scale bracket coverage
+
+A CPU-only search of the existing 16 source residual relations, using positive
+nearby coefficient ratios with denominator at most 512, finds six lower-chunk
+shared producers with exact two-readout reconstruction over all 65,536 pairs.
+Their counts change 39→5, 9→7, 16→8, 8→7, 14→6 and 26→6. The other ten have
+no accepted lower-chunk candidate in this bounded corresponding-threshold
+family; this does not prove impossibility for other coefficient or decoder
+families. Every original single-readout control table is independently checked
+against its supplied source relation before ranking alternatives.
+
+If all six were later qualified and selected, the proposed integer compute
+count would fall from 324,576 to 190,512. That excludes additional stores,
+private output allocation, CPU decoding and physical timing. It is a work
+count, with no claimed whole-model cycle saving. Target qualification for five
+additional numeric contracts and ordinary source/ABI binding remain open.
+The default source policy is unchanged.
+[Source feasibility](perf_records/residual_shared_bracket_source_feasibility.json).
