@@ -45,6 +45,48 @@ def choose_compact_resident(conv, *, prefetch_b=False):
     return GoldenResidentConv(conv, **asdict(options)), options
 
 
+def retain_resident_commands(control):
+    """Apply one explicit command choice to an already admitted resident layout.
+
+    Preserve all declared constructor facts and prior resource decisions.
+    Profitability is deliberately absent: smaller bodies can lose from extra
+    CPU issue work, and measured alternatives belong in shared plan selection.
+    """
+    decision = {
+        "applied": False,
+        "selection": "explicit opt-in; profitability not inferred",
+        "refusal": "selected family is not resident channel planes",
+        "timing_claim": False,
+    }
+    if type(control) is not GoldenResidentConv:
+        return control, decision
+    selected = GoldenResidentConv(
+        control.conv,
+        rows_per_tile=control.rows_per_tile,
+        loop_channels=control.loop_channels,
+        prefetch_b=control.prefetch_b,
+        weight_base=control.explicit_weight_base,
+        source_stride=control.source_stride,
+        row_residue=control.row_residue,
+        compact_commands=True,
+    )
+    for name in ("resident_stripe_decision", "source_stride_decision"):
+        if hasattr(control, name):
+            setattr(selected, name, getattr(control, name))
+    decision.update(
+        applied=True,
+        refusal=None,
+        rows_per_tile=selected.rows_per_tile,
+        prefetch_b=selected.prefetch_b,
+        input_plane_rows=selected.plane,
+        weight_base=selected.bbase,
+        source_stride=selected.source_stride,
+        row_residue=selected.row_residue,
+        source_reduction_order="increasing HWIO; exact original command/pointer sequence",
+    )
+    return selected, decision
+
+
 class GoldenResidentConv(GoldenGemm):
     def __init__(
         self,

@@ -26,3 +26,7 @@ PYTHONPATH=/scratch/agustin/tmp/gemmini-resident-command-loops-20261006:/scratch
 ```
 
 The historical capsule result field `prefetch_b` records the CLI flag. Actual implementation selection is bound by each fixture's `resident_options` and emitted module. The independent prefetched arms both use `prefetch_b=True`. Child token attribution is unavailable; root retains session accounting.
+
+`captured_requant_bundle.build(..., compact_resident_commands=True)` and `--compact-resident-commands` now expose this explicit option on an already admitted resident convolution family. The default remains false. An opt-in does not infer profitability: unadmitted dense/flat families remain unchanged. The source route records the actual applied decision and requires the existing proved flat-spatial/virtual-padding route.
+
+The normal source bundle preserves all 52 numeric/shape bindings, all adapter bytes, rewritten source MLIR and all 47 unselected kernel objects. Exactly five admitted resident objects change in the frozen source experiment. The 34 binding/primitive checks pass. Whole original numeric and final ELF qualification remain pending; no stock performance claim or automatic policy follows from this bundle closure. GSIM's memory regime differs from stock FireSim. Portable LLVM loop metadata comes from Merlin's existing `disable_loop_unroll` helper; target resource/address rules remain in OOT.

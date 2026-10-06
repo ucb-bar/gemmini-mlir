@@ -151,7 +151,9 @@ def integer_adapter(schedule,symbol,kernel,direct,proof,*,readout_options=None,p
     return emit_readout(proof,readout,fixedpoint=True,producer_range=producer_range,**dict(readout_options or {}))+adapter
 
 
-def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False,readout_domain_policy=None,spatial_command_loops=False,readout_pair_policy=None):
+def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output_lsb=0,exact_integer_readout=False,virtual_padding=False,banked_prefetch=False,grouped_b=False,separate_b_bank=False,full_k_banked_regions=(),resident_input_regions=(),resident_input_options=None,resident_input_policy=None,dense_input_policy=None,resident_stripes=False,dense_b_slot_policy=None,readout_options=None,source_stride_resident=False,source_stride_row_residue=False,resident_a_load_coalescing=False,readout_domain_policy=None,spatial_command_loops=False,readout_pair_policy=None,compact_resident_commands=False):
+    if type(compact_resident_commands) is not bool or (compact_resident_commands and (not flat_spatial or not virtual_padding)):
+        raise ValueError('compact resident commands require boolean selection and proved virtual padding/spatial scheduling')
     if type(spatial_command_loops) is not bool or (spatial_command_loops and not flat_spatial):
         raise ValueError('spatial command loops require boolean selection and flat spatial scheduling')
     if readout_pair_policy not in (None,'source_proven') or (readout_pair_policy is not None and not exact_integer_readout):
@@ -271,6 +273,11 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                     source_stride_resident=source_stride_resident and virtual_input is not None,
                     source_stride_row_residue=source_stride_row_residue and virtual_input is not None,
                     spatial_command_loops=spatial_command_loops)
+            if compact_resident_commands:
+                from .golden_resident_conv import retain_resident_commands
+                generator,compact_resident_decision=retain_resident_commands(generator)
+                if compact_resident_decision['applied']:
+                    schedule_kind+=',retained_resident_commands'
             schedule=generator.conv
         else:
             from .dense_schedule import select_kernel as select_dense,choose_banked_by_command_cost,choose_resident_a_by_command_cost,choose_transfer_by_command_cost
@@ -348,6 +355,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             routes[-1]['resident_policy_refusal']=policy_refusal
             if policy_options is not None:
                 routes[-1]['resident_options']=asdict(policy_options)
+        if direct and compact_resident_commands:
+            routes[-1]['compact_resident_command_decision']=compact_resident_decision
         if not direct and dense_input_policy is not None:
             routes[-1]['dense_policy']=dense_input_policy
             routes[-1]['dense_policy_decision']=dense_decision
@@ -357,7 +366,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             routes[-1]['resident_a_load_decision']=resident_a_load_decision
     selected_regions={r['region'] for r in routes if 'full_k_banked_prefetch' in r['schedule_kind']}
     if selected_regions != set(full_k_banked_regions):raise ValueError('requested full-K banked source regions not all selected')
-    selected_resident={r['region'] for r in routes if r['schedule_kind']=='resident_input_channel_planes'}
+    selected_resident={r['region'] for r in routes if r['schedule_kind'].split(',')[0]=='resident_input_channel_planes'}
     if resident_input_policy is None and selected_resident != set(resident_input_regions):raise ValueError('requested resident-input source regions not all selected')
     if not routes:raise ValueError('no exactly provable captured epilogues')
     module.verify();printed=serialize(module,declarations);parse_module(printed).verify();(output/'rewritten.mlir').write_text(printed)
@@ -368,6 +377,9 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
     audit=audit_elf(linked.read_bytes())
     if audit['status']!='pass':raise ValueError('forbidden device instruction')
     result=dict(schema='gemmini_exact_captured_requant_bundle_v1' if max_output_lsb==0 else 'gemmini_bounded_captured_requant_bundle_v1',selected_max_output_lsb=max_output_lsb,source_sha256=source_sha,weights_sha256=pins['weights.safetensors']['sha256'],manifest_sha256=pins['weights.safetensors.manifest.json']['sha256'],rewritten_sha256=hashlib.sha256(printed.encode()).hexdigest(),object_sha256=hashlib.sha256(linked.read_bytes()).hexdigest(),routes=routes,refused=refused,nofsm_audit=audit,scope='Specializes only hash-bound captured zero-bias parameters. Runtime input images remain variable. Other weights/bias blobs require recompilation. Explicit local error limits do not establish full-model quality; original goldens must be retained and checked.')
+    if compact_resident_commands:
+        result['compact_resident_commands']=True
+        result['compact_resident_command_applications']=sum(r.get('compact_resident_command_decision',{}).get('applied',False) for r in routes)
     if readout_pair_policy is not None:
         result['readout_pair_policy']=readout_pair_policy
         result['readout_pair_applications']=sum(bool(r.get('paired_readout',{}).get('applied')) for r in routes)
@@ -378,7 +390,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--readout-pair-policy',choices=('source_proven',));p.add_argument('--spatial-command-loops',action='store_true');a=p.parse_args()
-    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,readout_pair_policy=a.readout_pair_policy,spatial_command_loops=a.spatial_command_loops,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--readout-pair-policy',choices=('source_proven',));p.add_argument('--spatial-command-loops',action='store_true');p.add_argument('--compact-resident-commands',action='store_true');a=p.parse_args()
+    result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,readout_pair_policy=a.readout_pair_policy,spatial_command_loops=a.spatial_command_loops,compact_resident_commands=a.compact_resident_commands,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()
