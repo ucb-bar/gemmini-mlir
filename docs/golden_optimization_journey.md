@@ -957,3 +957,90 @@ compile/link commands and reused object hashes are disclosed. Hardware cycles
 remain UNKNOWN. A matched stockgroup comparison is being prepared, not a slow
 wholeSmol release or5Bforecast.
 [Actual composition](perf_records/smol_private_soft_floor_composition_qualification.json).
+
+## 2026-10-06 13:07 UTC — new whole champions and fresh compositions
+
+Stock1982 paired/flat ResNet completes34,792,010cycles, all1000originalwords exact;
+stock1983 exactly-two-multiply/buffer-identity Tiny completes427,815,474cycles,
+all256000originalwords and originalTorchgate exact. Actual stagedELF/bitstream,
+UART/output and final zero-FSM identities close. Tiny improves5.1872% against
+1967, while ResNet's0.3241% against1930 is a marginal single-run observation.
+Tiny still needs29.8763% reduction to300M; ResNet remains12,404,561cycles above
+the permitted ZIP1876 reference22,387,449. Current champion section cycles are
+UNKNOWN. No separate percentages are added.
+[1982](perf_records/stock1982_paired_flat_terminal.json),
+[1983](perf_records/stock1983_tiny_two_products_terminal.json).
+
+Root recloses1775pins for actual1982 paired/flat plus five packet leaves,
+original1000native/strict words/noFSM/control4abec57c...150af0. All52adapters,
+other47kernels, original1930host/runtime/weights and the actual47paired/50direct
+flat kernels remain byteidentical. The first seven-leaf normal composition was
+correctly refused and retained: a global packet policy also touched flat planes.
+OOT's explicit typed layout-family constraint admits channel planes only, with
+defaultTrue behavior unchanged and no workload/shape/provenance selector.
+Root21focused tests and agent62tests pass. The accepted five-leaf candidate
+fb1d9d93...bf3455 is admitted as1992 against1982, whole timingUNKNOWN. The earlier
+paired/nonflat arm1988 remains separate.
+[Composition](perf_records/resnet_paired_flat_packets_whole_qualification.json).
+
+Root builds a diagnostic profile of actual1974 compute objects, reproducing its
+uninstrumentedf9a06837...e532 ELF and reusing the existing70-boundary wrapper.
+All1000originalwords, rank/DONE, noFSM, source IDs and conservation pass;166pins
+close. Strict functional9,297,404instructions is not hardwarecycles. Recovery
+admits1990 with separately frozen profileparser and staged/numeric collectors.
+This measures1974 only; it cannot repartition1982's gap. Initial receipt-field
+and alignment-field failures are retained and corrected using actual execution
+records without another target run or weaker gate.
+[Profile](perf_records/root_resnet1974_leaf_profile_qualification.json).
+
+Merlin's exacti64 radix reconstruction retains signed weighted product terms,
+ordered exact integer prefixes and one finalf64 conversion under its existing
+producer range proof. A fresh matched allocation-aware completegroup drops
+2,739,859,283→2,726,638,089instructions (0.4825%), including its extra1MiB scratch.
+The prior old-size arena correctly refuses. Ordinary normal compilation now
+allocates one123,012,160-byte private pool plus64alignment padding, shares it
+across all48physical calls, retains publicABI and frees its owner once. Fresh
+normalLLVM/native objects preserve all1600originalwords with48calls/zero fallback,
+23040integer product stand-ins and unchanged original accuracy policy. Forced
+actual compiled source fallback passes196608BF16words/input+descriptor ownership.
+Root recloses237pins and freshly audits final7effc97c...f74d1; all17imported ABI/link
+objects close. No whole strict-target or stock timing promotion follows.
+[Normal integration](perf_records/smol_normal_integer_workspace_qualification.json).
+
+The unchanged current Tiny outlined PC census identifies737280accumulator stores
+in the source RMS squared-sum reduction versus360row results. A separate generic
+default-off scalarSCF iterarg pass retains each originalF32multiply/add, increasing
+K, arbitrary source seed and empty-K behavior. Independent livealias/shape/map/
+rawspecial/fenv gates pass; complete original firstnorm accuracy passes while
+GSIM timing runs before whole build. The hot preDown helper has no pure arithmetic
+subtree depending only on its projected scale inputs: all variable products
+consume full-domain i32 values. Moving constants across those products would
+change source rounding order, so that proposed hoist is not implemented. Earlier
+scope-dependent preDown instruction totals cannot establish a multiplication
+regression across changed outlining. All246boundedRNE sites remain selected;
+the software rounding DAG is dead. SHA and most whole-program memcpy calls are
+outside forward and are not production optimization opportunities.
+[Scope census](perf_records/tiny_two_products_outline_pc_census_journey.json).
+
+Next large hypotheses retain measured source scopes: OOT residual tiling can
+overlap a completed disjoint tile's exact Merlin correction with the next tile's
+primitive work only after fence/cache/resource/effect proofs. Smol's old55c
+soft_details scope accounts1.297Binstructions, but is not the current composed
+scope. Existing monotone encoded-word enclosure and prepared soft-domain policies
+cannot compose without a new word-policy probability/prefix bound; the current
+refusal is sound. These are implementation/qualification work, not claimed wins.
+
+Phase1/2 should expose typed input-layout schedule constraints, emitted workspace
+ABI queries/lifetimes, source-order scalar-reduction alternatives and timing scopes.
+Candidate composition must revalidate complete source bindings and preserve
+negative/refused arms. Analytical guidance must distinguish logicalbytes, actual
+physical traffic, sourceFMAs, retiredinstructions and stockcycles; source mappings
+are useful for selecting work, not replacement timing measurements.
+
+Owned8-thread ledger13:07:34UTC records47079926uncachedinput,2249336832cache-read,
+9270527output and3712415reasoning (subsetoutput):2305687285rawinput+output,
+56350453uncached+output. Since12:23:14UTC,1055155uncachedinput+202506output
+(1257661),59115392cache-read and75240reasoningsubset. ExactOOT-only/per-change
+tokens remainUNAVAILABLE and are not prorated. Activegoal tracker is a separate
+observation; all22M/5B/300M performance targets remain unmet.
+[Ledger](perf_records/golden_token_usage_20261006T130734Z.json).

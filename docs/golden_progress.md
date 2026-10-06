@@ -6,8 +6,8 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, transfer/banked residual, host quantization packets and resident weight issue packet2 | 34,830,614 (1974) | All 1,000 original output words exact; 3.5235% below isolated1903 control, 0.2135% below prior1930 best. This arm does not compose paired readout. Stock hardware and pre-teardown staging observations pinned | [1974](perf_records/stock1974_resident_weight_terminal.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, pure multiplication packet4, ordered contractions/K2, B-prefetch, fresh writer ownership and generic loop organization | 450,035,885 (1975) | All 256,000 original compiled words unchanged; original Torch gate passes. Marginal single-run 0.2627% below verified1967 control; stock staging/output pinned. Broadcast and new two-multiply buffering arms remain separate | [1975](perf_records/stock1975_tiny_outline_multiply_terminal.json) |
+| ResNet exact52/wide16, transfer/banked residual, host quantization packets, paired readout and flat resident input planes | 34,792,010 (1982) | All 1,000 original output words exact; 0.3241% below its1930 control and 0.1109% below1974. Single-run marginal gain; section attribution remains unknown. Stock hardware and pre-teardown staging observations pinned | [1982](perf_records/stock1982_paired_flat_terminal.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, pure multiplication packet4, ordered contractions/K2, B-prefetch, exactly-two-multiply packets and canonical buffer identity | 427,815,474 (1983) | All 256,000 original compiled words unchanged; original Torch gate passes. 5.1872% below verified1967 control; stock staging/output pinned. Outline composition1989 awaits hardware timing | [1983](perf_records/stock1983_tiny_two_products_terminal.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -56,10 +56,31 @@ fixes, portable host performance and target scheduling, with matched measurement
 
 ### Latest integration checkpoint (2026-10-06 UTC)
 
-Stock1975 and1974 are the current Tiny and ResNet best measured whole-model arms.
-ResNet1974 measures34,830,614cycles; paired-readout1930 remains a separate
-34,905,135cycle arm. Their changes are being composed under fresh source closure;
-these gains are not added. Tiny still needs about33.34% below450.036M to reach300M.
+Stock1983 and1982 are the current Tiny and ResNet best measured whole-model arms.
+ResNet1982 measures34,792,010cycles,12,404,561 above the permitted ZIP1876
+reference22,387,449. Five resident weight packet kernels are being composed
+with this exact paired/flat arm under fresh normal source closure; gains are
+not added. Tiny needs29.8763% below427.815M to reach300M. Its next default-off
+generic squared-sum reduction retains source F32 order while eliminating
+per-element accumulator stores; independent/source accuracy passes and matched
+section timing is running before whole-model promotion.
+
+Recovery owns queued stock1984/1985 matched Smol complete-group control and
+floor/private-soft composition,1988 paired/resident ResNet,1989 Tiny outline
+composition, and1990 conserved ResNet diagnostic profile. The1990 profile binds
+the exact1974 compute objects and70 source-aligned boundaries; it cannot assign
+current1982 section costs. Its instrumented strict-target gate preserves all
+1000words and the all-executable zero-FSM audit. The normal Smol integer-product
+reconstruction provider now passes all1600original native words through48calls
+with its actual123,012,160-byte workspace, zero fallback and unchanged publicABI.
+The separately forced retained-source fallback preserves196608originalBF16words
+and input/descriptor ownership. Root recloses237pins and the fresh finalELF
+noFSM audit. Whole target execution remains pending. No new whole
+Smol stock result or5B forecast follows from its small section instruction gain.
+[Profile qualification](perf_records/root_resnet1974_leaf_profile_qualification.json),
+[Tiny composition closure](perf_records/root_tiny_two_product_outline_whole_reclosure.json),
+[integer section cost](perf_records/source_frontier_integer_reconstruction_complete_group.json),
+[normal i64 whole compilation](perf_records/smol_normal_integer_workspace_qualification.json).
 The isolated constant-clamp
 arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
 than1926. No gains are added across arms.

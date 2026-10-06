@@ -2,13 +2,20 @@
 
 ## Current whole-model result
 
-The original-source compiler model's best qualified stock result is job1903:
-**36,102,704 cycles**, with all1,000 original output words exact and the final
+The original-source compiler model's best qualified stock result is job1982:
+**34,792,010 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876
 reproduces **22,387,449 cycles**. The measured whole-model difference is
-**13,715,255 cycles**, or **61.26% above the reference**.
-[Current result](perf_records/firesim1903_resnet_composed_verified.json),
+**12,404,561 cycles**, or **55.41% above the reference**.
+[Current result](perf_records/stock1982_paired_flat_terminal.json),
 [reference result](perf_records/q1013_diagnostic_reference_firesim.json).
+
+Current1982 section attribution is **UNKNOWN**. The latest completed stock
+profile1919 binds1903; diagnostic1990 now queues a conserved70-boundary profile
+of1974's resident-weight arm with all1000originalwords/noFSM closed. It does not
+profile1982. The historical comparisons below retain their actual object and
+timer scopes; their differences cannot be reassigned to the current champion.
+[1974 profile qualification](perf_records/root_resnet1974_leaf_profile_qualification.json).
 
 The reference supplies useful scheduling evidence. Its numerical coefficients,
 input representation and output epilogue differ from the immutable source model.
@@ -104,7 +111,9 @@ rules remain semantic and resource based, independent of workload names.
 ## Current exact profile in a separate RTL regime
 
 The actual1903 profile ELF completed in GSIM with all1,000 original words,
-70events and complete conservation. The stock1919 job remains queued.
+70events and complete conservation. Stock1919 subsequently completed with
+36,138,975forward cycles,30,678,196device-wrapper and5,460,779host-gap cycles.
+[Completed stock1919](perf_records/resnet1903_stock1919_profile.json).
 These GSIM costs have a different memory regime from stock FireSim and cannot
 be subtracted from reference1876stock costs to assign causal savings.
 
