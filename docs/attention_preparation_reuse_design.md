@@ -91,3 +91,65 @@ Cross-group K/V preparation remains an unimplemented typed format/lifetime
 contract. Further work should price its complete storage and preparation costs
 against the current qualified numerical capabilities, rather than carrying
 forward the packing-only performance hypothesis.
+
+## Concrete cross-group physical handle proposal
+
+The existing `TensorPreparationOpportunity` witness is the semantic source
+identity, not a handle. Revalidate it immediately before any rewrite. For each
+opportunity, derive batch/head count, row axis and reduction axis from the typed
+contraction maps. The source K row is `[head,key,depth]`; the source V row for
+encoding is `[head,channel,key]`, although its retained replay values remain in
+original `[head,key,channel]` order. This distinction is part of the format.
+
+A first conservative owned allocation contains disjoint aligned spans:
+
+| Span | Scalar | Layout | Required content |
+| --- | --- | --- | --- |
+| Source replay | f32 | Original logical source axes | Exact BF16 widening |
+| Reconstruction | f32 | `[head,row,k]` | Current encoder's returned values |
+| Reconstruction | f64 | `[head,row,k]` | Exact widening of preceding span |
+| Signed planes | i8 | `[head,plane,k,row]` | Three current signed-7 radix planes |
+| Scales | f64 | `[head,row]` | Exact widening of current f32 row step |
+| Source norm | three f64 | `[head,row]` | Admitted L1, maximum, L2 |
+| Error norm | three f64 | `[head,row]` | Admitted representation-error norms |
+
+Each element consumes 19 bytes across the four element spans; each row consumes
+56 bytes for its step and two admitted norms, before alignment. The f32
+reconstruction could later be temporary, but the first implementation keeps it
+so every existing preparation result can be compared directly. The format
+identity must hash all axes, scalar widths, row/reduction extents, radix/sign
+bounds, alignment, current encoder and norm semantics, rounding environment and
+numeric capability contract. The old logical-census format hashes are never
+accepted as these physical format hashes.
+
+For the current source's one quartet, two K and six V handles contain 1,572,864
+elements and 16,896 logical rows. At these conservative sizes the spans total
+30,830,592 bytes (plus alignment). This is live storage for one quartet, not an
+allocation per call. A normal compiler lifetime plan may recycle this region
+only after the fourth synchronous consumer returns; all regions must be
+initialized again for the next quartet. No pointer-keyed cache is permitted.
+
+The preparing operation accepts the exact source descriptor and one owned byte
+region. It validates every source value and produces a successful immutable
+handle only after every plane, step and norm is complete. Failure invokes the
+retained original source function; it cannot publish a partially valid handle.
+The handle binds the allocation owner/generation, typed source witness and
+format, offsets/capacities, and successful numeric admission. Consumers receive
+borrowed read-only spans. Device callbacks may read planes and write only their
+separate i32 readout; they may not mutate the prepared allocation. Original
+semantic BF16 inputs remain available for complete source fallback.
+
+Normal preparation should emit one explicit operation dominating the four
+consumers, append the handle only to private borrowed provider interfaces, and
+keep the public model ABI unchanged. The complete consumer set and last use must
+be validated before mutation, alongside no intervening writes, unknown escapes
+or asynchronous uses. A shape match or reusable pointer is insufficient. This
+proposal does not yet install a physical prepared ABI or remove any copying.
+
+Qualification should compare actual K and V planes/scales/reconstruction/norm
+bits to independently repeated preparation, then poison the region and exercise
+another quartet. Independent two-head, non-square, transposed and strided cases
+must distinguish head/plane ordering and V orientation. Refuse stale generation,
+wrong format, partial failure and overlapping mutable readout. Only after these
+checks should a complete original group and ordinary full48 route be measured;
+logical reuse counts cannot establish a whole-model speedup.
