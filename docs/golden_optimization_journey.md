@@ -9,6 +9,34 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### Latest compiler and measurement work (2026-10-06 UTC)
+
+| Change and owner | Complete evidence | Decision |
+| --- | --- | --- |
+| Typed source-bound profiler ABI — Merlin | Ordinary LLVM lowering and RV64GC/Spike compiled five f32 output events without the previous diagnostic ABI mismatch | Measurement infrastructure, not a performance gain |
+| Border-only fresh destination initialization — Merlin | Isolated original pre-stem slice reduces instructions27%; actual frozen1903 runtime whole adds666instructions, all1,000 outputs exact | Whole arm rejected. Legacy capsule memset was byte-only at158,700bytes; whole libc uses words plus tail. Capsule result does not transfer across runtimes |
+| Private uniform fill/copy folding — Merlin | Normal optional feature removes four copies/two slab allocations; frozen1903 all1,000 native/strict words exact/noFSM;9,246,562→9,203,553instructions |0.465% instruction reduction; hardware held, no cycle projection |
+| Broad scalar memref copy expansion — existing Merlin feature | Frozen1903 all1,000 exact/noFSM,9,246,562→10,718,894instructions |15.92% instruction regression, rejected; removing copy helpers produced scalar byte loops |
+| Contiguous-suffix strided copies — Merlin | Proved distinct fresh allocation roots, static common contiguous suffix, original byte representation; three selected copies, all1,000 native/strict exact/noFSM;9,246,562→9,199,529instructions |0.509% instruction reduction; hardware held; memcpy runtime retains alignment/tail handling |
+| Cached-A adjacent DMA coalescing — OOT | Complete original288,847→277,410 and563,901→552,245GSIMcapsules; independent i32 tails/explicit B slots pass. Controlled1897 changes24device objects, freezes all host/runtime/weights, original1,000 exact | Stock1922 queued; first3.5Mcycle capsule truncation retained, complete6M rerun closes the second case; whole composition unmeasured |
+| Encoded-zero device/support composition — OOT device, Merlin numeric metadata/consumer | Original bounded32×64 head, all four4,096-value reconstructions and192guards exact; paired GSIM mean+1.7625%, warm+2.0098% | Rejected, no complete-head target/stock admission. Large pair hit wall budget after control only; no invented candidate result |
+| Exact i64 radix reconstruction — Merlin | Canonical absolute prefixes≤2^53, separate disjoint initialized scratch, defined negative multiplication, one exact final conversion; compiled/UBSan proof tests and full65,536 native/strict head exact | Separate complete GSIM pairs: variable-weight paired mean−7.3715%; constant-case−14.4479%. Includes scratch/reset/finish/encoding/readbacks. One selected complete-head stock comparison being prepared; no full-model forecast |
+| Scoped primitive operand telemetry — OOT observer/provider | Copied optional engine preserves stdout and complete PC histogram byte identity for independent tails, ZIP reference and current1874; actual entry/class conservation closes54+16 reference and70 current scopes | Requested DMA payload and nominal padded work observed. Physical traffic, busy cycles and overlap unknown; production engine untouched |
+| Grouped fast screen validation — Merlin | Shared target-free feature-pointer fit/unknown domains, absolute held-out checks plus interval ranking; real same-ELF timing pairs and ZIP labels excluded from fit | Counter-only fit predicts45.95M vs22.39M(+105.25%), rejected. Additive instruction/array/load/store fit cannot identify nonnegative terms, rejected |
+
+Evidence: [uniform](perf_records/resnet_uniform_fill_copy_whole_qualification.json),
+[copy expansion](perf_records/resnet_expand_memref_copy_negative.json),
+[suffix](perf_records/resnet_contiguous_suffix_copy_whole_qualification.json),
+[encoded-zero journey](smol-encoded-zero-groups-20261005.md),
+[counter validation](perf_records/counter_only_fast_estimate_reference_check.json),
+[operand refusal](perf_records/additive_operand_fast_estimate_fit_rejected.json),
+[observer qualification](perf_records/spike_operand_telemetry_qualification.json).
+
+The first additive fit's refusal is useful evidence: complete packet counts alone
+do not establish CPU issue/array overlap, serialized readout cost or physical
+memory services. The next reusable observations are CPU opcode classes and
+declared command dependencies. Reference labels remain evaluation-only.
+
 | Change and owner | What changed | Matched evidence | Outcome and next gate |
 | --- | --- | --- | --- |
 | Resident/banked transfer policy — OOT | Complete-M A residency; shape/resource/command/traffic comparison | Stock1849→1853:42,269,808→40,479,548 whole forward cycles; original1,000 words exact | Qualified transfer arm;1886 later became best; [receipt](perf_records/resnet_transfer_command_policy_firesim.json) |
@@ -99,26 +127,26 @@ CPU time. [Current gap and measured historical locations](resnet_current_gap_sta
 
 ## Token accounting
 
-[Measured snapshot at2026-10-06T00:52:08Z](perf_records/golden_token_usage_20261006T005208Z.json)
+[Measured snapshot at2026-10-06T02:01:19Z](perf_records/golden_token_usage_20261006T020119Z.json)
 contains counters for the eight explicitly owned root/worker/descendant sessions.
 Ownership is supplied by the root spawn mapping; copied session metadata IDs are not used.
 
 | Bucket | Cumulative measured campaign traffic |
 | --- | ---: |
-| Uncached input |26,882,132|
-| Cached input reads |1,351,353,344|
-| Output |5,235,441|
-| Reasoning output, already included in output |2,001,139|
-| Raw input+output total, including cached reads once |1,383,470,917|
+| Uncached input |29,179,689|
+| Cached input reads |1,438,001,408|
+| Output |5,670,036|
+| Reasoning output, already included in output |2,188,131|
+| Raw input+output total, including cached reads once |1,472,851,133|
 
 The raw total includes repeatedly read cached context. Uncached input plus output totals
-32,117,573; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
-The separately observed goal counter is28,477,551; its accounting semantics are not exposed, so it
+34,849,725; it does not count cache reads or reasoning twice. Tokens do not establish dollar spend.
+The separately observed goal counter is31,213,052; its accounting semantics are not exposed, so it
 is retained rather than silently equated to raw session totals.
 
-The latest snapshot records completed-request deltas since23:58:49Z:
-1,228,955 uncached input,304,098 output and71,154,688 cached reads.
-The [prior snapshot](perf_records/golden_token_usage_20261005T235849Z.json) retains the earlier window.
+The latest snapshot records completed-request deltas since00:52:08Z:
+2,297,557 uncached input,434,595 output and86,648,064 cached reads.
+The [prior snapshot](perf_records/golden_token_usage_20261006T005208Z.json) retains the earlier window.
 Threads mix OOT, shared compiler, numerical debugging and orchestration. Exact OOT-only or
 per-optimization token allocation is **unavailable**, not zero. Experiment starts, finishes and
 transitions should carry counter checkpoints and request-span attribution; elapsed-time prorating

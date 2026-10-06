@@ -50,6 +50,64 @@ the new whole arm. Whole-model hardware qualification is separate.
 [Infrastructure and optimization ownership](infra_vs_dialect.md) separates correctness/integration
 fixes, portable host performance and target scheduling, with matched measurements for each gain.
 
+### Latest integration checkpoint (2026-10-06 UTC)
+
+The whole-model champions in the table remain unchanged. Full Smol stock1906 is
+running; its heartbeat at01:56:55Z records5,352 seconds of active simulation.
+It was submitted at22:52:37Z and began infrastructure setup at00:25:13Z.
+Heartbeat target cycles are elapsed simulation progress, not the forward ROI.
+Current-best ResNet profile1919 is still queued on stock hardware; the same
+qualified ELF is also running in the separately pinned GSIM memory regime.
+
+- **Merlin host copies:** optional private uniform-fill copying removes four
+  copies and two temporaries under a complete ownership/order proof. Frozen1903
+  runtime whole validation preserves all1,000 original words and reduces
+  retired instructions9,246,562→9,203,553. A separate longest-common-contiguous-
+  suffix rewrite preserves fresh distinct allocation roots and lowers three
+  strided copies to ordinary contiguous memcpy calls:
+  9,246,562→9,199,529instructions. These are0.465%/0.509% instruction changes;
+  neither is a measured stock-cycle improvement. The actual post-bufferization
+  transfers are i8 with256/512/1024byte suffixes. Earlier f32 semantic view
+  offsets are element offsets and do not authorize direct i8 device loads.
+  [Uniform proof](perf_records/resnet_uniform_fill_copy_whole_qualification.json),
+  [suffix proof](perf_records/resnet_contiguous_suffix_copy_whole_qualification.json).
+  The border+uniform+suffix composition also preserves every original word
+  and frozen runtime:9,246,562→9,156,449instructions(-0.975%).
+  [Composition](perf_records/resnet_host_copy_composition_qualification.json).
+- **OOT resident-A DMA coalescing:** general resource/layout proofs combine
+  legal adjacent input tiles without changing allocated cells or reduction
+  order. Complete original capsules measure288,847→277,410 and
+  563,901→552,245GSIMcycles, with all outputs and guards exact. Stock1922 is
+  queued against the frozen1897 control; whole-model gain and composition with
+  current1903 remain unknown.
+- **Exact Smol reconstruction:** a new explicit Merlin helper accumulates
+  canonical weighted i32 groups in separately owned i64 scratch, then converts
+  once to binary64. Its existing absolute-prefix proof prevents overflow and
+  rounding. Constant weights inside each case produce constant shifts in
+  ordinary CPU codegen without shifting negative signed C values. Original
+  full-head native and strict target words and replay/readback counts remain
+  exact. Complete unchanged-device RTL pairs reduce cycles7.3715% for the
+  variable-weight arm and14.4479% for its separate constant-case arm. The
+  latter retains30calls/47,185,920readback bytes and all65,536 original words;
+  one complete-head stock comparison is being prepared. Neither result is a
+  full-head or whole-model cycle forecast.
+  The earlier composed encoded-zero/support arm was rejected:
+  original bounded paired GSIM mean+1.7625%, despite exact outputs and guards.
+  [Negative journey](smol-encoded-zero-groups-20261005.md).
+- **Fast cycle estimation:** shared Merlin validation now requires grouped
+  held-out absolute errors and within-workload ranking, with unresolved or
+  out-of-domain features remaining unknown. The counter-only independent fit
+  predicts45.95M for Jack's measured22.39M and fails by105.25%; it is disabled.
+  Isolated copied-engine operand telemetry preserves stdout and the complete
+  PC histogram byte for byte and binds70 actual current entries and54+16
+  reference entries. It supplies command geometry and requested payload,
+  while physical DRAM traffic and overlap remain unknown. The first additive
+  operand fit also refuses nonnegative terms. CPU opcode classes and command
+  dependencies are the next observations, not a coefficient tuned to22M.
+  [Counter check](perf_records/counter_only_fast_estimate_reference_check.json),
+  [operand fit refusal](perf_records/additive_operand_fast_estimate_fit_rejected.json),
+  [telemetry](../support/gemmini_spike_telemetry/README.md).
+
 Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
 with all1,000 reference logits passing its self-check and54 buffered layer timings.
 The reference has different numerical coefficients and physical boundaries; this result does not

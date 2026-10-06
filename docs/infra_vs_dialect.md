@@ -68,6 +68,30 @@ campaign counters, per-experiment ownership, gains, negative results and remaini
 
 ## How these changes generalize
 
+Recent portable host optimizations prove ownership and representation before
+changing traffic: private uniform buffers can fill their copy destinations
+directly, and distinct fresh strided allocations can copy their longest common
+contiguous suffix with ordinary runtime memcpy. Unknown aliases, shared roots,
+dynamic extents or incompatible layouts are refused. These optional passes live
+in Merlin and preserve normal pipeline coverage receipts. Their current whole
+instruction reductions are0.465% and0.509%; stock gains remain unmeasured.
+
+The exact i64 reconstruction helper also belongs in Merlin: a canonical numeric
+range proof and disjoint scratch establish integer updates and one final exact
+binary64 conversion independently of the producer target. Gemmini zero-tile
+initialization, residency/coalescing and ISA/resource legality remain OOT. The
+zero-tile/support composition loses1.7625% on the complete original bounded
+capsule and is disabled; legal numeric proofs alone do not establish profitability.
+
+Shared fast-screen fitting and grouped validation live in Merlin. Executed
+Gemmini opcode/operand extraction and the optional isolated simulator hook live
+in OOT. Provider pointers describe observed work; fitting/composition reuse the
+existing shared calibration and resource abstractions. Missing physical traffic
+or dependency/overlap facts are unknown. Independent coefficients must pass
+section and whole known-reference checks plus within-workload ranking before
+they can guide automatic phase1/2 selection. The current counter-only and
+additive operand diagnostics both fail; neither is enabled as a cost provider.
+
 Production transforms match typed operations, operand/result mappings, numeric contracts, layouts
 and resource facts. They do not select an implementation by a model name. Source ordinals and hashes
 bind a chosen implementation to the exact source; they are not profitability rules. This is an
