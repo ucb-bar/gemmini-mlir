@@ -135,10 +135,12 @@ def select_coalesced_resident_a(control):
         decision['refusal']='input DMA command count does not decrease'
         return control,decision
     candidate=GoldenGemm(shape,prefetch_b_rows=control.prefetch_b_rows,
-                         resident_a_load_tiles=4)
+                         resident_a_load_tiles=4,input_view=control.input_view)
+    segments=(sum(len(tuple(control.input_view.split_rows(a*F.DIM,min(F.DIM,shape.m-a*F.DIM))))
+                  for a in range(mt)) if control.input_view is not None else mt)
     decision.update(applied=True,refusal=None,resident_a_load_tiles=4,
-                    control_input_dma_commands=mt*kt,
-                    candidate_input_dma_commands=mt*_ceil_div(kt,4),
+                    control_input_dma_commands=segments*kt,
+                    candidate_input_dma_commands=segments*_ceil_div(kt,4),
                     input_requested_bytes=shape.m*shape.k,
                     input_reserved_rows=shape.bm*kt*F.DIM,
                     block_stride_rows=F.DIM,

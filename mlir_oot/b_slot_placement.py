@@ -47,4 +47,5 @@ def select_remaining_b_slots(control):
                     ordering='initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain',
                     emitted_delta='B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged')
     return GoldenGemm(candidate,prefetch_b_rows=placement,
-                      resident_a_load_tiles=control.resident_a_load_tiles),decision
+                      resident_a_load_tiles=control.resident_a_load_tiles,
+                      input_view=control.input_view),decision

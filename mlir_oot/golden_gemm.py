@@ -10,6 +10,10 @@ ABI: ``void gemmini_golden_gemm(i8 *A, i8 *B, <i8|i32> *C[, i32 *bias])``
 with dense row-major A[M,K], B[K,N], C[M,N].  The output is initialized from
 zero or the optional bias, and optionally narrowed with scale/ReLU through
 Gemmini's store path.  Callers must match the model's exact semantics.
+
+An explicit segmented input contract may borrow a typed dense i8 owner through
+a noncontiguous read-only matrix view. The caller closes owner storage/lifetime
+and output nonoverlap; this option changes input DMA addresses only.
 """
 
 from __future__ import annotations
@@ -17,6 +21,7 @@ from __future__ import annotations
 import argparse
 import io
 import math
+import json
 from typing import Callable
 from dataclasses import dataclass
 
@@ -24,6 +29,8 @@ from xdsl.dialects import llvm
 from xdsl.dialects.builtin import Float32Type, FloatAttr, IntegerAttr, ModuleOp, StringAttr, i8, i64
 from xdsl.ir import SSAValue
 from xdsl.printer import Printer
+
+from merlin.llvmlower.segmented_matrix_view import SegmentedRows
 
 from .codegen.builder import FnBuilder, PTR
 from .ir import gemmini_dialect as G
@@ -148,13 +155,27 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
 
 class GoldenGemm:
     def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
-            resident_a_load_tiles: int = 1):
+            resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None):
         shape.validate(prefetch_b_rows=prefetch_b_rows)
         if type(resident_a_load_tiles) is not int or not 1 <= resident_a_load_tiles <= 4:
             raise ValueError('resident A DMA grouping must be an integer in 1..4')
         if resident_a_load_tiles != 1 and not shape.cache_a:
             raise ValueError('resident A DMA grouping requires the complete cached A layout')
+        if input_view is not None:
+            if not isinstance(input_view, SegmentedRows):
+                raise ValueError('input view requires the typed segmented-row contract')
+            if not shape.cache_a:
+                raise ValueError('segmented input requires complete cached A residency')
+            if (input_view.rows, input_view.cols) != (shape.m, shape.k):
+                raise ValueError('input view logical shape differs from GEMM')
+            if input_view.dtype != 'i8' or input_view.element_bytes != 1:
+                raise ValueError('segmented input requires physical i8 source storage')
+            if input_view.row_stride > 0xFFFFFFFF:
+                raise ValueError('input view row stride exceeds the configuration field')
+            if input_view.source_elements >= 1 << 63:
+                raise ValueError('input view source extent exceeds signed pointer indexing')
         self.shape = shape
+        self.input_view = input_view
         self.resident_a_load_tiles = resident_a_load_tiles
         # Placement is a target schedule fact, separate from source dimensions
         # and numeric semantics. The default retains the established banks2/3.
@@ -409,7 +430,8 @@ class GoldenGemm:
         self._rocc("fence", {})
         self._rocc("flush", {})
         self._rocc("config_ex", {"dataflow": isa.WEIGHT_STATIONARY})
-        self._rocc("config_ld", {"stride": s.k, "load_id": 0})
+        self._rocc("config_ld", {"stride": self.input_view.row_stride if self.input_view else s.k,
+                                  "load_id": 0})
         self._rocc("config_ld", {"stride": s.n, "load_id": 1})
         if self.bias is not None:
             self._rocc("config_ld", {"stride": 0, "load_id": 2})
@@ -429,6 +451,14 @@ class GoldenGemm:
                 # extents; later execute addresses and reduction order stay.
                 for ki in range(0,kt,self.resident_a_load_tiles):
                     kr = min(F.DIM*self.resident_a_load_tiles, s.k - ki * F.DIM)
+                    if self.input_view is not None:
+                        first_row=a * F.DIM
+                        for row,count,offset in self.input_view.split_rows(first_row,rows):
+                            ptr=self._ptr(self.a,self.fb.const(0),1,
+                                          self.fb.const(offset+ki * F.DIM))
+                            self._rocc("mvin", {"local": (a * kt + ki) * F.DIM + row-first_row,
+                                "rows": count, "cols": kr, "load_id": 0},ptr)
+                        continue
                     ptr = self._ptr(self.a, self.fb.const(a * F.DIM), s.k,
                                     self.fb.const(ki * F.DIM))
                     self._rocc("mvin", {"local": (a * kt + ki) * F.DIM,
@@ -519,6 +549,9 @@ class GoldenGemm:
                 ",".join(str(row) for row in self.prefetch_b_rows))
         if self.resident_a_load_tiles != 1:
             module.attributes["gemmini.resident_a_load_tiles"] = IntegerAttr(self.resident_a_load_tiles,i64)
+        if self.input_view is not None:
+            module.attributes["gemmini.segmented_input_contract"] = StringAttr(
+                json.dumps(self.input_view.__dict__,sort_keys=True))
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
@@ -532,6 +565,8 @@ class GoldenGemm:
         """Configure once, then repeat the primitive tile schedule per batch."""
         if batch <= 0 or self.shape.bias:
             raise ValueError("batch must be positive and batched bias is not supported")
+        if self.input_view is not None:
+            raise ValueError("segmented input batch storage requires a separate ABI contract")
         s = self.shape
         base_a, base_b, base_c = self.a, self.b, self.c
         self._emit_config()
