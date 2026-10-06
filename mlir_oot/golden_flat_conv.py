@@ -10,6 +10,8 @@ import json
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import StringAttr
 from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
+from .codegen.builder import PTR
+from .readout_store_plan import PairedReadoutPlan
 from .tables import rtl_facts as F, isa
 
 
@@ -71,10 +73,15 @@ def virtual_band_groups(s, rows):
 
 
 class GoldenFlatConv(GoldenGemm):
-    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False, store_plan=None):
         s.validate()
         if type(loop_spatial) is not bool:
             raise ValueError("spatial command loop selection must be boolean")
+        if store_plan is not None:
+            if type(store_plan) is not PairedReadoutPlan:
+                raise ValueError("typed paired readout plan required")
+            store_plan.require_conv_producer(s)
+        self.store_plan = store_plan
         self.loop_spatial = loop_spatial
         if virtual_padding and s.explicit_halo:raise ValueError("virtual padding requires unpadded input shape")
         if not eligible(s, band_rows,virtual_padding=virtual_padding):
@@ -91,6 +98,7 @@ class GoldenFlatConv(GoldenGemm):
             bm=_ceil_div(self.band_rows*s.ow, F.DIM), bn=s.bn,
             output_dtype=s.output_dtype, scale=s.scale, relu=s.relu,
             wide_store=True, reuse_b=True))
+        self.second_output = self.fb.entry.insert_arg(PTR, 3) if store_plan is not None else None
         if (self.shape.bm * (4 if wide_a else 1) + s.bn) * F.DIM > F.SPAD_ROWS:
             raise ValueError('flat A panel and B channel block exceed scratchpad')
 
@@ -167,14 +175,24 @@ class GoldenFlatConv(GoldenGemm):
                                 lambda ci: panel(ci,panel_width,False),retain_loop=self.loop_spatial)
                         if s.cin > panel_width and s.cin % panel_width:
                             panel(self.fb.const(full*panel_width), s.cin % panel_width, False)
-                for a, rows in enumerate(widths):
-                    step = 4 if s.output_dtype=='i8' else 1
-                    for d in range(0, len(nr), step):
-                        pixel = self.fb.add_i(self.fb.mul_i(y0,self.fb.const(s.ow)),self.fb.const(a*F.DIM))
-                        ptr = self._ptr(self.c, pixel, s.cout,
-                            self._tile(n0,d), 4 if s.output_dtype=='i32' else 1)
-                        self._rocc('mvout', {'local':isa.acc_addr((a*s.bn+d)*F.DIM,
-                            full_row=s.output_dtype=='i32'), 'rows':rows, 'cols':sum(nr[d:d+step])}, ptr)
+                def store(output, dtype):
+                    for a, rows in enumerate(widths):
+                        step = 4 if dtype=='i8' else 1
+                        for d in range(0, len(nr), step):
+                            pixel = self.fb.add_i(self.fb.mul_i(y0,self.fb.const(s.ow)),self.fb.const(a*F.DIM))
+                            ptr = self._ptr(output, pixel, s.cout,
+                                self._tile(n0,d), 4 if dtype=='i32' else 1)
+                            self._rocc('mvout', {'local':isa.acc_addr((a*s.bn+d)*F.DIM,
+                                full_row=dtype=='i32'), 'rows':rows, 'cols':sum(nr[d:d+step])}, ptr)
+                if self.store_plan is None:
+                    store(self.c, s.output_dtype)
+                else:
+                    # Both passes consume the same completed accumulator block;
+                    # no compute/load modifies it between these ordered stores.
+                    for output, scale in zip((self.c, self.second_output), self.store_plan.store_scales):
+                        self._rocc('config_st', {'stride':s.cout, 'acc_scale':scale,
+                            'acc_act':isa.RELU if self.store_plan.relu else isa.NO_ACTIVATION})
+                        store(output, 'i8')
             self._for_groups(_groups(s.cout,s.bn), channel,retain_loop=self.loop_spatial)
         if self.virtual_padding:
             for start,stop,height in virtual_band_groups(s,self.band_rows):
@@ -197,6 +215,12 @@ class GoldenFlatConv(GoldenGemm):
         if self.pingpong_b:module.attributes['gemmini.flat_conv_pingpong_b']=StringAttr('two-independent-banks')
         if self.loop_spatial:module.attributes['gemmini.flat_conv_loop_spatial']=StringAttr('exact bounded ordinary CPU spatial command loop')
         module.attributes['gemmini.flat_conv_separate_b_bank'] = StringAttr(str(self.separate_b_bank))
+        if self.store_plan is not None:
+            module.attributes['gemmini.paired_readout'] = StringAttr(json.dumps(
+                dict(certificate=self.store_plan.certificate(),
+                     abi='A:i8*,B:i8*,first:i8*,second:i8*',
+                     storage='Both outputs have OH*OW*Cout bytes, are disjoint from each other and inputs, and remain stable until the caller decoder finishes',
+                     lifetime='Both ordered store passes precede every subsequent accumulator overwrite; final fence completes both outputs'), sort_keys=True))
         return module
 
 

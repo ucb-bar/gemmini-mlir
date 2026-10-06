@@ -529,7 +529,7 @@ class GoldenGemm:
     def _finish(self, symbol: str, batch: int = 1) -> ModuleOp:
         s = self.shape
         self._rocc("fence", {})
-        fn = llvm.FuncOp(symbol, llvm.LLVMFunctionType([PTR] * (4 if s.bias else 3)),
+        fn = llvm.FuncOp(symbol, llvm.LLVMFunctionType([arg.type for arg in self.fb.entry.args]),
                          linkage=llvm.LinkageAttr("external"), body=self.fb.finish())
         module = ModuleOp([fn])
         module.attributes["gemmini.dim"] = IntegerAttr(F.DIM, i64)

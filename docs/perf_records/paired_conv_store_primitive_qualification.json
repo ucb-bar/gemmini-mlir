@@ -1,0 +1,276 @@
+{
+  "elf_sha256": "75a72ded8a7d1b1ef323e8c3cc0ae15bf21ae20f47eae7cf2745cc4fc4a64b6c",
+  "metadata": [
+    {
+      "shape": {
+        "h": 5,
+        "w": 7,
+        "cin": 16,
+        "cout": 19,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "loop_spatial": false,
+      "proof": {
+        "schema": "two_readout_enclosure_v1",
+        "source_scales": [
+          0.1525018811225891,
+          0.0011392629239708185,
+          4.235067367553711
+        ],
+        "store_scales": [
+          0.0007357994327321649,
+          0.0007357995491474867
+        ],
+        "lo": -37748736,
+        "hi": 37748736,
+        "relu": true,
+        "enclosed": true,
+        "exact_pair_decoder": true,
+        "enclosure_counterexamples": [],
+        "decoder_counterexamples": [],
+        "disagreement_intervals": [
+          {
+            "lo": 113482,
+            "hi": 113482,
+            "pair": [
+              83,
+              84
+            ],
+            "source": 84
+          },
+          {
+            "lo": 133868,
+            "hi": 133868,
+            "pair": [
+              98,
+              99
+            ],
+            "source": 98
+          }
+        ],
+        "corrections": [
+          {
+            "pair": [
+              83,
+              84
+            ],
+            "source": 84
+          },
+          {
+            "pair": [
+              98,
+              99
+            ],
+            "source": 98
+          }
+        ],
+        "proof": "Complete union of source and both store transition partitions; each pair has one source output on every reachable cell"
+      }
+    },
+    {
+      "shape": {
+        "h": 7,
+        "w": 5,
+        "cin": 32,
+        "cout": 33,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "loop_spatial": true,
+      "proof": {
+        "schema": "two_readout_enclosure_v1",
+        "source_scales": [
+          1.7959643602371216,
+          0.00084189377957955,
+          0.45207950472831726
+        ],
+        "store_scales": [
+          0.000683549209497869,
+          0.0006835493259131908
+        ],
+        "lo": -75497472,
+        "hi": 75497472,
+        "relu": true,
+        "enclosed": true,
+        "exact_pair_decoder": true,
+        "enclosure_counterexamples": [],
+        "decoder_counterexamples": [],
+        "disagreement_intervals": [
+          {
+            "lo": 15361,
+            "hi": 15361,
+            "pair": [
+              10,
+              11
+            ],
+            "source": 10
+          },
+          {
+            "lo": 46083,
+            "hi": 46083,
+            "pair": [
+              31,
+              32
+            ],
+            "source": 32
+          },
+          {
+            "lo": 76805,
+            "hi": 76805,
+            "pair": [
+              52,
+              53
+            ],
+            "source": 53
+          },
+          {
+            "lo": 107527,
+            "hi": 107527,
+            "pair": [
+              73,
+              74
+            ],
+            "source": 74
+          },
+          {
+            "lo": 138249,
+            "hi": 138249,
+            "pair": [
+              94,
+              95
+            ],
+            "source": 95
+          },
+          {
+            "lo": 168971,
+            "hi": 168971,
+            "pair": [
+              115,
+              116
+            ],
+            "source": 116
+          }
+        ],
+        "corrections": [
+          {
+            "pair": [
+              10,
+              11
+            ],
+            "source": 10
+          },
+          {
+            "pair": [
+              31,
+              32
+            ],
+            "source": 32
+          },
+          {
+            "pair": [
+              52,
+              53
+            ],
+            "source": 53
+          },
+          {
+            "pair": [
+              73,
+              74
+            ],
+            "source": 74
+          },
+          {
+            "pair": [
+              94,
+              95
+            ],
+            "source": 95
+          },
+          {
+            "pair": [
+              115,
+              116
+            ],
+            "source": 116
+          }
+        ],
+        "proof": "Complete union of source and both store transition partitions; each pair has one source output on every reachable cell"
+      }
+    }
+  ],
+  "strict_pass": true,
+  "all_outputs_original_ordered_f32_exact": true,
+  "guards": 2048,
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "75a72ded8a7d1b1ef323e8c3cc0ae15bf21ae20f47eae7cf2745cc4fc4a64b6c",
+    "executable_sections": 5,
+    "custom_funct_counts": {
+      "0": 14,
+      "1": 27,
+      "2": 145,
+      "3": 8,
+      "4": 72,
+      "5": 36,
+      "6": 108,
+      "7": 2
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "schema": "paired_conv_primitive_functional_v1",
+  "core_proof_commit": "1567655f9",
+  "source_contract": "Raw primitive explicitly declares two-output semantics; normal source-bound model routing not implemented",
+  "default_xdsl_identity_cases": 6,
+  "new_focused_tests": 9,
+  "prior_loop_tests": 18,
+  "hardware_submitted": false,
+  "token_usage_available": false,
+  "artifacts": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/probe.c",
+      "sha256": "53a940f4e2b7647b173c977d71b6de5755da5853ee54bae730ddfcf786eb7a8b"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/spike.stdout",
+      "sha256": "94906f94f91b03558abfe79f885b8a0bf46db333d645668c8fcae1636bb7b538"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/build/layer.elf",
+      "sha256": "75a72ded8a7d1b1ef323e8c3cc0ae15bf21ae20f47eae7cf2745cc4fc4a64b6c"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/normal_readout_domain/paired_conv_gate.py",
+      "sha256": "6dc7b4010df220e3916e93409b7db2b6a298e3d293ce2eb5e4d6bc8c14b0a0e3"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/paired0/kernel.gemmini.mlir",
+      "sha256": "9e48afb2b3f16f6d458ee187258b4b49a8ab4e5527d3aabaf953f8d22fed29f8"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/paired0/kernel.o",
+      "sha256": "b721a27be53910da53748a03e8553d81b417d2edd83d155fe7061dcbfbadf617"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/paired1/kernel.gemmini.mlir",
+      "sha256": "1c604814ca1a22367151a3f13d6e348a35882bdb4970fd02a4229a7609b91ac6"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/paired_conv_gate/paired1/kernel.o",
+      "sha256": "92b1e0a2bb83392a63b49b84460845b1509a9c9008f69415c8ce153bf453070c"
+    }
+  ]
+}
