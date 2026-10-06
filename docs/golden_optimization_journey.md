@@ -1857,3 +1857,46 @@ Frozen measured compiler/calibration trees remain unchanged.
 [Whole2039 review](perf_records/root_resnet_current2026_reduction_terminal_review_20261006.json),
 [Table calibration release](perf_records/root_source_interval_calibration_stock_release_20261006.json),
 [Generic upstream reviews](perf_records/root_merlin_model_runner_upstream_review_20261006.json).
+
+### Precision, schedule transfer and new section result
+
+Stock2043 establishes0.490% held error for a predeclared binary64 DIV/FMA
+count-plus-chain model, versus148.50% count-only. Stock2044's directed endpoint
+signatures yield1.845%/1.877% held count errors; both count-plus-chain fits are
+refused for negative terms. The actual Smol hot-loop census motivates the latter:
+DIV/FMA is outside its dominant directed multiply/add/narrowing domain. Rates
+remain complete-loop diagnostics, not hardware latencies or whole-model costs.
+
+Matched scheduling2049 holds every new executable case out from a frozen2044
+transfer hypothesis, separately from within-battery middle-count validation.
+Identical operations/counts but changed RAW spacing expose the information an
+agent needs to distinguish schedules. Unknown cross-block/memory/loop-carried
+effects stay visible. Native/strict legality and final zeroFSM are prerequisites.
+The job is queued behind a foreign job; no foreign workload is changed.
+
+Tiny's generic immutable pointer binding gives a2.397% mean improvement in
+the complete M8 stock ABBA pair2047. The original table/source/certificate/
+replay/guards remain in the measured call. It is not a whole gain or a reason
+to promote the earlier regressing table. One-topic MerlinPR44 includes frame
+context refusals,24 root tests and installed-wheel/object closure; main is
+unchanged pending review. A separate continuation-placement arm is being
+checked with supported source-domain and exception tests before timing.
+
+Current ResNet2046's role accounting locates about74% of its diagnostic gap
+in residual callbacks and outside intervals. The new flat-loop11/43 experiment
+closes complete identical command/pointer streams, but its remaining role cost
+is much smaller. Generic host lane scheduling is the next explicit priority.
+Root also reclosed248 Smol normal-owner artifacts and seven numerical-policy
+pins. Native full48/1,600 outputs pass; final target owner/materialization and
+allocator execution remain a separate required whole-model gate. The original
+elementwise tolerances remain. No numerical proof is relabeled to remove its
+source certification cost.
+
+Owned usage at22:59:36UTC covers the same eight explicit threads:
+62,891,666 uncached input,2,949,593,088 cache-read and12,337,711 output tokens.
+The4,959,078 reasoning tokens are included in output. Since22:04:22, completed
+requests add1,721,074 uncached input,69,340,288 cache-read and336,943 output.
+Raw3,024,822,465 is traffic, not billing. Exact OOT-only/per-optimization
+allocation remains unavailable. Separate active-goal observation71,585,802
+uses its own metric. Whole22M/5B/300M targets remain unmet.
+[Usage ledger](perf_records/golden_token_usage_20261006T225936Z.json).

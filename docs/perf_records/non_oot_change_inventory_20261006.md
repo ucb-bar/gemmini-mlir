@@ -82,3 +82,10 @@ prototypes; this inventory does not silently count them as upstream wins.
 | 56 | Merlin | reusable_improvement | Exact sequential logical address-region recurrence census with explicit budgets | fb82cb94e, [PR41 pending review](https://github.com/ucb-bar/merlin/pull/41) |
 | 57 | Merlin | bug_fix | Emulator output destination validated before expensive execution, including nonregular/ELF alias refusals | 6cb907bc3, [PR42 pending review](https://github.com/ucb-bar/merlin/pull/42) |
 | 58 | Merlin | reusable_improvement | Indexed RAW-edge duplicate detection preserves complete graph order while accelerating dependency analysis | f46a5ba66, [PR43 pending review](https://github.com/ucb-bar/merlin/pull/43) |
+| 59 | Merlin | reusable_improvement | Explicit immutable base binding preserves public ABI and source operations with frame/context refusals | aa484d509, [PR44 pending review](https://github.com/ucb-bar/merlin/pull/44) |
+
+Latest conservative count:59 implemented families, comprising29 Merlin bug
+families,22 Merlin reusable improvements and8 model2MLIR bug families. The55
+historical main families and four pending main-based topic reviews are recorded
+separately. Unpublished schedule/continuation prototypes are excluded.
+[Followup inventory](non_oot_change_inventory_followup_20261006.json).

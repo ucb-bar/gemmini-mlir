@@ -2,15 +2,42 @@
 
 ## Current whole-model result
 
-The original-source compiler model's best qualified stock result is job2026:
-**30,977,892 cycles**, with all1,000 original output words exact and the final
+The original-source compiler model's best qualified stock result is job2039:
+**30,715,818 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876
 reproduces **22,387,449 cycles**. The measured whole-model difference is
-**8,590,443 cycles**, or **38.37% above the reference**.
-[Current result](perf_records/stock2026_resident_stripes_current2025_terminal.json),
+**8,328,369 cycles**, or **37.20% above the reference**.
+[Current result](perf_records/root_resnet_current2026_reduction_terminal_review_20261006.json),
 [reference result](perf_records/q1013_diagnostic_reference_firesim.json).
 
-Current2026 section attribution is **UNKNOWN**. The following diagnostic
+The current2039 object-preserving profile2046 now covers all71 active primitive
+calls and conserves30,756,710 forward cycles. Callback windows measure
+27,791,061 cycles and outside intervals2,965,649 cycles. The40,892 difference
+from the uninstrumented control includes wrappers/layout; it is not an isolated
+overhead rate. Source callbacks include host issue, transfers and waits.
+
+| Current2046 role | Reference1876 cycles | Current2046 cycles | Difference |
+| --- | ---: | ---: | ---: |
+| Residual callbacks |2,192,393|5,471,731|3,279,338|
+| Outside timers/callbacks |51,717|2,965,649|2,913,932|
+| Pointwise callbacks |9,907,412|10,920,222|1,012,810|
+| Spatial callbacks |8,723,089|9,457,058|733,969|
+| Stem and pool |1,083,057|1,445,170|362,113|
+| Classifier plus integer mean callback |429,781|496,880|67,099|
+
+The pre-stem interval is2,195,679 cycles. Flat kernels11/43 currently measure
+755,946/906,911 cycles. Residual and outside intervals comprise about74% of
+the8,369,261 diagnostic difference. This is role/geometry accounting, not
+numerically equivalent substitutions. Reference classifier timing includes
+average; current CPU mean finishing remains in gaps. Fresh current geometry
+checks cover52 convolutions; stem/classifier role bindings inherit previously
+qualified symbols, with classifier geometry absent from the new manifest.
+[Current terminal review](perf_records/root_resnet2039_stock2046_profile_terminal_review_20261006.json),
+[current reference alignment](perf_records/q1013_current2039_stock2046_profile_alignment.json).
+
+## Earlier diagnostic history
+
+The following diagnostic
 profiles actual2013, before its mean/full-K composition. This profile is
 qualified from the actual winning frozen recipe: the unprofiled ELF reproduces
 byte for byte, all1,000 original words remain exact,70 active primitive

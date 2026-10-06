@@ -1,5 +1,55 @@
 # Faster performance screening
 
+## Latest results and transfer test: 2026-10-06 23:00 UTC
+
+The stock binary64 DIV/FMA battery2043 completes all four held middle cases
+and both repeats. The predeclared count-plus-chain model has0.490% maximum
+held mean error; count alone misses148.50%. The directed multiply/add/narrowing
+battery2044 has separate lower/upper count models with1.845%/1.877% held error.
+Both added-chain fits refuse negative coefficients. No coefficients are clipped
+or exported as pure FPU latencies. The DIV/FMA stream does not price Smol's
+dominant directed multiply/add/narrowing loops or ResNet's input quantization.
+
+The matched scalar/stage battery2049 is queued behind foreign2048. It retains
+eight identical per-lane arithmetic DAGs, operands, rounding, final flags and
+opcode counts, while multiply-to-consumer spacing changes1→8 without stack
+traffic. Root independently regenerated its source and exact words, reclosed
+98pins, ran16 legality tests,12 native cases and27 strict target windows.
+Middle sizes are held for within-battery fitting. A separate prediction uses
+only the original2044 training cases and holds every new executable case out.
+The original ELF-bound model correctly refuses transfer; the separately stated
+hardware/signature transfer hypothesis remains falsifiable until labels arrive.
+
+Tiny's complete original M8 immutable-base pair2047 improves from6,073,417 to
+5,927,830.5 mean cycles,2.397%, in four ABBA samples. All45,056 original outputs,
+guards, inputs and instruction counts pass. This is a section result; the
+422,018,733 whole champion remains. Generic implementation is published as
+[Merlin PR44](https://github.com/ucb-bar/merlin/pull/44), one topic from main,
+with24 root tests and installed-wheel/object-equivalence evidence.
+
+Current ResNet2039's source-preserved profile2046 measures27,791,061 callback
+cycles and2,965,649 outside-callback cycles,90.36%/9.64% of30,756,710 forward
+cycles. Callback windows include CPU issue, transfer and waiting. The30,715,818
+uninstrumented whole champion remains. Role accounting against the permitted
+ZIP locates3,279,338 cycles of residual difference and2,913,932 outside timers,
+about74% of the diagnostic gap. This directs the next experiments toward
+residual implementations and generic host quantization lane scheduling; the
+two current flat-convolution loops alone cannot close the dominant difference.
+Reference and original-source numerical contracts are not interchangeable.
+
+Phase0 needs immutable source/ELF/numerical/memory-scope bindings and declared
+feature schemas. Phase1 should choose experiments that separate candidate
+schedules whose current features collide, then validate held schedule ordering
+across executables. Phase2 needs composed coverage with explicit unknown CPU,
+DMA, memory and overlap terms, plus whole-model numeric/performance gates.
+Whole prediction and a held-out reproduction of ZIP22.39M remain unqualified.
+
+[FP64 terminal/model review](perf_records/root_fp64_stock2043_terminal_model_review_20261006.json),
+[directed review](perf_records/root_fp64_directed_bounds_stock2044_terminal_review_20261006.json),
+[cross-executable release](perf_records/root_fp64_matched_stage_stock_release_20261006.json),
+[Tiny stock pair](perf_records/root_tiny_stock2047_base_pair_terminal_review_20261006.json),
+[current ResNet role accounting](perf_records/q1013_current2039_stock2046_profile_alignment.json).
+
 ## Current evidence: 2026-10-06
 
 Performance modeling now has dedicated root and calibration work. Stock job2029

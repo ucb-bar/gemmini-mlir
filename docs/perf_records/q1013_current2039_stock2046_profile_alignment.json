@@ -1,0 +1,929 @@
+{
+  "schema": "root_q1013_current2039_stock2046_role_alignment_v1",
+  "profile_job": 2046,
+  "control_job": 2039,
+  "control_cycles": 30715818,
+  "reference_job": 1876,
+  "reference_cycles": 22387449,
+  "profile_forward_cycles": 30756710,
+  "profile_gap_cycles": 8369261,
+  "control_gap_cycles": 8328369,
+  "class_comparison": [
+    {
+      "category": "residual",
+      "reference1876_cycles": 2192393,
+      "current2046_cycles": 5471731,
+      "difference_cycles": 3279338
+    },
+    {
+      "category": "host_intervals",
+      "reference1876_cycles": 51717,
+      "current2046_cycles": 2965649,
+      "difference_cycles": 2913932
+    },
+    {
+      "category": "pointwise",
+      "reference1876_cycles": 9907412,
+      "current2046_cycles": 10920222,
+      "difference_cycles": 1012810
+    },
+    {
+      "category": "direct",
+      "reference1876_cycles": 8723089,
+      "current2046_cycles": 9457058,
+      "difference_cycles": 733969
+    },
+    {
+      "category": "pooled_stem",
+      "reference1876_cycles": 1083057,
+      "current2046_cycles": 1445170,
+      "difference_cycles": 362113
+    },
+    {
+      "category": "classifier_and_integer_mean",
+      "reference1876_cycles": 429781,
+      "current2046_cycles": 496880,
+      "difference_cycles": 67099
+    }
+  ],
+  "paired_layers": [
+    {
+      "reference_index": 1,
+      "reference_layer": "conv_1",
+      "current_region": "stem",
+      "category": "pooled_stem",
+      "geometry": {
+        "m": 12544,
+        "k": 147,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_stem_pool_kernel",
+      "current2046_cycles": 1445170,
+      "reference1876_cycles": 1083057,
+      "difference_cycles": 362113,
+      "preceding_host_gap": 2195679
+    },
+    {
+      "reference_index": 2,
+      "reference_layer": "conv_2",
+      "current_region": "matmul_1",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 64,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_0_kernel",
+      "current2046_cycles": 52131,
+      "reference1876_cycles": 57830,
+      "difference_cycles": -5699,
+      "preceding_host_gap": 1830
+    },
+    {
+      "reference_index": 3,
+      "reference_layer": "conv_3",
+      "current_region": "matmul_2",
+      "category": "direct",
+      "geometry": {
+        "m": 3136,
+        "k": 576,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_1_kernel",
+      "current2046_cycles": 513122,
+      "reference1876_cycles": 504580,
+      "difference_cycles": 8542,
+      "preceding_host_gap": 1508
+    },
+    {
+      "reference_index": 4,
+      "reference_layer": "conv_4",
+      "current_region": "matmul_3",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 64,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_2_kernel",
+      "current2046_cycles": 207200,
+      "reference1876_cycles": 211949,
+      "difference_cycles": -4749,
+      "preceding_host_gap": 1701
+    },
+    {
+      "reference_index": 5,
+      "reference_layer": "conv_5",
+      "current_region": "matmul_4",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 64,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_3_kernel",
+      "current2046_cycles": 207403,
+      "reference1876_cycles": 208377,
+      "difference_cycles": -974,
+      "preceding_host_gap": 1703
+    },
+    {
+      "reference_index": 6,
+      "reference_layer": "conv_6",
+      "current_region": "matmul_5",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 256,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_4_kernel",
+      "current2046_cycles": 215682,
+      "reference1876_cycles": 208764,
+      "difference_cycles": 6918,
+      "preceding_host_gap": 1704
+    },
+    {
+      "reference_index": 7,
+      "reference_layer": "conv_7",
+      "current_region": "matmul_6",
+      "category": "direct",
+      "geometry": {
+        "m": 3136,
+        "k": 576,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_5_kernel",
+      "current2046_cycles": 519929,
+      "reference1876_cycles": 499536,
+      "difference_cycles": 20393,
+      "preceding_host_gap": 1729
+    },
+    {
+      "reference_index": 8,
+      "reference_layer": "conv_8",
+      "current_region": "matmul_7",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 64,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_6_kernel",
+      "current2046_cycles": 207018,
+      "reference1876_cycles": 210680,
+      "difference_cycles": -3662,
+      "preceding_host_gap": 1634
+    },
+    {
+      "reference_index": 9,
+      "reference_layer": "conv_9",
+      "current_region": "matmul_8",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 256,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_7_kernel",
+      "current2046_cycles": 216001,
+      "reference1876_cycles": 208410,
+      "difference_cycles": 7591,
+      "preceding_host_gap": 1617
+    },
+    {
+      "reference_index": 10,
+      "reference_layer": "conv_10",
+      "current_region": "matmul_9",
+      "category": "direct",
+      "geometry": {
+        "m": 3136,
+        "k": 576,
+        "n": 64
+      },
+      "current_symbol": "gemmini_exact_requant_8_kernel",
+      "current2046_cycles": 519681,
+      "reference1876_cycles": 498597,
+      "difference_cycles": 21084,
+      "preceding_host_gap": 1634
+    },
+    {
+      "reference_index": 11,
+      "reference_layer": "conv_11",
+      "current_region": "matmul_10",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 64,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_9_kernel",
+      "current2046_cycles": 207009,
+      "reference1876_cycles": 211052,
+      "difference_cycles": -4043,
+      "preceding_host_gap": 1400
+    },
+    {
+      "reference_index": 12,
+      "reference_layer": "conv_12",
+      "current_region": "matmul_11",
+      "category": "pointwise",
+      "geometry": {
+        "m": 3136,
+        "k": 256,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_10_kernel",
+      "current2046_cycles": 413366,
+      "reference1876_cycles": 419897,
+      "difference_cycles": -6531,
+      "preceding_host_gap": 1671
+    },
+    {
+      "reference_index": 13,
+      "reference_layer": "conv_13",
+      "current_region": "matmul_12",
+      "category": "direct",
+      "geometry": {
+        "m": 784,
+        "k": 1152,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_11_kernel",
+      "current2046_cycles": 755946,
+      "reference1876_cycles": 598715,
+      "difference_cycles": 157231,
+      "preceding_host_gap": 2115
+    },
+    {
+      "reference_index": 14,
+      "reference_layer": "conv_14",
+      "current_region": "matmul_13",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 128,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_12_kernel",
+      "current2046_cycles": 351406,
+      "reference1876_cycles": 221791,
+      "difference_cycles": 129615,
+      "preceding_host_gap": 1977
+    },
+    {
+      "reference_index": 15,
+      "reference_layer": "conv_15",
+      "current_region": "matmul_14",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 256,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_13__segmented_a_kernel",
+      "current2046_cycles": 635395,
+      "reference1876_cycles": 494881,
+      "difference_cycles": 140514,
+      "preceding_host_gap": 1861
+    },
+    {
+      "reference_index": 16,
+      "reference_layer": "conv_16",
+      "current_region": "matmul_15",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 512,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_14_kernel",
+      "current2046_cycles": 227584,
+      "reference1876_cycles": 228568,
+      "difference_cycles": -984,
+      "preceding_host_gap": 1466
+    },
+    {
+      "reference_index": 17,
+      "reference_layer": "conv_17",
+      "current_region": "matmul_16",
+      "category": "direct",
+      "geometry": {
+        "m": 784,
+        "k": 1152,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_15_kernel",
+      "current2046_cycles": 511822,
+      "reference1876_cycles": 524846,
+      "difference_cycles": -13024,
+      "preceding_host_gap": 1599
+    },
+    {
+      "reference_index": 18,
+      "reference_layer": "conv_18",
+      "current_region": "matmul_17",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 128,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_16_kernel",
+      "current2046_cycles": 333344,
+      "reference1876_cycles": 220218,
+      "difference_cycles": 113126,
+      "preceding_host_gap": 1210
+    },
+    {
+      "reference_index": 19,
+      "reference_layer": "conv_19",
+      "current_region": "matmul_18",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 512,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_17_kernel",
+      "current2046_cycles": 227615,
+      "reference1876_cycles": 226304,
+      "difference_cycles": 1311,
+      "preceding_host_gap": 1688
+    },
+    {
+      "reference_index": 20,
+      "reference_layer": "conv_20",
+      "current_region": "matmul_19",
+      "category": "direct",
+      "geometry": {
+        "m": 784,
+        "k": 1152,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_18_kernel",
+      "current2046_cycles": 511370,
+      "reference1876_cycles": 521838,
+      "difference_cycles": -10468,
+      "preceding_host_gap": 1844
+    },
+    {
+      "reference_index": 21,
+      "reference_layer": "conv_21",
+      "current_region": "matmul_20",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 128,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_19_kernel",
+      "current2046_cycles": 333558,
+      "reference1876_cycles": 218656,
+      "difference_cycles": 114902,
+      "preceding_host_gap": 1413
+    },
+    {
+      "reference_index": 22,
+      "reference_layer": "conv_22",
+      "current_region": "matmul_21",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 512,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_20_kernel",
+      "current2046_cycles": 227038,
+      "reference1876_cycles": 225589,
+      "difference_cycles": 1449,
+      "preceding_host_gap": 1618
+    },
+    {
+      "reference_index": 23,
+      "reference_layer": "conv_23",
+      "current_region": "matmul_22",
+      "category": "direct",
+      "geometry": {
+        "m": 784,
+        "k": 1152,
+        "n": 128
+      },
+      "current_symbol": "gemmini_exact_requant_21_kernel",
+      "current2046_cycles": 511494,
+      "reference1876_cycles": 521253,
+      "difference_cycles": -9759,
+      "preceding_host_gap": 1885
+    },
+    {
+      "reference_index": 24,
+      "reference_layer": "conv_24",
+      "current_region": "matmul_23",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 128,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_22_kernel",
+      "current2046_cycles": 332820,
+      "reference1876_cycles": 218861,
+      "difference_cycles": 113959,
+      "preceding_host_gap": 1413
+    },
+    {
+      "reference_index": 25,
+      "reference_layer": "conv_25",
+      "current_region": "matmul_24",
+      "category": "pointwise",
+      "geometry": {
+        "m": 784,
+        "k": 512,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_23_kernel",
+      "current2046_cycles": 461324,
+      "reference1876_cycles": 438009,
+      "difference_cycles": 23315,
+      "preceding_host_gap": 1783
+    },
+    {
+      "reference_index": 26,
+      "reference_layer": "conv_26",
+      "current_region": "matmul_25",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_24_kernel",
+      "current2046_cycles": 739827,
+      "reference1876_cycles": 555284,
+      "difference_cycles": 184543,
+      "preceding_host_gap": 2541
+    },
+    {
+      "reference_index": 27,
+      "reference_layer": "conv_27",
+      "current_region": "matmul_26",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_25_kernel",
+      "current2046_cycles": 242480,
+      "reference1876_cycles": 230498,
+      "difference_cycles": 11982,
+      "preceding_host_gap": 355984
+    },
+    {
+      "reference_index": 28,
+      "reference_layer": "conv_28",
+      "current_region": "matmul_27",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 512,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_26__segmented_a_kernel",
+      "current2046_cycles": 479305,
+      "reference1876_cycles": 523344,
+      "difference_cycles": -44039,
+      "preceding_host_gap": 1417
+    },
+    {
+      "reference_index": 29,
+      "reference_layer": "conv_29",
+      "current_region": "matmul_28",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_27_kernel",
+      "current2046_cycles": 309676,
+      "reference1876_cycles": 241981,
+      "difference_cycles": 67695,
+      "preceding_host_gap": 1441
+    },
+    {
+      "reference_index": 30,
+      "reference_layer": "conv_30",
+      "current_region": "matmul_29",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_28_kernel",
+      "current2046_cycles": 467574,
+      "reference1876_cycles": 489237,
+      "difference_cycles": -21663,
+      "preceding_host_gap": 1757
+    },
+    {
+      "reference_index": 31,
+      "reference_layer": "conv_31",
+      "current_region": "matmul_30",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_29_kernel",
+      "current2046_cycles": 244641,
+      "reference1876_cycles": 229658,
+      "difference_cycles": 14983,
+      "preceding_host_gap": 1665
+    },
+    {
+      "reference_index": 32,
+      "reference_layer": "conv_32",
+      "current_region": "matmul_31",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_30_kernel",
+      "current2046_cycles": 307059,
+      "reference1876_cycles": 240142,
+      "difference_cycles": 66917,
+      "preceding_host_gap": 1469
+    },
+    {
+      "reference_index": 33,
+      "reference_layer": "conv_33",
+      "current_region": "matmul_32",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_31_kernel",
+      "current2046_cycles": 467579,
+      "reference1876_cycles": 486602,
+      "difference_cycles": -19023,
+      "preceding_host_gap": 1712
+    },
+    {
+      "reference_index": 34,
+      "reference_layer": "conv_34",
+      "current_region": "matmul_33",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_32_kernel",
+      "current2046_cycles": 244708,
+      "reference1876_cycles": 228174,
+      "difference_cycles": 16534,
+      "preceding_host_gap": 1635
+    },
+    {
+      "reference_index": 35,
+      "reference_layer": "conv_35",
+      "current_region": "matmul_34",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_33_kernel",
+      "current2046_cycles": 307890,
+      "reference1876_cycles": 238541,
+      "difference_cycles": 69349,
+      "preceding_host_gap": 1445
+    },
+    {
+      "reference_index": 36,
+      "reference_layer": "conv_36",
+      "current_region": "matmul_35",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_34_kernel",
+      "current2046_cycles": 467364,
+      "reference1876_cycles": 486009,
+      "difference_cycles": -18645,
+      "preceding_host_gap": 1394
+    },
+    {
+      "reference_index": 37,
+      "reference_layer": "conv_37",
+      "current_region": "matmul_36",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_35_kernel",
+      "current2046_cycles": 244423,
+      "reference1876_cycles": 228628,
+      "difference_cycles": 15795,
+      "preceding_host_gap": 1789
+    },
+    {
+      "reference_index": 38,
+      "reference_layer": "conv_38",
+      "current_region": "matmul_37",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_36_kernel",
+      "current2046_cycles": 307858,
+      "reference1876_cycles": 238510,
+      "difference_cycles": 69348,
+      "preceding_host_gap": 1234
+    },
+    {
+      "reference_index": 39,
+      "reference_layer": "conv_39",
+      "current_region": "matmul_38",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_37_kernel",
+      "current2046_cycles": 467490,
+      "reference1876_cycles": 485070,
+      "difference_cycles": -17580,
+      "preceding_host_gap": 1989
+    },
+    {
+      "reference_index": 40,
+      "reference_layer": "conv_40",
+      "current_region": "matmul_39",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_38_kernel",
+      "current2046_cycles": 244184,
+      "reference1876_cycles": 227928,
+      "difference_cycles": 16256,
+      "preceding_host_gap": 1490
+    },
+    {
+      "reference_index": 41,
+      "reference_layer": "conv_41",
+      "current_region": "matmul_40",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_39_kernel",
+      "current2046_cycles": 308096,
+      "reference1876_cycles": 238707,
+      "difference_cycles": 69389,
+      "preceding_host_gap": 1277
+    },
+    {
+      "reference_index": 42,
+      "reference_layer": "conv_42",
+      "current_region": "matmul_41",
+      "category": "direct",
+      "geometry": {
+        "m": 196,
+        "k": 2304,
+        "n": 256
+      },
+      "current_symbol": "gemmini_exact_requant_40_kernel",
+      "current2046_cycles": 467531,
+      "reference1876_cycles": 484731,
+      "difference_cycles": -17200,
+      "preceding_host_gap": 1791
+    },
+    {
+      "reference_index": 43,
+      "reference_layer": "conv_43",
+      "current_region": "matmul_42",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 256,
+        "n": 1024
+      },
+      "current_symbol": "gemmini_exact_requant_41_kernel",
+      "current2046_cycles": 244233,
+      "reference1876_cycles": 227934,
+      "difference_cycles": 16299,
+      "preceding_host_gap": 1566
+    },
+    {
+      "reference_index": 44,
+      "reference_layer": "conv_44",
+      "current_region": "matmul_43",
+      "category": "pointwise",
+      "geometry": {
+        "m": 196,
+        "k": 1024,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_42_kernel",
+      "current2046_cycles": 605494,
+      "reference1876_cycles": 472798,
+      "difference_cycles": 132696,
+      "preceding_host_gap": 1318
+    },
+    {
+      "reference_index": 45,
+      "reference_layer": "conv_45",
+      "current_region": "matmul_44",
+      "category": "direct",
+      "geometry": {
+        "m": 49,
+        "k": 4608,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_43_kernel",
+      "current2046_cycles": 906911,
+      "reference1876_cycles": 764153,
+      "difference_cycles": 142758,
+      "preceding_host_gap": 1923
+    },
+    {
+      "reference_index": 46,
+      "reference_layer": "conv_46",
+      "current_region": "matmul_45",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 512,
+        "n": 2048
+      },
+      "current_symbol": "gemmini_exact_requant_44_kernel",
+      "current2046_cycles": 282468,
+      "reference1876_cycles": 302086,
+      "difference_cycles": -19618,
+      "preceding_host_gap": 2012
+    },
+    {
+      "reference_index": 47,
+      "reference_layer": "conv_47",
+      "current_region": "matmul_46",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 1024,
+        "n": 2048
+      },
+      "current_symbol": "gemmini_exact_requant_45__segmented_a_kernel",
+      "current2046_cycles": 558262,
+      "reference1876_cycles": 588801,
+      "difference_cycles": -30539,
+      "preceding_host_gap": 1738
+    },
+    {
+      "reference_index": 48,
+      "reference_layer": "conv_48",
+      "current_region": "matmul_47",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 2048,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_46_kernel",
+      "current2046_cycles": 283634,
+      "reference1876_cycles": 309976,
+      "difference_cycles": -26342,
+      "preceding_host_gap": 1039
+    },
+    {
+      "reference_index": 49,
+      "reference_layer": "conv_49",
+      "current_region": "matmul_48",
+      "category": "direct",
+      "geometry": {
+        "m": 49,
+        "k": 4608,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_47_kernel",
+      "current2046_cycles": 816707,
+      "reference1876_cycles": 652750,
+      "difference_cycles": 163957,
+      "preceding_host_gap": 2463
+    },
+    {
+      "reference_index": 50,
+      "reference_layer": "conv_50",
+      "current_region": "matmul_49",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 512,
+        "n": 2048
+      },
+      "current_symbol": "gemmini_exact_requant_48_kernel",
+      "current2046_cycles": 282961,
+      "reference1876_cycles": 302067,
+      "difference_cycles": -19106,
+      "preceding_host_gap": 177445
+    },
+    {
+      "reference_index": 51,
+      "reference_layer": "conv_51",
+      "current_region": "matmul_50",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 2048,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_49_kernel",
+      "current2046_cycles": 283427,
+      "reference1876_cycles": 306722,
+      "difference_cycles": -23295,
+      "preceding_host_gap": 1344
+    },
+    {
+      "reference_index": 52,
+      "reference_layer": "conv_52",
+      "current_region": "matmul_51",
+      "category": "direct",
+      "geometry": {
+        "m": 49,
+        "k": 4608,
+        "n": 512
+      },
+      "current_symbol": "gemmini_exact_requant_50_kernel",
+      "current2046_cycles": 812711,
+      "reference1876_cycles": 649888,
+      "difference_cycles": 162823,
+      "preceding_host_gap": 2025
+    },
+    {
+      "reference_index": 53,
+      "reference_layer": "conv_53",
+      "current_region": "matmul_52",
+      "category": "pointwise",
+      "geometry": {
+        "m": 49,
+        "k": 512,
+        "n": 2048
+      },
+      "current_symbol": "gemmini_exact_requant_51_kernel",
+      "current2046_cycles": 283529,
+      "reference1876_cycles": 301081,
+      "difference_cycles": -17552,
+      "preceding_host_gap": 1862
+    },
+    {
+      "reference_index": 54,
+      "reference_layer": "classifier",
+      "current_region": null,
+      "category": "classifier",
+      "geometry": {
+        "m": 1,
+        "k": 2048,
+        "n": 1000
+      },
+      "current_symbol": "gemmini_golden_4351727d24288d93",
+      "current2046_cycles": 479137,
+      "reference1876_cycles": 429781,
+      "difference_cycles": 49356,
+      "preceding_host_gap": 49013
+    }
+  ],
+  "role_bindings_reclosed": 54,
+  "current_geometry_checks": 52,
+  "geometry_limit": "Stem/classifier roles inherit prior source symbol binding; current manifest does not state classifier geometry, so no fresh classifier geometry proof.",
+  "complete_events": 71,
+  "source_numeric_equivalence": "NOT_ESTABLISHED: ZIP uses its own sealed inputs/weights/numerical contracts; architectural role and geometry comparisons do not grant source substitution.",
+  "causal_savings_claim": false,
+  "reference_outside_timer_cycles": 51717,
+  "scope": "Current diagnostic intervals conserve, all original outputs exact. Callback windows include CPU issue/wait/transfer. Integer mean callback bundled with current classifier only for role accounting; reference classifier timer includes average, and current CPU finish remains in host gaps. Comparison is not a whole prediction, isolated host cost or interchangeable timer scopes.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-resnet2039-gap-model-20261006/docs/perf_records/q1013_current2013_stock2021_profile_alignment.json": "cb7912f165fd5ab3bdc4b97bfbd3d1271276110c8d6b638ced5e9e776db22bac",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_resnet2039_stock2046_profile_terminal_review_20261006.json": "5f6b939f4ce62b9cf8cf1b895bbd9afd222ac26693a7f6eee86f434ac04e00ea",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/q1013_diagnostic_reference_firesim.json": "df6c85403f375cb96b7f35e7edb47c6e2883b1ced92524e971eee0900262106b",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/model-terminals-20261006/current_alignment.py": "7b9c290f228c120e43e3effed7260b870714f61c0a784b66ff22d511db6f39f0"
+  }
+}
