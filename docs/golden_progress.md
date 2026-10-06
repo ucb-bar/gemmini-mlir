@@ -850,3 +850,88 @@ output8371543 (reasoning3338787 alreadyincluded),
 rawinput+output2069583741, uncached+output50881021. Exact OOT-only and
 peroptimization attribution remain unavailable; no proration or unrelatedsessions.
 Goal tracker is separate:47241576tokens/96704seconds atthischeckpoint.
+
+
+### 2026-10-06 10:59 UTC measured continuation
+
+Scratch cleanup remains complete (45.538 GiB physically reclaimed by our
+hash-verified actions); approximately89 GiB now available on scratch. Original
+model data, goldens, ZIP, historical paths and live experiments remain retained.
+Fresh outputs are used for every new build.
+
+**Verified stock bests:** ResNet1930 remains34,905,135cycles (ZIP1876 is22,387,449);
+Smol1906 remains258,621,872,969cycles; Tiny1967 is now451,221,105cycles versus
+1926's461,389,700, a2.204% improvement with all256000 original words/Torch gate.
+The target goals remain unmet. Root rehashed the owned terminal evidence;
+current source/ELF and stock metadata stay bound to the original measurement.
+
+ResNet1957 finished35,728,234cycles,1.037% below1903 but slower than1930; retain
+this result without composing it into the champion. Full-K B capacity is integrated
+(OOT2b51f56),491pins independently reclosed and50tests passed; stock1971 admitted,
+whole cycles pending. The source-derived resident weight packet policy is also
+integrated (OOT841eac2): matched kernel536180→468824GSIMcycles,12.56% improvement;
+prior complete-panel prefetch499263 at the same seam. Only5normal device leaves
+change,47others/source proofs/adapters unchanged. Root492whole+279capsule pins and
+98tests pass; stock1974 admitted once vs1903. Independent small shape6359→7858
+is a23.6% regression, so this remains explicit and has no universal profitability
+policy. Whole-model improvements are not inferred from local timings.
+
+Ordinary whole Smol minmax execution completed all1600 original words exactly,
+rank0/DONE/rc0,220253190030 retiredinstructions versus rowfloor306168018359,
+28.06% fewer. This remains above the original instruction baseline and is not
+promoted for stock whole-model performance. Word capsule1968 is queued; all
+original compiled consumer/gate evidence retained.
+
+Core consumer-derived typed L1 norm requirements (dd5d0f57c) eliminate dead
+squares/root work only under immutable all-zero RHS error admissions and typed
+L1 consumers. Original complete group3086875912→3067137022instructions,0.639%
+fewer; original accepted196608carrierwords and8stats unchanged, full native1600
+exact. Certified-row endpoint retention (0b48951f5) independently reduces the same
+control to2904713292instructions,5.901%, preserving complete initialized certified
+rows and refinement/source replay counts. Full native1600exact. Root integrates
+all36valid endpoint/word/zero-error/domain/norm/retention policy combinations:
+504tests PASS. Root168immutable source/header/ELF/native evidence pins reclosed.
+A historical mutable-source pin failure is preserved explicitly; original git
+bytes match and are rebound to immutable evidence, not relabeled as unchanged.
+
+Generic build fix61e2628dc adds separate late linker flags after objects/runtime
+libraries. A real static-archive failure reproduces before the fix;9tests pass,
+and actual RV64GC helper ELF is byte-identical to correctly ordered manual linking.
+Generic LLVM outline+merge policyf93e22c04 preserves original exported symbols,
+source arithmetic, observable stores and function-address rules;16executed tests
+and core structure/docs checks pass. Tiny isolated M2 outline cycle gain is0.901%,
+while62.39%whole text shrink is only code-size evidence. Independent current M2
+broadcast scheduling measures9.761%fewer GSIMcycles; neither has a new whole stock
+claim. A fresh composition with the verified1967 pure-multiply champion is being
+qualified, with original256000/Torch/noFSM/155devicebindings required.
+
+Preserve negatives: representative counted-N panel+3.20% and grouped DMA
+interleave+3.57% despite smaller code/fewer spills or plausible queue benefits.
+The unpromoted polynomial table's exact integer division-to-shift change passes
+original compiled786432i8+1024scale consumer, inputs/guards/noFSM and16native
+source/quotient tests. Full group instructions regress1.212% versus control.
+A small synthetic helper pair improves GSIM1.388%; it does not establish an
+actual group or whole gain. Unpromoted source is archived outside the installed
+core runtime/test tree, with failures and recipes preserved. Uniform source-radius
+feasibility widens replay4.705x; column-specific alternative2.629x. Both preserve
+original compiled consumer but lack cost proof. A complete-cost screen for the
+column-specific proof is now authorized; no empirical threshold or stock claim.
+
+**Phase1/2 tooling:** use existing Merlin content_store immutable byte copies
+for compiler source closures and model artifacts; pin original git blobs plus
+physical frozen files, never only mutable checkout paths. Keep explicit compiler
+policy prerequisites and typed consumer requirements/certificate-state transitions
+in the agent edit surface. Score complete source-bound sections and then whole
+compositions; reconcile dynamic commands, replay counts, host text/instructions
+and measured cycles separately. Static shrink, queue hypotheses, instruction
+counts, unique bytes and requested traffic cannot substitute for physical timing.
+Derive applicability from semantics/layout/resources; keep target implementation
+in OOT and reusable host/numeric/build mechanisms in Merlin.
+
+Owned tokenledger cutoff2026-10-06T10:59:12Z (8explicitownedthreads only):
+uncachedinput43721954, cacheread2085313152, output8644828,
+reasoning3463950 alreadyincluded in output; rawinput+output2137679934,
+uncached+output52366782. Exact OOT-only and per-optimization
+allocation remain unavailable; no proration or unrelated session access. Separate
+goal tracker48731274tokens at this checkpoint. Evidence is in
+perf_records/golden_token_usage_20261006T105912Z.json.
