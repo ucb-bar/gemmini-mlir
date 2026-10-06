@@ -551,12 +551,19 @@ def merlin_callbacks(llvm_bin, original_bundle, joint_bundle, base_callbacks):
 
     def prepare(source, work):
         check()
-        _declarations(parse_module(Path(source).read_text()), original, record, False)
-        prepared = prepare_base(source, work)
-        module = parse_module(Path(prepared).read_text())
+        module = parse_module(Path(source).read_text())
+        # Base preparation seals its own exact source for the remaining
+        # catalog. Select residual calls before that seal, so its compilation
+        # consumes the actual selected source without rebinding a foreign SHA.
         rewrite(module, original, record)
+        work = Path(work)
+        work.mkdir(parents=True, exist_ok=True)
+        selected_input = work / "joint_residual_input.mlir"
+        selected_input.write_text(serialize(module, []))
+        prepared = prepare_base(selected_input, work)
+        _declarations(parse_module(Path(prepared).read_text()), original, record, True)
         selected = Path(work) / "joint_residual_prepared.mlir"
-        selected.write_text(serialize(module, []))
+        selected.write_bytes(Path(prepared).read_bytes())
         return selected
 
     def compile_catalog(source, work):

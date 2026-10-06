@@ -428,13 +428,18 @@ def test_actual_target_catalog_compilation_and_binding_checks(tmp_path, single):
     source = tmp_path / "source.mlir"
     source.write_text(serialize(module, []))
     base_calls = []
+    sealed_source = {}
 
     def prepare_base(source, work):
         base_calls.append("prepare")
+        sealed_source["sha256"] = sha(source)
         return source
 
     def build_base(source, work):
         base_calls.append("build")
+        # The real fused catalog seals its source during preparation. A wrapper
+        # must select before that seal, rather than passing changed bytes later.
+        assert sha(source) == sealed_source["sha256"]
         path = Path(work) / "catalog.json"
         path.write_text(
             json.dumps(
