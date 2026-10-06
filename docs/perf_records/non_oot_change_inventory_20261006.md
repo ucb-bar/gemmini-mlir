@@ -2,12 +2,12 @@
 
 Conservative inventory of directly identified implemented change families in the golden compiler integration; related commits counted once. Lower bound, not all repository history, not every detected bug, not a count of commits or performance wins.
 
-**58 implemented families:29 Merlin fixes,21 Merlin reusable improvements,8 model2MLIR fixes.**
+**60 implemented families:29 Merlin fixes,23 Merlin reusable improvements,8 model2MLIR fixes.**
 
-The original55-family inventory is published on main. The three additional
-generic families are reviewed implementations in open PR41/42/43, with54 tests
-independently passed by root; they are not merged main changes or performance
-wins. Source-wide interval-table and prepared-owner prototypes remain outside
+The original55-family inventory is published on main. Five additional generic
+families are reviewed implementations in open PR41/42/43/44/46; they are not
+merged main changes or performance wins. Source-wide interval-table and
+prepared-owner prototypes remain outside
 this conservative inventory until separately audited.
 
 Merlin owned changes were published as13 squashed topic commits to main at7fee5cfdac. Historical source commit hashes below remain provenance; they are not claimed as ancestors after squashing. The [publication manifest](merlin_main_upstream_topics_20261006.json) records actual published topic commits and files. model2MLIR's eight listed fixes are verified ancestors of main3a5acb8fd4c. Fresh whole-model hardware qualification of the new Merlin head remains unknown. Many improvements are explicit alternatives; passing tests do not establish automatic enablement or a measured whole-model gain.
@@ -83,9 +83,10 @@ prototypes; this inventory does not silently count them as upstream wins.
 | 57 | Merlin | bug_fix | Emulator output destination validated before expensive execution, including nonregular/ELF alias refusals | 6cb907bc3, [PR42 pending review](https://github.com/ucb-bar/merlin/pull/42) |
 | 58 | Merlin | reusable_improvement | Indexed RAW-edge duplicate detection preserves complete graph order while accelerating dependency analysis | f46a5ba66, [PR43 pending review](https://github.com/ucb-bar/merlin/pull/43) |
 | 59 | Merlin | reusable_improvement | Explicit immutable base binding preserves public ABI and source operations with frame/context refusals | aa484d509, [PR44 pending review](https://github.com/ucb-bar/merlin/pull/44) |
+| 60 | Merlin | reusable_improvement | Complete provider-decoded execution extents, call/stack/frame summaries and unpriced training-domain refusals | 9db82572c, [PR46 pending review](https://github.com/ucb-bar/merlin/pull/46) |
 
-Latest conservative count:59 implemented families, comprising29 Merlin bug
-families,22 Merlin reusable improvements and8 model2MLIR bug families. The55
-historical main families and four pending main-based topic reviews are recorded
+Latest conservative count:60 implemented families, comprising29 Merlin bug
+families,23 Merlin reusable improvements and8 model2MLIR bug families. The55
+historical main families and five pending main-based topic reviews are recorded
 separately. Unpublished schedule/continuation prototypes are excluded.
-[Followup inventory](non_oot_change_inventory_followup_20261006.json).
+[Followup inventory](non_oot_change_inventory_followup_v2_20261006.json).

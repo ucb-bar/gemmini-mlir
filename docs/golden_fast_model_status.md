@@ -1,6 +1,47 @@
 # Faster performance screening
 
-## Latest results and transfer test: 2026-10-06 23:12 UTC
+## Latest results and transfer test: 2026-10-06 23:40 UTC
+
+Stock2053 closes the frozen actual Tiny source-continuation forecast without
+refitting. Complete45056-output M8 ABBA means are6,073,068 control and
+5,054,062.5 lazy,16.779% lower. Executed-instruction/regions and near-RAW/regions
+hypotheses both chose lazy before timing; their control/candidate absolute errors
+are1.454%/1.381% and1.532%/2.323%. Element/region-only models tied. Root reclosed
+321 archive pins and replayed every shared score field. This is one held pair;
+the export gate still refuses insufficient slices and unpriced new calls/stack.
+The422,018,733 whole champion stays unchanged until the normal composition runs.
+[Frozen transfer review](perf_records/root_tiny_stock2053_frozen_transfer_review_20261006.json).
+
+Generic call/stack/frame summaries are now published as one-topic
+[Merlin PR46](https://github.com/ucb-bar/merlin/pull/46), with72 source tests and
+72 installed-package tests. These summaries expose costs that an instruction
+count misses; they have no fitted cycle price. The approved base/head/body and
+publication receipt are reclosed. Main is unchanged pending review.
+[Publication review](perf_records/root_merlin_execution_boundaries_PR46_publication_review_20261006.json).
+
+Model work now prioritizes actual source loops. The matched ResNet quantizer
+extension uses half/current/double row extents and both4/8-lane schedules;
+half and double train, the current pair is held out. FP work, dependency spacing,
+branches, requested addresses and call/stack domains are declared before labels.
+The existing DIV/FMA pilots do not cover this mixed FMUL/clamp/convert stream.
+
+The all48-source Smol exact-route audit counts207,618,048 reconstructed scalar
+outputs across384 contractions. Current reconstruction requires at least
+8,927,576,064 retired instructions, excluding scaling, bounds, softmax and other
+work. Its cycle interpretation is conditional on single-instruction retirement
+and successful execution of every fastpath; source-to-bitstream retirement-width
+identity is not closed. This rejects the current implementation as a5B direction
+under that condition, without ruling out other algorithms. Work now examines
+exact high-digit products with source-derived sparse low-digit correction before
+spending hardware time on another small scheduling change.
+[Source-bound audit](perf_records/root_smol_exact_route_lower_bound_review_20261006.json).
+
+ResNet2052 improves the qualified whole observation30,715,818→30,650,056cycles,
+0.2141%, all1000 original words exact. Primitive features tied before timing;
+the result exposes unpriced CPU issue/footprint effects rather than validating
+that primitive model. The remaining ZIP gap is8,262,607cycles. Profile2046
+remains bound to2039 and is not reassigned to this new candidate.
+[Whole terminal review](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json).
 
 The stock binary64 DIV/FMA battery2043 completes all four held middle cases
 and both repeats. The predeclared count-plus-chain model has0.490% maximum
@@ -54,9 +95,10 @@ call. Grouped old validation resolves only three of nine table variants and
 refuses its coverage/slice gate. Root rehashes305pins and reproduces all fitted
 fields using the original qualified NumPy2.5.3 environment. A first replay with
 the ordinary root interpreter differed in least-squares last bits and fit hashes;
-neither replay replaces the frozen forecast. Stock2052 separately holds the
-current ResNet flat-loop whole candidate; its primitive features tie and CPU
-issue/footprint costs remain unpriced. Both are prospective transfer tests.
+neither replay replaces the frozen forecast. Stock2052 separately completes the
+current ResNet flat-loop whole candidate; its primitive features tied and CPU
+issue/footprint costs remain unpriced. Both were prospective transfer tests;
+immutable predictions remain alongside the new outcomes.
 
 [Actual Tiny forecast replay](perf_records/root_tiny_lazy_prospective_model_review_20261006.json),
 [frozen prelabel packet](perf_records/source_continuation_prospective_model.json),
@@ -72,7 +114,8 @@ with24 root tests and installed-wheel/object-equivalence evidence.
 Current ResNet2039's source-preserved profile2046 measures27,791,061 callback
 cycles and2,965,649 outside-callback cycles,90.36%/9.64% of30,756,710 forward
 cycles. Callback windows include CPU issue, transfer and waiting. The30,715,818
-uninstrumented whole champion remains. Role accounting against the permitted
+uninstrumented2039 observation is retained. The current whole champion2052 is
+30,650,056. Role accounting against the permitted
 ZIP locates3,279,338 cycles of residual difference and2,913,932 outside timers,
 about74% of the diagnostic gap. This directs the next experiments toward
 residual implementations and generic host quantization lane scheduling; the

@@ -42,7 +42,7 @@ No new whole-model prediction or automatic ranking is enabled.
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes with retained reduction loops | 30,715,818 (2039) | All 1,000 original output words exact;262,074cycles/0.846% below2026. Host/runtime/weights and other46 kernels unchanged | [2039 root review](perf_records/root_resnet_current2026_reduction_terminal_review_20261006.json) |
+| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24, six spatial resident stripes and retained flat/reduction loops | 30,650,056 (2052) | All 1,000 original output words exact;65,762cycles/0.2141% below2039. Only two flat primitive bodies changed; host/runtime/weights retained | [2052 root review](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, exact squared-sum, multiplication packets, source 2×4 contractions/K2, B-prefetch, canonical buffer identity and generic outlining | 422,018,733 (2004) | All 256,000 original compiled words unchanged; original Torch gate passes. 0.4277% below2002 in one matched single run. Collector staging/output pinned | [2004](perf_records/stock2004_tiny_rectangular_terminal.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
@@ -102,8 +102,8 @@ prediction or automatic ranking is enabled.
 [Model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
 [Tiny terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
 
-Stock2004 and2039 are the current Tiny and ResNet whole-model bests.
-ResNet2039 measures30,715,818cycles,8,328,369 above the permitted ZIP1876
+Stock2004 and2052 are the current Tiny and ResNet whole-model bests.
+ResNet2052 measures30,650,056cycles,8,262,607 above the permitted ZIP1876
 reference. The actual current2013 comparison and its matching profile follow;
 those sections are not reassigned to2039.
 

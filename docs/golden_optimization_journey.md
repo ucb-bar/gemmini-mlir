@@ -9,6 +9,52 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-06 23:40 UTC: actual-source forecasts and implementation bounds
+
+- Tiny stock2053 measures the complete M8 lazy continuation at6,073,068→
+  5,054,062.5 mean cycles,16.779% lower, with all45056 original bytes exact.
+  Frozen executed/regions and near-RAW/regions models chose the correct arm;
+  errors are1.454%/1.381% and1.532%/2.323%. Root replays every score field
+  without a new fit and rehashes321 pins. One held pair and unpriced call/stack
+  changes leave the general ranking gate refused. Whole2004 stays422,018,733.
+- The shared call/stack/frame summary and unpriced-domain API is published
+  as Merlin PR46, one topic from actual main7fee, with72 source and72 installed
+  tests. ISA/ABI decoding remains OOT. Publication is independently reclosed;
+  it adds one reusable improvement family, taking the conservative inventory
+  to60:29 Merlin bugs,23 Merlin improvements,8 model2MLIR bugs.55 families
+  are on main; five additional families are pending review.
+- ResNet2052 is the new qualified whole observation at30,650,056,65,762cycles
+  below2039. Only two flat bodies changed; all1000 original words remain exact.
+  The primitive feature model tied, exposing unpriced host issue/footprint
+  behavior. Single observations do not establish statistical significance;
+  the2039 profile is kept under its original identity.
+- Smol's48 installed source bindings/384 contractions produce207,618,048
+  reconstructed scalar outputs. Current emitted reconstruction alone needs
+  8,927,576,064 retired instructions before scaling/certificates/other work.
+  The cycle floor is conditional on a proven single-retirement stock core
+  and all48 successful fastpaths. This is a bound on this implementation.
+  It motivates exact dense high-digit plus sparse residual alternatives;
+  runtime numeric sparsity and resources must govern admission. No workload
+  names or golden values may govern selection.
+- Actual host quantization now has a matched4/8-lane GSIM pair with roughly
+  9.7% section savings. Its next model crosses half/current/double extents,
+  fitting the corners and holding both current arms out. Complete source
+  semantics, numerical flags, calls/stack and address scope travel with each
+  case. Existing DIV/FMA prices remain refused for this mixed stream.
+
+[Tiny frozen transfer](perf_records/root_tiny_stock2053_frozen_transfer_review_20261006.json),
+[PR46 publication](perf_records/root_merlin_execution_boundaries_PR46_publication_review_20261006.json),
+[ResNet2052 terminal](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json),
+[Smol instruction bound](perf_records/root_smol_exact_route_lower_bound_review_20261006.json),
+[shared inventory](perf_records/non_oot_change_inventory_followup_v2_20261006.json).
+
+For Phase0, preserve declared features, source numerical policy and complete
+execution/memory domains. Phase1 should first rule out implementations whose
+proved work exceeds the budget, then choose measurements that distinguish
+actual legal schedules. Phase2 should check held schedule ordering across
+source signatures and fresh whole compositions, retaining failed transfers.
+No universal opcode rates, assumed overlap or post-label prediction replacement.
+
 ### 2026-10-06 23:12 UTC: model tuning moves to actual compiler candidates
 
 - Root independently replays stock2049: identical directed operation counts
