@@ -252,7 +252,20 @@ class PreloadOp(_GemminiOp):
         for key in ("bd_cols", "bd_rows", "c_cols", "c_rows"):
             self._extent(key)
         self._execute_source("bd")
-        self._local("c")
+        if not self.operands_:
+            self._local("c")
+        elif len(self.operands_) == 1:
+            if self.operands_[0].type != i64 or "c" in self.attributes:
+                raise VerifyException("gemmini.preload: dynamic C row must be one i64 operand")
+            maximum, reserved = self.a("c_max"), self.a("c_reserved_rows")
+            if (type(maximum) is not int or type(reserved) is not int
+                    or maximum < 0 or maximum + self.a("c_rows") > reserved
+                    or reserved > F.ACC_ROWS):
+                raise VerifyException("gemmini.preload: dynamic C range exceeds reserved accumulator rows")
+            if type(self.a("c_accumulate", 0)) is not int or self.a("c_accumulate", 0) not in (0, 1):
+                raise VerifyException("gemmini.preload: c_accumulate must be a one-bit integer")
+        else:
+            raise VerifyException("gemmini.preload: at most one dynamic C row is supported")
 
 
 @irdl_op_definition

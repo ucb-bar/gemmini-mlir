@@ -60,8 +60,24 @@ def _encoded(op: G._GemminiOp) -> tuple[int, int | None, int] | None:
 def lower(module):
     """Rewrite a golden target module in place, then verify no Gemmini op remains."""
     module.verify()
+    _verify_dynamic_preload_rows(module)
     for op in list(module.walk()):
         if not isinstance(op, G._GemminiOp):
+            continue
+        if isinstance(op, G.PreloadOp) and len(op.operands_) == 1:
+            funct, rs1, rs2_base = isa.preload(
+                bd_addr=op.a("bd"),
+                c_addr=isa.acc_addr(0, accumulate=bool(op.a("c_accumulate", 0))),
+                bd_cols=op.a("bd_cols"), bd_rows=op.a("bd_rows"),
+                c_cols=op.a("c_cols"), c_rows=op.a("c_rows"),
+            )
+            isa.assert_legal(funct)
+            other, high = iconst(rs1), iconst(rs2_base)
+            packed = llvm.OrOp(op.operands_[0], high.results[0])
+            Rewriter.replace_op(op, [other, high, packed, llvm.InlineAsmOp(
+                isa.asm_string(funct), "r,r", [other.results[0], packed.results[0]], [],
+                has_side_effects=True,
+            )])
             continue
         if isinstance(op, G.ComputeOp) and len(op.operands_) == 1:
             funct, rs1_base, rs2 = isa.compute(
@@ -105,3 +121,38 @@ def lower(module):
         raise AssertionError("device lowering left a Gemmini op behind")
     module.verify()
     return module
+
+
+def _verify_dynamic_preload_rows(module):
+    """Close every declared C range against the actual ordinary CPU CFG.
+
+    Resource attributes do not establish runtime row bounds. This option accepts
+    only statically resolvable command loops; unknown values/control flow refuse
+    before mutation. Every dynamic declaration must be observed in a completed
+    function trace. Unreachable or uncontained declarations have no row proof.
+    """
+    from merlin.llvmlower.static_llvm_cfg import StaticInt, StaticPointer, trace_static_function
+
+    dynamic = {op for op in module.walk()
+               if isinstance(op, G.PreloadOp) and op.operands_}
+    observed = set()
+    for function in module.walk():
+        if not isinstance(function, llvm.FuncOp) or not any(
+                isinstance(op, G.PreloadOp) and op.operands_ for op in function.walk()):
+            continue
+        arguments = [StaticPointer(i, StaticInt(0, 64))
+                     for i, _ in enumerate(function.body.blocks.first.args)]
+        for step in trace_static_function(function, arguments,
+                observe=lambda op: isinstance(op, G._GemminiOp), pointer_index_bits=64):
+            op = step.operation
+            if isinstance(op, G.PreloadOp) and op.operands_:
+                observed.add(op)
+                row = step.inputs[0]
+                if not isinstance(row, StaticInt) or not 0 <= row.value <= op.a("c_max"):
+                    raise ValueError("executed dynamic C violates declared accumulator row range")
+            elif isinstance(op, G.ComputeOp) and op.operands_:
+                row = step.inputs[0]
+                if not isinstance(row, StaticInt) or not 0 <= row.value <= op.a("a_max"):
+                    raise ValueError("executed dynamic A violates declared scratchpad row range")
+    if observed != dynamic:
+        raise ValueError("dynamic C declaration has no complete reachable function trace")

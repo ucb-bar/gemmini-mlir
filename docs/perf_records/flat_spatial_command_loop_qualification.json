@@ -1,0 +1,417 @@
+{
+  "schema": "flat_spatial_command_loop_qualification_v1",
+  "recorded_utc": "2026-10-06T03:00:00Z",
+  "hypothesis": "Preserving ordinary CPU command loops reduces repeated instruction bodies without changing the exact primitive command sequence or arithmetic",
+  "ownership": {
+    "shared": "Merlin explicit LLVM no-unroll metadata c371984ee; exact integer CFG traversal",
+    "target": "OOT dynamic accumulator destination encoding/resource verifier and GoldenFlatConv spatial schedule"
+  },
+  "default_changed": false,
+  "production_selector": "Explicit loop_spatial boolean; shape/layout/resource derived, no model or region selectors",
+  "proof": {
+    "sequence": "Complete bounded LLVM CFG traces close every preload/compute address, extent, accumulation initialization, stationary-weight flip/reuse and command order against the static control",
+    "lowering": "Every dynamic C declaration must occur in a completed trace before mutation; unknown runtime values, unreachable declarations and declared range violations refuse",
+    "focused_gate": "18 compact-loop checks plus 8 existing convolution checks; shared metadata actual upstream translation/codegen and borrowed-input contracts31PASS"
+  },
+  "exact_independent_capsule": {
+    "shape": {
+      "h": 11,
+      "w": 19,
+      "cin": 65,
+      "cout": 73,
+      "stride": 1,
+      "bn": 4,
+      "output_dtype": "i32",
+      "scale": 1.0,
+      "relu": false,
+      "wide_b": true,
+      "explicit_halo": false
+    },
+    "options": {
+      "virtual_padding": true,
+      "wide_a": true,
+      "separate_b_bank": true,
+      "band_rows": 7
+    },
+    "elements_per_call": 15257,
+    "calls": 4,
+    "guards_per_call": 4096,
+    "input_rereads": "Historical retained driver checks all inputs after each call; older recipe scope incorrectly says after all four calls",
+    "strict_rv64gc": "PASS",
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/layer.elf",
+      "sha256": "223346626c438cf96d9f77173075771f6a088610dcb16ab31428cc20547b8e3b"
+    },
+    "final_nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "223346626c438cf96d9f77173075771f6a088610dcb16ab31428cc20547b8e3b",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 10,
+        "1": 360,
+        "2": 2128,
+        "3": 140,
+        "4": 900,
+        "5": 3600,
+        "6": 4500,
+        "7": 2
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "cycles": [
+      [
+        0,
+        0,
+        101611
+      ],
+      [
+        0,
+        1,
+        97107
+      ],
+      [
+        1,
+        1,
+        93817
+      ],
+      [
+        1,
+        0,
+        97282
+      ]
+    ],
+    "paired_mean_fraction_change": -0.04006676956956756,
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "compiled": [
+      {
+        "arm": 0,
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "b5f342ae459c9623325621b38d5f16de460e2b6cefd30c9f3e7698e6778b2402",
+          "llvm_mlir_sha256": "5764e8d6da6c8c6c2a0f8f05f6237f303af2cb35b84e5bcc5406a212e034c436",
+          "llvm_ir_sha256": "db83b70b7b0e373b7ccda8edf23f57e309218ac05a53a42e92933c1362e7b9c6",
+          "object_sha256": "48a7f25bbb4c9c124846c2b8373aaecce6e690c407c18034310eb3fe96c6bfb8",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm0/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm0/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm0/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm0/kernel.o"
+            ]
+          ]
+        },
+        "object": {
+          "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm0/kernel.o",
+          "sha256": "48a7f25bbb4c9c124846c2b8373aaecce6e690c407c18034310eb3fe96c6bfb8"
+        },
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "48a7f25bbb4c9c124846c2b8373aaecce6e690c407c18034310eb3fe96c6bfb8",
+          "executable_sections": 1,
+          "custom_funct_counts": {
+            "0": 5,
+            "1": 180,
+            "2": 1064,
+            "3": 70,
+            "4": 450,
+            "5": 2700,
+            "6": 3150,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        }
+      },
+      {
+        "arm": 1,
+        "compilation": {
+          "schema": "gemmini_golden_device_compile_v1",
+          "target_ir_sha256": "110f977a14fc8f2aadc76a32a3dfe7a33caac2db581c2dc73d2789a6bef4b4ed",
+          "llvm_mlir_sha256": "cdcafc367b2309800f2e9f819623e649f956b456b60a948407256f906d2ad3eb",
+          "llvm_ir_sha256": "3660baedc66f03281a4fd2e8e5708bd6a63237bbbe8062cae7bf90f5e42ef212",
+          "object_sha256": "6fb39987434ab09cdff0dfbbe54d92878a4b824e738737b12f264e20a65da59f",
+          "object_nofsm_status": "pass",
+          "compiler_sha256": {
+            "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+            "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+          },
+          "compiler_argv": [
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+              "--mlir-to-llvmir",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm1/kernel.llvm.mlir",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm1/kernel.ll"
+            ],
+            [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm1/kernel.ll",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm1/kernel.o"
+            ]
+          ]
+        },
+        "object": {
+          "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/arm1/kernel.o",
+          "sha256": "6fb39987434ab09cdff0dfbbe54d92878a4b824e738737b12f264e20a65da59f"
+        },
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "6fb39987434ab09cdff0dfbbe54d92878a4b824e738737b12f264e20a65da59f",
+          "executable_sections": 1,
+          "custom_funct_counts": {
+            "0": 5,
+            "1": 180,
+            "2": 1064,
+            "3": 70,
+            "4": 450,
+            "5": 900,
+            "6": 1350,
+            "7": 1
+          },
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        }
+      }
+    ],
+    "source": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/probe.c",
+      "sha256": "8a0fdc60e32d990fe2161620c1363bb9fe36c427355d6f429b3b52f7b36dee54"
+    },
+    "historical_driver": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/driver_snapshot.py",
+      "sha256": "1e8806489487d762c02ceb520dbf5d6429dc2f780f022aee93be374279a3dbf1"
+    },
+    "recipe": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/recipe.json",
+      "sha256": "70cdde8d06ce2f9098248548a32dd50e92ae7ef2a0eefd6a1e82e889c4c2eab1"
+    },
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/result.json",
+      "sha256": "63985eae7119cfd9ed3a62f3f7628730038a2b5db08257adb696ce6db78d0076"
+    },
+    "spike_log": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/independent_tail_pair_retained/spike.log",
+      "sha256": "9da521f9fa4b45f4e23458927093674d3615e4733f856c10c0db15c5a041ef5e"
+    },
+    "control_text_bytes": 73226,
+    "candidate_text_bytes": 73610
+  },
+  "original_schedule_geometry_compilation": [
+    {
+      "trace_region_only": "matmul_2",
+      "shape": {
+        "h": 56,
+        "w": 56,
+        "cin": 64,
+        "cout": 64,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.00206922204233706,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "wide_a": true,
+        "separate_b_bank": true,
+        "band_rows": 4,
+        "virtual_padding": true,
+        "pingpong_b": false
+      },
+      "arms": [
+        {
+          "compact": false,
+          "text_bytes": 120366,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_2/0/kernel.o",
+            "sha256": "c0616463c2e4d4d29f9b2fab62da035a1009cda484f471062d6c089db1bb28b0"
+          },
+          "target_ir_sha256": "597f13df820961654bfa02986c6f2b7ee17c116b9bd677d0c6659722ca3a4fac",
+          "default_target_ir_identity": true,
+          "nofsm": "pass"
+        },
+        {
+          "compact": true,
+          "text_bytes": 39744,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_2/1/kernel.o",
+            "sha256": "d309fb30e03d8885a03e2e2b6a67396af1d683d42a068a4aef5005fbee1cc00c"
+          },
+          "target_ir_sha256": "55c54dac5dd58ae4fbbc3d9b5df33600c4a2fd81d5a6fab1cc16fcf37bf3a35e",
+          "default_target_ir_identity": false,
+          "nofsm": "pass"
+        }
+      ]
+    },
+    {
+      "trace_region_only": "matmul_12",
+      "shape": {
+        "h": 56,
+        "w": 56,
+        "cin": 128,
+        "cout": 128,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0015212674625217915,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "wide_a": true,
+        "separate_b_bank": true,
+        "band_rows": 8,
+        "virtual_padding": true,
+        "pingpong_b": false
+      },
+      "arms": [
+        {
+          "compact": false,
+          "text_bytes": 211352,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_12/0/kernel.o",
+            "sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9"
+          },
+          "target_ir_sha256": "1faf4e29548e5015676a11d45793ee091d4d516bd3f11b0f947b52483653e758",
+          "default_target_ir_identity": true,
+          "nofsm": "pass"
+        },
+        {
+          "compact": true,
+          "text_bytes": 63498,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_12/1/kernel.o",
+            "sha256": "357a1e3a850b03d3ef40ad3242e0c59422569731fcbe55cc30d5c8081d519ef9"
+          },
+          "target_ir_sha256": "ccb4ceb25c83b47beb978825eba9c023125cb023ed381db01e9169d790d1a201",
+          "default_target_ir_identity": false,
+          "nofsm": "pass"
+        }
+      ]
+    },
+    {
+      "trace_region_only": "matmul_25",
+      "shape": {
+        "h": 28,
+        "w": 28,
+        "cin": 256,
+        "cout": 256,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "wide_a": true,
+        "separate_b_bank": true,
+        "band_rows": 14,
+        "virtual_padding": true,
+        "pingpong_b": false
+      },
+      "arms": [
+        {
+          "compact": false,
+          "text_bytes": 82490,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_25/0/kernel.o",
+            "sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3"
+          },
+          "target_ir_sha256": "67c5a8424b71c71d39ca7f8473f49936b4794b58656d467f3cf4ccf888cfc814",
+          "default_target_ir_identity": true,
+          "nofsm": "pass"
+        },
+        {
+          "compact": true,
+          "text_bytes": 28850,
+          "object": {
+            "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/flat-spatial-command-loop-20261005/current_geometry_v3/matmul_25/1/kernel.o",
+            "sha256": "9d6ba102298f86d18367e1ba5e23c7f85c84ff80c34314598d75adfa721f7730"
+          },
+          "target_ir_sha256": "17ee23227a4fb6e585b9e192c408d12e23283cb34730300b9d3d97849e82b258",
+          "default_target_ir_identity": false,
+          "nofsm": "pass"
+        }
+      ]
+    }
+  ],
+  "negative_evidence": [
+    {
+      "scope": "Initial inner-loop-only build",
+      "result": "LLVM O2 unrolled the loop back to the original static commands; both .text73226bytes; no cycle qualification"
+    },
+    {
+      "scope": "Initial capsule link",
+      "result": "Baremetal harness has no puts; link failed and was fixed with printf plus -fno-builtin; no result claimed from failed build"
+    }
+  ],
+  "limitations": [
+    "Qualified timing is complete independent i32 convolution GSIM, not stock FireSim or a whole-model improvement",
+    "Current geometry object text bytes are compiled size facts, not executed fetch chronology, cache misses or cycles",
+    "The larger current stride2 geometry has passed strict full50176output/guards/input and noFSM gates; its GSIM result remains pending",
+    "The original source and all original whole-model gates remain unchanged; normal source/provider qualification is separate"
+  ],
+  "token_usage_available": false
+}

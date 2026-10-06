@@ -85,8 +85,10 @@ class FnBuilder:
             body(self.const(i))
 
     def for_loop(self, start: int, stop: int, step: int,
-                 body: Callable[[SSAValue], None]) -> None:
+                 body: Callable[[SSAValue], None], *, retain_loop: bool = False) -> None:
         """Emit an ordinary CPU loop in LLVM CFG; no Gemmini loop opcode is involved."""
+        if type(retain_loop) is not bool:
+            raise ValueError("retaining an ordinary CPU loop requires explicit boolean")
         if step <= 0 or start < 0 or stop < start:
             raise ValueError("invalid CPU loop bounds")
         if start == stop:
@@ -107,7 +109,10 @@ class FnBuilder:
         self.blk = loop_body
         body(iv)
         nxt = self.add_i(iv, self.const(step))
-        self.add(llvm.BrOp(header, nxt))
+        latch = self.add(llvm.BrOp(header, nxt))
+        if retain_loop:
+            from merlin.llvmlower.llvm_loop_metadata import disable_loop_unroll
+            disable_loop_unroll(latch)
         self.blk = exit_block
 
     # -- memory ------------------------------------------------------------------------------

@@ -71,8 +71,11 @@ def virtual_band_groups(s, rows):
 
 
 class GoldenFlatConv(GoldenGemm):
-    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False):
         s.validate()
+        if type(loop_spatial) is not bool:
+            raise ValueError("spatial command loop selection must be boolean")
+        self.loop_spatial = loop_spatial
         if virtual_padding and s.explicit_halo:raise ValueError("virtual padding requires unpadded input shape")
         if not eligible(s, band_rows,virtual_padding=virtual_padding):
             raise ValueError('spatial band requires explicit halo and accumulator capacity')
@@ -129,18 +132,39 @@ class GoldenFlatConv(GoldenGemm):
                                     self._rocc('mvin', {'local':current_bbase+d*F.DIM,
                                         'rows':kr, 'cols':sum(nr[d:d+4]), 'load_id':1}, ptr)
                                 for d, cols in enumerate(nr):
-                                    for a, rows in enumerate(widths):
+                                    def spatial(a, rows, dynamic=False):
+                                        initialize = not (first and ki==0)
+                                        if dynamic:
+                                            address = self.fb.add_i(self.fb.mul_i(a,self.fb.const(s.bn*F.DIM)),self.fb.const(d*F.DIM))
+                                            self._rocc('preload', {
+                                                'bd':isa.GARBAGE_ADDR, 'c_accumulate':int(initialize),
+                                                'c_max':(len(widths)-1)*s.bn*F.DIM+d*F.DIM,
+                                                'c_reserved_rows':len(widths)*s.bn*F.DIM,
+                                                'bd_cols':cols, 'bd_rows':kr, 'c_cols':cols, 'c_rows':rows},address)
+                                            address = self.fb.add_i(self.fb.mul_i(a,self.fb.const(panel_width)),self.fb.const(ki*F.DIM))
+                                            self._rocc('compute', {'a_cols':kr, 'a_rows':rows, 'accumulate':True,
+                                                'a_max':(len(widths)-1)*panel_width+ki*F.DIM,
+                                                'a_reserved_rows':len(widths)*panel_width},address)
+                                            return
                                         self._rocc('preload', {
                                             'bd':current_bbase+d*F.DIM if a==0 else isa.GARBAGE_ADDR,
-                                            'c':isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=not (first and ki==0)),
+                                            'c':isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=initialize),
                                             'bd_cols':cols, 'bd_rows':kr, 'c_cols':cols, 'c_rows':rows})
                                         self._rocc('compute', {'a':a*panel_width+ki*F.DIM,
                                             'a_cols':kr, 'a_rows':rows, 'accumulate':a!=0})
+                                    if self.loop_spatial:
+                                        spatial(0,widths[0])
+                                        full = sum(rows==F.DIM for rows in widths)
+                                        if full>1:self.fb.for_loop(1,full,1,lambda a:spatial(a,F.DIM,True),retain_loop=True)
+                                        if widths[-1] != F.DIM and len(widths)>1:
+                                            spatial(len(widths)-1,widths[-1])
+                                    else:
+                                        for a, rows in enumerate(widths):spatial(a,rows)
                         panel(self.fb.const(0), min(panel_width,s.cin), kh==0 and kw==0)
                         full = s.cin // panel_width
                         if full > 1:
                             self.fb.for_loop(panel_width, full*panel_width, panel_width,
-                                lambda ci: panel(ci,panel_width,False))
+                                lambda ci: panel(ci,panel_width,False),retain_loop=self.loop_spatial)
                         if s.cin > panel_width and s.cin % panel_width:
                             panel(self.fb.const(full*panel_width), s.cin % panel_width, False)
                 for a, rows in enumerate(widths):
@@ -151,18 +175,18 @@ class GoldenFlatConv(GoldenGemm):
                             self._tile(n0,d), 4 if s.output_dtype=='i32' else 1)
                         self._rocc('mvout', {'local':isa.acc_addr((a*s.bn+d)*F.DIM,
                             full_row=s.output_dtype=='i32'), 'rows':rows, 'cols':sum(nr[d:d+step])}, ptr)
-            self._for_groups(_groups(s.cout,s.bn), channel)
+            self._for_groups(_groups(s.cout,s.bn), channel,retain_loop=self.loop_spatial)
         if self.virtual_padding:
             for start,stop,height in virtual_band_groups(s,self.band_rows):
                 if stop-start==self.band_rows:band(self.fb.const(start),height,start)
-                else:self.fb.for_loop(start,stop,self.band_rows,lambda y0,h=height,sample=start:band(y0,h,sample))
+                else:self.fb.for_loop(start,stop,self.band_rows,lambda y0,h=height,sample=start:band(y0,h,sample),retain_loop=self.loop_spatial)
         else:
             full, tail = divmod(s.oh,self.band_rows)
             if full == 1:
                 band(self.fb.const(0),self.band_rows)
             else:
                 self.fb.for_loop(0,full*self.band_rows,self.band_rows,
-                    lambda y0: band(y0,self.band_rows))
+                    lambda y0: band(y0,self.band_rows),retain_loop=self.loop_spatial)
             if tail:
                 band(self.fb.const(full*self.band_rows),tail)
         module = self._finish('gemmini_golden_flat_conv')
@@ -171,6 +195,7 @@ class GoldenFlatConv(GoldenGemm):
         module.attributes['gemmini.flat_conv_shape'] = StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.flat_conv_wide_a'] = StringAttr(str(self.wide_a))
         if self.pingpong_b:module.attributes['gemmini.flat_conv_pingpong_b']=StringAttr('two-independent-banks')
+        if self.loop_spatial:module.attributes['gemmini.flat_conv_loop_spatial']=StringAttr('exact bounded ordinary CPU spatial command loop')
         module.attributes['gemmini.flat_conv_separate_b_bank'] = StringAttr(str(self.separate_b_bank))
         return module
 

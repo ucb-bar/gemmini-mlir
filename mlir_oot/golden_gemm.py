@@ -417,13 +417,13 @@ class GoldenGemm:
                     "rows": rows, "cols": sum(nr[d:d + width])}, ptr)
                 d += width
 
-    def _for_groups(self, groups, body) -> None:
+    def _for_groups(self, groups, body, *, retain_loop=False) -> None:
         for start, stop, step, widths in groups:
             if stop - start == step:
                 body(self.fb.const(start), widths)
             else:
                 self.fb.for_loop(start, stop, step,
-                                 lambda iv, w=widths: body(iv, w))
+                                 lambda iv, w=widths: body(iv, w),retain_loop=retain_loop)
 
     def _emit_config(self) -> None:
         s = self.shape
