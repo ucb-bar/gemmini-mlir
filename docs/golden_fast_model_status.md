@@ -213,3 +213,41 @@ address/dependency/spill and overlap pricing remain needed. Pure text reductions
 did not yield proportional cycles; no unmeasured overlap coefficient is introduced.
 
 [Source-equivalent variant check](perf_records/root_resident_source_variant_model_validation_20261006.json).
+
+## Latest calibration and reusable features
+
+The exact generic address-region recurrence census is published for review in
+[Merlin PR41](https://github.com/ucb-bar/merlin/pull/41). Its26 tests include an
+independent oracle and40,000-request trace. No target constants or cycle prices
+are introduced. The OOT gather adapter reconstructs bound kernel requests from
+actual source/ELF object addresses and emitted load order, then delegates census
+and fitting to Merlin. All16 post-label hypotheses are retained:10 refuse
+negative screening terms, while six have37.73–54.49% maximum error. The best
+exploratory error remains too large, with wrapper/preparation state unpriced.
+No independent-validation, physical-capacity or production claim follows.
+[Exploration review](perf_records/root_gather_locality_exploration_review_20261006.json).
+
+Matched resident-B calibration2038 now closes the same strict/GSIM/stock ELF,
+15 separate windows and original i32 outputs. Both M64 strategy arms remain
+held. Stock array-row demand alone ties the schedules and misses16.59%; adding
+real-B preload demand predicts their ordering with5.15% maximum error. GSIM
+separately gives5.45%. Instruction-only diagnostic gives4.57% stock error and
+is also retained. These coefficients include CPU issue and fenced completion;
+they are not pure device prices or mixed-stripe/whole-model rates. Root reclosed
+107 receipt pins and104 distinct screen artifacts.
+[Matched model review](perf_records/root_b_reuse_model_pilot_20261006.json).
+
+The complete table battery is released as stock2040 after root independently
+reclosed145+14pins, native336/strict420mode-and-sticky gates, actual readonly
+512KiB/2MiB/8MiB table bytes and27 short-harness rows. M2/M8×16/20-bit corners
+train the two supported no-fixed models; five cases and both repeats are held.
+All three complete source controls are excluded from fitting. The original
+underidentified fixed-term declaration stays rejected. Source control,
+preparation, table certificate, replay, finishing and storage are measured.
+[Root release](perf_records/root_source_interval_calibration_stock_release_20261006.json).
+
+A lost-output calibration failure also led to
+[Merlin PR42](https://github.com/ucb-bar/merlin/pull/42): validate the emulator
+stdout destination before starting it. Seven tests include real FIFO fixtures
+that refuse before opening or invoking the backend. Both PRs are isolated
+one-topic commits from main7fee5cfdac and remain pending review.

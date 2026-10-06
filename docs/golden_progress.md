@@ -28,15 +28,17 @@ remains unknown; smaller source-wide partitions are being calibrated.
 
 More modeling work now crosses gather read counts/address extents and a second
 stream seed, with four training corners/eight withheld cases. All12cases/27
-strict counter windows pass; stock calibration2036 is running. Matched
-source-table size/prefix calibration and source-equivalent resident-B reuse
-checks continue.
+strict counter windows pass; stock calibration2036 is complete. Its broader
+instruction/region hypothesis misses by up to40.87%. The matched resident-B
+reuse calibration2038 now completes on all three engines: array rows plus
+real-B preload demand gives5.15% maximum error on the two held M64 arms and
+predicts their ordering. Source-table size/prefix calibration is running as2040.
 No new whole-model prediction or automatic ranking is enabled.
 [Model work](golden_fast_model_status.md).
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes | 30,977,892 (2026) | All 1,000 original output words exact;719,723cycles/2.2706% below2025. Actual2013 diagnostic2021 remains separately bound | [2026](perf_records/stock2026_resident_stripes_current2025_terminal.json) |
+| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes with retained reduction loops | 30,715,818 (2039) | All 1,000 original output words exact;262,074cycles/0.846% below2026. Host/runtime/weights and other46 kernels unchanged | [2039 root review](perf_records/root_resnet_current2026_reduction_terminal_review_20261006.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, exact squared-sum, multiplication packets, source 2×4 contractions/K2, B-prefetch, canonical buffer identity and generic outlining | 422,018,733 (2004) | All 256,000 original compiled words unchanged; original Torch gate passes. 0.4277% below2002 in one matched single run. Collector staging/output pinned | [2004](perf_records/stock2004_tiny_rectangular_terminal.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
@@ -96,10 +98,18 @@ prediction or automatic ranking is enabled.
 [Model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
 [Tiny terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
 
-Stock2004 and2026 are the current Tiny and ResNet whole-model bests.
-ResNet2026 measures30,977,892cycles,8,590,443 above the permitted ZIP1876
+Stock2004 and2039 are the current Tiny and ResNet whole-model bests.
+ResNet2039 measures30,715,818cycles,8,328,369 above the permitted ZIP1876
 reference. The actual current2013 comparison and its matching profile follow;
-those sections are not reassigned to2026.
+those sections are not reassigned to2039.
+
+Retained ordinary K/row loops preserve the complete primitive/pointer sequence
+of all six already-admitted resident stripe kernels. Root reclosed44,353pins,
+both normal/controlled whole gates and all command traces before release.
+Stock2039 finishes0.846% below the byte-reproduced2026 control. Six terminal
+and three named staging pins reclose; all1,000 original words and zero-FSM
+final ELF pass. One observation per arm, with current section attribution
+unknown. [Release](perf_records/root_resnet_current2026_reduction_loops_release_20261006.json).
 
 Smol's best complete12-head group is2024 at4,857,792,055cycles,8.1516%
 below the identical2003driver control. This is not a whole-model5B result;

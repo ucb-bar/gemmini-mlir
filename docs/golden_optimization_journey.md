@@ -1779,3 +1779,44 @@ The whole22M/5B/300M targets remain unmet.
 [Source-variant collision check](perf_records/root_resident_source_variant_model_validation_20261006.json),
 [Bitwise upstream review](perf_records/root_merlin_static_bitwise_review_publication_20261006.json),
 [Token ledger](perf_records/golden_token_usage_20261006T211731Z.json).
+
+### Exact locality, matched reuse and current whole validation
+
+Merlin PR41 adds an exact O(N log N) requested-address recurrence census with
+explicit granule/budget; root independently passes26 tests. All16 source-bound
+post-label gather hypotheses remain visible:10 negative-term refusals and six
+fits with37.73–54.49% maximum errors. None licenses ranking or physical cache
+capacity. The unknown wrapper/preparation state remains a modeling gap.
+
+Stock2038 completes the real-B versus GARBAGE reuse battery. With both M64 arms
+held, the no-fixed array-row model misses16.59% and ties the strategies; adding
+real-B preload demand gives5.15% error and correct held ordering. The separate
+instruction-only diagnostic gives4.57% and is retained. These operational
+windows include CPU issue/fenced completion and exclude prep/readback, so rates
+cannot be transplanted into mixed stripe or whole-model costs.
+
+Retaining source-exact ordinary K/row loops then measures30,715,818 whole
+ResNet cycles in2039, versus30,977,892 for the reproduced2026 control:262,074
+cycles/0.846% lower. All1,000 original words remain exact. Root reclosed44,353
+qualification pins and all six complete command traces, then six terminal
+pins and three named staging pins. Gap to ZIP22,387,449 is8,328,369 cycles;
+current section costs and confidence remain unknown.
+
+The matched M2/M4/M8×16/18/20-bit table battery is running as2040. Native336
+and strict420 gates, identical immutable kernels and actual readonly tables
+pass;145+14pins independently reclose. All complete source/prep/certification/
+replay/finish costs remain inside the common window. No alternate whole policy
+is selected from untimed region or replay counts.
+
+The discarded RTL result caused by a missing output directory motivated generic
+GSIM output preflight. PR42 squashes that fix and root's FIFO correction into
+one topic; seven tests pass without opening the FIFO or starting a backend.
+PR41/42 are separate one-topic reviews based on main7fee5cfdac. The conservative
+inventory is now57 implemented families, with55 on main and two pending review.
+Frozen measured compiler/calibration trees remain unchanged.
+
+[Locality review](perf_records/root_gather_locality_exploration_review_20261006.json),
+[Reuse model](perf_records/root_b_reuse_model_pilot_20261006.json),
+[Whole2039 review](perf_records/root_resnet_current2026_reduction_terminal_review_20261006.json),
+[Table calibration release](perf_records/root_source_interval_calibration_stock_release_20261006.json),
+[Generic upstream reviews](perf_records/root_merlin_model_runner_upstream_review_20261006.json).
