@@ -1,13 +1,13 @@
 # Primitive-only Gemmini golden: current evidence
 
-The requested targets are ResNet-50 at or below 22,387,449 FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama as low as possible, all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
+The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama as low as possible, all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
 
 ## Latest verified whole-model results (2026-10-05)
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, virtual padding/layout, resident/banked transfer, residual prefetch and exact early-saturation/eight-lane readout | 37,946,541 (1900) | All 1,000 original output words exact; actual staged ELF and stock hardware pinned. 3.20% below matched1874 control; separate from the1897 stripe arm | [1900](perf_records/firesim1900_resnet_sat8_readout_verified.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, two-lane host pointwise packets, eight ordered contraction outputs/K2, cached-A B-prefetch and fresh writer ownership | 531,072,370 (1880) | All 256,000 compiled output bits unchanged; original Torch gate passes | [1880](perf_records/tiny_pointwise_packet_firesim.json) |
+| ResNet exact52/wide16, transfer/banked residual, host quantization packets and exact early-saturation/eight-lane readout | 36,102,704 (1903) | All 1,000 original output words exact; staged ELF/stock hardware pinned. Measured composition, 6.48% below matched1886 control; separate from1897 stripes | [1903](perf_records/firesim1903_resnet_composed_verified.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, host pointwise/adjacent RNE packets, ordered contractions/K2, B-prefetch and fresh writer ownership | 527,255,504 (1902) | All 256,000 original compiled words unchanged; original Torch gate passes. Single-run marginal 0.719% gain versus1880 | [1902](perf_records/firesim1902_tiny_adjacent_rne_verified.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | Qualified baseline admitted as stock1906; hardware cycles pending | Native and actual RV64GC target **all1,600 original words bitexact**, zero gate failures. Original atol=0.03125/rtol=0.02 unchanged. Normal API rebuild has an identical complete loaded image except its diagnostic marker | [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [1906 admission](perf_records/smol_first_exact_stock_baseline_admission.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -182,7 +182,7 @@ original ResNet output in native and strict target execution. Only two CPU adapt
 the unmodified control link reproduces verified1874 byte for byte. Whole retired instructions
 fall10,222,806→9,389,018. Stock1900 now verifies37,946,541cycles versus the matched1874
 control39,201,279:1,254,738cycles(3.20%) saved, all1,000 original words exact with staged
-ELF/stock pins closed. This is the current whole-model best; it does not include1897 stripes.
+ELF/stock pins closed. This was the whole-model best before1903; it does not include1897 stripes.
 [Verified readout hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json).
 
 The following narrative retains the earlier experiment sequence; the table above is current.
@@ -426,12 +426,18 @@ The qualified composition now combines1886 generic host quantization packets,187
 residual schedules and1900 exact eight-lane readouts. The1886 control and1900 readout ELFs
 are reproduced byte for byte; all semantic catalog proofs/bindings and unchanged host/runtime/weights
 objects are pinned. Native and actual strict target execution preserve all1,000 original words.
-Stock1903 is admitted versus1886; hardware cycles remain pending.
+Stock1903 verifies36,102,704cycles versus1886 38,603,949 (6.479% lower), all1,000 original words exact with staged stock identity closed. This is the current verified ResNet best, 4.859% below prior1900; gains are measured as a composition.
+[Composition hardware](perf_records/firesim1903_resnet_composed_verified.json).
 [Composition qualification](perf_records/resnet_qualified_packet_composition_spike.json).
 
 Tiny adjacent independently proved RNE results now use separate CPU floating temporaries under an
 explicit CPU policy. The general Merlin pass preserves strict source chains/aliases and refuses
 unsafe motion. Actual full capsuleGSIM256,637→247,568cycles(3.53%) with identical instruction count;
-whole native/target256,000 words and original Torch gate pass. Stock1902 is admitted versus1880.
+whole native/target256,000 words and original Torch gate pass. Stock1902 verifies527,255,504cycles versus1880 531,072,370 (0.719% lower), a single-run marginal gain.
+[Adjacent RNE hardware](perf_records/firesim1902_tiny_adjacent_rne_verified.json).
 The fresh155-boundary profile1901 targets1880; older1837 attribution above remains historical.
 [Qualified next Tiny arm](tiny_adjacent_rne_packets.md).
+
+The source-stride resident convolution uses a general layout/stride/resource rule and fixes execute-stride propagation in target lowering. Its original-input paired capsule measures727,070→577,376GSIMcycles (20.59% lower), every50,176 output and4,096guard exact; an independent non-square/tail case also passes. Both normal and controlled whole builds preserve all1,000 original words on native/strict target. Only one of52 device kernels changes, with every original1897 host/runtime object retained in the controlled arm. Stock1914 is queued versus1897; whole-model gain is unknown. [Qualification](perf_records/source_stride_resident_conv_whole_qualification.json).
+
+Three-digit approximate attention also fails the unchanged full Smol gate (121/1,600), despite only27 changed first-head words. A separate zero-encoding-error diagnostic fails144/1,600 when accumulation is widened; exact source-ordered f32 replay at the identical384-route seam reproduces all1,600 bits. This closes integration sanity and proves accumulation rounding alone is sufficient to fail this original gate. No approximate route is promoted. [Precision negative](perf_records/smol_three_digit_full_native_rejected.json), [paired source-seam diagnosis](perf_records/smol_source_replay_vs_wide_accumulation.json).

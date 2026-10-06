@@ -29,6 +29,8 @@ fixture, not a whole-model speedup.
 | OOT banked residual added to transfer control | Stock1853→1874, ResNet whole model |40,479,548→39,201,279|1,278,269;3.158%|
 | OOT full-reduction convolution stripes | Stock1853→1878, ResNet whole model |40,479,548→39,754,283|725,265;1.792%|
 | OOT convolution stripes added to transfer/residual control | Stock1874→1897, ResNet whole model |39,201,279→38,468,933|732,346;1.868%|
+| Merlin adjacent independently proved RNE packets | Stock1880→1902, Tiny whole model |531,072,370→527,255,504|3,816,866;0.719% single-run marginal|
+| Merlin/OOT qualified host/readout/residual composition | Stock1886→1903, ResNet whole model |38,603,949→36,102,704|2,501,245;6.479%|
 | OOT resident-A/B-prefetch alternative | Tiny-shaped synthetic int8/amplitude21 common-address GSIM capsule |111,885→76,456|35,429;31.67%|
 
 Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.json),
@@ -38,7 +40,9 @@ Receipts: [ResNet host](perf_records/firesim1886_resnet_quant_packet_verified.js
 [residual composition](perf_records/resnet_transfer_residual_composed_firesim.json),
 [stripes](perf_records/resnet_resident_stripe_policy_firesim.json),
 [stripe composition](perf_records/firesim1897_resnet_stripe_composition_verified.json),
-[Tiny device capsule](perf_records/tiny_resident_a_prefetch_gsim.json).
+[Tiny device capsule](perf_records/tiny_resident_a_prefetch_gsim.json),
+[adjacent RNE](perf_records/firesim1902_tiny_adjacent_rne_verified.json),
+[measured composition](perf_records/firesim1903_resnet_composed_verified.json).
 
 The Tiny device alternative also passes the normal full-model original-output and zero-FSM gates.
 Its first build selects one contraction. The expanded44-binding normal and controlled builds
@@ -52,7 +56,7 @@ lower device/readback work. It is disabled. [Hardware](perf_records/firesim1895_
 
 ## Remaining gap and accounting
 
-Current verified whole-model champions are ResNet37,946,541cycles and Tiny531,072,370cycles.
+Current verified whole-model champions are ResNet36,102,704cycles and Tiny527,255,504cycles.
 Smol has full original target correctness; stock1906baseline cycles are pending. These do not
 meet the requested22M/5B goals. Matching Jack's permitted executable remains a device scheduling
 oracle, with original source/numeric gates held fixed.
