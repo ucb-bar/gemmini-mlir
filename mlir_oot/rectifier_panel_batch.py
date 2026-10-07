@@ -36,21 +36,7 @@ class PanelBatch:
             raise ValueError("panel batching requires the exact sparse rectifier chain")
         if not isinstance(ordering_contract, OrderingContract):
             raise ValueError("panel batching requires a pinned ordering contract")  # noqa: TRY004
-        pins = ordering_contract.require()
-        directory = Path(ordering_contract.source_directory).resolve()
-        paths = [(directory / name, digest) for name, digest in _SOURCE_HASHES.items()]
-        chipyard = directory.parents[5]
-        rocket = (
-            chipyard / "generators/rocket-chip/src/main/scala/rocket/RocketCore.scala"
-        )
-        paths.append((rocket, _ROCKET_HASH))
-        for path, digest in paths:
-            if (
-                not path.is_file()
-                or hashlib.sha256(path.read_bytes()).hexdigest() != digest
-            ):
-                raise ValueError("unsupported panel completion implementation")
-            pins.append({"path": str(path), "sha256": digest})
+        pins = require_completion_sources(ordering_contract)
         reservations = self.reservations(plan)
         intervals = [(base, base + rows) for base, rows in reservations.values()]
         if any(begin < 0 or end > F.SPAD_ROWS for begin, end in intervals):
@@ -96,3 +82,23 @@ class PanelBatch:
             "weights": plan.spad_intervals["weights"],
             "seeds": plan.spad_intervals["seeds"],
         }
+
+
+def require_completion_sources(ordering_contract: OrderingContract):
+    """Bind controller/store/fence facts without granting a storage schedule."""
+    if not isinstance(ordering_contract, OrderingContract):
+        raise ValueError("panel completion requires a pinned ordering contract")  # noqa: TRY004
+    pins = ordering_contract.require()
+    directory = Path(ordering_contract.source_directory).resolve()
+    paths = [(directory / name, digest) for name, digest in _SOURCE_HASHES.items()]
+    chipyard = directory.parents[5]
+    rocket = chipyard / "generators/rocket-chip/src/main/scala/rocket/RocketCore.scala"
+    paths.append((rocket, _ROCKET_HASH))
+    for path, digest in paths:
+        if (
+            not path.is_file()
+            or hashlib.sha256(path.read_bytes()).hexdigest() != digest
+        ):
+            raise ValueError("unsupported panel completion implementation")
+        pins.append({"path": str(path), "sha256": digest})
+    return pins

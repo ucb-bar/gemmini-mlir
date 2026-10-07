@@ -84,7 +84,9 @@ def _rectifier(route):
     if type(value) is not bool:
         raise ValueError("explicit rectifier implementation boolean required")
     if value and route.get("single_output_guard", False):
-        raise ValueError("rectifier and CPU guard implementations are mutually exclusive")
+        raise ValueError(
+            "rectifier and CPU guard implementations are mutually exclusive"
+        )
     return value
 
 
@@ -128,6 +130,20 @@ def joint_attributes(route, original):
             "and internal exact SPAD correction; final fence before publication; "
             "no CPU correction, retained/free pointers or second writer"
         )
+        if route["proof"]["indicator_family"] == "predictor_key":
+            from .rectifier_residual_catalog import _plan
+
+            plan = _plan(route)
+            attrs["gemmini.rectifier_adapter_scratch_bytes"] = IntegerAttr(
+                plan.scratch_bytes, i64
+            )
+            attrs["gemmini.rectifier_adapter_scratch_alignment"] = IntegerAttr(64, i64)
+            attrs["gemmini.rectifier_storage"] = StringAttr(
+                "private fresh C; immutable A/B/tables; bounded adapter-owned aligned "
+                "scratch disjoint from all tensor owners; identity ACC DMA RMW; both "
+                "key readbacks complete before reload; final fence before publication "
+                "and scratch owner return; no CPU correction or retained pointer"
+            )
         return attrs
     if _single_output(route):
         attrs["gemmini.output_guard_proof_sha256"] = StringAttr(route["proof_sha256"])

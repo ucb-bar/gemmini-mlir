@@ -17,6 +17,9 @@ from xdsl.dialects.builtin import StringAttr
 
 from .captured_residual_bundle import canonical, compile_adapter, sha
 from .golden_device_compile import compile_module
+from .golden_key_rectified_resadd import Capabilities as KeyCapabilities
+from .golden_key_rectified_resadd import Plan as KeyPlan
+from .golden_key_rectified_resadd import build as emit_key
 from .golden_rectified_resadd import Capabilities, Plan
 from .golden_rectified_resadd import build as emit
 from .joint_residual_catalog import _identifier, _validate_record
@@ -24,7 +27,25 @@ from .no_fsm_audit import audit_elf
 from .spad_fence_coalescing import OrderingContract
 
 
+def _key_family(route):
+    value = route.get("identity_i32_acc_dma_accumulate", False)
+    if type(value) is not bool:
+        raise ValueError("explicit identity ACC DMA RMW capability boolean required")
+    key = route["proof"]["indicator_family"] == "predictor_key"
+    if key and value is not True:
+        raise ValueError("predictor-key family requires identity ACC DMA RMW")
+    return key
+
+
 def _plan(route):
+    if _key_family(route):
+        return KeyPlan(
+            route["m"],
+            route["n"],
+            route["proof"],
+            KeyCapabilities(Capabilities(**route["capabilities"]), True),
+            panel_batch=route.get("panel_batch", 1),
+        )
     return Plan(
         route["m"], route["n"], route["proof"], Capabilities(**route["capabilities"])
     )
@@ -35,6 +56,15 @@ def kernel(route):
     panel_batch = route.get("panel_batch", 1)
     if type(flag) is not bool:
         raise ValueError("explicit SPAD coalescing boolean required")
+    if _key_family(route):
+        if flag is not True or not route["ordering_source"]:
+            raise ValueError(
+                "predictor-key family requires its pinned SPAD completion proof"
+            )
+        return emit_key(
+            _plan(route),
+            ordering_contract=OrderingContract(route["ordering_source"]),
+        )
     return emit(
         _plan(route),
         coalesce_internal_spad=flag,
@@ -49,13 +79,26 @@ def adapter(route):
     plan = _plan(route)
     symbol, function, count = route["symbol"], route["kernel"], plan.m * plan.n
     values = ",".join(str(x if x < 128 else x - 256) for x in plan.tables())
+    if _key_family(route):
+        extra_parameter = ",int8_t*"
+        workspace = (
+            f"int8_t scratch[{plan.scratch_bytes}] __attribute__((aligned(64)));"
+        )
+        workspace += (
+            f"if({symbol}_overlap(pa,scratch,sizeof(scratch))||"
+            f"{symbol}_overlap(pb,scratch,sizeof(scratch))||"
+            f"{symbol}_overlap(pc,scratch,sizeof(scratch)))__builtin_trap();"
+        )
+        extra_argument = ",scratch"
+    else:
+        extra_parameter = workspace = extra_argument = ""
     return f"""#include <stdint.h>
 #ifndef GEMMINI_RECTIFIER_RESIDUAL_ABI
 #define GEMMINI_RECTIFIER_RESIDUAL_ABI
 typedef struct{{void *allocated,*aligned;intptr_t offset,sizes[2],strides[2];}} rectifier_memref2;
 #endif
 static const int8_t {symbol}_tables[{len(plan.tables())}] __attribute__((aligned(64)))={{{values}}};
-extern void {function}(const int8_t*,const int8_t*,int8_t*,const int8_t*);
+extern void {function}(const int8_t*,const int8_t*,int8_t*,const int8_t*{extra_parameter});
 static int8_t *{symbol}_pointer(rectifier_memref2*d){{
  if(!d->aligned||d->offset<0||d->sizes[0]!={plan.m}||d->sizes[1]!={plan.n}||d->strides[0]!={plan.n}||d->strides[1]!=1)__builtin_trap();
  uintptr_t base=(uintptr_t)d->aligned,off=(uintptr_t)d->offset;
@@ -68,7 +111,7 @@ static int {symbol}_overlap(const int8_t*a,const int8_t*b,uintptr_t bsize){{
 void _mlir_ciface_{symbol}(rectifier_memref2*r,rectifier_memref2*a,rectifier_memref2*b,rectifier_memref2*c){{
  const int8_t*pa={symbol}_pointer(a),*pb={symbol}_pointer(b);int8_t*pc={symbol}_pointer(c);
  if({symbol}_overlap(pc,pa,{count})||{symbol}_overlap(pc,pb,{count})||{symbol}_overlap(pc,{symbol}_tables,{len(plan.tables())}))__builtin_trap();
- {function}(pa,pb,pc,{symbol}_tables);*r=*c;
+ {workspace}{function}(pa,pb,pc,{symbol}_tables{extra_argument});*r=*c;
 }}
 """
 
@@ -79,7 +122,14 @@ def oracle(route):
     predictor = plan.certificate["predictor"]
     low = 0 if plan.certificate["source"]["relu"] else -128
     stages = []
-    if plan.relation:
+    if _key_family(route):
+        key = plan.relation["key"]
+        stages.append(
+            f"int32_t key=acc+{key['seed']};"
+            "int e=key==0;"
+            f"out+={plan.relation['correction']}*e;"
+        )
+    elif plan.relation:
         stages.append("int e=1;")
         for offset in plan.relation["offsets"]:
             operand = "a[i]" if offset["axis"] == "lhs" else "b[i]"
@@ -89,9 +139,11 @@ def oracle(route):
                 "e-=part;if(e<0)e=0;if(e>127)e=127;"
             )
         stages.append(f"out+={plan.relation['correction']}*e;")
+    extra_parameter = ",int8_t*scratch" if _key_family(route) else ""
+    extra_void = "(void)scratch;" if _key_family(route) else ""
     return f"""#include <math.h>
-void {route["kernel"]}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*tables){{
- (void)tables;
+void {route["kernel"]}(const int8_t*a,const int8_t*b,int8_t*c,const int8_t*tables{extra_parameter}){{
+ (void)tables;{extra_void}
  for(intptr_t i=0;i<{plan.m * plan.n};i++){{
   int32_t acc=(int32_t)a[i]*{predictor["p"]}+(int32_t)b[i]*{predictor["q"]};
   float predicted=nearbyintf((float)acc*{float(predictor["scale"]).hex()}f);
@@ -114,7 +166,10 @@ def build(
     coalesce_internal_spad=False,
     ordering_source=None,
     panel_batch=1,
+    identity_i32_acc_dma_accumulate=False,
 ):
+    if type(identity_i32_acc_dma_accumulate) is not bool:
+        raise ValueError("explicit identity ACC DMA RMW capability boolean required")
     if type(coalesce_internal_spad) is not bool:
         raise ValueError("explicit SPAD coalescing boolean required")
     if type(panel_batch) is not int or panel_batch not in (1, 4):
@@ -159,6 +214,8 @@ def build(
             if ordering_source
             else None,
         }
+        if proof["indicator_family"] == "predictor_key":
+            route["identity_i32_acc_dma_accumulate"] = identity_i32_acc_dma_accumulate
         if panel_batch != 1:
             route["panel_batch"] = panel_batch
         kernel(route)
@@ -215,7 +272,12 @@ def build(
         numeric_policy=original["numeric_policy"],
         default_selection_enabled=False,
         target_cycle_cost="UNKNOWN until complete matched runtime and whole gates",
-        workspace="private fresh C; immutable A/B/tables; no second writer or CPU correction",
+        workspace=(
+            "private fresh C and bounded adapter-owned aligned scratch; immutable A/B/tables; "
+            "completion before private scratch return; no retained pointer or CPU correction"
+            if any(_key_family(route) for route in routes)
+            else "private fresh C; immutable A/B/tables; no second writer or CPU correction"
+        ),
     )
     (output / "joint.json").write_text(json.dumps(record, indent=2) + "\n")
     return record
