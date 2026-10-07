@@ -1,5 +1,20 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: table storage tradeoff retains source replay cost
+
+The read-only all22 source-interval census closes117 pins and991,232 original
+points per partition. Reducing the immutable table512KiB→64KiB changes source
+replay count13,375→98,742 while reducing logical64B first touches9,436→1,482.
+All certified integer observations equal the original source; there is no new
+compiled candidate, physical cache/VMA evidence, cost ranking or whole gain.
+[Root census review](perf_records/root_source_interval_storage_census_review_20261007.json).
+
+Phase1/2 cost search needs the complete source fallback price and actual mixed
+request chronology alongside table footprint and admission counts. Logical
+reuse alone cannot rank these representations. The partition and storage
+budget are general source-domain parameters; a model name or measured golden
+output cannot select their production legality or profitability.
+
 ## 2026-10-07: early zero-product complete cost is negative
 
 Stock2087's complete original M8 ABBA pair regresses312,405.5 cycles/8.92251%
