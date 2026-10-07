@@ -30,7 +30,8 @@ def supported():
 
 
 @pytest.mark.parametrize(
-    "m,n,batch", [(16, 64, 1), (48, 128, 4), (80, 192, 4), (12544, 64, 4)]
+    "m,n,batch", [(16, 64, 1), (48, 128, 4), (80, 192, 4), (12544, 64, 4),
+                  (144, 128, 8), (272, 192, 16)]
 )
 def test_complete_nonsquare_shapes_and_partial_batch_resources(
     certificate, m, n, batch
@@ -61,6 +62,22 @@ def test_missing_rmw_capability_and_too_small_spad_refuse(certificate, monkeypat
     monkeypatch.setattr(rtl_facts, "SPAD_ROWS", 128)
     with pytest.raises(ValueError, match="capacity"):
         Plan(16, 64, certificate, supported())
+
+
+@pytest.mark.parametrize("batch", [False, True, 0, -1, 1.5, "4"])
+def test_untyped_or_empty_panel_batch_refuses(certificate, batch):
+    with pytest.raises(ValueError, match="positive integral"):
+        Plan(16, 64, certificate, supported(), batch)
+
+
+def test_batch_capacity_is_derived_from_actual_live_extents(certificate, monkeypatch):
+    Plan(272, 192, certificate, supported(), 16)
+    with pytest.raises(ValueError, match="SPAD extents overlap|ACC reservation"):
+        Plan(272, 192, certificate, supported(), 17)
+    monkeypatch.setattr(rtl_facts, "ACC_ROWS", 512)
+    Plan(144, 128, certificate, supported(), 8)
+    with pytest.raises(ValueError, match="ACC reservation"):
+        Plan(272, 192, certificate, supported(), 16)
 
 
 def test_emission_rechecks_mutable_nested_key_witness(certificate):

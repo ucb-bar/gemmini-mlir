@@ -65,8 +65,8 @@ class Plan:
             raise ValueError(
                 "complete DIM row tiles and four-DIM column groups required"
             )
-        if type(self.panel_batch) is not int or self.panel_batch not in (1, 4):
-            raise ValueError("explicit bounded panel batch1 or4 required")
+        if type(self.panel_batch) is not int or self.panel_batch <= 0:
+            raise ValueError("positive integral panel batch required")
         if self.n >= 1 << 32 or self.m * self.n >= 1 << 63:
             raise ValueError("matrix extent or stride exceeds physical index fields")
         if F.DIM != 16 or F.OPERAND_DTYPE != "i8" or F.ACCUMULATOR_DTYPE != "i32":

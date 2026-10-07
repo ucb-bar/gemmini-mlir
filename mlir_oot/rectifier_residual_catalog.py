@@ -172,10 +172,10 @@ def build(
         raise ValueError("explicit identity ACC DMA RMW capability boolean required")
     if type(coalesce_internal_spad) is not bool:
         raise ValueError("explicit SPAD coalescing boolean required")
-    if type(panel_batch) is not int or panel_batch not in (1, 4):
-        raise ValueError("explicit panel batch 1 or proved factor 4 required")
+    if type(panel_batch) is not int or panel_batch <= 0:
+        raise ValueError("positive integral panel batch required")
     capabilities.require()
-    if coalesce_internal_spad or panel_batch == 4:
+    if coalesce_internal_spad or panel_batch != 1:
         if ordering_source is None:
             raise ValueError("pinned SPAD ordering source required")
         OrderingContract(str(ordering_source)).require()
