@@ -2,7 +2,7 @@
 
 ## Evidence at 2026-10-07
 
-Whole stock bests remain ResNet2090 **29,402,206**, Tiny2085
+Whole stock bests remain ResNet2095 **29,243,057**, Tiny2085
 **378,946,263**, Smol1906 **258,621,872,969**. All requested targets remain
 unmet. Section wins need a freshly compiled and measured whole composition.
 

@@ -1,5 +1,24 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: stationary-B tail whole ResNet result
+
+Stock2095 verifies **29,243,057 whole-model cycles**,159,149 fewer than2090
+(**0.541283%**). All1,000 original source f32 words remain exact at0/0,
+with actual staged stock ELF/bitstream and final zeroFSM closed. Root recloses
+2,619 source pins and independently verifies both actual selected function
+bodies:13,570/13,262 bytes,22 total local relocations, exact branch targets and
+registers, and all remaining bytes. Fresh normal52-source and controlled whole
+numeric gates pass; the2090 control reproduces across all14 link stages.
+Only two typed eligible flat schedules change; original host/runtime/weights,
+all52 adapters and50 other primitives remain fixed. Integrated source passes61
+schedule/default/clone/refusal checks. The prior readout-clone omission stays
+preserved with its regression test. No source ID selects production eligibility.
+
+The22M gap is **7,243,057** cycles. Separate capsule wins are not added to a
+whole forecast. Tiny2085 remains **378,946,263**; Smol1906 remains
+**258,621,872,969**. Every whole-model target remains unmet.
+[Whole terminal](perf_records/root_resnet_stationary_tail_whole_stock2095_terminal.json).
+
 ## 2026-10-07: stationary-B tail scheduling measured on stock Rocket
 
 Matched complete convolution+decoder stock2093/2094 measures
