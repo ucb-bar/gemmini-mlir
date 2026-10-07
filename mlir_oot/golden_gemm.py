@@ -63,7 +63,12 @@ class Shape:
     prefetch_b: bool = False
 
     def validate(self, *, prefetch_b_rows: tuple[int, int] | None = None,
-                 cached_b_resource_capacity: bool = False) -> None:
+                 cached_b_resource_capacity: bool = False,
+                 cached_a_output_blocks: bool = False) -> None:
+        if type(cached_a_output_blocks) is not bool:
+            raise ValueError("cached A output blocking requires a boolean selection")
+        if cached_a_output_blocks and not self.cache_a:
+            raise ValueError("cached A output blocking requires complete A residency")
         if type(cached_b_resource_capacity) is not bool:
             raise ValueError("cached B capacity selection must be boolean")
         if cached_b_resource_capacity and not self.cache_b:
@@ -80,9 +85,10 @@ class Shape:
             raise ValueError("wide A panels require K to be a positive tile multiple larger than one tile")
         # Wide B groups up to four adjacent tiles within each output block.
         # Partial channel groups and multiple N blocks use their exact extents.
-        if self.cache_a and (_ceil_div(self.m, F.DIM) > self.bm or
+        if self.cache_a and ((not cached_a_output_blocks and _ceil_div(self.m, F.DIM) > self.bm) or
                              self.wide_a or self.pipeline_m or self.cache_b):
             raise ValueError("cached A needs one complete M block and no competing A schedule")
+        a_storage_tiles = _ceil_div(self.m, F.DIM) if cached_a_output_blocks else self.bm
         if self.banked_m and not (self.pipeline_m and self.wide_a and self.cache_b):
             raise ValueError("banked M needs alternating slots, wide A, and cached B")
         if self.banked_m and self.bm * _ceil_div(self.k, F.DIM) * F.DIM > F.SPAD_BANK_ROWS:
@@ -96,7 +102,7 @@ class Shape:
                 raise ValueError("B prefetch needs cached A, multiple K panels, and its own bank placement")
             if self.bn * F.DIM > F.SPAD_BANK_ROWS:
                 raise ValueError("one prefetched B panel must fit one scratchpad bank")
-            a_end = self.bm * _ceil_div(self.k, F.DIM) * F.DIM
+            a_end = a_storage_tiles * _ceil_div(self.k, F.DIM) * F.DIM
             if prefetch_b_rows is None:
                 if a_end > 2 * F.SPAD_BANK_ROWS:
                     raise ValueError("prefetched B requires cached A to fit the lower two banks")
@@ -116,7 +122,7 @@ class Shape:
                     raise ValueError("prefetched B slots overlap")
         slots = 2 if self.pipeline_m else 1
         a_panel_tiles = _ceil_div(self.k, F.DIM) if self.wide_a or self.cache_a else 1
-        a_rows = slots * self.bm * a_panel_tiles
+        a_rows = slots * a_storage_tiles * a_panel_tiles
         if slots * self.bm * self.bn * F.DIM > F.ACC_ROWS:
             raise ValueError("output block exceeds the accumulator")
         if (a_rows + self.bn) * F.DIM > F.SPAD_ROWS:
@@ -175,9 +181,12 @@ class GoldenGemm(EmissionOptionsMixin):
     def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
             resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None,
             cached_b_resource_capacity: bool = False,
-            stationary_b_tail_before_last_full: bool = False):
+            stationary_b_tail_before_last_full: bool = False,
+            cached_a_output_blocks: bool = False):
         shape.validate(prefetch_b_rows=prefetch_b_rows,
-                       cached_b_resource_capacity=cached_b_resource_capacity)
+                       cached_b_resource_capacity=cached_b_resource_capacity,
+                       cached_a_output_blocks=cached_a_output_blocks)
+        self.cached_a_output_blocks = cached_a_output_blocks
         if type(resident_a_load_tiles) is not int or not 1 <= resident_a_load_tiles <= 4:
             raise ValueError('resident A DMA grouping must be an integer in 1..4')
         if resident_a_load_tiles != 1 and not shape.cache_a:
@@ -199,7 +208,8 @@ class GoldenGemm(EmissionOptionsMixin):
             raise ValueError("stationary B tail selection must be boolean")
         if stationary_b_tail_before_last_full and (
                 not shape.cache_a or not shape.reuse_b or shape.bias
-                or shape.m // F.DIM < 2 or shape.m % F.DIM == 0):
+                or shape.m // F.DIM < 2 or shape.m % F.DIM == 0
+                or cached_a_output_blocks):
             raise ValueError("stationary B tail placement requires complete cached A, reuse B, two full tiles, one short tail and no bias")
         self.stationary_b_tail_before_last_full = stationary_b_tail_before_last_full
         self.shape = shape
@@ -243,6 +253,9 @@ class GoldenGemm(EmissionOptionsMixin):
         return self.fb.mul_i(self.fb.add_i(index, self.fb.const(delta)),
                              self.fb.const(F.DIM))
 
+    def _a_storage_tiles(self) -> int:
+        return _ceil_div(self.shape.m, F.DIM) if self.cached_a_output_blocks else self.shape.bm
+
     def _load_b_panel(self, n0: SSAValue, k0: SSAValue,
                       nr: tuple[int, ...], kr: int, b_base: int) -> None:
         s = self.shape
@@ -266,7 +279,7 @@ class GoldenGemm(EmissionOptionsMixin):
         kt = _ceil_div(s.k, F.DIM)
         a_panel_tiles = kt if s.wide_a or s.cache_a else 1
         a_base = slot * s.bm * a_panel_tiles if s.pipeline_m else 0
-        b_base = (2 if s.pipeline_m else 1) * s.bm * a_panel_tiles
+        b_base = (2 if s.pipeline_m else 1) * self._a_storage_tiles() * a_panel_tiles
         if s.separate_b_bank:
             b_base = 2 * F.SPAD_BANK_ROWS // F.DIM
         if s.banked_m:
@@ -291,6 +304,8 @@ class GoldenGemm(EmissionOptionsMixin):
         def a_addr(a: int) -> int:
             return (a_base + a * a_panel_tiles + (wide_k or 0)) * F.DIM
         dynamic_a = self.fb.mul_i(k0, self.fb.const(F.DIM)) if s.cache_a else None
+        if self.cached_a_output_blocks:
+            dynamic_a = self.fb.add_i(dynamic_a, self.fb.mul_i(m0, self.fb.const(kt * F.DIM)))
 
         def compute(rows: int, accumulate: bool, a: int = 0) -> None:
             attrs = {"a_cols": kr, "a_rows": rows, "accumulate": accumulate}
@@ -298,8 +313,8 @@ class GoldenGemm(EmissionOptionsMixin):
                 attrs["a"] = a_addr(0)
                 self._rocc("compute", attrs)
             else:
-                attrs["a_max"] = (a * kt + kt - 1) * F.DIM
-                attrs["a_reserved_rows"] = s.bm * kt * F.DIM
+                attrs["a_max"] = ((self._a_storage_tiles() * kt - 1) if self.cached_a_output_blocks else (a * kt + kt - 1)) * F.DIM
+                attrs["a_reserved_rows"] = self._a_storage_tiles() * kt * F.DIM
                 address=dynamic_a if a == 0 else self.fb.add_i(dynamic_a,self.fb.const(a * kt * F.DIM))
                 self._rocc("compute", attrs, address)
 
@@ -597,6 +612,8 @@ class GoldenGemm(EmissionOptionsMixin):
                 json.dumps(self.input_view.__dict__,sort_keys=True))
         if self.stationary_b_tail_before_last_full:
             module.attributes["gemmini.stationary_b_tail_before_last_full"] = IntegerAttr(1, i64)
+        if self.cached_a_output_blocks:
+            module.attributes["gemmini.cached_a_output_blocks"] = IntegerAttr(1, i64)
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module

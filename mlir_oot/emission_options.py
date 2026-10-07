@@ -21,6 +21,7 @@ class GemmEmissionOptions:
     input_view: SegmentedRows | None = None
     cached_b_resource_capacity: bool = False
     stationary_b_tail_before_last_full: bool = False
+    cached_a_output_blocks: bool = False
 
 
 @dataclass(frozen=True, kw_only=True)

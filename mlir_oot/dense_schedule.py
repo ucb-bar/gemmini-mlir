@@ -187,7 +187,9 @@ def select_coalesced_resident_a(control):
     This ranks transfer command count only, never predicts cycle savings.
     """
     shape=control.shape
-    shape.validate(prefetch_b_rows=control.prefetch_b_rows)
+    shape.validate(prefetch_b_rows=control.prefetch_b_rows,
+        cached_a_output_blocks=control.cached_a_output_blocks,
+        cached_b_resource_capacity=control.cached_b_resource_capacity)
     decision=dict(applied=False,policy='resident_a_load_coalescing',
                   timing_claim=False,cost_unit='input_dma_commands_not_cycles')
     if not shape.cache_a:
@@ -207,10 +209,47 @@ def select_coalesced_resident_a(control):
                     control_input_dma_commands=segments*kt,
                     candidate_input_dma_commands=segments*_ceil_div(kt,4),
                     input_requested_bytes=shape.m*shape.k,
-                    input_reserved_rows=shape.bm*kt*F.DIM,
+                    input_reserved_rows=control._a_storage_tiles()*kt*F.DIM,
                     block_stride_rows=F.DIM,
                     emitted_delta='Adjacent K input packets coalesce; source pointers, resident cells, B ordering, increasing K compute and stores are unchanged')
     return candidate,decision
+
+
+def select_resident_a_output_blocks(control, *, output_channel_tiles=4):
+    """Separate complete A residency from private accumulator M/N blocking.
+
+    This is an explicit legality transform. Wider DMA/stores trade against
+    repeated B loads across M blocks; command count does not imply profitability.
+    """
+    decision = dict(applied=False, automatic_policy=False, performance='UNKNOWN',
+                    selection='explicit complete-A storage with separate output blocks')
+    if type(output_channel_tiles) is not int or not 1 <= output_channel_tiles <= 4:
+        raise ValueError('output channel tiles require an integer in 1..4')
+    if type(control) is not GoldenGemm or not control.shape.cache_a:
+        return control, dict(decision, refusal='Requires complete-resident-A dense family')
+    if control.cached_a_output_blocks:
+        return control, dict(decision, refusal='Existing separate A/output storage preserved')
+    if control.stationary_b_tail_before_last_full:
+        return control, dict(decision, refusal='Existing complete-M stationary tail order preserved')
+    shape = control.shape
+    bn = min(output_channel_tiles, _ceil_div(shape.n, F.DIM))
+    bm = min(_ceil_div(shape.m, F.DIM), F.ACC_ROWS // F.DIM // bn)
+    if (bm, bn) == (shape.bm, shape.bn):
+        return control, dict(decision, refusal='Requested output block already selected')
+    try:
+        candidate = control.with_emission_options(shape=replace(shape, bm=bm, bn=bn),
+                                                  cached_a_output_blocks=True)
+    except ValueError as failure:
+        return control, dict(decision, refusal=str(failure))
+    decision.update(applied=True, refusal=None, output_channel_tiles=bn, output_row_tiles=bm,
+                    complete_a_tiles=_ceil_div(shape.m, F.DIM) * _ceil_div(shape.k, F.DIM),
+                    source_reduction_order='Original increasing K for every independent output',
+                    source_storage='Complete immutable A retained once at original physical addresses',
+                    accumulator_storage='Private current output block reuses cells only after exact stores',
+                    weight_storage='Repeated original B DMA per M block, disjoint from complete A',
+                    original_shape=shape.__dict__, selected_shape=candidate.shape.__dict__)
+    return candidate, decision
+
 
 
 def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_bank=False, full_k_banked=False, banked_command_policy=False, resident_a_command_policy=False, transfer_command_policy=False, resident_a_prefetch_policy=False,resident_a_load_coalescing=False):
