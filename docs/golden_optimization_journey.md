@@ -1,5 +1,26 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: immutable polynomial context reaches Merlin main
+
+Merlinmain **eb15a85ce** adds an explicit prepared source-polynomial consumer.
+At private immutable context entry it validates all8 current source plan words,
+RNE and zero implementation budget against the complete rounded-monotonicity
+theorem. Both distinct input endpoints and the original ordered F32 denominator
+remain; unsupported contexts use the original checked helper. No numerical
+approximation or default target/workload policy is added. Root passes30 source
+and30 installed-wheel tests,4module/30header identity, Ruff and no-regex gates.
+[Main qualification](perf_records/root_merlin_polynomial_constants_main_qualification/review.json).
+
+The complete first12-head group passes original786,432i8/1,024scales/guards,
+480product callbacks and finalzeroFSM. Strict retired instructions decrease
+1,713,849,505→1,560,212,849 (**8.96442%**); all1,600 freshnormalnative outputs
+are bit exact. Root independently recloses469pins and all62named data/arena
+symbols in the actual clockpair ELFs. Candidate FireSim2098 reuses the prior2092
+byteidentical stock control explicitly; hardware cost is pending. These are
+complete group observations, with no all48 multiplier or whole prediction.
+The instruction decrease composes theorem consumption and constant context;
+it is not attributed wholly to constant loading. Original final gates remain.
+
 ## 2026-10-07: table hierarchy has no measured complete Tiny win
 
 Stock2097's complete firstM8 ABBA pair measures mean **3,513,995.5** current

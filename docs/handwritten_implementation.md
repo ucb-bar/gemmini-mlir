@@ -38,7 +38,8 @@ the audit baseline`3a1e24c77`, finite guards`b1108c60d` (95source/95installed),
 predictor-key corrections`b1b6d1379` (45/45), and explicit rounded-polynomial
 theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 `c0f40f8f8` (107/107), and canonical row-grid proof
-`e9194ac08` (44/44 source/installed). The last topic verifies both implementation modules and
+`e9194ac08` (44/44 source/installed), and private immutable polynomial contexts
+`eb15a85ce` (30/30 source/installed). The last topic verifies both implementation modules and
 all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
