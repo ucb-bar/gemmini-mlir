@@ -1,5 +1,23 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: compact source polynomial table rejected on complete cost
+
+A fixed256-word source-function partition uses3,339,740 bytes and preserves
+exact outward polynomial bounds, the source-ordered F32 denominator and the
+existing explicit RMS4 policy. Native2,904,809 cases and strict1,031 target
+words/intervals across all five rounding modes pass. The complete12-head group
+retains all786,432 i8 outputs,1,024 escaping BF16 scales, guards and480 callbacks;
+10 internal carrier changes are unobserved by its original consumer.
+
+Despite reducing polynomial-header instructions163,625,999→149,331,753,
+full group cost increases1,560,212,849→1,642,458,829 retired instructions
+(**5.27146%**). Wider exact cells trigger source replay3,782,976→12,219,776 FMAs.
+Root recloses479 pins. This prototype is retained as negative evidence; no whole
+build, stock run, default policy or Merlinmain promotion follows from it.
+[Complete negative](perf_records/source_polynomial_prefix_table_negative.json).
+Phase1/2 must price both local code and consumer refinement/cold-path work.
+A smaller evaluator alone is insufficient evidence of a cheaper implementation.
+
 ## 2026-10-07: remaining four obsolete review trees removed
 
 PR39/48/49/42 review trees are fully archived and removed after source review,
