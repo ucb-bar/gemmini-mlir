@@ -1,5 +1,42 @@
 # Golden compiler optimization journey
 
+## 2026-10-07 23:21 UTC: price complete work and inspect original framework semantics
+
+The current shared compiler4ca2269 qualifies264+264 source/installed checks and
+exact package bytes. The generic execution-memory admission gate and explicit
+owned BF16 producer facts compose without numerical-policy changes. Source
+forwarding reproduces the qualified actual two-role C exactly. A clean OOT
+e5a33fd source topic separates complete input storage from output blocking and
+preserves that resource fact through DMA coalescing; no model identity selects it.
+Canonical and experiment source owners remain unchanged.
+
+| Candidate | Complete measured scope | Decision |
+| --- | --- | --- |
+| Full resident weights, actualsource11 | GSIM primitive i8−6.86610%,raw i32−6.45990% | Positive section; normal whole gate/timing remain separate |
+| Input coalescing with separate output blocks, actualsource12 | GSIM ranked callback−3.15570%; two independent cases also pass/improve | Source topic integrated locally; new all52/whole original gate pending |
+| BF16 producer max/min forwarding predecessor | Complete softmax/packing GSIM6,920,348→6,901,740.5,−0.26888% | Small bounded cycle win; later max-certificate instruction result is different scope |
+| Tiny quadratic16 carrier | Complete source instructions−6.6230%; independent+47.3210%; original whole native/Spike exact | Explicit policy only; GSIM running |
+| Tiny exact-margin carrier | Source instructions+52.2418%; independent+159.9844% | Rejected before GSIM despite fewer exact fallbacks |
+| Smol encoded K16 partial order | Whole native115/1,600 original failures,maxabs0.1637932062 | Rejected before target provider |
+| Smol raw exact-source K16 partial order | Whole native113/1,600 original failures,maxabs0.15374207497 | Representation removed; order alone fails. K16 target work abandoned |
+
+The new [FX/PyTorch audit](smol_fx_lowering_audit.md) identifies actual workload
+geometry and the missing attention quantization boundary. Linear quantization
+does not imply attention lowering. Smol's vision attention has19.327B MACs;
+the comparison Tiny eight-token prepared attention has5.767M. Static MAC totals
+cannot be substituted for latency, dynamic placement or complete correspondence.
+PyTorch's deliberate f32 Q/K widening and probability cast remain observations
+that any replacement must preserve or validate under the original whole gate.
+
+Phase0 needs mixed-precision, real-shape source capsules; phase1 needs explicit
+whole-graph coverage/fallback reasons and closed typed source binding; phase2
+needs complete host/transfer/cache/device costs and paired measured calibration.
+Retain negative independent costs and do not add overlapping section savings.
+Thread tokens observed113,696,704; exact Gemmini/topic allocation UNKNOWN.
+Local publication remains pending remote DNS recovery; no PR was opened.
+
+[Strict current delivery](perf_records/root_current_shared_compiler_and_section_delivery_20261007.json).
+
 ## 2026-10-07 22:24 UTC: resource selection closes across current normal all-kernel delivery
 
 Complete reduction-weight residency is now a source-independent OOT schedule

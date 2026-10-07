@@ -1,5 +1,55 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 23:21 UTC: current shared composition and direct FX audit
+
+Local Merlin main4ca2269 composes the qualified execution-memory gate759 with
+owned BF16 producer facts. All264 source and264 independent installed checks
+pass without skips;1,026 Python modules and157 public resources (62 runtime)
+agree across source/wheel/sdist/install. Fresh installed current-source
+producer forwarding emits both native/target C roles byte exactly as the
+qualified all48-group/1,600-word witness. The original numerical policy and
+fallback remain separate. Initial qualification caught13 inherited long Python
+C literals; adjacent literal formatting retains an identical complete Python AST.
+
+New local OOT handwritten-implementation e5a33fd ports complete-A residency with
+separate output blocks and its coalescing composition repair: five production
+files, three tests, no resident-row-loop topic. Root51 selected tests pass under
+current4ca; the frozen port65 tests and six actualsource12/independent objects
+reproduce the measured complete callback ELF exactly. Source12 GSIM callback
+263,048→254,747 cycles (−3.15570%); independent i32−6.59319%,i8−13.36718%.
+Full-weight source11 primitive i8 separately improves678,602→632,008.5 cycles
+(−6.86610%). Neither section result transfers to whole stock performance.
+
+Tiny's controlled quadratic16 successor passes every256,000 native/Spike word
+and the original Torch gate, with a768KiB table and source-section retired
+instructions−6.6230%; the independent cost+47.3210% is retained. Exact-margin
+runtime certification is rejected (+52.2418% source,+159.9844% independent).
+Quadratic and affine18 complete GSIM costs are running on their existing owners.
+No new whole stock result is assigned.
+
+Direct matching FX/PyTorch inspection confirms302 integer Linear products plus
+88 prepared floating BMMs. Smol's vision path alone has1,024 tokens,12 layers,
+12 heads,150,994,944 scores and19.327B attention MACs. Expert PyTorch attention
+explicitly widens Q/K to f32. TorchAO's Linear recipe leaves attention floating;
+full current dynamic host/device coverage remains unclosed. Encoded K16 partial
+dot reconstruction fails115/1,600 original outputs and is rejected before target
+emission. A raw-source control also completes all48 groups but fails113/1,600
+outputs,maxabs0.15374207497. Removing representation loss does not rescue this
+order; K16 target work is abandoned, with both negatives retained.
+[Detailed graph and compiler audit](smol_fx_lowering_audit.md).
+
+Root strictly recloses26,811 distinct original paths across shared delivery,
+complete target sections, controlled Tiny policies and the FX audit. Ten exact
+receipt mirrors retain their original declared keys. Whole champions remain
+ResNet28,649,233, Tiny378,946,263, Smol258,621,872,969 cycles. Queue is idle and
+alive, but canonical queue paths are not writable in this session; current process
+lacks firesim membership. Remote fetches still fail DNS, so neither local topic
+is claimed pushed. Aggregate thread meter113,696,704 tokens; exact OOT/topic
+billing UNKNOWN. All targets remain unmet.
+
+[Current closure](perf_records/root_current_shared_compiler_and_section_delivery_20261007.json).
+[Exact mirror ledger](perf_records/current_shared_delivery_and_fx_mirror_identity_20261007.json).
+
 ## 2026-10-07 22:24 UTC: full-weight residency reaches normal current compiler delivery
 
 The frozen OOT successor exposes complete reduction-weight residency through

@@ -1,5 +1,28 @@
 # Shared compiler, optimization records and promotion status
 
+## Current local source qualification: 2026-10-07 23:21 UTC
+
+Shared Merlin main4ca2269 composes runtime-memory admission with explicit owned
+BF16 producer facts:264 source+264 outside-installed checks, no skips,
+1,026 Python modules/157 public resources/62 runtime resources byte exact.
+Selected original current-provider C equals the qualified all48-group output
+witness; no whole build or cycles are inherited from that identity comparison.
+OOT handwritten-implementation e5a33fd integrates semantic complete-A/output
+blocking and coalescing, with51 root tests under current4ca plus the frozen
+65-case port and exact six-object/same-ELF section lineage. Defaults remain inert.
+New normal all52/whole1,000 ResNet selection is still required.
+
+[Framework graph audit](smol_fx_lowering_audit.md) records302 integer Linear
+products,88 floating BMMs,44 softmaxes and25 native layer norms in prepared Smol
+FX. It does not certify current dynamic offload coverage. The compiler needs a
+complete attention representation whose numerical gate and total execution costs
+are both acceptable. Encoded K16 fails the unchanged whole gate; it is not enabled.
+Current local GSIM has a normalization passthrough; stock capability remains a
+separate provenance question. Whole stock champions remain unchanged below.
+
+[Shared composition](perf_records/shared_runtime_producer_facts_composition_20261007.json).
+[Complete delivery reclosure](perf_records/root_current_shared_compiler_and_section_delivery_20261007.json).
+
 ## One compiler and one target backend
 
 All three models use Merlin's shared typed preparation, upstream lowering, host

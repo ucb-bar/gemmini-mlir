@@ -2,9 +2,28 @@
 
 ## Evidence at 2026-10-07
 
-Whole stock bests remain ResNet2101 **28,728,702**, Tiny2085
+Whole stock bests remain ResNet2109 **28,649,233**, Tiny2085
 **378,946,263**, Smol1906 **258,621,872,969**. All requested targets remain
 unmet. Section wins need a freshly compiled and measured whole composition.
+
+### Direct FX audit and current composition
+
+[Matching PyTorch/FX inspection](smol_fx_lowering_audit.md) provides concrete
+phase0–2 gaps: attention remains floating after the Linear quantization recipe,
+current graph correspondence is diagnostic, and host reconstruction/certificate
+work makes a device-product count an inadequate coverage/performance metric.
+Use current typed producers/consumers to derive a mixed-precision schedule,
+price full work and enforce unchanged whole gates. Numerical/effect obligations
+cannot be inferred from parameter size or successful sampled values.
+
+The new shared4ca compiler closes264+264 source/install checks. OOTe5's explicit
+complete-A/outputblock composition preserves all resource and ABI facts and
+reproduces a complete measured callback. Automatic applicability/profitability,
+new whole current ResNet selection and stock cycle qualification remain open.
+Tiny smaller-table approximate policies retain both positive source and negative
+independent cost evidence; exact-margin arithmetic overhead rejects that arm.
+Smol's encoded partial-order candidate fails whole accuracy and receives no
+target provider. Root closes26,811 original delivery paths; whole targets are open.
 
 Recent complete stock examples:
 
