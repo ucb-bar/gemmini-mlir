@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`e9194ac080c0eb0a006e677284dea68249378481`.
+`eb15a85ce550ec63c27530d56af66893fe629766`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.

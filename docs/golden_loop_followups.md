@@ -11,7 +11,8 @@ Recent complete stock examples:
 | General mechanism | Complete observation | Ownership |
 |---|---:|---|
 | Source-stride row-residue layout and retained commands | Convolution 818,566 → 707,799 cycles; whole ResNet 29,514,240 → 29,402,206 | OOT resource/layout/schedule |
-| Short independent tile before a later stationary-operand reuse tile | Convolution plus decoder 890,568 → 809,631 cycles; whole pending | OOT schedule |
+| Short independent tile before a later stationary-operand reuse tile | Flat convolution plus decoder 890,568 → 809,631; whole ResNet 29,402,206 → 29,243,057; dense convolution 291,426 → 243,341; composed whole 28,728,702 | OOT schedule |
+| Immutable exact source-polynomial context | Complete attention group 3,857,281,394 → 3,611,264,318 cycles; whole target execution pending for this ELF | Merlin numeric preparation, OOT execution |
 | One finite source-row grid proof before canonical packing/widening | Attention group 3,936,970,420 → 3,857,281,394 cycles; whole pending | Merlin numeric preparation, OOT execution |
 | Original saturated ties-even observation with zero-bin admission | Complete M8 3,712,239.5 → 3,483,695 cycles; whole Tiny 380,396,343 → 378,946,263 | Merlin observer/host lowering |
 
@@ -24,7 +25,7 @@ do not establish a useful compiler transformation.
 
 ## Current foundation
 
-Merlin main `e9194ac08` already provides CCA facets in `kernels/cca.py`,
+Merlin main `eb15a85ce` already provides CCA facets in `kernels/cca.py`,
 emitted-artifact role lifting in `perf/artifact_activity.py`, source-resolved
 agent guidance, reviewed required-decision owners in `phase2_edit_contract.py`,
 and data-driven resource calibration/composition in
@@ -82,11 +83,28 @@ The active campaign counter observed **93,671,490 aggregate tokens** at
 attribution are unavailable from that meter. Keep the raw checkpoint and this
 limitation; do not invent allocations.
 
-Twenty integrated obsolete worktrees were fully archived, hash-verified and
-removed, recovering 1,991,103,560 logical bytes. Active source/measurement
+Twenty-four integrated obsolete worktrees were fully archived, hash-verified and
+removed, recovering 2,348,010,542 logical bytes. Active source/measurement
 owners, primary Git stores and receipt dependencies remain until successor
 closure permits removal. Logical bytes are not a filesystem free-space delta.
 
 The later campaign counter observed **95,524,474 aggregate tokens** at
 2026-10-07 13:07:28 UTC. Attribution limits above still apply; no per-topic
 or billed-cost allocation is inferred.
+
+The complete older exact-row Smol target gate now passes all1,600 original
+words in strict Spike; its149,157,846,939 functional cycles are not a hardware
+measurement. Its successor constants ELF is running a separate target gate.
+The fixed source-prefix table reduces local evaluator work but raises complete
+group retirement by5.27146% through extra source replay, and remains rejected.
+
+A further Phase0 requirement is a typed join of source DAG, preparation words,
+compiled helper and captured context before attaching a context-local histogram
+or cost. Historical inherited M8 identifies context21, not the first context in
+a census. Validate joins before Phase2 consumes per-context locality features.
+Normal compilation of a globally legal option is a separate gate from profitable
+whole selection; retain qualification and negative results independently.
+
+The later raw campaign meter observed **96,663,392 aggregate tokens** at
+2026-10-07 13:42:40 UTC. Per-agent, per-topic, OOT-only and billed token
+attribution remain unavailable. This counter is preserved without allocation.
