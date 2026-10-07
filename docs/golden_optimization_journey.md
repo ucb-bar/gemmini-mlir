@@ -1,5 +1,25 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: remaining four obsolete review trees removed
+
+PR39/48/49/42 review trees are fully archived and removed after source review,
+remote-main verification and explicit no-dependency confirmation from all three
+agents. Their topic additions are already on Merlinmain eb15a85ce. Exact module
+and regression-test equality covers independent topics; recorded patches close
+shared frontier/runtime files superseded by later RHS, numerical-policy and
+emulator-slot improvements. No useful production delta was found in these four.
+All regular files and symlinks, including ignored and untracked outputs, match
+the retained archive inventories. Recovery branches and shared Git objects remain;
+old receipt paths map to exact archived members. Original working tree and active
+source/build/runtime/measurement/archive owners stay intact.
+
+These four remove356,906,982 logical bytes net of compressed archives. Across
+both earlier cleanups, **24 worktrees** now save **2,348,010,542 logical bytes**
+(about2.19GiB). This is not a filesystem free-space delta.
+[Cleanup](perf_records/root_superseded_review_worktree_cleanup_20261007.json),
+[main review](perf_records/root_superseded_review_worktree_main_closure_20261007.json),
+[archive successors](perf_records/root_superseded_review_worktree_archive_successors_20261007.json).
+
 ## 2026-10-07: complete Smol target accuracy gate passes
 
 The older exact-row normal ELF a4b9…cdd4 completes strict Gemmini Spike in
