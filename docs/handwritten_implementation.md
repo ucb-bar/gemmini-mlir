@@ -41,7 +41,7 @@ theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
-The latest qualified whole-model cycles are ResNet2086 **29,514,240**,
+The latest qualified whole-model cycles are ResNet2090 **29,402,206**,
 Tiny2085 **378,946,263**, and Smol1906 **258,621,872,969**. Original output gates
 and final zero-FSM instruction audits remain mandatory. All requested whole
 targets are still unmet; explicit experiment recipes do not install a default
@@ -102,7 +102,8 @@ this reproduction does not rerun them.
 
 ## Publication checks and measured scope
 
-The combined source checks pass:
+Earlier combined publication source checks passed (before the later focused
+main topics recorded above):
 
 - 1,358 Merlin compiler/runtime/diagnostic checks, with seven skipped cases.
 - 61 additional generic source interval/continuation/integer observer checks.
@@ -118,9 +119,9 @@ verified stock FireSim whole observations remain:
 
 | Workload | Cycles | Original target |
 | --- | ---: | ---: |
-| ResNet50 | 29,698,347 | about 22M |
-| TinyLlama | 394,765,577 | about 300M |
-| SmolVLA | 258,621,872,969 | about 5B |
+| ResNet50 (2090) | 29,402,206 | about 22M |
+| TinyLlama (2085) | 378,946,263 | about 300M |
+| SmolVLA (1906) | 258,621,872,969 | about 5B |
 
 SmolVLA group 2072 is 3,918,275,805 cycles, using its explicitly recorded
 experimental numeric policy. Keep group cycles separate from whole-model cycles.

@@ -1,5 +1,34 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: resource-derived row-residue whole ResNet result
+
+Stock2090 qualifies **29,402,206 whole-model cycles**,112,034 fewer than2086
+(0.379593%). All1,000 original source words remain bit exact at0/0. Root
+recloses1,081 pins, every52 adapter/51 unselected primitives and current24,
+actual selected entry, final zeroFSM and actual staged stock identities.
+Its independent ELF-section/symbol/RELA parser verifies all13,914 selected
+body bytes, nine BRANCH/one compressed BRANCH/one JAL targets and unchanged
+opcodes/registers, with declared RELAX metadata. Fresh normal and controlled
+whole gates pass; original2086 ELF is reproduced exactly across14 link stages.
+[Whole terminal](perf_records/root_resnet_source_residue_whole_stock2090_terminal.json).
+
+Separate complete convolution stock2088/2089 measures **818,566→707,799**
+cycles (110,767/13.5318%). All25,088 outputs,4,096 guards,2,459,648 immutable
+input bytes and common addresses pass. Resource-derived row-residue layout
+reduces requested A payload409,600→100,352 while real B/preload/compute counts
+stay fixed; compact ordinary loops preserve its command/pointer stream.
+Requested bytes are not physical DDR traffic, and neither gain identifies
+CPU versus device service or grants a summed whole forecast.
+[Complete pair](perf_records/root_resnet_source_residue_pair_stock2088_2089_terminal.json).
+
+Current whole bests: ResNet2090 **29,402,206**, Tiny2085 **378,946,263**,
+Smol1906 **258,621,872,969**. ResNet's22M gap is7,402,206, or7,014,757 above
+the ZIP22,387,449 diagnostic. All targets remain unmet. No production code
+changed for this candidate: published general row-residue/command-retention
+options select by layout/resource facts. Identifiers authenticate bindings.
+Smol's complete normal48 target is now under bounded strict validation; native
+all1,600 words pass, but target execution and stock whole cycles remain unknown.
+
 ## 2026-10-07: early zero-product complete cost is negative
 
 Stock2087's complete original M8 ABBA pair regresses312,405.5 cycles/8.92251%

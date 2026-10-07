@@ -36,3 +36,11 @@ and the selected candidate primitive are bound before admission.
 stock2087's separate152-pin complete original M8 protocol. Its early zero-product
 threshold regresses8.92251%; it remains an unpromoted experiment. The source
 prototype03d8d101f and historical word-only drift are distinct from Merlin main.
+
+`submit_source_residue_stock.py` / `collect_source_residue_stock.py` bind281 pins
+and2088/2089's complete original convolution with13.5318% improvement.
+`verify_source_residue_link.py` independently closes raw final ELF bytes against
+relocatable section/symbol/RELA records, including compressed branches and JAL.
+The corresponding whole submit/collect pair binds1,081 pins and stock2090's
+all1,000-word protocol:29,402,206 cycles,112,034 fewer than2086. These source
+options are already general compiler mechanisms; route identifiers are audit only.

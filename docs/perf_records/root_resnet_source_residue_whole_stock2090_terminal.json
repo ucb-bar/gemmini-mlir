@@ -1,0 +1,290 @@
+{
+  "schema": "root_source_residue_ResNet_stock2090_whole_terminal_v1",
+  "status": "verified_complete_original_whole",
+  "job_id": 2090,
+  "terminal": {
+    "id": 2090,
+    "state": "DONE",
+    "phase": "DONE",
+    "exit_code": 0,
+    "submitted_at": 1791373156.5267196,
+    "started_at": 1791373160.5292804,
+    "ended_at": 1791373390.6021445
+  },
+  "control_job": 2086,
+  "control_cycles": 29514240,
+  "candidate_cycles": 29402206,
+  "saving_cycles": 112034,
+  "saving_fraction": 0.00379593037123771,
+  "target_cycles": 22000000,
+  "remaining_target_gap": 7402206,
+  "original_output_gate": {
+    "count": 1000,
+    "raw_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "compiled_source_bitexact": true,
+    "original_atol": 0,
+    "original_rtol": 0,
+    "original_pass": true,
+    "golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+  },
+  "source_packet": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/docs/perf_records/current_source_residue_2086_whole_qualification.json",
+  "source_packet_sha256": "fb8a941888ace210965d8cab3b29d4c09cf3e7f8851f592a1a80e515592dc439",
+  "source_pins_revalidated": 1081,
+  "actual_staged_identity": {
+    "job_id": 2090,
+    "phase": "RUNNING",
+    "observed_before_teardown": true,
+    "objects": {
+      "elf": {
+        "path": "/scratch/firesim_queue/jobs/2090/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+        "sha256": "8c964c8d437adbec08c9f508a78d425cc76c0d1dd7b57be303ca815e3e154fbc",
+        "bytes": 53615584
+      },
+      "bitstream": {
+        "path": "/scratch/firesim_queue/jobs/2090/simulation/sim_slot_0/xilinx_alveo_u250/firesim.bit",
+        "sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+        "bytes": 59101699
+      }
+    }
+  },
+  "final_nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "8c964c8d437adbec08c9f508a78d425cc76c0d1dd7b57be303ca815e3e154fbc",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 425,
+      "1": 1857,
+      "2": 19621,
+      "3": 1296,
+      "4": 12808,
+      "5": 27002,
+      "6": 39810,
+      "7": 80,
+      "14": 100
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "actual_selected_entry_closure": {
+    "status": "PASS",
+    "elf_sha256": "8c964c8d437adbec08c9f508a78d425cc76c0d1dd7b57be303ca815e3e154fbc",
+    "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+    "argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "-g",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x80000000",
+      "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/candidate/model.elf"
+    ],
+    "stdout_sha256": "1bcfed339bc12fe84dc2bf8fdcc5f0cc5af2163ebed65d4af0eaabbb11b9cf39",
+    "histogram_sha256": "ec697a7b050cb2fd0a973979c93ce047cff627ee365eb92149dbe46d721785a0",
+    "original1000_full_digest_match": true,
+    "selected_symbol": "gemmini_exact_requant_43_kernel",
+    "selected_symbol_entry_count": 1,
+    "selected_symbol_bounds": {
+      "symbol": "gemmini_exact_requant_43_kernel",
+      "start": 2148289302,
+      "end": 2148303216
+    },
+    "selected_primitive_link_relocation_equivalent": true,
+    "branch_relocation_witness": [
+      {
+        "offset": 6108,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148294502,
+        "source_local_target": 5200
+      },
+      {
+        "offset": 7034,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148295424,
+        "source_local_target": 6122
+      },
+      {
+        "offset": 7956,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148296350,
+        "source_local_target": 7048
+      },
+      {
+        "offset": 8878,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148297270,
+        "source_local_target": 7968
+      },
+      {
+        "offset": 9800,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148298192,
+        "source_local_target": 8890
+      },
+      {
+        "offset": 10722,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148299114,
+        "source_local_target": 9812
+      },
+      {
+        "offset": 11642,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148300036,
+        "source_local_target": 10734
+      },
+      {
+        "offset": 12562,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148300956,
+        "source_local_target": 11654
+      },
+      {
+        "offset": 13482,
+        "width": 4,
+        "relocation": "R_RISCV_BRANCH",
+        "final_target": 2148301876,
+        "source_local_target": 12574
+      },
+      {
+        "offset": 13874,
+        "width": 2,
+        "relocation": "R_RISCV_RVC_BRANCH",
+        "final_target": 2148303182,
+        "source_local_target": 13880
+      },
+      {
+        "offset": 13876,
+        "width": 4,
+        "relocation": "R_RISCV_JAL",
+        "final_target": 2148293390,
+        "source_local_target": 4088
+      }
+    ],
+    "relaxation_metadata_offsets": [
+      13876
+    ],
+    "prior_observation": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/entry_observation_v2",
+    "prior_observation_scope": "same exact ELF strict output/histogram retained; no numerical run substituted",
+    "selected_object_sha256": "d0d7cbd2e8e5054690fc0677f3b91d82a6b2ef301a19de076baf6483951b326c",
+    "whole_cycles": "UNKNOWN"
+  },
+  "independent_selected_body_link_review": {
+    "status": "PASS",
+    "source_object": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/bundle/gemmini_exact_requant_43/kernel.o",
+    "source_object_sha256": "d0d7cbd2e8e5054690fc0677f3b91d82a6b2ef301a19de076baf6483951b326c",
+    "elf": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/candidate/model.elf",
+    "elf_sha256": "8c964c8d437adbec08c9f508a78d425cc76c0d1dd7b57be303ca815e3e154fbc",
+    "full_selected_body_bytes": 13914,
+    "symbol": "gemmini_exact_requant_43_kernel",
+    "actual_entry_count": 1,
+    "relocation_targets_and_registers": [
+      {
+        "offset": 6108,
+        "kind": 16,
+        "width": 4,
+        "target": 2148294502
+      },
+      {
+        "offset": 7034,
+        "kind": 16,
+        "width": 4,
+        "target": 2148295424
+      },
+      {
+        "offset": 7956,
+        "kind": 16,
+        "width": 4,
+        "target": 2148296350
+      },
+      {
+        "offset": 8878,
+        "kind": 16,
+        "width": 4,
+        "target": 2148297270
+      },
+      {
+        "offset": 9800,
+        "kind": 16,
+        "width": 4,
+        "target": 2148298192
+      },
+      {
+        "offset": 10722,
+        "kind": 16,
+        "width": 4,
+        "target": 2148299114
+      },
+      {
+        "offset": 11642,
+        "kind": 16,
+        "width": 4,
+        "target": 2148300036
+      },
+      {
+        "offset": 12562,
+        "kind": 16,
+        "width": 4,
+        "target": 2148300956
+      },
+      {
+        "offset": 13482,
+        "kind": 16,
+        "width": 4,
+        "target": 2148301876
+      },
+      {
+        "offset": 13874,
+        "kind": 44,
+        "width": 2,
+        "target": 2148303182
+      },
+      {
+        "offset": 13876,
+        "kind": 17,
+        "width": 4,
+        "target": 2148293390
+      }
+    ],
+    "relax_metadata_offsets": [
+      13876
+    ],
+    "all_other_bytes_equal": true,
+    "independent_from_agent_boolean": true,
+    "source_packet": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/docs/perf_records/current_source_residue_2086_whole_qualification.json",
+    "source_packet_sha256": "fb8a941888ace210965d8cab3b29d4c09cf3e7f8851f592a1a80e515592dc439",
+    "entry_receipt": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/entry_observation_v3/receipt.json",
+    "entry_receipt_sha256": "64f26a277324fa33f4c8493d519c31e66c8570d2125c51a19fb11e2b3a448596",
+    "script_sha256": "0d5a10818f93eecb40cde91f402989dbccae9994f6823f436661f1c4272a4fb8"
+  },
+  "hardware_alias": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "actual_staged_bit_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "elapsed_queue_seconds": 230.07286405563354,
+  "scope": "One uninstrumented original ResNet whole METRIC observation. Fresh normal build reproduces all52 baseline source bindings and only one candidate kernel differs. Sole selected primitive resource-derived row-residue plus bounded command retention; all52 adapters and51 other primitives unchanged. Control2086 ELF reproduced byte-exact. Capsule gains are not added or projected to whole cycles; simulator PASSED count includes setup/validation and is not the performance metric.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_stock/root_admission.json": "1a35df9b948f2a9174de1f16b916e2a9ccf16574a9f9bd549875185e74806a16",
+    "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/docs/perf_records/current_source_residue_2086_whole_qualification.json": "fb8a941888ace210965d8cab3b29d4c09cf3e7f8851f592a1a80e515592dc439",
+    "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/qualification/spike_validation.json": "0131e1a15858adb3b4f545a18f7f8a33989005b668ecdec1543bbebd1ae1b6bd",
+    "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/out/current_source_residue/controlled2086_v2/qualification/host/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_link_review.json": "27160dff9adac512de78f61a5684bc90fdbcb202bb2d92a7b5065796e07bfa94",
+    "/scratch/firesim_queue/jobs/2090/runworkload-full.json": "b0798369f15c84d9b48de5bae2cf8095bade7b95a47afc4c99b42b0397a18aee",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_stock/preflight/firesim_preflight.json": "6b5e8092f27c67f891579806830c48d0b78d0c43c8c34e40c84a44740156c13e",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_stock/actual_staged_identity.json": "176ccedbdd1298534c1f7245208a2cf0aa1f2e922e40cb0ed777027c6ee6c1af",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_stock/queue_submission.json": "0008e922009894ec5f8712aefdf219f1e2a0ba803a664724c58784b17decf806",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_whole_stock/stock2090_uart.txt": "c6fdfea8fb6c365d4fb06190407baebec1cd3b970d41cce180abf32321102c27",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/collect_source_residue_whole_stock.py": "2e410bedf951beca56b8ab7ee6ecfc195dfbd8e19b977d3aab945a8e297bba92"
+  },
+  "token_usage_available": false,
+  "token_usage": null
+}

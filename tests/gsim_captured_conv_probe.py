@@ -46,6 +46,7 @@ def main():
             "resident_stripe_reduction",
             "strided_resident",
             "stride_residue",
+            "stride_residue_compact",
             "coalesced_resident_a",
             "mesh_flip",
             "compact_commands",
@@ -219,12 +220,21 @@ def main():
                 resident_a_load_tiles=4,
                 prefetch_b_rows=tuple(placement) if placement else None,
             )
-        elif args.schedule == "stride_residue":
+        elif args.schedule in ("stride_residue", "stride_residue_compact"):
             from mlir_oot.conv_schedule import source_stride_resource_layout
+            from mlir_oot.golden_resident_conv import retain_resident_commands
 
             generator, _resource_choice = source_stride_resource_layout(
                 shape, row_residue=True
             )
+            if args.schedule == "stride_residue_compact":
+                generator, _command_choice = retain_resident_commands(
+                    generator, source_stride_only=True
+                )
+                if not _command_choice["applied"]:
+                    raise ValueError(
+                        "admitted source-residue command retention refused"
+                    )
             shape = generator.conv
         elif args.schedule == "strided_resident":
             input_rows = (shape.cin // F.DIM) * (shape.h + 2) * (shape.w + 2)
@@ -236,8 +246,9 @@ def main():
         elif args.schedule == "resident_stripe_inner":
             generator = GoldenResidentStripeConv(shape, compact_inner_commands=True)
         elif args.schedule == "resident_stripe_reduction":
-            generator = GoldenResidentStripeConv(shape, compact_inner_commands=True,
-                                                 compact_reduction_commands=True)
+            generator = GoldenResidentStripeConv(
+                shape, compact_inner_commands=True, compact_reduction_commands=True
+            )
         else:
             generator = (
                 GoldenResidentConv(shape, prefetch_b=args.prefetch_b)
@@ -277,6 +288,7 @@ def main():
             "compact",
             "strided_resident",
             "stride_residue",
+            "stride_residue_compact",
             "compact_commands",
             "resident_weight_packets",
             "flat_resident_planes",

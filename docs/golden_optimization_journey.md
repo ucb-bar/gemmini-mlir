@@ -1,5 +1,35 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: second source-derived spatial whole win and final-body audit
+
+ResNet2090 closes29,402,206 cycles,112,034/0.379593% below2086. Its separate
+complete source convolution pair2088/2089 saves110,767/13.5318%; these are
+separate observations. All source original outputs/guards/immutable operands,
+1,081 whole pins, final zeroFSM and staged stock identities pass. Source code
+was already published; the explicit source layout/resource option newly admits
+one previously flat primitive and every other object remains fixed. Fresh
+normal52 source generation plus both full whole numeric gates and exact2086
+14-stage control reproduction close. No workload selector or numeric change.
+[Whole terminal](perf_records/root_resnet_source_residue_whole_stock2090_terminal.json).
+
+Root independently parses the actual ELF section and relocatable symbol/RELA
+records to compare all13,914 body bytes. Nine ordinary branches, one compressed
+branch and one JAL preserve opcode/registers and exact resolved targets; RELAX
+is metadata. The archived agent comparison body is normalized at relocation
+immediates, so treating it as raw linked bytes correctly refused. Root's final
+check reads raw ELF bytes, validates each immediate separately, then compares
+all other bytes. Phase0 tooling needs a reusable executable-binding receipt
+that distinguishes raw bodies, normalized comparisons and relocation proofs.
+Production numerical permission remains independent of authenticated hashes.
+[Independent linked body](perf_records/root_resnet_source_residue_whole_link_review_20261007.json).
+
+The next paired late-spatial B-packet candidate regresses3.390% in complete
+GSIM on the current original shape despite a10.334% independent tail win;
+resource legality alone does not decide profit. A new tail placement hypothesis
+uses the actual next-PRELOAD D-port condition for shortened WS waves; cycles
+are unpriced before its complete command and execution gates. No gain is
+assigned here. Remaining22Mgap7,402,206 is unresolved.
+
 ## 2026-10-07: table storage tradeoff retains source replay cost
 
 The read-only all22 source-interval census closes117 pins and991,232 original

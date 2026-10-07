@@ -1,6 +1,17 @@
 # ResNet remaining gap: measured locations and unresolved attribution
 
-## Latest whole2086 qualification
+## Latest whole2090 qualification
+
+Stock2090 measures **29,402,206 cycles**,112,034/0.379593% below2086.
+All1,000 original words/0/0,1,081 pins, normal52 source generation, actual
+selected entry/full linked body, zeroFSM and staged stock identities close.
+Only one resource-derived row-residue primitive changes; current24 remains.
+Gap to22M is7,402,206; to ZIP22,387,449 it is7,014,757. Complete section2088/9
+is818,566→707,799cycles, separately observed. Active issue/cache/coherence
+versus array/DMA attribution remains unresolved; no section sum predicts whole.
+[Whole result](perf_records/root_resnet_source_residue_whole_stock2090_terminal.json).
+
+## Prior whole2086 qualification
 
 Stock2086 measures **29,514,240 cycles**,103,958/0.350994% below2081.
 All1,000 original outputs are bit exact at0/0; all1,959 pins, actual selected
