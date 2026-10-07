@@ -19,10 +19,13 @@ profiler tests, complete Spike output validation and stock hardware validation
 qualify the change. Initial ABI/preflight mistakes remain in diagnostic logs.
 No source or hardware configuration was changed to make the profile pass.
 
-Three agents continue independent work: generic bounded-RNE helper scheduling
-for ResNet, generic broadcast guard hoisting for TinyLlama, and source-proven
-prepared interval/bin metadata for SmolVLA. These are pending optimizations,
-not measured wins. Task-specific token counts remain unavailable.
+Three agents continue independent work: actual inlined bounded-RNE instruction
+ordering for ResNet, generic broadcast guard hoisting for TinyLlama, and
+source-proven prepared interval/bin metadata for SmolVLA. The explicit inlining
+arm is a no-op: fresh default and candidate objects/ELFs are byte identical.
+The earlier inference from a retained helper symbol to executed ABI calls was
+wrong. No hardware run or speedup is claimed for it. Remaining candidates are
+pending optimizations, not measured wins. Task-specific tokens are unavailable.
 [Profile evidence and tooling implications](perf_records/current2071_boundary_profile_20261007.md).
 
 ## 2026-10-07: clean upstream and handwritten branch delivery

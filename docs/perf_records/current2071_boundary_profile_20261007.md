@@ -35,9 +35,13 @@ convolutions, 1,273,432 in spatial convolutions, 2,446,449 in residuals,
 boundaries differ; these are locations of extra work, not independently
 attainable savings. Global mean and host intervals also have different scopes.
 
-The largest between-call interval directly motivates the pending generic
-Merlin scheduling change for bounded-RNE packet helpers: the current pre-stem
-map calls a 24-argument helper 18,816 times, with stack argument traffic. Target
+The largest between-call interval motivated a bounded-RNE helper inlining
+experiment. Fresh reconstruction then reproduced both the default host object
+and entire 2071 ELF byte for byte; the `alwaysinline` candidate was also byte
+identical. LLVM already inlines the arithmetic at its callers. The retained
+global helper symbol does not establish executed calls or stack traffic.
+The inlining hypothesis is rejected and receives no hardware run. Actual
+inlined instruction ordering remains a separate candidate mechanism. Target
 schedule/layout work remains necessary after host preparation is improved.
 
 The failed initial ABI assumption was retained in the work directory: two
