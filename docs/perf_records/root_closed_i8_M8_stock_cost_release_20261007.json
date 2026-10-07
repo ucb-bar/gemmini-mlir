@@ -1,0 +1,94 @@
+{
+  "schema": "root_closed_i8_complete_M8_stock_cost_release_v1",
+  "status": "RELEASED_ONE_STOCK_COST_CAPSULE",
+  "candidate": {
+    "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/timing/build/layer.elf",
+    "sha256": "b0635db509ff33c99e396b60dc94741e1d1350fc7f5db7f41a80db477fc7b6ad"
+  },
+  "custom_expected_adapter": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/stock_cost_adapter/expected.json",
+  "declaration": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/stock_cost_adapter/declaration.json",
+  "packet_pins_reclosed": 356,
+  "original_complete_integer_words": 45056,
+  "parser_tests": 10,
+  "original_native_whole_words": 256000,
+  "all5frm7sticky_companion": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/target_v3/qualification.json",
+  "all_executable_zero_FSM": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "b0635db509ff33c99e396b60dc94741e1d1350fc7f5db7f41a80db477fc7b6ad",
+    "executable_sections": 4,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "strict_retirement_only_observation": {
+    "schema": "closed_i8_complete_M8_observation_v1",
+    "rows": [
+      {
+        "id": 0,
+        "sample": 0,
+        "cycles": 2131552,
+        "instructions": 2131548,
+        "digest": 13187261661403020842
+      },
+      {
+        "id": 1,
+        "sample": 1,
+        "cycles": 1952089,
+        "instructions": 1952086,
+        "digest": 13187261661403020842
+      },
+      {
+        "id": 1,
+        "sample": 2,
+        "cycles": 1952089,
+        "instructions": 1952086,
+        "digest": 13187261661403020842
+      },
+      {
+        "id": 0,
+        "sample": 3,
+        "cycles": 2131557,
+        "instructions": 2131553,
+        "digest": 13187261661403020842
+      }
+    ],
+    "actual_common_addresses": {
+      "a": 2158519936,
+      "sa": 2158700160,
+      "b": 2158722688,
+      "sb": 2158902912,
+      "out": 2158971296
+    },
+    "original_i8_words": 45056,
+    "original_digest": 13187261661403020842,
+    "control_mean_cycles": 2131554.5,
+    "candidate_mean_cycles": 1952089.0,
+    "fraction_change": -0.08419465699797968,
+    "scope": "Complete helper preparation/table/certificate/sourcefallback/finish/store/frame; validation outside each ROI.",
+    "no_whole_cycle_prediction": true
+  },
+  "hardware_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hardware_identity_required": {
+    "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229"
+  },
+  "requirements": [
+    "Recovery alone submits after this release is committed; retain queue/staging/workload completion receipts.",
+    "Check actual staged ELF, hardware config, bitstream and job-owned UART/DONE/rank0.",
+    "Parse exactly four complete ABBA windows and original45056-byte digest/guards/inputs with frozen adapter.",
+    "Keep live GSIM unchanged; this stock observation is an independent engine label."
+  ],
+  "scope": "Complete helper dequant/table/certificate/original source fallback/finish/store/frame. Validation outside each ROI. No whole target ELF admitted.",
+  "prospective_cycle_model": "UNKNOWN; interval, frame, memory and cross-call costs unpriced",
+  "whole_cycle_forecast": "UNKNOWN",
+  "whole_champion_changes": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/closed_i8_interval_stock_cost_release.json": "385d222b7c1f818a595f19d33e970dccb2adfb6c18cb0a42b665307402d178a7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/stock_cost_adapter/expected.json": "2a5c5eee5b984b0a6d9ef09ff6a2dc6eb074348e0b66f056b43b2e150d54b35f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_closed_i8_preparation_review_20261007.json": "ac0810f3808f3124baa11c42b0dd03ea867e558cd4ef47e9d0191edd7ae17af0",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/closed_i8_root_parser_tests_correct_cwd_20261007.txt": "4c78d91fecebd9ff2601366b209fedef5a34c74b72f29aadd727b0d4e4957970",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/review_closed_i8_stock_capsule_probe.py": "4e4ad4b455a2868eadbaac994f5ee4e242d2d4f3c702ccb21cfba25a4683f3dd"
+  }
+}
