@@ -18,7 +18,7 @@ class BoundaryProfileTest(unittest.TestCase):
             parse_profile(self.valid.replace('31 13 18 3 0','31 13 18 3 1'),self.manifest)
     def test_unsupported_abi_refused(self):
         with self.assertRaises(ValueError):emit([('unsafe;name',3)])
-        with self.assertRaises(ValueError):emit([('valid_name',5)])
+        with self.assertRaises(ValueError):emit([('valid_name',6)])
 
 
 def test_leaf_profile_reconstructs_and_checks_original_object_bytes(tmp_path):

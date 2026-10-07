@@ -1,5 +1,20 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: current ResNet profile after upstream audit
+
+Published Merlin main is now `3a1e24c77`; model2MLIR main is `7915e234`.
+The complete generic audit and seven safely archived worktree removals are
+recorded in [the audit release](perf_records/generic_compiler_audit_release_20261007.md).
+
+Stock 2074 profiles the unchanged accepted ResNet 2071 objects. All 1,000 output
+words remain bit exact and the final ELF contains zero FSM instructions.
+The 71 source/ABI-bound callback intervals conserve the 29,738,792-cycle forward
+window. Work before the stem costs 2,026,898 cycles; residual callbacks cost
+4,638,842; convolution/requantization callbacks cost 20,934,226. The callbacks
+include CPU glue and device service. They do not measure pure utilization.
+This diagnostic does not change the 29,698,347-cycle champion.
+[Current profile, ZIP comparison and next changes](perf_records/current2071_boundary_profile_20261007.md).
+
 ## 2026-10-07: clean upstream and handwritten branch delivery
 
 Merlin main is `95e8142d9`; model2MLIR main is `7915e234`. Reviewed changes

@@ -1,5 +1,30 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: latest source-bound ResNet profile
+
+Stock 2074 closes all 71 declared call boundaries while preserving every
+accepted 2071 semantic object. All 1,000 original outputs remain bit exact;
+the final instruction audit finds zero FSM instructions. Profiling adds
+40,960 cycles to the outer metric relative to the unprofiled observation.
+
+The pre-stem host interval is 2.027M cycles. Residual callbacks cost 4.639M;
+convolution/requantization callbacks cost 20.934M. Callbacks include host
+adapters and device issue/transfers/waits, so the 93% share is not accelerator
+utilization. Declared layer geometry comparisons with the permitted ZIP
+reference locate remaining costs without asserting numeric equivalence.
+
+The derived ABI exposed two five-pointer adapters. The target profiler now
+accepts that explicit ABI. Original object/link identity, eight existing
+profiler tests, complete Spike output validation and stock hardware validation
+qualify the change. Initial ABI/preflight mistakes remain in diagnostic logs.
+No source or hardware configuration was changed to make the profile pass.
+
+Three agents continue independent work: generic bounded-RNE helper scheduling
+for ResNet, generic broadcast guard hoisting for TinyLlama, and source-proven
+prepared interval/bin metadata for SmolVLA. These are pending optimizations,
+not measured wins. Task-specific token counts remain unavailable.
+[Profile evidence and tooling implications](perf_records/current2071_boundary_profile_20261007.md).
+
 ## 2026-10-07: clean upstream and handwritten branch delivery
 
 Merlin main is `95e8142d9`; model2MLIR main is `7915e234`. Reviewed changes

@@ -16,8 +16,8 @@ def digest(p: Path) -> str:
 
 def emit(symbols: list[tuple[str, int]]) -> str:
     for symbol, arity in symbols:
-        if not re.fullmatch(r'[A-Za-z_][A-Za-z_0-9]*', symbol) or arity not in (3, 4):
-            raise ValueError('profile supports only declared void pointer ABIs of arity3/4')
+        if not re.fullmatch(r'[A-Za-z_][A-Za-z_0-9]*', symbol) or arity not in (3, 4, 5):
+            raise ValueError('profile supports only declared void pointer ABIs of arity3/4/5')
     out = ['''#include <stdint.h>
 #include "merlin_model.h"
 #include "htif.h"
