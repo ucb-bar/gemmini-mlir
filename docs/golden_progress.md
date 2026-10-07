@@ -1,5 +1,24 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: whole Tiny zero-bin observer result
+
+Stock2085 qualifies **378,946,263 whole-model cycles**,1,450,080 fewer than2076
+(0.3812024%). All256,000 original compiled output words remain bit exact and
+the original Torch0.03125/0.02 gate passes. The260 source pins, actual staged
+ELF/stock bitstream identities and final zero-FSM audit close. Only model.o
+changes; the control ELF reproduces2076 exactly and all155 device bindings
+and11 other objects remain intact. The6.15651% first-section gain does not
+describe the separately measured whole gain. The300M gap is78,946,263 cycles.
+[Whole terminal](perf_records/root_tiny_rne_zero_stock2085_terminal.json).
+
+ResNet's source-stride whole successor is submitted as2086. Root independently
+checks all1,959 source pins, all52 fresh default kernels/adapters against the
+accepted source build, and the candidate's sole changed kernel. Both normal
+and controlled source/native/strict gates preserve all1,000 original words;
+the selected entry executes and its full linked body matches with ten exact
+branch relocations. Fresh source modules match the published compiler.
+Whole cycles remain UNKNOWN; the existing ResNet best is29,618,198.
+
 ## 2026-10-07: source delivery closure and two complete section gains
 
 Tiny's exact sufficient zero-bin observer measures **3,712,239.5 → 3,483,695**

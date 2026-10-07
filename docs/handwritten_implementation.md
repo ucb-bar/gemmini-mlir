@@ -42,7 +42,7 @@ all30 installed header payloads with typed source/effect refusals. These focused
 relabel an earlier whole-package suite as rerun at the latest head.
 
 The latest qualified whole-model cycles are ResNet2081 **29,618,198**,
-Tiny2076 **380,396,343**, and Smol1906 **258,621,872,969**. Original output gates
+Tiny2085 **378,946,263**, and Smol1906 **258,621,872,969**. Original output gates
 and final zero-FSM instruction audits remain mandatory. All requested whole
 targets are still unmet; explicit experiment recipes do not install a default
 numerical policy or imply that rejected private prototypes reached main.
@@ -63,6 +63,12 @@ The combined source/resource/key gate passes109 checks; its narrow option
 integration passes47. Fresh source generation and actual whole performance
 retain separate qualification records; frozen winning objects alone do not
 establish reproducibility from the published compiler.
+
+The source-stride whole2086 admission independently closes1,959 pins, all52
+fresh default kernels/adapters, the one changed candidate kernel, both whole
+numeric gates, actual entry execution and complete relocation-aware linked-body
+identity. Its seven compiler source modules match this published implementation.
+Whole cycles were unknown at submission.
 
 Merlin owns the generic interval tables, typed observer closure, exact cold
 source continuation placement, direct certified integer observation publication,

@@ -1,5 +1,25 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: zero-bin whole Tiny measurement and fresh52 ResNet admission
+
+Stock2085 measures378,946,263 complete original Tiny cycles, saving1,450,080
+(0.3812024%) against2076. All256,000 source words/Torch gate,260 pins, actual
+staged ELF/stock bitstream and final zeroFSM close. Only model.o changes;
+all155 target bindings and11 other leaves stay intact. The first M8 section's
+6.15651% gain is not the whole gain; all22 source contexts must be composed
+and measured. Remaining300Mgap is78,946,263cycles. Source retied-instruction
+increase1.291% also did not predict this actual whole improvement.
+
+Root independently admits ResNet whole2086 after rechecking1,959 pins. Fresh
+restored normal generation reproduces all52 default primitive/adapter pairs
+and the accepted aggregate byte for byte. The explicit source-stride candidate
+changes just one primitive, preserving every adapter and51 other primitives.
+The compiler source bytes match the published implementation, both normal and
+controlled native/strict original1,000-word gates pass, and actual selected
+entry/full-body equivalence closes ten linker branch relocations. Whole cycles
+remain UNKNOWN; no stock section gain is credited in advance.
+[Whole Tiny](perf_records/root_tiny_rne_zero_stock2085_terminal.json).
+
 ## 2026-10-07: exact observer cut, retained source-stride loops and delivery audit
 
 Stock2082 prices the complete M8 source observer alternative at
