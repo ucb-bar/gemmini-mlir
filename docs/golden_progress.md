@@ -1,5 +1,19 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: five more integrated worktrees safely removed
+
+Five obsolete Merlin delivery/review worktrees were removed after remote main
+verification,review of superseding source changes and agent/process dependency
+checks. Every working-tree file and link,including ignored and untracked output,
+was archived and rehashed before removal. Shared Git objects and branches remain.
+Old absolute receipt paths have explicit archive/member successor mappings.
+The operation saves525.94MiB of logical file bytes after retained archives.
+Together with the previous seven removals,this is12 worktrees and1.19GiB of
+logical net savings; these values are not filesystem free-space measurements.
+Active model/kernel/runtime/source strategy trees and primary Git stores remain.
+[Cleanup](perf_records/root_integrated_worktree_cleanup_post_finite_20261007.json),
+[archive successors](perf_records/root_integrated_worktree_archive_successors_post_finite_20261007.json).
+
 ## 2026-10-07: finite broadcast guards improve whole TinyLlama
 
 Stock2076 measures **380,396,343 whole-model cycles**,14,369,234 fewer than2070

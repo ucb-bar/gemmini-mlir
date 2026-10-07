@@ -1,5 +1,22 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: archived integrated delivery worktrees
+
+After Merlin main`b1108c60d` is verified remotely,five clean obsolete delivery
+trees are archived and removed:constant projection ranges,execution boundaries,
+existing topic review,immutable LLVM bases and masked contractions. Original
+production modules either match main exactly or have reviewed superseding
+prepared-policy/argument-slot changes. Agents confirm no active source
+dependencies; own live process references are checked immediately before removal.
+Complete archives preserve ignored/untracked outputs and symlinks,with per-file
+hashes and original-path-to-member maps. Primary Git stores,objects,branches,
+active model/source experiments and original development checkouts remain.
+525.94MiB logical net is reclaimed after archives;12 removals including the
+earlier seven total1.19GiB logical net. This is storage cleanup,not a performance
+win,and historical receipt bytes are unchanged.
+[Verified cleanup](perf_records/root_integrated_worktree_cleanup_post_finite_20261007.json),
+[exact archive successors](perf_records/root_integrated_worktree_archive_successors_post_finite_20261007.json).
+
 ## 2026-10-07: measured finite-guard whole gain and legal accumulator primitive
 
 **Mechanism and ownership.** Generic typed producer domains prove original
