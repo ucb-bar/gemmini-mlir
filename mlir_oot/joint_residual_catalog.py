@@ -54,7 +54,11 @@ def _identifier(value):
     return value
 
 
-def _proof(proof, *, single_output_guard=False):
+def _proof(proof, *, single_output_guard=False, rectifier_pipeline=False):
+    if rectifier_pipeline:
+        from merlin.llvmlower.quantized_affine_rectifier import validate
+
+        return validate(proof)
     if single_output_guard:
         if proof != derive_pair(**proof["source"], **proof["predictor"]):
             raise ValueError("single-output certificate changed or cannot be rederived")
@@ -72,11 +76,24 @@ def _single_output(route):
     value = route.get("single_output_guard", False)
     if type(value) is not bool:
         raise ValueError("explicit single-output guard boolean required")
+    return value or _rectifier(route)
+
+
+def _rectifier(route):
+    value = route.get("rectifier_pipeline", False)
+    if type(value) is not bool:
+        raise ValueError("explicit rectifier implementation boolean required")
+    if value and route.get("single_output_guard", False):
+        raise ValueError("rectifier and CPU guard implementations are mutually exclusive")
     return value
 
 
 def _kernel(route):
     proof = route["proof"]
+    if _rectifier(route):
+        from .rectifier_residual_catalog import kernel
+
+        return kernel(route)
     if _single_output(route):
         return build_single_kernel(
             route["m"],
@@ -104,6 +121,14 @@ def joint_attributes(route, original):
             if k in ("lhs_scale", "rhs_scale", "output_scale", "relu")
         }
     )
+    if _rectifier(route):
+        attrs["gemmini.rectifier_proof_sha256"] = StringAttr(route["proof_sha256"])
+        attrs["gemmini.rectifier_storage"] = StringAttr(
+            "private fresh C; immutable A/B/tables; predictor store/fence/reload "
+            "and internal exact SPAD correction; final fence before publication; "
+            "no CPU correction, retained/free pointers or second writer"
+        )
+        return attrs
     if _single_output(route):
         attrs["gemmini.output_guard_proof_sha256"] = StringAttr(route["proof_sha256"])
         attrs["gemmini.output_guard_storage"] = StringAttr(
@@ -127,7 +152,11 @@ def _validate_record(original, record):
     for route in record["routes"]:
         old = originals.get(route["original_symbol"])
         single = _single_output(route)
-        proof = _proof(route["proof"], single_output_guard=single)
+        proof = _proof(
+            route["proof"],
+            single_output_guard=single,
+            rectifier_pipeline=_rectifier(route),
+        )
         if (
             old is None
             or route["original_route"] != old
@@ -309,6 +338,12 @@ void _mlir_ciface_{symbol}(joint_memref2 *r,joint_memref2 *a,joint_memref2 *b,jo
 
 def adapter(route, *, first_output_guard):
     """Caller owns every output; correction retains no model-sized workspace."""
+    if _rectifier(route):
+        if first_output_guard:
+            raise ValueError("rectifier pipeline has no CPU output guard")
+        from .rectifier_residual_catalog import adapter as rectifier_adapter
+
+        return rectifier_adapter(route)
     if _single_output(route):
         if first_output_guard:
             raise ValueError("single-output correction has no second decoder input")
@@ -351,6 +386,10 @@ void _mlir_ciface_{symbol}(joint_memref2 *r,joint_memref2 *a,joint_memref2 *b,jo
 
 
 def oracle(route):
+    if _rectifier(route):
+        from .rectifier_residual_catalog import oracle as rectifier_oracle
+
+        return rectifier_oracle(route)
     if _single_output(route):
         predictor = route["proof"]["predictor"]
         low = 0 if route["proof"]["source"]["relu"] else -128
