@@ -32,8 +32,8 @@ within that one compiler.
 
 | Workload | Best verified whole stock cycles | Current qualification boundary |
 | --- | ---: | --- |
-| ResNet50 | 28,649,233 (2109) | Fresh installed 3f6a8db27 build regenerates every linked object leaf and passes all 1,000 original words exactly plus final zero-FSM. Whole stock timing and automatic policy qualification remain open |
-| TinyLlama | 378,946,263 (2085) | Fresh installed cdf117e3 build regenerates every linked object leaf and passes all 256,000 original compiled words exactly plus the unchanged Torch gate and final zero-FSM. A successor using the normal 451849ba7 mask-contract API is building; whole stock timing remains unknown |
+| ResNet50 | 28,649,233 (2109) | Fresh installed 8790b5c5b build regenerates all linked object leaves and passes all 1,000 original words exactly plus final zero-FSM. A generic checked decoder saves 30.17% on one complete GSIM section and 36.23% independently; whole stock timing and automatic policy qualification remain open |
+| TinyLlama | 378,946,263 (2085) | Fresh installed 451849ba7 build regenerates every linked object leaf through the normal mask API and passes all 256,000 original compiled words, unchanged Torch gate and final zero-FSM. Current installed 458858350 discovers its 22 scalar observers from current IR; fresh helper substitution and whole stock timing remain open |
 | SmolVLA | 258,621,872,969 (1906) | Stock2113 completes at 324,229,555,204 cycles, a 25.3682% regression, with all 1,600 original words exact. Fresh exact-math b154 passes the full functional gate but has no stock timing |
 
 ResNet's original experiment replaced global compiler functions. The explicit
@@ -102,6 +102,72 @@ hardware execution and publication status are recorded separately.
 
 
 ## 2026-10-07: shared source-observation topics and remaining promotion work
+
+### 21:23 UTC: current-source discovery, helper reification and shared readout
+
+Newest qualified local Merlin main is `458858350`, with three clean topics on
+451: portable checked aligned packet loads, current fused source observation and
+exact typed scalar helper reification. All 130 affected source and 130 independently
+installed checks pass with no skips. All 1,022 Python and 61 runtime files agree
+across source, wheel, source archive and installation. Four unselected normal
+model LLVM cases remain byte-identical. Parent readout qualification reclosure
+checks all 7,629 pins. The installed receipt closes 10,354 files.
+[Installed qualification](perf_records/merlin_current_source_observation_installed_20261007_qualification.json),
+[default emission](perf_records/merlin_current_source_observation_defaults_20261007.json).
+
+The normal default-off source stage retains exact typed IR after ordinary scalar
+fusion/generalization, before scheduling or bufferization. It requires explicit
+effects and rederives typed proofs when loading. On Tiny's actual current source,
+it finds all 22 observers with no refusals. Pre-outline LLVM remains byte-exact;
+returned outlined LLVM differs only in the existing ModuleID path comment.
+The generic reifier clones original expression/quantizer arithmetic under the
+same checked source/effects, without retained typed/LLVM helper bodies. Both
+mechanisms belong in Merlin and select no workload names. Fresh complete helper
+substitution remains pending; discovery supplies no ownership or profit policy.
+[Normal actual-source discovery](perf_records/tiny_normal_current_source_observation_20261007_qualification.json),
+[helper proof and native checks](perf_records/tiny_current_source_helper_reification_20261007_qualification.json).
+
+The normal installed loader/reifier composition also passes 901,824 native
+comparisons across four rounding modes, without module injection or retained
+helpers; root recloses its 10,366 pins. The actual-source recipe explicitly
+retains the champion's `MERLIN_FUSION_GUARD=0` setting. A first fresh successor
+omitted that setting and correctly reported 22 nonliteral finishing-factor
+refusals; its failed owner is preserved. This is a remaining automatic source
+analysis/selection boundary, rather than permission to weaken the observer
+theorem. A new normal whole successor is required before claiming all retained
+ingredients have been eliminated.
+[Normal installed composition](perf_records/tiny_normal_installed_helper_composition_20261007_qualification.json),
+[root reclosure](perf_records/root_tiny_normal_installed_helper_composition_20261007_reclosure.json).
+
+Fresh normal installed451 Tiny passes all original 256,000 native and target
+words, the original Torch elementwise gate, all 155 regenerated source bindings
+and final zero-FSM. Its extra mask lowering is removed. Canonical OOT regenerates
+the same bindings, five descriptors and writer ABI, and byte-identical primitive
+IR, lowered IR, LLVM and actual kernel object. A separate Tiny backend is not
+needed. Its three retained observer-source ingredients still belong to this
+qualified build; their normal current-stage replacement is the next gate.
+[Fresh whole gate](perf_records/tiny_fresh_all_target_leaves_installed451_whole_20261007_qualification.json),
+[canonical backend identity](perf_records/tiny_canonical_oot_catalog_identity_20261007.json).
+
+ResNet's checked aligned readout delegates to Merlin; OOT forwards an explicit
+option and retains device store/ABI legality. Complete source ABBA windows are
+849,365→593,115 cycles (−30.1696%); an independent case is 18,570→11,843
+(−36.2251%). All windows include producer, both readouts, fence, decoder and
+complete validation. Fresh installed879 whole compilation regenerates every
+linked object leaf and passes all 1,000 original words exactly and final zero-FSM.
+These are local GSIM section costs, with no new whole stock timing.
+[Complete measured readout and fresh whole gate](perf_records/resnet_checked_pair_scan_complete_current_whole_20261007_qualification.json).
+
+Root independently reclosed five new packets and 12,538 distinct pins, then
+mirrored their receipt bytes exactly. Source-package failure recovery and audit
+schema corrections are retained separately from compiler fixes. GitHub fetch
+still fails DNS at 21:23:32 UTC; no push or PR was made. The campaign meter then
+reads **110,270,128 aggregate tokens**; exact OOT/per-topic billing remains
+unavailable. Measured champions and remaining automatic selection work do not
+change merely because a common mechanism is installed.
+[Source reclosure](perf_records/root_shared_compiler_current_delivery_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_third.json),
+[publication status](perf_records/merlin_current_source_observation_publication_20261007.json).
 
 ### 20:35 UTC: normal effect forwarding and fresh object closure
 

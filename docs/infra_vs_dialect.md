@@ -1,5 +1,36 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 21:23 UTC: current-source observations and portable packet reads
+
+Merlin owns the newly qualified current fused tensor checkpoint, explicit source
+effects, typed observer discovery and exact helper reification. These APIs
+derive arithmetic from current IR and clone its original operations; supplied
+workload names, provenance IDs and retained helper bodies choose no strategy.
+Portable checked aligned packet loads also belong in Merlin. Local main
+`458858350` passes 130 source and 130 outside-installed checks; all four release
+forms agree, with unchanged unselected normal LLVM. OOT forwards the explicit
+readout option and retains actual device store, resource, ABI and execution facts.
+[Shared compiler qualification](perf_records/merlin_current_source_observation_installed_20261007_qualification.json).
+
+The generic decoder saves 30.1696% on one complete ResNet GSIM callback and
+36.2251% on an independent shape. Fresh whole output/zero-FSM gates pass, but
+whole stock timing remains unknown. Normal source discovery finds all 22 Tiny
+observers; its fresh full helper replacement still needs the original whole gate.
+Canonical OOT reproduces its 155 bindings, descriptors, writer ABI and kernel
+bytes. Shared interfaces now remove another manual recipe prerequisite; they
+do not establish that automatic compilation picks every profitable option.
+[Readout measurement](perf_records/resnet_checked_pair_scan_complete_current_whole_20261007_qualification.json),
+[actual source discovery](perf_records/tiny_normal_current_source_observation_20261007_qualification.json),
+[canonical target identity](perf_records/tiny_canonical_oot_catalog_identity_20261007.json).
+
+Phase 0/1/2 should expose current typed analysis boundaries, exact helper
+reification, immutable operands/effects/ownership, ordinary installed package
+identity, selected/unused feature decisions, complete measured service/traffic
+and independent refusals. Root reclosed 12,538 source pins; failed storage/audit
+harness steps are kept separate from compiler changes. No infrastructure versus
+dialect token or effort percentage is inferred. Latest publication attempt still
+fails GitHub DNS. [Status and records](compiler_recipe_status.md).
+
 ## 2026-10-07 20:35 UTC: shared APIs and automatically discoverable source proofs
 
 Newest qualified local Merlin main `451849ba7` forwards the existing typed

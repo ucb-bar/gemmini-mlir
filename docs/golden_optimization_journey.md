@@ -1,5 +1,62 @@
 # Golden compiler optimization journey
 
+## 2026-10-07 21:23 UTC: current source replaces supplied observation recipes
+
+The common compiler work adds three clean local topics: checked aligned host
+readout, discovery at the current fused tensor boundary, and cloning the proved
+original scalar expression and complete integer observer. All are generic Merlin
+mechanisms; target stores, physical legality, device instructions and ABI remain
+OOT. The new installed core is `458858350`, with 130 source/130 installed checks,
+exact four-form package closure and unchanged normal default emission.
+[Installed qualification](perf_records/merlin_current_source_observation_installed_20261007_qualification.json).
+
+| Change | What it moved | Qualification and remaining gate |
+| --- | --- | --- |
+| Checked aligned byte-object packets | Complete ResNet GSIM callback 849,365→593,115 (−30.1696%); independent 18,570→11,843 (−36.2251%) | Original source/independent outputs, guards, flags and fresh whole 0/0/zero-FSM pass; whole stock timing unknown |
+| Current fused source discovery | Normal compilation now derives all 22 Tiny observer proofs after ordinary fusion instead of supplying an earlier typed observer recipe | Explicit effects, typed refusals and unchanged pre-outline LLVM; no rewrite/ownership/profit policy inferred |
+| Current typed helper reification | Original expression/quantizer bodies are cloned from those proofs without retained compiled helpers | Independent expressions and source mutations/effect refusals; prototype 1,024,800 native comparisons over four rounding modes; normal fresh whole replacement pending |
+| Normal mask contract API | Fresh451 Tiny removes the extra lowering invocation and regenerates all 155 bindings/linked leaves | Every original native/target word and original Torch gate pass; three retained observer ingredients still present in this qualified build |
+| Canonical target backend identity | Canonical OOT emits the same Tiny binding/catalog/kernel bytes | No separate Tiny backend needed; negative unselected experiment hooks remain outside production selection |
+
+[Complete readout and whole gate](perf_records/resnet_checked_pair_scan_complete_current_whole_20261007_qualification.json),
+[normal current-source proofs](perf_records/tiny_normal_current_source_observation_20261007_qualification.json),
+[helper source/native proof](perf_records/tiny_current_source_helper_reification_20261007_qualification.json),
+[fresh normal mask build](perf_records/tiny_fresh_all_target_leaves_installed451_whole_20261007_qualification.json),
+[canonical backend](perf_records/tiny_canonical_oot_catalog_identity_20261007.json).
+
+Normal installed current loader/reifier composition now passes 901,824 native
+comparisons across four modes, with no injected module or retained helper file;
+root recloses 10,366 pins. The source discovery recipe explicitly preserves
+the champion's disabled fusion guard. A first new whole recipe omitted that
+setting and produced 22 typed nonliteral-factor refusals, so it stopped before
+helper substitution. Preserve that failed owner and permission boundary; fix
+the experiment recipe and qualify a new whole owner. Automatic literal/source
+propagation and profitability still need general source proofs.
+[Normal composition](perf_records/tiny_normal_installed_helper_composition_20261007_qualification.json),
+[reclosure](perf_records/root_tiny_normal_installed_helper_composition_20261007_reclosure.json).
+
+Package source-archive ENOSPC, the parent receipt reader's optional byte-count
+field and the section reporter's wrong candidate-arm filter were qualification
+harness/storage failures. Failed artifacts remain; corrected readers reclose
+actual source, linked ELF and stdout. They are not additional compiler bugs or
+performance gains. Whole champions stay unchanged; original accuracy and final
+zero-FSM gates remain mandatory. GitHub fetch fails DNS, so these topics are
+qualified local main rather than claimed published.
+
+For phase 0, expose a typed observation boundary after ordinary fusion, explicit
+effects and source-to-consumer proof refusals. Phase 1 should reify helpers and
+bind source/object/installed-package identity through supported APIs. Phase 2
+needs actual selected/unused feature reports, portable alignment and prepared
+operand lifetime options, complete producer/consumer and target traffic costs,
+independent shapes and whole hardware gates. Different legal choices within this
+shared compiler do not justify workload-name strategy routing.
+
+Root reclosed five source packets/12,538 distinct pins and mirrored nine receipts
+exactly. Aggregate campaign usage at 21:23:32 UTC is **110,270,128 tokens**; exact
+per-topic/OOT-only accounting remains unavailable.
+[Root reclosure](perf_records/root_shared_compiler_current_delivery_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_third.json).
+
 ## 2026-10-07 20:35 UTC: fresh shared delivery and complete cost limits
 
 All three workloads continue through the shared Merlin compiler and Gemmini OOT

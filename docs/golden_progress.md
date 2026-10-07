@@ -1,5 +1,41 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 21:23 UTC: shared current-source discovery and measured host readout
+
+Qualified local Merlin main `458858350` now includes generic checked aligned
+packet loads, current fused source discovery and exact typed scalar helper
+reification. All 130 source and 130 outside-installed checks pass; 1,022 Python
+and 61 runtime files match all four delivery forms, and four unselected ordinary
+model LLVM cases remain byte-identical. Normal discovery finds Tiny's 22 actual
+closed observers with no supplied observer recipe; its pre-outline arithmetic
+is unchanged. Fresh whole helper substitution remains pending.
+[Installed shared compiler](perf_records/merlin_current_source_observation_installed_20261007_qualification.json),
+[normal actual-source discovery](perf_records/tiny_normal_current_source_observation_20261007_qualification.json).
+
+Fresh normal451 Tiny passes every original output and final zero-FSM through the
+supported mask API. Canonical OOT reproduces all 155 bindings, five descriptors,
+writer ABI and actual kernel bytes: a Tiny-only backend is unnecessary. Its
+three retained source ingredients remain explicit until the current-stage
+successor passes the original whole gates.
+[Whole gate](perf_records/tiny_fresh_all_target_leaves_installed451_whole_20261007_qualification.json),
+[canonical backend identity](perf_records/tiny_canonical_oot_catalog_identity_20261007.json).
+
+The portable checked decoder reduces the complete ResNet section from 849,365 to
+593,115 GSIM cycles (−30.1696%) and an independent case from 18,570 to 11,843
+(−36.2251%), with complete paired windows. Its fresh installed879 whole build
+passes every original output and final zero-FSM. These section results are not a
+new whole stock measurement. Whole champions remain ResNet **28,649,233**,
+Tiny **378,946,263**, Smol **258,621,872,969**; performance targets remain open.
+[Readout cost and fresh whole gate](perf_records/resnet_checked_pair_scan_complete_current_whole_20261007_qualification.json).
+
+Root reclosed five packets and 12,538 declared pins and mirrored nine new source
+records exactly. All three share compiler/backend mechanisms; differing pinned
+experimental recipes and remaining automatic selection work stay explicit in
+the [common compiler record](compiler_recipe_status.md). GitHub DNS still prevents
+publication. No new stock submission is claimed.
+[Reclosure](perf_records/root_shared_compiler_current_delivery_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_third.json).
+
 ## 2026-10-07 20:35 UTC: fresh object closure and normal contract delivery
 
 Fresh ResNet using installed Merlin `3f6a8db27` regenerates every final linked
