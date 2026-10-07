@@ -1,5 +1,18 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: early zero-product complete cost is negative
+
+Stock2087's complete original M8 ABBA pair regresses312,405.5 cycles/8.92251%
+versus the current zero-bin observer. All45,056 original bytes, guards,
+immutable operands, common addresses and five-FRM/seven-sticky target checks
+pass; root recloses152 source pins and actual staged ELF/stock bitstream.
+The explicit typed source-scale threshold omits63,502 finishing FMULs but
+adds abs/max/branch work. Fewer multiplies do not establish a complete win.
+No all22 or whole candidate is promoted, and its core prototype stays isolated.
+The historical word-only source pin drift is explicit and unpromoted. Tiny's
+whole best stays2085 **378,946,263**; original gates and defaults are unchanged.
+[Complete negative](perf_records/root_tiny_rne_zero_product_stock2087_stock2087_terminal.json).
+
 ## 2026-10-07: whole retained convolution and correct ROI accounting
 
 Stock2086 closes29,514,240 ResNet cycles versus29,618,198 in2081, saving103,958

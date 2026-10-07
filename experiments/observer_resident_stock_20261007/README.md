@@ -31,3 +31,8 @@ and selection do not depend on those workload paths or observed output values.
 close the1,959-pin original ResNet2081 successor and stock2086's all1,000-word
 whole protocol:29,514,240 cycles,103,958 fewer than2081. Fresh52 default pairs
 and the selected candidate primitive are bound before admission.
+
+`submit_rne_zero_product_stock.py` / `collect_rne_zero_product_stock.py` bind
+stock2087's separate152-pin complete original M8 protocol. Its early zero-product
+threshold regresses8.92251%; it remains an unpromoted experiment. The source
+prototype03d8d101f and historical word-only drift are distinct from Merlin main.
