@@ -2247,3 +2247,19 @@ this target did not print them, so they are not inferred. Stock physical memory
 capacity and whole hardware timing remain unknown. Fresh endpoint successor f90b
 is independently running its own bounded target gate; no predecessor pass is
 transferred.
+
+## 2026-10-07 endpoint prepared evaluation measured on stock
+
+Fresh stock2107/2108 full12-head group: **3,611,264,318 → 3,550,334,843**
+cycles, saving60,929,475 (**1.687206%**). Full786,432 original i8 words,
+1,024 BF16 scales, guards, eight statistics and two unobserved diagnostic carrier
+differences pass unchanged. Root recloses289 source pins, actual staged ELFs
+and stock bit, DONE/0/PASSED/COMMAND0 and all-executable noFSM. Actual45 sized
+data symbols match. Control reproduces measured2098 bytes and cycle value; this
+is a fresh matched pair, not only a historical control comparison.
+
+Complete timers include preparation/extra16,448 private stack bytes and all
+products/observer/refinement/stores. Group retirement−2.895% differs from stock
+−1.687%; neither predicts whole-model timing by multiplication. Core7625 main
+and OOT source/normal integration are delivered. Fresh whole f90b original1600
+strict gate is still running; whole hardware remains unmeasured.
