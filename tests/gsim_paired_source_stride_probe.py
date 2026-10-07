@@ -32,7 +32,13 @@ def main():
     parser.add_argument("--source-symbol", required=True)
     parser.add_argument(
         "--schedule",
-        choices=("control", "source_stride", "compact_source_stride"),
+        choices=(
+            "control",
+            "source_stride",
+            "compact_source_stride",
+            "flat_resident_packets",
+            "flat_resident_tail",
+        ),
         required=True,
     )
     parser.add_argument("--workdir", type=Path, required=True)
@@ -101,18 +107,36 @@ def main():
             "sha256": sha(path),
         }
     else:
-        from mlir_oot.conv_schedule import source_stride_resource_layout
+        if args.schedule == "flat_resident_packets":
+            generator = GoldenResidentConv(
+                shape,
+                flat_spatial_planes=True,
+                compact_commands=True,
+                prefetch_b=True,
+                weight_issue_tiles=2,
+                store_plan=plan,
+            )
+        elif args.schedule == "flat_resident_tail":
+            generator = GoldenResidentConv(
+                shape,
+                flat_spatial_planes=True,
+                compact_commands=True,
+                tail_before_last_full=True,
+                store_plan=plan,
+            )
+        else:
+            from mlir_oot.conv_schedule import source_stride_resource_layout
 
-        resident, _resource_choice = source_stride_resource_layout(shape)
-        generator = GoldenResidentConv(
-            resident.conv,
-            rows_per_tile=resident.rows_per_tile,
-            source_stride=True,
-            weight_base=resident.explicit_weight_base,
-            row_residue=resident.row_residue,
-            compact_commands=args.schedule == "compact_source_stride",
-            store_plan=plan,
-        )
+            resident, _resource_choice = source_stride_resource_layout(shape)
+            generator = GoldenResidentConv(
+                resident.conv,
+                rows_per_tile=resident.rows_per_tile,
+                source_stride=True,
+                weight_base=resident.explicit_weight_base,
+                row_residue=resident.row_residue,
+                compact_commands=args.schedule == "compact_source_stride",
+                store_plan=plan,
+            )
         module = generator.build()
         module.body.block.first_op.properties["sym_name"] = StringAttr(symbol)
         compilation = compile_module(module, args.llvm_bin, root)

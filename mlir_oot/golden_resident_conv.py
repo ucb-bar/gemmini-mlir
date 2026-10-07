@@ -223,8 +223,21 @@ class GoldenResidentConv(GoldenGemm):
         weight_issue_tiles=None,
         flat_spatial_planes=False,
         store_plan=None,
+        tail_before_last_full=False,
     ):
         s.validate()
+        if type(tail_before_last_full) is not bool:
+            raise ValueError("spatial tail placement requires a boolean selection")
+        if tail_before_last_full and (
+            not flat_spatial_planes
+            or not compact_commands
+            or s.oh * s.ow // F.DIM < 2
+            or s.oh * s.ow % F.DIM == 0
+        ):
+            raise ValueError(
+                "tail placement requires retained flat planes, a short tail and at least two full tiles"
+            )
+        self.tail_before_last_full = tail_before_last_full
         if store_plan is not None:
             from .readout_store_plan import PairedReadoutPlan
 
@@ -610,11 +623,18 @@ class GoldenResidentConv(GoldenGemm):
                 )
 
             spatial(None, span, True, 0)
+            # The first full tile establishes stationary B. A short tile can
+            # then be followed by another reuse PRELOAD, keeping the D port
+            # garbage for both single-mul and paired mul/pre dispatch. A full
+            # tile remains last before the next real-B PRELOAD. Per-output K,
+            # ACC addressing, stores and private input lifetimes are unchanged.
+            if self.tail_before_last_full:
+                spatial(None, self.row_tiles[-1][2], False, len(self.row_tiles) - 1)
             if full > 1:
                 self.fb.for_loop(
                     1, full, 1, lambda tile: spatial(tile, span), retain_loop=True
                 )
-            if (
+            if not self.tail_before_last_full and (
                 (s.oh * s.ow % F.DIM and full > 0)
                 if self.flat_spatial_planes
                 else s.oh % self.rows_per_tile
@@ -1074,7 +1094,13 @@ class GoldenResidentConv(GoldenGemm):
             )
         if self.compact_commands:
             module.attributes["gemmini.resident_conv_compact_commands"] = StringAttr(
-                "retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes"
+                "retained bounded ordinary CPU K/spatial loops; independent spatial pairs reordered and alternating B lifetimes unchanged"
+                if self.tail_before_last_full
+                else "retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes"
+            )
+        if self.tail_before_last_full:
+            module.attributes["gemmini.resident_conv_tail_before_last_full"] = StringAttr(
+                "first full tile loads B; short tail precedes later full reuse tiles; source K and stores unchanged"
             )
         if self.store_plan is not None:
             module.attributes["gemmini.paired_readout"] = StringAttr(
