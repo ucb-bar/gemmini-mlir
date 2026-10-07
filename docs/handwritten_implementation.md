@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`eb15a85ce550ec63c27530d56af66893fe629766`.
+`7625d2d9177f60718202c82a054ce0eedc929aac`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.
@@ -39,8 +39,9 @@ predictor-key corrections`b1b6d1379` (45/45), and explicit rounded-polynomial
 theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 `c0f40f8f8` (107/107), and canonical row-grid proof
 `e9194ac08` (44/44 source/installed), and private immutable polynomial contexts
-`eb15a85ce` (30/30 source/installed). The last topic verifies both implementation modules and
-all30 installed header payloads with typed source/effect refusals. These focused checks do not
+`eb15a85ce` (30/30 source/installed), and producer-owned endpoint rows
+`7625d2d91` (12/12 source/installed). The endpoint delivery verifies all1,014 Python
+modules and all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
 The latest qualified whole-model cycles are ResNet2101 **28,728,702**,

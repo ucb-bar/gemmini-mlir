@@ -3399,3 +3399,22 @@ Raw3,024,822,465 is traffic, not billing. Exact OOT-only/per-optimization
 allocation remains unavailable. Separate active-goal observation71,585,802
 uses its own metric. Whole22M/5B/300M targets remain unmet.
 [Usage ledger](perf_records/golden_token_usage_20261006T225936Z.json).
+
+## 2026-10-07 prepared endpoint host evaluation delivery
+
+Merlin main7625d2d9177f60718202c82a054ce0eedc929aac is pushed and verified
+as one generic topic. The opt-in producer-owned endpoint evaluator checks complete
+immutable row epochs, invalidates before refinement, preserves source operation
+order and retains checked fallback. It adds no numerical permission; source
+interval truth remains the existing explicit experiment policy. Root fresh12
+source/12 installed tests pass; all1,014 Python modules and30 runtime headers
+match source/wheel/installation. Agent20 source tests are separate evidence.
+
+Smol group candidate exact original consumer and guards passes; complete retirement
+1,560,212,849→1,515,040,109 is a proxy, not hardware cycles. Extra16,448 bytes
+of private stack are inside the complete group. Fresh stock matched2107/2108
+and independent whole target gates are pending. Normal whole source191 pins
+closes48 bindings/297 ordinary contractions/19 signatures; all1,600 native words
+exact, measured provider sources identical. Stock physical capacity remains
+unknown: current header/driver and retained bit identities are distinct from
+executed historical driver/header-to-bit build proof.
