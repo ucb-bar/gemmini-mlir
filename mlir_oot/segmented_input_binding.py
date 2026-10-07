@@ -138,8 +138,14 @@ def derive(module, routes):
             rows = slots.get("prefetch_b_rows") if slots.get("applied") else None
             loads = route.get("resident_a_load_decision", {})
             width = loads.get("resident_a_load_tiles", 1) if loads.get("applied") else 1
+            tail = route.get("dense_stationary_tail_decision", {}).get("applied", False)
+            if type(tail) is not bool:
+                raise ValueError("dense tail decision requires a boolean witness")
             control = GoldenGemm(
-                shape, prefetch_b_rows=rows, resident_a_load_tiles=width
+                shape,
+                prefetch_b_rows=rows,
+                resident_a_load_tiles=width,
+                stationary_b_tail_before_last_full=tail,
             )
             emitted = control.build()
             emitted.body.block.first_op.properties["sym_name"] = StringAttr(
@@ -155,6 +161,7 @@ def derive(module, routes):
                 prefetch_b_rows=rows,
                 resident_a_load_tiles=width,
                 input_view=view,
+                stationary_b_tail_before_last_full=tail,
             )
             if route.get("numeric_contract", {}).get("max_output_lsb_error") != 0:
                 raise ValueError(

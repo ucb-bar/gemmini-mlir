@@ -1,5 +1,27 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: dense short-row scheduling lowers whole ResNet cost
+
+Stock2101 measures **28,728,702 whole model cycles**, down514,355
+(**1.7589%**) from the byte-reproduced2095 control29,243,057.
+All1,000 original output words match exactly at0/0; the actual staged stock
+ELF and bitstream, original output digest and final zeroFSM close. Root
+revalidates2,671 source pins and all19 complete linked function bodies,
+including each local branch relocation. Fresh normal generation reproduces
+all52 original kernels/adapters and14 partial-link stages. The selected
+alternative changes17 ordinary dense entries and2 borrowed segmented entries;
+flat47/50 and unused original segmented26/45 remain unchanged. Each output's
+increasing K order, ACC ownership, commands, loads, stores and fences are retained.
+The explicit compiler option defaults off and uses shape/resource legality.
+Root integration passes75 tests against current Merlinmain modules.
+
+Separate complete original section2099/2100 improves291,426→243,341 cycles
+(**16.500%**). This section observation is not added to a whole forecast.
+The whole target gap is **6,728,702 cycles** to22M; all three workload targets
+remain unmet. [Whole result](perf_records/root_resnet_dense_tail_whole_stock2101_terminal.json),
+[section](perf_records/root_dense_stationary_tail_stock2099_2100_terminal.json),
+[integration review](perf_records/root_dense_stationary_tail_integrated_source_review.json).
+
 ## 2026-10-07: eight more integrated review worktrees archived and removed
 
 Eight obsolete PR review worktrees have exact topic implementation/test bytes

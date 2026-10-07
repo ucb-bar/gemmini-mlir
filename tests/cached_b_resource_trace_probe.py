@@ -31,6 +31,7 @@ def prove(generator):
     weight = None
     destination = None
     real_weights = 0
+    logical_row_starts = {}
     for step in trace_static_function(
         fn,
         arguments,
@@ -51,7 +52,15 @@ def prove(generator):
             cols = op.a("cols")
             state = op.a("load_id")
             assert local < F.SPAD_ROWS and rows <= F.DIM and cols <= 4 * F.DIM
-            extent = s.m * s.k if pointer.base == 0 else s.k * s.n
+            extent = (
+                (
+                    generator.input_view.source_elements
+                    if generator.input_view
+                    else s.m * s.k
+                )
+                if pointer.base == 0
+                else s.k * s.n
+            )
             loads[str(pointer.base)] += 1
             requested["load_bytes"] += rows * cols
             for r in range(rows):
@@ -69,7 +78,16 @@ def prove(generator):
                 ]
             destination = (op.a("c") & 0x3FFF, bool(op.a("c") & isa.ACC_ACCUMULATE_BIT))
         elif isinstance(op, G.ComputeOp):
-            assert not step.inputs, "This dense probe expects static local addresses"
+            if step.inputs:
+                assert len(step.inputs) == 1 and isinstance(step.inputs[0], StaticInt)
+                a_local = step.inputs[0].value
+                assert 0 <= a_local <= op.a("a_max")
+                assert a_local % F.DIM == 0
+                assert (
+                    a_local + op.a("a_rows") <= op.a("a_reserved_rows") <= F.SPAD_ROWS
+                )
+            else:
+                a_local = op.a("a")
             assert weight is not None and destination is not None
             a_rows, a_cols = op.a("a_rows"), op.a("a_cols")
             c_row, accumulate = destination
@@ -80,11 +98,21 @@ def prove(generator):
                 for col, source in enumerate(row):
                     assert source == (1, (k0 + k) * s.n + n0 + col)
             for row in range(a_rows):
-                a = [scratch[(op.a("a") + row, k)] for k in range(a_cols)]
-                m0 = a[0][1] // s.k
-                assert all(
-                    source == (0, m0 * s.k + k0 + k) for k, source in enumerate(a)
-                )
+                a = [scratch[(a_local + row, k)] for k in range(a_cols)]
+                if generator.input_view is None:
+                    m0 = a[0][1] // s.k
+                    expected = lambda k, m0=m0, k0=k0: m0 * s.k + k0 + k
+                else:
+                    view = generator.input_view
+                    if k0 not in logical_row_starts:
+                        starts = {view.offset(m, k0): m for m in range(s.m)}
+                        assert len(starts) == s.m
+                        logical_row_starts[k0] = starts
+                    m0 = logical_row_starts[k0][a[0][1]]
+                    expected = lambda k, view=view, m0=m0, k0=k0: view.offset(
+                        m0, k0 + k
+                    )
+                assert all(source == (0, expected(k)) for k, source in enumerate(a))
                 for col in range(len(weight[0])):
                     cell = (c_row + row, col)
                     assert cell[0] < F.ACC_ROWS

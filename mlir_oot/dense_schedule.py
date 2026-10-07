@@ -200,7 +200,8 @@ def select_coalesced_resident_a(control):
         decision['refusal']='input DMA command count does not decrease'
         return control,decision
     candidate=GoldenGemm(shape,prefetch_b_rows=control.prefetch_b_rows,
-                         resident_a_load_tiles=4,input_view=control.input_view)
+                         resident_a_load_tiles=4,input_view=control.input_view,
+                         stationary_b_tail_before_last_full=control.stationary_b_tail_before_last_full)
     segments=(sum(len(tuple(control.input_view.split_rows(a*F.DIM,min(F.DIM,shape.m-a*F.DIM))))
                   for a in range(mt)) if control.input_view is not None else mt)
     decision.update(applied=True,refusal=None,resident_a_load_tiles=4,
@@ -278,3 +279,33 @@ def select_kernel(shape, *, banked_prefetch=False, grouped_b=False, separate_b_b
         if decision['applied']:
             policies.append('resident_a_load_coalescing')
     return generator,'dense_gemm'+(':'+','.join(policies) if policies else '')
+
+
+def select_stationary_b_spatial_tail(control):
+    """An explicit compute-order alternative inside a complete cached-A block.
+
+    Resource legality and per-output source K are preserved. This choice changes
+    no allocation, load/store/fence or real-B count; profitability is unknown.
+    """
+    refusal=dict(applied=False,automatic_policy=False,performance='UNKNOWN',
+                 policy='stationary_b_spatial_tail')
+    if type(control) is not GoldenGemm:
+        return control,dict(refusal,refusal='Requires dense GoldenGemm family')
+    if control.stationary_b_tail_before_last_full:
+        return control,dict(refusal,refusal='Existing tail placement retained')
+    try:
+        candidate=GoldenGemm(control.shape,prefetch_b_rows=control.prefetch_b_rows,
+            resident_a_load_tiles=control.resident_a_load_tiles,input_view=control.input_view,
+            cached_b_resource_capacity=control.cached_b_resource_capacity,
+            stationary_b_tail_before_last_full=True)
+    except ValueError as failure:
+        return control,dict(refusal,refusal=str(failure))
+    mt=_ceil_div(control.shape.m,F.DIM)
+    decision=dict(refusal,applied=True,refusal=None,
+        selected_row_order=[0,mt-1,*range(1,mt-1)],
+        source_reduction_order='Increasing K for every output; no reassociation',
+        retained_work='Identical compute/preload multiset, real B loads, DMA/store/fence order',
+        input_lifetime='All A tiles resident, immutable and disjoint from B until complete stores',
+        last_stationary_compute='Full DIM tile; short tile followed by garbage-B PRELOAD')
+    candidate.stationary_b_tail_decision=decision
+    return candidate,decision

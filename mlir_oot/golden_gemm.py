@@ -169,7 +169,8 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
 class GoldenGemm:
     def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
             resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None,
-            cached_b_resource_capacity: bool = False):
+            cached_b_resource_capacity: bool = False,
+            stationary_b_tail_before_last_full: bool = False):
         shape.validate(prefetch_b_rows=prefetch_b_rows,
                        cached_b_resource_capacity=cached_b_resource_capacity)
         if type(resident_a_load_tiles) is not int or not 1 <= resident_a_load_tiles <= 4:
@@ -189,6 +190,13 @@ class GoldenGemm:
                 raise ValueError('input view row stride exceeds the configuration field')
             if input_view.source_elements >= 1 << 63:
                 raise ValueError('input view source extent exceeds signed pointer indexing')
+        if type(stationary_b_tail_before_last_full) is not bool:
+            raise ValueError("stationary B tail selection must be boolean")
+        if stationary_b_tail_before_last_full and (
+                not shape.cache_a or not shape.reuse_b or shape.bias
+                or shape.m // F.DIM < 2 or shape.m % F.DIM == 0):
+            raise ValueError("stationary B tail placement requires complete cached A, reuse B, two full tiles, one short tail and no bias")
+        self.stationary_b_tail_before_last_full = stationary_b_tail_before_last_full
         self.shape = shape
         self.cached_b_resource_capacity = cached_b_resource_capacity
         self.input_view = input_view
@@ -294,8 +302,18 @@ class GoldenGemm:
             # Keep a weight tile in the array while varying the A row tile.
             # A garbage BD address on subsequent PRELOADs preserves the
             # stationary operand; COMPUTE_ACCUMULATE is the matching opcode.
+            row_order = list(range(len(mr)))
+            if self.stationary_b_tail_before_last_full:
+                # The first tile loads real B. A short independent output tile
+                # now executes before retained full tiles, so its next PRELOAD
+                # keeps the stationary weight and has an effective garbage D.
+                # Physical A/C addresses and each output's increasing K stay.
+                assert len(mr) >= 3 and mr[-1] < F.DIM
+                assert all(rows == F.DIM for rows in mr[:-1])
+                row_order = [0, len(mr) - 1, *range(1, len(mr) - 1)]
             for d, cols in enumerate(nr):
-                for a, rows in enumerate(mr):
+                for a in row_order:
+                    rows = mr[a]
                     acc_row = (acc_base + a * s.bn + d) * F.DIM
                     self._rocc("preload", {
                         "bd": b_addr(d) if a == 0 else isa.GARBAGE_ADDR,
@@ -572,6 +590,8 @@ class GoldenGemm:
         if self.input_view is not None:
             module.attributes["gemmini.segmented_input_contract"] = StringAttr(
                 json.dumps(self.input_view.__dict__,sort_keys=True))
+        if self.stationary_b_tail_before_last_full:
+            module.attributes["gemmini.stationary_b_tail_before_last_full"] = IntegerAttr(1, i64)
         module.attributes["gemmini.golden_batch"] = IntegerAttr(batch, i64)
         module.verify()
         return module
