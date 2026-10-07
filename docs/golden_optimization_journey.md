@@ -9,6 +9,42 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 03:35 UTC: source ranges consumed and Smol instruction roles
+
+Generic domain topic2f880046f passes36source/36installed checks in a fresh
+main7fee-based delivery; publication review remains pending. OOTe70a2e5 derives
+producer output ranges from complete65536-pair source contracts, preserves them
+through actual verified SSA views and re-proves32768 admitted input pairs for
+each cheaper route. No captured-value range grants eligibility. Three routes
+use9→3,17→16,8→7 products; unknown/fullsigned sources retain complete domains.
+Excluded mismatches7/3/3 remain inadmissible. Fresh normal and controlled current
+2068 source/native/strict original1000words are exact;98,304 target pairs pass
+strictSpike/GSIM with immutable inputs, guards, FRM0 and fflags0. The current2068
+ELF2247…d0633 is byte-reproduced. All13other residuals, first14/batch4 route,
+host/runtime/weights stay unchanged. Actual emitted CFG removes338688 nominal
+rows without new transfers, scratch, corrections or fences. Whole instructions
+8298979→8253603 are only a retirement proxy. Root rehashes5921pins, rederives all
+16actual source choices and the three complete admitted certificates, checks
+active finalELF entry counts and final noFSM. Roota0229f6 releases one controlled
+whole observation; Recovery admits stock2071. Hardware cycles remainUNKNOWN.
+[Release](perf_records/root_resnet_source_domain_stock_release_20261007.json).
+
+Root independently closes285pins of the exact2069 source-role audit. The debug
+companion changes no allocated object/ELF sections or relocations; the original
+execution histogram is reused. Exclusive timed-provider instructions conserve:
+softmax/polynomial/denominator641837705; encoding/widening355323029; endpoint
+observations206372985; dot bounds/metadata197475908; gather/output/control
+180313864; reconstruction134355424; source replay49736696; callback issue/fences
+3760800. Known roles1769176411 plus36988704shared timed instructions equal the
+1806165115ROI. PostROIvalidation151975030 and wholeprogramshared344044381 are
+not charged wholesale. Full9-term device work3623878656logicalMACs/86507520
+requested bytes has a conditional14.156M ideal mesh floor, excluding all host,
+fill/drain/issue/transfer costs; it is not observed stock throughput. Role cycles,
+physical traffic, full48 role prices and accelerator/host cycle percentages
+remainUNKNOWN. This motivates reducing repeated numeric/representation work;
+ordinary scheduling gains do not establish the258.622B→5B whole target.
+[Independent role conservation](perf_records/root_fused2069_structural_role_review_20261007.json).
+
 ### 2026-10-07: Tiny whole transfer and rejected digit norms
 
 Root independently closes Tiny stock2070 after11terminal/10release pins, the

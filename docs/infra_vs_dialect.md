@@ -36,6 +36,17 @@ checks plus16existing checks pass on a clean main-based core topic. Fresh normal
 and controlled whole compositions pass original1000words bitexact. The controlled
 stock release is pending independent packet review; no whole cycle claim yet.
 
+Root now independently rederives all16actual normal source choices, the three
+admitted32768-pair certificates and actual active finalELF entries;5921pins,
+all1000 original native/strict words and all98304target pairs close. One controlled
+stock2071 observation is released; hardware cycles remainUNKNOWN. A target-free
+phase1 fact-consumption report should expose producer proof, SSA/view path,
+admitted domain, selected cost and unused facts so automatic agents can discover
+this seam. Stable typed evidence schemas should distinguish one rebinding from
+lists of rebindings and identify actual normal inputs despite identical copies;
+experimental receipt conventions caused root review-driver refusals, not compiler
+or accuracy failures. No unqualified family count is added.
+
 ### Additional requirements for automatic phase0/1/2 loops
 
 - Phase0: test ordered floating reductions, escaping BF16 scales, partial integer

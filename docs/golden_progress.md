@@ -115,6 +115,17 @@ The15.335M-word scan and79880B metadata are included; no full48 or hardware run.
 [Norm negative](perf_records/root_digit_norm_partial_complete_negative_review_20261007.json).
 [Journey](golden_optimization_journey.md).
 
+The independent same-executable Smol profile assigns642M instructions/group to
+softmax/polynomial/denominator work,355M to encoding/widening and404M to endpoint
+observations plus dot bounds. These are exclusive instruction roles, not measured
+cycle percentages. The remaining strategy must reduce repeated arithmetic and
+representation work while preserving ordered reductions and escaping scale/i8
+observations. ResNet's next source-domain composition removes products9→3/17→16/
+8→7 with unchanged transfers/storage and original1000words exact. Root releases
+one stock2071 observation; the current measured champion stays2068 pending it.
+[Smol profile](perf_records/root_fused2069_structural_role_review_20261007.json),
+[ResNet release](perf_records/root_resnet_source_domain_stock_release_20261007.json).
+
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
 0.260% for FMA with dependency features; stock memory remains38.29% inaccurate.
