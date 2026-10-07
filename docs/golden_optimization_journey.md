@@ -1,5 +1,53 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: full-key correction and fresh Tiny cost locations
+
+**ResNet mechanism.** Complete source/predictor enumeration identifies keys at
+which every signed-byte pair needs the same correction, including pairs whose
+correction is zero. Colliding fibres refuse. Merlin owns this generic proof;
+OOT owns the nine-product realization, bounded literal representability,
+activation/scale order and all private DMA lifetime checks. The production
+Spike/GSIM negative-scale ReLU ordering mismatch stays visible; the legal
+realization uses a separate ReLU product. The full original section saves
+77,826 of 1,339,430 cycles on stock2078/2079 (5.81038%), with all 802,816 outputs
+and inputs/descriptors/flags/guards checked. This does not predict a whole gain.
+The generic topic is direct-main `b1b6d1379`, one clean commit, 45 source and
+45 installed checks, with identical module bytes. No PR or force push.
+
+**Tiny measurement.** Stock2080 uses the accepted2076 semantic objects and a
+typed 155-call primitive manifest. The first attempt assumed calls in an
+upstream contraction snapshot and refused before profile linking; the corrected
+recipe binds actual typed contractions to the target shim's primitive ABI.
+Forward costs are 179,740,352 callback cycles plus 200,819,005 outside cycles.
+The 87,965,554 pre-down and 62,399,491 pre-output-projection gaps identify
+locations for complete producer/observer experiments. They do not identify a
+single cause or pure utilization. Profiling adds 163,498 outer cycles, and
+the unprofiled champion remains380,396,343. All original256,000 words pass.
+
+**Smol negatives.** Explicit approximate conditional observation admits more
+rows but fails49/1,600 original-gate outputs; no promotion follows. A separate
+residual-aware two-plane/four-product representation preserves section outputs
+yet increases complete instructions40.824%, because representation-error rows
+lose the existing fast bound coverage and replay more source work. Product
+counts alone would rank this candidate incorrectly. Preserve the exact policy,
+extend separately rigorous residual bounds, and price complete encoding,
+source replay, polynomial evaluation, interval finishing and publication.
+
+**Automatic-loop implications.** Phase0 needs complete observation/effect and
+representation-error contracts, plus immutable original quality gates. Phase1
+needs generic finite-domain proof synthesis, source-selected-entry/ABI relations
+and explicit target capability consumption. Phase2 needs actual linked/executed
+selection closure, complete matched cost windows, negative candidates, fresh
+source-location profiles and source/preparation/replay modeling. Historical
+measurements cannot stand in for a current object's missing interval. Experiment
+drivers may bind specific source instances; production chooses by semantics,
+shapes, layouts, numeric policy and target facts. Exact per-Gemmini/task token
+billing is unavailable; active-goal aggregate usage is not allocated to topics.
+
+[Residual stock pair](perf_records/root_resnet_predictor_key_stock2078_2079_terminal_20261007.json),
+[current Tiny profile](perf_records/root_tiny_current2076_profile_stock2080_terminal_20261007.json),
+[publication copy identities](perf_records/root_pair_profile_publication_copies_20261007.json).
+
 ## 2026-10-07: archived integrated delivery worktrees
 
 After Merlin main`b1108c60d` is verified remotely,five clean obsolete delivery

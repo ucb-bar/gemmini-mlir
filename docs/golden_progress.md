@@ -1,5 +1,41 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: complete residual pair and current Tiny profile
+
+Stock2078/2079 measures the complete original 802,816-element residual section:
+**1,339,430 → 1,261,604 cycles**, saving 77,826 cycles (5.81038%). All original
+outputs, inputs, descriptors, flags and 4,096 guard bytes pass. Actual staged
+ELFs and stock bitstream identities were captured before teardown. The two
+executables differ in one selector byte and perform identical warmups at common
+addresses. The candidate derives nine products from the complete signed-byte
+source/predictor domain; setup, scratch, DMA, reload and completion remain timed.
+Merlin main `b1b6d1379` contains the generic predictor-key proof as one topic,
+qualified by 45 source and 45 installed-wheel tests. Target realization stays
+in OOT. Whole-model qualification of this candidate is still pending.
+[Section terminal](perf_records/root_resnet_predictor_key_stock2078_2079_terminal_20261007.json),
+[generic publication](perf_records/root_merlin_predictor_key_direct_main_publication_20261007.json).
+
+Stock2080 profiles the unchanged accepted Tiny2076 semantic objects and checks
+all 256,000 original outputs. Its forward window is **380,559,357 cycles**:
+179,740,352 inside the 155 primitive callbacks and 200,819,005 outside them.
+The largest preceding gaps are 87,965,554 before down projections and 62,399,491
+before attention output projections. These are source execution locations,
+not causal attribution: callbacks include CPU issue, DMA, fences and array
+service, while gaps include observers, attention, allocation and dispatch.
+The instrumented outer measurement is 163,498 cycles above the uninstrumented
+champion. Tiny's best remains **380,396,343**; no utilization percentage or
+whole-model gain is inferred from this diagnostic.
+[Current profile](perf_records/root_tiny_current2076_profile_stock2080_terminal_20261007.json).
+
+All three whole targets remain unmet: ResNet2071 **29,698,347**, Tiny2076
+**380,396,343**, Smol1906 **258,621,872,969** cycles. Smol experiments published
+with this update include normal owner composition and two explicit negatives;
+their native or section observations do not update the whole champion. Fixed
+conditional observation failed 49 of 1,600 original-gate outputs. The later
+four-product residual-aware attention screen passes its original section gate
+but increases complete retired instructions 40.824%; it requires better bound
+coverage before a hardware performance candidate can be admitted.
+
 ## 2026-10-07: five more integrated worktrees safely removed
 
 Five obsolete Merlin delivery/review worktrees were removed after remote main
