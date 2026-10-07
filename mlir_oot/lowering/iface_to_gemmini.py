@@ -1,0 +1,1039 @@
+"""The interface -> target pass: a verified ``merlin_iface`` workload becomes a ``gemmini`` module.
+
+One rewrite per interface op, all of them funnelling into the single weight-stationary contraction
+emitter. The pass also decides the kernel's pointer ABI, following
+``mlir_oot_backend_contract.yaml``'s ``arg_order_by_command_shape`` rows TOP-DOWN, and records the
+command-shape it matched so the emitted artifact and the command buffer cannot disagree about it.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field, replace
+from typing import Any
+
+from xdsl.dialects.builtin import ModuleOp, StringAttr
+
+from ..ir.workload import Epilogue, Op, Workload, TensorDecl
+from ..target import dialect as gd
+from ..target import facts
+from ..target import layout
+from . import conv as convlib
+from .contraction import (
+    AOperand,
+    BiasSpec,
+    KTile,
+    LoweringRefusal,
+    OutSpec,
+    Stats,
+    TileLoad,
+    dense_a,
+    dense_b,
+    dense_ktiles,
+    emit_contraction,
+    transposed_b,
+)
+from .epilogue import NO_ACTIVATION, RELU, UnsupportedEpilogue, plan_readout
+from .kernel import KernelBuilder
+from . import hybrid
+from .schedule import Scheduler
+from .sumsq import PARTIAL_DTYPE
+
+DIM = facts.DIM
+DENSE_PACK = False  # pending correctness and timing qualification
+WHOLE_OP_OPCODES = ("ATTENTION_QK", "ATTENTION_PV", "BATCHED_MATMUL", "CONV2D")
+
+DTYPE_BYTES = {"i8": 1, "i16": 2, "i32": 4, "i64": 8, "bf16": 2, "f16": 2, "f32": 4, "f64": 8}
+
+#: What the mesh can READ. RTL-derived: ``datapaths`` reports the operand store as ``UInt<8>`` and
+#: the accumulator as ``SInt<32>``; there is no floating-point operand port anywhere in this design.
+MESH_OPERAND_DTYPES = ("i8",)
+#: What the readout can WRITE: the raw accumulator, or the scaled/clamped operand width.
+MESH_RESULT_DTYPES = ("i8", "i32")
+
+
+def dtype_bytes(name: str) -> int:
+    try:
+        return DTYPE_BYTES[name]
+    except KeyError as exc:
+        raise LoweringRefusal(f"no on-chip container for dtype {name!r}") from exc
+
+
+def require_mesh_dtypes(operands: dict[str, str], result: str, op: str) -> None:
+    """Refuse a contraction whose operands the mesh has no encoding for.
+
+    This is the one place the datapath is checked, and it is checked by NAME rather than by width:
+    an f32 operand is the same four bytes as an i32 accumulator and would otherwise be moved in and
+    contracted as if it were integer data, which is a wrong answer that looks like a right one.
+    """
+    for role, dt in operands.items():
+        if dt not in MESH_OPERAND_DTYPES:
+            raise LoweringRefusal(
+                f"{op}: this mesh reads {'/'.join(MESH_OPERAND_DTYPES)} operands (RTL-derived "
+                f"scratchpad UInt<8>); operand '{role}' is {dt}, for which it has no encoding"
+            )
+    if result not in MESH_RESULT_DTYPES:
+        raise LoweringRefusal(
+            f"{op}: the readout writes {'/'.join(MESH_RESULT_DTYPES)} (raw i32 accumulator, or the "
+            f"scaled operand width); the declared result is {result}"
+        )
+
+
+def require_movement_dtypes(src: str, dst: str) -> None:
+    """Refuse a movement whose containers this datapath cannot make the round trip in.
+
+    Movement is the one interface operation that never enters the mesh: the ABI defines it as an
+    identity load->store trip in which the values are carried UNCHANGED and only the container
+    widens. So the datapath question it asks is not the mesh's -- it is which ON-CHIP container can
+    hold the data on the way through. The RTL declares two: the operand scratchpad (`UInt<8>`) and
+    the accumulator (`AccumulatorMem SInt<32>`). A source in either one is movable; a source in
+    neither is not, and a NARROWING trip is not a movement at all, because carrying values
+    unchanged into a smaller container is a clamp the ABI does not define.
+
+    Kept beside :func:`require_mesh_dtypes` and called from both the lane gate and the lowering, so
+    this package still has exactly one predicate per operation class rather than two that drift.
+    """
+    if dst not in MESH_RESULT_DTYPES:
+        raise LoweringRefusal(
+            f"movement: the readout writes {'/'.join(MESH_RESULT_DTYPES)}; the declared result "
+            f"is {dst}"
+        )
+    if src not in MESH_OPERAND_DTYPES and dtype_bytes(src) != facts.ACC_BYTES_PER_ELEM:
+        raise LoweringRefusal(
+            f"movement: this target holds data on chip as {'/'.join(MESH_OPERAND_DTYPES)} operands "
+            f"(RTL-derived scratchpad UInt<8>) or as i{8 * facts.ACC_BYTES_PER_ELEM} accumulator "
+            f"rows (AccumulatorMem SInt<32>); operand 'src' is {src}, which is neither"
+        )
+    if dtype_bytes(dst) < dtype_bytes(src):
+        raise LoweringRefusal(
+            f"movement narrows {src} to {dst}: the ABI's movement carries its values UNCHANGED and "
+            "only widens the container, so a narrowing trip is not one of its forms and this "
+            "package will not invent a clamp for it"
+        )
+
+
+@dataclass
+class Lowered:
+    module: ModuleOp
+    arg_tensors: list[str]
+    command_shape: str
+    stats: Stats
+    kernel_abi: dict[str, Any] | None = None
+    notes: list[str] = field(default_factory=list)
+    #: kernel-internal buffers the kernel allocates in its own frame (route W's digit staging)
+    scratch: list[str] = field(default_factory=list)
+    #: the (possibly REWRITTEN) workload the off-mesh stages were compiled against
+    workload: Workload | None = None
+    #: route X: the off-mesh stages, in marker order, that the code generator expands in place
+    lane_stages: list[list[Op]] = field(default_factory=list)
+
+
+# --------------------------------------------------------------------------- ABI
+def _matmul_groups(wl: Workload) -> list[tuple[str, list[tuple[Op, Op]]]]:
+    """Resident weight -> its (matmul, commit) pairs, in resident-pack then command order."""
+    commit_of: dict[str, Op] = {}
+    for op in wl.ops:
+        if op.kind == "commit":
+            commit_of[op.operands["src"]] = op
+    order: list[str] = [op.out for op in wl.ops if op.kind == "resident_pack"]
+    groups: dict[str, list[tuple[Op, Op]]] = {h: [] for h in order}
+    for op in wl.ops:
+        if op.kind != "matmul":
+            continue
+        commit = commit_of.get(op.out)
+        if commit is None:
+            raise LoweringRefusal("a matmul accumulator is never committed")
+        groups.setdefault(op.operands["rhs"], []).append((op, commit))
+    return [(h, groups.get(h, [])) for h in order]
+
+
+def dram_reads(wl: Workload, op: Op) -> set[str]:
+    """The DRAM tensors issuing ``op``'s commands will LOAD.
+
+    A ``matmul`` issues nothing of its own -- its operands are loaded by the ``commit`` that reads
+    its accumulator out -- so the matmul's reads are reported against that commit instead. Resident
+    handles are resolved to the weight tensor they pack, because that is the buffer the DMA names.
+    """
+    names: set[str] = set()
+
+    def take(ref: str | None) -> None:
+        if not ref:
+            return
+        name = wl.residents.get(ref, ref)
+        if name in wl.tensors:
+            names.add(name)
+
+    if op.kind in ("matmul", "evict"):
+        return names            # the commit carries them / an evict touches no DRAM
+    if op.kind == "commit":
+        for mm in wl.ops:
+            if mm.kind == "matmul" and mm.out == op.operands.get("src"):
+                take(mm.operands.get("lhs"))
+                take(mm.operands.get("rhs"))
+    else:
+        for ref in op.operands.values():
+            take(ref)
+    if op.epilogue is not None:
+        take(op.epilogue.bias)
+    return names
+
+
+def dram_writes(wl: Workload, op: Op) -> set[str]:
+    """The DRAM tensors issuing ``op``'s commands will STORE."""
+    if op.kind in ("matmul", "resident_pack", "evict"):
+        return set()
+    many = op.attrs.get("outs")
+    if many:
+        return {n for n in many if n in wl.tensors}
+    return {op.out} if op.out in wl.tensors else set()
+
+
+def plan_abi(wl: Workload) -> tuple[str, list[str], dict[str, Any] | None]:
+    """Pick the command shape and the pointer order, trying the contract's rows top-down."""
+    kinds = {op.kind for op in wl.ops}
+    whole_ops = [op for op in wl.ops if op.kind in ("conv2d", "matmul_batched", "attention_qk", "attention_pv")]
+
+    def _whole_program() -> tuple[str, list[str], dict[str, Any]]:
+        args = list(wl.decl_order)
+        return (
+            "whole_program",
+            args,
+            {
+                "kind": "whole_program",
+                "args": [
+                    {
+                        "tensor": n,
+                        "access": (
+                            "write"
+                            if wl.tensors[n].role in ("output", "intermediate")
+                            else "read"
+                        ),
+                    }
+                    for n in args
+                ],
+                "outputs": [n for n in args if wl.tensors[n].role == "output"],
+            },
+        )
+
+    if hybrid.is_hybrid(wl):
+        # A kernel that runs stages off the array reaches EVERY declared tensor -- the off-mesh
+        # ones through ordinary loads and stores, which no narrower row can name. The contract's
+        # own first row declares the pointer boundary explicitly, so that is the one it takes.
+        return _whole_program()
+
+    if kinds & {"bias_add", "k_chain", "residual_add", "depthwise_conv2d"}:
+        return _whole_program()
+
+    if wl.quant is not None:
+        # Route Q's weight is a kernel-internal staging buffer, so the resident-matmul row -- whose
+        # first pointer block IS the resident weight -- would name a buffer the harness does not
+        # have. Declaring the pointer boundary explicitly is the contract's own first row.
+        return _whole_program()
+
+    if "resident_pack" not in kinds and "movement" in kinds:
+        mv = next(op for op in wl.ops if op.kind == "movement")
+        return "movement", [mv.operands["src"], mv.out], None
+
+    if len(whole_ops) == 1 and not any(op.kind == "matmul" for op in wl.ops):
+        # The native-whole-op harness renders one pointer per external tensor from its declared
+        # RANK, so a rank-1 operand (a per-channel bias) has no shape it can render. Declaring the
+        # pointer boundary explicitly is the contract's own answer to that, and it is the row tried
+        # FIRST -- not a different program, the same one with its ABI written down. It is also the
+        # WHOLE answer: the operation keeps its native lowering, so a convolution goes on forming
+        # its im2col rows in the DMA address stream and no engine has to materialise a gather.
+        if any(len(wl.tensors[n].shape) < 2 for n in wl.decl_order):
+            return _whole_program()
+        return "native_whole_op", list(wl.decl_order), None
+
+    if any(op.kind == "conv2d" for op in wl.ops):
+        # The resident-matmul row names the moving operand as a FLAT [M, K] matrix. A convolution's
+        # moving operand is its native activation, so that row would oblige whoever fills the
+        # pointer to materialise the im2col matrix first -- the gather this lowering exists to
+        # avoid (`conv.conv_a_operand` forms those rows in the DMA address stream instead, one
+        # kernel tap at a time). Declaring the pointer boundary explicitly -- the contract's own
+        # first row -- keeps the activation in the layout it was declared in.
+        return _whole_program()
+
+    weights: list[str] = []
+    lhs: list[str] = []
+    outs: list[str] = []
+    biases: list[str] = []
+    for handle, pairs in _matmul_groups(wl):
+        weights.append(wl.residents[handle])
+        for mm, commit in pairs:
+            lhs.append(mm.operands["lhs"])
+            outs.append(commit.out)
+            ep = commit.epilogue or Epilogue()
+            if ep.bias and ("bias_add" in ep.has or "bias" in ep.has):
+                biases.append(ep.bias)
+    return "resident_matmul", weights + lhs + outs + biases, None
+
+
+
+# --------------------------------------------------------------------------- the pass
+class IfaceToGemmini:
+    """The interface -> gemmini rewrite pipeline."""
+
+    def __init__(self, scheduler: Scheduler | None = None) -> None:
+        self.scheduler = scheduler or Scheduler()
+
+    def run(self, wl: Workload) -> Lowered:
+        if not wl.ops and wl.lane_placement:
+            return self._host_lane(wl)
+        self._pack_names: dict[int, str] = {}
+        for idx, op in enumerate(wl.ops):
+            if not DENSE_PACK:
+                break
+            if op.kind != "conv2d":
+                continue
+            ifm = wl.tensors[op.operands["ifm"]]
+            wname = op.operands["weight"]
+            weight = wl.tensors[wl.residents.get(wname, wname)]
+            g = convlib.geometry_from(op.attrs, ifm.shape, weight.shape)
+            readout = plan_readout(op.epilogue or Epilogue(), g.m)
+            if not (DENSE_PACK and g.ci < DIM and g.kh * g.kw > 1 and readout.pool_enabled
+                    and g.batch == 1 and g.m > facts.ACC_ROWS):
+                continue
+            sp, ps = readout.pool_stride, readout.pool_size
+            po = max(1, (facts.ACC_ROWS // g.wo - ps) // sp + 1)
+            max_rows = min(g.ho, min(po, readout.porows) * sp + ps)
+            name = f"__conv_dense_rows_{idx}"
+            wl.tensors[name] = TensorDecl(name, (max_rows * g.wo, g.k), ifm.dtype, "scratch")
+            wl.scratch = list(wl.scratch) + [name]
+            self._pack_names[id(op)] = name
+        shape, args, abi = plan_abi(wl)
+        # Staging buffers are addressed exactly like a DRAM tensor but are allocated by the kernel
+        # itself, so they are kernel operands without being ABI pointers.
+        staged = [s.dst for s in wl.quant.staged] if wl.quant is not None else []
+        staged += [n for n in wl.scratch if n not in staged]
+        b = KernelBuilder(args + staged)
+        # The harness fills the operand buffers before it calls in, so the kernel opens by ordering
+        # those stores against the DMA it is about to issue; Rocket's fence also drains any
+        # accelerator command still in flight from a previous call.
+        b.fence()
+        b.flush(0)
+        total = Stats()
+        # A tensor an earlier region STORED and a later region LOADS is a dependency the DMA does
+        # not carry on its own: the load may issue while the store is still in flight, which the
+        # functional planes never see because they retire each command before the next. So the
+        # dependency is ordered explicitly, once, at the region that consumes it.
+        in_flight: set[str] = set()
+        # Route X: each off-mesh stage becomes ONE marker in the stream, at the position its
+        # operations occupy in the program. The stage itself is compiled by the code generator into
+        # the same function body; here it only has to hold its place and order its memory.
+        lane_stages = [st.ops for st in hybrid.scalar_stages(wl)]
+        self._stages = lane_stages
+        stage_of = {id(op): i for i, ops in enumerate(lane_stages) for op in ops}
+        opened: set[int] = set()
+        for op in wl.ops:
+            if dram_reads(wl, op) & in_flight:
+                b.fence()
+                in_flight.clear()
+            idx = stage_of.get(id(op))
+            if idx is not None:
+                if idx not in opened:
+                    b.lane_stage(idx)
+                    opened.add(idx)
+                in_flight |= dram_writes(wl, op)
+                continue
+            st = self._lower_op(b, wl, op)
+            in_flight |= dram_writes(wl, op)
+            if st is not None:
+                total.mvin += st.mvin
+                total.mvout += st.mvout
+                total.compute += st.compute
+        b.fence()
+        b.terminate()
+        kernel = gd.KernelOp.build(
+            regions=[b.region()],
+            attributes={"sym_name": StringAttr("gemmini_kernel"),
+                        "command_shape": StringAttr(shape)},
+        )
+        module = ModuleOp([kernel])
+        module.verify()
+        return Lowered(module, args, shape, total, abi, lane_stages=lane_stages,
+                       scratch=list(wl.scratch), workload=wl)
+
+    def _host_lane(self, wl: Workload) -> Lowered:
+        """Route H: every region is declared on the host lane, so the mesh issues NOTHING.
+
+        The kernel still exists and still orders memory, because the harness links against the
+        symbol either way -- but it carries no accelerator command, which is the whole claim.
+        """
+        args = list(wl.decl_order)
+        b = KernelBuilder(args)
+        b.fence()
+        b.terminate()
+        kernel = gd.KernelOp.build(
+            regions=[b.region()],
+            attributes={"sym_name": StringAttr("gemmini_kernel"),
+                        "command_shape": StringAttr("host_lane")},
+        )
+        module = ModuleOp([kernel])
+        module.verify()
+        abi = {
+            "kind": "whole_program",
+            "args": [
+                {
+                    "tensor": n,
+                    "access": "write" if wl.tensors[n].role in ("output", "intermediate") else "read",
+                }
+                for n in args
+            ],
+            "outputs": [n for n in args if wl.tensors[n].role == "output"],
+        }
+        return Lowered(module, args, "host_lane", Stats(), abi)
+
+    # -- per-op rewrites ---------------------------------------------------
+    def _lower_op(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats | None:
+        if op.kind in ("resident_pack", "evict"):
+            return None
+        if op.kind == "matmul":
+            return None  # emitted by its commit, which carries the readout
+        if op.kind == "commit":
+            return self._matmul_commit(b, wl, op)
+        if op.kind == "conv2d":
+            return self._conv(b, wl, op)
+        if op.kind == "movement":
+            return self._movement(b, wl, op)
+        if op.kind == "matmul_batched":
+            return self._batched(b, wl, op)
+        if op.kind in ("attention_qk", "attention_pv"):
+            return self._attention(b, wl, op)
+        if op.kind == "row_sumsq":
+            return self._row_sumsq(b, wl, op)
+        if op.kind == "bias_add":
+            return self._bias_add(b, wl, op)
+        if op.kind == "residual_add":
+            return self._residual_add(b, wl, op)
+        raise LoweringRefusal(f"no lowering for interface operation {op.kind!r}")
+
+    def _matmul(self, wl: Workload, acc_id: str) -> Op:
+        for op in wl.ops:
+            if op.kind == "matmul" and op.out == acc_id:
+                return op
+        raise LoweringRefusal("a commit consumes an accumulator no matmul produced")
+
+    def _matmul_commit(self, b: KernelBuilder, wl: Workload, commit: Op) -> Stats:
+        mm = self._matmul(wl, commit.operands["src"])
+        lhs = wl.tensors[mm.operands["lhs"]]
+        weight = wl.tensors[wl.residents[mm.operands["rhs"]]]
+        m, k, n = mm.shape["m"], mm.shape["k"], mm.shape["n"]
+        out_decl = wl.tensors[commit.out]
+        require_mesh_dtypes(
+            {"lhs": lhs.dtype, "weight": weight.dtype}, out_decl.dtype, "matmul"
+        )
+        ep = commit.epilogue or Epilogue()
+        readout = plan_readout(ep, m)
+        out = wl.tensors[commit.out]
+        bias = BiasSpec(readout.bias, 0) if readout.bias else None
+        if bias is not None and bias.tensor not in b.arg_tensors:
+            raise LoweringRefusal(f"the bias tensor {bias.tensor!r} is not a kernel argument")
+        out_pitch = layout.row_pitch(out.shape)
+        return emit_contraction(
+            b,
+            a=dense_a(lhs.name, m, k, dtype_bytes(lhs.dtype), layout.row_pitch(lhs.shape)),
+            bop=dense_b(weight.name, k, n, dtype_bytes(weight.dtype), layout.row_pitch(weight.shape)),
+            ktiles=dense_ktiles(k),
+            m=m, n=n,
+            out=OutSpec(out.name, out_pitch, out_pitch * dtype_bytes(out.dtype)),
+            readout=readout,
+            bias=bias,
+            scheduler=self.scheduler,
+            prefer_full_b=True,
+        )
+
+    def _conv(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        ifm = wl.tensors[op.operands["ifm"]]
+        wname = op.operands["weight"]
+        weight = wl.tensors[wl.residents.get(wname, wname)]
+        g = convlib.geometry_from(op.attrs, ifm.shape, weight.shape)
+        out = wl.tensors[op.out]
+        require_mesh_dtypes({"ifm": ifm.dtype, "weight": weight.dtype}, out.dtype, "conv2d")
+        ep = op.epilogue or Epilogue()
+        readout = plan_readout(ep, g.m)
+        expected_rows = g.m
+        if readout.pool_enabled:
+            # A fused pool commits the POOLED extent, and its declared pool_in_dims must be the
+            # conv's own output extent -- a disagreement is rejected, never reconciled.
+            if tuple(ep.pool_in_dims or ()) != (g.ho, g.wo):
+                raise LoweringRefusal(
+                    f"conv2d pool_in_dims {tuple(ep.pool_in_dims or ())} disagrees with the "
+                    f"geometry's output extent [{g.ho}, {g.wo}]"
+                )
+            expected_rows = readout.pool_batches * readout.porows * readout.pocols
+        if tuple(out.shape) != (expected_rows, g.co):
+            raise LoweringRefusal(
+                f"conv2d result {tuple(out.shape)} disagrees with the geometry's "
+                f"[{expected_rows}, {g.co}]"
+            )
+        bias = BiasSpec(readout.bias, 0) if readout.bias else None
+        out_pitch = layout.row_pitch(out.shape)
+        packed = self._pack_names.get(id(op))
+        # A fused-pool convolution whose committed plane is larger than the accumulator is lowered
+        # band by band (`_conv_banded`): the whole-plane commit is the only reason this group was
+        # declined and left to run on the core.
+        if readout.pool_enabled and g.m > facts.ACC_ROWS:
+            return self._conv_banded(b, g, ifm, weight, out, readout, bias, out_pitch,
+                                     packed=packed)
+        return emit_contraction(
+            b,
+            a=convlib.conv_a_operand(ifm.name, g, layout.row_pitch(ifm.shape)),
+            bop=dense_b(weight.name, g.k, g.co, dtype_bytes(weight.dtype),
+                        layout.row_pitch(weight.shape)),
+            ktiles=convlib.conv_ktiles(g),
+            m=g.m, n=g.co,
+            out=OutSpec(out.name, out_pitch, out_pitch * dtype_bytes(out.dtype)),
+            readout=readout,
+            bias=bias,
+            scheduler=self.scheduler,
+        )
+
+    def _conv_banded(self, b: KernelBuilder, g, ifm, weight, out, readout, bias,
+                     out_pitch: int, packed: str | None = None) -> Stats:
+        """A fused-pool convolution whose output plane is larger than the accumulator.
+
+        The store path pools over a CONTIGUOUS run of accumulator rows, so a whole-plane commit
+        needs ``ho*wo`` rows -- 12,544 for the stem convolution against a 1,024-row accumulator,
+        which is why this group used to be declined and run on the core. A band of ``po`` pooled
+        rows is a plane in its own right: it commits only the conv rows its windows touch, with
+        its own ``orows`` and its own top padding, and neighbouring bands overlap by the single
+        conv row two neighbouring windows share. Every other field of the readout -- the window,
+        the stride, the column geometry, the output row pitch -- is the whole commit's, so the
+        pooled rows land where the unbanded store would have put them.
+        """
+        if g.batch != 1 or readout.pool_batches != 1:
+            raise LoweringRefusal("a banded pooled commit needs a single-image plane")
+        sp, ps = readout.pool_stride, readout.pool_size
+        # Size each row band for the widest column stripe and all live channel tiles.
+        # Narrow-channel kernels benefit from spatial stripes. Wider-channel pooled
+        # kernels keep the original whole-width band schedule.
+        stripes = 8 if g.ci < DIM else 1
+        stripe_pocols = (readout.pocols + stripes - 1) // stripes
+        max_width = 0
+        for q0 in range(0, readout.pocols, stripe_pocols):
+            nq = min(stripe_pocols, readout.pocols - q0)
+            col0 = max(0, q0 * sp - readout.lpad)
+            last_col = min(g.wo - 1, (q0 + nq - 1) * sp + ps - 1 - readout.lpad)
+            width = last_col - col0 + 1
+            max_width = max(max_width, DIM if stripes > 1 and width <= DIM else width)
+        nt = (g.co + facts.DIM - 1) // facts.DIM
+        rows_per_channel_tile = (facts.ACC_ROWS // (nt * facts.DIM)) * facts.DIM
+        base_po = (facts.ACC_ROWS // g.wo - ps) // sp + 1
+        stripe_po = (rows_per_channel_tile // max_width - ps) // sp + 1
+        po = stripe_po if stripes > 1 and stripe_po >= 1 else base_po
+        if po < 1:
+            raise LoweringRefusal(
+                f"the accumulator cannot hold one pooled band of {g.wo} columns"
+            )
+        po = min(po, readout.porows)
+        outspec = OutSpec(out.name, out_pitch, out_pitch * dtype_bytes(out.dtype))
+        bop = dense_b(weight.name, g.k, g.co, dtype_bytes(weight.dtype),
+                      layout.row_pitch(weight.shape))
+        ktiles = convlib.dense_ktiles(g.k) if packed else convlib.conv_ktiles(g)
+        pitch = layout.row_pitch(ifm.shape)
+        total = Stats()
+        for p0 in range(0, readout.porows, po):
+            npo = min(po, readout.porows - p0)
+            first = p0 * sp - readout.upad
+            upad = max(0, -first)
+            first = max(0, first)
+            last = min(g.ho - 1, (p0 + npo - 1) * sp + ps - 1 - readout.upad)
+            brows = last - first + 1
+            band = replace(readout, orows=brows, porows=npo, upad=upad, pool_batches=1)
+            if packed:
+                b.fence()
+                b.forget_loads()
+                self._stages.append(convlib.PackSpec(
+                    ifm.name, packed, g, pitch, layout.row_pitch((brows * g.wo, g.k)),
+                    first * g.wo, brows * g.wo))
+                b.lane_stage(len(self._stages) - 1)
+                b.fence()
+            # A short pool band can also be split across output columns. Each stripe includes
+            # the input columns touched by its own pool windows, including the shared seam
+            # column. Narrowing the spatial plane lets all output-channel tiles remain resident,
+            # so the moving operand is gathered once instead of once per channel block.
+            for q0 in range(0, readout.pocols, stripe_pocols):
+                nq = min(stripe_pocols, readout.pocols - q0)
+                raw_first_col = q0 * sp - readout.lpad
+                col0 = max(0, raw_first_col)
+                last_col = min(g.wo - 1, (q0 + nq - 1) * sp + ps - 1 - readout.lpad)
+                width = last_col - col0 + 1
+                tile_width = DIM if stripes > 1 and width <= DIM else width
+                stripe = replace(band, ocols=tile_width, pocols=nq,
+                                 pool_out_dim=readout.pocols,
+                                 lpad=max(0, -raw_first_col))
+                st = emit_contraction(
+                    b,
+                    a=(dense_a(packed, brows * g.wo, g.k, 1,
+                               layout.row_pitch((brows * g.wo, g.k)))
+                       if packed else convlib.conv_a_operand(
+                           ifm.name, g, pitch, row0=first * g.wo,
+                           rows_total=brows * tile_width, col0=col0,
+                           row_width=tile_width, valid_width=width)),
+                    bop=bop,
+                    ktiles=ktiles,
+                    m=brows * tile_width, n=g.co,
+                    out=outspec,
+                    readout=stripe,
+                    bias=bias,
+                    scheduler=self.scheduler,
+                    out_base=(p0 * readout.pocols + q0) * out_pitch * readout.out_bytes,
+                )
+                total.mvin += st.mvin
+                total.mvout += st.mvout
+                total.compute += st.compute
+                total.notes.extend(st.notes)
+                if stripes > 1:
+                    b.fence()
+        return total
+
+    def _movement(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        src = wl.tensors[op.operands["src"]]
+        dst = wl.tensors[op.out]
+        if len(src.shape) != 2 or tuple(src.shape) != tuple(dst.shape):
+            raise LoweringRefusal(
+                f"movement expects one rank-2 extent through the accelerator; got "
+                f"{tuple(src.shape)} -> {tuple(dst.shape)}"
+            )
+        rows, cols = src.shape
+        require_movement_dtypes(src.dtype, dst.dtype)
+        in_b, out_b = dtype_bytes(src.dtype), dtype_bytes(dst.dtype)
+        in_pitch, out_pitch = layout.row_pitch(src.shape), layout.row_pitch(dst.shape)
+        # An accumulator-width container at either end forces the trip through the accumulator; the
+        # load is `shrunk` only when the SOURCE is the narrow one being widened on the way in.
+        via_acc = facts.ACC_BYTES_PER_ELEM in (in_b, out_b)
+        widen = via_acc
+        st = Stats()
+        b.config_ex(act=0)
+        b.config_ld(0, in_pitch * in_b, shrunk=via_acc and in_b < facts.ACC_BYTES_PER_ELEM)
+        b.config_st(out_pitch * out_b)
+        pool = max(1, facts.ACC_ROWS // DIM) if widen else max(1, facts.SP_ROWS // DIM)
+        idx = 0
+        for i in range((rows + DIM - 1) // DIM):
+            r = min(DIM, rows - i * DIM)
+            for j in range((cols + DIM - 1) // DIM):
+                c = min(DIM, cols - j * DIM)
+                slot = (idx % pool) * DIM
+                idx += 1
+                local_in = facts.acc_addr(slot, False, False) if widen else slot
+                local_out = facts.acc_addr(slot, True, True) if widen else slot
+                b.mvin(b.addr(src.name, (i * DIM * in_pitch + j * DIM) * in_b), local_in, c, r)
+                b.mvout(b.addr(dst.name, (i * DIM * out_pitch + j * DIM) * out_b), local_out, c, r)
+                st.mvin += 1
+                st.mvout += 1
+        return st
+
+    def _batched(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        a = wl.tensors[op.operands["a"]]
+        w = wl.tensors[op.operands["w"]]
+        out = wl.tensors[op.out]
+        *prefix, m, k = a.shape
+        batch = 1
+        for d in prefix:
+            batch *= d
+        n = w.shape[-1]
+        if w.shape[-2] != k or tuple(out.shape[-2:]) != (m, n):
+            raise LoweringRefusal("batched matmul extents do not contract")
+        require_mesh_dtypes({"a": a.dtype, "w": w.dtype}, out.dtype, "matmul_batched")
+        ep = op.epilogue or Epilogue()
+        readout = plan_readout(ep, m)
+        ab, wb, ob = dtype_bytes(a.dtype), dtype_bytes(w.dtype), dtype_bytes(out.dtype)
+        a_pitch = layout.row_pitch(a.shape)
+        w_pitch = layout.row_pitch(w.shape)
+        o_pitch = layout.row_pitch(out.shape)
+        st = Stats()
+        for bi in range(batch):
+            sub = emit_contraction(
+                b,
+                a=_offset_a(dense_a(a.name, m, k, ab, a_pitch), bi * m * a_pitch * ab),
+                bop=_offset_b(dense_b(w.name, k, n, wb, w_pitch), bi * k * w_pitch * wb),
+                ktiles=dense_ktiles(k),
+                m=m, n=n,
+                out=OutSpec(out.name, o_pitch, o_pitch * ob),
+                readout=readout,
+                bias=None,
+                scheduler=self.scheduler,
+                out_base=bi * m * o_pitch * ob,
+            )
+            st.mvin += sub.mvin
+            st.mvout += sub.mvout
+            st.compute += sub.compute
+        return st
+
+    def _attention(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        qk = op.kind == "attention_qk"
+        lhs = wl.tensors[op.operands["q" if qk else "p"]]
+        rhs = wl.tensors[op.operands["k" if qk else "v"]]
+        out = wl.tensors[op.out]
+        m, d = lhs.shape
+        require_mesh_dtypes({"lhs": lhs.dtype, "rhs": rhs.dtype}, out.dtype, op.kind)
+        ep = op.epilogue or Epilogue()
+        readout = plan_readout(ep, m)
+        lb, rb, ob = dtype_bytes(lhs.dtype), dtype_bytes(rhs.dtype), dtype_bytes(out.dtype)
+        if qk:
+            n = rhs.shape[0]
+            if rhs.shape[1] != d:
+                raise LoweringRefusal("attention_qk contracts the trailing head dim of both operands")
+            bop = transposed_b(rhs.name, n, d, rb, layout.row_pitch(rhs.shape))
+        else:
+            n = rhs.shape[1]
+            if rhs.shape[0] != d:
+                raise LoweringRefusal("attention_pv: p's key extent must match v's row extent")
+            bop = dense_b(rhs.name, d, n, rb, layout.row_pitch(rhs.shape))
+        if tuple(out.shape) != (m, n):
+            raise LoweringRefusal(f"attention result {tuple(out.shape)} is not [{m}, {n}]")
+        out_pitch = layout.row_pitch(out.shape)
+        return emit_contraction(
+            b,
+            a=dense_a(lhs.name, m, d, lb, layout.row_pitch(lhs.shape)),
+            bop=bop,
+            ktiles=dense_ktiles(d),
+            m=m, n=n,
+            out=OutSpec(out.name, out_pitch, out_pitch * ob),
+            readout=readout,
+            bias=None,
+            scheduler=self.scheduler,
+            b_transpose=qk,
+        )
+
+    def _row_sumsq(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        """``ss[i] = sum_k x[i,k]**2``, contracted on the mesh one row BAND at a time.
+
+        Band ``bd`` is the DIM-row slice of ``src`` starting at ``bd*DIM``. It is contracted against
+        ITSELF -- the moving operand is the band, the stationary operand is the same band read
+        through ``b_transpose`` (which is what :func:`.contraction.transposed_b` expresses: a
+        stationary operand stored row-per-output-column, and a band's rows ARE the output columns
+        here). The result is a ``rows_b x rows_b`` tile whose diagonal holds the band's reductions,
+        committed full width into the band's slot of the staged intermediate.
+
+        Every extent below comes from the tensor the capsule declared; the band edge is the
+        RTL-derived array edge, not a constant chosen here.
+        """
+        src = wl.tensors[op.operands["src"]]
+        ss = wl.tensors[op.out]
+        require_mesh_dtypes({"lhs": src.dtype, "rhs": src.dtype}, ss.dtype, "row_sumsq")
+        rows = layout.row_count(src.shape)
+        k = int(src.shape[-1])
+        sb = dtype_bytes(src.dtype)
+        s_pitch = layout.row_pitch(src.shape)
+        ss_pitch = layout.row_pitch(ss.shape)
+        # The intermediate is read out RAW: the row scale has not been applied yet, so no
+        # activation and no accumulator scale ride this store.
+        readout = plan_readout(Epilogue(output_dtype=PARTIAL_DTYPE), DIM)
+        st = Stats()
+        for band, row0 in enumerate(range(0, rows, DIM)):
+            nb = min(DIM, rows - row0)
+            base = row0 * s_pitch * sb
+            sub = emit_contraction(
+                b,
+                a=_offset_a(dense_a(src.name, nb, k, sb, s_pitch), base),
+                bop=_offset_b(transposed_b(src.name, nb, k, sb, s_pitch), base),
+                ktiles=dense_ktiles(k),
+                m=nb, n=nb,
+                out=OutSpec(ss.name, ss_pitch, ss_pitch * 4),
+                readout=readout,
+                bias=None,
+                scheduler=self.scheduler,
+                b_transpose=True,
+                out_base=band * DIM * ss_pitch * 4,
+            )
+            st.mvin += sub.mvin
+            st.mvout += sub.mvout
+            st.compute += sub.compute
+        return st
+
+    def _acc_add(
+        self,
+        b: KernelBuilder,
+        wl: Workload,
+        out,
+        srcs: list[tuple[Any, bool, float, int]],
+        act: int,
+        acc_scale: float,
+    ) -> Stats:
+        """Sum several equal-extent tensors inside the ACCUMULATOR and read them out once.
+
+        This is the shape both `bias_add` and `residual_add` have on this datapath: the array's
+        accumulator is a read-modify-write memory whose load path carries a per-unit f32 scale, so a
+        pure elementwise sum needs no pass through the mesh at all -- which is why the derived
+        instruction coverage for these ops asks for movement and a store, and for no compute.
+
+        ``srcs`` is ``(tensor, broadcast, scale, repeat)`` in accumulate order. The very first load
+        lands with the accumulate bit CLEAR, so it initialises the rows rather than adding to
+        whatever a previous command left there; every later one lands with the bit SET. ``repeat``
+        above one issues the operand's load that many times, which is how an INTEGER multiplier is
+        realised here: the load's own scale cannot carry it without saturating the operand into its
+        container, while repeated accumulating loads add exact copies. A ``broadcast`` operand is a
+        rank-1 vector replayed under every row, which the load unit expresses as a zero row pitch.
+        """
+        rows, cols = out.shape
+        ob = dtype_bytes(out.dtype)
+        o_pitch = layout.row_pitch(out.shape)
+        full = ob == 4
+        if full and (act != NO_ACTIVATION or acc_scale != 1.0):
+            raise LoweringRefusal(
+                "a full-width (i32) readout reads the raw accumulator, so it cannot carry the "
+                "declared activation or accumulator scale"
+            )
+        if len(srcs) > 2:
+            raise LoweringRefusal(
+                "this load path has two register sets that decode cleanly, so at most two operands "
+                "can be summed in one accumulator pass"
+            )
+        # One CONFIG_LD per operand, hoisted out of the tile loop: each operand keeps its own load
+        # unit, so its row pitch, its narrow/wide container and its scale are configured once.
+        plan: list[tuple[int, Any, bool, int]] = []
+        for unit, (t, broadcast, scale, repeat) in enumerate(srcs):
+            tb = dtype_bytes(t.dtype)
+            pitch = 0 if broadcast else layout.row_pitch(t.shape) * tb
+            b.config_ld(unit, pitch, scale=scale, shrunk=tb < 4)
+            plan.extend([(unit, t, broadcast, tb)] * max(1, int(repeat)))
+        b.config_ex(act=0)
+        b.config_st(o_pitch * ob, act=act, acc_scale=acc_scale)
+        st = Stats()
+        # TRANSFER WIDTH. One load carries up to `MAX_BLOCK_LEN` DIM-wide column blocks
+        # (`MAX_BYTES` 64 / (DIM * sizeof(elem))), block `b` landing `DIM` rows on from the named
+        # destination. An accumulator destination does not shrink that here: the DMA sizes a
+        # transfer by the ACCUMULATOR width only when `has_acc_bitwidth` holds, and that is
+        # `is_acc_addr && !shrink` -- every operand of a narrow sum is loaded SHRUNK, so the
+        # transfer is sized by the operand width and the declared payload is reachable.
+        # The READOUT still goes one block at a time: a store reads one accumulator row per DRAM
+        # row and a row is DIM elements wide.
+        blocks = min(
+            facts.MAX_BLOCK_LEN if all(tb < 4 for _, _, _, tb in plan) else 1,
+            (cols + DIM - 1) // DIM,
+        )
+        span = blocks * DIM             # accumulator rows one tile occupies
+        wide = blocks * DIM             # columns one transfer carries
+        pool = max(1, facts.ACC_ROWS // span)
+        tiles: list[tuple[int, int, int, int]] = []
+        for i in range((rows + DIM - 1) // DIM):
+            r = min(DIM, rows - i * DIM)
+            for j in range(0, cols, wide):
+                tiles.append((i, j, r, min(wide, cols - j)))
+
+        def load(accumulate: bool, unit: int, t, broadcast: bool, tb: int,
+                 tile: tuple[int, int, int, int], slot: int) -> None:
+            i, j, r, c = tile
+            off = j * tb if broadcast else (i * DIM * layout.row_pitch(t.shape) + j) * tb
+            (b.mvin if unit == 0 else b.mvin2)(
+                b.addr(t.name, off), facts.acc_addr(slot, accumulate, False), c, r
+            )
+            st.mvin += 1
+
+        # ORDERING, and why the loads are grouped rather than issued tile by tile. This target's
+        # load commands are ISSUE-ordered only [derived, firrtl_structural:
+        # load_completion_ordering]: a later load waits for an earlier one to ISSUE, not to
+        # complete. The INITIALISING load and the accumulating ones address the SAME accumulator
+        # rows, so with nothing between them the initialisation can retire LAST and erase every
+        # other contribution -- and a wrong element then reads as the first operand's contribution
+        # alone. The target's completion barrier is `fence` (it waits until every tracked command
+        # has retired), so one is issued between the initialising load and the rest, and one before
+        # a batch overwrites rows a previous batch's readout may still be reading. Accumulating
+        # loads need no barrier against EACH OTHER: each is a read-modify-write of the accumulator
+        # row, so whichever order they retire in, the sum is the same.
+        #
+        # The barrier is per ACCUMULATOR-FULL batch of tiles, not per tile: every tile in a batch
+        # owns its own slot, so a single barrier orders all of them at once and the DMA still has a
+        # whole accumulator's worth of transfers in flight when it drains.
+        init, rest = plan[0], plan[1:]
+        for base in range(0, len(tiles), pool):
+            batch = tiles[base:base + pool]
+            if rest and base:
+                b.fence()
+            for k, tile in enumerate(batch):
+                load(False, *init, tile, k * span)
+            if rest:
+                b.fence()
+            for entry in rest:
+                for k, tile in enumerate(batch):
+                    load(True, *entry, tile, k * span)
+            for k, (i, j, r, c) in enumerate(batch):
+                for bl in range(0, c, DIM):
+                    b.mvout(b.addr(out.name, (i * DIM * o_pitch + j + bl) * ob),
+                            facts.acc_addr(k * span + bl, True, full), min(DIM, c - bl), r)
+                    st.mvout += 1
+        return st
+
+    def _bias_add(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        """``dst[i, j] = src[i, j] + bias[j]`` -- the bias COMMIT stage standing on its own.
+
+        Folded into the accumulator read-out, which is what the ABI says a target with no separate
+        vector-add class is expected to do. The bias is a length-N vector replayed under every row.
+        """
+        src = wl.tensors[op.operands["src"]]
+        bias = wl.tensors[op.operands["bias"]]
+        out = wl.tensors[op.out]
+        if len(src.shape) != 2 or tuple(out.shape) != tuple(src.shape):
+            raise LoweringRefusal("bias_add expects a rank-2 source committed at the same extent")
+        n = out.shape[1]
+        if bias.shape[-1] != n or (len(bias.shape) == 2 and bias.shape[0] != 1):
+            raise LoweringRefusal(
+                f"bias_add's bias must be one length-{n} vector; got {tuple(bias.shape)}"
+            )
+        ep = op.epilogue or Epilogue()
+        stages = ep.has - {"bias_add", "bias"}
+        act = RELU if "relu" in stages else NO_ACTIVATION
+        if stages - {"relu"}:
+            raise LoweringRefusal(
+                f"bias_add epilogue stage(s) {sorted(stages - {'relu'})} have no readout path here"
+            )
+        # The bias initialises the accumulator rows and the source adds onto them; addition
+        # commutes, and this way the broadcast operand is the one that needs no row pitch.
+        return self._acc_add(b, wl, out, [(bias, True, 1.0, 1), (src, False, 1.0, 1)], act, 1.0)
+
+    def _residual_add(self, b: KernelBuilder, wl: Workload, op: Op) -> Stats:
+        """``dst = relu?(sat(roundeven(lhs*lhs_scale + rhs*rhs_scale)))`` -- a residual connection.
+
+        The reference rounds ONCE, in f32, and this datapath has two places it can multiply: the
+        load unit's per-operand scale and the store path's accumulator scale. Which of the two may
+        carry a GAIN is not a choice -- it is a hardware fact. A scaled operand-width load SATURATES
+        into the operand container before it reaches the accumulator [derived,
+        generated_header+firrtl_structural: load_scale_saturation], so a load multiplier above one
+        clips every element whose scaled magnitude leaves that range and the accumulator then adds
+        clipped values. The readout, by contrast, reads the accumulator's own i32 rows and clamps
+        only at the end.
+
+        So the gain rides the READOUT (:func:`_factor_scales`): the loads carry `lhs_scale / f` and
+        `rhs_scale / f` with `f = max(1, |lhs_scale|, |rhs_scale|)`, neither of which can clip, and
+        the store's accumulator scale carries `f`. With both multipliers already at or below one the
+        factor is one and nothing moves.
+
+        That rounds each operand at its load and the sum again at the readout, where the reference
+        rounds once, so it is legal only from the capsule's declared `bound_lsb >= 1` and is refused
+        by name below it. The one pair this datapath reproduces EXACTLY is `(1, 1)`: the accumulator's
+        integer sum is then the reference's own, with no multiplier anywhere.
+        """
+        lhs = wl.tensors[op.operands["lhs"]]
+        rhs = wl.tensors[op.operands["rhs"]]
+        out = wl.tensors[op.out]
+        if len(out.shape) != 2 or tuple(lhs.shape) != tuple(out.shape) or tuple(rhs.shape) != tuple(out.shape):
+            raise LoweringRefusal(
+                f"residual_add sums two tensors at the output's own rank-2 extent; got "
+                f"{tuple(lhs.shape)} + {tuple(rhs.shape)} -> {tuple(out.shape)}"
+            )
+        ls = float(op.attrs.get("lhs_scale", 1.0))
+        rs = float(op.attrs.get("rhs_scale", 1.0))
+        bound = int(op.attrs.get("bound_lsb", 0))
+        ep = op.epilogue or Epilogue()
+        stages = ep.has
+        if stages - {"relu"}:
+            raise LoweringRefusal(
+                f"residual_add epilogue stage(s) {sorted(stages - {'relu'})} have no readout path here"
+            )
+        act = RELU if "relu" in stages else NO_ACTIVATION
+        exact = _integer_split(ls, rs, out.dtype)
+        # The exact split is taken whenever it is free -- one load per operand, which is what the
+        # inexact one costs too -- and whenever the capsule leaves no slack for a second rounding.
+        # Above that it buys exactness with extra transfers over the same bytes, which a program
+        # that declared slack did not ask to pay.
+        if exact is not None and (exact[0] + exact[1] == 2 or bound < 1):
+            p, q, store = exact
+            return self._acc_add(
+                b, wl, out, [(lhs, False, 1.0, p), (rhs, False, 1.0, q)], act, store
+            )
+        if bound < 1:
+            raise LoweringRefusal(
+                f"residual_add declares bound_lsb {bound} with multipliers ({ls}, {rs}): the "
+                "reference rounds the scaled sum ONCE, and the pair does not reduce to small "
+                "integer multipliers this load path can add exactly by repeating a unit-scale load "
+                f"within {MAX_EXACT_LOADS} transfers. A load scale below one rounds its operand and "
+                "a load scale above one saturates it, so every remaining path rounds twice and is "
+                "legal only from bound_lsb 1"
+            )
+        split = _factor_scales(ls, rs, lhs.dtype, rhs.dtype, out.dtype)
+        if split is None:
+            raise LoweringRefusal(
+                f"residual_add multipliers ({ls}, {rs}) need a gain of more than one on the readout "
+                f"and the declared result is {out.dtype}: a full-width readout reads the raw "
+                "accumulator and carries no store scale, so there is nowhere left to put it"
+            )
+        p, q, store = split
+        return self._acc_add(b, wl, out, [(lhs, False, p, 1), (rhs, False, q, 1)], act, store)
+
+
+#: How many accumulator loads one elementwise sum may spend to stay EXACT. A repeated load carries
+#: the same bytes a second time, so the split stops where the transfer count would pass twice what
+#: the two operands already cost.
+MAX_EXACT_LOADS = 4
+
+#: How far the exact split may push the binary point. Every finite f32 is a dyadic rational, but a
+#: multiplier needing more halvings than this cannot keep its integer partner inside
+#: :data:`MAX_EXACT_LOADS` for any pair this target loads.
+_MAX_BINARY_SHIFT = 24
+
+
+def _integer_split(ls: float, rs: float, out_dtype: str) -> tuple[int, int, float] | None:
+    """``(p, q, 2**-t)`` with ``p = ls * 2**t`` and ``q = rs * 2**t`` positive integers, or ``None``.
+
+    This is the datapath's EXACT elementwise sum. An integer multiplier is realised by REPEATING the
+    operand's load at multiplier one, never by a load scale above one: the scale would saturate the
+    operand into its container before the accumulator saw it [derived: load_scale_saturation], while
+    `p` accumulating loads of the same tile add `p` exact copies of it. The accumulator's sum is then
+    exactly `p*lhs + q*rhs`, and the store's accumulator scale `2**-t` is the program's only
+    rounding -- the same single rounding the reference performs.
+
+    ``None`` when no such split exists inside :data:`MAX_EXACT_LOADS`, when a multiplier is negative
+    (a multiplier of -1 saturates the container's most negative value, so negating on the load is
+    not value-preserving either) or not finite, or when the readout is full width and so carries no
+    store scale for a `t` above zero.
+    """
+    for v in (ls, rs):
+        if v != v or v <= 0.0 or v == float("inf"):
+            return None
+    for t in range(_MAX_BINARY_SHIFT + 1):
+        p, q = ls * (2.0 ** t), rs * (2.0 ** t)
+        if not (p.is_integer() and q.is_integer()):
+            continue
+        if p + q > MAX_EXACT_LOADS:
+            return None
+        store = 2.0 ** -t
+        if store != 1.0 and dtype_bytes(out_dtype) == 4:
+            return None         # a full-width readout reads the raw accumulator; no store scale
+        return int(p), int(q), store
+    return None
+
+
+def _factor_scales(
+    ls: float, rs: float, lhs_dtype: str, rhs_dtype: str, out_dtype: str
+) -> tuple[float, float, float] | None:
+    """Split ``(ls, rs)`` into LOAD multipliers that cannot saturate and one STORE multiplier.
+
+    Returns ``(ls / f, rs / f, f)`` with ``f = max(1, |ls|, |rs|)``. Both load multipliers are then
+    at or below one, which is the condition this target's load path imposes: a scaled operand-width
+    load saturates into the operand container BEFORE the accumulator sees it [derived,
+    generated_header+firrtl_structural: load_scale_saturation], so a multiplier above one clips
+    every element whose scaled magnitude leaves that range and the accumulator adds clipped values.
+    At or below one nothing can clip, and the whole gain reaches the accumulator's own i32 rows
+    through the store's scale, which clamps once at the end.
+
+    ``None`` means the split has nowhere to put the gain: the readout is full width, so it reads the
+    raw accumulator and carries no store scale, or a multiplier is not finite.
+    """
+    for v in (ls, rs):
+        if v != v or v in (float("inf"), float("-inf")):
+            return None
+    factor = max(1.0, abs(ls), abs(rs))
+    if factor != 1.0 and dtype_bytes(out_dtype) == 4:
+        return None             # a full-width readout reads the raw accumulator; no store scale
+    return ls / factor, rs / factor, factor
+
+
+def _offset_a(a: AOperand, base: int) -> AOperand:
+    def loads(i: int, kti: int) -> list[TileLoad]:
+        return [
+            TileLoad(l.row_offset, l.tensor, l.byte_offset + base, l.cols, l.rows)
+            for l in a.loads(i, kti)
+        ]
+
+    return AOperand(m=a.m, stride_bytes=a.stride_bytes, loads=loads, runs=a.runs,
+                    shrunk=a.shrunk, elem_bytes=a.elem_bytes)
+
+
+def _offset_b(bop, base: int):
+    def load(kspec: KTile, jti: int, ncols: int, n: int) -> TileLoad:
+        l = bop.load(kspec, jti, ncols, n)
+        return TileLoad(l.row_offset, l.tensor, l.byte_offset + base, l.cols, l.rows)
+
+    return type(bop)(tensor=bop.tensor, stride_bytes=bop.stride_bytes, load=load,
+                     elem_bytes=bop.elem_bytes)

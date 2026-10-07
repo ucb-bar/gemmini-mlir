@@ -1,0 +1,238 @@
+"""Kernel builder: appends verified ``gemmini``-dialect ops into the kernel region.
+
+It also carries the small amount of machine state a correct instruction stream depends on (which
+load unit currently holds which DRAM row pitch, what the store path is configured for), so a
+redundant CONFIG is not emitted and a stale one is never relied on.
+"""
+
+from __future__ import annotations
+
+from xdsl.dialects.builtin import StringAttr
+from xdsl.ir import Block, Region, SSAValue
+
+from ..target import dialect as gd
+from ..target import facts
+from ..target.dialect import fattr, iattr
+
+WEIGHT_STATIONARY = 1
+
+
+class KernelBuilder:
+    def __init__(self, arg_tensors: list[str]) -> None:
+        self.arg_tensors = list(arg_tensors)
+        self.block = Block(
+            arg_types=[gd.DramType(StringAttr(n)) for n in self.arg_tensors]
+        )
+        self._arg = {n: self.block.args[i] for i, n in enumerate(self.arg_tensors)}
+        self._addr_cache: dict[tuple[str, int], SSAValue] = {}
+        self._ld_state: dict[int, tuple] = {}
+        self._st_state: tuple | None = None
+        self._ex_state: tuple | None = None
+        #: what each SCRATCHPAD row currently holds, so a load that would rewrite a destination with
+        #: the exact source it already holds is not emitted at all. Only DMA loads write the
+        #: scratchpad, so this cannot go stale behind the compute path.
+        self._spad_content: dict[int, tuple] = {}
+        #: for every scratchpad row a live transfer wrote, the address that transfer was RECORDED
+        #: under. A record claims every row of its block span, so an overlapping later transfer can
+        #: find and drop the claim even when the two do not start at the same row.
+        self._spad_owner: dict[int, int] = {}
+        self.n_instr = 0
+        self.elided_loads = 0
+
+    # -- region ------------------------------------------------------------
+    def region(self) -> Region:
+        return Region([self.block])
+
+    def _add(self, op):
+        self.block.add_op(op)
+        self.n_instr += 1
+        return op
+
+    # -- addressing --------------------------------------------------------
+    def addr(self, tensor: str, byte_offset: int = 0) -> SSAValue:
+        """A DRAM address formed from the kernel's own pointer argument for ``tensor``."""
+        key = (tensor, int(byte_offset))
+        cached = self._addr_cache.get(key)
+        if cached is not None:
+            return cached
+        if tensor not in self._arg:
+            raise KeyError(f"tensor {tensor!r} is not a kernel argument")
+        op = gd.DramAddrOp.build(
+            operands=[[self._arg[tensor]]],
+            result_types=[[gd.AddrType()]],
+            attributes={"offset": iattr(byte_offset), "tensor": StringAttr(tensor)},
+        )
+        self.block.add_op(op)
+        self._addr_cache[key] = op.results[0]
+        return op.results[0]
+
+    # -- configuration -----------------------------------------------------
+    def flush(self, skip: int = 0):
+        return self._add(gd.FlushOp.build(operands=[[]], result_types=[[]],
+                                          attributes={"skip": iattr(skip)}))
+
+    def fence(self):
+        return self._add(gd.FenceOp.build(operands=[[]], result_types=[[]], attributes={}))
+
+    def lane_stage(self, index: int):
+        """Mark the position an OFF-MESH stage expands into. Issues no instruction."""
+        return self._add(gd.LaneStageOp.build(operands=[[]], result_types=[[]],
+                                              attributes={"index": iattr(index)}))
+
+    def terminate(self):
+        self.block.add_op(gd.ReturnOp.build(operands=[[]], result_types=[[]], attributes={}))
+
+    def config_ex(self, act: int = 0, a_transpose: bool = False, b_transpose: bool = False,
+                  dataflow: int = WEIGHT_STATIONARY):
+        state = (dataflow, act, a_transpose, b_transpose)
+        if state == self._ex_state:
+            return None
+        self._ex_state = state
+        return self._add(
+            gd.ConfigExOp.build(
+                operands=[[]], result_types=[[]],
+                attributes={
+                    "dataflow": iattr(dataflow),
+                    "act": iattr(act),
+                    "sys_shift": iattr(0),
+                    "acc_scale": fattr(1.0),
+                    "a_stride": iattr(1),
+                    "c_stride": iattr(1),
+                    "a_transpose": iattr(1 if a_transpose else 0),
+                    "b_transpose": iattr(1 if b_transpose else 0),
+                },
+            )
+        )
+
+    def config_ld(self, ld_id: int, stride_bytes: int, scale: float = 1.0, shrunk: bool = False):
+        state = (stride_bytes, scale, shrunk)
+        if self._ld_state.get(ld_id) == state:
+            return None
+        self._ld_state[ld_id] = state
+        return self._add(
+            gd.ConfigLdOp.build(
+                operands=[[]], result_types=[[]],
+                attributes={
+                    "id": iattr(ld_id),
+                    "stride": iattr(stride_bytes),
+                    "scale": fattr(scale),
+                    "shrunk": iattr(1 if shrunk else 0),
+                },
+            )
+        )
+
+    def config_st(self, stride_bytes: int, act: int = 0, acc_scale: float = 1.0,
+                  pool_stride: int = 0, pool_size: int = 0, pool_out_dim: int = 0,
+                  porows: int = 0, pocols: int = 0, orows: int = 0, ocols: int = 0,
+                  upad: int = 0, lpad: int = 0):
+        state = (stride_bytes, act, acc_scale, pool_stride, pool_size, pool_out_dim,
+                 porows, pocols, orows, ocols, upad, lpad)
+        if state == self._st_state:
+            return None
+        self._st_state = state
+        return self._add(
+            gd.ConfigStOp.build(
+                operands=[[]], result_types=[[]],
+                attributes={
+                    "stride": iattr(stride_bytes), "act": iattr(act),
+                    "acc_scale": fattr(acc_scale),
+                    "pool_stride": iattr(pool_stride), "pool_size": iattr(pool_size),
+                    "pool_out_dim": iattr(pool_out_dim), "porows": iattr(porows),
+                    "pocols": iattr(pocols), "orows": iattr(orows), "ocols": iattr(ocols),
+                    "upad": iattr(upad), "lpad": iattr(lpad),
+                },
+            )
+        )
+
+    # -- movement ----------------------------------------------------------
+    def _mv(self, cls, addr: SSAValue, local: int, cols: int, rows: int, note: str):
+        return self._add(
+            cls.build(
+                operands=[[addr]], result_types=[[]],
+                attributes={"spad": iattr(local), "cols": iattr(cols), "rows": iattr(rows),
+                            "note": StringAttr(note)},
+            )
+        )
+
+    def _already_resident(self, unit: int, addr: SSAValue, local: int, cols: int, rows: int) -> bool:
+        """True when this exact source already occupies this exact on-chip destination.
+
+        A transfer may carry several DIM-wide column blocks; block ``b`` lands ``b * DIM`` rows on
+        from the named address (the CONFIG_LD block stride this package declares). The footprint
+        invalidated here is therefore the WHOLE block span, not just the first block's rows --
+        otherwise a later single-tile load into the second block of a live transfer would read as
+        untouched and be elided against stale contents.
+        """
+        if local & facts.BIT_IS_ACC:
+            return False
+        key = (addr, cols, rows, self._ld_state.get(unit))
+        if self._spad_content.get(local) == key:
+            self.elided_loads += 1
+            return True
+        blocks = max(1, (cols + facts.DIM - 1) // facts.DIM)
+        written = [
+            local + blk * facts.DIM + r for blk in range(blocks) for r in range(rows)
+        ]
+        # Dropping only the records that START on a written row is not enough: a transfer recorded
+        # at row `local` claims `rows` rows after it, so a later transfer that begins PART-WAY down
+        # that span (a padded convolution's run that starts at an interior row) leaves the earlier
+        # record standing over rows it has just overwritten -- and the next repeat of the earlier
+        # transfer would then be elided against contents that are no longer its own. Each written
+        # row names its owning record, and the owner is dropped with the row.
+        for row in written:
+            owner = self._spad_owner.pop(row, None)
+            if owner is not None:
+                self._spad_content.pop(owner, None)
+            self._spad_content.pop(row, None)
+        self._spad_content[local] = key
+        for row in written:
+            self._spad_owner[row] = local
+        return False
+
+    def forget_loads(self) -> None:
+        """Drop every record of what the on-chip rows mirror: the DRAM under them was REWRITTEN.
+
+        The elision in `_already_resident` is sound only while a DRAM address still holds the bytes
+        the transfer that recorded it read. A kernel-frame staging buffer refilled per band breaks
+        exactly that, so its refill drops the records rather than letting a later load of the same
+        address be elided against the previous fill.
+        """
+        self._spad_content.clear()
+        self._spad_owner.clear()
+
+    def mvin(self, addr, spad, cols, rows, note="a"):
+        if self._already_resident(0, addr, spad, cols, rows):
+            return None
+        return self._mv(gd.MvinOp, addr, spad, cols, rows, note)
+
+    def mvin2(self, addr, spad, cols, rows, note="b"):
+        if self._already_resident(1, addr, spad, cols, rows):
+            return None
+        return self._mv(gd.Mvin2Op, addr, spad, cols, rows, note)
+
+    def mvin3(self, addr, local, cols, rows, note="d"):
+        return self._mv(gd.Mvin3Op, addr, local, cols, rows, note)
+
+    def mvout(self, addr, local, cols, rows, note="c"):
+        return self._mv(gd.MvoutOp, addr, local, cols, rows, note)
+
+    # -- compute -----------------------------------------------------------
+    def preload(self, bd: int, c: int, bd_cols: int, bd_rows: int, c_cols: int, c_rows: int):
+        return self._add(
+            gd.PreloadOp.build(
+                operands=[[]], result_types=[[]],
+                attributes={"bd": iattr(bd), "c": iattr(c), "bd_cols": iattr(bd_cols),
+                            "bd_rows": iattr(bd_rows), "c_cols": iattr(c_cols),
+                            "c_rows": iattr(c_rows)},
+            )
+        )
+
+    def compute(self, a: int, a_cols: int, a_rows: int, preloaded: bool):
+        return self._add(
+            gd.ComputeOp.build(
+                operands=[[]], result_types=[[]],
+                attributes={"a": iattr(a), "a_cols": iattr(a_cols), "a_rows": iattr(a_rows),
+                            "preloaded": iattr(1 if preloaded else 0),
+                            "bd": iattr(facts.GARBAGE_ADDR)},
+            )
+        )

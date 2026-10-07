@@ -1,0 +1,464 @@
+"""The one contraction emitter every accelerated family goes through.
+
+A matmul, a batched matmul, an attention product and an im2col'd convolution differ ONLY in how
+their moving operand's rows are gathered and which rows of the stationary operand a contraction
+tile covers. Both are expressed as data (:class:`AOperand`, :class:`KTile`), so there is exactly one
+weight-stationary loop nest in this package and it is driven by the extents of whatever capsule was
+handed in.
+
+The instruction sequence is the one the shipped ISA header's own ``sp_tiled_matmul_ws`` spells out:
+per contraction tile a PRELOAD naming the accumulator destination, then COMPUTE_PRELOADED for the
+first moving row-block against that stationary tile and COMPUTE_ACCUMULATE for the rest.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Callable
+
+from ..target import facts
+from .coalesce import Burst, coalesce
+from .epilogue import Readout
+from .kernel import KernelBuilder
+from .schedule import Scheduler
+
+DIM = facts.DIM
+
+
+class LoweringRefusal(Exception):
+    """This program cannot be lowered here; the caller turns it into an explicit decline."""
+
+
+@dataclass(frozen=True)
+class TileLoad:
+    """One DMA burst filling part of an on-chip tile."""
+
+    row_offset: int
+    tensor: str
+    byte_offset: int
+    cols: int
+    rows: int
+
+
+@dataclass(frozen=True)
+class KTile:
+    """One contraction tile: how many columns it carries and where its stationary rows start."""
+
+    width: int
+    b_row: int
+
+
+@dataclass
+class AOperand:
+    """The moving operand: what to load for an (m-tile, k-tile) pair and which rows are live."""
+
+    m: int
+    stride_bytes: int
+    loads: Callable[[int, int], list[TileLoad]]
+    runs: Callable[[int, int], list[tuple[int, int]]]
+    shrunk: bool = False
+    #: width of one operand element in DRAM, which is the stride one column block advances by
+    elem_bytes: int = 1
+
+
+@dataclass
+class BOperand:
+    """The stationary operand."""
+
+    tensor: str
+    stride_bytes: int
+    #: (k-tile, n-tile) -> the burst that fills the on-chip tile
+    load: Callable[[KTile, int, int, int], TileLoad]
+    #: width of one operand element in DRAM, which is the stride one column block advances by
+    elem_bytes: int = 1
+
+
+@dataclass
+class OutSpec:
+    tensor: str
+    #: DRAM row pitch in ELEMENTS (the declared trailing extent rounded up to a tile edge)
+    n: int
+    #: DRAM byte pitch of one output row
+    row_bytes: int
+
+
+@dataclass
+class BiasSpec:
+    tensor: str
+    #: byte pitch between bias rows; 0 means one repeating row broadcast down the tile
+    stride_bytes: int = 0
+
+
+@dataclass
+class Stats:
+    mvin: int = 0
+    mvout: int = 0
+    compute: int = 0
+    notes: list[str] = field(default_factory=list)
+
+
+def _extent(total: int, tile: int) -> int:
+    return min(DIM, total - tile * DIM)
+
+
+def emit_contraction(
+    b: KernelBuilder,
+    *,
+    a: AOperand,
+    bop: BOperand,
+    ktiles: list[KTile],
+    m: int,
+    n: int,
+    out: OutSpec,
+    readout: Readout,
+    bias: BiasSpec | None,
+    scheduler: Scheduler,
+    b_transpose: bool = False,
+    a_transpose: bool = False,
+    out_base: int = 0,
+) -> Stats:
+    """Emit a whole weight-stationary contraction into ``b``."""
+    st = Stats()
+    mt = (m + DIM - 1) // DIM
+    nt = (n + DIM - 1) // DIM
+    kt = len(ktiles)
+    if mt == 0 or nt == 0 or kt == 0:
+        raise LoweringRefusal("a contraction with an empty extent has no instruction stream")
+
+    blocking = scheduler.choose(mt, kt, nt, b_transposed=b_transpose)
+    ti, tj, tk = blocking.ti, blocking.tj, blocking.tk
+
+    if readout.pool_enabled:
+        # The store path pools over a CONTIGUOUS run of accumulator rows, so the pooled batch must
+        # be resident whole and one output-column tile at a time.
+        need = mt * DIM
+        if need > facts.ACC_ROWS:
+            raise LoweringRefusal(
+                f"a fused maxpool needs all {need} committed rows resident, more than the "
+                f"{facts.ACC_ROWS}-row accumulator this target has"
+            )
+        ti = mt
+        tj = min(nt, max(1, facts.ACC_ROWS // (mt * DIM)))
+        # A pooled commit holds the whole plane in the accumulator, so `ti` is the WHOLE m extent
+        # and the k-chunk the scheduler picked for a square block can be far too deep for the
+        # scratchpad. The chunk is the only free dimension left, so it is CLAMPED to what fits
+        # beside the stationary tiles rather than refused: a shorter chunk moves the same bytes.
+        tk = max(1, min(blocking.tk, facts.SP_ROWS // ((ti + tj) * DIM), DIM))
+        blocking = type(blocking)(
+            ti=ti, tj=tj, tk=tk,
+            a_base=0, b_base=facts.SP_ROWS - tk * tj * DIM,
+        )
+        if ti * tk * DIM > blocking.b_base:
+            raise LoweringRefusal("scratchpad cannot hold the pooled contraction's operands")
+
+    # -- where a stationary tile lives --------------------------------------
+    # A stationary tile's home must name the n-tile it holds GLOBALLY, not its index inside the
+    # current n-block: `Blocking.b_row` names only the local one, so the n-blocks of a single
+    # m-block land every k-chunk of the stationary operand on the very same scratchpad rows and
+    # evict each other. The operand is then re-fetched once per (m-block, n-block) even though the
+    # whole of it would have fitted on chip. Widening its home to the full n extent gives every
+    # tile a unique row, and the residency check in `KernelBuilder` then elides the repeat loads by
+    # itself: with `tk == kt` the stationary operand is gathered exactly ONCE for the whole
+    # contraction. The widening is taken only when it fits beside the moving operand, so it can
+    # never overflow the scratchpad, and it changes no row count, no command order and no gather.
+    # The k-chunk index is local too, so when `tk < kt` the chunks of one m-block already evict
+    # each other and a wide-but-local home does not help. Naming the home by the GLOBAL k-tile
+    # makes the WHOLE stationary operand resident for the entire contraction, which costs a
+    # smaller `tk`: shrinking the k-chunk moves no extra bytes (every moving tile is still
+    # gathered once per sweep) while the stationary operand drops from one fetch per m-block to
+    # one fetch, full stop. It is taken only when the whole operand fits beside at least one
+    # k-tile of the moving one, so it can never overflow the scratchpad.
+    global_k = False
+    full_span = kt * nt * DIM
+    if not readout.pool_enabled and full_span + ti * DIM <= facts.SP_ROWS:
+        tk_fit = min(kt, (facts.SP_ROWS - full_span) // (ti * DIM))
+        if tk_fit >= 1:
+            global_k = True
+            wide_base = facts.SP_ROWS - full_span
+            if tk_fit != tk:
+                tk = tk_fit
+                blocking = type(blocking)(
+                    ti=ti, tj=tj, tk=tk, a_base=0, b_base=wide_base,
+                )
+    a_span = ti * tk * DIM
+    if not global_k:
+        wide_span = tk * nt * DIM
+        wide_b = wide_span + a_span <= facts.SP_ROWS
+        wide_base = facts.SP_ROWS - wide_span if wide_b else 0
+
+    def b_row(k0: int, kl: int, jl: int, jg: int) -> int:
+        if global_k:
+            return wide_base + ((k0 + kl) * nt + jg) * DIM
+        return wide_base + (kl * nt + jg) * DIM if wide_b else blocking.b_row(kl, jl)
+
+    def acc_tile_row(il: int, jl: int, jb: int) -> int:
+        # Pooling reads a whole spatial plane from consecutive accumulator rows.
+        # Keep each output-channel tile's plane contiguous when several fit at once.
+        if readout.pool_enabled:
+            return (jl * mt + il) * DIM
+        return blocking.acc_row(il, jl, jb)
+
+    # An output tile is only finished once EVERY k-chunk has contributed, so a store can be brought
+    # forward only when the whole contraction dimension is one chunk. The pooled readout stores a
+    # contiguous batch of accumulator rows by its own rule and is left alone.
+    early_store = tk >= kt and not readout.pool_enabled
+
+    b.config_ex(act=readout.act, a_transpose=a_transpose, b_transpose=b_transpose)
+    b.config_ld(0, a.stride_bytes, shrunk=a.shrunk)
+    b.config_ld(1, bop.stride_bytes)
+    if early_store:
+        b.config_st(out.row_bytes, readout.act, readout.acc_scale)
+
+    for i0 in range(0, mt, ti):
+        ib = min(ti, mt - i0)
+        for j0 in range(0, nt, tj):
+            jb = min(tj, nt - j0)
+            # keyed by (m-tile, n-tile, row): an accumulator row is a row OF ONE OUTPUT TILE,
+            # and the tile at (il, jl+1) is untouched while the one at (il, jl) is full.
+            initialized: set[tuple[int, int, int]] = set()
+
+            if bias is not None:
+                # The bias rides load unit 0 (the same unit the moving operand uses) because this
+                # decoder names three load classes and the DMA state they select is otherwise
+                # identical; the unit's row pitch is re-declared around the burst.
+                b.config_ld(0, bias.stride_bytes, shrunk=False)
+                for il in range(ib):
+                    rows = _extent(m, i0 + il)
+                    for jl in range(jb):
+                        cols = _extent(n, j0 + jl)
+                        local = facts.acc_addr(acc_tile_row(il, jl, jb), False, False)
+                        b.mvin(
+                            b.addr(bias.tensor, (j0 + jl) * DIM * 4),
+                            local, cols, rows, note=f"bias[{i0 + il}][{j0 + jl}]",
+                        )
+                        st.mvin += 1
+                        for r in range(rows):
+                            initialized.add((il, jl, r))
+
+            b.config_ld(0, a.stride_bytes, shrunk=a.shrunk)
+            for k0 in range(0, kt, tk):
+                kb = min(tk, kt - k0)
+                # -- fill the on-chip operand tiles for this k chunk --------
+                for il in range(ib):
+                    # Gather this row-block's whole k-chunk first, so consecutive k-tiles that are
+                    # contiguous in DRAM and DIM rows apart on chip become ONE block transfer.
+                    pending = [
+                        Burst(
+                            blocking.a_row(il, kl) + ld.row_offset, ld.tensor, ld.byte_offset,
+                            ld.cols, ld.rows, f"a[{i0 + il}][{k0 + kl}]",
+                        )
+                        for kl in range(kb)
+                        for ld in a.loads(i0 + il, k0 + kl)
+                    ]
+                    for bu in coalesce(pending, elem_bytes=a.elem_bytes):
+                        b.mvin(b.addr(bu.tensor, bu.byte_offset), bu.spad, bu.cols, bu.rows,
+                               note=bu.note)
+                        st.mvin += 1
+                for kl in range(kb):
+                    kt_spec = ktiles[k0 + kl]
+                    pending = []
+                    for jl in range(jb):
+                        ld = bop.load(kt_spec, j0 + jl, _extent(n, j0 + jl), n)
+                        pending.append(
+                            Burst(
+                                b_row(k0, kl, jl, j0 + jl) + ld.row_offset,
+                                ld.tensor, ld.byte_offset,
+                                ld.cols, ld.rows, f"b[{k0 + kl}][{j0 + jl}]",
+                            )
+                        )
+                    for bu in coalesce(pending, elem_bytes=bop.elem_bytes):
+                        b.mvin2(b.addr(bu.tensor, bu.byte_offset), bu.spad, bu.cols, bu.rows,
+                                note=bu.note)
+                        st.mvin += 1
+
+                # -- the weight-stationary nest ----------------------------
+                def tile(kl: int, jl: int) -> None:
+                    kspec = ktiles[k0 + kl]
+                    ncols = _extent(n, j0 + jl)
+                    staged = False
+                    for il in range(ib):
+                        for r0, nrows in _fuse_runs(a.runs(i0 + il, k0 + kl)):
+                            for seg0, seglen, was_init in _split_by_init(
+                                initialized, il, jl, r0, nrows
+                            ):
+                                c_addr = facts.acc_addr(
+                                    acc_tile_row(il, jl, jb) + seg0,
+                                    was_init,
+                                    readout.full_width,
+                                )
+                                b.preload(
+                                    b_row(k0, kl, jl, j0 + jl)
+                                    if not staged else facts.GARBAGE_ADDR,
+                                    c_addr,
+                                    ncols, kspec.width, ncols, seglen,
+                                )
+                                b.compute(
+                                    blocking.a_row(il, kl) + seg0,
+                                    kspec.width, seglen, not staged,
+                                )
+                                st.compute += 1
+                                staged = True
+                            for r in range(r0, r0 + nrows):
+                                initialized.add((il, jl, r))
+
+                if early_store:
+                    # An output COLUMN of the block is complete the moment its last contraction
+                    # tile retires, and the rows it owns are touched by no later compute of this
+                    # block -- so its store carries no hazard against the columns still running and
+                    # the DMA overlaps the mesh instead of standing after it. Contracting the
+                    # n-tile OUTERMOST is what makes a column complete early; it moves no bytes,
+                    # changes no command count and stages the stationary tile exactly as often as
+                    # the k-outer order did (once per (k-tile, n-tile) pair either way).
+                    for jl in range(jb):
+                        for kl in range(kb):
+                            tile(kl, jl)
+                        _emit_store(b, blocking, ib, jb, i0, j0, m, n, out, readout, st,
+                                    out_base, jls=[jl], configure=False)
+                else:
+                    for kl in range(kb):
+                        for jl in range(jb):
+                            tile(kl, jl)
+
+            if not early_store:
+                _emit_store(b, blocking, ib, jb, i0, j0, m, n, out, readout, st, out_base)
+    return st
+
+
+def _fuse_runs(runs: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Merge runs that are ADJACENT inside the tile into one systolic pass.
+
+    A run is a maximal set of tile rows the moving operand gathers with ONE strided burst, so a run
+    ends wherever the DRAM address stops advancing by that one stride -- at a padded tap, but also
+    merely at an output-row wrap, where the next pixel is still in bounds and still resident. The
+    contraction nest does not care about the address stream: it names a base row of the operand tile,
+    the matching base row of the accumulator tile, and a row count, and both bases advance with the
+    tile row. Two runs that touch therefore describe one contiguous band of resident rows and cost
+    one PRELOAD/COMPUTE pair instead of two. Rows the gather left out are never merged across,
+    because a gap between runs is exactly a row that holds no operand.
+    """
+    out: list[tuple[int, int]] = []
+    for r0, nrows in runs:
+        if out and out[-1][0] + out[-1][1] == r0:
+            prev0, prevn = out[-1]
+            out[-1] = (prev0, prevn + nrows)
+        else:
+            out.append((r0, nrows))
+    return out
+
+
+def _split_by_init(initialized: set, il: int, jl: int, r0: int, nrows: int):
+    """Split ``[r0, r0+nrows)`` into maximal segments of uniform initialised state.
+
+    A row that no contraction tile has written yet must be OVERWRITTEN (accumulate = 0); one that
+    has been written must be accumulated into. With a padded convolution the two states coexist
+    inside one tile, which is exactly why this is a split and not a flag.
+
+    Each segment is reported as an ABSOLUTE row offset within the tile, because that offset indexes
+    both the on-chip operand tile and the accumulator tile -- a run that starts part-way down a tile
+    does not start at its own beginning.
+    """
+    out = []
+    start = r0
+    cur = (il, jl, r0) in initialized
+    for r in range(r0 + 1, r0 + nrows):
+        was = (il, jl, r) in initialized
+        if was != cur:
+            out.append((start, r - start, cur))
+            start, cur = r, was
+    out.append((start, r0 + nrows - start, cur))
+    return out
+
+
+def _emit_store(b, blocking, ib, jb, i0, j0, m, n, out: OutSpec, readout: Readout, st: Stats,
+                out_base: int = 0, jls: list[int] | None = None, configure: bool = True):
+    if readout.pool_enabled:
+        b.config_st(
+            out.row_bytes, readout.act, readout.acc_scale,
+            pool_stride=readout.pool_stride, pool_size=readout.pool_size,
+            pool_out_dim=readout.pool_out_dim, porows=readout.porows, pocols=readout.pocols,
+            orows=readout.orows, ocols=readout.ocols, upad=readout.upad, lpad=readout.lpad,
+        )
+        rows_in = readout.orows * readout.ocols
+        rows_out = readout.porows * readout.pocols
+        for bi in range(readout.pool_batches):
+            for jl in range(jb):
+                cols = _extent(n, j0 + jl)
+                b.mvout(
+                    b.addr(out.tensor, out_base + (bi * rows_out * out.n + (j0 + jl) * DIM) * readout.out_bytes),
+                    facts.acc_addr(jl * ((m + DIM - 1) // DIM) * DIM + bi * rows_in,
+                                   True, readout.full_width),
+                    cols, DIM, note=f"pooled[{bi}][{j0 + jl}]",
+                )
+                st.mvout += 1
+        return
+
+    if configure:
+        b.config_st(out.row_bytes, readout.act, readout.acc_scale)
+    for il in range(ib):
+        rows = _extent(m, i0 + il)
+        for jl in (range(jb) if jls is None else jls):
+            cols = _extent(n, j0 + jl)
+            b.mvout(
+                b.addr(out.tensor, out_base + ((i0 + il) * DIM * out.n + (j0 + jl) * DIM) * readout.out_bytes),
+                facts.acc_addr(blocking.acc_row(il, jl, jb), True, readout.full_width),
+                cols, rows, note=f"c[{i0 + il}][{j0 + jl}]",
+            )
+            st.mvout += 1
+
+
+# --------------------------------------------------------------------------- operand factories
+def dense_a(tensor: str, m: int, k: int, elem_bytes: int = 1, pitch: int | None = None) -> AOperand:
+    """The moving operand of a plain row-major [M, K] contraction.
+
+    ``pitch`` is the DRAM row pitch in ELEMENTS (``layout.row_pitch``), which is the declared
+    trailing extent rounded up to a tile edge -- not the extent itself.
+    """
+    p = k if pitch is None else pitch
+
+    def loads(i: int, kti: int) -> list[TileLoad]:
+        return [
+            TileLoad(
+                0, tensor, ((i * DIM) * p + kti * DIM) * elem_bytes,
+                _extent(k, kti), _extent(m, i),
+            )
+        ]
+
+    def runs(i: int, kti: int) -> list[tuple[int, int]]:
+        return [(0, _extent(m, i))]
+
+    return AOperand(m=m, stride_bytes=p * elem_bytes, loads=loads, runs=runs,
+                    elem_bytes=elem_bytes)
+
+
+def dense_b(tensor: str, k: int, n: int, elem_bytes: int = 1, pitch: int | None = None) -> BOperand:
+    """The stationary operand of a plain row-major [K, N] contraction."""
+    p = n if pitch is None else pitch
+
+    def load(kspec: KTile, jti: int, ncols: int, _n: int) -> TileLoad:
+        return TileLoad(0, tensor, (kspec.b_row * p + jti * DIM) * elem_bytes, ncols, kspec.width)
+
+    return BOperand(tensor=tensor, stride_bytes=p * elem_bytes, load=load, elem_bytes=elem_bytes)
+
+
+def transposed_b(tensor: str, rows: int, depth: int, elem_bytes: int = 1,
+                 pitch: int | None = None) -> BOperand:
+    """A stationary operand stored ROW-PER-OUTPUT-COLUMN ([N, K]), transposed by the mesh.
+
+    This is what ``attention_qk`` means by contracting the trailing head dim of both operands: K is
+    stored row-per-key, so the tile that feeds mesh column block ``j`` is K's ROW block ``j``.
+    """
+    p = depth if pitch is None else pitch
+
+    def load(kspec: KTile, jti: int, ncols: int, _n: int) -> TileLoad:
+        return TileLoad(
+            0, tensor, (jti * DIM * p + kspec.b_row) * elem_bytes, kspec.width, ncols
+        )
+
+    # Consecutive n-tiles of a transposed stationary operand are a whole ROW BLOCK apart in DRAM,
+    # not one tile apart, so the coalescer's contiguity test never merges them -- stated by passing
+    # the real element width rather than by relying on the default.
+    return BOperand(tensor=tensor, stride_bytes=p * elem_bytes, load=load, elem_bytes=elem_bytes)
+
+
+def dense_ktiles(k: int) -> list[KTile]:
+    return [KTile(_extent(k, t), t * DIM) for t in range((k + DIM - 1) // DIM)]

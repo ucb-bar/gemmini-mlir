@@ -1,0 +1,57 @@
+{
+  "build_time_gate": {
+    "clean": true,
+    "library_groups": [
+      "0",
+      "71"
+    ],
+    "record": "artifacts/perf-studies/whole-model/gemmini/b12fc1ee1ffeaa08/801eec3ffeb4a25ac7b3d73fee824f2ea1c1efdbab7dd093ab206dfa1891bbca/no_fsm_scan.json",
+    "sha256": "5e8d7e3a46c7a42d5857f37ab5addb49991874465a02b82625cdc135f7607e65"
+  },
+  "elf_sha256": "d8d3627effb2421c2f763c1010b62cfc616b94a8f6c54f67b771b3e488ae728f",
+  "elfs": {
+    "gsim_certification_host_dump": "9a11fb49fcdea1c7c12c3a37ed14f7d01d3a4e63a32364543ab12ebf9b040681",
+    "lean_jobs_1436_1444_timing": "d8d3627effb2421c2f763c1010b62cfc616b94a8f6c54f67b771b3e488ae728f",
+    "note": "the stock and lean timing ELFs are the same bytes: with g71 on the host core neither build reads the readout-width macro that distinguishes the two headers",
+    "stock_job_1939_timing": "d8d3627effb2421c2f763c1010b62cfc616b94a8f6c54f67b771b3e488ae728f"
+  },
+  "exempt": "the batch ELF 7eab9c01 also links the vendor control, which uses loop instructions by design",
+  "hits": [],
+  "positive_control": {
+    "clean": false,
+    "elf_sha256": "e8536e625bb552afbb604149fd520341d47b0db8b007409b304d000379c4d10e",
+    "summary": {
+      "LOOP_WS": 1,
+      "LOOP_WS_CONFIG_ADDRS_AB": 1,
+      "LOOP_WS_CONFIG_ADDRS_DC": 1,
+      "LOOP_WS_CONFIG_BOUNDS": 1,
+      "LOOP_WS_CONFIG_STRIDES_AB": 1,
+      "LOOP_WS_CONFIG_STRIDES_DC": 1
+    },
+    "what": "job 1882's timing ELF (FSM-allowed build, FC via the vendor library)"
+  },
+  "prohibited_instructions": {
+    "10": "LOOP_WS_CONFIG_ADDRS_AB",
+    "11": "LOOP_WS_CONFIG_ADDRS_DC",
+    "12": "LOOP_WS_CONFIG_STRIDES_AB",
+    "13": "LOOP_WS_CONFIG_STRIDES_DC",
+    "15": "LOOP_CONV_WS",
+    "16": "LOOP_CONV_WS_CONFIG_1",
+    "17": "LOOP_CONV_WS_CONFIG_2",
+    "18": "LOOP_CONV_WS_CONFIG_3",
+    "19": "LOOP_CONV_WS_CONFIG_4",
+    "20": "LOOP_CONV_WS_CONFIG_5",
+    "21": "LOOP_CONV_WS_CONFIG_6",
+    "24": "LOOP_WS_CONFIG_SPAD_AB",
+    "8": "LOOP_WS",
+    "9": "LOOP_WS_CONFIG_BOUNDS"
+  },
+  "prohibited_roles": [
+    "loop_descriptor"
+  ],
+  "scanner": "merlin.perf.isa_prohibition.scan_elf at Merlin main e0dfc894e; the prohibited set and the accelerator opcode are derived from the target's facts with the gemmini support package selected",
+  "schema": "merlin_champion_v1",
+  "scope": "whole_elf",
+  "summary": {},
+  "verdict": "clean"
+}

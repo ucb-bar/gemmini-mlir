@@ -1,0 +1,121 @@
+{
+  "board_correctness": {
+    "lean_job_1436": "pass: 71/71 groups, argmax 21",
+    "lean_job_1444": "pass: 71/71 groups, argmax 21",
+    "stock_job_1939": "pass: 71/71 groups verified against the functional model, argmax 21 = oracle 21"
+  },
+  "gsim": {
+    "argmax": {
+      "agrees_with_oracle": true,
+      "core_agrees_with_dump": true,
+      "from_core": 21,
+      "from_dump": 21,
+      "golden": 21,
+      "oracle": 21
+    },
+    "bracket_sum_cycles": 37024210,
+    "cycles_note": "elaborated-RTL cycles; the measurement ladder does not admit them as the device's cycle count (cycles_adjudication in the verdict). FireSim is the cycle authority.",
+    "dump": {
+      "coherent_lines": 3109,
+      "sha256": "3f49b3f2bed1742b919f506734603958f0caac41f86d60518de981a1983eb403",
+      "source": "hybrid",
+      "stale_bytes": 0
+    },
+    "emulator": {
+      "engine": "gsim-hostdump (dump-capable build of the gemmini_gsim_model_serialclk elaboration)",
+      "equivalence_with_pinned_gemmini_gsim_emulator": {
+        "AGREE": 12,
+        "DISAGREE": 0,
+        "UNFINISHED": 0,
+        "candidate_sha256": "7d6e5e38521836992601d6c9fa5debebfe90a67b8c661aa834e2cf9e22d9488c",
+        "members": 12,
+        "reference_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea"
+      },
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "receipt_sha256": "12a3216e6d190efc213939220ef938b1a7b6ab68a137575a69f32e4665eab8cb",
+      "sha256": "7d6e5e38521836992601d6c9fa5debebfe90a67b8c661aa834e2cf9e22d9488c"
+    },
+    "groups_correct": 71,
+    "groups_wrong": [],
+    "header": "3758ae967af3a179497660970201093a7fb624be00173990ce33d3f5c38da924",
+    "machine": {
+      "elaboration_pin_check": {
+        "artifact": "gemmini_gsim_model_serialclk",
+        "matches_pin": true,
+        "path": "build/rtl_engines/gemmini/gsim/model.fir",
+        "sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8"
+      },
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "note": "the verdict's own artifact check looked for the elaboration in the checkout that ran the tool, which does not hold it; the store's copy hashes to the pinned FIRRTL digest",
+      "registry_entry": "gemmini_gsim_model_serialclk"
+    },
+    "program": {
+      "attribution": {
+        "host": 2,
+        "package": 70,
+        "vendor": 0
+      },
+      "build_options": {
+        "allow_passes": true,
+        "allow_regions": true,
+        "machine": "gemmini_gsim_emulator",
+        "prohibited_roles": [
+          "loop_descriptor"
+        ]
+      },
+      "capsule_weights_sha256": "334694bba28285e6674b01fe9cca7c69c861a4c366fe66ac7b0903dede17c70e",
+      "elf_sha256": "9a11fb49fcdea1c7c12c3a37ed14f7d01d3a4e63a32364543ab12ebf9b040681",
+      "isa_scan": {
+        "clean": true,
+        "elf_sha256": "9a11fb49fcdea1c7c12c3a37ed14f7d01d3a4e63a32364543ab12ebf9b040681"
+      },
+      "oracle": {
+        "argmax": 21,
+        "cosine_to_golden": 0.9994677639400666,
+        "golden_argmax": 21
+      },
+      "same_kernels_as_job_1939": "70/70 package kernel objects are byte-identical to the stock timing build's; the programs differ only in the harness (host_dump writes outputs for a memory dump instead of checking them on the core, which an RTL simulator cannot afford)",
+      "verify": "host_dump"
+    },
+    "quotable": true,
+    "records": {
+      "build": "artifacts/perf-studies/whole-model/gemmini/gsim-cert/20261007T053000Z_801eec3f/build/whole_model_build.json",
+      "build_sha256": "4d6747f0677684a29c6de37203e98e78ff786d549da5016f1da2b918804fd00b",
+      "verdict": "artifacts/perf-studies/whole-model/gemmini/gsim-cert/20261007T053000Z_801eec3f/gsim/verdict.json",
+      "verdict_sha256": "3c446d64e9d17305159277e3492dbbbff2a26fcb57ed574f9665b70e3b84cc73"
+    },
+    "status": "graded",
+    "superseded_attempt": {
+      "record": "artifacts/perf-studies/whole-model/gemmini/contract_row_layout/8ba3d6e9f4e162c0/801eec3ffeb4a25ac7b3d73fee824f2ea1c1efdbab7dd093ab206dfa1891bbca/result.json",
+      "timing_status": "REFUSED",
+      "why": "an earlier certification attempt in the old-line certifier store was refused before it ran (screen_failed, infrastructure)"
+    },
+    "tool": "merlin-whole-model-gsim (merlin.perf.whole_model_gsim) at Merlin main e0dfc894e",
+    "verdict": "pass",
+    "wall_seconds": 6635.2,
+    "whole_window_cycles": 37061012
+  },
+  "parents_certified_do_not_carry_over": {
+    "079a9cb8": {
+      "gsim_whole_window_cycles": 42889757,
+      "store": "artifacts/perf-studies/whole-model/gemmini/contract_row_layout/87375eed396065f2",
+      "verdict": "pass"
+    },
+    "efaed4dc": {
+      "gsim_whole_window_cycles": 38115229,
+      "record": "artifacts/perf-studies/whole-model/gemmini/contract_row_layout/8ba3d6e9f4e162c0/efaed4dcd64a195423c6b79bdbe4a2c558c769fc79fbadf0698c8b6ff778e5ed/result.json",
+      "timing_status": "MEASURED"
+    }
+  },
+  "payload_gate": "no oot_runner.certify rungs are recorded for these bytes (a separate, optional gate)",
+  "per_group_gsim_check": {
+    "correct": 34,
+    "groups": 34,
+    "isa_clean": 34,
+    "machine": "gemmini_gsim_model_serialclk",
+    "rows": "artifacts/perf-studies/group-capsules/gemmini/composed_801eec3f_20261001/gsim_check_rows.json",
+    "rows_sha256": "915d7835e3a7040c95ed72ee7c7f8567fb1208a5e029d7a1147b5045ec8ae81b",
+    "scope": "24 ResNet-50 groups plus 10 held-out groups (ResNet-18 g1/2/12/19/26, ResNet-34 g1/2/15/28/47), each timed alone on GSIM before the board run; NOT a whole-model certification"
+  },
+  "schema": "merlin_champion_v1"
+}

@@ -1,0 +1,297 @@
+"""Loop RE-ROLLING over the emitted command stream.
+
+A tiled contraction emits the same few commands once per tile, with every operand field advancing by
+a constant step. Emitted straight-line, the PROGRAM then grows with the payload -- which is the
+defect the route-quality gate names as "the host still works at element scale". Rolling those
+repeats back into a loop keeps the issued command sequence identical while the emitted code stops
+scaling: the host computes addresses, issues commands and branches, which is exactly the division of
+labour the contract permits.
+
+The transform is verified by RE-EXPANSION: :func:`reroll` returns a node list only when expanding it
+reproduces the input stream instruction for instruction. There is no case where it can silently
+change the program.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from ..target import isa
+
+#: Loop bodies longer than this are not searched for; a tiled nest's inner body is small.
+#:
+#: Raised 96 -> 128. `Rolled` bodies are STRAIGHT-LINE (there is no nested `Rolled`), so the cap is
+#: the only thing that decides WHICH level of the contraction nest becomes a loop and how much host
+#: code the rest of the nest is spelled out as. The k-tile level of a deep 3x3 convolution carries
+#: one body of `jb * ib * 2` commands -- 8 n-tiles x 6-7 m-tiles x (PRELOAD, COMPUTE) is 96-112,
+#: plus the chunk's stationary mvins, so roughly 100-120: just over the old cap. Refused that
+#: period, the search fell back to the n-tile level (period `2 * ib`, trip `jb`), which leaves the
+#: k-tile loop SPELLED OUT: a `kt = 72` chunk emits 72 copies of that body as straight-line host
+#: code, i.e. tens of thousands of commands' worth of code per contraction against a scalar core
+#: whose instruction cache holds a few thousand. Admitting the k-tile period rolls trip `kt - 1`
+#: (the first k-tile differs: its accumulator addresses do not carry the accumulate bit) into ONE
+#: body and collapses the emitted code for a chunk by ~70x.
+#: The cap can only ADD candidate periods -- `reroll` keeps the period with the largest `saved` --
+#: so no roll that was found before is lost, and `reroll` still verifies the result by
+#: RE-EXPANSION, so the issued command stream is unchanged instruction for instruction and no group
+#: can change value. The cost is the period scan at each start position, which grows with the cap;
+#: 128 cleared the deep-convolution body. 256 was submitted once and its board job NEVER RETURNED,
+#: so there is no measurement for it; back at 128, the value of the promoted best `73c10e39a5d8`.
+#: The cap is now the SECONDARY lever anyway: `_nest` below reaches the outer repeats the flat
+#: search cannot see at any cap, and it does so without the quadratic period scan.
+MAX_PERIOD = 128
+#: Below this trip count a loop costs more code than it saves.
+MIN_TRIP = 4
+#: A rolled loop pays per-iteration address arithmetic and a branch. Unrolling the body amortises
+#: that over several commands, which matters because the cycle-accurate tier measures the SCALAR
+#: core too -- the point of rolling is to stop the CODE growing with the payload, not to hand the
+#: core more work per command.
+#: Back to 4, MEASURED. On THIS command stream a wider factor is a LOSS: `cd12694fc601` (the same
+#: stream, byte-identical accelerator files, with UNROLL 16 / MIN_UNROLL_TRIP 8) measured 45,744,198
+#: against `e9e6198d24bc`'s 43,630,858, and the whole +2.1M sat in conv (23,311,246 vs 21,463,368).
+#: Straight-line host code that large misses the scalar core's instruction cache faster than the
+#: saved loop arithmetic pays for. `UNROLL_BODY_MAX` still caps the longer mvin-plus-nest bodies,
+#: so a long body now takes a factor BELOW 4 where the old flat rule took 4.
+UNROLL = 2
+#: An unrolled body is straight-line host code, so it must stay inside the core's instruction
+#: cache: the factor is raised only while the WIDE body stays under this many accelerator commands.
+#: A two-command PRELOAD/COMPUTE body therefore unrolls the whole way to `UNROLL`, while a long
+#: mvin-plus-nest body keeps the factor that fits.
+UNROLL_BODY_MAX = 64
+#: Only unroll when there are enough iterations left for the loop to still be worth having.
+#:
+#: Back to 32, MEASURED with UNROLL above (`cd12694fc601` 45,744,198 vs `e9e6198d24bc` 43,630,858).
+#: Lowering it to 8 unrolled the trip-16 innermost m-block loop by 8, which is the code growth the
+#: measurement charged for. `reroll` verifies every roll by RE-EXPANSION, so the emitted command
+#: stream is unchanged instruction for instruction whatever this threshold is -- only the host code
+#: around it moves, and therefore no group can change value.
+MIN_UNROLL_TRIP = 32
+#: Below this many repeats of the SAME rolled loop, a nested loop is not worth its outer block.
+#: Two copies already pay: the second copy's whole body of host code is replaced by the outer
+#: branch and one add per moving operand, issued once per outer iteration rather than per command.
+MIN_OUTER_TRIP = 2
+
+
+@dataclass
+class Rolled:
+    """``trip`` repeats of ``body``, where repeat ``i`` adds ``i * step`` to each operand."""
+
+    trip: int
+    body: list[isa.Instr]
+    steps: list[tuple[int, int]]
+    #: The NESTED level, when there is one: the whole rolled loop repeats ``outer_trip`` times, and
+    #: repeat ``o`` adds ``o * outer_steps[k]`` to operand ``k``'s base. ``1`` is a plain loop.
+    outer_trip: int = 1
+    outer_steps: list[tuple[int, int]] | None = None
+
+    @property
+    def saved(self) -> int:
+        return len(self.body) * (self.trip * self.outer_trip - 1)
+
+
+Node = isa.Instr | str | Rolled
+
+
+def _operand_step(a, b) -> int | None:
+    """The constant difference from operand ``a`` to ``b``, or None if they are not comparable."""
+    if isinstance(a, isa.Imm) and isinstance(b, isa.Imm):
+        return b.value - a.value
+    if isinstance(a, isa.ArgAddr) and isinstance(b, isa.ArgAddr) and a.tensor == b.tensor:
+        return b.byte_offset - a.byte_offset
+    return None
+
+
+def _advance(op, step: int):
+    if isinstance(op, isa.Imm):
+        return isa.Imm(op.value + step)
+    return isa.ArgAddr(op.tensor, op.byte_offset + step)
+
+
+def _advance_instr(base: isa.Instr, i: int, step: tuple[int, int]) -> isa.Instr:
+    return isa.Instr(
+        base.cls, _advance(base.rs1, i * step[0]), _advance(base.rs2, i * step[1]), base.note
+    )
+
+
+def _unroll_factor(body_len: int, trip: int) -> int:
+    """How many bodies one loop iteration carries.
+
+    Raised while the loop still keeps at least two iterations (so the code does not grow with the
+    payload) and the wide body still fits the instruction cache budget.
+    """
+    if trip < MIN_UNROLL_TRIP:
+        return 1
+    factor = 1
+    while (factor * 2 <= UNROLL and trip // (factor * 2) >= 2
+           and body_len * factor * 2 <= UNROLL_BODY_MAX):
+        factor *= 2
+    return factor
+
+
+def _emit_rolled(nodes: list, body: list, steps: list[tuple[int, int]], trip: int) -> None:
+    """Append the loop for ``trip`` repeats of ``body``, unrolled where that is profitable."""
+    factor = _unroll_factor(len(body), trip)
+    iterations = trip // factor
+    wide_body: list[isa.Instr] = []
+    wide_steps: list[tuple[int, int]] = []
+    for i in range(factor):
+        for j, base in enumerate(body):
+            wide_body.append(_advance_instr(base, i, steps[j]))
+            wide_steps.append((steps[j][0] * factor, steps[j][1] * factor))
+    nodes.append(Rolled(trip=iterations, body=wide_body, steps=wide_steps))
+    for i in range(iterations * factor, trip):
+        for j, base in enumerate(body):
+            nodes.append(_advance_instr(base, i, steps[j]))
+
+
+def _period_trip(stream: list, start: int, period: int) -> tuple[int, list[tuple[int, int]]] | None:
+    """How many times the window at ``start`` repeats with a CONSTANT per-operand step."""
+    n = len(stream)
+    if start + 2 * period > n:
+        return None
+    first = stream[start : start + period]
+    if any(isinstance(x, str) for x in first):
+        return None
+    steps: list[tuple[int, int]] = []
+    for j in range(period):
+        a, b = stream[start + j], stream[start + period + j]
+        if isinstance(b, str) or a.cls != b.cls:
+            return None
+        s1, s2 = _operand_step(a.rs1, b.rs1), _operand_step(a.rs2, b.rs2)
+        if s1 is None or s2 is None:
+            return None
+        steps.append((s1, s2))
+    trip = 2
+    while start + (trip + 1) * period <= n:
+        ok = True
+        for j in range(period):
+            a, b = stream[start + j], stream[start + trip * period + j]
+            if isinstance(b, str) or a.cls != b.cls:
+                ok = False
+                break
+            if _operand_step(a.rs1, b.rs1) != steps[j][0] * trip:
+                ok = False
+                break
+            if _operand_step(a.rs2, b.rs2) != steps[j][1] * trip:
+                ok = False
+                break
+        if not ok:
+            break
+        trip += 1
+    return (trip, steps) if trip >= MIN_TRIP else None
+
+
+def _outer_step(a: Rolled, b: Rolled) -> list[tuple[int, int]] | None:
+    """The constant per-operand step from one rolled loop to the next identical one, or None."""
+    if a.outer_trip != 1 or b.outer_trip != 1:
+        return None
+    if a.trip != b.trip or len(a.body) != len(b.body) or a.steps != b.steps:
+        return None
+    steps: list[tuple[int, int]] = []
+    for x, y in zip(a.body, b.body):
+        if x.cls != y.cls:
+            return None
+        s1, s2 = _operand_step(x.rs1, y.rs1), _operand_step(x.rs2, y.rs2)
+        if s1 is None or s2 is None:
+            return None
+        steps.append((s1, s2))
+    return steps
+
+
+def _nest(nodes: list[Node]) -> list[Node]:
+    """Roll a RUN OF IDENTICAL ROLLED LOOPS into one two-level loop.
+
+    The flat pass emits straight-line bodies, so an outer nest level that repeats the same inner
+    loop stays SPELLED OUT: a contraction whose row loop is rolled but which has 16 identical rows
+    emits 16 COPIES of that loop's host code. This pass collapses such a run to ONE nest, which is
+    the same lever `MAX_PERIOD` reaches for and the flat search cannot: the repeat unit here is a
+    LOOP, not a window of instructions, so no period admits it at any cap.
+
+    The outer offset is added in the OUTER block (see :mod:`.llvm_emit`), so the inner body still
+    pays a single add per moving operand: the issued command stream and its cost are unchanged.
+    """
+    out: list[Node] = []
+    i = 0
+    while i < len(nodes):
+        node = nodes[i]
+        if not isinstance(node, Rolled) or node.outer_trip != 1:
+            out.append(node)
+            i += 1
+            continue
+        steps: list[tuple[int, int]] | None = None
+        j = i + 1
+        while j < len(nodes):
+            nxt = nodes[j]
+            cand = _outer_step(node, nxt) if isinstance(nxt, Rolled) else None
+            if cand is None:
+                break
+            if steps is None:
+                steps = cand
+            elif any(c != (s[0] * (j - i), s[1] * (j - i)) for c, s in zip(cand, steps)):
+                break
+            j += 1
+        if steps is not None and j - i >= MIN_OUTER_TRIP:
+            out.append(Rolled(trip=node.trip, body=list(node.body), steps=list(node.steps),
+                              outer_trip=j - i, outer_steps=steps))
+            i = j
+            continue
+        out.append(node)
+        i += 1
+    return out
+
+
+def expand(nodes: list[Node]) -> list:
+    out: list = []
+    for n in nodes:
+        if isinstance(n, Rolled):
+            osteps = n.outer_steps or [(0, 0)] * len(n.body)
+            for o in range(n.outer_trip):
+                for i in range(n.trip):
+                    for j, base in enumerate(n.body):
+                        s1, s2 = n.steps[j]
+                        o1, o2 = osteps[j]
+                        out.append(
+                            isa.Instr(base.cls, _advance(base.rs1, i * s1 + o * o1),
+                                      _advance(base.rs2, i * s2 + o * o2), base.note)
+                        )
+        else:
+            out.append(n)
+    return out
+
+
+def _same(a, b) -> bool:
+    if isinstance(a, str) or isinstance(b, str):
+        return a == b
+    return a.cls == b.cls and a.rs1 == b.rs1 and a.rs2 == b.rs2
+
+
+def reroll(stream: list) -> list[Node]:
+    """Roll every profitable repeat in ``stream``; verified by re-expansion before returning."""
+    nodes: list[Node] = []
+    i = 0
+    n = len(stream)
+    while i < n:
+        if isinstance(stream[i], str):
+            nodes.append(stream[i])
+            i += 1
+            continue
+        best: tuple[int, int, list[tuple[int, int]]] | None = None
+        for period in range(1, min(MAX_PERIOD, (n - i) // 2) + 1):
+            found = _period_trip(stream, i, period)
+            if found is None:
+                continue
+            trip, steps = found
+            saved = period * (trip - 1)
+            if best is None or saved > best[0]:
+                best = (saved, period, steps, trip)
+        if best is not None and best[0] > 0:
+            _, period, steps, trip = best
+            _emit_rolled(nodes, list(stream[i : i + period]), steps, trip)
+            i += period * trip
+        else:
+            nodes.append(stream[i])
+            i += 1
+    nodes = _nest(nodes)
+    if len(expand(nodes)) != n or not all(_same(a, b) for a, b in zip(expand(nodes), stream)):
+        return list(stream)  # re-expansion disagreed: ship the stream as it was
+    return nodes
