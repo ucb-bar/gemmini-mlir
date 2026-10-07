@@ -32,12 +32,16 @@ def _plan(route):
 
 def kernel(route):
     flag = route["coalesce_internal_spad"]
+    panel_batch = route.get("panel_batch", 1)
     if type(flag) is not bool:
         raise ValueError("explicit SPAD coalescing boolean required")
     return emit(
         _plan(route),
         coalesce_internal_spad=flag,
-        ordering_contract=OrderingContract(route["ordering_source"]) if flag else None,
+        ordering_contract=OrderingContract(route["ordering_source"])
+        if flag or panel_batch == 4
+        else None,
+        panel_batch=panel_batch,
     )
 
 
@@ -109,11 +113,14 @@ def build(
     capabilities,
     coalesce_internal_spad=False,
     ordering_source=None,
+    panel_batch=1,
 ):
     if type(coalesce_internal_spad) is not bool:
         raise ValueError("explicit SPAD coalescing boolean required")
+    if type(panel_batch) is not int or panel_batch not in (1, 4):
+        raise ValueError("explicit panel batch 1 or proved factor 4 required")
     capabilities.require()
-    if coalesce_internal_spad:
+    if coalesce_internal_spad or panel_batch == 4:
         if ordering_source is None:
             raise ValueError("pinned SPAD ordering source required")
         OrderingContract(str(ordering_source)).require()
@@ -152,6 +159,8 @@ def build(
             if ordering_source
             else None,
         }
+        if panel_batch != 1:
+            route["panel_batch"] = panel_batch
         kernel(route)
         routes.append(route)
     if {canonical(r["proof"]["source"]) for r in routes} != set(sources):

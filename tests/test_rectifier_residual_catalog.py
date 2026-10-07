@@ -16,6 +16,7 @@ from mlir_oot.captured_residual_bundle import canonical
 from mlir_oot.descriptor_writer import DescriptorWriterContract, transform
 from mlir_oot.golden_rectified_resadd import Capabilities
 from mlir_oot.joint_residual_catalog import adapter, oracle, rewrite
+from mlir_oot.rectifier_residual_catalog import kernel
 
 
 def selected(m=48, name="source_affine"):
@@ -54,6 +55,41 @@ def test_same_source_relation_uses_existing_private_single_writer_route(name):
     assert writers[0]["fresh_writers"] == [2]
     assert sum(op.name == "memref.alloc" for op in module.walk()) == 1
     module.verify()
+
+
+def test_batch_schedule_preserves_typed_writer_and_numeric_binding():
+    module, original, record = selected(m=80, name="arbitrary_affine_source")
+    route = record["routes"][0]
+    route.update(
+        panel_batch=4,
+        coalesce_internal_spad=True,
+        ordering_source="/scratch2/agustin/wt/chipyard-stock/generators/gemmini/src/main/scala/gemmini",
+    )
+    implementation = kernel(route)
+    assert "gemmini.rectifier_panel_batch" in implementation.attributes
+    rewrite(module, original, record)
+    writers = transform(module, [DescriptorWriterContract(route["symbol"], 2, (2,))])
+    assert writers[0]["fresh_writers"] == [2]
+    assert sum(op.name == "memref.alloc" for op in module.walk()) == 1
+    module.verify()
+
+
+@pytest.mark.parametrize("factor", [2, True, 4.0])
+def test_unknown_catalog_batch_refuses_before_source_mutation(factor):
+    module, original, record = selected()
+    record["routes"][0]["panel_batch"] = factor
+    before = str(module)
+    with pytest.raises(ValueError, match="explicit panel batch"):
+        rewrite(module, original, record)
+    assert str(module) == before
+
+
+def test_legacy_catalog_without_batch_has_identical_default_bytes():
+    _, _, record = selected()
+    route = record["routes"][0]
+    original = str(kernel(route))
+    route["panel_batch"] = 1
+    assert str(kernel(route)) == original
 
 
 @pytest.mark.parametrize(
