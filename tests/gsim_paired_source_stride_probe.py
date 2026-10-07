@@ -31,7 +31,9 @@ def main():
     parser.add_argument("--paired-manifest", type=Path, required=True)
     parser.add_argument("--source-symbol", required=True)
     parser.add_argument(
-        "--schedule", choices=("control", "source_stride"), required=True
+        "--schedule",
+        choices=("control", "source_stride", "compact_source_stride"),
+        required=True,
     )
     parser.add_argument("--workdir", type=Path, required=True)
     parser.add_argument("--llvm-bin", type=Path, required=True)
@@ -108,6 +110,7 @@ def main():
             source_stride=True,
             weight_base=resident.explicit_weight_base,
             row_residue=resident.row_residue,
+            compact_commands=args.schedule == "compact_source_stride",
             store_plan=plan,
         )
         module = generator.build()

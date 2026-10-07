@@ -21,7 +21,10 @@ def executed_commands(module):
     module.verify()
     lower(module.clone()).verify()
     fn = module.body.block.first_op
-    args = [StaticPointer(i, StaticInt(0, 64)) for i in range(3)]
+    args = [
+        StaticPointer(i, StaticInt(0, 64))
+        for i in range(len(fn.body.blocks.first.args))
+    ]
     commands = []
     for step in trace_static_function(
         fn, args, observe=lambda op: isinstance(op, G._GemminiOp), pointer_index_bits=64
@@ -94,6 +97,30 @@ def test_retained_spatial_mapping_preserves_strided_source_planes(residue):
     a = GoldenResidentConv(shape, **kwargs).build()
     b = GoldenResidentConv(shape, **kwargs, compact_commands=True).build()
     assert executed_commands(a) == executed_commands(b)
+
+
+@pytest.mark.parametrize(
+    "shape",
+    [
+        ConvShape(5, 7, 32, 67, stride=2, bn=4, output_dtype="i32"),
+        ConvShape(9, 5, 48, 19, stride=2, bn=2, output_dtype="i32"),
+    ],
+)
+def test_retained_paired_source_stride_preserves_both_store_owners(shape):
+    from mlir_oot.readout_store_plan import PairedReadoutPlan
+
+    plan = PairedReadoutPlan((1.0,), (1.0, 1.0), -100_000_000, 100_000_000, False)
+    kwargs = {"rows_per_tile": 1, "source_stride": True, "store_plan": plan}
+    control = GoldenResidentConv(shape, **kwargs).build()
+    candidate = GoldenResidentConv(shape, **kwargs, compact_commands=True).build()
+    left, right = executed_commands(control), executed_commands(candidate)
+    assert left == right
+    assert {
+        pointer.base
+        for name, _, pointers in right
+        if name == "gemmini.mvout"
+        for pointer in pointers
+    } == {2, 3}
 
 
 def test_large_regular_geometry_changes_static_size_not_issued_work():
