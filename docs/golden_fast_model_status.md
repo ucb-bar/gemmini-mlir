@@ -1,5 +1,24 @@
 # Faster performance screening
 
+## Blinded complete-group check: 2026-10-07 01:56 UTC
+
+Stock2064 is4256146700 cycles,4.72149% below2060 and12.38516% below2024.
+All original786432i8/1024BF16 consumer bytes, guards/inputs,8stats andcarrier3
+pass; root rehashes10 terminal pins and finalstock ELF/all-executable noFSM.
+Unchanged prequeue count-ratio4278988055.291242 errs0.536667%; the separate
+blinded six-historical-arm fit4283782180.9632835 errs0.649308%. No new label
+enters fitting, source variants remain one workload, the below-training-range
+refusal stays immutable and whole/automatic export remains UNKNOWN/disabled.
+This strengthens complete-group screening within this regime; it does not
+assign physical CPU/DDR/device costs or establish48-group prices.
+[Terminal and unchanged forecast scores](perf_records/root_bounded_floor_stock2064_terminal_review_20261007.json).
+
+One exact ResNet whole candidate is independently released after3334 source/
+link/proof/compiler pins and original1000word0/0 gates. The two prior residual
+GSIM pairs stay separate, without additive whole-cycle credit. More residual
+certificates are being audited by typed eligibility; new fence/resource/DDR
+regimes require fresh evidence rather than old array-row coefficients.
+
 ## Measured spacing model: 2026-10-07 01:44 UTC
 
 Stock2063 closes all15 windows, the original1,053,696 native output bytes,

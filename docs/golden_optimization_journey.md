@@ -9,6 +9,38 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 01:56 UTC: complete-group prediction check and exact whole release
+
+Root independently closes2064 stock4256146700 cycles/10pins/original consumer,
+8stats/carrier3/guards/inputbytes/staged receipts/finalzeroFSM. It improves
+2060 by4.72149% and2024 by12.38516%. Prequeue ratioforecast4278988055.291242
+errs0.536667%; blinded six-historical-arm retirement fit4283782180.9632835
+errs0.649308%. Originalforecast/range refusal/fixed-term negative unchanged;
+no refit, physical service attribution or whole extrapolation.
+[Independent hardware/model score](perf_records/root_bounded_floor_stock2064_terminal_review_20261007.json).
+
+Root releases exact14-product/coalesced-fence whole ResNet candidate16e8f69a…
+after3334 pins. The actual2055 control is byteexact5b8b0049…, both normal and
+controlledactualhost8 native/strict gates preserve all1000words0/0/fullSHA,
+and finalPC histogram rederives newpublicadapter/newkernel1each, retainedold0.
+Object executable bytes are unchanged by symbol-only rebinding. Host/runtime/
+weights/other target routes remain controlled2055. Initial rootreview expected
+two ELFsection fields instead of4 and refused before release; proper structural
+extraction fixes reviewer only, target/evidence bytes unchanged. No additive
+section/whole forecast. [Root release](perf_records/root_exact_rectifier_whole_stock_release_20261007.json).
+
+The separate single7bit selected graph removes inherited exact-source observer
+constraints under an explicit approximate policy. Generic selectedQK centers→
+unchangedF32max/scale/cubic/lane-tree/alpha→selectedPV centers→original endpoint
+and downstreamquantizer executes all48groups/1152QK+3456PV products, zero
+replay/fallback/errors. It FAILS131/1600 both originalcompiled/Torch gates,
+maxabs0.1346874237. This is an actualaccuracy negative d1eac4f/486pins, distinct
+from fallback-only d82f5e4/de4620a. It receives no target/hardware campaign.
+Statistical intervals must never certify original-source exactpoints. The
+previously assessed two-signed7digit/three-degree representation is a separate
+fixed native experiment with the same approximate graph/original whole gate;
+no thresholds, precision sweep or gold-derived selector.
+
 ### 2026-10-07 01:44 UTC: dependence calibration and whole/section negatives
 
 - Stock2063 closes159 packet/9 terminal pins and all15 original windows.

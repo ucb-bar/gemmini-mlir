@@ -9,7 +9,7 @@ generic explicit eight-lane host quantization. Tiny2062 improves to
 **410,147,055 cycles** through source-exact continuation and generic typed
 masked-output contraction scheduling.
 All original outputs and numeric gates pass. Smol whole1906 remains
-**258,621,872,969 cycles**; group2060's4,467,058,350 is a section result.
+**258,621,872,969 cycles**; group2064's4,256,146,700 is a section result.
 The source-bound quantizer model predicts the held current4/8 pair within3.73%
 and ranks it correctly. The new entirely held5/7-lane cross-executable test2059
 predicts within6.13% and ranks all three new pairs correctly without refitting.
@@ -24,12 +24,25 @@ a separate restricted internal-fence pair reports a further11.91%, with root
 release review pending. Tiny's compound16.38% becomes only0.612% whole stock
 gain. Smol fastRMS4 improves the complete12-head group8.043% on stock2060.
 Its proved bounded F32-floor successor passes all1600 original native words/
-61440 target checks and is running as2064 with a frozen exploratory count-ratio
-forecast. Single7bit Smol and dynamic-i8 Tiny attention experiments are negative:
-the former falls back in all48 groups and replays9.66B QK FMAs; the latter fails
+61440 target checks and stock2064 at4256146700 (4.721% below2060). The unchanged
+prequeue forecast errs0.537%; a separate blinded historical fit errs0.649%.
+Single7bit Smol and dynamic-i8 Tiny attention experiments are negative:
+the first Smol arm falls back all48 groups and replays9.66B QK FMAs; its separate
+fully selected graph executes48groups/4608products/zero replay/fallback but
+fails131/1600 original-gate words. Tiny's first single-i8 QK/PV policy fails
 220325/256000 words under both original compiled/Torch gates. Neither is queued.
 [Calibration release](perf_records/root_source_host_quant_spacing_prelabel_20261007.json),
 [Smol section release](perf_records/root_rms4_fast_stock_packet_review_20261007.json).
+
+Root now closes3334 source/link/compiler/proof/whole pins for the controlled
+exact14-product/fence-coalesced ResNet candidate16e8f69a…3c91ef9. Current2055
+control reproduces byte-exactly, all original1000 native/strict words pass0/0,
+actual newadapter/kernel execute once and retained oldproducer never executes.
+Only one active target residual route changes; host8/runtime/weights/other
+target objects stay current2055. One stock observation is released; whole
+prediction and additive composition of separate section gains remain UNKNOWN.
+[ResNet release](perf_records/root_exact_rectifier_whole_stock_release_20261007.json),
+[latest Smol section](perf_records/root_bounded_floor_stock2064_terminal_review_20261007.json).
 
 Generic typed closed-mask topic is published as Merlin PR48 on actual
 main7fee5cfdac, with114 source/114 installed tests and qualified package bytes.
