@@ -1,0 +1,103 @@
+{
+  "capsules": {
+    "accounting_source": "each capsule's capsule_result.json (tiers.L3 and tier_reuse), cross-checked with the certification index artifacts/handoff/champions/cand_07_certification/cand_07_certification.json",
+    "completion_failures": [
+      "public:not_all_capsules_passed",
+      "public:functional_pass_not_true",
+      "public:numeric_grade_not_gradeable",
+      "public:numeric_exactness_not_complete",
+      "public:trace_conformance_not_complete",
+      "public:model_execution_evidence_not_complete",
+      "public:structural_evidence_not_complete",
+      "public:cohort_admission_denominator_mismatch",
+      "public:n_not_graded_ineligible_nonzero",
+      "public:n_incomplete_nonzero",
+      "public:not_all_capsules_reached_L3",
+      "public:not_all_capsules_rtl_backed"
+    ],
+    "corpus": {
+      "bundle": "merlin_assisted_rtlchecks_public_v0",
+      "hidden_capsule_snapshot": "770b4a350d82417a3f4ecb6cf1509e75eeb14ae4a516bccb6341fc34a09d4247",
+      "input_bundle_manifest_sha256": "5d540284de06193b2af67ffdb03d35892913141ede6ffdcfefe3514afa5a6f1b",
+      "public_contract_sha256": "44d695d9c22b1c5a77932768d5dc2ec8d413783903d9d7342c9175b6b3272f21"
+    },
+    "engine": {
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "capsules": 135,
+      "capsules_without_an_L3_engine": 40,
+      "config": "GemminiGsimSerialClkConfig",
+      "fidelity": "elaborated_rtl",
+      "name": "gsim",
+      "registry_artifact": "gemmini_gsim_emulator"
+    },
+    "formal_completion_unreachable": {
+      "also": "1 capsule (SY_host_only_attention) timed out at elaborated_rtl (900 s): unmeasured, not wrong",
+      "bf16_out_of_capability": "11 bf16 capsules are outside the declared operand dtype capability (not graded)",
+      "capped_at_L2": "39 public capsules declare max_oracle_tier L2; they can never reach L3",
+      "host_lane_grader_golden_crash": "9 host-lane capsules crash the grader's golden (unsupported operation layernorm/gelu/softmax/reduce_sum/depthwise_conv2d)",
+      "model_capsules_missing_weights": "10 model capsules lack their weights asset in the grader tree"
+    },
+    "formal_grade_complete": false,
+    "grade": "grade_l3_fresh",
+    "graded_at": "2026-10-06T07:08:46Z to 2026-10-06T09:03:18Z",
+    "grader": {
+      "commit": "7013aff4b72f846cf114254a025c7ee3566fbc5f",
+      "entry": "merlin/experiments/capsule_bench/harness/regrade_run_snapshot.py -> targets/gemmini/scripts/grade_agent_run.py",
+      "kind": "old-line formal post-freeze grader (main cannot consume this bundle: no hidden capsule root)",
+      "required_tier": "L3"
+    },
+    "hidden": {
+      "at_tier": 14,
+      "carried": 0,
+      "graded": 14,
+      "highest_tier": {
+        "L3": 14
+      },
+      "measured_now": 14,
+      "passed_any_tier": 14,
+      "status_counts": {
+        "pass": 14
+      }
+    },
+    "mode": "fresh: tier-certificate cache OFF, ELF build cache OFF (every L3 executed now)",
+    "public": {
+      "at_tier": 121,
+      "carried": 0,
+      "graded": 180,
+      "highest_tier": {
+        "L2": 40,
+        "L3": 121,
+        "none": 30
+      },
+      "l2_only_passes": 39,
+      "measured_now": 121,
+      "passed_any_tier": 160,
+      "status_counts": {
+        "error": 9,
+        "fail": 1,
+        "incomplete": 10,
+        "not_graded": 11,
+        "pass": 160
+      }
+    },
+    "record": "artifacts/handoff/champions/cand_07_certification/grade_l3_fresh.certification.json",
+    "record_sha256": "0dc9a41460065580c2dddcfcae93b49405fb342d8c6c6b225328f010c08ffd01",
+    "tier": "L3",
+    "toolchain_shas": {
+      "gemmini_isa_headers": "6b477a8b43ed6d1e267a25a3afa70700bb887edc",
+      "gemmini_rocket_chipyard": "009e85b05ca817a15fcd6c3fe4eedd86cc2a3617",
+      "gemmini_rocket_rtl": "63f0b68a68f185a016a2993f2fb32e1661ea9e6c",
+      "gemmini_rtl": "63f0b68a68f185a016a2993f2fb32e1661ea9e6c",
+      "merlin": "7013aff4b72f846cf114254a025c7ee3566fbc5f"
+    }
+  },
+  "loop_grade_round_07": {
+    "failed": 12,
+    "l2_only": 39,
+    "l3": "122 (all carried from earlier grades)",
+    "passed": "161/173",
+    "record_sha256": "d9dd4071e2218b6638421f95ec4f0b0766be50c0175a14344945b4a39e8dae09"
+  },
+  "payload_gate": "no oot_runner.certify rungs are recorded for these bytes (a separate, optional gate)",
+  "schema": "merlin_champion_v1"
+}

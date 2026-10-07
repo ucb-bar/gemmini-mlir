@@ -1,0 +1,280 @@
+artifact_type: mlir_oot_target_backend
+target: gemmini
+package_id: gemmini_xdsl_oot_backend
+language: python
+integrity_exempt: false
+
+authoring:
+  mode: agent_generated_from_rtl_facts
+  author: capsule_bench agent (merlin_rtlchecks arm)
+  generated_by_agent: true
+
+entrypoints:
+  tool: gemmini-opt
+
+commands:
+  parse:
+    argv: ["{tool}", "--verify-diagnostics", "{input_mlir}"]
+  lower_interface_to_target:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "{input_mlir}"]
+  emit_command_buffer:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-command-buffer={output_json}", "{input_mlir}"]
+  lower_target_to_llvm:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-target-artifact", "{input_mlir}"]
+  emit_analysis_bundle:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-command-buffer={output_json}", "--emit-target-artifact", "{input_mlir}"]
+
+components:
+  parse: [mlir_oot/frontend/, mlir_oot/ir/, mlir_oot/driver.py, mlir_oot/lowering/, mlir_oot/codegen/, mlir_oot/target/]
+  lower_interface_to_target: [mlir_oot/frontend/, mlir_oot/ir/, mlir_oot/lowering/, mlir_oot/target/, mlir_oot/tables/, mlir_oot/driver.py]
+  emit_command_buffer: [mlir_oot/frontend/, mlir_oot/ir/, mlir_oot/lowering/, mlir_oot/target/, mlir_oot/tables/, mlir_oot/codegen/, mlir_oot/cmdbuf.py, mlir_oot/validate.py, mlir_oot/driver.py]
+  lower_target_to_llvm: [mlir_oot/frontend/, mlir_oot/ir/, mlir_oot/lowering/, mlir_oot/target/, mlir_oot/tables/, mlir_oot/codegen/, mlir_oot/driver.py]
+  emit_analysis_bundle: [mlir_oot/]
+
+optimization_surfaces:
+  - id: contraction-blocking
+    scope: heuristic
+    path: mlir_oot/lowering/schedule.py
+    symbol: Scheduler.choose
+    effects: [tiling, movement, residency, latency_hiding]
+    cca_axes: [spatial.dataflow, spatial.accumulator_resident, memory.capacity_fit]
+    mechanism: >-
+      pick the M/N/K blocking of the weight-stationary loop nest from the derived accumulator and
+      scratchpad depths, so more moving row-blocks reuse one stationary weight tile
+    emitted_delta: >-
+      fewer MVIN2 bursts and fewer PRELOADs for the same COMPUTE count in the decoded trace
+    validation: warm reduced witness on one capsule, then the full emit-path shape probe
+    abandonment: >-
+      abandon if the emitted trace does not lose transfers, if a tile stops fitting the derived
+      capacity, or if the verdict's numeric plane regresses
+  - id: readout-fusion
+    scope: pass
+    path: mlir_oot/lowering/epilogue.py
+    symbol: plan_readout
+    effects: [fusion, quantization, dtype, encoding]
+    cca_axes: [spatial.accumulator_resident]
+    mechanism: >-
+      fold activation, accumulator scale and pooling geometry into the store-path configuration
+      instead of a second pass over the committed tensor
+    emitted_delta: >-
+      the CONFIG_ST operand fields carry the epilogue and no extra MVIN/MVOUT round trip appears
+    validation: decode the emitted artifact and reconcile CONFIG_ST against the command buffer
+    abandonment: abandon a stage whose parameters the readout cannot carry; decline it by name
+  - id: elementwise-scale-factorisation
+    scope: codegen
+    path: mlir_oot/lowering/iface_to_gemmini.py
+    symbol: _factor_scales
+    effects: [quantization, encoding, dtype]
+    cca_axes: [spatial.accumulator_resident]
+    mechanism: >-
+      split a per-operand multiplier pair into integer load-unit scales plus one store-path
+      accumulator scale, so the accumulator adds exactly and the program rounds exactly once
+    emitted_delta: >-
+      the CONFIG_LD scale fields decode as integers and the single remaining factor appears in
+      CONFIG_ST acc_scale, for the same transfer and compute counts
+    validation: >-
+      disassemble the emitted artifact and reconcile every scale field against the command buffer,
+      then re-run the datapath model at zero tolerance
+    abandonment: >-
+      abandon when the pair does not factor inside the declared containers' exactness bound, or
+      when the readout is full width and carries no store scale; keep the per-operand path instead
+  - id: im2col-address-stream
+    scope: codegen
+    path: mlir_oot/lowering/conv.py
+    symbol: conv_a_operand
+    effects: [layout, movement, memory_planning]
+    cca_axes: [memory.capacity_fit]
+    mechanism: >-
+      form the convolution's im2col rows in the DMA address stream, one kernel tap at a time, so
+      no im2col matrix is materialised and out-of-bounds taps emit no transfer at all
+    emitted_delta: >-
+      MVIN bursts per padded tap shrink to the in-bounds run, and no intermediate tensor is declared
+    validation: shape-coverage probe over kernel/stride/padding/dilation corners
+    abandonment: abandon if a geometry produces runs the DMA row pitch cannot express
+  - id: command-stream-rerolling
+    scope: pass
+    path: mlir_oot/codegen/reroll.py
+    symbol: reroll
+    effects: [issue, encoding, latency_hiding]
+    cca_axes: [spatial.dataflow]
+    mechanism: >-
+      roll a repeated command window whose operand fields form an arithmetic progression back into a
+      loop, and unroll that loop once the trip count makes the per-iteration address arithmetic
+      worth amortising; verified by re-expansion against the original stream
+    emitted_delta: >-
+      the decoded instruction trace keeps every class and every field, while the emitted program
+      stops growing with the payload
+    validation: decode the emitted artifact and confirm 0 UNKNOWN and an unchanged class histogram
+    abandonment: >-
+      abandon a roll whose re-expansion does not reproduce the stream instruction for instruction
+  - id: host-lane-region-compilation
+    scope: codegen
+    path: mlir_oot/codegen/host_lane.py
+    symbol: HostLaneCompiler.compile
+    effects: [placement, dtype, fusion]
+    cca_axes: [memory.capacity_fit]
+    mechanism: >-
+      compile a region the mesh has no operand encoding for into scalar single-precision arithmetic
+      on the host lane, with the transcendental expansions emitted once as internal functions
+    emitted_delta: >-
+      the declared output tensor is written by the emitted kernel, and no accelerator command is
+      issued for a region declared on the host lane
+    validation: >-
+      interpret the emitted module and compare against an independent evaluation of the same region
+    abandonment: >-
+      a construct the lane cannot express becomes a stated decline, never a kernel that returns
+      without writing its output
+  - id: movement-widening
+    scope: codegen
+    path: mlir_oot/lowering/iface_to_gemmini.py
+    symbol: IfaceToGemmini._movement
+    effects: [dtype, movement, placement]
+    cca_axes: [memory.capacity_fit]
+    mechanism: >-
+      route an identity round trip through the scratchpad when the container width is unchanged and
+      through the accumulator when the readout must widen
+    emitted_delta: a widening movement emits accumulator-addressed MVIN/MVOUT instead of two passes
+    validation: the movement capsules' decoded trace and their command buffer agree on the dtype
+    abandonment: abandon if the widened readout does not reproduce the operand bit-for-bit
+  - id: lane-routing
+    scope: heuristic
+    path: mlir_oot/lowering/lanes.py
+    symbol: mesh_refusal
+    effects: [placement, dtype]
+    cca_axes: [memory.capacity_fit]
+    mechanism: >-
+      decide, from the RTL alone, whether a region is issued on the mesh or compiled onto the
+      scalar lane -- asked before the interface->target rewrite runs, so a region the datapath
+      cannot encode reaches the lane as the interface wrote it. Two RTL facts drive it: the operand
+      store is UInt<8> (no floating-point operand port), and AccumulatorScale gates its
+      LAYERNORM/SOFTMAX/IGELU paths on `has_normalizations`, which this elaborated design leaves at
+      its default -- so no normalizer is instantiated and a normalization-class stage has no
+      readout. A program that INTERLEAVES such a stage with a mesh contraction is declined by name
+      rather than run wholly off the mesh
+    emitted_delta: >-
+      a region the mesh cannot encode emits a scalar-lane kernel and a declared host placement
+      instead of a decline, so the program still commits the tensor it was asked for
+    validation: >-
+      interpret the emitted kernel over harness-laid-out buffers and compare against an
+      independent evaluation of the same region
+    abandonment: >-
+      abandon if a region the mesh CAN encode is routed off it (the emit-path sweep loses
+      accelerator commands), or if the lane's result disagrees with the region's definition
+  - id: descriptor-reuse
+    scope: knob
+    path: mlir_oot/lowering/kernel.py
+    symbol: KernelBuilder.config_ld
+    effects: [issue, movement]
+    cca_axes: [dispatch.descriptor_reuse]
+    mechanism: >-
+      keep the live per-unit load descriptor (row pitch, container width, f32 scale) and issue a
+      CONFIG_LD only when the requested state actually differs, so a tile loop that reuses one
+      descriptor reconfigures once instead of once per tile
+    emitted_delta: >-
+      the decoded trace's CONFIG_LD count drops to the number of DISTINCT descriptors while every
+      MVIN keeps the fields it had
+    validation: decode the emitted artifact and reconcile each CONFIG_LD against the command buffer
+    abandonment: >-
+      abandon if a reused descriptor ever serves a transfer whose pitch, width or scale differs
+      from the one that configured it
+  - id: operand-residency-elision
+    scope: heuristic
+    path: mlir_oot/lowering/kernel.py
+    symbol: KernelBuilder._already_resident
+    effects: [movement, residency, latency_hiding]
+    cca_axes: [dispatch.dma_overlap]
+    mechanism: >-
+      track what each scratchpad row already holds and skip a transfer whose exact source already
+      occupies its exact destination under the same descriptor, so a stationary operand is fetched
+      once across the tiles that reuse it
+    emitted_delta: fewer MVIN/MVIN2 in the decoded trace for the same COMPUTE count
+    validation: >-
+      run the emitted program on the datapath model and confirm the elided load's rows hold the
+      same bytes a fresh transfer would have written
+    abandonment: >-
+      abandon for any accumulator-addressed transfer, where the destination is read-modify-write and
+      an elision would drop an initialisation
+  - id: stationary-operand-major
+    scope: knob
+    path: mlir_oot/lowering/contraction.py
+    symbol: transposed_b
+    effects: [layout, movement]
+    cca_axes: [layout.operand_major]
+    mechanism: >-
+      choose which operand order the stationary tile is staged in, so a contraction over the
+      TRAILING axis of both operands (attention_qk) streams its key tile row-per-key instead of
+      materialising a transposed copy
+    emitted_delta: >-
+      no extra movement is declared for the transpose, and the PRELOAD's row/column fields carry
+      the chosen order
+    validation: the attention region matrix, interpreted and compared elementwise
+    abandonment: abandon an order the PRELOAD fields cannot express; refuse it by name
+  - id: scalar-lane-loop-nest
+    scope: codegen
+    path: mlir_oot/codegen/scalar_lane.py
+    symbol: ScalarLane.contraction
+    effects: [issue, tiling, latency_hiding]
+    cca_axes: [spatial.dataflow]
+    mechanism: >-
+      compile a host-lane contraction as a loop nest over the declared extents, with the reduction
+      carried in a block argument, rather than unrolling it to one value per multiply-add
+    emitted_delta: >-
+      the emitted function stays a fixed number of blocks as the extents grow; a 32x32x32
+      contraction is tens of lines instead of tens of thousands
+    validation: the scalar-lane region matrix, every form interpreted and compared elementwise
+    abandonment: >-
+      abandon a region whose addressing the nest cannot express; it becomes a stated decline
+  - id: dma-block-transfer
+    scope: pass
+    path: mlir_oot/lowering/coalesce.py
+    symbol: coalesce
+    effects: [movement, issue, latency_hiding]
+    cca_axes: [dispatch.dma_overlap, memory.capacity_fit]
+    mechanism: merge consecutive operand tile loads that are contiguous in DRAM and exactly one
+      declared CONFIG_LD block stride apart on chip into a single transfer, bounded by the
+      RTL-derived DMA payload (MAX_BLOCK_LEN for the scratchpad, 1 for the wider accumulator element)
+    emitted_delta: fewer MVIN/MVIN2 instructions carrying the same bytes, each with a wider cols
+      field; identical non-movement instruction counts and an unchanged command buffer
+    validation: replay the merged and unmerged transfer lists to the same (DRAM byte -> on-chip
+      cell) map, then re-screen the touched capsules at the loop tier
+    abandonment: any merge whose run fails the contiguity, equal-rows, partial-tile-last or
+      non-accumulator preconditions is left unmerged rather than emitted
+
+  - id: softmax-weight-residency
+    scope: pass
+    path: mlir_oot/lowering/softmaxfuse.py
+    symbol: apply
+    effects: [residency, fusion, movement]
+    cca_axes: [spatial.accumulator_resident, dispatch.descriptor_reuse]
+    mechanism: derive one row of fused softmax weights once into a kernel-frame buffer and read
+      it back for every output column, instead of re-deriving each weight inside the column loop;
+      the exponential is expanded from base arithmetic, so it is the dominant term
+    emitted_delta: the weighted-sum stage evaluates 2*k exponentials per row instead of k + n*k,
+      with an unchanged instruction trace and bit-identical f32 weights
+    validation: L2 screen the attention capsules and require mismatch_count 0 with an unchanged
+      decoded class histogram
+    abandonment: abandon if the buffer cannot hold a row within the kernel frame, or if any
+      screened capsule moves off mismatch_count 0
+
+  - id: normalization-reduction-offload
+    scope: pass
+    path: mlir_oot/lowering/sumsq.py
+    symbol: plan
+    effects: [placement, movement, issue]
+    cca_axes: [dispatch.loop_offloaded, spatial.dataflow]
+    mechanism: decide whether a normalization's row REDUCTION is issued on the systolic mesh or
+      left on the scalar lane. sum_k x[i,k]**2 is the diagonal of X @ X^T, whose stationary
+      operand under the mesh's b_transpose bit is X's own row-major layout -- so both operand
+      ports read the same declared tensor and nothing is staged in memory first. Only the per-row
+      SCALE stays off the array, because AccumulatorScale instantiates no normalizer here. The
+      reduction is emitted one DIM-row band at a time, keeping the intermediate linear in the row
+      extent rather than quadratic
+    emitted_delta: a standalone rmsnorm's decoded trace gains MVIN/MVIN2/PRELOAD/
+      COMPUTE_PRELOADED/MVOUT per row band where it previously carried no accelerator command at
+      all, and routed_macs rises from zero with the declared output unchanged
+    validation: execute the emitted program on the datapath model and require the staged tile's
+      diagonal to equal sum_k x[i,k]**2 exactly, over a row/depth sweep that straddles the band
+      edge; then L2 screen the touched capsules at mismatch_count 0
+    abandonment: abandon when the reduction is not provably value-preserving against the f32
+      accumulation it replaces (k * 128**2 > 2**24), or when the banded intermediate exceeds the
+      stated kernel-frame budget -- in both cases the scalar reduction it already had is kept
