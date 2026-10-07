@@ -88,6 +88,12 @@ and validation outside the region when admitting a bounded simulator run: an
 80M-cycle single-issue run cannot reach timing after a 115M-instruction input
 check. Preserve original complete input checks and budget them explicitly.
 
+Local Merlin main cdf117e3d now includes the generic explicitly contracted
+borrowed-buffer lane schedule, with 96 source and 96 independent installed
+checks and complete package byte closure. This extends the supported common
+feature system; it does not automatically choose the experimental best recipe.
+[Qualification](perf_records/merlin_borrowed_pointwise_current_main_20261007_qualification.json).
+
 New FireSim submissions currently refuse because execution UID2621 lacks the
 `firesim` group. Existing job2113 continues independently. Prepared packet
 admission and hardware execution status are recorded separately.

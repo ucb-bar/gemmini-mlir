@@ -1,5 +1,29 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: normal borrowed lanes integrate and issue-loop regression stays visible
+
+Local Merlin main cdf117e3d adds the explicitly contracted borrowed memref
+two-lane feature on top of the shared preparation interface. The feature
+checks typed scalar arithmetic, full static maps, injective positive output
+layouts and bounded tails; physical lifetimes and floating effects remain
+caller proofs. All 96 source and 96 independently installed checks pass,
+including normal upstream/RV64/Spike execution. All 1,016 Python and 61 runtime
+payloads match source, wheel, source archive and outside installation. Root
+recloses 2,692 pins. The runner AST matches the previously qualified experiment;
+defaults and automatic profitability policy remain unchanged. Fresh whole
+current-head qualification across all three models remains required. Publication
+still refuses GitHub DNS. [Installed compiler qualification](perf_records/merlin_borrowed_pointwise_current_main_20261007_qualification.json).
+
+ResNet's bounded ordinary row-command loops preserve every original primitive
+command, configuration, address, transfer and store. Original output bytes,
+independent i32/i8 shapes, guards, FCSR0 and final zero-FSM pass; 122 checks
+and 564 receipt pins close. The source stack shrinks 1,408→112 bytes for the
+fully looped arm, yet retired instructions increase at every tested unroll
+width: 1, 2, 4 and 8. Additional branch/address work outweighs removed spills.
+No GSIM or whole-model gain is credited and no policy is promoted. The next
+structural resource hypothesis separates complete input residency lifetime
+from output accumulator blocking. [Negative qualification](perf_records/resnet_resident_row_command_loop_negative_20261007.json).
+
 ## 2026-10-07: record shared pipeline limits and completed exact-math gate
 
 The [shared compiler record](compiler_recipe_status.md) now explicitly separates
