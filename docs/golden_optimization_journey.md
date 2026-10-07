@@ -1,5 +1,51 @@
 # Golden compiler optimization journey
 
+## 2026-10-07 22:16 UTC: fresh source closure and reusable row/decoder mechanisms
+
+| Change | What it moved | Owner and evidence boundary |
+| --- | --- | --- |
+| Normal current Tiny source/helpers | All 22 helper bodies now derive from fresh current IR; all 155 bindings/five kernels and original native/Spike/Torch gates pass without retained helper ingredients | Merlin source discovery/reification; OOT target kernels. No new whole hardware timing |
+| Closed row domains and private plans | Current-core source/installed APIs prove complete parallel rows, original reductions, scatter coverage and explicit quotas; actual Smol fallback 256 rows/112 ops passes | Merlin. 194 source +194 installed checks; physical ownership/replacement/profitability remain separate |
+| Empty seed refusal | A cast of an empty initializer no longer acts as a uniform tensor; overwrite-only seeds and distinct operand-use permissions stay supported | Merlin proof safety. Direct empty reads/nested scalar regions already refused; no invented performance gain |
+| Canonical checked readout option | Normal OOT forwards the measured shared decoder option; both actual selected C/object leaves reproduce the qualified implementation | OOT forwarding/ABI, Merlin algorithm. 55 checks; old complete GSIM −30.1696%/−36.2251% stay attributed to old pinned runs |
+| Actual stride-two operand capture | Read-only current full-model capture supplies real source11 NHWC/HWIO inputs and independent raw MAC/output checks | Trusted experiment; all original 1,000 words unchanged. Raw i32 screen and actual i8 service remain distinct |
+| Immutable duplicate sharing | Independently generated Tiny payloads retain original paths/readbytes and recover 5,706,547,200 observed filesystem bytes | Experiment storage after all writers terminate; no compiler/latency credit |
+
+[Fresh Tiny](perf_records/tiny_normal_current_source_all_leaves_20261007_whole.json),
+[current shared compiler](perf_records/merlin_closed_row_current_main_20261007_qualification.json),
+[actual row proof](perf_records/merlin_actual_smol_closed_row_current_installed_20261007.json),
+[canonical decoder](perf_records/canonical_checked_pair_alignment_20261007_qualification.json),
+[actual stride inputs](perf_records/resnet_actual_source11_operand_capture_20261007.json),
+[sharing](perf_records/tiny_current_source_payload_sharing_20261007.json).
+
+Preserve the first adapter object-identity failure: identical C/machine text had
+a different generated filename in ELF string/symbol metadata. A successor with
+the same adapter.c basename reproduces complete object bytes. This was an
+artifact identity issue, not a decoder correctness/performance regression.
+Before target promotion, root recloses 14,066 paths and records an explicit
+646-file prior-source snapshot binding. Ten receipt mirrors are byte exact.
+[Root reclosure](perf_records/root_current_row_tiny_source_20261007_reclosure.json),
+[source binding](perf_records/canonical_previous_source_binding_20261007.json),
+[mirrors](perf_records/compiler_row_current_source_record_mirror_identity_20261007_fourth.json).
+
+Next target experiments retain negatives: partial activation stripes lower
+requested traffic but increase padded compute and regress retirement; full-B
+flat residency keeps the original compute geometry and awaits GSIM. Primitive
+counts alone do not explain the reference's service advantage. Tiny midpoint
+and affine bits16 approximations fail the unchanged whole gate, including the
+affine case with only two changed codes on original local frontiers. A bits18
+affine numerical screen passes the original capture, but is still an explicit
+approximate policy pending independent/target/complete-cost qualification.
+Smol's adjacent-code policy also fails the original whole gate. Its exact
+producer-to-radix metadata reuse is being measured as a component; no whole
+cycle gain is attributed. These are active source-owned experiments, not
+automatic compiler defaults or completed performance targets.
+
+The campaign meter reads 112,096,904 aggregate tokens; per-topic/OOT-only billing
+is unavailable. Current whole stock champions are unchanged. GitHub DNS prevents
+remote ancestry verification/publication; no PR was opened.
+[Publication attempt](perf_records/publication_current_row_alignment_20261007.json).
+
 ## 2026-10-07 21:23 UTC: current source replaces supplied observation recipes
 
 The common compiler work adds three clean local topics: checked aligned host

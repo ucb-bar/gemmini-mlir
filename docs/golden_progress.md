@@ -1,5 +1,63 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 22:16 UTC: fresh normal Tiny passes; current row proofs and decoder forwarding qualify
+
+Fresh installed `458858350` Tiny now discovers all 22 observers from current
+ordinary source, reifies and lowers their helpers without retained typed/LLVM
+ingredients, and regenerates all 155 bindings and five target kernels. All
+256,000 native and actual Spike words match the champion exactly; the original
+Torch gate passes with max absolute error 9.536743e-6. Final ELF `eeb907ab` has
+zero FSM instructions. Original disabled fusion guard, numerical/effect choices
+and manual profitability selection remain explicit. Whole hardware timing is
+unknown; this is a compiler/correctness gate.
+[Complete fresh delivery](perf_records/tiny_normal_current_source_all_leaves_20261007_whole.json),
+[target gate](perf_records/tiny_normal_current_source_target_20261007_qualification.json).
+
+Newest qualified common Merlin local main is `bfe708666`, on 458. Generic closed
+row domains, complete private scatter and explicit consumer quotas pass 194
+source and 194 independent installed checks with no skips. All 1,024 Python and
+156 public resources, including 61 runtime files, agree across source, wheel,
+source archive and installation. Four unselected normal LLVM cases are unchanged.
+An observed casted empty initializer no longer supplies uniform-value evidence;
+genuinely unused destination seeds remain valid. Actual original Smol source
+rederives 256 rows/112 operations through the installed API. These proofs grant
+no physical ownership, rewrite or performance policy.
+[Installed compiler](perf_records/merlin_closed_row_current_main_20261007_qualification.json),
+[actual source proof](perf_records/merlin_actual_smol_closed_row_current_installed_20261007.json).
+
+Canonical OOT `a718ef4` now forwards checked alignment to Merlin's decoder under
+the original source-proven exact paired-readout contract. All 55 target checks
+pass; both actual selected adapters and freshly compiled objects match the
+already-qualified source/object bytes. Default C and the unselected emitter API
+remain compatible. This installs the option; no new whole FPGA timing is added.
+An explicit 646-file binding to Tiny's physical source snapshot preserves prior
+consumed target bytes before canonical source edits.
+[Canonical forwarding](perf_records/canonical_checked_pair_alignment_20261007_qualification.json),
+[previous source binding](perf_records/canonical_previous_source_binding_20261007.json).
+
+Actual ResNet stride-two operands are captured read-only from the qualified fresh
+whole native model, with all original 1,000 words exact. Independent MAC/requant
+checks match its i8 leaf. A raw i32 accumulator fixture is separately labelled;
+it is not the actual i8 provider's complete service. The partial-stripe experiment
+regresses retirement; a full-weight flat alternative preserves compute geometry
+and is being measured in GSIM. No timing has been admitted for it or padding.
+[Actual layer inputs](perf_records/resnet_actual_source11_operand_capture_20261007.json).
+
+Root strictly reclosed four packets and 14,066 distinct original paths before
+canonical promotion. Three independently generated immutable Tiny payloads are
+byte-identical to prior qualified payloads; documented sharing recovers
+5,706,547,200 observed filesystem bytes without changing old receipts or unique
+source/ELF/proof assets. Ten source records are mirrored byte exactly.
+[Reclosure](perf_records/root_current_row_tiny_source_20261007_reclosure.json),
+[sharing](perf_records/tiny_current_source_payload_sharing_20261007.json),
+[mirror identity](perf_records/compiler_row_current_source_record_mirror_identity_20261007_fourth.json).
+
+Whole stock champions remain ResNet **28,649,233**, Tiny **378,946,263** and Smol
+**258,621,872,969**. Fetches for Merlin main and Gemmini handwritten-implementation
+still fail GitHub DNS; no push or PR was made. The recorded campaign meter is
+**112,096,904 aggregate tokens**, with no exact OOT/per-topic billing allocation.
+[Publication attempt](perf_records/publication_current_row_alignment_20261007.json).
+
 ## 2026-10-07 21:23 UTC: shared current-source discovery and measured host readout
 
 Qualified local Merlin main `458858350` now includes generic checked aligned

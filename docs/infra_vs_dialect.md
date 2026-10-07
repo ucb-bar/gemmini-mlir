@@ -1,5 +1,55 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 22:16 UTC: current row legality and canonical decoder delivery
+
+Merlin local main `bfe708666` integrates generic typed closed rows, complete
+private scatter and explicit prepared-consumer quotas, with 194 source and 194
+independent installed checks and complete four-form byte closure. Unknown
+physical ownership/epochs, rewrite legality and profitability remain separate.
+An observed casted empty initializer no longer grants uniform-value permission;
+actual original Smol source still proves 256 rows/112 operations. The mechanism
+uses typed maps/effects, not target or workload names.
+[Current core](perf_records/merlin_closed_row_current_main_20261007_qualification.json),
+[actual installed source](perf_records/merlin_actual_smol_closed_row_current_installed_20261007.json).
+
+Fresh installed458 Tiny eliminates retained observer/helper ingredients through
+ordinary current-source APIs and passes all original native/Spike/Torch outputs
+and final zero-FSM. OOT canonical `a718ef4` forwards the portable checked decoder
+option and exactly reproduces its two qualified selected adapter/object leaves.
+Host decoding remains Merlin; target stores/resources/ABI stay OOT. Neither
+source freshness nor adapter identity supplies whole stock cycle credit.
+[Tiny delivery](perf_records/tiny_normal_current_source_all_leaves_20261007_whole.json),
+[OOT delegation](perf_records/canonical_checked_pair_alignment_20261007_qualification.json).
+
+### Concrete deployment gap exposed by the padding capsule
+
+The original GSIM capsule traps on a store to its inherited absolute allocator
+arena at 0xc0000000 before timing. The printf assertion is secondary to that
+failed exit. ELF load-range checking alone misses an absolute runtime allocator
+interval; emulator backing-store capacity is not a decoded-memory theorem.
+Old elaboration paths are unavailable, so inspecting a current source memory
+port is a limited lineage inference. A newly selected arena's actual GSIM
+usability remains pending; no full hardware-map proof is claimed.
+
+A generic Merlin deployment admission should close loaded ELF, stack, allocator
+and external-buffer intervals against an explicit execution memory-map contract,
+check extent/nonoverlap/lifetime and refuse missing maps. The OOT provider must
+supply the actual selected target/model memory regions and their provenance.
+Phase 0 should expose these regions and runtime demands, phase 1 should verify
+the executable/runtime layout before launch, and phase 2 should retain that
+admission together with complete timing budgets. This is a concrete infrastructure
+requirement; it is not implemented by choosing a workload-specific address.
+
+Before canonical target edits, root strictly recloses 14,066 pins and preserves
+previous production bytes through a 646-file physical source binding. Immutable
+Tiny duplicate sharing recovers actual filesystem space after terminal writers.
+The source/artifact filename identity failure remains separate from compiler
+bugs and gains. Whole champions, numerical gates and automatic selection gaps
+remain unchanged; publication still fails GitHub DNS.
+[Reclosure](perf_records/root_current_row_tiny_source_20261007_reclosure.json),
+[source binding](perf_records/canonical_previous_source_binding_20261007.json),
+[publication](perf_records/publication_current_row_alignment_20261007.json).
+
 ## 2026-10-07 21:23 UTC: current-source observations and portable packet reads
 
 Merlin owns the newly qualified current fused tensor checkpoint, explicit source

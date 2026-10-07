@@ -33,7 +33,7 @@ within that one compiler.
 | Workload | Best verified whole stock cycles | Current qualification boundary |
 | --- | ---: | --- |
 | ResNet50 | 28,649,233 (2109) | Fresh installed 8790b5c5b build regenerates all linked object leaves and passes all 1,000 original words exactly plus final zero-FSM. A generic checked decoder saves 30.17% on one complete GSIM section and 36.23% independently; whole stock timing and automatic policy qualification remain open |
-| TinyLlama | 378,946,263 (2085) | Fresh installed 451849ba7 build regenerates every linked object leaf through the normal mask API and passes all 256,000 original compiled words, unchanged Torch gate and final zero-FSM. Current installed 458858350 discovers its 22 scalar observers from current IR; fresh helper substitution and whole stock timing remain open |
+| TinyLlama | 378,946,263 (2085) | Fresh installed 458858350 regenerates all leaves and 155 bindings, discovers/reifies all 22 helpers from current source without retained helper ingredients, and passes every original native/Spike word, unchanged Torch gate and final zero-FSM. Manual numerical/effect/schedule selection and whole stock timing remain open |
 | SmolVLA | 258,621,872,969 (1906) | Stock2113 completes at 324,229,555,204 cycles, a 25.3682% regression, with all 1,600 original words exact. Fresh exact-math b154 passes the full functional gate but has no stock timing |
 
 ResNet's original experiment replaced global compiler functions. The explicit
@@ -102,6 +102,43 @@ hardware execution and publication status are recorded separately.
 
 
 ## 2026-10-07: shared source-observation topics and remaining promotion work
+
+### 22:16 UTC: normal whole helper substitution and current row APIs qualify
+
+Newest qualified common local main is `bfe708666`, on 458. Generic row-domain,
+private scatter and explicit consumer-quota APIs pass 194 source/194 independent
+installed checks. All 1,024 Python and 156 public resources agree across delivery
+forms, including 61 runtime files; four ordinary unselected LLVM cases are
+unchanged. The actual original Smol tensor function qualifies 256 rows/112 ops.
+Prepared physical wrappers remain outside this pure-tensor proof. An observed
+casted empty seed refuses; unused destination arguments do not require initialized
+contents and cannot grant permission to a separate observed operand occurrence.
+[Qualification](perf_records/merlin_closed_row_current_main_20261007_qualification.json),
+[actual installed source](perf_records/merlin_actual_smol_closed_row_current_installed_20261007.json).
+
+Fresh normal installed458 Tiny completes native and actual Spike with all
+256,000 original words exact, original Torch gate passing and final zero-FSM.
+All 155 bindings/five kernels are fresh; its 22 observers and helpers now come
+from current ordinary source APIs. No retained typed observer/LLVM helper bodies
+or prepared-model callback remain. Original fusion guard, numeric/effect choices,
+host/target options and lookup policy are still manual experiment selections.
+This completes the previously pending helper-substitution gate; it does not
+establish ordinary automatic selection or a whole stock performance result.
+[Fresh complete delivery](perf_records/tiny_normal_current_source_all_leaves_20261007_whole.json).
+
+Canonical target `a718ef4` installs the checked alignment option with 55 checks
+and exact actual selected adapter/object identity to the qualified private
+build. Portable packet reads stay in Merlin. Previous source bytes are preserved
+through an explicit 646-file physical snapshot binding; historic receipts are
+unchanged. Root strict reclosure precedes those canonical source edits.
+[Forwarding](perf_records/canonical_checked_pair_alignment_20261007_qualification.json),
+[binding](perf_records/canonical_previous_source_binding_20261007.json),
+[root reclosure](perf_records/root_current_row_tiny_source_20261007_reclosure.json).
+
+Fresh current-version whole builds and automatic profitable selection still
+need qualification across all three. Merlin main and OOT handwritten branch
+fetches fail DNS, so these are local topics, not claimed remote delivery.
+[Publication](perf_records/publication_current_row_alignment_20261007.json).
 
 ### 21:23 UTC: current-source discovery, helper reification and shared readout
 
