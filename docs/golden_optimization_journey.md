@@ -9,6 +9,162 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 01:44 UTC: dependence calibration and whole/section negatives
+
+- Stock2063 closes159 packet/9 terminal pins and all15 original windows.
+  Group8 lowers31.253%/31.019%/30.033% cycles at equal compiled work. Frozen2057
+  instructions/groups misses30.535%; FP-distance misses10.652% while predicting
+  27.199% pair gains. Both original fits/domain refusals remain unchanged.
+- Separate predeclared model trains0/1/4/5, holds2/3. Work-only misses26.259%
+  and ties; ordered-spacing model misses2.524%/3.892% and picks the correct arm.
+  One held pair/one slice fails broad export. Root prioritizes modeling while
+  three agents continue target/source candidates and queue checks.
+  [Model terminal](perf_records/root_source_host_quant_spacing_stock2063_terminal_review_20261007.json).
+- Read-only Smol index binds seven complete-group experiments and62 evidence
+  pins. Root audits all seven ELFs and freezes a distinct six-historical-arm
+  retirement fit without opening2064's new label: conditional4283782180.9632835
+  cycles. Fixed-plus-retirement refuses negative terms. Shared domain refuses
+  the held below-training instruction extent; no broad/whole export. Historical
+  arms are one source workload, not independent held families. Prequeue ratio
+  forecast4278988055.291242 remains unchanged.
+  [Blinded index fit](perf_records/root_smol_complete_group_blinded_retirement_screen_20261007.json).
+- Tiny2062 whole410147055 is0.612% below412672134, smaller than compound16.38%
+  GSIM or1.57% strict retirement changes. Root reparses UART/DONE/rank0 and all
+  256000 original words. One fixed dynamic-i8 QK/PV native policy fails220325
+  words in both unchanged gates despite44 calls/zero refusal; same-ABI exact
+  control is original-bitexact. Initial malformed-ABI harness failure is kept
+  separately. No hardware or precision ladder for this negative.
+  [Whole terminal](perf_records/root_tiny_stock2062_masked_whole_terminal_review_20261007.json).
+- Smol2060 complete12-head group4467058350 is8.043% below2024's4857792055;
+  all original compiled consumer bytes checked. Whole1906 remains258.622B.
+  Root7cdad5d closes364 qualification/381 census pins to release bounded
+  F32-floor successor2064. Integer conversion/exact F32/signed-zero handling
+  is proved on private prepared[-2^24,2^24) source coordinates; default provider
+  bytes unchanged. Original1600 words/61440 target checks/fiveFRMs pass.
+  Instructions decrease4.210%; frozen count-ratio4278988055.291242 is exploratory
+  and leaves dependency/cache/frame/overlap changes unpriced. No whole projection.
+  [Section terminal](perf_records/root_rms4_stock2060_terminal_review_20261007.json),
+  [successor release](perf_records/root_prepared_bounded_floor_stock_release_20261007.json).
+- Single7bit Smol's initial96-product attempt falls back all48 groups at a
+  statistical QK miss. Explicit QK-observer repair uses exact replay points,
+  counts6607 misses and executes4608 products including PV, but all48 fall
+  back at PV containment. It pays9663676416 QK replay FMAs plus771008 recorded
+  PV FMAs and unpriced source fallback. Exact1600 outputs through fallback do
+  not establish selected accuracy/performance. Negatives d82f5e4/de4620a stay
+  immutable, with no guard relaxation, threshold tuning or hardware campaign.
+- Generic typed mask PR48 remotehead30ca8325ad/base7fee5cfdac/body match root
+  approvalac64409;114 source/114 installed tests and959Python/201resources verify.
+  Inherited optional main filesize failures stay separate. Defaultoff, no main
+  push/force/merge. This adds shared family61; PR47 extends family33.
+  [Publication](perf_records/root_merlin_masked_PR48_publication_review_20261007.json).
+  [Conservative inventory](perf_records/non_oot_change_inventory_followup_v3_20261007.json).
+- Eight-owned-thread tokenledger01:31:37: cumulative68202032 uncached,
+  3199521280 cache-read/13495077 output;5421873 reasoning is outputsubset.
+  Window00:42:37→01:31:37:1540999 uncached/77908864 cache-read/354766 output,
+  reasoning151014 subset. Separate goal78053237 is not rawsum; exclusive
+  dialect/model/topic allocation and monetary billing stay UNKNOWN.
+  [Ledger](perf_records/golden_token_usage_20261007T013137Z.json).
+
+Phase0 needs typed effects/all-use observation and complete selected/fallback
+coverage. Phase1 should identify dependence separately from work and retain
+old-model forecast errors. Phase2 must validate actual whole composition;
+helper gains and fallback-bitexact outputs alone do not qualify a fast model.
+
+### 2026-10-07 01:20 UTC: separate dependency cost from loop geometry
+
+The new eight-lane calibration crosses112/224/448 extents with independent
+chains issued one lane at a time or by stage across all eight lanes. The typed
+source graph, source opcode counts, packet/branch counts, scoped retired
+instructions, calls and stack requests agree within all three pairs. Actual
+FP inverse spacing changes5.53 times. Native checks cover1,053,696 original
+bytes; strict target15 windows/guards/immutable inputs/flags/checksum pass.
+Root freezes the original2057 hypotheses unchanged: count/groups almost ties,
+elements/FP-spacing predicts27.20% grouped-stage advantage. The old domain
+refusals remain. New future fitting uses only half/double extents, with both
+current arms held; previous forecasts and negatives are never overwritten.
+This is a calibration driver, not a workload-selected production pass.
+[Frozen causal calibration](perf_records/root_source_host_quant_spacing_prelabel_20261007.json).
+
+The full original802816 residual ranked pair measures1,996,286→1,821,983 GSIM
+cycles (8.731% lower), not the proportional14/39 nominal-work prediction.
+Added DMA, seeds and7843 fences explain why the incomplete cost model cannot
+rank this network reliably. The data does not identify each term's cycle price.
+Hardware-proved internal-SPAD fence removal proceeds only in a fresh candidate,
+retaining predictor DRAM store→reload, panel and final completion fences.
+
+Tiny's complete compound mask candidate measures493,595.5→412,735 GSIM cycles
+(16.38% lower). Full native and strict composition preserves all256000 original
+words/Torch gate,155 bindings, original continuation/table/runtime and only
+changes model.o; the actual2056 control object and ELF reproduce exactly. Both
+arms explicitly use documentedfusion_guard0 solely to match the historical
+runner, with main/default unchanged. Earlier materialization/finalization
+refusals remain archived. Whole timing is independent of the local capsule.
+
+Root commits8784051 to release exactly one RMS4 complete-group stock run2060.
+All246 pins, original1600 bits,65 independent target cases/five modes and final
+zeroFSM close. UART compares every original compiled consumer byte but emits
+no separate output checksum; this distinction is retained. No whole promotion.
+The newer nonlinear policy passes all1600 bits but adds18.54% total instructions.
+Generic guarded floor/ceil-to-i64 code generation saves3.88% on that negative
+arm with41,110 target checks/five FRMs, yet it remains13.94% slower than fastRMS4.
+No hardware is spent on the negative. The fast arm's existing F32 floor and
+post-ROI BF16/rintf calls require separate scope and semantic treatment.
+[RMS4 independent review](perf_records/root_rms4_fast_stock_packet_review_20261007.json).
+
+Phase1 should select measurements that change one emitted cost feature while
+holding known confounders fixed, then compare new held schedules before broad
+export. Phase2 must retain complete host/transfer/accelerator/dispatch scopes;
+primitive-work savings and shared post-ROI library totals are not whole prices.
+
+### 2026-10-07 00:56 UTC: held signature transfer and remaining model confounding
+
+Stock2059 closes all15 windows/12 case repeats and checksum63371034b267c555,
+with unchanged predicted features/retirement, exact17ab17a1… ELF and the original
+2057 stock bitstream/hwdb. Root imports147 pinned artifacts and scores the
+immutable prelabel forecast with no fitter access to new labels. Maximum held
+errors are6.129% for instructions/groups and6.022% for elements/FP-distance;
+both rank7vs5 correctly at168/224/336 rows. The conditional diagnostic three-size
+pair gate passes; original executable-domain refusals and unpriced effects remain.
+Three sizes of one numeric graph do not qualify other source/memory signatures
+or whole-model composition. A preliminary commentary5.5% figure was corrected
+to6.13% after independent full-case scoring.
+[New terminal/model review](perf_records/root_source_host_quant_stock2059_transfer_terminal_review_20261007.json).
+
+The typed per-row tail audit finds that the original floor(totalElements/width)
+feature does not equal actual static full+tail packets. FP distance remains
+exactly3×those logical packets in all12 original/new cases. This exposes coarse
+feature error without identifying separate FP dependency and loop/branch prices.
+Frozen inputs/features/forecasts are unchanged. A useful next calibration should
+hold geometry/opcode work fixed and vary emitted intra-packet consumer spacing,
+with numeric/effect/ISA legality and prelabel held predictions preserved.
+[Identifiability evidence](perf_records/source_host_quant_tail_group_identifiability_20261007.json).
+
+Root independently rebuilds all54 source geometry/request joins and16 typed
+residual schedules, conserving actual23,422,080 current/18,484,224 reference
+rows, residual4,837,888 extra (97.98%) and integer mean8192 each. An initial
+reviewer incorrectly demanded optional byte-size keys from path/hash-only pins;
+the refusal is retained, supported declared fields now checked, evidence unchanged.
+[Independent accounting review](perf_records/root_current2039_reference_nominal_work_alignment_review_20261007.json).
+
+Fast RMS4 removes redundant score-bound construction and passes original1600
+native bits/48 groups/23040 products/no fallback. Complete-group strict instructions
+drop2,165,148,233→1,980,223,983 (8.54%); callbacks/readback stay unchanged.
+Actual source-frame roles place725.21M/36.62%ROI in softmax/polynomial/denominator
+and49.74M/2.51% in replay. This changes the next optimization priority toward
+nonlinear uncertainty propagation. Exact BF16 exponential lookup is inapplicable:
+the source arguments/ordered polynomial remainF32 and first BF16 truncation
+follows nonlinear/reduction observation. Preserve that typed refusal. Approximate
+policies may be evaluated under the original user gate, never mislabeled as
+rigorous certificates or source-exact proofs. Complete source reconstruction's
+earlier conditional8.93B instruction floor still prevents claiming a5B route.
+
+The residual14-product pipeline's actual source census adds7,840 realB requests,
+808,448 logical load bytes and802,816 store bytes versus39, and introduces7,843
+fences. Frozen nominal-row arithmetic cannot price privateSPAD real-D writes
+and extraDMA/fences. Actual complete ranked-fixture timing and hardware hazard
+analysis must drive fence coalescing; current timed schedules remain immutable.
+Generic source proof/synthesis stays Merlin; resource/hazard/ISA implementation OOT.
+
 ### 2026-10-07 00:42 UTC: complete costs, new whole champions and frozen model transfer
 
 - ResNet2055 is **30,550,422 cycles**,165,396/0.5385% below2039;

@@ -1,5 +1,26 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 01:44 UTC: reusable compiler topic and calibrated target features
+
+Shared typed closed-mask contraction scheduling is published in Merlin PR48,
+independent of target/model names, with explicit nontrapping/unobserved-flags
+permission and original live reduction order. The conservative shared inventory
+now61families:29Merlin bug fixes,24Merlin reusable improvements,8model2MLIR bug
+fixes.55families are on main,6new families pending review. PR47 extends the
+already-counted bounded host quantization family33. Private RMS/finite/floor
+prototypes are not counted as merged shared infrastructure.
+[Publication readback](perf_records/root_merlin_masked_PR48_publication_review_20261007.json).
+
+Complete source-use/effect/numerical legality and portable bounded floor
+conversion belong in Merlin. Gemmini SPAD hazards, primitive realization,
+resources, ABI, target counters and RV64 dependence decoders belong in OOT.
+Generic provenance/fit/ranking/selected-vs-fallback evidence belongs in Merlin.
+Stock spacing calibration now distinguishes equal-work host schedules and
+scores one held pair within3.892%; this does not price whole programs or new
+cache/dispatch/fence/overlap regimes. Tiny2062 gains0.612%whole despite16.38%
+compound gain; Smol2060 gains8.043%section, with whole258.622B unchanged.
+These measured scope differences guide general compiler and model work.
+
 ## 2026-10-06 19:10 UTC ownership and modeling checkpoint
 
 Generic finite BF16 source-point preparation sharing is a Merlin runtime/source

@@ -5,14 +5,38 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 ## Latest verified whole-model results (2026-10-07 UTC)
 
 ResNet2055 improves the whole observation to **30,550,422 cycles** through
-generic explicit eight-lane host quantization. Tiny2056 improves to
-**412,672,134 cycles** through source-exact cold continuation placement.
+generic explicit eight-lane host quantization. Tiny2062 improves to
+**410,147,055 cycles** through source-exact continuation and generic typed
+masked-output contraction scheduling.
 All original outputs and numeric gates pass. Smol whole1906 remains
-**258,621,872,969 cycles**; group2054's4,731,616,313 is a section result.
+**258,621,872,969 cycles**; group2060's4,467,058,350 is a section result.
 The source-bound quantizer model predicts the held current4/8 pair within3.73%
-and ranks it correctly; a new entirely held5/7-lane cross-executable test is
-released with frozen parameters. Whole-program cycle prediction remains unknown.
+and ranks it correctly. The new entirely held5/7-lane cross-executable test2059
+predicts within6.13% and ranks all three new pairs correctly without refitting.
+Fixed eight-lane spacing2063 shows30–31% actual grouped-stage gains at equal
+compiled work. Its separately predeclared training-only model scores held224
+arms within3.892%; work alone misses26.259%. Old model errors remain recorded.
+Whole-program cycle prediction stays unknown. [Model evidence](golden_fast_model_status.md).
 [Model evidence](golden_fast_model_status.md).
+
+Exact residual correction improves the complete original section8.73% in GSIM;
+a separate restricted internal-fence pair reports a further11.91%, with root
+release review pending. Tiny's compound16.38% becomes only0.612% whole stock
+gain. Smol fastRMS4 improves the complete12-head group8.043% on stock2060.
+Its proved bounded F32-floor successor passes all1600 original native words/
+61440 target checks and is running as2064 with a frozen exploratory count-ratio
+forecast. Single7bit Smol and dynamic-i8 Tiny attention experiments are negative:
+the former falls back in all48 groups and replays9.66B QK FMAs; the latter fails
+220325/256000 words under both original compiled/Torch gates. Neither is queued.
+[Calibration release](perf_records/root_source_host_quant_spacing_prelabel_20261007.json),
+[Smol section release](perf_records/root_rms4_fast_stock_packet_review_20261007.json).
+
+Generic typed closed-mask topic is published as Merlin PR48 on actual
+main7fee5cfdac, with114 source/114 installed tests and qualified package bytes.
+Root reads actual remote head/body/base. Defaults remain unchanged. The
+conservative shared inventory now61families:29Merlin bugs,24Merlin improvements,
+8model2MLIR bugs;55on main/6pending new topic families. PR47 extends family33.
+[Publication](perf_records/root_merlin_masked_PR48_publication_review_20261007.json).
 
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
@@ -53,7 +77,7 @@ No new whole-model prediction or automatic ranking is enabled.
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, banked residual, eight-lane host quantization, paired readout, resident packets/full-K weights, segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes | 30,550,422 (2055) | All 1,000 original output words exact;165,396cycles/0.5385% below2039. Only host model.o changed;2052's separate two flat loops are not composed | [2055 root review](perf_records/root_resnet_stock2055_host8_terminal_review_20261007.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffer identity, generic outlining and source-exact cold continuation | 412,672,134 (2056) | All 256,000 original compiled words unchanged; original Torch gate passes.9,346,599cycles/2.2147% below2004 in one observation per arm. Staging/output/final noFSM pinned | [2056 root review](perf_records/root_tiny_stock2056_continuation_terminal_review_20261007.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffers, outlining, source-exact continuation and typed closed mask | 410,147,055 (2062) | All256000 original compiled words unchanged; original Torch gate passes.2525079cycles/0.6119% below2056 in one observation per arm. Only model.o changes;11 other linked objects, staging/output/final noFSM pinned | [2062 root review](perf_records/root_tiny_stock2062_masked_whole_terminal_review_20261007.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,

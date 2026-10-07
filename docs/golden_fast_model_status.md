@@ -1,6 +1,95 @@
 # Faster performance screening
 
-## Latest model tuning: 2026-10-07 00:42 UTC
+## Measured spacing model: 2026-10-07 01:44 UTC
+
+Stock2063 closes all15 windows, the original1,053,696 native output bytes,
+checksum98e0beb22396e0f5, identical strict retirement/FP state and released
+stock ELF/bitstream. Stage-wise eight-lane consumers are31.253%,31.019% and
+30.033% faster at112/224/448 extents. Immutable2057 instructions/groups
+forecasts almost tie and miss absolute cycles by up to30.535%; elements/FP
+distance predicts27.199% gains and misses absolute cycles by up to10.652%.
+Both old fits, all prelabel values and original domain refusals are unchanged.
+
+The separately predeclared spacing model trains only112/448 arms and scores
+both224 arms held. Work alone misses26.259% and ties the schedules. Work plus
+ordered FP spacing scores2.524%/3.892% error and ranks the held pair correctly.
+Its coefficients are12.578259697447887 and3.5222467241725792;
+fit370fda14ff360587233c3b80c48cd386bccff774baccc735797fcd450ce42287.
+One source slice/held pair still fails broad search approval; point estimates
+have no calibrated uncertainty. GPR dependence, linked footprint, extent
+effects, physical cache traffic and complete host/device overlap are unpriced.
+This is useful local screening; whole predictions stay UNKNOWN.
+[Independent old/new model scores](perf_records/root_source_host_quant_spacing_stock2063_terminal_review_20261007.json).
+
+Root now prioritizes calibration while the three agents handle source legality/
+ResNet, Tiny bottlenecks and Smol/queue. A read-only seven-experiment Smol index
+joins complete group instructions, stock cycles, exact source/link/arena scope,
+exclusive source frames and actual requests where present. Missing features
+stay explicit. Next calibration should separate dependence, issue/fences,
+readout, allocation and cache regimes using held source schedules. Target model
+providers stay OOT; generic evidence/fit/ranking/loop tooling belongs in Merlin.
+Root independently closes62 index pins and all seven zeroFSM ELFs. A new
+blinded six-historical-group retirement fit forecasts2064 at4283782180.9632835
+cycles, without opening its stock label. Fixed-plus-retirement refuses negative
+terms. The held instruction extent is below training range, so the shared
+predictor returns UNKNOWN; conditional arithmetic stays explicitly diagnostic.
+All six training arms are one source workload, not six held workload families.
+Original prequeue count-ratio4278988055.291242 remains unchanged.
+[Blinded cohort fit](perf_records/root_smol_complete_group_blinded_retirement_screen_20261007.json).
+
+Actual Tiny2062 whole410147055 improves0.612% although its local compound
+improves16.38% and strict retirement1.57%. Smol2060's complete12-head group
+4857792055→4467058350 improves8.043%, close to its8.541% retirement change.
+The bounded F32-floor successor's frozen exploratory count-ratio forecast is
+4278988055.291242 cycles; stock2064 is running. None of these section labels
+qualifies whole Smol or a CPU/Gemmini overlap model.
+[Tiny terminal](perf_records/root_tiny_stock2062_masked_whole_terminal_review_20261007.json),
+[Smol terminal](perf_records/root_rms4_stock2060_terminal_review_20261007.json),
+[frozen floor successor](perf_records/root_prepared_bounded_floor_stock_release_20261007.json).
+
+## Fixed-geometry calibration: 2026-10-07 01:20 UTC
+
+A new prospective battery keeps the original typed quantizer graph, eight-lane
+packet geometry, arithmetic counts, scoped retired instructions, branches,
+calls and stack requests equal within each pair. It changes only the ordering
+of independent clamp/conversion chains. All 1,053,696 original native bytes and
+15 strict Spike windows pass. The observed inverse FP spacing feature differs
+by 5.53 times, breaking its earlier exact relationship with loop packet counts.
+Small/large extents train a future separate model; both current-extent arms are
+held. Original2057 coefficients also predict every new arm prospectively,
+without fitting any new label. The count/group hypothesis almost ties the arms;
+the FP-distance hypothesis predicts grouped stages 27.20% faster. Those are
+conditional forecasts: original executable-domain refusals remain, and changed
+GPR dependencies, instruction footprint and physical cache traffic are recorded.
+One stock calibration is released with immutable source/ELF/partition/forecasts.
+[Prelabel calibration](perf_records/root_source_host_quant_spacing_prelabel_20261007.json).
+
+Complete original residual timing now measures current39 at1,996,286 and the
+exact14-product correction network at1,821,983 GSIM cycles, an8.731% section
+gain. The earlier conditional array/preload arithmetic omitted new SPAD writes,
+DMA and fences and cannot price this result. Restricted hardware-proved internal
+fence coalescing is the next candidate, in a fresh worktree; timed bytes stay
+frozen. No proportional whole saving is inferred.
+
+Tiny's typed masked contraction passes the complete compound at493,595.5 versus
+412,735 GSIM cycles,16.38% lower. Its normal whole composition retains the
+source-exact continuation and reproduces the2056 control object/final ELF. All
+256,000 original native/Torch/strict outputs pass; strict retirement falls1.57%,
+which is not a hardware forecast. Whole stock review and measurement are separate.
+
+Smol's explicit RMS4 fast group is independently released after246 pins, all
+1600 original outputs and65 target refusal/rounding cases close. Stock2060 is
+running. A nonlinear uncertainty variant reduces replay but raises complete
+instructions18.54%. Guarded portable floor/ceil-to-i64 code generation removes
+libm calls and lowers that negative arm3.88%, preserving1600 original bits;
+it still loses to fast RMS4 and is held. Generic conversion belongs in Merlin.
+The fast arm's source floor returns F32 for an observed fraction subtraction,
+so substituting an integer result there requires a separate proved conversion.
+Shared BF16/rintf call counts belong to post-ROI validation and cannot be counted
+as provider savings. These complete-cost negatives guide the next experiments.
+[RMS4 root release](perf_records/root_rms4_fast_stock_packet_review_20261007.json).
+
+## Latest model tuning: 2026-10-07 00:56 UTC
 
 The actual-source host quantizer2057 held current224-row4/8-lane schedules
 out of training. Four half/double-extent schedules train the two-parameter
@@ -21,10 +110,20 @@ native oracles check978,432 output bytes; production strict Spike passes all
 predict seven lanes faster in each pair. The original executable domain refuses
 transfer; a separately declared conditional signature extrapolation is frozen
 for hardware evaluation. No labels are fitted or automatic export enabled.
-The new tail breaks the exact groups/FP-distance proportionality and exposes
-previously unpriced helper/stack/footprint behavior.
+Stock2059 closes every15-window counter, output checksum and same stock
+bitstream. Frozen instructions/groups and elements/FP-distance errors are at
+most **6.13%/6.02%** over all six new cases; both rank all three pairs correctly.
+New labels never enter fitting. The conditional three-size pair gate passes,
+while original executable-domain refusals remain. An exact static packet audit
+shows the coarse floor(elements/width) feature under-counts per-row tails.
+FP distance remains exactly3×true full+tail packets on all12 old/new cases,
+so separate FP/branch prices are still unidentified. Original features and
+predictions remain immutable; other source/memory signatures and whole ranking
+are unqualified.
 [Prelabel release](perf_records/root_source_host_quant_transfer_stock_release_20261007.json),
-[immutable forecast](perf_records/source_host_quant_frozen_transfer_forecast_20261007.json).
+[immutable forecast](perf_records/source_host_quant_frozen_transfer_forecast_20261007.json),
+[held stock transfer](perf_records/root_source_host_quant_stock2059_transfer_terminal_review_20261007.json),
+[tail identifiability audit](perf_records/source_host_quant_tail_group_identifiability_20261007.json).
 
 The actual2039 request census closes23,422,080 nominal array rows versus the
 ZIP reference18,484,224;97.98% of the extra rows are residual arithmetic.
@@ -33,6 +132,10 @@ reference22.39M. This is postlabel diagnostic arithmetic with no refit, outside
 the trained full-program extent/scope. Physical traffic, host issue and overlap
 remain unpriced. Approved whole predictions stay UNKNOWN.
 [Current census](perf_records/root_current2039_frozen_stationary_request_diagnostic_20261007.json).
+
+Root independently rebuilds all54 geometry/request joins and all16 source
+residual chunk proofs; role sums conserve and integer mean has8192 rows each.
+[Independent role review](perf_records/root_current2039_reference_nominal_work_alignment_review_20261007.json).
 
 Actual whole transfer now measures ResNet2055 at30,550,422 (host8 only) and
 Tiny2056 at412,672,134 (source-exact continuation). The latter improves2.2147%
@@ -53,6 +156,17 @@ selective-replay policy passes all1600 original native bits; it is explicitly
 approximate and still pays old bounds, so no performance win is established.
 Original elementwise gates remain unchanged.
 [Whole strict review](perf_records/root_smol_prepared_owner_strict_whole_terminal_review_20261007.json).
+
+The fixed RMS4 fast successor removes redundant rigorous score-bound work and
+still passes all1600 original native bits,48 groups/23040 products/zero fallback.
+Complete-group strict instructions are1,980,223,983 versus reproduced2024
+2,165,148,233 (**8.54% lower**); hardware cycles are unmeasured. Its source-frame
+census attributes725.21M to softmax/polynomial/denominator and49.74M to replay,
+36.62%/2.51% of ROI. Polynomial/denominator propagation is the next explicit
+approximate-policy experiment. Exact BF16 lookup is refused: source QK
+FMA/scale/max subtraction and polynomial arguments remainF32, and BF16
+truncation follows nonlinear/reduction observation. No exact-certificate claim
+accompanies an approximate estimate.
 
 Phase0 should expose typed source observation/use closures, numeric policy,
 immutable code/request features and simulator capability failures. Phase1 should
