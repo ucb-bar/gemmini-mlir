@@ -1,5 +1,23 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: complete Smol target accuracy gate passes
+
+The older exact-row normal ELF a4b9…cdd4 completes strict Gemmini Spike in
+4,592.896 seconds (about77 minutes). Its complete1,600-word raw output digest
+matches the original capture, exceeding the retained atol0.03125/rtol0.02 gate.
+Root revalidates156 source pins and the ELF/stdout/histogram hashes. This is
+complete target execution, not a FireSim performance result. The reported
+149,157,846,939 Spike cycles are functional accounting. Native instrumentation
+closes48groups/12preparations/23,040products; this target main does not print those
+counters or arena usage, so none are inferred from absent target lines.
+The explicit16GiB Spike map does not establish stock memory capacity.
+[Completed target gate](perf_records/root_smol_exact_row_whole_strict_qualification.json).
+
+The newer prepared-constants ELF a90f…bf95 has its own171-pin source/native
+qualification and is now running a separate bounded whole target gate.
+The older ELF pass is not transferred to the newer binary. Whole FireSim best
+remains Smol1906 258,621,872,969 cycles; section2098 3,611,264,318 is not whole.
+
 ## 2026-10-07: dense short-row scheduling lowers whole ResNet cost
 
 Stock2101 measures **28,728,702 whole model cycles**, down514,355

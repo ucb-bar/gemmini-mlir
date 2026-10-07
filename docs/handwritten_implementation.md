@@ -43,7 +43,7 @@ theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
-The latest qualified whole-model cycles are ResNet2095 **29,243,057**,
+The latest qualified whole-model cycles are ResNet2101 **28,728,702**,
 Tiny2085 **378,946,263**, and Smol1906 **258,621,872,969**. Original output gates
 and final zero-FSM instruction audits remain mandatory. All requested whole
 targets are still unmet; explicit experiment recipes do not install a default
@@ -121,7 +121,7 @@ verified stock FireSim whole observations remain:
 
 | Workload | Cycles | Original target |
 | --- | ---: | ---: |
-| ResNet50 (2095) | 29,243,057 | about 22M |
+| ResNet50 (2101) | 28,728,702 | about 22M |
 | TinyLlama (2085) | 378,946,263 | about 300M |
 | SmolVLA (1906) | 258,621,872,969 | about 5B |
 
