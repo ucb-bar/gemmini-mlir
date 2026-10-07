@@ -1,5 +1,33 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: whole retained convolution and correct ROI accounting
+
+Stock2086 closes29,514,240 ResNet cycles versus29,618,198 in2081, saving103,958
+(0.350994%). Original1,000 words/0/0, all1,959 pins, normal52-kernel reproduction,
+actual selected entry/ten branch relocations, final zeroFSM and staged stock
+identities pass. The source-stride section's103,094 saving and whole saving
+are separately observed. Remaining22Mgap7,514,240 is unresolved.
+[Whole terminal](perf_records/root_resnet_source_stride_stock2086_stock2086_terminal.json).
+
+The accepted Smol2072 executed-PC audit corrects a whole-histogram scope error:
+236,079,104 BF16-conversion instructions belong entirely to post-ROI consumer
+validation. They receive no model-region optimization credit. Shared rintf
+has mixed caller scope and no forced input-dependent body split. Current ROI
+work is concentrated in encoding, softmax/interval observations and dot bounds;
+these are instruction locations, not physical accelerator utilization or cycle
+percentages. Three complete sparse representation successors are retained as
+negative screens, not hardware cycle measurements or useful core promotions.
+
+For phase0, bind profiling to the actual ROI and caller paths, with an explicit
+unknown bucket for shared callees and missing source lines. For phases1/2,
+require source-generated candidate identity and general numerical policies at
+semantic observation boundaries, then unchanged whole accuracy and actual
+complete section pricing. Instruction count must not rank mixed FP/issue/control
+work alone:2082 and2085 already reversed that ordering. Never add observed
+section gains to a whole forecast. Preserve failed policies as immutable evidence.
+The campaign goal counter observed91,967,723 aggregate tokens at11:18:32UTC;
+it cannot be assigned to OOT, this optimization, a particular agent or billing.
+
 ## 2026-10-07: zero-bin whole Tiny measurement and fresh52 ResNet admission
 
 Stock2085 measures378,946,263 complete original Tiny cycles, saving1,450,080
@@ -7,7 +35,7 @@ Stock2085 measures378,946,263 complete original Tiny cycles, saving1,450,080
 staged ELF/stock bitstream and final zeroFSM close. Only model.o changes;
 all155 target bindings and11 other leaves stay intact. The first M8 section's
 6.15651% gain is not the whole gain; all22 source contexts must be composed
-and measured. Remaining300Mgap is78,946,263cycles. Source retied-instruction
+and measured. Remaining300Mgap is78,946,263cycles. Source retired-instruction
 increase1.291% also did not predict this actual whole improvement.
 
 Root independently admits ResNet whole2086 after rechecking1,959 pins. Fresh

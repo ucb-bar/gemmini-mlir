@@ -1,5 +1,16 @@
 # ResNet remaining gap: measured locations and unresolved attribution
 
+## Latest whole2086 qualification
+
+Stock2086 measures **29,514,240 cycles**,103,958/0.350994% below2081.
+All1,000 original outputs are bit exact at0/0; all1,959 pins, actual selected
+entry/linked relocations, final zeroFSM and staged stock identities close.
+The normal compiler reproduces52 accepted default kernel/adapter pairs and
+only one candidate primitive changes. Gap to22M is7,514,240; to the permitted
+ZIP22,387,449 diagnostic it is7,126,791. Complete section2083/2084 and whole2086
+are separate observations; mixed CPU issue/fetch/service attribution is unresolved.
+[Whole result](perf_records/root_resnet_source_stride_stock2086_stock2086_terminal.json).
+
 ## Source-stride section and source delivery update
 
 The complete original paired source-stride capsule in2083/2084 improves
@@ -7,7 +18,7 @@ The complete original paired source-stride capsule in2083/2084 improves
 are inside the window. Source commands/pointers and immutable operands match;
 smaller code also adds branches/body instructions. GSIM's1.7874% result does
 not identify physical fetch/issue/cache costs or grant a whole-cycle forecast.
-The current29,618,198 whole champion remains2081 until a new whole run passes.
+The then-current29,618,198 whole champion was2081; whole2086 is qualified above.
 [Stock pair](perf_records/root_resnet_source_stride_stock2083_2084_stock2083_2084_terminal.json).
 
 Source delivery now includes the six already measured resident K/row-loop
@@ -18,9 +29,9 @@ also confirms that2081's pre-stem helper already groups eight FMUL, eight FMAX,
 eight FMIN and eight FCVT instructions. The2063 grouping proposal is therefore
 a no-op here and receives no hypothetical performance credit.
 
-## Current whole-model result
+## Prior whole2081 result
 
-Stock2081 is the latest qualified original-source result: **29,618,198 cycles**,
+Stock2081 previously qualified the original-source result: **29,618,198 cycles**,
 80,149/0.269877% below2071. All1,000 original words remain bit exact at0/0,
 all679 source pins close, actual selected newadapter/kernel entries execute,
 and the final zero-FSM ELF and staged stock bitstream match. Complete

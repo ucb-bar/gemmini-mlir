@@ -41,7 +41,7 @@ theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
-The latest qualified whole-model cycles are ResNet2081 **29,618,198**,
+The latest qualified whole-model cycles are ResNet2086 **29,514,240**,
 Tiny2085 **378,946,263**, and Smol1906 **258,621,872,969**. Original output gates
 and final zero-FSM instruction audits remain mandatory. All requested whole
 targets are still unmet; explicit experiment recipes do not install a default
@@ -68,7 +68,8 @@ The source-stride whole2086 admission independently closes1,959 pins, all52
 fresh default kernels/adapters, the one changed candidate kernel, both whole
 numeric gates, actual entry execution and complete relocation-aware linked-body
 identity. Its seven compiler source modules match this published implementation.
-Whole cycles were unknown at submission.
+Whole stock2086 later closes29,514,240 cycles with all original outputs exact.
+[Whole terminal](perf_records/root_resnet_source_stride_stock2086_stock2086_terminal.json).
 
 Merlin owns the generic interval tables, typed observer closure, exact cold
 source continuation placement, direct certified integer observation publication,

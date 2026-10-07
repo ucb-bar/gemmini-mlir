@@ -26,3 +26,8 @@ The repeated inherited build marker is not an executable identity.
 
 All paths and hashes are experiment provenance. Production compiler legality
 and selection do not depend on those workload paths or observed output values.
+
+`submit_source_stride_whole_stock.py` / `collect_source_stride_whole_stock.py`
+close the1,959-pin original ResNet2081 successor and stock2086's all1,000-word
+whole protocol:29,514,240 cycles,103,958 fewer than2081. Fresh52 default pairs
+and the selected candidate primitive are bound before admission.

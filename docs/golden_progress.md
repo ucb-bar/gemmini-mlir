@@ -1,5 +1,24 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: retained source-stride whole ResNet result
+
+Stock2086 qualifies **29,514,240 whole-model cycles**,103,958 fewer than2081
+(0.350994%). All1,000 original output words remain bit exact at0/0. Root
+recloses1,959 source pins, actual entry/relocation proof, final zero-FSM ELF
+and actual staged ELF/stock bitstream. Fresh normal generation reproduces all52
+default kernels/adapters; only one candidate primitive changes. The separate
+section saves103,094 cycles; it was not added to a whole prediction.
+Gap to22M is7,514,240; gap to ZIP22,387,449 is7,126,791 cycles.
+[Whole terminal](perf_records/root_resnet_source_stride_stock2086_stock2086_terminal.json).
+
+Current whole champions: ResNet2086 **29,514,240**, Tiny2085 **378,946,263**,
+Smol1906 **258,621,872,969**. All requested whole targets remain unmet. Tiny's
+complete early zero-product M8 test is submitted as2087 with152 independently
+closed pins; cycles and any whole transfer remain UNKNOWN. Its control is the
+zero-bin mechanism in2085. Historical word-only source drift stays unpromoted.
+Cleanup remains12 verified archived removals and1.19GiB logical net recovery;
+active owners, primary Git stores and reproduction dependencies are retained.
+
 ## 2026-10-07: whole Tiny zero-bin observer result
 
 Stock2085 qualifies **378,946,263 whole-model cycles**,1,450,080 fewer than2076
