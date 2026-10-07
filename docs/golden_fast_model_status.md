@@ -1,5 +1,26 @@
 # Faster performance screening
 
+## Whole transfer and source-order diagnostic: 2026-10-07 UTC
+
+Actual ResNet2066 whole30169093 is1.2482% below30550422, with all1000 original
+outputs exact. Complete802816-element residual GSIM pairs had8.73% and11.91%
+gains separately; these did not establish additive whole savings. Whole gap to
+ownedZIP/1876 reference remains7781644cycles. Latest target-demand updates still
+require host/DDR/fence/overlap prices; no new whole model is qualified.
+[Independent whole transfer](perf_records/root_resnet_stock2066_rectifier_terminal_review_20261007.json).
+
+Smol's one/two signed7-digit selected graphs genuinely fail131/106 original
+outputs with48selected/zero fallback/replay. A semantic control feeding SAME
+graph original orderedF32 QK/PV values preserves all1600 bits. A separate
+unchanged-operand binary64 accumulation/finalF32 diagnostic fails144outputs,
+maxabs0.14271593. Firstgroup QK175729dots differ by at most2^-16 andPV714254
+by at most0x1.cp-18 on the same selected inputs; firstBF16 probability differs
+at head0/row72/key309. Binary64 is a widerprecision control, not an exactsum
+claim. Source ordered-rounding sensitivity is real on this workload, separately
+from lowprecision coefficient error. No precision sweeps or new hardware for
+these negatives. Costmodels must carry observer/replay obligations and original
+gate; cheaper dense products alone do not qualify an implementation.
+
 ## Blinded complete-group check: 2026-10-07 01:56 UTC
 
 Stock2064 is4256146700 cycles,4.72149% below2060 and12.38516% below2024.

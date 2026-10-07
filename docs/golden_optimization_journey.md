@@ -9,6 +9,57 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07: actual whole transfer and reduction-order sensitivity
+
+ResNet2066 finishes30169093cycles,381329/1.2482% below2055; root12terminalpins,
+actualUART/DONE/rank0/original1000rawSHA/standardadapter/finalzeroFSM close.
+Gap to ownedJack reference22387449 remains7781644cycles/34.76%. Failed2065
+setup reached no workload/staging/UART; submitter HOME/USER/LOGNAME overrode
+serviceidentity. Owned launcher removes these captured identity variables,
+matching successful2064 exactly. Corrected2066 is the sole actual workload;
+failure/admission/envcomparison pins retained, shareddaemon/config/foreignjobs
+untouched. No additional timing sample or reference-folder access.
+[Whole terminal](perf_records/root_resnet_stock2066_rectifier_terminal_review_20261007.json).
+
+All16 current residual sources have legal typedlayouts/privatewriter/resources;
+only one cheap singleton certificate is currently supplied. Five other historical
+cheap relations require2–39 independent corrections, whose naive productcounts
+often exceed oldexact routes. Ten bounded priorsearch failures are not global
+impossibility. Shared correction synthesis remains open. Full-width ACC-mvin
+scale128 is unsupported: pinneddefaultNone/sharedfalse/headeridentity and SAME
+actualSpike/GSIM ELF710d3d… return256 original i32values unchanged atscale1/128.
+No invented radixcapability or stock probe. Next supported candidate batches
+four disjoint privatepanels to amortize preserved externalfences, with exact
+14products/sourceorder/resources/lifetimes and completecost gates.
+
+Fixedtwo-digit selectedgraph fails106/1600 (maxabs0.1435578465),48selected/
+13824callbacks/zero fallback/replay; fe29891 negative remains frozen. SAME
+surroundinggraph plusoriginalorderedF32QK/PV givesall1600bitexact,8c7e930/56pins,
+19327352832orderedFMAs. Binary64 increasingK separateMUL/ADD/finalF32 on SAME
+operands fails144/1600 (maxabs0.14271593),217dc83/57pins. Firstgroup dot/probability
+differences recorded; no exactsum claim or precisionpolicy/hardwarepromotion.
+This isolates reduction-order sensitivity from a surroundinggraph bug and from
+coefficient quantization. Next source optimization stages independent endpoint
+preparation in existing4-point/8-endpoint helper; perlane arithmetic/order and
+whole originalgates remain, actualcompiler schedule/extra stack must be checked.
+
+Tiny same2062ELF attribution:155target boundaries,8.275BlogicalMACs,1.034GB
+requestedB bytes. QK6.528M/PV9.595M retiredinstructions; preDowninterval46.608M.
+The263.110M fullPC total includes107.14M SHA validation, so it is not the
+130.505M timedmodelROI or410.147Mhardwarecycle split. memcpy524715entries include
+512005validationcalls; only12688memrefCopy/22ciface calls belong to that model
+copy path. Firsti8attention negative is406a3a8/699pins; no blindPV-only arm.
+Next generic closed-i8 result removes duplicate rounded multiply/clamp/RNE
+after an already-certified integer observation; source/all-use/effectproof,
+no floatingescape, retained originalcontinuation onrefusal, same table/policy.
+50focusedchecks pass; completeM8/targetfiveFRM/whole qualification pending.
+
+Owned ledger02:01:04:8threads;69171618uncached/3246846976cache-read/13705337output,
+5496875reasoning(outputsubset). Window01:31:37→02:01:04:969586uncached/
+47325696cache-read/210260output/75002reasoning subset. Separategoal79232636,
+not rawsum. ExclusiveOOT/model/topic allocation andbilling remainUNKNOWN.
+[Token ledger](perf_records/golden_token_usage_20261007T020104Z.json).
+
 ### 2026-10-07 01:56 UTC: complete-group prediction check and exact whole release
 
 Root independently closes2064 stock4256146700 cycles/10pins/original consumer,
