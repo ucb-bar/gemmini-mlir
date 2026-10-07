@@ -1,5 +1,23 @@
 # ResNet remaining gap: measured locations and unresolved attribution
 
+## Source-stride section and source delivery update
+
+The complete original paired source-stride capsule in2083/2084 improves
+1,001,893→898,799cycles (103,094/10.2899%). Both stores and the exact decoder
+are inside the window. Source commands/pointers and immutable operands match;
+smaller code also adds branches/body instructions. GSIM's1.7874% result does
+not identify physical fetch/issue/cache costs or grant a whole-cycle forecast.
+The current29,618,198 whole champion remains2081 until a new whole run passes.
+[Stock pair](perf_records/root_resnet_source_stride_stock2083_2084_stock2083_2084_terminal.json).
+
+Source delivery now includes the six already measured resident K/row-loop
+winners' previously missing normal API and bounded dynamic-B implementation.
+The restored seven files match qualified173ab44 exactly. Fresh all52 source
+regeneration is separate from partial linking preserved kernels. Inspection
+also confirms that2081's pre-stem helper already groups eight FMUL, eight FMAX,
+eight FMIN and eight FCVT instructions. The2063 grouping proposal is therefore
+a no-op here and receives no hypothetical performance credit.
+
 ## Current whole-model result
 
 Stock2081 is the latest qualified original-source result: **29,618,198 cycles**,

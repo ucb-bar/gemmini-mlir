@@ -1,5 +1,49 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: source delivery closure and two complete section gains
+
+Tiny's exact sufficient zero-bin observer measures **3,712,239.5 → 3,483,695**
+cycles in stock2082's complete M8 ABBA window, a6.15651% improvement despite
+1.2994% more retired instructions. The original45,056 i8 outputs, guards,
+immutable inputs and separate five-mode/seven-sticky gate pass; all164 source
+pins and actual staged ELF/bitstream identities close. Both source finishing
+products and the216 cold continuation calls remain unchanged. Normal all22
+contexts/991,232 words and616 mode/sticky cases pass, as do all256,000 original
+whole output words and the original Torch0.03125/0.02 gate. Control2076 is
+reproduced byte for byte. Whole stock2085 is submitted; whole cycles are UNKNOWN.
+[Complete section](perf_records/root_tiny_rne_zero_stock2082_stock2082_terminal.json),
+[whole admission](perf_records/root_tiny_rne_zero_stock2085_root_admission.json).
+
+ResNet's paired source-stride command retention measures **1,001,893 → 898,799**
+cycles in stock2083/2084, saving103,094/10.2899%. Every original50,176 output,
+second store, input and guard passes. Primitive commands/pointers are identical;
+ordinary CPU loops reduce touched code154,856→8,376bytes while increasing body
+instructions. GSIM's1.7874% gain does not predict the RTL gain's magnitude;
+independent small tails slightly regress. This is a complete section result,
+with all292 source pins and staged identities closed. Whole timing is separate.
+[Complete pair](perf_records/root_resnet_source_stride_stock2083_2084_stock2083_2084_terminal.json).
+
+The audit found a source delivery omission: six existing measured ResNet
+resident K/row-loop winners were absent from the published compiler API. Their
+seven implementation modules are restored byte-identically to qualified173ab44
+as one topic, with bounded dynamic-B lowering. Both explicit loop options are
+integrated, passing109 source/resource/key checks and47 narrow integration
+checks. Fresh all52 normal recipe reproduction is being independently sealed.
+Merlin main is now`c0f40f8f8`, one generic exact typed observer topic, passing107
+source and107 outside-checkout installed checks, with two modules and30 runtime
+headers identical. Production defaults and original numeric gates stay intact.
+[Source delivery](perf_records/root_restored_resident_source_delivery_20261007.json),
+[Merlin publication](perf_records/root_merlin_rne_observer_direct_main_publication_20261007.json).
+
+Current whole champions remain ResNet2081 **29,618,198**, Tiny2076
+**380,396,343**, Smol1906 **258,621,872,969**. All targets remain unmet. Smol's
+exact sparse dyadic source admission is verified natively, but its first complete
+cost screens are negative; no new hardware or whole result is claimed. The
+two-key residual correction is exact but46.67% slower and stays unselected.
+The older grouped eight-lane pre-stem ordering is already present in2081;
+reapplying it would change no code. Cleanup remains12 archived worktrees and
+1.19GiB logical net savings, preserving active owners and shared Git stores.
+
 ## 2026-10-07: predictor-key whole ResNet win and generic proof publication
 
 Stock2081 measures **29,618,198** original whole-model cycles, 80,149 fewer

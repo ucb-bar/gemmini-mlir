@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`0a9c14552e4bf3711cda02d98f9e31911def01d6`.
+`c0f40f8f8d100b841c26fe8bbd6c09e79b6de17c`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.
@@ -36,8 +36,9 @@ preparation and exact residual certificates.
 Later generic topics are independently qualified before direct-main delivery:
 the audit baseline`3a1e24c77`, finite guards`b1108c60d` (95source/95installed),
 predictor-key corrections`b1b6d1379` (45/45), and explicit rounded-polynomial
-theorem consumption`0a9c14552` (104/104). The last topic verifies all30 installed
-header payloads and caller proof/refusal behavior. These focused checks do not
+theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
+`c0f40f8f8` (107/107). The last topic verifies both implementation modules and
+all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
 The latest qualified whole-model cycles are ResNet2081 **29,618,198**,
@@ -53,6 +54,15 @@ resource checks, exact finite residual rectifiers, bounded private panel batches
 source-bound operand domains and restricted internal SPAD fence coalescing.
 The latest ResNet residual source modules were integrated individually; newer
 compiler code from the working branch was retained.
+
+The existing six resident K/row-loop winners' implementation and normal API
+were restored as a separate source delivery topic, including bounded dynamic B
+rows, with seven modules byte-identical to qualified173ab44. Explicit source-stride
+command retention composes with that option and leaves other families intact.
+The combined source/resource/key gate passes109 checks; its narrow option
+integration passes47. Fresh source generation and actual whole performance
+retain separate qualification records; frozen winning objects alone do not
+establish reproducibility from the published compiler.
 
 Merlin owns the generic interval tables, typed observer closure, exact cold
 source continuation placement, direct certified integer observation publication,

@@ -1,5 +1,91 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: exact observer cut, retained source-stride loops and delivery audit
+
+Stock2082 prices the complete M8 source observer alternative at
+3,712,239.5→3,483,695cycles (−6.15651%). Its sufficient zero-bin test removes
+54,186 conversions and108,372 min/max instructions per call while retaining
+the360,808 original FMULs and216 source activation calls. Retired instructions
+increase1.2994%, so instruction count alone ranks this result incorrectly.
+The first context admits27,093/45,056 zero observations; all22 cheap contexts
+admit452,646/991,232. These fractions are admission counts, not whole savings.
+All original bytes, guards, immutable inputs and mode/sticky continuations pass.
+Full indexed observer cells had increased instructions21.14%; their historical
+driver/source pin drift is explicit and that experiment remains unpromoted.
+
+Merlin main`c0f40f8f8` contains the generic complete typed RNE cell partition
+and explicit zero sufficient predicate as one clean topic. Root independently
+passes107 source and107 installed checks, with two implementation modules and
+all30 bundled headers byte-identical. Original scalar products, rounding order,
+effects, unsupported-mode continuations and defaults remain. Normal all22
+source bindings and616 native mode/sticky cases preserve991,232 i8 words;
+both whole native arms preserve256,000 words and the original Torch gate.
+Published main re-emits the lookup and22 native/target wrappers byte-identically.
+The2076 control ELF is reproduced, and only model.o changes. Whole2085 is
+admitted with260 independently reclosed pins; cycles remain UNKNOWN.
+
+Stock2083/2084 prices complete paired source-stride retention at
+1,001,893→898,799cycles (−10.2899%). Same65,678 primitive commands and actual
+DMA pointers, both stores, final fence and decoder are included. Touched code
+shrinks154,856→8,376bytes, integer loads34,697→114 and stores3,000→78; body
+instructions rise187,015→199,499 and branches4→30,528. GSIM prices only1.7874%
+gain, while independent small tails regress0.0872%. No physical cache/issue
+attribution or section-to-whole sum follows. Whole selection and timing retain
+their own gates. The two-key exact residual alternative is separately rejected
+at roughly46.67% more complete cost; additional readbacks/reloads/completion
+outweigh fewer products.
+
+The audit found a delivery omission rather than a new performance gain:
+six existing measured resident K/row-loop schedules were missing from the
+published normal compiler API. Root restores four related commits as one
+coherent OOT topic, with bounded dynamic B/C SSA row verification. Its seven
+modules match qualified173ab44 byte for byte. An independently explicit narrow
+source-stride option composes with it; merging preserves both keyword, metadata
+and CLI choices.109 source/resource/key and47 narrow integration checks pass.
+Fresh52 normal generation is separate from linking preserved control objects.
+The already grouped eight-FMUL/FMAX/FMIN/FCVT pre-stem code makes reapplying
+the older2063 schedule a no-op; it receives no invented performance credit.
+
+Smol's sparse dyadic proof closes157,106,176 independent mathematical source
+product cells across1,525 admitted calls, including every1,152 K64 contraction.
+This does not prove equality to ordered F32 accumulation; the existing explicit
+RMS4 permission and a distinct corrected-product witness remain required.
+Separate preparation/readout/sparse finishing costs must be measured. The first
+complete implementation is negative, and cached exact power scaling improves
+that implementation while still losing to its matched accepted control. These
+negative experiments do not update the Smol whole champion or reach main merely
+because their arithmetic proofs are valid.
+
+### Tooling and abstractions for automatic phases
+
+- **Phase0:** require a clean compiler checkout to regenerate the accepted source
+  recipe and objects. Package checks, callback ABI/ownership, actual entry counts,
+  relocation-aware linked-body identity and complete final-ELF ISA audits are
+  separate evidence. A frozen winning binary alone does not close source delivery.
+- **Phase1:** expose source observer preimages, prepared numeric witnesses and
+  ordinary retained loop alternatives as typed, independently selected compiler
+  mechanisms. Give the agent the actual source/use/effect proof and resource
+  obligations. Generic numeric/host/runtime support belongs in Merlin; primitive
+  schedules, physical rows and target execution belong in the OOT compiler.
+- **Phase2:** measure complete preparation, scans, tables, observer finishing,
+  replay, DMA/readouts and completion. Export emitted operation dependencies,
+  integer/FP load and store widths/order, branch counts, library call expansion
+  and touched code footprint. More instructions can improve RTL time; one engine's
+  ranking magnitude may not transfer to another. Use held programs and contexts,
+  retain UNKNOWN for unpriced mixed effects, and validate composition on the
+  original whole model before promoting a section gain.
+
+Cleanup archives and successor maps remain mandatory before removing integrated
+worktrees.12 removals save1.19GiB logically; active owners and primary Git stores
+remain. Goal metric90,905,400 is aggregate campaign usage, not dialect-only,
+per-optimization or billable spending. Exact attribution remains unavailable.
+All22M/5B/300M whole targets remain unmet.
+[Observer stock](perf_records/root_tiny_rne_zero_stock2082_stock2082_terminal.json),
+[source-stride stock](perf_records/root_resnet_source_stride_stock2083_2084_stock2083_2084_terminal.json),
+[source delivery](perf_records/root_restored_resident_source_delivery_20261007.json),
+[generic publication](perf_records/root_merlin_rne_observer_direct_main_publication_20261007.json),
+[usage](perf_records/root_goal_token_observation_20261007T104509Z.json).
+
 ## 2026-10-07: whole selection closes and source-polynomial proof reaches main
 
 Stock2081 qualifies29,618,198 whole ResNet cycles,80,149/0.269877% below2071,
