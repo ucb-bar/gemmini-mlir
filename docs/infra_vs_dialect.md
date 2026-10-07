@@ -1,5 +1,48 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07: invocation-local preparation and explicit layout selection
+
+Local Merlin main `edf0e0ca4` adds a generic fully prepared model callback:
+immutable private input, verified public function types and recorded selected
+bytes before normal profiling/upstream lowering. No target or workload chooses
+policy. Source and independently installed checks pass 17 each; 1,016 Python
+and 61 runtime payloads match all release forms. GitHub publication is pending
+DNS access. [Qualification](perf_records/merlin_prepared_model_transform_local_20261007_qualification.json).
+
+The OOT physical-layout/catalog wrappers now forward an explicit channel block
+to Merlin's existing layout pass. Target catalog options remain OOT; the shared
+algorithm is retained in Merlin. Both process-global replacements in the fresh
+ResNet recipe are removed. Its same-core control/selected LLVM, object and final
+ELF are byte-identical, with original whole 0/0 output and zero-FSM gates passing.
+This is compiler interface qualification, with hardware cost still pending.
+[Shared recipe audit](compiler_recipe_status.md).
+
+
+## 2026-10-07: current shared compiler and normal-recipe coverage
+
+Current Merlin main is `3430c2ca9`; model2MLIR main is `7915e234`.
+The allocator overflow guard and explicit LLVM helper link/inline contract
+are shared infrastructure topics, independently qualified in source and an
+outside package installation. They add no default numerical policy.
+The earlier head and cycle snapshots below are historical records.
+
+The three models share the normal compiler API and target backend. Explicit
+experimental selections, differing pinned revisions and source numeric
+contracts are not a qualified universal automatic policy. Maintain a per-option
+promotion record: source legality, independent cases, actual compiler feature
+selection, original whole gate, complete cost, installed delivery and default
+routing status. Golden outputs may validate an option, never select its code.
+
+The latest concrete unused shared mechanism is exact scalar BF16/math
+legalization: current Smol source LLVM retains hundreds of BF16 conversions
+while its recipe omits `lower_exact_math_inline`. Normal selection now produces
+LLVM with no scalar BF16 arithmetic or truncation; all 1,600 native outputs
+and the final zero-FSM audit pass. Full target/hardware qualification remains
+pending. This is host lowering in Merlin. Sharing all five
+signed-radix product outputs, accumulator stripes and device commands belongs
+in OOT; source numeric/product/ownership proofs and orchestration stay in Merlin.
+[Actual whole function costs](perf_records/root_smol_endpoint_whole_retirement_20261007_summary.json).
+
 ## 2026-10-07: clean upstream and handwritten branch delivery
 
 Merlin main is `95e8142d9`; model2MLIR main is `7915e234`. Reviewed changes

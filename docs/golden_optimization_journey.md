@@ -1,5 +1,136 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: complete cost limits multi-output and wider-panel gains
+
+The optional finite-point observer retains stable scale/norm/replay checks and
+skips duplicate endpoint quantizations only with pure returned-value, RNE,
+nontrapping/unobserved-effect and private-storage proofs. All 1,600 native
+original output words remain exact, with all 48 groups and 23,040 product calls.
+The complete original 12-head target section falls from 1,515,040,109 to
+1,472,334,273 functional retired instructions (**2.81879%**), with the original
+compiled consumer, guards and refinement statistics unchanged. Native counters
+identify 37,503,064 avoided calls; they are not FPGA measurements. Root recloses
+152 native and 38 complete-group pins. Source/topic installation and hardware
+promotion remain separate. [Complete group](perf_records/smol_frontier_point_cells_group_20261007.json),
+[original whole native gate](perf_records/smol_frontier_point_cells_native_20261007.json).
+
+The explicit product-family seam carries all five degree planes, all nine
+integer products and physical output-plane stride through a checked generic
+contract. All 1,600 native words remain exact; 4,608 family calls replace
+23,040 degree calls while all 1,038,090,240 logical i32 words remain. Complete
+target source-group retirement changes 1,515,040,109→1,514,248,511
+(**0.0522493%**), with unchanged complete source observations and refinement
+statistics. Kernel-only savings do not establish the complete benefit. All
+five raw planes pass for three kernels at stride 131,072, 60 target rows and
+819,200 checked words. QK GSIM/hardware cost remains pending. Root recloses 145
+native and 38 complete-group pins. [Complete cost](perf_records/smol_product_family_group_20261007.json),
+[native source gate](perf_records/smol_product_family_native_20261007.json),
+[raw plane checks](perf_records/smol_product_family_planes_20261007.json).
+
+Declared 128-column contiguous residual panels retain split transfers of at
+most 64 columns. The mechanism is coefficient/command reuse, with unchanged
+physical DMA bytes. All 15 original cases close 4,716,544 output bytes,
+30 normal-entry objects reproduce, independent full signed-byte pair/tail
+cases pass, and 174 checks pass. Fresh residual5 complete GSIM measures
+422,044→412,585 (**2.241236%**), with full output/input/guard/descriptor/FCSR
+checks. Other shapes regress in retirement, including residual1 +13.65%.
+No blanket policy, incremental comparison against older group64 ELFs, stock
+result or whole-model speedup is credited. Root recloses 1,038 pins.
+[Qualification](perf_records/residual_contiguous_panels_local_20261007.json).
+
+The next ResNet target seam is bounded ordinary row-command loops: a current
+49-row unrolled pointwise kernel has a 1,408-byte stack frame and spills many
+command constants. Source/resource proofs and complete costs must determine
+whether compact issue loops help. The next Smol seam must reduce the dominant
+host source-observer/preparation work; callback count alone is inadequate.
+
+## 2026-10-07: explicit shared compiler interfaces preserve fresh ResNet bytes
+
+The shared compiler audit and phase 0/1/2 promotion requirements are recorded
+in [compiler recipe status](compiler_recipe_status.md). Local Merlin main
+`edf0e0ca4` exposes invocation-local fully prepared MLIR transformation after
+all ordinary preparation. Seventeen source and seventeen independently
+installed checks pass; 1,016 Python and 61 runtime payloads match source,
+wheel, source archive and installation. Empty selection preserves the normal
+route. The interface checks typed public entries and selected identity;
+numerical, effect and provider proofs remain caller obligations.
+
+The OOT catalog now threads an explicit reduction-channel block into Merlin's
+existing generic layout algorithm. Nonzero selection requires layout
+propagation; defaults retain the previous report and source bytes. Five layout
+checks and eight refusal subtests pass. The fresh normal ResNet legacy control
+and explicit route produce identical LLVM, host model object and final ELF.
+All 1,000 original words are exact at 0/0, rank mismatches are zero and the
+final ELF has zero FSM instructions. The functional counter is 8,394,275,
+not a FireSim measurement or reproduction of the earlier stock2109 ELF.
+[Fresh normal whole qualification](perf_records/root_resnet_shared_preparation_20261007_qualification.json).
+
+The source/package qualification closes 2,189 pins and the fresh whole
+interface packet 252. Both initial missing-capability-input refusals remain;
+supplying the original pinned i8/i32 hardware facts closes ordinary lowering.
+GitHub fetch fails DNS resolution and new queue submission refuses UID2621's
+missing FireSim group membership. No new topic is claimed published or queued.
+Whole best results remain ResNet 28,649,233, TinyLlama 378,946,263 and SmolVLA
+258,621,872,969; existing whole Smol2113 continues independently.
+
+
+## 2026-10-07: whole Smol source fidelity and shared compiler selection
+
+The actual Smol f90b executable completes a full functional target run in
+4,294.20 seconds with all 1,600 original f32 output words bitwise exact and
+zero FSM instructions. Its functional counter is 137,215,662,148; this is not
+a FireSim cycle result. Full stock job 2113 remains running. Whole champions
+remain ResNet 28,649,233, TinyLlama 378,946,263 and SmolVLA 258,621,872,969.
+[Whole functional qualification](perf_records/root_smol_endpoint_whole_spike_20261007_qualification.json).
+
+An independent complete executable PC census conserves 137,216,964,028
+retired instructions, with 98,310 outside nonzero function extents. Exclusive
+function-address costs include 37.54B in the prepared group executor, 21.86B
+in the BF16 conversion helper, 17.94B in product evaluation and 9.89B in
+frontier certification. Shared callees are charged to their own addresses;
+these are neither host/accelerator cycle percentages nor FPGA latency estimates.
+[Actual function costs](perf_records/root_smol_endpoint_whole_retirement_20261007_summary.json).
+
+The normal Smol recipe did not select the existing generic
+`lower_exact_math_inline` feature. A fresh normal build selects it through
+Merlin main 3430c2ca9 and the shared OOT backend. Returned LLVM removes all
+803 scalar f32-to-BF16 truncations, 1,631 BF16 arithmetic operations and BF16
+intrinsics from the model object. The numeric C provider already contains no
+BF16 operations. The fresh normal target model object has no undefined
+`__truncsfbf2` reference. All 1,600 native output words remain bitwise exact;
+48 groups, 12 preparations and 23,040 product callbacks close with no fallback
+or lifetime errors. The final ELF passes zero-FSM. The full target strict run
+and hardware cost remain pending; static removal earns no performance credit.
+[Normal native qualification](perf_records/root_smol_exact_math_normal_native_20261007_qualification.json).
+
+All three workloads use Merlin's normal preparation/lowering/object/link
+infrastructure and the Gemmini OOT backend. Experimental drivers select
+source-bound candidates and explicit pass/schedule options; their differing
+source revisions and numerical contracts remain visible. One automatically
+selected configuration at current heads has not yet been qualified across all
+three models. A successful experimental option must become a semantics/shape/
+resource rule before automatic promotion, with independent shapes and refusal
+cases. No model name, provenance ID or golden value may choose production code.
+
+The source callback inventory closes 69 pins and distinguishes the actual
+5,760 QK, 11,520 PV192 and 5,760 PV128 integer-group callbacks from 24 remaining
+floating contractions and unclassified SCF regions. A five-output family can
+share encoded operands across all nine required integer products, but complete
+encoding, five readouts, reconstruction and source certification must be priced.
+Reducing callback count alone earns no whole-model cycle credit.
+[Source inventory](perf_records/root_smol_endpoint_source_callback_inventory_20261007.json).
+
+Phase 0 should record actual source arithmetic, complete observation/effect
+boundaries, prepared operands, issue/wait intervals, compiler features selected
+and features available but unused. Phase 1 should expose general BF16 rounding,
+immutable operand preparation and bounded multi-output product contracts to
+shared rewrites; target memory, resource and command legality remain OOT.
+Phase 2 should search these explicit options using conserved instruction/traffic
+estimates, then complete matched sections and original whole hardware gates.
+The agent must be able to edit shared passes/runtime in Merlin and target
+scheduling/lowering in OOT, with a reproducible normal recipe and installed
+package qualification. Keep rejected alternatives beside wins.
+
 ## 2026-10-07: shared host compilation and allocator topics reach Merlin main
 
 Merlinmain3430c2ca9 includes two clean generic topics. Calloc rejects unsigned
