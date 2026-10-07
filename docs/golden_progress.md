@@ -1,5 +1,28 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: residual batch16 lowers whole ResNet to 28,649,233 cycles
+
+Stock2109 measures **28,649,233 whole-model cycles**, saving79,469
+(**0.276619%**) against byte-reproduced2101. All1,000 original output words
+remain exact at0/0, with actual staged ELF/stock bitstream, rank checks,
+complete execution and final zeroFSM audit. Root recloses810 source pins and
+the actual selected linked body. Only one source-derived key residual kernel
+and adapter change;68 other routes, stem, classifier, host, runtime and weights
+are retained. Explicit batch16 passes capacity/order legality; primitive
+default1 and catalog default4 remain unchanged.
+
+The remaining22M target gap is **6,649,233 cycles**. Tiny2085 remains
+**378,946,263** and whole Smol1906 **258,621,872,969** pending fresh evaluation.
+The2104 boundary profile describes2101, not this new whole executable.
+Separate section2105/2106 saves74,000 cycles; that saving is not added to the
+whole result. [Whole hardware result](perf_records/root_resnet_key_batch16_stock2109_qualification.json).
+
+The exact fixed-prefix host quantizer is rejected: complete stock2110/2111
+means3,344,753.5→5,412,866.5 cycles (**+61.831552%**), despite96.4765%
+source-hit coverage. Allocation, layout, copies and original fallback remain
+in its isolated window. No alternative partition, whole build or policy
+promotion is credited. [Complete negative](perf_records/root_quant_prefix_stock2110_2111_qualification.json).
+
 ## 2026-10-07: current whole-model boundary profile closes on stock
 
 Stock2104 profiles the exact2101 implementation:12 original linker objects
