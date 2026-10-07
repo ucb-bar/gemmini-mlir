@@ -1,5 +1,25 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: borrowed-input dense alternative also wins on stock
+
+Complete original M196/K512/N1024 stock2102/2103 improves474,791→453,191
+cycles, saving21,600 (**4.54937%**). All200,704 outputs,4,096 guard bytes
+and925,696 immutable bytes pass. The actual401,408-byte segmented input
+owner is borrowed directly; no packed copy is introduced. Root recloses516
+source pins, the current whole-object binding, both actual staged ELFs/stock
+bitstreams and final zeroFSM. Configuration, flush, transfers, commands,
+stores and final fence are timed; checking is outside the interval. This is one
+section observation per arm; the whole best stays28,728,702 and section gains
+are not added into a forecast.
+[Complete section](perf_records/root_dense_segmented_stationary_tail_stock2102_2103_terminal.json).
+
+GSIM complete-cost estimates for the two measured original dense shapes differ
+from stock by at most1.717%; both order the alternatives correctly. Four arm
+observations are recorded with source/hardware identity. This is a comparison,
+not a fitted or independently validated general performance model; host,
+attention, overlap and whole prediction remain uncalibrated.
+[Estimate comparison](perf_records/root_dense_gsim_stock_complete_comparison_20261007.json).
+
 ## 2026-10-07: normal hierarchy legality closes without a measured win
 
 The source-table hierarchy is legally prepared across all22 contexts and616
