@@ -1,5 +1,48 @@
 # gemmini-mlir
 
+## Handwritten implementation
+
+The `handwritten-implementation` branch contains the handwritten xDSL Gemmini
+backend, source-bound upstream lowering, primitive device schedules, and the
+recorded optimization experiments. The golden device path emits configuration,
+DMA, preload, compute and fence instructions. Ordinary RISC-V loops repeat the
+schedule; Gemmini FSM loop instructions have no lowering in this path. Every
+device object and final linked ELF must pass the executable-section
+[zero-FSM audit](mlir_oot/no_fsm_audit.py).
+
+Start with [the compiler export API](mlir_oot/golden_compiler_export.py),
+[device lowering](mlir_oot/golden_device_lower.py), and
+[device compilation](mlir_oot/golden_device_compile.py). Target implementations
+live here; reusable proofs, host compilation, packing, runtime and dispatch live
+in [Merlin](https://github.com/ucb-bar/merlin). Frontend capture fixes live in
+[model2MLIR](https://github.com/ucb-bar/model2MLIR). Production decisions use input
+semantics, shapes, numeric contracts and hardware capabilities. Model selections
+and measured recipes remain explicit experiments.
+
+Use Python with Merlin installed and the compatible xDSL dependencies, plus an
+LLVM installation containing `mlir-translate` and a RISC-V-capable `clang`:
+
+```sh
+python -m mlir_oot.golden_device_compile \
+  --kernel gemm --m 17 --n 73 --k 65 --output-dtype i32 \
+  --llvm-bin "$LLVM_BIN" --workdir out/handwritten-gemm
+```
+
+This produces typed Gemmini/LLVM IR, a RISC-V object, compiler hashes and its
+instruction audit. Upstream contraction and capture export commands are declared
+in [manifest.yaml](manifest.yaml). The compatible dependency revisions and
+publication checks are recorded in [the branch publication notes](docs/handwritten_implementation.md).
+
+The latest verified whole-model observations are ResNet50 **29,698,347**,
+TinyLlama **394,765,577**, and SmolVLA **258,621,872,969** stock FireSim cycles.
+SmolVLA group 2072 takes **3,918,275,805** cycles; that is a section result.
+The 22M/300M/5B whole-model goals remain unmet. Read the
+[performance evidence](docs/golden_progress.md),
+[optimization journey](docs/golden_optimization_journey.md), and
+[fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md).
+
+## Published parent provenance
+
 Standalone, buildable out-of-tree Merlin codegen backend for **gemmini** (family `tensor_resident`).
 
 > ## ⚠ NOT CERTIFIED — published with `--no-gate`
