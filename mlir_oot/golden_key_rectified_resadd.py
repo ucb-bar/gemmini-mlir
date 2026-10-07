@@ -49,6 +49,7 @@ class Plan:
     certificate: dict
     capabilities: Capabilities
     panel_batch: int = 4
+    max_key_fibres: int = 1
 
     def __post_init__(self):
         validate(self.certificate)
@@ -72,8 +73,20 @@ class Plan:
             raise ValueError("signed-byte/i32 DIM16 primitive capability required")
         if self.certificate["indicator_family"] != "predictor_key":
             raise ValueError("complete predictor-key fibre certificate required")
-        if len(self.certificate["relation"]) != 1:
+        if (
+            type(self.max_key_fibres) is int
+            and self.max_key_fibres == 1
+            and len(self.certificate["relation"]) != 1
+        ):
             raise ValueError("exactly one complete correction-key fibre supported")
+        if (
+            type(self.max_key_fibres) is not int
+            or self.max_key_fibres not in (1, 2)
+            or not 1 <= len(self.certificate["relation"]) <= self.max_key_fibres
+        ):
+            raise ValueError(
+                "explicit bounded complete correction-key fibre count required"
+            )
         if any(
             not 1 <= self.certificate["predictor"][key] <= 32767 for key in ("p", "q")
         ):
@@ -103,6 +116,25 @@ class Plan:
             for name, field in (("lhs_coefficient", "p"), ("rhs_coefficient", "q"))
         ):
             raise ValueError("key must reuse the actual predictor integer coefficients")
+        for index, key_relation in enumerate(self.certificate["relation"]):
+            if (
+                not -127 <= key_relation["correction"] <= 127
+                or key_relation["correction"] == 0
+                or max(map(abs, key_relation["key_range"])) >= 1 << 24
+                or max(map(abs, key_relation["predictor_integer_range"])) >= 1 << 24
+                or abs(key_relation["key"]["seed"]) >= 1 << 24
+                or abs(self.seed_delta(index)) >= 1 << 24
+            ):
+                raise ValueError(
+                    "every key/seed delta requires exact binary32 integer bounds"
+                )
+            if any(
+                key_relation["key"][name] != self.certificate["predictor"][field]
+                for name, field in (("lhs_coefficient", "p"), ("rhs_coefficient", "q"))
+            ):
+                raise ValueError(
+                    "every key must reuse the actual predictor coefficients"
+                )
         intervals = [(base, base + rows) for base, rows in self.spad_intervals.values()]
         if any(begin < 0 or end > F.SPAD_ROWS for begin, end in intervals):
             raise ValueError("key rectifier SPAD reservation exceeds capacity")
@@ -136,13 +168,38 @@ class Plan:
             dict.fromkeys(
                 _chunks(predictor["p"])
                 + _chunks(predictor["q"])
-                + [1, -1, self.relation["correction"]]
+                + [1, -1]
+                + [relation["correction"] for relation in self.certificate["relation"]]
             )
         )
 
     @property
     def spad_intervals(self):
         extent, bank = self.panel_batch * self.panel_rows, F.SPAD_BANK_ROWS
+        fibres = len(self.certificate["relation"])
+        if fibres != 1:
+            reservations = {
+                "lhs_positive": (0, extent),
+                "prediction": (fibres * extent, extent),
+                "rhs_negative": (bank, extent),
+                "indicator0": (bank + fibres * extent, extent),
+                "negative_rectified": (bank + (2 * fibres + 1) * extent, extent),
+                "weights": (2 * bank, len(self.weights) * F.DIM),
+                "ones": (3 * bank, self.panel_rows),
+                "zero": (3 * bank + self.panel_rows, self.panel_rows),
+            }
+            for index in range(fibres):
+                if index:
+                    reservations[f"positive_key_{index}"] = (index * extent, extent)
+                    reservations[f"negative_key_{index}"] = (
+                        bank + index * extent,
+                        extent,
+                    )
+                reservations[f"indicator_key_{index}"] = (
+                    bank + (fibres + 1 + index) * extent,
+                    extent,
+                )
+            return reservations
         return {
             "lhs_positive": (0, extent),
             "prediction": (extent, extent),
@@ -162,7 +219,19 @@ class Plan:
     @property
     def compute_passes(self):
         predictor = self.certificate["predictor"]
-        return len(_chunks(predictor["p"])) + len(_chunks(predictor["q"])) + 4
+        return (
+            len(_chunks(predictor["p"]))
+            + len(_chunks(predictor["q"]))
+            + 4 * len(self.certificate["relation"])
+        )
+
+    def seed_delta(self, index):
+        seed = self.certificate["relation"][index]["key"]["seed"]
+        return (
+            seed
+            if index == 0
+            else seed - self.certificate["relation"][index - 1]["key"]["seed"]
+        )
 
     @property
     def acc_seed_offset(self):
@@ -178,13 +247,14 @@ class Plan:
             )
         data.extend([1] * self.panel_columns)
         data.extend([0] * self.panel_columns)
-        data.extend(struct.pack("<i", self.relation["key"]["seed"]) * F.DIM)
+        for index in range(len(self.certificate["relation"])):
+            data.extend(struct.pack("<i", self.seed_delta(index)) * F.DIM)
         return bytes(data)
 
     def attributes(self):
         count = self.m * self.n
         panels = count // (F.DIM * self.panel_columns)
-        return {
+        attributes = {
             "m": self.m,
             "n": self.n,
             "panel_batch": self.panel_batch,
@@ -196,10 +266,16 @@ class Plan:
             "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
             "source_table_sha256": self.certificate["source_table_sha256"],
             "predictor_table_sha256": self.certificate["predictor_table_sha256"],
-            "command_logical_dma_bytes_excluding_setup": 9 * count
-            + panels * 4 * F.DIM * F.DIM * 4,
-            "source_row_payload_bytes_excluding_setup": 9 * count
-            + panels * 4 * F.DIM * 4,
+            "command_logical_dma_bytes_excluding_setup": (
+                5 + 4 * len(self.certificate["relation"])
+            )
+            * count
+            + panels * 4 * F.DIM * F.DIM * 4 * len(self.certificate["relation"]),
+            "source_row_payload_bytes_excluding_setup": (
+                5 + 4 * len(self.certificate["relation"])
+            )
+            * count
+            + panels * 4 * F.DIM * 4 * len(self.certificate["relation"]),
             "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
             "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores",
             "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
@@ -207,6 +283,18 @@ class Plan:
             "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
             "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
         }
+        if len(self.certificate["relation"]) != 1:
+            attributes.update(
+                correction_key_fibres=len(self.certificate["relation"]),
+                identity_ACC_seed_deltas=[
+                    self.seed_delta(index)
+                    for index in range(len(self.certificate["relation"]))
+                ],
+                ACC_lifetime="predictor retained through every key readback; indicators overwrite ACC only after all key observations reside in SPAD",
+                DDR_reuse="every key readback/reload completes before C or private scratch is reused for the next key",
+                traffic_description="A/B plus prediction load/store, positive/negative load/store per fibre, identity i32 seed delta per fibre and final store",
+            )
+        return attributes
 
 
 def build(plan: Plan, *, ordering_contract: OrderingContract):
@@ -284,6 +372,156 @@ def build(plan: Plan, *, ordering_contract: OrderingContract):
     e._rocc("fence", {})
     e._rocc("config_ld", {"stride": 0, "load_id": 2, "shrunk": 0, "scale": 1.0})
 
+    def multiple_keys(destinations):
+        # Preserve the predictor ACC throughout all key observations. Real-D
+        # indicator products may overwrite it only after every key is in SPAD.
+        # Each DDR readback is completed before the same C/scratch locations
+        # are reused for another key; RS local-range hazards alone cannot
+        # establish this external DDR alias dependency.
+        e._rocc("fence", {})
+        for slot, destination in enumerate(destinations):
+            e._rocc(
+                "mvin",
+                {
+                    "local": local("prediction", slot),
+                    "rows": rows,
+                    "cols": cols,
+                    "load_id": 0,
+                },
+                destination,
+            )
+        for index, _relation in enumerate(plan.certificate["relation"]):
+            seed = e._ptr(
+                tables,
+                e.fb.const(0),
+                1,
+                e.fb.const(plan.acc_seed_offset + index * rows * 4),
+            )
+            for slot in range(len(destinations)):
+                for tile in range(4):
+                    e._rocc(
+                        "mvin",
+                        {
+                            "local": isa.acc_addr(
+                                slot * cols + tile * rows, accumulate=True
+                            ),
+                            "rows": rows,
+                            "cols": rows,
+                            "load_id": 2,
+                        },
+                        seed,
+                    )
+            for scale, stride, output, activation in (
+                (1.0, plan.n, c, isa.RELU),
+                (-1.0, cols, negative, isa.NO_ACTIVATION),
+            ):
+                e._rocc(
+                    "config_st",
+                    {"stride": stride, "acc_act": activation, "acc_scale": scale},
+                )
+                for slot, destination in enumerate(destinations):
+                    if output is negative:
+                        destination = e._ptr(
+                            negative, e.fb.const(slot * rows), cols, e.fb.const(0)
+                        )
+                    e._rocc(
+                        "mvout",
+                        {
+                            "local": isa.acc_addr(slot * cols),
+                            "rows": rows,
+                            "cols": cols,
+                        },
+                        destination,
+                    )
+            e._rocc("fence", {})
+            e._rocc("config_ld", {"stride": cols, "load_id": 1})
+            for slot, destination in enumerate(destinations):
+                positive_name = (
+                    "lhs_positive" if index == 0 else f"positive_key_{index}"
+                )
+                negative_name = (
+                    "rhs_negative" if index == 0 else f"negative_key_{index}"
+                )
+                e._rocc(
+                    "mvin",
+                    {
+                        "local": local(positive_name, slot),
+                        "rows": rows,
+                        "cols": cols,
+                        "load_id": 0,
+                    },
+                    destination,
+                )
+                e._rocc(
+                    "mvin",
+                    {
+                        "local": local(negative_name, slot),
+                        "rows": rows,
+                        "cols": cols,
+                        "load_id": 1,
+                    },
+                    e._ptr(negative, e.fb.const(slot * rows), cols, e.fb.const(0)),
+                )
+            e._rocc("fence", {})
+        for slot, destination in enumerate(destinations):
+            e._rocc("config_ex", {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.RELU})
+            for index, _relation in enumerate(plan.certificate["relation"]):
+                positive_name = (
+                    "lhs_positive" if index == 0 else f"positive_key_{index}"
+                )
+                negative_name = (
+                    "rhs_negative" if index == 0 else f"negative_key_{index}"
+                )
+                product(
+                    local(negative_name, slot),
+                    1,
+                    local("negative_rectified", slot),
+                    real_d=place["zero"][0],
+                )
+                e._rocc("fence", {"internal_spad_stage": 1})
+                product(
+                    local(positive_name, slot),
+                    -1,
+                    local("indicator0", slot),
+                    real_d=ones_base,
+                )
+                e._rocc("fence", {"internal_spad_stage": 1})
+                product(
+                    local("negative_rectified", slot),
+                    -1,
+                    local(f"indicator_key_{index}", slot),
+                    real_d=local("indicator0", slot),
+                )
+                e._rocc("fence", {"internal_spad_stage": 1})
+            e._rocc(
+                "config_ex",
+                {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.NO_ACTIVATION},
+            )
+            for index, relation in enumerate(plan.certificate["relation"]):
+                product(
+                    local(f"indicator_key_{index}", slot),
+                    relation["correction"],
+                    -(slot * cols + 1),
+                    real_d=local("prediction", slot) if index == 0 else None,
+                    accumulate=index != 0,
+                )
+            e._rocc(
+                "config_st",
+                {
+                    "stride": plan.n,
+                    "acc_act": isa.RELU
+                    if plan.certificate["source"]["relu"]
+                    else isa.NO_ACTIVATION,
+                    "acc_scale": 1.0,
+                },
+            )
+            e._rocc(
+                "mvout",
+                {"local": isa.acc_addr(slot * cols), "rows": rows, "cols": cols},
+                destination,
+            )
+        e._rocc("fence", {})
+
     def batch(mrow, count):
         def columns(ncol):
             e._rocc("config_ld", {"stride": plan.n, "load_id": 0})
@@ -340,6 +578,9 @@ def build(plan: Plan, *, ordering_contract: OrderingContract):
                     {"local": isa.acc_addr(slot * cols), "rows": rows, "cols": cols},
                     destination,
                 )
+            if len(plan.certificate["relation"]) != 1:
+                multiple_keys(destinations)
+                return
             e._rocc("fence", {})
             for slot, destination in enumerate(destinations):
                 e._rocc(

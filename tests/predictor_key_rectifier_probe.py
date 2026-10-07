@@ -8,17 +8,21 @@ import hashlib
 import json
 import subprocess
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 from merlin.llvmlower import quantized_affine_pair as pair
 from merlin.llvmlower import quantized_affine_rectifier as rectifier
 from merlin.perf.layer_bench import build_program, run_on_gsim
+from xdsl.dialects.builtin import StringAttr
 
 from mlir_oot.golden_device_compile import compile_module
 from mlir_oot.golden_key_rectified_resadd import Capabilities, Plan, build
 from mlir_oot.golden_rectified_resadd import Capabilities as ControlCapabilities
 from mlir_oot.golden_rectified_resadd import Plan as ControlPlan
 from mlir_oot.golden_rectified_resadd import build as control_build
+from mlir_oot.golden_wide_resadd import build as wide_control_build
+from mlir_oot.golden_wide_resadd import tables as wide_tables
 from mlir_oot.no_fsm_audit import audit_elf
 from mlir_oot.spad_fence_coalescing import OrderingContract
 
@@ -40,6 +44,7 @@ def generate(args):
         bound = json.loads(args.source_certificate.read_text())
         bound = bound.get("source_certificate", bound)
         proof = pair.derive(**bound["source"], **bound["predictor"])
+        max_pairs = bound["max_pairs"]
     else:
         # Explicit research fixture; production derivation consumes a complete
         # source proof and never matches these values or the fixture identity.
@@ -52,20 +57,62 @@ def generate(args):
             scale=0.0032446938566863537,
             relu=True,
         )
+        max_pairs = 1
     contract = OrderingContract(str(args.ordering_source.resolve()))
     base_cap = ControlCapabilities(*([True] * 6))
-    old = ControlPlan(
-        args.m,
-        args.n,
-        rectifier.derive(proof, max_pairs=1, indicator_family="axis_offsets"),
-        base_cap,
-    )
+    if args.control_manifest:
+        manifest = json.loads(args.control_manifest.read_text())
+        routes = [
+            r for r in manifest["routes"] if r["proof"]["source"] == proof["source"]
+        ]
+        if len(routes) != 1 or routes[0]["numeric_policy"]["max_output_lsb"] != 0:
+            raise ValueError("one exact source-semantic control binding required")
+        route = routes[0]
+        coefficients = route["proof"]["coefficients"]
+        exact = pair.derive(**proof["source"], **coefficients)
+        if exact["mismatched_pairs"] != 0:
+            raise ValueError(
+                "control coefficients are not source-exact over the complete domain"
+            )
+        old = SimpleNamespace(
+            tables=lambda: wide_tables(coefficients["p"], coefficients["q"]),
+            attributes=lambda: route,
+            certificate=exact,
+        )
+        old_module = wide_control_build(
+            args.m * args.n // 64,
+            coefficients["p"],
+            coefficients["q"],
+            coefficients["scale"],
+            relu=proof["source"]["relu"],
+            prefetch_m=route["device_schedule"]["prefetch_m"],
+            banked_accumulators=route["device_schedule"]["banked_accumulators"],
+        )
+        next(iter(old_module.body.block.ops)).properties["sym_name"] = StringAttr(
+            "gemmini_golden_rectified_resadd"
+        )
+    else:
+        old = ControlPlan(
+            args.m,
+            args.n,
+            rectifier.derive(
+                proof, max_pairs=max_pairs, indicator_family="axis_offsets"
+            ),
+            base_cap,
+        )
+        old_module = control_build(
+            old,
+            coalesce_internal_spad=True,
+            ordering_contract=contract,
+            panel_batch=args.panel_batch,
+        )
     new = Plan(
         args.m,
         args.n,
-        rectifier.derive(proof, max_pairs=1, indicator_family="predictor_key"),
+        rectifier.derive(proof, max_pairs=max_pairs, indicator_family="predictor_key"),
         Capabilities(base_cap, True),
         panel_batch=args.panel_batch,
+        max_key_fibres=args.max_key_fibres,
     )
     count = args.m * args.n
     if args.inputs:
@@ -87,12 +134,7 @@ def generate(args):
         a.astype(np.int16) + 128, b.astype(np.int16) + 128
     ]
     old_compile = compile_module(
-        control_build(
-            old,
-            coalesce_internal_spad=True,
-            ordering_contract=contract,
-            panel_batch=args.panel_batch,
-        ),
+        old_module,
         args.llvm_bin,
         work / "control",
     )
@@ -247,10 +289,12 @@ if __name__ == "__main__":
     for name in ("workdir", "core", "llvm-bin", "ordering-source"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--source-certificate", type=Path)
+    parser.add_argument("--control-manifest", type=Path)
     parser.add_argument("--inputs", type=Path)
     parser.add_argument("--m", type=int, default=1024)
     parser.add_argument("--n", type=int, default=64)
     parser.add_argument("--panel-batch", type=int, choices=(1, 4), default=4)
+    parser.add_argument("--max-key-fibres", type=int, choices=(1, 2), default=1)
     parser.add_argument("--max-cycles", type=int, default=3000000)
     parser.add_argument("--timeout", type=int, default=240)
     raise SystemExit(generate(parser.parse_args()))

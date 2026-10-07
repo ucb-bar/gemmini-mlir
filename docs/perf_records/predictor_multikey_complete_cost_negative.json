@@ -1,0 +1,347 @@
+{
+  "schema": "source_exact_two_predictor_key_fibres_negative_v1",
+  "status": "REJECTED_FOR_PERFORMANCE",
+  "default_enabled": false,
+  "normal_route_selected": false,
+  "stock_release": false,
+  "hypothesis": "Retain predictor ACC while observing two proved correction key fibres through exact seed deltas; postpone indicator products until every key readback is safely in SPAD",
+  "generic_eligibility": "Explicit two-fibre complete source proof, signed-i8 pair domain, bounded exact integer seeds/keys, disjoint full SPAD/ACC/private scratch extents, source readonly owners, all external DDR reuse fenced",
+  "source_domain_pairs": 65536,
+  "source_table_sha256": "ade9fa1734e121118dc13d4e2673d908b1e5aaf5124ad490dd8c22ac02644933",
+  "work": {
+    "control_products_per_tile": 26,
+    "candidate_products_per_tile": 14,
+    "control_requested_dma_bytes_excluding_setup": 301056,
+    "candidate_requested_dma": {
+      "m": 1568,
+      "n": 64,
+      "panel_batch": 4,
+      "compute_passes_per_tile": 14,
+      "spad_reservations": {
+        "lhs_positive": [
+          0,
+          256
+        ],
+        "prediction": [
+          512,
+          256
+        ],
+        "rhs_negative": [
+          4096,
+          256
+        ],
+        "indicator0": [
+          4608,
+          256
+        ],
+        "negative_rectified": [
+          5376,
+          256
+        ],
+        "weights": [
+          8192,
+          80
+        ],
+        "ones": [
+          12288,
+          64
+        ],
+        "zero": [
+          12352,
+          64
+        ],
+        "indicator_key_0": [
+          4864,
+          256
+        ],
+        "positive_key_1": [
+          256,
+          256
+        ],
+        "negative_key_1": [
+          4352,
+          256
+        ],
+        "indicator_key_1": [
+          5120,
+          256
+        ]
+      },
+      "acc_reservation": [
+        0,
+        256
+      ],
+      "negative_scratch_bytes": 4096,
+      "identity_ACC_seed": -7716,
+      "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+      "source_table_sha256": "ade9fa1734e121118dc13d4e2673d908b1e5aaf5124ad490dd8c22ac02644933",
+      "predictor_table_sha256": "acbde35d8326df671161abce0977ac48cb3bc4be7d429b0f4b667bcd0778b907",
+      "command_logical_dma_bytes_excluding_setup": 2107392,
+      "source_row_payload_bytes_excluding_setup": 1354752,
+      "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+      "traffic_description": "A/B plus prediction load/store, positive/negative load/store per fibre, identity i32 seed delta per fibre and final store",
+      "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+      "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+      "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+      "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+      "correction_key_fibres": 2,
+      "identity_ACC_seed_deltas": [
+        -7716,
+        -19389
+      ],
+      "ACC_lifetime": "predictor retained through every key readback; indicators overwrite ACC only after all key observations reside in SPAD",
+      "DDR_reuse": "every key readback/reload completes before C or private scratch is reused for the next key"
+    },
+    "physical_DRAM": "UNKNOWN"
+  },
+  "measurements": [
+    {
+      "scope": "complete_domain",
+      "elements": 65536,
+      "complete": true,
+      "counter_rows": [
+        {
+          "arm": 0,
+          "repeat": 0,
+          "cycles": 111378,
+          "instructions": 20946,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 1,
+          "repeat": 0,
+          "cycles": 163035,
+          "instructions": 20190,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 0,
+          "repeat": 1,
+          "cycles": 111113,
+          "instructions": 20946,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 1,
+          "repeat": 1,
+          "cycles": 163588,
+          "instructions": 20190,
+          "before": 0,
+          "after": 0
+        }
+      ],
+      "candidate_delta_percent": 46.802792023048134,
+      "ROI": "complete primitive setup+all products, both per-key seed/readbacks/reloads/fences, final output; raw-pointer ABI, not ranked normal adapter",
+      "ELF": {
+        "path": "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/layer.elf",
+        "sha256": "495d12bbd533875c53d02985cac771ff1e2af47c92b13baf75a8cf464c2ce69e",
+        "bytes": 225176
+      },
+      "nofsm": "pass"
+    },
+    {
+      "scope": "original_inputs",
+      "elements": 100352,
+      "complete": true,
+      "counter_rows": [
+        {
+          "arm": 0,
+          "repeat": 0,
+          "cycles": 170201,
+          "instructions": 31961,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 1,
+          "repeat": 0,
+          "cycles": 250211,
+          "instructions": 30882,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 0,
+          "repeat": 1,
+          "cycles": 169972,
+          "instructions": 31961,
+          "before": 0,
+          "after": 0
+        },
+        {
+          "arm": 1,
+          "repeat": 1,
+          "cycles": 248711,
+          "instructions": 30882,
+          "before": 0,
+          "after": 0
+        }
+      ],
+      "candidate_delta_percent": 46.66713701557737,
+      "ROI": "complete primitive setup+all products, both per-key seed/readbacks/reloads/fences, final output; raw-pointer ABI, not ranked normal adapter",
+      "ELF": {
+        "path": "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/layer.elf",
+        "sha256": "295fb77be49fa90d9f780a71d5ebcdce04e6b096dfc32a9af06fa7a570586f2b",
+        "bytes": 332120
+      },
+      "nofsm": "pass"
+    }
+  ],
+  "cause_scope": "Extra readback/seed/reload/completion services distinguish the compiled schedules; no pure latency or causal per-service timing is claimed",
+  "control_reproduction": {
+    "source_object": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_13/kernel.o",
+    "recompiled_control": "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/kernel.o",
+    "text_byte_identical": true,
+    "text_sha256": "76468e4cc012bd1b64a15ec82738b0b502f8943618305cd7c5400f21232f550e",
+    "function_name_only_rebound_for_fixture": true
+  },
+  "original_capture": {
+    "whole1000originalbits": true,
+    "receipt": "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/receipt.json",
+    "A_sha256": "02bfcd164fca35fbaa909bdf4179b356f558fc44d03075fe4408ddfd0e5c8c54",
+    "B_sha256": "0d5209eca0cd68c385d51d0e097bf989b057af277b8b63ccfcec4c5714535d21"
+  },
+  "default_identity": {
+    "status": "PASS",
+    "rows": [
+      {
+        "m": 16,
+        "n": 64,
+        "batch": 1,
+        "before": {
+          "ir": "aaaa9ead12c2f4bbbbcff060259d654cd2f4da215e4adcef7754f9ac6f525f9c",
+          "object": "7218c36baee3e8f75e5d3fb383dd2b76208d2c93d958e708453efe29a6b19a26"
+        },
+        "after": {
+          "ir": "aaaa9ead12c2f4bbbbcff060259d654cd2f4da215e4adcef7754f9ac6f525f9c",
+          "object": "7218c36baee3e8f75e5d3fb383dd2b76208d2c93d958e708453efe29a6b19a26"
+        },
+        "byte_identical": true
+      },
+      {
+        "m": 80,
+        "n": 192,
+        "batch": 4,
+        "before": {
+          "ir": "21238e69ab1cd033f6d482b2e32a34beaecda081a462e2848aa8d7e7db86ff32",
+          "object": "7f9472e15a326d93fd70a8b31d45a739f087664180d53eff88a5efc32c683c51"
+        },
+        "after": {
+          "ir": "21238e69ab1cd033f6d482b2e32a34beaecda081a462e2848aa8d7e7db86ff32",
+          "object": "7f9472e15a326d93fd70a8b31d45a739f087664180d53eff88a5efc32c683c51"
+        },
+        "byte_identical": true
+      }
+    ]
+  },
+  "tests": "39 focused tests passed; ruff check/format passed",
+  "prior_refusals": [
+    {
+      "stage": "allpairs_v1",
+      "reason": "Existing axis-offset target refuses multiple correction relations; no timer executed"
+    },
+    {
+      "stage": "allpairs_v2",
+      "reason": "Research control metadata lacked certificate; compiled artifacts only, no timer executed"
+    },
+    {
+      "stage": "original_capture_v1",
+      "reason": "Instrumentation matched an extern prototype and next adapter body, read descriptor bytes instead of raw kernel inputs; trap/partial files preserved and inadmissible. Corrected v2 anchors actual function definition and passes original whole gate."
+    }
+  ],
+  "unsupported": "Existing normal catalog still defaults/refuses multi-fibre family; only explicit primitive research construction admits two. No unchanged source or numerical gate relaxed",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/mlir_oot/golden_key_rectified_resadd.py": "a0cb93cb3a7956115d5825cd8a661a5a92903c105fe3f3e5491f5a0b9611a5ca",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/a.bin": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/b.bin": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/layer.elf": "495d12bbd533875c53d02985cac771ff1e2af47c92b13baf75a8cf464c2ce69e",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/probe.o": "0acc84af2b82160a3ed594606cfbba1bec8b0779a0c595f95b3c228fb8b92b23",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/built.json": "8f37ce29aebd2f9fd16325252c01bf3552f92a579d3b9dc3caf1ef4ba4af6371",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/device_compile.json": "bbab194823e1750a09d53187f2e300468127dba805e8c6dba1359089b3333395",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/kernel.gemmini.mlir": "ace64d31d94a9f69f3b7ac6eac60704b4c02c8b21697eb9e02564f849813fbb2",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/kernel.ll": "5a68a030ef23cc1bc265e9d0417aff39836c23a8f767b1f0d8673bfe05abb182",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/kernel.llvm.mlir": "6dddafae00a31611f3e6b1b453b682271aa0b35abaf9ee648d0926a1b287d00d",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/kernel.o": "cf7ccf88ea7fdf75c3411aec979f6dd674a786f53477207679f2496a89fd5f33",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/candidate/object_nofsm_audit.json": "73886d35398cd925f0ce3dc9869bd53584e4a6bead117b1a7d85556606df6b26",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/device_compile.json": "12afa159460900c182410ae1d29c1b237c5f8b5f6ec6d5d77787cc0ff8f0b07a",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/kernel.gemmini.mlir": "5b1c000cebc99ae4c89fb30f90aa5ca6c3cfd9a52817c608f1997a31e0942c9a",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/kernel.ll": "5690abbb71056cce3e13400adee69026de38c5eb84d09888b20f60183bde4d80",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/kernel.llvm.mlir": "4d8aa44678bba89e32d821c3cfe14a9f7c91427652fcbdc1a99e1142781c24ba",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/kernel.o": "55ba4d5f6c6f3b92ba157ff07f3f48e30c1e0650841b5648d4314f2518818f14",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/control/object_nofsm_audit.json": "82291752a7c0dd9293f210b99afc5e0f7b050337b943105db0de473c06fc040b",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/expected.bin": "ade9fa1734e121118dc13d4e2673d908b1e5aaf5124ad490dd8c22ac02644933",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/gsim.json": "751ac5c4cc2eeb12bd9c01d89fa1ce78fa227f5bea58feb79b0a6321f112672d",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/gsim.stdout": "ac794523f60c7da4f74bf3973fd459f1c3d4fb229e8e22dcd9ef67f8fd11e7a9",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/new_tables.bin": "3e2057b8655f66210c5440be54991b9f02f54868a7d9309df74548316eabfdff",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/old_tables.bin": "6d5baac48716d1fbf69054fe1a6a70f2850a96192691911004698f12f702d641",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/probe.c": "6fa0825c7c72102dd73f6f2e3d37e45073b31b05c6b373072f06ab6ff4ac11dc",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_allpairs_v3/spike.stdout": "e1bcd9c2a35ae2f8798cb8204e15c4cecbcd4127a326b6d55b0e28beb005c41d",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/a.bin": "02bfcd164fca35fbaa909bdf4179b356f558fc44d03075fe4408ddfd0e5c8c54",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/b.bin": "0d5209eca0cd68c385d51d0e097bf989b057af277b8b63ccfcec4c5714535d21",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/layer.elf": "295fb77be49fa90d9f780a71d5ebcdce04e6b096dfc32a9af06fa7a570586f2b",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/probe.o": "447818e58bce4088869cc97256ae3ede2cb0d01fcf816a3ee0567478027691f3",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/built.json": "2e27ef5387b3c890c986941a98b36bb7bef02101001dca469b9b77abf5eaccb9",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/device_compile.json": "6f604c911faa726782dbf4fe138d2d9a305c233e5b2af699ca18b94d75bea5d6",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/kernel.gemmini.mlir": "a00c510ad11c102341a81d709927eaef8c84ad9e3df5315403582b52ccdca815",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/kernel.ll": "eb9e6557f6342d40183acacbb7cc797017a995761c7fe09f0569d0ac4b7ac203",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/kernel.llvm.mlir": "2dedbb61c09859d32606f178d9cca99bf9dffa6d6513fafe72e16a17c92c2b78",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/kernel.o": "59063d44e9fd9cba441596972f4224625444a16467994915ae554ede7b3c39d1",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/candidate/object_nofsm_audit.json": "163bec3359fefe82cc46ae7e637d69b130c3d0caeb87791c21be8123c6718b1e",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/device_compile.json": "16e2c66405ac790dccf28478baa9afde0051af9d7b1dcc2a3cc6368df616c907",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/kernel.gemmini.mlir": "f7d75a1068100de64680ba1c1743aef51a094772a445b21a1220da79e1d6da9a",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/kernel.ll": "9e8aedb1558ae197a295f69a80d7eea5206fed781c2dbbbff01187b3b7fa0474",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/kernel.llvm.mlir": "f43a37985c1930adf606bdda1078c9e0f9eb16dd6e8f144f3a42821ffe267cab",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/kernel.o": "51e23642c581a68a22c1d72fd68df3e94aa73f72d6298e014cf9bec08d6ef7c7",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/control/object_nofsm_audit.json": "6026ffa606ec1cb7a77e4e868c25d26f2f0abf9935e6f7692853282430a4ab3e",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/expected.bin": "3d6221e1a828314be0a82aab177f6a2d016f274f45987c34e3200322fb5250fe",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/gsim.json": "bede5df8de376cf7114020258f812e7617d607e260083fc001f2456350c46112",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/gsim.stdout": "b2fdd3a9edb96259d104a8e4e6d1aa2f572ced0ef5690c288626fce1a54cbe42",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/new_tables.bin": "3e2057b8655f66210c5440be54991b9f02f54868a7d9309df74548316eabfdff",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/old_tables.bin": "6d5baac48716d1fbf69054fe1a6a70f2850a96192691911004698f12f702d641",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/probe.c": "fc118674d4d4ed9b8d89d810d12720173b40ccb0d7f364f337aaae31f63a9814",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_original_v1/spike.stdout": "28843ce7060e982f9f319077d4ee5a973c0548632fdc2e135812239327ade843",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/archive.py": "3dfb961635fa481a854dd4b3bffac3b12acc05e11cd30c638c5fb0984959e21f",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture_current_operands.py": "930dea65393ada44b0de156cc5ec1afaa40b6523945b7c28d5f7bda0f6838d61",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture_current_operands_v2.py": "41ee6d9f0565cb2ae79cdbe4d16e3b248883ea0ac550637c19c7cf77f41ddf86",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture_v2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/capture_v2.stdout": "3245e182f042f56ff252926c45e06add6f450f375f0f898f7108d4a9492e1b6d",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/default_identity.json": "a16fcf2da3d3f6bf3aa8a8812e81600c615a15d2229b6702c584688614bcd1b1",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/default_identity.py": "6109f59f1e2dd7a3287c64c995f07b3716cf01b51d19b1d3ca05a90c408c2522",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/a.bin": "c59d99f93c735d55247ecf40de6c1282d48a807542ae72f0b588b4ec6f2b4e89",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/b.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/capture.so": "5c4593ee0cae2e6c9c0654f4c775e1d7266ca3809a6c55d18da8a867e0b918ae",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture/native_capture.c": "ef1631a21583da254fefe2ea4d2aafcd0cbfbc257857376772f06d806491af73",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/a.bin": "02bfcd164fca35fbaa909bdf4179b356f558fc44d03075fe4408ddfd0e5c8c54",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/b.bin": "0d5209eca0cd68c385d51d0e097bf989b057af277b8b63ccfcec4c5714535d21",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/capture.so": "cb3582a39a9c7674f18cbcf44aef33333cce38e9bb44ae90669d85d8def1a810",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/compile.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/compile.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/native_capture.c": "3d57309abfaa29166ddc38d8153a27da7a4f44084b1b41b7f9ad1aaf62b79d7f",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/original_capture_v2/receipt.json": "925d922cf9c915b4817d442a2a88cd15878f22d7bed006a86e22e7b63f2bea58",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/single_key_before.py": "15dde247be1c6f445769c6885600f86fdebc239510d9ad9e8e337ad45feb8dc0",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/tests.stderr": "f0a5d2706fdb7c3aa606a4218dbc0bb6219ee4ed07ddaaab909b607ee57d363d",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/out/multikey_v1/tests.stdout": "d88381a8a4cfad30672ffde771d90a8185c9dc26ab545a150516a8c6bd95f669",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/tests/predictor_key_rectifier_probe.py": "d093d30aed0cb59331f779d4346ada9f6b3d93f6050131e058dfe097d2868036",
+    "/scratch/agustin/tmp/gemmini-predictor-multikey-20261007/tests/test_golden_multikey_rectified_resadd.py": "3959d7218b45793424416943ce64aab627298b726c5a71d2182f616932510644",
+    "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/gemmini_residual_13/kernel.o": "3ab406dbb040c07287128cadb52d762095537753c2ecc47912269032992d4a47",
+    "/scratch/agustin/tmp/gemmini-residual-domain-20261007/out/source_domain_v1/closed_v3/bundle/residual.json": "4b19c6df72bd215428df2b3888b1f74873c50f19509ca4c40ee41a16c7654754",
+    "/scratch/agustin/tmp/gemmini-residual-rectifier-coverage-20261007/out/rectifier_coverage_v1/cheap_relation_13.json": "ad618ae5f35dfca6210160d8bfd348e05562e388706822cd955ad3815e083896"
+  },
+  "token_usage_available": false
+}
