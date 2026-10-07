@@ -1,5 +1,22 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: eight more integrated review worktrees archived and removed
+
+Eight obsolete PR review worktrees have exact topic implementation/test bytes
+on pushed Merlinmain **eb15a85ce**. Allthree current agents confirmed no live
+source/build dependencies; root checked owned process references again before
+removal. Every file/link, including ignored/untracked outputs, is archived and
+hashchecked against the full pre-removal inventory. Original receipt paths have
+explicit archive-member successors; shared Git store and original branches remain.
+Active source/runtime/measurement/qualification owners are retained. Four older
+review trees with follow-on differences remain pending their separate closure.
+[Cleanup](perf_records/root_integrated_refresh_worktree_cleanup_20261007.json),
+[successors](perf_records/root_integrated_refresh_worktree_archive_successors_20261007.json).
+
+This removal saves713,784,341 logical bytes net of archives. Together with the
+prior12 removals,20 worktrees save **1,991,103,560 logical bytes**; this is not a
+filesystem free-space delta. No Jack directory was read or traversed.
+
 ## 2026-10-07: exact polynomial implementation reduces Smol group cost
 
 Stock2098 measures **3,611,264,318** cycles for the complete first12-head group,

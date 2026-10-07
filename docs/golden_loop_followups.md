@@ -82,7 +82,11 @@ The active campaign counter observed **93,671,490 aggregate tokens** at
 attribution are unavailable from that meter. Keep the raw checkpoint and this
 limitation; do not invent allocations.
 
-Twelve integrated obsolete worktrees were fully archived, hash-verified and
-removed, recovering 1,277,319,219 logical bytes. Active source/measurement
+Twenty integrated obsolete worktrees were fully archived, hash-verified and
+removed, recovering 1,991,103,560 logical bytes. Active source/measurement
 owners, primary Git stores and receipt dependencies remain until successor
 closure permits removal. Logical bytes are not a filesystem free-space delta.
+
+The later campaign counter observed **95,524,474 aggregate tokens** at
+2026-10-07 13:07:28 UTC. Attribution limits above still apply; no per-topic
+or billed-cost allocation is inferred.
