@@ -1,5 +1,39 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: preserve resident resource witnesses through normal compilation
+
+OOT topic37ff7ee derives prefetch slots beyond the **complete cached input**,
+after selecting the output panel width. The ranked segmented adapter, native
+oracle and compile binding now validate the same explicit resource witnesses
+as the emitter. This fixes legal composition across storage, output blocking
+and prefetching; selection still uses shapes and declared scratchpad intervals.
+There is no workload identifier rule or private full-weight/row-loop prerequisite.
+
+The frozen source review passes69 checks and four fresh unchanged default
+IR/LLVM/object cases. Root independently passes64 focused checks using installed
+Merlin4ca and closes22,491 original declared path/hash/byte records. The current
+three production files and independent test exactly match the qualified topic,
+and all114 unrelated target Python files stay byte exact. Root review initially
+refused two receipt-schema assumptions; both attempts remain recorded.
+
+This is a correctness and coverage fix. The actual accepted segmented callback
+raises100,240 to103,659 retired instructions (**+3.41082%**), so CPU evidence is
+negative. One bounded same-ELF complete GSIM is admitted separately; hardware
+benefit remains UNKNOWN. The actual original1,000-output input capture and
+source/independent callback gates pass, with unchanged readonly owners,
+descriptors, guards, FCSR and zeroFSM. The branch-only object-body theorem does
+not prove adapter CALL relocation; its actual linked ABI/execution witnesses are
+separate. No whole-model or stock cycle improvement is assigned.
+
+Phase1 should carry complete operand lifetimes and physical layout witnesses
+through the device emitter and ABI boundary. Phase2 should price the complete
+callback, including command issue and arbitration, before promoting prefetch.
+The new all52/original1,000 ResNet recipe uses a separate immutable source
+snapshot while this topic is integrated. Exact topic token usage remains UNKNOWN.
+
+[Qualified source topic](perf_records/resnet_resident_prefetch_resource_witness_20261007.json).
+[Current independent composition](perf_records/root_resident_prefetch_resource_witness_composition_20261007.json).
+
 ## 2026-10-07 23:21 UTC: price complete work and inspect original framework semantics
 
 The current shared compiler4ca2269 qualifies264+264 source/installed checks and
