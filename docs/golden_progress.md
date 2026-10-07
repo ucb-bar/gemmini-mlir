@@ -1,5 +1,35 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: stationary-B tail scheduling measured on stock Rocket
+
+Matched complete convolution+decoder stock2093/2094 measures
+**890,568→809,631 cycles**, saving80,937 (**9.08824%**). All50,176 two-store
+source outputs,8,192 guard bytes,2,384,384 immutable input bytes, five common
+addresses, original decoder and final zeroFSM pass. Root recloses350 source
+pins and actual staged ELF/stock bitstream identities. Whole cycles remain
+unknown for this candidate; current ResNet2090 best remains **29,402,206**.
+[Stock pair](perf_records/root_resnet_stationary_B_tail_stock2093_2094_terminal.json).
+
+The general target option uses typed retained flat spatial planes, a shorttile
+and two or more fulltiles. After the first fulltile establishes stationary B,
+the shorttile executes before a later full reuse tile. Each output retains
+source K order; complete commands and DMA/config/fence/store sequence are
+unchanged. Conditional ExecuteController geometry motivated this experiment,
+but measured gain is not assigned wholly to that mechanism. Independent
+nonsquare/channel-tail complete GSIM and source-cell proofs pass. Integration
+passes51 decoded-command/default/refusal tests. The experimental probe retains
+both earlier weight-packet and new tail arms; the packet variant's+3.39% GSIM
+cost rejection stays preserved. No workload ID, source hash or measured
+operand grants production schedule eligibility.
+
+Fresh normal52 source regeneration is being qualified. Its first attempt
+caught readout-plan cloning dropping the new tail option; metadata alone
+would have overstated application. The rejected attempt is retained, actual
+choose-to-emitted-object regression added, and successor compilation runs
+before any whole hardware admission. Target schedule records should preserve
+all typed fields across readout selection and prove actual command/object
+application. This is an OOT compiler requirement, independent of workload.
+
 ## 2026-10-07: exact source-row packing measured on stock Rocket
 
 Matched stock2091/2092 measures **3,936,970,420→3,857,281,394** cycles,
