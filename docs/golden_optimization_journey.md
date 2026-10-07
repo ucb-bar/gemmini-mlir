@@ -1,5 +1,53 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: measured finite-guard whole gain and legal accumulator primitive
+
+**Mechanism and ownership.** Generic typed producer domains prove original
+signed-i32 conversion and each ordered constant product finite over admitted
+immutable broadcast scales. Exact scale-load bounds and effect/ownership
+contracts bind portable integer-bit scans to actual LLVM helpers and matching
+observer tables. Source products, table data, interval checks, cold continuation
+and finishing arithmetic remain unchanged. Mode instructions remain OOT.
+Merlin main receives one cohesive default-off topic`b1108c60d` after95 source
+and95 installed-wheel checks; changed modules are byte identical across source,
+wheel and installation. No PR or force push was used.
+
+**Complete cost.** Stock2075's original M8 ABBA compares4,342,915.5 to
+3,704,471.5 mean cycles,14.7008% lower. Both scans/all downstream work are in
+the window. Independent stock2076 measures380,396,343 whole cycles versus
+394,765,577 in2070:14,369,234 saved (3.63994%). All178 admission pins,actual
+staging,256,000 original words,Torch gate and final zero-FSM audit close.
+No additive prediction from section savings was used. Remaining300M gap is
+80,396,343. Queue elapsed471.56s includes loading the2.337GB ELF; its compute
+metric remains distinct from setup/loading. Artifact compaction is a compiler
+infrastructure direction for iteration latency,not a claimed model-cycle gain.
+
+**Negative and capability evidence.** Fresh root source tests first lacked
+explicit LLVM/compilerPython paths; the development interpreter also lacked
+setuptools. Both environment failures remain recorded; qualified source and
+isolated-build/installed gates pass. Stock2077 confirms identity-scale ACC DMA
+read/modify/write with full signed-i32 readback at718/415 cycles,256 values and
+128 guards twice. Its staged bitstream was not preserved before teardown;
+immutable HWDB/archive and retained staged ELF close,but this limited receipt
+is not a fully sealed residual champion. A complete residual candidate must
+capture actual staged hardware. The former inlining hypothesis remains a
+byte-identical no-op and receives no redundant FireSim run.
+
+**Automatic-loop tooling.** Phase0 should describe exact scalar producer cuts,
+buffer lifetime/layout and observation/effect permissions,plus independent
+quality gates. Phase1 can propose typed finite-domain preparation and prove
+scale load bounds/ownership; target mode providers supply their own legality.
+Phase2 should measure complete prepared helpers and the actual whole graph,
+retain original controls/refusals and source/object identity,and avoid summing
+different section gains. Queue observers should preserve staged identities
+automatically before teardown. No workload/golden-based production selector
+was introduced. Task-specific token billing remains unavailable; aggregate
+goal/session ledgers are not attributed to this optimization.
+
+[Whole receipt](perf_records/root_tiny_finite_guard_stock2076_whole_terminal_20261007.json),
+[compiler delivery](perf_records/root_merlin_finite_guard_direct_main_publication_20261007.json),
+[limited capability](perf_records/root_acc_identity_rmw_stock2077_terminal_20261007.json).
+
 ## 2026-10-07: latest source-bound ResNet profile
 
 Stock 2074 closes all 71 declared call boundaries while preserving every

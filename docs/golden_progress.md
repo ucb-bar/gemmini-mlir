@@ -1,5 +1,34 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: finite broadcast guards improve whole TinyLlama
+
+Stock2076 measures **380,396,343 whole-model cycles**,14,369,234 fewer than2070
+(3.63994%). All256,000 original compiled output words remain bit exact; the
+original Torch0.03125/0.02 gate passes. All155 device bindings and11 other
+linked objects remain unchanged. Actual staged ELF/bitstream identities and
+all178 admission pins close against the queue terminal and final zero-FSM ELF.
+The remaining300M gap is80,396,343 cycles; this is one stock observation.
+
+The generic compiler topic is published as one clean commit`b1108c60d` on
+Merlin main, after95 source and95 installed-wheel checks. Typed signed-integer
+producer domains and bounded LLVM scale loads permit one immutable broadcast
+scan instead of redundant per-element finite checks. Both scans and all source
+products, table checks, continuations and stores are included in measured cost.
+Complete M8 stock2075 improves14.7008%; the whole gain is separately measured.
+Target mode checks remain in OOT. Ordinary emission and numerical policies
+remain unchanged; the optimization is explicitly selected through proofs.
+[Whole terminal](perf_records/root_tiny_finite_guard_stock2076_whole_terminal_20261007.json),
+[upstream qualification](perf_records/root_merlin_finite_guard_upstream_qualification_20261007.json).
+
+Stock2077 passes unit-scale signed-i32 accumulator DMA overwrite/accumulate
+and full readback:256 values and128 adjacent guard bytes,repeated twice,
+718/415 complete cycles. Its actual retained staged ELF and immutable HWDB are
+verified; the staged bitstream was removed before collection and was not
+preserved. This is a bounded capability observation with that stated limitation,
+not a fully sealed residual performance champion. The next complete residual
+capsule must preserve actual hardware identity.
+[Capability receipt](perf_records/root_acc_identity_rmw_stock2077_terminal_20261007.json).
+
 ## 2026-10-07: current ResNet profile after upstream audit
 
 Published Merlin main is now `3a1e24c77`; model2MLIR main is `7915e234`.
@@ -56,9 +85,10 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 ResNet2071 improves the whole observation to **29,698,347 cycles** through
 generic eight-lane host quantization and exact finite-source residual lowering
 with restricted internal-fence coalescing, four private panels and consumed
-source-proven nonnegative operand ranges. Tiny2070 improves to
-**394,765,577 cycles** through source-exact continuation, generic typed
-masked-output contraction scheduling and direct certified integer publication.
+source-proven nonnegative operand ranges. Tiny2076 improves to
+**380,396,343 cycles** through source-exact continuation,generic typed
+masked-output contraction scheduling,direct certified integer publication and
+source-bound immutable broadcast finite guards.
 All original outputs and numeric gates pass. Smol whole1906 remains
 **258,621,872,969 cycles**; group2072's **3,918,275,805** is a section result,
 2.703% below group2069 through exact encoder/witness composition with unchanged
@@ -266,7 +296,7 @@ No new whole-model prediction or automatic ranking is enabled.
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
 | ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes, exact14-product/four-panel residual and source-domain coefficient selection | 29,698,347 (2071) | All1000 original output words exact;193618cycles/0.647726% below2068. Three source-proven target routes change; first14batch4 and allhost/runtime/weights/other targetobjects preserved. Gap to ownedJack1876 remains7310898cycles | [2071 root review](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffers, outlining, source-exact continuation, typed closed mask and direct certified integer publication | 394,765,577 (2070) | All256000 original compiled words unchanged; original Torch gate passes.15381478cycles/3.750235% below2062 in one observation per arm. Only model.o changes;11 other linked objects, staging/output/final noFSM pinned | [2070 root review](perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json) |
+| Full22-layer pretrained TinyLlama,8 tokens,source-exact continuation,typed closed mask,direct certified integer publication and immutable broadcast finite guards | 380,396,343 (2076) | All256000 original compiled words unchanged;original Torch gate passes.14369234cycles/3.63994% below2070 in one observation per arm.Only model.o changes;155 target bindings,11 other linked objects,actual staging/output/final noFSM pinned | [2076 root review](perf_records/root_tiny_finite_guard_stock2076_whole_terminal_20261007.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,

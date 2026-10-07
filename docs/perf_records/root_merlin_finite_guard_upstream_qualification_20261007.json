@@ -1,0 +1,84 @@
+{
+  "schema": "finite_guard_source_wheel_installed_qualification_v1",
+  "status": "pass",
+  "source_parent": "3a1e24c77258d577326978e5e21cdf7f369618be",
+  "source_tests": 95,
+  "installed_tests": 95,
+  "source_log_sha256": "ce2adc5090ccb73aaa9d41a284db317d2997ca2b4165745416e0e4979dcae486",
+  "installed_module_origins": "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/import_origins.json",
+  "wheel": "/scratch/agustin/tmp/merlin-finite-guard-upstream-main-20261007/out/finite_guard_package/merlin-0.0.1-py3-none-any.whl",
+  "wheel_sha256": "0dba67eb7e3896a66e2ecec889f8a412a5665246b65d7e55c6aceb9b2f43150c",
+  "identities": [
+    {
+      "module": "merlin/llvmlower/scaled_integer_finite.py",
+      "sha256": "e6cdf31ab0869832bc0d642199d5c198d2d1150c06dc244975ca6fea92858b97"
+    },
+    {
+      "module": "merlin/llvmlower/scaled_integer_finite_llvm.py",
+      "sha256": "80be8d165950848a7c4bcf1b00eb0e6bf71983d65b8860901149eb3a25a81844"
+    },
+    {
+      "module": "merlin/llvmlower/source_expression_interval.py",
+      "sha256": "72131e943ce6253fc0476fd24b05452581de82bfb28e922149ee5ba6e3e4f092"
+    }
+  ],
+  "commands": [
+    {
+      "label": "finite_guard_install_venv",
+      "argv": [
+        "/home/agustin/.local/bin/uv",
+        "venv",
+        "--python",
+        "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/venv"
+      ],
+      "exit_code": 0,
+      "log": "/scratch/agustin/tmp/merlin-finite-guard-upstream-main-20261007/out/finite_guard_install_venv.log",
+      "log_sha256": "17d9c02d0cc86ad5e972405c76cc952c368dc4bcccedf48df6ca385fb701283a"
+    },
+    {
+      "label": "finite_guard_install_wheel",
+      "argv": [
+        "/home/agustin/.local/bin/uv",
+        "pip",
+        "install",
+        "--no-deps",
+        "--python",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/venv/bin/python",
+        "/scratch/agustin/tmp/merlin-finite-guard-upstream-main-20261007/out/finite_guard_package/merlin-0.0.1-py3-none-any.whl"
+      ],
+      "exit_code": 0,
+      "log": "/scratch/agustin/tmp/merlin-finite-guard-upstream-main-20261007/out/finite_guard_install_wheel.log",
+      "log_sha256": "79a14358c343584e154ead97646ef53de278574d1dc75bfd47999b7c3e480bcf"
+    },
+    {
+      "label": "finite_guard_installed_tests",
+      "argv": [
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/venv/bin/python",
+        "-P",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/run_installed.py",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/venv/lib/python3.12/site-packages",
+        "-q",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/test_scaled_integer_finite.py",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/test_scaled_integer_finite_llvm.py",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/test_source_expression_interval.py",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/test_source_expression_interval_llvm.py",
+        "/scratch/agustin/tmp/merlin-finite-guard-installed-20261007/work/test_source_expression_interval_i8_llvm.py"
+      ],
+      "exit_code": 0,
+      "log": "/scratch/agustin/tmp/merlin-finite-guard-upstream-main-20261007/out/finite_guard_installed_tests.log",
+      "log_sha256": "34c79efea47b59896b9bcd8e7aa6a249d094b2ee200b5ff933101b56a624c601"
+    }
+  ],
+  "explicit_tools": {
+    "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "MERLIN_MLIR_INSTALL": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install",
+    "MERLIN_COMPILER_PYTHON": "/scratch/agustin/projects/model2MLIR/.venv/bin/python"
+  },
+  "negative_environment_attempts": [
+    "Fresh worktree lacks explicit LLVM/compilerPython paths;2fail21errors before qualified95pass",
+    "Original development interpreter lacks setuptools.build_meta; isolateduvbuild succeeds"
+  ],
+  "numeric_policy": "Default off; no source arithmetic, tables, cold continuation, original gates or target provider ownership changed",
+  "token_usage_available": false
+}
