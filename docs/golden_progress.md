@@ -1,5 +1,33 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: complete Tiny producer/consumer overlap loses on stock
+
+Stock2112 closes six complete same-ELF windows with all90,112 originali32
+products,45,056 originali8 consumer bytes, inputs, dirty guards and target
+rounding/sticky presets exact. Mean original8,073,029.5 cycles versus
+serial8,133,952.5 (**+0.754649%**) and overlap8,220,149.5 (**+1.822364%**).
+Root recloses184 source pins and195 complete linked-span pins; actual
+staged ELF/bitstream and zeroFSM pass. Thirty integrated provider/resource
+and protocol tests pass. Both alternatives remain disabled; Tiny whole2085
+stays378,946,263 cycles. No whole-model borrowed route is installed.
+
+The issue function currently completes its CPU K-command loop before returning;
+only its pending accelerator tail can overlap the host consumer. The next
+explicit experiment interleaves bounded command groups with chunks of a
+previous wait-complete private slot. It must retain source order, immutable
+input views, disjoint slots, complete fallback and final drain; additional
+callback/frame overhead requires complete cost. Generic coordinator/ownership
+belongs in Merlin, target resources/command groups in OOT.
+[Complete hardware negative](perf_records/root_tiny_borrowed_stock2112_qualification.json),
+[source and linked spans](perf_records/tiny_borrowed_source_20261007/complete_link_closure.json).
+
+Phase0 should expose issue/drain/readiness intervals and actual outstanding
+work rather than label any two-slot program overlapped. Phase1 should search
+bounded producer/consumer chunk sizes with source/effect/resource proofs.
+Phase2 should retain both full-source correctness and complete compound cost
+before composing a whole-model route. This observation is not a pure
+accelerator/CPU fraction or an isolated copy-elimination experiment.
+
 ## 2026-10-07: residual batch16 lowers whole ResNet to 28,649,233 cycles
 
 Stock2109 measures **28,649,233 whole-model cycles**, saving79,469

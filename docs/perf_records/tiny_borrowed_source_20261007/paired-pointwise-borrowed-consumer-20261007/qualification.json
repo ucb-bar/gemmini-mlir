@@ -1,0 +1,305 @@
+{
+  "schema": "normal_source_pointwise_tile_native_v1",
+  "status": "pass",
+  "source_scalar_operation_order_precision_and_constants": "unchanged cloned typed source; ordinary upstream lowering",
+  "maps": "compact owned i32 tile plus exact last-axis scale slices; borrowed private i8 output retains original parent pitch5632, no temporary/scatter",
+  "schedule": "single scalar lane; existing tensor packet2 does not apply to separately contracted memref writer",
+  "scope": "One original context21, all45056i8 words/four host modes; target/compound cost pending",
+  "events": [
+    {
+      "mode": 0,
+      "all45056_original_i8": true,
+      "input_and_guard_identity": true
+    },
+    {
+      "mode": 1024,
+      "all45056_original_i8": true,
+      "input_and_guard_identity": true
+    },
+    {
+      "mode": 2048,
+      "all45056_original_i8": true,
+      "input_and_guard_identity": true
+    },
+    {
+      "mode": 3072,
+      "all45056_original_i8": true,
+      "input_and_guard_identity": true
+    }
+  ],
+  "source_routes": {
+    "schema": "source_expression_interval_i8_llvm_binding_v1",
+    "routes": [
+      {
+        "function_body_index": 0,
+        "endpoint_source_span": [
+          2967,
+          2995
+        ],
+        "endpoint": "%i55",
+        "input": "%i33",
+        "up": "%i30",
+        "quant_factor_bits": 1133693052,
+        "source_expression_sha256": "f7c17106bbd5bcd4a12f19f5b94664a2e2348bccbf9cbf8f898706d413597542",
+        "integer_observation": "%i74",
+        "complete_scalar_uses_closed": true,
+        "source_observer_proof": {
+          "result": "%i74",
+          "clamped_input": "%i59",
+          "raw_input": "%i57",
+          "dtype": "f32",
+          "integer_dtype": "i8",
+          "bounds": [
+            -128,
+            127
+          ],
+          "rounding": "nearest_ties_even",
+          "source_nan": "poison_from_fptosi"
+        },
+        "integer_source_span": [
+          3702,
+          3726
+        ],
+        "result_type": "i8",
+        "floating_carrier_retained": false,
+        "effect_contract": "RNE/gradual/nontrapping/flags-and-signed-zero-unobserved"
+      }
+    ],
+    "source_sha256": "67df1fbec12379f8b979e8bbff6d44dca7963d063f6a47fad0f57648e801b59a",
+    "table_sha256": "c9a337725a3fd042457ff63014b4ebd6d534271f97085ee545931d78c3a10e0b",
+    "leading_bits": 16,
+    "rewritten_sha256": "d8fe43a59efb337830fc0f7be5343a980e88ae9a6cad4c104b3bad40819e8aad"
+  },
+  "commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O3",
+      "-fPIC",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/lookup.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/lookup.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O3",
+      "-fPIC",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/scanner.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/scanner.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O3",
+      "-fPIC",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/guard.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/guard.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-link",
+      "-S",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/source.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/selected.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/table.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/activation.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/quantize.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/lookup.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/scanner.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/guard.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/linked.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt",
+      "-S",
+      "-passes=always-inline",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/linked.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/inlined.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O3",
+      "-fPIC",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/model.native.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-shared",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.o",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.so"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-objdump",
+      "-dr",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/lookup.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/lookup.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/scanner.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/scanner.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/guard.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/guard.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-link",
+      "-S",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/source.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/selected.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/table.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/activation.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/quantize.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/lookup.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/scanner.ll",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/guard.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/linked.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt",
+      "-S",
+      "-passes=always-inline",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/linked.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/inlined.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/model.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/consumer.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-objdump",
+      "-dr",
+      "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/consumer.o"
+    ]
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/tests/paired_pointwise_borrowed_prepare.py": "31b4fa2d666a1118b92e7155f5e5de137a77b20cdd22efcbf20afa29237f6874",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/source.mlir": "4532c501b5ff38b7d34186938c4d406ecbf38dfb72c92d36a3ef7aff07ea1d1f",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/named.ll": "67df1fbec12379f8b979e8bbff6d44dca7963d063f6a47fad0f57648e801b59a",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/source.ll": "93ecd86d1daebff466d887996828aea2f1142869c880150f2f118099b87eda75",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/lower/lowering_recipe.json": "98618eff08ed1c251ccc11893a32c75ca8707931a786f8e3625063089d1cb631",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/lower/run_lowering.py": "4f1c03a1217e4ad466ccc9dfdece6f11e94bfda192d11b560ab527598225b03a",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/lower/model.ll": "2498c975cb3b4aa29525d7aeac7719f4df7d7704b800a28aa8313e2346c31c8f",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-borrowed-tile-v2-20261007/lower/model.mlir": "4532c501b5ff38b7d34186938c4d406ecbf38dfb72c92d36a3ef7aff07ea1d1f",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/source.mlir": "646514051303ba3532d7e58ca9825ab58aa53cee540f2a4930b22d7cb4d7d0cf",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/named.ll": "0f73d8c286221de5623243e9133b87f7375ea45b78035e591a72b0c0914f2c03",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/source.ll": "d612f4cfb47c4ee5b115fb4ee599a6f9fbf872afcf5e7b755cb473cb927bd10a",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/lower/lowering_recipe.json": "6e5510ffef9b97ec06d1068263a9555069cd70ca9ac6d7d868393b7943cec8ed",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/lower/run_lowering.py": "4f1c03a1217e4ad466ccc9dfdece6f11e94bfda192d11b560ab527598225b03a",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/lower/model.ll": "566cc3cfa10174d76f2c73e8c3305b0239eaabf4928aecfe44abf3a73750a541",
+    "/scratch/agustin/tmp/merlin-sibling-producer-consumer-main-20261007/out/artifacts/probes/sibling-pointwise-tile-v6-20261007/lower/model.mlir": "646514051303ba3532d7e58ca9825ab58aa53cee540f2a4930b22d7cb4d7d0cf",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/quantize.ll": "3e38db9c1067140bbd1aebbfe6f0820eb181b2e3d6cdaac1111ecc0d0dd486e7",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/table.ll": "92adc74060188ee6fc4faa873be77c0ae066a1e18ba3e2eafeb6e4f8cfdb14ec",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/driver.py": "31b4fa2d666a1118b92e7155f5e5de137a77b20cdd22efcbf20afa29237f6874",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/activation.ll": "6dcb5b73e25196899026308b3b6d097c5332e21586c580ac398335a9061f9040",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/selected.ll": "ed07e5da2fc1cb95b8195b10b5c3083fca8ff459fda2e2599414e62fe096d2c9",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/source.ll": "5001600ef11b0aa919afcbcbb4a0db0a195d1d89d654ad5867fb62f11d2e0465",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/lookup.c": "2d07c17a0a6b3bf791f1b4592a07a47a030e1f19b89bdfc7ce3365b2fba0907c",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/scanner.c": "66f611ae5f3f7e74b84d64b616352e0ab58e95edb39850ff275b45238cde0589",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/lookup.ll": "3c76969285741d4bf245e37084493cf74fc4aed08a9f410ff48e339b6510efde",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.dump": "905da388c3d2e8d194a96544a62691a70905ab39a311c1d6ec1a3e1bedf24315",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/inlined.ll": "2b1b054cf29cd82be9a8f589089a83daa06e5888c84d741ad2fb4420d3e91f46",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/guard.c": "ea956c3f368f3f9b696623e791b20632aca40b7ef816bd6ce47947bcabc2db8e",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.o": "94047ba330e1cbecf5323ff08efea02a2fe411838908f87108beb048fe6eb180",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/scanner.ll": "7994337aed28546215f88355ceaebe656e41eed3572dcaa35a418b7c6c6650ad",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/linked.ll": "7f171672a0ef50bcf707209743193913dd702fac0594791155511abc8a44b6ef",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/guard.ll": "41c35c20d1c2d4ea6a95fa0d37ac2d573b277b25a523da436ca103f56c134ab7",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/consumer.so": "49a9c660475f58efa62380ca93f0bd799fdaf2ae454d45f8f353eb63443ae01c",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/lookup.ll": "ef22c03ba5d6a562bbfc82dd9fd83c057818875a808c6fce260d4a4761ca77db",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/consumer.dump": "d4c9a50a7037ea89be687c969fa0eb3c091f00f5ec3b03dd3a33fa05b5625d63",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/inlined.ll": "6cba9fac3705cfca529b23b6177d71b96e206809e8620f7f81dbec67fcb0a9b1",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/guard.c": "d7a65916f11725a49540b14afa7bba4668e138bb6200a536ae086ee8f5b9345a",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/consumer.o": "bf76a0412a2537a7c0588ada05fbfae73b1267e6a3e0268ef193919149b3a683",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/scanner.ll": "1d78ee61ab4e3f3a1e3a0ec6568e318de16ac47985c66753c1e36124a0430287",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/linked.ll": "e6f71a236df486221fbaefc5cd2b189baaa62f54c3eabf53c8f6c3de761a948f",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/guard.ll": "3742f99e1ee27cb81be57269974d0bebfb88f4cb8dd7b804377a9eb4916bd336",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/model.ll": "fc43a763e2dddea516f670ce879c85c53bfebfbd3e441c3940060ca2cc109653",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/receipt.json": "4b2fc19cf1ea5b4ffedc03c75c39309536e092016afd82d11c64fcad5e003301",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/model.native.ll": "20b7a6fa834062bfa67dcd564690a05f4a8609799cc58fcd98a9b8a0f512574a",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/model.bc": "c0294a0bf92446e25ba8471dc4b74763de00841c973168f404608eab91c5c0e7",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/model.native.bc": "40da41c3e1d50eb34b3f4e1629a9b85bacf32bb7ea81ac17254a108095ad68bd",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/native/late_rne/source.bc": "3d119ee0a331c7707102b020f47b8e57fc2854e70570d90bcdbacc49f6fe3372",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/model.ll": "9091c5a01a8baf916691e979eb90619fd7256a36900bf1f3fcead3e043b30dc3",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/receipt.json": "11d93cb1c2527ae9c533f0745cc65c9d32cc57a78981840accc7a0b01d51184a",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/model.native.ll": "72c00d3e388de32406a1c748ef6e18873683be188e557a3b8e4651ae538dfbb8",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/model.bc": "c5f9cb882c8c34073b6fcc0a3dd43d5dde519bca5e4716168e450846351e393e",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/model.native.bc": "4863e6869e86ee75b17eccadd6aed1987cc4cbede849938bdd7c541cc19a1a1a",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-borrowed-consumer-20261007/target/late_rne/source.bc": "20b356f2b92c5c2dfda2af24f8550821580c86b06ce96163463f2a8c0314ddca",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-continuation-contexts-v3-20261007/context_21/scale_b.npy": "1cdb4423dc8addaad48c17757f227b92562c055f6b2f561063f85643f6ce6d64",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-continuation-contexts-v3-20261007/context_21/scale_a.npy": "7beb9d772a92e984f661bd13d20929d5430174ff7d05583fd671ef07dd8e598a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-continuation-contexts-v3-20261007/context_21/a.npy": "a6046b8140b798c7dcdffed6f949d36b0c353d964a3b78ce0da509da108e5b55",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-continuation-contexts-v3-20261007/context_21/expected.npy": "9fc384d7615da056f86e1ba672afc1ea501fba28bb12506d1877bf17c5a505f7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-continuation-contexts-v3-20261007/context_21/b.npy": "3d37692e836389e2fc64798e6aba2f4ea4f0506f58ff7df05d36cfbdfee99865",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-cold-successor-20261007/assets/source_activation.ll": "918d9e04cbfac88f949a9a3a9270773ff03b8932cd486ac5ad83e700228f336e",
+    "/scratch/agustin/tmp/gemmini-sibling-producer-consumer-20261007/out/artifacts/probes/paired-pointwise-cold-successor-20261007/assets/source_quantize.ll": "984e49dc31e4179909ac0194ff2124b98ac63b07ccc45ec39428943bb14aa2ea"
+  },
+  "token_usage_available": false
+}
