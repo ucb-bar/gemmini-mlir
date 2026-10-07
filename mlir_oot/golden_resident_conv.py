@@ -9,10 +9,12 @@ admission and optional remaining-row weight placement are explicit.
 
 import json
 from dataclasses import asdict, dataclass
+from typing import ClassVar
 
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import IntegerAttr, StringAttr, i64
 
+from .emission_options import ResidentConvEmissionOptions
 from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
 from .tables import isa
 from .tables import rtl_facts as F
@@ -67,20 +69,7 @@ def retain_resident_commands(control, *, source_stride_only=False):
             decision,
             refusal="explicit source stride command policy excludes this resident layout",
         )
-    selected = GoldenResidentConv(
-        control.conv,
-        rows_per_tile=control.rows_per_tile,
-        loop_channels=control.loop_channels,
-        prefetch_b=control.prefetch_b,
-        weight_base=control.explicit_weight_base,
-        source_stride=control.source_stride,
-        row_residue=control.row_residue,
-        compact_commands=True,
-        weight_issue_tiles=control.weight_issue_tiles,
-        flat_spatial_planes=control.flat_spatial_planes,
-        store_plan=control.store_plan,
-        tail_before_last_full=control.tail_before_last_full,
-    )
+    selected = control.with_emission_options(compact_commands=True)
     for name in ("resident_stripe_decision", "source_stride_decision"):
         if hasattr(control, name):
             setattr(selected, name, getattr(control, name))
@@ -121,19 +110,8 @@ def issue_resident_weight_packets(control, *, tiles=2, include_flat_planes=True)
             refusal="Flat spatial planes excluded by explicit packet layout policy",
         )
     try:
-        selected = GoldenResidentConv(
-            control.conv,
-            rows_per_tile=control.rows_per_tile,
-            loop_channels=control.loop_channels,
-            prefetch_b=True,
-            weight_base=control.explicit_weight_base,
-            source_stride=control.source_stride,
-            row_residue=control.row_residue,
-            compact_commands=True,
-            weight_issue_tiles=tiles,
-            flat_spatial_planes=control.flat_spatial_planes,
-            store_plan=control.store_plan,
-            tail_before_last_full=control.tail_before_last_full,
+        selected = control.with_emission_options(
+            prefetch_b=True, compact_commands=True, weight_issue_tiles=tiles
         )
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
@@ -228,20 +206,7 @@ def place_resident_spatial_tail(control):
     if control.tail_before_last_full:
         return control, dict(decision, refusal="Short tile placement already selected")
     try:
-        selected = GoldenResidentConv(
-            control.conv,
-            rows_per_tile=control.rows_per_tile,
-            loop_channels=control.loop_channels,
-            prefetch_b=control.prefetch_b,
-            weight_base=control.explicit_weight_base,
-            source_stride=control.source_stride,
-            row_residue=control.row_residue,
-            compact_commands=control.compact_commands,
-            weight_issue_tiles=control.weight_issue_tiles,
-            flat_spatial_planes=control.flat_spatial_planes,
-            store_plan=control.store_plan,
-            tail_before_last_full=True,
-        )
+        selected = control.with_emission_options(tail_before_last_full=True)
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
     for name in (
@@ -268,6 +233,12 @@ def place_resident_spatial_tail(control):
 
 
 class GoldenResidentConv(GoldenGemm):
+    emission_options_type = ResidentConvEmissionOptions
+    emission_shape_attribute = "conv"
+    emission_option_attributes: ClassVar[dict[str, str]] = {
+        "weight_base": "explicit_weight_base"
+    }
+
     def __init__(
         self,
         s,

@@ -8,7 +8,7 @@ actual bank arbitration and overlap require measurement.
 
 from dataclasses import replace
 
-from .golden_gemm import GoldenGemm, _ceil_div
+from .golden_gemm import _ceil_div
 from .tables import rtl_facts as F
 
 
@@ -46,6 +46,4 @@ def select_remaining_b_slots(control):
                     b_banks=[base//F.SPAD_BANK_ROWS for base in bases],
                     ordering='initial two panels; load next free slot before current K compute; increasing source K order and exact tail drain',
                     emitted_delta='B panel command order and row placement change; primitive command counts, requested operand bytes and source arithmetic are unchanged')
-    return GoldenGemm(candidate,prefetch_b_rows=placement,
-                      resident_a_load_tiles=control.resident_a_load_tiles,
-                      input_view=control.input_view),decision
+    return control.with_emission_options(shape=candidate,prefetch_b_rows=placement),decision

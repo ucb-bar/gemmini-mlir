@@ -12,12 +12,16 @@ from dataclasses import asdict
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import StringAttr
 
+from .emission_options import ResidentStripeEmissionOptions
 from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
 from .tables import isa
 from .tables import rtl_facts as F
 
 
 class GoldenResidentStripeConv(GoldenGemm):
+    emission_options_type = ResidentStripeEmissionOptions
+    emission_shape_attribute = "conv"
+
     def __init__(
         self,
         conv,

@@ -25,6 +25,8 @@ import json
 from typing import Callable
 from dataclasses import dataclass
 
+from .emission_options import EmissionOptionsMixin, GemmEmissionOptions
+
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import Float32Type, FloatAttr, IntegerAttr, ModuleOp, StringAttr, i8, i64
 from xdsl.ir import SSAValue
@@ -166,7 +168,10 @@ def _groups(extent: int, block: int) -> list[tuple[int, int, int, tuple[int, ...
     return out
 
 
-class GoldenGemm:
+class GoldenGemm(EmissionOptionsMixin):
+    emission_options_type = GemmEmissionOptions
+    emission_shape_attribute = "shape"
+
     def __init__(self, shape: Shape, *, prefetch_b_rows: tuple[int, int] | None = None,
             resident_a_load_tiles: int = 1, input_view: SegmentedRows | None = None,
             cached_b_resource_capacity: bool = False,

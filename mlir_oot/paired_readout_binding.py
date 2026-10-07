@@ -18,20 +18,11 @@ def choose(generator, proof):
         return generator, None, dict(applied=False, refusal=result)
     p=result['certificate']; plan=PairedReadoutPlan(tuple(p['source_scales']),tuple(p['store_scales']),p['lo'],p['hi'],p['relu'])
     if resident:
-        candidate=GoldenResidentConv(generator.conv,rows_per_tile=generator.rows_per_tile,
-            loop_channels=generator.loop_channels,prefetch_b=generator.prefetch_b,
-            weight_base=generator.explicit_weight_base,source_stride=generator.source_stride,
-            row_residue=generator.row_residue,compact_commands=generator.compact_commands,
-            weight_issue_tiles=generator.weight_issue_tiles,
-            flat_spatial_planes=generator.flat_spatial_planes,store_plan=plan,
-            tail_before_last_full=generator.tail_before_last_full)
+        candidate=generator.with_emission_options(store_plan=plan)
         for name in ('resident_stripe_decision','source_stride_decision','flat_resident_decision','weight_issue_decision','resident_spatial_tail_decision'):
             if hasattr(generator,name):setattr(candidate,name,getattr(generator,name))
     else:
-        candidate=GoldenFlatConv(generator.conv,wide_a=generator.wide_a,
-            separate_b_bank=generator.separate_b_bank,band_rows=generator.band_rows,
-            virtual_padding=generator.virtual_padding,pingpong_b=generator.pingpong_b,
-            loop_spatial=generator.loop_spatial,store_plan=plan)
+        candidate=generator.with_emission_options(store_plan=plan)
     return candidate, plan, dict(applied=True, proof=p, synthesis_radius=result['radius'],
         host_copy_policy='compiler_builtin',storage='fresh caller-owned byte scratch and byte output, guarded disjointness, stable through exact decoder')
 

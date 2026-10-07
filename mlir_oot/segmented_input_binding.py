@@ -156,13 +156,7 @@ def derive(module, routes):
                 raise ValueError(
                     "reconstructed control differs from its compiled target IR"
                 )
-            generator = GoldenGemm(
-                shape,
-                prefetch_b_rows=rows,
-                resident_a_load_tiles=width,
-                input_view=view,
-                stationary_b_tail_before_last_full=tail,
-            )
+            generator = control.with_emission_options(input_view=view)
             if route.get("numeric_contract", {}).get("max_output_lsb_error") != 0:
                 raise ValueError(
                     "accepted input requires the existing exact numeric contract"

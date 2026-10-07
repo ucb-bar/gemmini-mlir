@@ -33,7 +33,8 @@ def select_capacity_cached_b(control, *, row_tiles=1):
         wide_a=wide,wide_b=True,wide_store=s.output_dtype=='i8',reuse_b=False,
         pipeline_m=wide,prefetch_m=wide,banked_m=wide,
         separate_b_bank=not wide,prefetch_b=False)
-    generator=GoldenGemm(candidate,cached_b_resource_capacity=True)
+    generator=control.with_emission_options(shape=candidate,cached_b_resource_capacity=True,
+        prefetch_b_rows=None,resident_a_load_tiles=1,stationary_b_tail_before_last_full=False)
     input_span=bm*(kt if wide else 1)*F.DIM
     input_slots=([0,input_span],[F.SPAD_BANK_ROWS,F.SPAD_BANK_ROWS+input_span]) if wide else ([0,input_span],)
     weight_begin=2*F.SPAD_BANK_ROWS
@@ -199,9 +200,7 @@ def select_coalesced_resident_a(control):
     if kt <= 1:
         decision['refusal']='input DMA command count does not decrease'
         return control,decision
-    candidate=GoldenGemm(shape,prefetch_b_rows=control.prefetch_b_rows,
-                         resident_a_load_tiles=4,input_view=control.input_view,
-                         stationary_b_tail_before_last_full=control.stationary_b_tail_before_last_full)
+    candidate=control.with_emission_options(resident_a_load_tiles=4)
     segments=(sum(len(tuple(control.input_view.split_rows(a*F.DIM,min(F.DIM,shape.m-a*F.DIM))))
                   for a in range(mt)) if control.input_view is not None else mt)
     decision.update(applied=True,refusal=None,resident_a_load_tiles=4,
@@ -294,10 +293,7 @@ def select_stationary_b_spatial_tail(control):
     if control.stationary_b_tail_before_last_full:
         return control,dict(refusal,refusal='Existing tail placement retained')
     try:
-        candidate=GoldenGemm(control.shape,prefetch_b_rows=control.prefetch_b_rows,
-            resident_a_load_tiles=control.resident_a_load_tiles,input_view=control.input_view,
-            cached_b_resource_capacity=control.cached_b_resource_capacity,
-            stationary_b_tail_before_last_full=True)
+        candidate=control.with_emission_options(stationary_b_tail_before_last_full=True)
     except ValueError as failure:
         return control,dict(refusal,refusal=str(failure))
     mt=_ceil_div(control.shape.m,F.DIM)

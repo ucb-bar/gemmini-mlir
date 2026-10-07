@@ -68,8 +68,12 @@ Readout-plan cloning dropped a newly requested tile-order option while metadata
 claimed it was applied. The rejected source build is preserved, and the narrow
 choose-to-emitted-object regression now checks the actual result. Introduce an
 immutable typed target schedule record whose fields survive readout selection
-through a checked replacement operation. Actual command/object closure remains
-necessary. This is a compiler-plan preservation rule across workload families.
+through a checked replacement operation. This requirement is now implemented
+for four target emission families: complete constructor/default coverage, checked
+replacement and existing resource validation. Both measured52-source recipes and
+allthree accepted views preserve actual object/oracle bytes. Root2536pins and14
+fresh record tests close; actual command/object closure remains necessary.
+This is a compiler-plan preservation rule across workload families.
 
 ## Records and limits
 

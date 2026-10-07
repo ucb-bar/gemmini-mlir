@@ -1,5 +1,25 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: complete target option records survive compiler factories
+
+Four immutable target emission records cover every constructor keyword and
+default for dense, flat, resident and stripe families. Checked replacement
+preserves typed views/readout plans, rejects unknown or unrecorded fields,
+and reuses existing resource validation. Ordinary, paired readout and segmented
+input factories now preserve requested choices. Legacy public attributes remain
+compatible through fresh snapshots. No new profitability or default policy is added.
+
+The2095 and2101 recipes each reproduce all52 kernel/adapter objects, aggregates
+and native oracles exactly; all three actual segmented-view objects/adapters/
+aggregates/oracles also match. Root recloses2,536 pins and passes14 fresh record,
+clone, family/default/refusal checks against current Merlinmain. The agent's
+132 focused checks and subsequent14 record checks are separate receipts, not
+an invented count of146 distinct cases. Initial fixture and tuple/list metadata
+refusals remain archived. This infrastructure change preserves measured binaries
+and adds no new performance measurement.
+[Source/object closure](perf_records/emission_option_survival_qualification.json),
+[root integration](perf_records/root_emission_options_integration_qualification.json).
+
 ## 2026-10-07: directed observer variants rejected and fixture context corrected
 
 Two source-proved one-edge integer-observer variants preserve all45,056 i8

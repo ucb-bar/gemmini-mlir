@@ -9,6 +9,7 @@ from dataclasses import asdict
 import json
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import StringAttr
+from .emission_options import FlatConvEmissionOptions
 from .golden_gemm import GoldenGemm, Shape, _ceil_div, _groups
 from .codegen.builder import PTR
 from .readout_store_plan import PairedReadoutPlan
@@ -73,6 +74,9 @@ def virtual_band_groups(s, rows):
 
 
 class GoldenFlatConv(GoldenGemm):
+    emission_options_type = FlatConvEmissionOptions
+    emission_shape_attribute = "conv"
+
     def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False, store_plan=None):
         s.validate()
         if type(loop_spatial) is not bool:

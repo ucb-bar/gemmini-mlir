@@ -27,11 +27,8 @@ def retain_reduction_commands(control):
             "resident stripe emitter does not support the selected separate store plan"
         )
         return control, decision
-    candidate = GoldenResidentStripeConv(
-        control.conv,
-        stripe_rows=control.stripe_rows,
-        compact_inner_commands=True,
-        compact_reduction_commands=True,
+    candidate = control.with_emission_options(
+        compact_inner_commands=True, compact_reduction_commands=True
     )
     fields = (
         "plane",
