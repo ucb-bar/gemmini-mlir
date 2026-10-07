@@ -1,5 +1,28 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: exact polynomial implementation reduces Smol group cost
+
+Stock2098 measures **3,611,264,318** cycles for the complete first12-head group,
+246,017,076 fewer (**6.37799%**) than prior2092 **3,857,281,394**. The2092 control
+ELF is reproduced byteidentical, with the same62namedmemorysymbols, clockdriver,
+original consumer and actual stock bit identity. This is explicit historical
+control reuse: one measurement per arm, with no repeat-stability claim. Root
+recloses469source pins,4protocol pins and361prior control pins. All786,432
+i8 outputs,1,024BF16scales, guards,480product callbacks, expected candidate
+statistics and finalzeroFSM pass. Two internal BF16carrier differences are
+unobserved by the unchanged original consumer.
+[Stock result](perf_records/root_smol_polynomial_constants_stock2098_terminal.json).
+
+Fresh normal source compilation separately recloses171pins,297ordinaryroutes,
+19signatures, original model.o and emitted provider source/object identity,
+plus all1,600 native whole words exact across48groups/12preps/23,040products.
+Its target ELF is instruction-audited; whole target execution and memory binding
+remain separate gates. The earlier row-proof whole strict run is still active.
+No group×48 forecast or whole performance is claimed. The existing explicit
+RMS4 approximation is unchanged; prepared constants/theorem consumption retain
+both distinct score endpoints and the original ordered F32 denominator.
+Whole Smol1906 remains **258,621,872,969**; its5B target remains unmet.
+
 ## 2026-10-07: immutable polynomial context reaches Merlin main
 
 Merlinmain **eb15a85ce** adds an explicit prepared source-polynomial consumer.
