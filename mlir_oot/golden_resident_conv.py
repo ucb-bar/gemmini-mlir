@@ -45,13 +45,15 @@ def choose_compact_resident(conv, *, prefetch_b=False):
     return GoldenResidentConv(conv, **asdict(options)), options
 
 
-def retain_resident_commands(control):
+def retain_resident_commands(control, *, source_stride_only=False):
     """Apply one explicit command choice to an already admitted resident layout.
 
     Preserve all declared constructor facts and prior resource decisions.
     Profitability is deliberately absent: smaller bodies can lose from extra
     CPU issue work, and measured alternatives belong in shared plan selection.
     """
+    if type(source_stride_only) is not bool:
+        raise ValueError("source stride command family selection must be boolean")
     decision = {
         "applied": False,
         "selection": "explicit opt-in; profitability not inferred",
@@ -60,6 +62,11 @@ def retain_resident_commands(control):
     }
     if type(control) is not GoldenResidentConv:
         return control, decision
+    if source_stride_only and not control.source_stride:
+        return control, dict(
+            decision,
+            refusal="explicit source stride command policy excludes this resident layout",
+        )
     selected = GoldenResidentConv(
         control.conv,
         rows_per_tile=control.rows_per_tile,

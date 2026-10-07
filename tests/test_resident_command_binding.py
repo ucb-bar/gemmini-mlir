@@ -80,3 +80,38 @@ def test_source_route_requires_both_layout_permissions(spatial, padding):
             virtual_padding=padding,
             compact_resident_commands=True,
         )
+
+
+@pytest.mark.parametrize("value", [None, 1, "yes"])
+def test_source_stride_family_selection_requires_boolean(value):
+    with pytest.raises(ValueError, match="must be boolean"):
+        retain_resident_commands(
+            GoldenResidentConv(ConvShape(3, 3, 16, 16)), source_stride_only=value
+        )
+
+
+def test_source_stride_family_filter_retains_other_legal_resident_schedules():
+    control = GoldenResidentConv(ConvShape(7, 7, 32, 33, bn=2))
+    selected, decision = retain_resident_commands(control, source_stride_only=True)
+    assert selected is control and not decision["applied"]
+    control = GoldenResidentConv(
+        ConvShape(5, 7, 32, 33, bn=2, stride=2), source_stride=True
+    )
+    selected, decision = retain_resident_commands(control, source_stride_only=True)
+    assert selected is not control and selected.compact_commands and decision["applied"]
+    assert executed_commands(control.build()) == executed_commands(selected.build())
+
+
+@pytest.mark.parametrize(
+    "options",
+    [{}, {"flat_spatial": True}, {"flat_spatial": True, "virtual_padding": True}],
+)
+def test_source_stride_route_requires_existing_layout_permissions(options):
+    with pytest.raises(ValueError, match="proved source stride residency"):
+        build_capture(
+            Path("absent"),
+            Path("absent"),
+            Path("absent"),
+            compact_source_stride_commands=True,
+            **options,
+        )
