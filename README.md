@@ -39,7 +39,8 @@ SmolVLA group 2072 takes **3,918,275,805** cycles; that is a section result.
 The 22M/300M/5B whole-model goals remain unmet. Read the
 [performance evidence](docs/golden_progress.md),
 [optimization journey](docs/golden_optimization_journey.md), and
-[fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md).
+[fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md), and
+[Tiny observer reproduction recipe](experiments/tiny_closed_observer/README.md).
 
 ## Published parent provenance
 

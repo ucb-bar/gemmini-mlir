@@ -62,6 +62,14 @@ byte, with the actual 124,061,504-byte workspace ABI and final zero-FSM audit.
 Its baseline, captured inputs, compiled assets and qualification are authenticated
 external experiment inputs.
 
+The [Tiny observer recipe](../experiments/tiny_closed_observer/README.md)
+regenerates those same 22 proofs and 44 routes from published Merlin, then
+recompiles authenticated prepared LLVM and replays the controlled links. Both
+model objects and complete control/candidate ELFs reproduce byte for byte, and
+both final executable audits pass. Its four refusal tests pass. Capture, full
+upstream lowering, whole execution and stock timing retain their original gates;
+this reproduction does not rerun them.
+
 ## Publication checks and measured scope
 
 The combined source checks pass:
@@ -99,3 +107,9 @@ Merlin/model2MLIR. New PRs require explicit user approval in every repository.
 Reviewed topics reach main with one commit per topic. Existing PR records are
 closed and archived after content preservation; already merged PR records cannot
 be archived through GitHub's supported mutation. Published history is retained.
+
+The completed scoped cleanup covers 42 authored records: 34 are archived and
+return HTTP 404 without authentication, eight already merged records remain
+visible, and no authored PR remains open in either repository. Thirty-one exact
+closed Merlin topic refs and four merged model2MLIR topic refs were removed after
+local preservation and dependency checks.

@@ -1,5 +1,39 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07: clean upstream and handwritten branch delivery
+
+Merlin main is `95e8142d9`; model2MLIR main is `7915e234`. Reviewed changes
+reach main with one clean commit per topic. The final Merlin package passes
+1,085 installed checks, preserves 995 Python modules, 28 runtime headers and
+five C templates exactly, and reproduces the accepted Tiny2070 source routes.
+Root independently reclosed all 2,096 package qualification pins.
+
+The named `handwritten-implementation` Gemmini branch now includes the missing
+qualified ResNet rectifier/domain/fence/panel compiler modules and explicit
+Smol/Tiny experiment reproduction drivers. ResNet integration passes 64 checks;
+compiler/export/audit gates pass 61 checks and six subtests. Both Tiny model
+objects and final ELFs reproduce exactly; source-wide table and observation
+proofs remain generic Merlin mechanisms. All original numeric gates remain.
+
+Scoped cleanup archives 34 PR records and verifies public HTTP 404 for every
+one. Eight already merged records cannot be archived; zero authored PRs remain
+open in Merlin/model2MLIR. Published history is retained, and future PR creation
+requires explicit approval in every repository. The 31 stale Merlin topic refs
+and four merged model2MLIR refs are removed after exact local preservation.
+
+The broader test failures identified checkout child-import ambiguity and stale
+audit fixtures. Phase 0 should distinguish execution environment and oracle
+identity; phase 1 should verify installed compiler/resource ownership; phase 2
+should bind selected source, prepared LLVM, actual objects and complete cost.
+One-source module ownership and explicit compiler/toolchain provenance prevent
+editable-checkout mixtures from qualifying a different implementation.
+
+No new FireSim result is claimed by this publication. Whole ResNet/Tiny/Smol
+remain 29,698,347 / 394,765,577 / 258,621,872,969 cycles. The 22M/300M/5B goals
+remain unmet. Family counts and token ledgers retain their stated deduplication
+and attribution limits; publication commits are not additional performance wins.
+[Delivery details](handwritten_implementation.md).
+
 ## 2026-10-07 04:26 UTC: quantization quality and typed observation boundaries
 
 The original Smol TorchAO recipe reproduces 1,600 golden words exactly. All303
