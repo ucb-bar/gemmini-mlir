@@ -64,6 +64,28 @@ def lower(module):
     for op in list(module.walk()):
         if not isinstance(op, G._GemminiOp):
             continue
+        if isinstance(op, G.PreloadOp) and "bd" in op.dynamic_rows():
+            rows = dict(zip(op.dynamic_rows(), op.operands_, strict=True))
+            funct, rs1_base, rs2_base = isa.preload(
+                bd_addr=0,
+                c_addr=isa.acc_addr(0, accumulate=bool(op.a("c_accumulate", 0)))
+                if "c" in rows else op.a("c"),
+                bd_cols=op.a("bd_cols"), bd_rows=op.a("bd_rows"),
+                c_cols=op.a("c_cols"), c_rows=op.a("c_rows"),
+            )
+            isa.assert_legal(funct)
+            b_high, c_high = iconst(rs1_base), iconst(rs2_base)
+            b_packed = llvm.OrOp(rows["bd"], b_high.results[0])
+            ops = [b_high, b_packed, c_high]
+            rhs = c_high.results[0]
+            if "c" in rows:
+                c_packed = llvm.OrOp(rows["c"], c_high.results[0])
+                ops.append(c_packed)
+                rhs = c_packed.results[0]
+            ops.append(llvm.InlineAsmOp(isa.asm_string(funct), "r,r",
+                [b_packed.results[0], rhs], [], has_side_effects=True))
+            Rewriter.replace_op(op, ops)
+            continue
         if isinstance(op, G.PreloadOp) and len(op.operands_) == 1:
             funct, rs1, rs2_base = isa.preload(
                 bd_addr=op.a("bd"),
@@ -124,7 +146,7 @@ def lower(module):
 
 
 def _verify_dynamic_preload_rows(module):
-    """Close every declared C range against the actual ordinary CPU CFG.
+    """Close every declared B/C range against the actual ordinary CPU CFG.
 
     Resource attributes do not establish runtime row bounds. This option accepts
     only statically resolvable command loops; unknown values/control flow refuse
@@ -147,12 +169,17 @@ def _verify_dynamic_preload_rows(module):
             op = step.operation
             if isinstance(op, G.PreloadOp) and op.operands_:
                 observed.add(op)
-                row = step.inputs[0]
-                if not isinstance(row, StaticInt) or not 0 <= row.value <= op.a("c_max"):
-                    raise ValueError("executed dynamic C violates declared accumulator row range")
+                for key, row in zip(op.dynamic_rows(), step.inputs, strict=True):
+                    if (not isinstance(row, StaticInt)
+                            or not op.a(key + "_min", 0) <= row.value <= op.a(key + "_max")
+                            or row.value % op.a(key + "_alignment", 1)):
+                        message = ("executed dynamic C violates declared accumulator row range"
+                                   if key == "c" else "executed dynamic B violates declared scratchpad row range/alignment")
+                        raise ValueError(message)
             elif isinstance(op, G.ComputeOp) and op.operands_:
                 row = step.inputs[0]
                 if not isinstance(row, StaticInt) or not 0 <= row.value <= op.a("a_max"):
                     raise ValueError("executed dynamic A violates declared scratchpad row range")
     if observed != dynamic:
-        raise ValueError("dynamic C declaration has no complete reachable function trace")
+        label = "B/C" if any("bd" in op.dynamic_rows() for op in dynamic) else "C"
+        raise ValueError("dynamic " + label + " declaration has no complete reachable function trace")

@@ -245,12 +245,13 @@ def commands_from_function(function, *, pointer_index_bits, max_steps=10000000):
         elif isinstance(op, G.PreloadOp):
             fields = {key: op.a(key) for key in ('bd', 'bd_rows', 'bd_cols', 'c', 'c_rows', 'c_cols')}
             if step.inputs:
-                if len(step.inputs) != 1 or not isinstance(step.inputs[0], StaticInt):
-                    raise WaveProofError('dynamic C row did not resolve to an integer')
-                row = step.inputs[0].value
-                if not 0 <= row <= op.a('c_max'):
-                    raise WaveProofError('executed dynamic C violates declared accumulator row range')
-                fields['c'] = isa.acc_addr(row,accumulate=bool(op.a('c_accumulate',0)))
+                for key, value in zip(op.dynamic_rows(), step.inputs, strict=True):
+                    if not isinstance(value, StaticInt):
+                        raise WaveProofError('dynamic preload row did not resolve to an integer')
+                    row = value.value
+                    if not op.a(key + '_min', 0) <= row <= op.a(key + '_max') or row % op.a(key + '_alignment', 1):
+                        raise WaveProofError('executed dynamic preload violates declared row range/alignment')
+                    fields[key] = isa.acc_addr(row,accumulate=bool(op.a('c_accumulate',0))) if key == 'c' else row
         elif isinstance(op, G.ComputeOp):
             a = op.a('a')
             if step.inputs:

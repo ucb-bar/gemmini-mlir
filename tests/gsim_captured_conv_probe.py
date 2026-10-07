@@ -42,6 +42,8 @@ def main():
             "control",
             "compact",
             "full_reduction",
+            "resident_stripe_inner",
+            "resident_stripe_reduction",
             "strided_resident",
             "stride_residue",
             "coalesced_resident_a",
@@ -231,6 +233,11 @@ def main():
                 weight_base=((input_rows + F.DIM - 1) // F.DIM) * F.DIM,
                 source_stride=True,
             )
+        elif args.schedule == "resident_stripe_inner":
+            generator = GoldenResidentStripeConv(shape, compact_inner_commands=True)
+        elif args.schedule == "resident_stripe_reduction":
+            generator = GoldenResidentStripeConv(shape, compact_inner_commands=True,
+                                                 compact_reduction_commands=True)
         else:
             generator = (
                 GoldenResidentConv(shape, prefetch_b=args.prefetch_b)

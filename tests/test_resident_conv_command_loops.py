@@ -41,11 +41,16 @@ def executed_commands(module):
                 accumulate=bool(op.a("accumulate", False)),
             )
         elif isinstance(op, G.PreloadOp) and step.inputs:
-            value = step.inputs[0]
-            assert isinstance(value, StaticInt) and value.value <= op.a("c_max")
+            addresses = {"bd": op.a("bd"), "c": op.a("c")}
+            for key, value in zip(op.dynamic_rows(), step.inputs, strict=True):
+                assert isinstance(value, StaticInt)
+                assert op.a(key + "_min", 0) <= value.value <= op.a(key + "_max")
+                assert value.value % op.a(key + "_alignment", 1) == 0
+                addresses[key] = (isa.acc_addr(value.value, accumulate=bool(op.a("c_accumulate")))
+                                  if key == "c" else value.value)
             command = isa.preload(
-                bd_addr=op.a("bd"),
-                c_addr=isa.acc_addr(value.value, accumulate=bool(op.a("c_accumulate"))),
+                bd_addr=addresses["bd"],
+                c_addr=addresses["c"],
                 bd_cols=op.a("bd_cols"),
                 bd_rows=op.a("bd_rows"),
                 c_cols=op.a("c_cols"),

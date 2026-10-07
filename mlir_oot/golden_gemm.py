@@ -200,7 +200,11 @@ class GoldenGemm:
         self.a, self.b, self.c = self.fb.entry.args[:3]
         self.bias = self.fb.entry.args[3] if shape.bias else None
 
-    def _rocc(self, kind: str, attrs: dict, pointer: SSAValue | None = None) -> None:
+    def _rocc(self, kind: str, attrs: dict, pointer: SSAValue | None = None, *,
+              operands: tuple[SSAValue, ...] | None = None) -> None:
+        if operands is not None and pointer is not None:
+            raise ValueError("command operands and pointer are mutually exclusive")
+        values = list(operands) if operands is not None else ([pointer] if pointer is not None else [])
         cls = {
             "flush": G.FlushOp, "config_ex": G.ConfigExOp,
             "config_ld": G.ConfigLdOp, "config_st": G.ConfigStOp,
@@ -208,7 +212,7 @@ class GoldenGemm:
             "preload": G.PreloadOp, "compute": G.ComputeOp,
             "fence": G.FenceOp,
         }[kind]
-        op = cls(operands=[[pointer] if pointer is not None else []], result_types=[[]])
+        op = cls(operands=[values], result_types=[[]])
         op.attributes.update({k: IntegerAttr(int(v), i64) if isinstance(v, int)
                               else FloatAttr(float(v), Float32Type()) if isinstance(v, float)
                               else StringAttr(str(v)) for k, v in attrs.items()})

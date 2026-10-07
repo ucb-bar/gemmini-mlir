@@ -244,19 +244,46 @@ class MvoutOp(_GemminiOp):
 
 @irdl_op_definition
 class PreloadOp(_GemminiOp):
-    """`gemmini.preload` — load the stationary operand into the mesh (k_PRELOAD)."""
+    """Load the stationary operand; dynamic row operands are B then C.
+
+    Dynamic B rows read scratchpad only. GARBAGE and accumulator execute reads
+    remain separate static addresses, not members of a broad dynamic interval.
+    Declared bounds are checked again against the executed SSA/CFG by lowering.
+    """
 
     name = "gemmini.preload"
 
+    def dynamic_rows(self) -> tuple[str, ...]:
+        return tuple(key for key in ("bd", "c") if key + "_max" in self.attributes)
+
     def verify_(self) -> None:
+        supported = {"bd", "c", "bd_cols", "bd_rows", "c_cols", "c_rows",
+                     "bd_min", "bd_max", "bd_reserved_rows", "bd_alignment",
+                     "c_max", "c_reserved_rows", "c_accumulate"}
+        if set(self.attributes) - supported or self.res is not None:
+            raise VerifyException("gemmini.preload: unsupported command attribute or result")
         for key in ("bd_cols", "bd_rows", "c_cols", "c_rows"):
             self._extent(key)
-        self._execute_source("bd")
-        if not self.operands_:
-            self._local("c")
-        elif len(self.operands_) == 1:
-            if self.operands_[0].type != i64 or "c" in self.attributes:
-                raise VerifyException("gemmini.preload: dynamic C row must be one i64 operand")
+        rows = self.dynamic_rows()
+        if len(self.operands_) != len(rows) or any(value.type != i64 for value in self.operands_):
+            raise VerifyException("gemmini.preload: dynamic B then C rows require matching i64 operands")
+        if "bd" in rows:
+            if "bd" in self.attributes:
+                raise VerifyException("gemmini.preload: dynamic B contradicts static bd address")
+            minimum, maximum, reserved, alignment = (self.a(key) for key in
+                ("bd_min", "bd_max", "bd_reserved_rows", "bd_alignment"))
+            if (any(type(value) is not int for value in (minimum, maximum, reserved, alignment))
+                    or not 0 <= minimum <= maximum
+                    or maximum + self.a("bd_rows") > reserved or reserved > F.SPAD_ROWS
+                    or alignment <= 0 or alignment > DIM or alignment & (alignment - 1)):
+                raise VerifyException("gemmini.preload: dynamic B range/alignment exceeds reserved scratchpad rows")
+        else:
+            if any(key in self.attributes for key in ("bd_min", "bd_reserved_rows", "bd_alignment")):
+                raise VerifyException("gemmini.preload: unused dynamic B range declaration")
+            self._execute_source("bd")
+        if "c" in rows:
+            if "c" in self.attributes:
+                raise VerifyException("gemmini.preload: dynamic C contradicts static c address")
             maximum, reserved = self.a("c_max"), self.a("c_reserved_rows")
             if (type(maximum) is not int or type(reserved) is not int
                     or maximum < 0 or maximum + self.a("c_rows") > reserved
@@ -265,7 +292,9 @@ class PreloadOp(_GemminiOp):
             if type(self.a("c_accumulate", 0)) is not int or self.a("c_accumulate", 0) not in (0, 1):
                 raise VerifyException("gemmini.preload: c_accumulate must be a one-bit integer")
         else:
-            raise VerifyException("gemmini.preload: at most one dynamic C row is supported")
+            if any(key in self.attributes for key in ("c_reserved_rows", "c_accumulate")):
+                raise VerifyException("gemmini.preload: unused dynamic C range declaration")
+            self._local("c")
 
 
 @irdl_op_definition
