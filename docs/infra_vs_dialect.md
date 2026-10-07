@@ -17,7 +17,8 @@ OOT. Experimental RMS4 policy is not relabeled an exact normal binder theorem.
 
 The shared integer-result observer ABI/use/effect proof and portable lowering
 also belong in Merlin; target rounding legalization and actual simulation remain
-OOT. Stock2067's14.0703% complete-helper gain does not predict whole Tiny2070.
+OOT. Stock2067's14.0703% complete-helper gain becomes3.750235% on whole Tiny2070,
+not an additive whole forecast.
 Immutable original scales/source/table/cold paths and typed floating-escape
 refusal remain mandatory. New partial integer readout enclosures are generic
 Merlin math; target callback scheduling belongs OOT. First complete partial arm
@@ -31,7 +32,9 @@ typed SSA/layout maps into finite affine coefficient proofs. Existing domain
 certificates were not consumed by normal coefficient choice; full type-domain
 assumptions prevented three cheaper routes. Eligibility must come from source
 and producer proofs, not callee/source names or captured values. New20 focused
-checks are provisional agent evidence; normal whole composition is pending.
+checks plus16existing checks pass on a clean main-based core topic. Fresh normal
+and controlled whole compositions pass original1000words bitexact. The controlled
+stock release is pending independent packet review; no whole cycle claim yet.
 
 ### Additional requirements for automatic phase0/1/2 loops
 

@@ -9,6 +9,30 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07: Tiny whole transfer and rejected digit norms
+
+Root independently closes Tiny stock2070 after11terminal/10release pins, the
+complete256000f32le bytes, original Torch0.03125/0.02gate, actual staged ELF/
+bitstream receipts and all-executable noFSM. Whole410147055→394765577 is a
+15381478cycle/3.750235% gain, with94765577cycles still above300M. Only model.o
+changes; all155 target boundaries and11otherobjects are unchanged. The14.0703%
+completeM8 helper gain remains local; no model is refitted to this new label.
+[Whole terminal](perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json).
+
+The tighter source-produced digit norm hypothesis is a complete-cost negative.
+Generic core345b6e499 depends on immutablea94;30source/reference/native/UBSan
+tests pass. OOTc66f35c binds complete packed planes to private owner/generation
+norm metadata, preserves general source error/replay/escaping observations and
+passes the complete original786432i8/1024scale consumer. Callbacks remain192/
+readback34603008bytes, but15,335,424scan words plus79,880Bmetadata/bound work
+yield5348877773instructions:147.04% aboveexact2024,2.3512% abovecanonicalnegative.
+Stats[4432,0,2143516,957116,61255424,2943,501300,85555200] reduce replay without
+paying for new bookkeeping. Root closes296pins and actual same native/strict
+statistics/consumer/all-executable noFSM; final generator executable AST equals
+compiled6f97 with only alias documentation changed. Source-only prototype;
+no installed/upstream/default promotion, full48 or hardware.
+[Independent negative](perf_records/root_digit_norm_partial_complete_negative_review_20261007.json).
+
 ### 2026-10-07 03:12 UTC: structural cost, published storage fusion and actual transfer
 
 Root969872d releases one Tiny completeM8 cost capsule after356pins/original45056

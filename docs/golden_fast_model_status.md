@@ -16,8 +16,11 @@ The earlier quantizer model refuses the new interval/table/call/frame domain;
 no new label enters fitting and no whole prediction is issued. Actual whole
 helper attribution reduces46607803→42689832instructions, exactly the3917971
 whole-retirement difference; all other named source roles are unchanged.
-That is an instruction conservation check, not a whole-cycle forecast.
+That is an instruction conservation check, not a whole-cycle forecast. Root
+closes whole2070 at394765577cycles,3.750235% below2062; the local14.0703% remains
+a separate observation. No new label enters fitting.
 [Independent stock review](perf_records/root_tiny_M8_stock2067_terminal_review_20261007.json).
+[Whole stock review](perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json).
 
 Fused completed integer readouts reduce1896853389→1806165115 complete-group
 instructions with480 callbacks/86507520 requested bytes unchanged. Root freezes
@@ -36,7 +39,10 @@ source replay counters explain the loss; a callback/MAC-only model would rank
 this arm incorrectly. A separately pinned digit-norm audit bounds every actual
 omitted contribution, but proves zero omitted-term outputs0/4325376. Costs of
 metadata production and tighter consumer bounds remain unpriced until a new
-complete screen. Preserve input-dependent replay pressure as a required feature.
+complete screen. That successor now closes5.348877773B instructions:147.04%
+above exact control and2.3512% above canonical partial negative. Reduced replay
+does not offset metadata/bound work. Preserve both costs as required features.
+[Complete negative](perf_records/root_digit_norm_partial_complete_negative_review_20261007.json).
 
 ## Whole transfer and source-order diagnostic: 2026-10-07 UTC
 
