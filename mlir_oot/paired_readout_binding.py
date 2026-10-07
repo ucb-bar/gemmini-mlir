@@ -27,7 +27,9 @@ def choose(generator, proof):
         host_copy_policy='compiler_builtin',storage='fresh caller-owned byte scratch and byte output, guarded disjointness, stable through exact decoder')
 
 
-def adapter(schedule,symbol,kernel,plan):
+def adapter(schedule,symbol,kernel,plan,*,checked_alignment=False):
+    if type(checked_alignment) is not bool:
+        raise ValueError('paired scan checked alignment requires boolean selection')
     plan.require_conv_producer(schedule)
     m,n=schedule.oh*schedule.ow,schedule.cout
     out_bytes=m*n
@@ -52,7 +54,8 @@ def adapter(schedule,symbol,kernel,plan):
     text=text.replace(tail,'(int8_t*)c->aligned+c->offset,(int8_t*)scratch->aligned+scratch->offset);')
     decoder=symbol+'_pair_decode'
     text=text.replace('*r=*c;',f'{decoder}((unsigned char*)c->aligned+c->offset,(const unsigned char*)scratch->aligned+scratch->offset,{out_bytes});*r=*c;')
-    return emit_pair_scan(plan.certificate(),decoder,copy_policy='compiler_builtin')+text
+    options={'checked_alignment':True} if checked_alignment else {}
+    return emit_pair_scan(plan.certificate(),decoder,copy_policy='compiler_builtin',**options)+text
 
 
 def native_oracle(schedule,kernel,plan,scalar_oracle):
