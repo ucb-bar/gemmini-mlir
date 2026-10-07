@@ -1,5 +1,21 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: two-byte attention approximation refused before hardware
+
+A fixed two-signed-byte residual RMS policy reduces product callbacks, but47
+of48 groups fall back to the original source because ordered PV replay escapes
+the heuristic estimate. All1,600 final words remain exact through those
+fallbacks; that does not qualify an efficient selected implementation.
+
+A successor explicitly rebuilds private endpoints using authoritative ordered
+replay. It selects37 groups with11 fallbacks but fails the unchanged final
+atol0.03125/rtol0.02 gate on84 of1,600 elements (maxabs0.1150923). Neither
+variant is promoted, retuned or sent to hardware. Root recloses103 and58 pins.
+Generic prototypes remain isolated; Merlinmain and the selected2098 numeric
+policy are unchanged. Phase1/2 need both actual selected coverage and the
+original full-model quality gate before pricing a reduced representation.
+[Reviewed negative policies](perf_records/root_residual_rms_negative_review_20261007.json).
+
 ## 2026-10-07: borrowed-input dense alternative also wins on stock
 
 Complete original M196/K512/N1024 stock2102/2103 improves474,791→453,191
