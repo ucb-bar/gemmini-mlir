@@ -2,15 +2,16 @@
 
 ## Current whole-model result
 
-The original-source compiler model's best qualified stock result is job2052:
-**30,650,056 cycles**, with all1,000 original output words exact and the final
+The original-source compiler model's best qualified stock result is job2055:
+**30,550,422 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876
 reproduces **22,387,449 cycles**. The measured whole-model difference is
-**8,262,607 cycles**, or **36.91% above the reference**. Retaining ordinary loops
-in two flat kernels improves65,762cycles/0.2141% versus2039 in one observation
-per arm. Primitive work features tied before timing; CPU issue/footprint effects
-remain unpriced.
-[Current result](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json),
+**8,162,973 cycles**, or **36.46% above the reference**. Explicit eight-lane
+host quantization improves165,396cycles/0.5385% versus2039 in one observation
+per arm. Only model.o changes; the separate2052 flat-loop candidate is not
+composed. The actual ranked-map held model2057 predicts within3.73%, but its
+section prices are not added to the whole gap.
+[Current result](perf_records/root_resnet_stock2055_host8_terminal_review_20261007.json),
 [reference result](perf_records/q1013_diagnostic_reference_firesim.json).
 
 The2039 object-preserving profile2046 covers all71 active primitive
@@ -18,7 +19,29 @@ calls and conserves30,756,710 forward cycles. Callback windows measure
 27,791,061 cycles and outside intervals2,965,649 cycles. The40,892 difference
 from the uninstrumented control includes wrappers/layout; it is not an isolated
 overhead rate. Source callbacks include host issue, transfers and waits. These
-section measurements are not reassigned to2052.
+section measurements are not reassigned to2055.
+
+### Actual primitive work reconciliation
+
+A fresh16.49s functional replay attributes all requests to71 active source
+functions while conserving the complete original stdout, PC histogram and
+every geometry counter. Current2039 has23,422,080 nominal padded array rows;
+the permitted reference has18,484,224. Of the4,937,856 extra rows, residual
+arithmetic accounts for4,837,888 (**97.98%**), stem81,536 and net spatial18,432.
+All other paired pointwise/convolution/classifier row totals agree.
+The residual coefficient/numeric contracts differ; reference substitution
+does not prove the original-source outputs.
+
+Frozen independently trained resident-B coefficients give conditional
+29,836,576 current versus24,436,060 reference cycles, compared with actual
+30,715,818/22,387,449. No timing labels are fitted. This remains diagnostic
+arithmetic: nominal rows and requested bytes are not useful-MAC counts or
+physical DDR traffic, and host/memory/readout/overlap are unpriced.
+The new exact-source sparse correction network targets residual arithmetic.
+Generic finite-domain synthesis belongs in Merlin; its resource schedule,
+primitive implementation and simulation support belong in OOT.
+[Current census/model review](perf_records/root_current2039_frozen_stationary_request_diagnostic_20261007.json),
+[source-function census](perf_records/current2039_stationary_requests_by_function.json).
 
 | Current2046 role | Reference1876 cycles | Current2046 cycles | Difference |
 | --- | ---: | ---: | ---: |

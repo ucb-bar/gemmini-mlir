@@ -2,15 +2,16 @@
 
 The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama around **300M** (user clarification on 2026-10-06), all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
 
-## Latest verified whole-model results (2026-10-06 UTC)
+## Latest verified whole-model results (2026-10-07 UTC)
 
-Actual-source transfer tests now close: Tiny's frozen dependency forecast chose
-the16.779% faster complete M8 continuation in stock2053; whole2004 remains.
-Smol radius stock2054 measures4,731,616,313 complete-group cycles,2.5974%
-below2024; whole1906 remains. ResNet2052 is the new30,650,056 whole observation.
-Generic call/stack summaries are published as Merlin PR46, while actual-source
-quantizer calibration and exact sparse reconstruction proceed. No qualified
-whole-program cycle predictor is claimed.
+ResNet2055 improves the whole observation to **30,550,422 cycles** through
+generic explicit eight-lane host quantization. Tiny2056 improves to
+**412,672,134 cycles** through source-exact cold continuation placement.
+All original outputs and numeric gates pass. Smol whole1906 remains
+**258,621,872,969 cycles**; group2054's4,731,616,313 is a section result.
+The source-bound quantizer model predicts the held current4/8 pair within3.73%
+and ranks it correctly; a new entirely held5/7-lane cross-executable test is
+released with frozen parameters. Whole-program cycle prediction remains unknown.
 [Model evidence](golden_fast_model_status.md).
 
 Dedicated model work now closes CPU21 stock2029 against the identical strict
@@ -51,8 +52,8 @@ No new whole-model prediction or automatic ranking is enabled.
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host quantization packets, paired readout, resident packets/full-K weights, three segmented inputs, exact integer mean, source-stride24, six spatial resident stripes and retained flat/reduction loops | 30,650,056 (2052) | All 1,000 original output words exact;65,762cycles/0.2141% below2039. Only two flat primitive bodies changed; host/runtime/weights retained | [2052 root review](perf_records/root_resnet_stock2052_flat_loops_terminal_review_20261006.json) |
-| Full 22-layer pretrained TinyLlama, 8 tokens, normalization hoist, exact squared-sum, multiplication packets, source 2×4 contractions/K2, B-prefetch, canonical buffer identity and generic outlining | 422,018,733 (2004) | All 256,000 original compiled words unchanged; original Torch gate passes. 0.4277% below2002 in one matched single run. Collector staging/output pinned | [2004](perf_records/stock2004_tiny_rectangular_terminal.json) |
+| ResNet exact52/wide16, banked residual, eight-lane host quantization, paired readout, resident packets/full-K weights, segmented inputs, exact integer mean, source-stride24 and six spatial resident stripes | 30,550,422 (2055) | All 1,000 original output words exact;165,396cycles/0.5385% below2039. Only host model.o changed;2052's separate two flat loops are not composed | [2055 root review](perf_records/root_resnet_stock2055_host8_terminal_review_20261007.json) |
+| Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffer identity, generic outlining and source-exact cold continuation | 412,672,134 (2056) | All 256,000 original compiled words unchanged; original Torch gate passes.9,346,599cycles/2.2147% below2004 in one observation per arm. Staging/output/final noFSM pinned | [2056 root review](perf_records/root_tiny_stock2056_continuation_terminal_review_20261007.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
 Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
@@ -111,10 +112,10 @@ prediction or automatic ranking is enabled.
 [Model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
 [Tiny terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
 
-Stock2004 and2052 are the current Tiny and ResNet whole-model bests.
-ResNet2052 measures30,650,056cycles,8,262,607 above the permitted ZIP1876
-reference. The actual current2013 comparison and its matching profile follow;
-those sections are not reassigned to2039.
+Stock2056 and2055 are the current Tiny and ResNet whole-model bests.
+ResNet2055 is8,162,973cycles above the permitted ZIP1876 reference;
+Tiny2056 is112,672,134 above300M. The actual current2013 comparison and its
+matching profile follow; historical profiles retain their source identities.
 
 Retained ordinary K/row loops preserve the complete primitive/pointer sequence
 of all six already-admitted resident stripe kernels. Root reclosed44,353pins,

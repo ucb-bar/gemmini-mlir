@@ -1,6 +1,69 @@
 # Faster performance screening
 
-## Latest results and transfer test: 2026-10-06 23:40 UTC
+## Latest model tuning: 2026-10-07 00:42 UTC
+
+The actual-source host quantizer2057 held current224-row4/8-lane schedules
+out of training. Four half/double-extent schedules train the two-parameter
+models; every original source byte, all15 counter windows and source FP/GPR
+features are bound. Retired-instructions/loop-groups predicts the held arms
+within1.65%/3.73%; elements/ordered-FP-distance gives1.64%/3.72%. Both choose
+eight lanes before the held timing score. The fixed-plus-elements fit refuses
+only two distinct training vectors. One pair/one slice still fails the broad
+ranking gate. These point estimates are not uncertainty intervals, and FP
+distance is exactly3×groups on the original cases, so causes remain confounded.
+[Root held score](perf_records/root_source_host_quant_stock2057_model_review_20261007.json).
+
+A new prospective transfer uses the same typed scalar graph and constant
+producers at168/224/336 rows with five/seven lanes. All six new cases and
+repeats are held. Five lanes introduce four-element row tails. Fresh original
+native oracles check978,432 output bytes; production strict Spike passes all
+15 windows and output/input/unused-area guards. Frozen original2057 parameters
+predict seven lanes faster in each pair. The original executable domain refuses
+transfer; a separately declared conditional signature extrapolation is frozen
+for hardware evaluation. No labels are fitted or automatic export enabled.
+The new tail breaks the exact groups/FP-distance proportionality and exposes
+previously unpriced helper/stack/footprint behavior.
+[Prelabel release](perf_records/root_source_host_quant_transfer_stock_release_20261007.json),
+[immutable forecast](perf_records/source_host_quant_frozen_transfer_forecast_20261007.json).
+
+The actual2039 request census closes23,422,080 nominal array rows versus the
+ZIP reference18,484,224;97.98% of the extra rows are residual arithmetic.
+Frozen resident-B parameters give29.84M versus current30.72M and24.44M versus
+reference22.39M. This is postlabel diagnostic arithmetic with no refit, outside
+the trained full-program extent/scope. Physical traffic, host issue and overlap
+remain unpriced. Approved whole predictions stay UNKNOWN.
+[Current census](perf_records/root_current2039_frozen_stationary_request_diagnostic_20261007.json).
+
+Actual whole transfer now measures ResNet2055 at30,550,422 (host8 only) and
+Tiny2056 at412,672,134 (source-exact continuation). The latter improves2.2147%
+despite only0.1199% fewer retired instructions. New22-context Tiny observations
+show13,375 cold continuation calls and620 logical table regions, substantially
+different from the first M8's216 calls. No section label is reused as a whole
+price and no whole result enters fitting.
+[ResNet terminal](perf_records/root_resnet_stock2055_host8_terminal_review_20261007.json),
+[Tiny terminal](perf_records/root_tiny_stock2056_continuation_terminal_review_20261007.json).
+
+The all48-source Smol prepared-owner strict execution finishes in2800.11s:
+all1600 original bits pass,48 groups/12 epochs/23040 products, zero fallbacks.
+Its174,447,368,363 cycle counter is a retirement proxy. A complete-work screen
+keeps sparse encoder witnesses at−0.721% instructions and rejects the magnitude
+variant:44.54% fewer replay FMAs but1.353% more total instructions,64 extra
+callbacks and15.2MB extra logical readback. The first predeclared RMS4
+selective-replay policy passes all1600 original native bits; it is explicitly
+approximate and still pays old bounds, so no performance win is established.
+Original elementwise gates remain unchanged.
+[Whole strict review](perf_records/root_smol_prepared_owner_strict_whole_terminal_review_20261007.json).
+
+Phase0 should expose typed source observation/use closures, numeric policy,
+immutable code/request features and simulator capability failures. Phase1 should
+rank complete candidate cost and select crossed measurements that break feature
+confounding, retaining prelabel predictions. Phase2 should validate independent
+source schedules and actual whole composition with explicit unpriced terms.
+The current residual correction network and Tiny masked-output contraction
+apply source-use proofs; legality belongs in Merlin and target implementation
+facts remain OOT. Workload names and golden values never select a production pass.
+
+## Earlier transfer checkpoint: 2026-10-06 23:40 UTC
 
 A new isolated Spike observer separates real stationary-weight preloads from
 retaining existing weights. On the permitted reference it observes325,104 real

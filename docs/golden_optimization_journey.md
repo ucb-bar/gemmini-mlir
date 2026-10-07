@@ -9,6 +9,86 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 00:42 UTC: complete costs, new whole champions and frozen model transfer
+
+- ResNet2055 is **30,550,422 cycles**,165,396/0.5385% below2039;
+  all1000 original words exact. Only the generic host8 model object changes.
+  It beats2052 by99,634, but the separate flat-loop optimization is not composed.
+  The remaining permitted ZIP gap is8,162,973. Explicit scheduling is published
+  as one-topic Merlin PR47 from actual main7fee,56 source/56 installed tests and
+  all958 wheel/source/installed Python modules identical. It extends existing
+  inventory family33; the conservative60-family inventory does not increase.
+- Tiny2056 is **412,672,134 cycles**,9,346,599/2.2147% below2004.
+  All256000 original words and Torch gate pass; root reparses DONE/rank/timer/full
+  digest and final noFSM, with actual staging/stock identity. Whole held transfer
+  does not refit the2053 section forecast. Actual22-context source observations
+  show13,375 cold calls/991232 table requests/620 logical64B regions;
+  the first M8's216 calls are not a whole-model price.
+- Quant2057 holds both actual224-row4/8 schedules out. The retired/groups
+  and elements/FP-distance two-parameter models predict within3.73%/3.72%
+  and rank8 correctly. The fixed/elements model refuses distinct-vector coverage.
+  Original inverseFPdistance=3×groups prevents causal separation. One pair/one
+  slice leaves the search gate refused. Root repeats training-only fitting with
+  qualified NumPy2.5.3 and retains every raw repeat and frozen fit hash.
+- A new cross-executable transfer holds every168/224/336×5/7 case out,
+  including four-element five-lane row tails. Fresh native source oracles check
+  978432 bytes; production strict Spike passes15 windows/guards/flags/checksum.
+  The original domain refuses transfer. Separately declared conditional forecasts
+  use unchanged2057 parameters and choose7 in all three pairs before timing.
+  Root releases exactly one stock job2059; tail/helper/stack/footprint costs remain
+  explicit unknowns and no automatic export is enabled. A first textual IR check
+  correctly refused printer block-label differences across environments; preserved
+  source bytes are now checked with typed structural SSA equivalence, not renaming
+  or output changes.
+- Actual2039 request census closes71 active functions with byte-identical
+  original outputs/histograms and all geometry counters. Of4,937,856 extra
+  nominal array rows versus reference,4,837,888/97.98% are residual arithmetic.
+  Frozen resident-B arithmetic gives29.84M current/24.44M reference versus
+  actual30.72M/22.39M. No reference timing is fitted; whole prediction remains
+  UNKNOWN. This makes exact-source residual arithmetic the immediate target.
+- Smol prepared-owner strict whole finishes in2800.11s:1600 exact outputs,
+  48 groups/12 epochs/23040 products/no fallbacks.174.45B is a retirement proxy.
+  Sparse encoder witnesses reduce complete-group instructions0.721%; the
+  magnitude variant cuts replay44.54% but increases complete instructions1.353%
+  with64 more callbacks/15.2MB readback. The first predefined RMS4 approximate
+  selection passes all1600 original bits on both native runs; it still pays the
+  old bounds, so no speed claim. Original atol=.03125/rtol=.02 stays unchanged.
+- Generic exhaustive residual correction synthesis belongs in Merlin. Target
+  ACC-read capability attempts fail production Spike/GSIM and stay frozen.
+  A legal SPAD real-D fallback passes both engines; its14-product all65536-pair
+  pipeline passes strict source outputs. Complete original ranked-fixture cost
+  remains pending. Tiny's typed all-use mask closure legally skips only wholly
+  discarded2×4 reduction tiles; source/nontrapping/fflags policy is explicit,
+  core default unchanged, and complete compound timing remains pending.
+
+[ResNet whole](perf_records/root_resnet_stock2055_host8_terminal_review_20261007.json),
+[Tiny whole](perf_records/root_tiny_stock2056_continuation_terminal_review_20261007.json),
+[quantizer held model](perf_records/root_source_host_quant_stock2057_model_review_20261007.json),
+[new immutable forecast](perf_records/source_host_quant_frozen_transfer_forecast_20261007.json),
+[actual request census](perf_records/root_current2039_frozen_stationary_request_diagnostic_20261007.json),
+[Smol strict whole](perf_records/root_smol_prepared_owner_strict_whole_terminal_review_20261007.json),
+[PR47 publication](perf_records/root_merlin_host_rne_eight_PR47_publication_review_20261007.json).
+
+The eight explicitly owned-thread ledger at00:42:37UTC records66,661,033
+uncached input,3,121,612,416 cache-read,13,140,311 output and5,270,859 reasoning
+tokens (already part of output); raw total3,201,413,760. Since23:41:29UTC,
+completed request counters add2,050,757 uncached input,98,516,480 cache-read
+and483,679 output;190,739 reasoning is an output subset. Raw window101,050,916.
+The separate active-goal observation is76,155,598. Exact OOT-only, model-only,
+per-optimization and billing allocation remain unavailable. Historical counters
+and scope boundaries remain unchanged.
+[Owned usage ledger](perf_records/golden_token_usage_20261007T004237Z.json).
+
+For automatic convergence, Phase0 needs typed all-use/observation-frontier
+proofs, emitted source-function request scopes, explicit approximate/exact numeric
+policies and target capability receipts. Phase1 needs complete-work ledgers and
+crossed experiments that break feature confounding, with predictions frozen
+before labels. Phase2 needs independent schedule ordering, default/source
+composition closure and final whole accuracy/performance gates. CPU counts,
+logical DMA requests and nominal array rows must retain separate units; unpriced
+memory/overlap/calls are explicit. Reusable analysis/fitting/selection stays in
+Merlin, ISA/ABI/device resource and simulator implementation stays OOT.
+
 ### 2026-10-06 23:56 UTC: workload transfer without reference refitting
 
 The isolated OOT Spike observer now distinguishes real stationary-weight
