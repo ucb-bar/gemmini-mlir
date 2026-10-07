@@ -1,5 +1,46 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 20:35 UTC: fresh object closure and normal contract delivery
+
+Fresh ResNet using installed Merlin `3f6a8db27` regenerates every final linked
+object leaf and passes all 1,000 original outputs exactly in native and actual
+Spike, with final zero-FSM. Fresh installed CDF Tiny also regenerates all leaves
+and 155 bindings, with all 256,000 original compiled outputs exact, the unchanged
+Torch gate passing, and final zero-FSM. Whole FPGA timing is unknown for both.
+Manual source ingredients and pass/schedule choices remain explicit; a single
+current automatically selected compiler recipe across all three is unqualified.
+[Fresh ResNet](perf_records/resnet_fresh_all_target_leaves_installed3f_whole_20261007_qualification.json),
+[fresh Tiny](perf_records/tiny_fresh_all_target_leaves_installedCDF_whole_20261007_qualification.json).
+
+Newest qualified local Merlin main `451849ba7` passes existing typed mask effects
+through normal model lowering and both backend builders. All 69 source checks
+and 58 affected outside-installed checks pass; source-only curated-target cases
+and six unavailable support skips remain explicit. All 1,020 Python and 61 runtime
+files match all release forms, four default model LLVM cases remain byte-identical,
+and all 2,881 parent pins reclose. A fresh Tiny successor now uses this normal API
+to remove the CDF experiment's extra lowering step. Full gates are pending and
+GitHub publication still refuses DNS.
+[API delivery](perf_records/merlin_model_mask_effects_current_main_20261007_qualification.json).
+
+Complete Tiny batching improves GSIM only 0.22207594% despite 14.0806% fewer native
+instructions; arm spread limits promotion. Smol actual source attribution and
+endpoint coverage close guessed hotspots: softmax interval/BF16/lanes cost18.860B,
+canonical packing9.616B and polynomial endpoints8.040B functional instructions;
+ordered QK/PV replay totals3.264B and all150,994,944 score cells are active.
+Complete softmax outlining improves one full group by0.5719854% functional
+instructions. None supplies new whole stock cycles.
+[Tiny complete cost](perf_records/tiny_retained_n_complete_cost_20261007.json),
+[Smol source costs](perf_records/smol_actual_source_phase_census_20261007.json),
+[coverage](perf_records/smol_actual_softmax_endpoint_coverage_20261007_qualification.json),
+[outlining](perf_records/smol_source_softmax_outline_complete_20261007_seal.json).
+
+The [shared compiler record](compiler_recipe_status.md) and
+[journey](golden_optimization_journey.md) retain compiler versions, legality,
+original gates, gains, rejected candidates, ownership and phase0/1/2 suggestions.
+Root recloses12 source packets and6,274 declared pins and mirrors15 new records
+byte exactly. Best whole stock cycles remain ResNet28,649,233,
+Tiny378,946,263 and Smol258,621,872,969; all whole performance targets remain open.
+
 ## 2026-10-07 19:40 UTC: whole Smol trial completes; shared source topics qualify
 
 | Model | Best whole stock cycles | Latest boundary |

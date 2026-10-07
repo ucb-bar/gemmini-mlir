@@ -1,5 +1,51 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 20:35 UTC: shared APIs and automatically discoverable source proofs
+
+Newest qualified local Merlin main `451849ba7` forwards the existing typed
+mask-effect contract through normal model lowering and both backend builders.
+It adds no target branch or inferred permission. All 58 affected checks pass in
+an outside installation, source adds 11 legacy curated-target checks with six
+unavailable support skips, all four delivery forms agree, and four unselected
+normal LLVM cases remain byte-identical. Publication still fails GitHub DNS.
+[Qualification](perf_records/merlin_model_mask_effects_current_main_20261007_qualification.json).
+
+Fresh ResNet through installed 3f and Tiny through installed CDF regenerate all
+linked object leaves and pass their original complete outputs and final zero-FSM.
+Explicit retained source recipes and earlier captures remain visible. The common
+pipeline still needs an invocation-local typed stage after scalar arithmetic and
+fusion so current-IR observation proofs can replace manually supplied helper
+recipes. Typed source discovery, helper reification, numerical/effect contracts,
+preparation/ownership, packing and checked aligned host readout belong in Merlin.
+[Shared compiler audit](compiler_recipe_status.md),
+[fresh Tiny and pipeline gap](perf_records/tiny_current_shared_delivery_journey_20261007.md).
+
+OOT retains all actual device instruction schedules, resource/bank/address
+legality, command batching and target ABI/simulation. Tiny's native command-loop
+savings translate to only −0.22207594% complete GSIM cycles. CCA must distinguish
+executed CPU work, actual transfer/device service and overlap, and retain arm
+spread. Unchanged dispatch counts cannot express those costs.
+[Complete Tiny source cost](perf_records/tiny_retained_n_complete_cost_20261007.json).
+
+Actual Smol source attribution puts 18.860B functional instructions in softmax
+interval/BF16/lanes/scheduling, 9.616B in canonical packing and 8.040B in polynomial
+endpoints. Ordered dot replay costs 3.264B. All measured source score cells are
+active; guessed masked skipping supplies no work reduction here. The exact
+softmax placement screen improves one complete group by only 0.5719854%.
+Representation/preparation/global transformations require complete numeric and
+cost proofs; target GEMM throughput alone does not account for this source cost.
+[Source costs](perf_records/smol_actual_source_phase_census_20261007.json),
+[coverage](perf_records/smol_actual_softmax_endpoint_coverage_20261007_qualification.json),
+[placement result](perf_records/smol_source_softmax_outline_complete_20261007_seal.json).
+
+The current records explicitly retain phase 0/1/2 requirements: observable source
+and effects, selected/refused transformations, current installed compiler identity,
+source/object/buffer ownership, semantic/resource edit surfaces and a calibrated
+complete cost model. Root recloses 12 source packets and 6,274 declared pins.
+New whole stock timings remain unknown; no infrastructure-versus-dialect effort
+or token percentage is inferred.
+[Reclosure](perf_records/root_common_compiler_records_20261007_reclosure.json).
+
 ## 2026-10-07 19:40 UTC: exact source observations and reusable scheduling costs
 
 Newest qualified local Merlin main is `3f6a8db27`, not a newly published remote

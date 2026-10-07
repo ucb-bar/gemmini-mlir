@@ -32,8 +32,8 @@ within that one compiler.
 
 | Workload | Best verified whole stock cycles | Current qualification boundary |
 | --- | ---: | --- |
-| ResNet50 | 28,649,233 (2109) | Fresh installed cdf117e3 host builds pass all 1,000 original words; a successor also freshly generates all 52 target kernels and passes the whole 0/0 gate. Neither successor has whole stock timing |
-| TinyLlama | 378,946,263 (2085) | Observer and command-batching section candidates have independent gates. A fresh installed cdf117e3 whole build with all target leaves is in progress; current-head automatic qualification remains open |
+| ResNet50 | 28,649,233 (2109) | Fresh installed 3f6a8db27 build regenerates every linked object leaf and passes all 1,000 original words exactly plus final zero-FSM. Whole stock timing and automatic policy qualification remain open |
+| TinyLlama | 378,946,263 (2085) | Fresh installed cdf117e3 build regenerates every linked object leaf and passes all 256,000 original compiled words exactly plus the unchanged Torch gate and final zero-FSM. A successor using the normal 451849ba7 mask-contract API is building; whole stock timing remains unknown |
 | SmolVLA | 258,621,872,969 (1906) | Stock2113 completes at 324,229,555,204 cycles, a 25.3682% regression, with all 1,600 original words exact. Fresh exact-math b154 passes the full functional gate but has no stock timing |
 
 ResNet's original experiment replaced global compiler functions. The explicit
@@ -68,7 +68,7 @@ host/accelerator percentage. Section savings cannot be added to manufacture a
 whole-model result. Experiment selection is recorded separately from default
 compiler routing and automatic promotion.
 
-The campaign meter at 2026-10-07 19:40:57 UTC is **107,256,545 aggregate tokens**.
+The campaign meter at 2026-10-07 20:35:32 UTC is **108,738,933 aggregate tokens**.
 Per-topic/OOT-only token allocation and billing are unavailable. This aggregate
 must not be attributed to Gemmini dialect work alone.
 
@@ -103,6 +103,67 @@ hardware execution and publication status are recorded separately.
 
 ## 2026-10-07: shared source-observation topics and remaining promotion work
 
+### 20:35 UTC: normal effect forwarding and fresh object closure
+
+Newest qualified local Merlin main is `451849ba7`, on `3f6a8db27`. The existing
+typed `MaskEffectContract` now passes unchanged through `lower_model`,
+`lower_model_file`, the normal bare-metal model builder and the Zephyr builder.
+Selection still requires the explicit mask feature and scalar schedule; no
+numerical or effect permission is inferred. All 69 source checks pass with six
+unavailable target-support skips. The 58 affected normal lowering/build/runtime
+checks pass in an independent installation. Seventeen legacy curated-target
+routing cases run in source only because installed core intentionally supplies
+no default target or reference contracts. All 1,020 Python and 61 runtime files
+match source, wheel, source archive and installation. Four independent normal
+default model lowerings emit byte-identical LLVM across old source, current
+source and outside installation; all 2,881 parent qualification pins reclose.
+GitHub fetch still fails DNS at 20:35:32 UTC, so this is qualified local main.
+[API qualification](perf_records/merlin_model_mask_effects_current_main_20261007_qualification.json),
+[default emission](perf_records/merlin_model_mask_effects_default_emission_20261007.json).
+
+Fresh installed `3f6a8db27` ResNet now regenerates every final linked object leaf:
+stem, all convolution/requantization and residual/domain providers, mean,
+classifier, host adapters, weights, runtime and harness. All 1,000 original words
+pass exactly in native and actual Spike; final zero-FSM passes. The receipt closes
+3,937 pins. Fresh installed CDF Tiny also regenerates all object leaves and all
+155 source bindings, with 256,000 original compiled words exact in native and
+actual Spike, the original Torch `atol=0.03125, rtol=0.02` gate passing, and final
+zero-FSM. Its receipt closes 1,348 pins. These builds retain explicit earlier
+source ingredients and manual selections, and have no new whole FPGA timings.
+The Tiny 451 successor removes CDF's extra mask-contract lowering through the
+supported normal API; its full gates remain pending.
+[Fresh ResNet delivery](perf_records/resnet_fresh_all_target_leaves_installed3f_whole_20261007_qualification.json),
+[fresh Tiny delivery](perf_records/tiny_fresh_all_target_leaves_installedCDF_whole_20261007_qualification.json).
+
+The remaining automatic-discovery gap is concrete: Tiny's early prepared-model
+hook sees no closed scalar-observer proofs; the source after ordinary polynomial,
+FMA, elementwise fusion and generalization has 22. A selected invocation-local
+typed stage at that point must discover proofs from current IR and reify their
+original helper arithmetic before ordinary lowering. The diagnostic checkpoint
+is an experiment; supported integration and a fresh whole-model gate are required
+before claiming that retained recipes have been eliminated.
+[Delivery journey and phase recommendations](perf_records/tiny_current_shared_delivery_journey_20261007.md).
+
+Complete Tiny command batching costs 2,016,652.5→2,012,174.0 GSIM cycles
+(−0.22207594%), despite a −14.0806% native instruction result. Arm spread is large
+relative to this small change; no default or whole-model promotion follows.
+Smol's actual source phases assign 18.860B instructions to softmax interval/
+BF16/lanes/scheduling, 9.616B to canonical packing and 8.040B to polynomial
+endpoints. Ordered QK/PV dot replay totals only 3.264B. Source coverage finds all
+150,994,944 score cells active, so omitted masked/cutoff cells supply no savings
+on this capture. Complete softmax outlining passes original outputs but saves
+only 0.5719854% functional instructions on one full group.
+[Tiny complete cost](perf_records/tiny_retained_n_complete_cost_20261007.json),
+[Smol source costs](perf_records/smol_actual_source_phase_census_20261007.json),
+[endpoint coverage](perf_records/smol_actual_softmax_endpoint_coverage_20261007_qualification.json),
+[complete outlining](perf_records/smol_source_softmax_outline_complete_20261007_seal.json).
+
+Root independently reclosed 12 source packets and 6,274 distinct declared pins,
+then mirrored the new records byte exactly. Source counts, GSIM sections,
+functional counters and stock model cycles keep their original scopes.
+[Source reclosure](perf_records/root_common_compiler_records_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_second.json).
+
 Local Merlin main `3f6a8db27` now integrates three clean topics on cdf117e3:
 an exact multi-output integer-product family, elimination of duplicate finite
 point observations and exact BF16-to-integer observation decoding. Each has
@@ -117,8 +178,8 @@ whole-model performance result or automatic profitable selection.
 [Compiler qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json),
 [default and source closure](perf_records/merlin_source_observation_topics_source_reclosure_20261007.json).
 
-The new full ResNet successors use the previous installed cdf117e3, not the
-new 3f6a8db27 package. One verifies the shared eight-lane host recipe; the other
+The earlier full ResNet successors used installed cdf117e3. One verifies the
+shared eight-lane host recipe; the other
 freshly generates all 52 target kernels, including 11 explicitly selected dense
 output-block changes. Original 1,000-word 0/0 and final zero-FSM gates pass.
 Their receipts close 859 and 4,847 pins respectively. Input capture/source

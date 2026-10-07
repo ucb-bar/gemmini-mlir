@@ -1,5 +1,57 @@
 # Golden compiler optimization journey
 
+## 2026-10-07 20:35 UTC: fresh shared delivery and complete cost limits
+
+All three workloads continue through the shared Merlin compiler and Gemmini OOT
+backend. Experimental source ingredients and selected policies remain explicit;
+the [compiler status](compiler_recipe_status.md) records the remaining automatic
+selection and fresh capture gaps. Production decisions derive from current IR,
+numerical/effect/ownership contracts and target resources. Model names and golden
+answers supply no transformation permission.
+
+Local Merlin main `451849ba7` forwards existing typed mask effects through the
+normal text/file model lowering and both backend builders. This removes one
+reason Tiny's CDF experiment needed a second lowering invocation. Source checks
+pass 69 with six unavailable support skips; all 58 affected outside-installed
+checks pass, including normal RV64 build and actual Spike execution. Legacy
+curated-target routing cases have a separate source-only scope. All 1,020 Python
+and 61 runtime files match the four delivery forms, and four default model LLVM
+cases remain byte-identical. GitHub fetch still fails DNS.
+[Qualification](perf_records/merlin_model_mask_effects_current_main_20261007_qualification.json).
+
+| Mechanism / observation | Qualified result | Remaining limit |
+| --- | --- | --- |
+| Fresh installed 3f ResNet whole build | Every linked object leaf regenerated; original 1,000 outputs exact in native and actual Spike; final zero-FSM; 3,937 pins | Earlier input source and manual eight-lane/layout/resource selections remain; fresh whole stock cycles unknown |
+| Fresh installed CDF Tiny whole build | Every object leaf and all 155 bindings regenerated; original 256,000 compiled outputs exact; unchanged Torch gate and zero-FSM; 1,348 pins | Retained typed expression and two scalar source helpers still explicitly selected; 451 normal-builder successor in progress |
+| Tiny retained-N command batching | Complete ABBA GSIM 2,016,652.5→2,012,174.0 (−0.22207594%) | Native −14.0806% instruction reduction overpredicts complete gain; small change relative to arm spread, no default/whole promotion |
+| Smol actual source-phase census | Softmax 18.860B, canonical packing 9.616B, polynomial endpoints 8.040B functional instructions; QK/PV replay 3.264B | Exact ELF-bound attribution; functional counts supply no FPGA latency or pure host/accelerator percentage |
+| Smol endpoint coverage | 150,994,944 score cells all active; 98.8767% probability bins BF16-stable, but pre-BF16 denominator escapes | No masked/cutoff skipping opportunity here; stable local bins do not permit changing an escaping denominator |
+| Smol complete softmax function placement | All 1,600 whole native words exact; complete group 1,515,040,109→1,506,374,301 (−0.5719854%) functional instructions | Original arithmetic retained; no hardware gain/default placement promotion |
+
+[Fresh ResNet](perf_records/resnet_fresh_all_target_leaves_installed3f_whole_20261007_qualification.json),
+[fresh Tiny](perf_records/tiny_fresh_all_target_leaves_installedCDF_whole_20261007_qualification.json),
+[complete command cost](perf_records/tiny_retained_n_complete_cost_20261007.json),
+[source-phase census](perf_records/smol_actual_source_phase_census_20261007.json),
+[endpoint coverage](perf_records/smol_actual_softmax_endpoint_coverage_20261007_qualification.json),
+[outlining journey](perf_records/smol_source_softmax_outline_journey_20261007.md).
+
+Generic compiler work now targets current-IR observer discovery/reification at
+the shared post-arithmetic/fusion stage, proven immutable preparation and closed
+row-domain transformations, and checked alignment for word packing/readout.
+Target command scheduling/resource placement stays in OOT. Each needs independent
+legality/refusal tests and a complete cost gate; lower workspace or CPU work alone
+does not justify promotion. Phase 0/1/2 should expose these reusable edit surfaces,
+unused proof/feature reports and actual ELF-bound issue/address/stack/traffic
+costs. Original numerical gates and whole stock performance gates remain fixed.
+
+Root reclosed 12 source packets and 6,274 declared pins and copied 15 new records
+byte exactly. Best whole stock cycles remain ResNet28,649,233,
+Tiny378,946,263 and Smol258,621,872,969. New full-delivery checks transfer no
+historical timing. Aggregate goal usage is 108,738,933 tokens at 20:35:32 UTC;
+exact OOT-only/per-topic allocation remains unavailable.
+[Root reclosure](perf_records/root_common_compiler_records_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_second.json).
+
 ## 2026-10-07: shared main qualification, complete costs and stock regression
 
 The journal retains reusable compiler changes, manual recipe selections,
