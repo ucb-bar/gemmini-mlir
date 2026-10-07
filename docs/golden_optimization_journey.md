@@ -3418,3 +3418,19 @@ closes48 bindings/297 ordinary contractions/19 signatures; all1,600 native words
 exact, measured provider sources identical. Stock physical capacity remains
 unknown: current header/driver and retained bit identities are distinct from
 executed historical driver/header-to-bit build proof.
+
+## 2026-10-07 prepared constants independent whole target pass
+
+Actual a90f4db229bc530034e5edeedda42a9847c62a5a51c6f1c52ab08165ee85bf95
+completed the bounded original SmolVLA target run in4,366.498 seconds (~72.8min).
+All1,600 original output words are bitwise exact (raw f32le digest
+1e5b274d4c99cb6710994542f509769ba61ed37f435dc6ee1ed05ed1b8cc03de);
+rank0/DONE/exit0/final noFSM and171 source pins close independently.
+The original atol.03125/rtol.02 gate remains unchanged.
+
+Reported Spike140,205,205,953 is a functional instruction proxy, **not FireSim
+performance**. Source instrumentation counters belong to native qualification;
+this target did not print them, so they are not inferred. Stock physical memory
+capacity and whole hardware timing remain unknown. Fresh endpoint successor f90b
+is independently running its own bounded target gate; no predecessor pass is
+transferred.
