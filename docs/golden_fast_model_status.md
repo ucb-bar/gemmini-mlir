@@ -1,5 +1,43 @@
 # Faster performance screening
 
+## Complete-cost transfer: 2026-10-07 03:12 UTC
+
+Four-panel residual scheduling predicts a tie under the frozen array-row/B-load
+law because nominalrows/B bytes/productcounts are equal. Fences1571→395 and
+CPU issue/overlap are unpriced. Actual complete802816 GSIM cycles fall17.496%,
+but whole stock2068 improves only0.91858% to29891965. Preserve that model refusal;
+do not add the section improvement to old whole labels.
+[Whole terminal](perf_records/root_resnet_stock2068_four_panel_terminal_review_20261007.json).
+
+Tiny2067 complete actual M8 helper means5036698.5→4328018.5stock cycles,14.0703%
+lower, alongside independently completed GSIM14.0706%. The exact same four
+strict instruction counts, original45056 bytes, guards and addresses close.
+The earlier quantizer model refuses the new interval/table/call/frame domain;
+no new label enters fitting and no whole prediction is issued. Actual whole
+helper attribution reduces46607803→42689832instructions, exactly the3917971
+whole-retirement difference; all other named source roles are unchanged.
+That is an instruction conservation check, not a whole-cycle forecast.
+[Independent stock review](perf_records/root_tiny_M8_stock2067_terminal_review_20261007.json).
+
+Fused completed integer readouts reduce1896853389→1806165115 complete-group
+instructions with480 callbacks/86507520 requested bytes unchanged. Root freezes
+an exploratory2064 count-ratio forecast before new hardware, explicitly leaving
+larger live planes, changed write addresses, removed integer traffic and overlap
+unpriced. Root verifies stock2069 at4027126711cycles; the frozen4052660969.18
+diagnostic errs0.634056% without refitting. Existing historical domain refusal
+stays unchanged. Neither conditional arithmetic nor a close
+same-group fit qualifies new workloads, automatic ranking or whole inference.
+[Prelabel release](perf_records/root_smol_fused_radix_stock_release_20261007.json).
+[Independent terminal and frozen score](perf_records/root_smol_fused_radix_stock2069_terminal_review_20261007.json).
+
+Exact partial high4/3 readout lowers480→192 callbacks and86507520→34603008
+requested bytes but raises2165148233→5226002888 complete instructions. Actual
+source replay counters explain the loss; a callback/MAC-only model would rank
+this arm incorrectly. A separately pinned digit-norm audit bounds every actual
+omitted contribution, but proves zero omitted-term outputs0/4325376. Costs of
+metadata production and tighter consumer bounds remain unpriced until a new
+complete screen. Preserve input-dependent replay pressure as a required feature.
+
 ## Whole transfer and source-order diagnostic: 2026-10-07 UTC
 
 Actual ResNet2066 whole30169093 is1.2482% below30550422, with all1000 original

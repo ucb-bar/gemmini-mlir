@@ -1,5 +1,56 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 03:12 UTC: structural algorithms and consumed proofs
+
+Generic completed-plane integer reconstruction is now a clean main-based
+Merlin PR49. Defined integer prefixes, one final exact conversion, typed private
+storage and original numeric policy are independent of the producer target.
+Root958 source/wheel/installed modules,151 packaged-data and50 bundled source
+resources match;946 source and56 installed checks pass. OOT owns the actual
+target readout ABI, resources and stock run. A1MiB larger native workspace is
+queried and propagated into the fresh normal pool; obsolete capacities refuse
+before writes. The native ranked-versus-flattened ABI mismatch is retained and
+an explicit native-only provider adapter repairs integration. This motivates a
+generic ABI-version/signature admission gate; target adapter implementation stays
+OOT. Experimental RMS4 policy is not relabeled an exact normal binder theorem.
+[Delivery and publication](perf_records/root_merlin_fused_radix_PR49_delivery_review_20261007.json).
+
+The shared integer-result observer ABI/use/effect proof and portable lowering
+also belong in Merlin; target rounding legalization and actual simulation remain
+OOT. Stock2067's14.0703% complete-helper gain does not predict whole Tiny2070.
+Immutable original scales/source/table/cold paths and typed floating-escape
+refusal remain mandatory. New partial integer readout enclosures are generic
+Merlin math; target callback scheduling belongs OOT. First complete partial arm
+loses141.37%instructions from extra replay, despite60% fewer callbacks. Do not
+promote a legal numeric mechanism based on primitive count alone.
+
+ResNet's four-panel private residency/store-reload/fence schedule is OOT. Its
+17.496% local GSIM gain becomes0.91858% whole stock2068. The next missing seam
+is generic propagation of existing source ReLU/clamp domains through actual
+typed SSA/layout maps into finite affine coefficient proofs. Existing domain
+certificates were not consumed by normal coefficient choice; full type-domain
+assumptions prevented three cheaper routes. Eligibility must come from source
+and producer proofs, not callee/source names or captured values. New20 focused
+checks are provisional agent evidence; normal whole composition is pending.
+
+### Additional requirements for automatic phase0/1/2 loops
+
+- Phase0: test ordered floating reductions, escaping BF16 scales, partial integer
+  intervals, nonfinite/refusal/rounding effects and producer-domain propagation.
+- Phase1: expose whether each proved fact is consumed by actual normal lowering;
+  bind emitted objects, callback ABI versions, source owner epochs and queried
+  workspace lifetimes. A point and a remainder interval must have different
+  semantic contracts. Source replay storage remains live when observed.
+- Phase2: expose changes to producer/consumer grouping, numeric representation,
+  packing, preparation lifetimes and target schedules. Include actual source
+  replay/ambiguity counters, requested readouts, frames and dependencies in cost
+  evidence. Preserve complete-cost negatives, original whole gates and unknown
+  physical memory/overlap terms; never infer whole gain from section percentages.
+
+The conservative reviewed61-family inventory below is unchanged. PR49 and new
+private mechanisms have not yet been independently mapped into its families;
+do not count every variant or test as a new bug/improvement, or claim them merged.
+
 ## 2026-10-07 01:44 UTC: reusable compiler topic and calibrated target features
 
 Shared typed closed-mask contraction scheduling is published in Merlin PR48,

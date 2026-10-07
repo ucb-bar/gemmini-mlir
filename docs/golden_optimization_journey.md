@@ -9,6 +9,90 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 03:12 UTC: structural cost, published storage fusion and actual transfer
+
+Root969872d releases one Tiny completeM8 cost capsule after356pins/original45056
+bytes/fiveFRM-sevensticky companion,284 source preparation pins and50 tests.
+Stock2067 means5036698.5→4328018.5cycles(14.0703%lower);14 terminal pins/rawUART/
+ABBA/digest/addresses/staged identities independently close inb4f91f8. Independently
+completed liveGSIM37.514Mtotalcycles/44.28min shows14.0706%. No engine restart,
+domain-model fitting or whole prediction. Whole successor416pins reproduces2062
+ELF/model.o, changesonlyselectedmodel.o, keeps11otherobjects/155bindings/all
+256000original/Torchwords. Roota5aaf31 releases stock2070; latest verified whole
+remains410147055 pending that result. SameELF role attribution closes entire
+3917971instruction delta in22 helper bodies, with13375coldsourcecalls unchanged.
+
+Root5452c3b releases four-panel exact residual after3369pins/all1000source/native/
+strictwords, current2066 byteexact control and finalzeroFSM. Complete802816 GSIM
+1603489→1322936(17.4964%lower) becomes whole2068 29891965,277128cycles/0.91858%
+below2066. Root12terminalpins/original0c2f…14787/stockbitstream/DONE/rank0 close.
+OwnedJack1876 reference22387449 remains7504516cyclesaway. Fourteenproducts and
+payload stayequal; fences1571→395/private panel reuse change. Array-row model
+ties and leaves issue/fence/overlap unpriced. New typed source-domain propagation
+work finds12 nonnegative RHS sources and three previously proved cheaper routes
+whose range facts were not consumed. Normal composition pending; no target/source
+ID strategy selection. Separate bounded MAX-of-affine-minorants proof is retained
+without target promotion; extra transfers were not priced as free.
+
+Generic storage fusion is Merlin63578e4b/PR49, one6-file topic onactualmain7fee.
+All946 sourcechecks and56 installed native/refusal checks pass. Root rehashes
+958Python payloads/151 packaged-data/50bundled source resources and actualremote
+head/body/base; no mainpush/force/merge/defaultenablement. First nonisolatedbuild,
+missingpip and34pass/22installedfixture errors are kept; isolatedbuild/uvtarget
+install andpackageddata_path fixture correction pass. The wheel builtinitial926
+has all final635library bytes; only test fixture discovery changed. Two inherited
+module-size andone target-name failures remain unchanged; no-regex passes.
+
+The exact fused helper retainsfive complete readonlyi32 planes, removesi64 scratch,
+sums locally once and converts once; net workspace+1048576 to124061504. Same
+480callbacks/86507520readbackbytes, original786432i8/1024scales/8stats/carrier3/
+guards preserved. Strictgroup1896853389→1806165115(4.781%lower). Requestedinteger
+LD22928365→1739043/SD21845888→112096 explains the entire90688274instruction delta,
+but physical traffic/cycles are separate. Fresh normal exact pool plus explicit
+experimentalRMS4 override/nativeABIadapter preserve all48/1600bits/23040products/
+zero fallback/errors; forcedNULLworkspace retained source196608BF16bits pass.
+Root399pins/rederivedactualChelper/layout/capacityrefusals release2069 with frozen
+unresolved count-ratio screen. Root closes12terminal/8releasepins, original
+consumer/statistics/carrier3/guards, actual staging receipts and final noFSM:
+4027126711cycles(5.381%lower). Frozen4052660969.18 errs0.634056%, without fitting
+the new label; cost/ranking qualification stays unresolved. Whole258621872969
+remains unchanged.
+[Independent terminal](perf_records/root_smol_fused_radix_stock2069_terminal_review_20261007.json).
+
+Independent endpoint-packet scheduling is a complete-cost negative:68native and
+245760target lanechecks, all48/1600bits and originalgroupconsumer pass, but group
+instructions1896853389→1944113806(+2.4915%).80Bcallee frame at786432calls requests
+125829120stackbytes. No hardware. Generic DAG/FP/effect/packet contract belongs
+Merlin; RV64register/instruction legalization OOT. No standalone helper speedup
+claim bypasses real call/frame costs.
+
+Rootgeneric partial readout theorem a94e15a41 onmain7fee passes32source/native/
+signed-extreme/alias/effect/refusal/UBSan checks. Exact completed sum±missing
+canonical weighted bound is a real integer interval, not a source point. OOT
+partialhigh4/3 applies outward scales/generalgamma/sourceerror/replay, disabling
+point-center shortcuts. Original786432i8/1024scales pass, callbacks480→192 and
+readback86507520→34603008bytes, but instructions2165148233→5226002888(+141.37%).
+Stats[5306,0,3140422,0,0,3072,1110702,189559808] show excesssource replay. Negative
+771adbf185pins retained; no full48 orhardware campaign. Separate source-owner
+census finds96distinctQKoperandpairs despite shared24K/72Vviews: four disjoint
+query slices prevent complete-product reuse. PV probabilities/replay storage is
+still live. No cache-win claim.
+
+Digit-norm audit7422c84 checks every actual omitted sum against tighter exact
+L1/Linf bounds. All4325376 bounds remain nonzero;1074 actual cancellationzeros
+do not prove zero missingterms. MaxQK8.817B/PV36.591B versus153.008Bcanonical
+remainder; scan15.335Mwordreads/1.991MBcumulativemetadata/36864Bpeak, bounds cost
+unpriced. A new source-produced metadata witness and complete exactcost screen
+are required before using the tighter mechanism. Fixeddegrees stayunchanged;
+no precision/threshold/golden-derived ladder.
+
+Owned ledger03:12:53:8threads;71369219uncachedinput/3358302208cache-read/
+14168439output,5686415reasoning(outputsubset), rawtotal3443839866.
+Window02:01:04→03:12:53:2197601uncached/111455232cache-read/463102output/
+189540reasoningsubset/raw114115935. Separategoal81902150, notrawsum. Exclusive
+OOT/model/topic allocation and billing remainUNKNOWN.
+[Token ledger](perf_records/golden_token_usage_20261007T031253Z.json).
+
 ### 2026-10-07: actual whole transfer and reduction-order sensitivity
 
 ResNet2066 finishes30169093cycles,381329/1.2482% below2055; root12terminalpins,

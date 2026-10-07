@@ -4,13 +4,13 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 ## Latest verified whole-model results (2026-10-07 UTC)
 
-ResNet2066 improves the whole observation to **30,169,093 cycles** through
+ResNet2068 improves the whole observation to **29,891,965 cycles** through
 generic eight-lane host quantization and exact finite-source residual lowering
-with restricted internal-fence coalescing. Tiny2062 improves to
+with restricted internal-fence coalescing and four private panels. Tiny2062 improves to
 **410,147,055 cycles** through source-exact continuation and generic typed
 masked-output contraction scheduling.
 All original outputs and numeric gates pass. Smol whole1906 remains
-**258,621,872,969 cycles**; group2064's4,256,146,700 is a section result.
+**258,621,872,969 cycles**; group2069's **4,027,126,711** is a section result.
 The source-bound quantizer model predicts the held current4/8 pair within3.73%
 and ranks it correctly. The new entirely held5/7-lane cross-executable test2059
 predicts within6.13% and ranks all three new pairs correctly without refitting.
@@ -18,11 +18,12 @@ Fixed eight-lane spacing2063 shows30–31% actual grouped-stage gains at equal
 compiled work. Its separately predeclared training-only model scores held224
 arms within3.892%; work alone misses26.259%. Old model errors remain recorded.
 Whole-program cycle prediction stays unknown. [Model evidence](golden_fast_model_status.md).
-[Model evidence](golden_fast_model_status.md).
 
 Exact residual correction improves the complete original section8.73% in GSIM;
-a separate restricted internal-fence pair reports a further11.91%, with root
-release review pending. Tiny's compound16.38% becomes only0.612% whole stock
+a separate restricted internal-fence pair reports a further11.91%. Four private
+panels improve another complete section17.496%, but whole2068 improves only
+0.91858% versus2066. These different scopes are not additive forecasts.
+Tiny's compound16.38% becomes only0.612% whole stock
 gain. Smol fastRMS4 improves the complete12-head group8.043% on stock2060.
 Its proved bounded F32-floor successor passes all1600 original native words/
 61440 target checks and stock2064 at4256146700 (4.721% below2060). The unchanged
@@ -71,6 +72,43 @@ conservative shared inventory now61families:29Merlin bugs,24Merlin improvements,
 8model2MLIR bugs;55on main/6pending new topic families. PR47 extends family33.
 [Publication](perf_records/root_merlin_masked_PR48_publication_review_20261007.json).
 
+The generic completed-plane reconstruction topic is published as
+[Merlin PR49](https://github.com/ucb-bar/merlin/pull/49), one six-file topic on
+actual main7fee. Root rechecks958 source/wheel/installed Python payloads,
+151 packaged-data resources and50 bundled source resources.946 source checks
+and56 outside-checkout installed checks pass; inherited structure/target-name
+gate failures remain explicit. Defaults are unchanged. The experimental Smol
+integration preserves all1600 original words across48 native groups and full
+group consumer observations, with a queried1MiB workspace increase. It reduces
+complete-group strict instructions4.781%; root verifies stock2069 at4027126711cycles,
+5.381% below2064. All original consumer/statistics/guards, raw UART, actual staged
+ELF/bitstream receipts and the all-executable noFSM audit pass. This is a group,
+not a whole-model Smol result or a production approximate binder seal.
+[Delivery](perf_records/root_merlin_fused_radix_PR49_delivery_review_20261007.json),
+[stock release](perf_records/root_smol_fused_radix_stock_release_20261007.json),
+[stock terminal](perf_records/root_smol_fused_radix_stock2069_terminal_review_20261007.json).
+
+Tiny's certified integer-result publication preserves the existing table/source/
+cold continuation and removes duplicate floating finishing. Root356-pin capsule
+review and14-pin stock2067 terminal review close45056 original words, guards,
+common addresses and four ABBA windows:5036698.5→4328018.5mean cycles,14.0703%
+lower. Independent GSIM completes at14.0706% lower. The416-pin controlled whole
+successor reproduces2062 control byteexactly, preserves all256000 compiled/Torch
+words, all155 target bindings and11 other objects; stock2070 is admitted.
+Whole prediction remainsUNKNOWN; latest verified whole result is still2062.
+[Helper terminal](perf_records/root_tiny_M8_stock2067_terminal_review_20261007.json),
+[whole release](perf_records/root_tiny_closed_i8_whole_stock_release_20261007.json).
+
+Host instruction tuning does not establish a route from258.622B to5B whole
+Smol cycles. The prepared route executes23040 products and requests4152360960
+integer readback bytes across all48 actual source geometries. One rigorous
+partial-readout experiment cuts callbacks480→192/group, but source replay grows
+and complete instructions increase141.37%; it is not queued. Actual owner
+analysis finds96 distinct QK operand pairs: K/V preparation is reusable, complete
+QK/PV products have no invariant witness. Tighter encoded-digit remainder norms
+are a separate source-derived hypothesis, with complete replay/cost still pending.
+[Journey](golden_optimization_journey.md).
+
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
 0.260% for FMA with dependency features; stock memory remains38.29% inaccurate.
@@ -109,7 +147,7 @@ No new whole-model prediction or automatic ranking is enabled.
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes and one exact14-product residual with coalesced internal fences | 30,169,093 (2066) | All1000 original output words exact;381329cycles/1.2482% below2055. Onlyone active residual targetroute changes; allhost/runtime/weights/other targetobjects preserved.2065setup failure is not a timing sample | [2066 root review](perf_records/root_resnet_stock2066_rectifier_terminal_review_20261007.json) |
+| ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes and one exact14-product residual with four private panels/coalesced internal fences | 29,891,965 (2068) | All1000 original output words exact;277128cycles/0.91858% below2066. Onlyone active residual targetroute changes; allhost/runtime/weights/other targetobjects preserved. Gap to ownedJack1876 remains7504516cycles | [2068 root review](perf_records/root_resnet_stock2068_four_panel_terminal_review_20261007.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffers, outlining, source-exact continuation and typed closed mask | 410,147,055 (2062) | All256000 original compiled words unchanged; original Torch gate passes.2525079cycles/0.6119% below2056 in one observation per arm. Only model.o changes;11 other linked objects, staging/output/final noFSM pinned | [2062 root review](perf_records/root_tiny_stock2062_masked_whole_terminal_review_20261007.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 
