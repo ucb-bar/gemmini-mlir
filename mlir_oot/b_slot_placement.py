@@ -15,7 +15,9 @@ from .tables import rtl_facts as F
 def select_remaining_b_slots(control):
     """Derive placements using shape/resources only; preserve every fallback."""
     s=control.shape
-    s.validate(prefetch_b_rows=control.prefetch_b_rows)
+    s.validate(prefetch_b_rows=control.prefetch_b_rows,
+               cached_a_output_blocks=control.cached_a_output_blocks,
+               cached_b_resource_capacity=control.cached_b_resource_capacity)
     decision=dict(applied=False,timing_claim=False,
                   policy='remaining_rows',selection='shape and complete SPAD extents')
     if s.prefetch_b:
@@ -24,7 +26,7 @@ def select_remaining_b_slots(control):
     if not s.cache_a or s.k<=F.DIM or s.separate_b_bank:
         decision['refusal']='requires complete cached A, multiple K panels and no competing B placement'
         return control,decision
-    a_end=s.bm*_ceil_div(s.k,F.DIM)*F.DIM
+    a_end=control._a_storage_tiles()*_ceil_div(s.k,F.DIM)*F.DIM
     span=s.bn*F.DIM
     row=a_end
     bases=[]
@@ -36,7 +38,9 @@ def select_remaining_b_slots(control):
     placement=tuple(bases)
     candidate=replace(s,prefetch_b=True)
     try:
-        candidate.validate(prefetch_b_rows=placement)
+        candidate.validate(prefetch_b_rows=placement,
+                           cached_a_output_blocks=control.cached_a_output_blocks,
+                           cached_b_resource_capacity=control.cached_b_resource_capacity)
     except ValueError as failure:
         decision.update(refusal=str(failure),reserved_a_rows=a_end,
                         reserved_b_panel_rows=span,attempted_b_rows=bases)

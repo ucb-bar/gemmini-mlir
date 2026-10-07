@@ -46,11 +46,11 @@ void _mlir_ciface_{symbol}(memref2 *r,memref2 *a,memref2 *b,memref2 *c) {{
 '''
 
 
-def scalar_oracle(s,kernel,direct,*,input_view=None,cached_a_output_blocks=False):
+def scalar_oracle(s,kernel,direct,*,input_view=None,cached_a_output_blocks=False,prefetch_b_rows=None):
     scale=s.scale.hex()+'f';low=0 if s.relu else -128
     if input_view is not None:
         if direct:raise ValueError('segmented matrix input cannot enter direct convolution')
-        GoldenGemm(s,input_view=input_view,cached_a_output_blocks=cached_a_output_blocks)
+        GoldenGemm(s,input_view=input_view,cached_a_output_blocks=cached_a_output_blocks,prefetch_b_rows=prefetch_b_rows)
     if direct:
         loops=f'''for(int y=0;y<{s.oh};y++) for(int x=0;x<{s.ow};x++) for(int n=0;n<{s.cout};n++) {{
  uint32_t acc=0;
@@ -326,7 +326,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                 choose={'banked_command_cost':choose_banked_by_command_cost,'resident_a_command_cost':choose_resident_a_by_command_cost,'transfer_command_cost':choose_transfer_by_command_cost}[dense_input_policy]
                 _,dense_decision=choose(control.shape)
             generator,schedule_kind=select_dense(schedule,banked_prefetch=banked_prefetch,grouped_b=grouped_b,separate_b_bank=separate_b_bank,full_k_banked=rid in full_k_banked_regions,banked_command_policy=dense_input_policy=='banked_command_cost',resident_a_command_policy=dense_input_policy=='resident_a_command_cost',transfer_command_policy=dense_input_policy=='transfer_command_cost')
-            if dense_b_slot_policy is not None:
+            if dense_b_slot_policy is not None and dense_resident_output_channel_tiles is None:
                 from .b_slot_placement import select_remaining_b_slots
                 generator,b_slot_decision=select_remaining_b_slots(generator)
                 if b_slot_decision['applied']:
@@ -354,6 +354,12 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                 schedule=generator.shape
                 if output_block_decision["applied"]:
                     schedule_kind+=",separate_resident_a_output_blocks"
+            if dense_b_slot_policy is not None and dense_resident_output_channel_tiles is not None:
+                from .b_slot_placement import select_remaining_b_slots
+                generator,b_slot_decision=select_remaining_b_slots(generator)
+                if b_slot_decision["applied"]:
+                    schedule_kind+=",remaining_rows_b_prefetch"
+                schedule=generator.shape
         pair_plan=None;pair_decision=None
         if readout is not None and readout_pair_policy is not None:
             from .paired_readout_binding import choose

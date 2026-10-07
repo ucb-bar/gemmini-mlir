@@ -49,11 +49,12 @@ def _identifier(value):
         raise ValueError("C identifier required for the accepted consumer")
 
 
-def adapter_source(shape, symbol, kernel, view, owner_shape, *, cached_a_output_blocks=False):
+def adapter_source(shape, symbol, kernel, view, owner_shape, *, cached_a_output_blocks=False, prefetch_b_rows=None):
     """Ranked descriptor ABI for an unchanged dense owner and fresh output."""
     _identifier(symbol)
     _identifier(kernel)
-    GoldenGemm(shape, input_view=view, cached_a_output_blocks=cached_a_output_blocks)
+    GoldenGemm(shape, input_view=view, cached_a_output_blocks=cached_a_output_blocks,
+               prefetch_b_rows=prefetch_b_rows)
     owner_shape = tuple(owner_shape)
     if not owner_shape or any(type(v) is not int or v <= 0 for v in owner_shape):
         raise ValueError("positive static dense owner shape required")
@@ -201,6 +202,7 @@ def compile_bindings(bindings, llvm_bin, directory):
             binding.contract.address,
             binding.owner_shape,
             cached_a_output_blocks=binding.generator.cached_a_output_blocks,
+            prefetch_b_rows=binding.generator.prefetch_b_rows,
         )
         (work / "adapter.c").write_text(adapter)
         adapter_compilation = compile_adapter(
@@ -215,6 +217,7 @@ def compile_bindings(bindings, llvm_bin, directory):
                 False,
                 input_view=binding.contract.address,
                 cached_a_output_blocks=binding.generator.cached_a_output_blocks,
+                prefetch_b_rows=binding.generator.prefetch_b_rows,
             )
         )
         records.append(
