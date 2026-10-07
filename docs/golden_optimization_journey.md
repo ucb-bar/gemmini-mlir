@@ -1,5 +1,18 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: exact reconstruction and scaling fusion loses complete cost
+
+Current2098 already consumes fused integer radix reconstruction; there is no
+remaining per-term float reconstruction to eliminate. Fusing its terminal
+scaling also preserves all1,600 native words, complete group outputs, guards,
+480 callbacks and zeroFSM, but raises retired instructions1,560,212,849→
+1,565,985,371 (**0.369983%**). The new checked loop costs139.629M against
+95.160M reconstruction plus39.003M separate scaling. No fallback reconstruction
+PCs execute. Root recloses216 pins; this prototype stays local and gets no
+hardware/default/main promotion. The remaining196.989M evaluate instructions
+are bounds/norm/control, not an unused reconstruction facility.
+[Complete negative and attribution](perf_records/scaled_fused_radix_complete_group_negative.json).
+
 ## 2026-10-07: two-byte attention approximation refused before hardware
 
 A fixed two-signed-byte residual RMS policy reduces product callbacks, but47
