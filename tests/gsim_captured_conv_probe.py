@@ -54,6 +54,7 @@ def main():
             "capacity_cached_b",
             "resident_weight_packets",
             "flat_resident_planes",
+            "flat_resident_tail",
             "flat_control_loops",
         ),
         required=True,
@@ -171,6 +172,13 @@ def main():
                 separate_b_bank=True,
                 virtual_padding=True,
                 loop_spatial=True,
+            )
+        elif args.schedule == "flat_resident_tail":
+            generator = GoldenResidentConv(
+                shape,
+                flat_spatial_planes=True,
+                compact_commands=True,
+                tail_before_last_full=True,
             )
         elif args.schedule == "flat_resident_planes":
             generator = GoldenResidentConv(
@@ -292,6 +300,7 @@ def main():
             "compact_commands",
             "resident_weight_packets",
             "flat_resident_planes",
+            "flat_resident_tail",
         ):
             resource = {
                 "input_rows": shape.cin // F.DIM * generator.plane,

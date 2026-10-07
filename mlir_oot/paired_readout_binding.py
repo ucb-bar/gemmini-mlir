@@ -23,8 +23,9 @@ def choose(generator, proof):
             weight_base=generator.explicit_weight_base,source_stride=generator.source_stride,
             row_residue=generator.row_residue,compact_commands=generator.compact_commands,
             weight_issue_tiles=generator.weight_issue_tiles,
-            flat_spatial_planes=generator.flat_spatial_planes,store_plan=plan)
-        for name in ('resident_stripe_decision','source_stride_decision','flat_resident_decision','weight_issue_decision'):
+            flat_spatial_planes=generator.flat_spatial_planes,store_plan=plan,
+            tail_before_last_full=generator.tail_before_last_full)
+        for name in ('resident_stripe_decision','source_stride_decision','flat_resident_decision','weight_issue_decision','resident_spatial_tail_decision'):
             if hasattr(generator,name):setattr(candidate,name,getattr(generator,name))
     else:
         candidate=GoldenFlatConv(generator.conv,wide_a=generator.wide_a,

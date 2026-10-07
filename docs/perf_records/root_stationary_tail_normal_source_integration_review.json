@@ -1,0 +1,44 @@
+{
+  "schema": "root_stationary_tail_normal_source_integration_review_v1",
+  "status": "pass",
+  "original_source_topic": "7c12eb1",
+  "original_qualification_topic": "e7fceab",
+  "source_pins_revalidated": 2619,
+  "original_whole_gate": "Both normal and controlled native+strict original1000 f32 words bitexact0/0",
+  "current2090_baseline_reproduced_byte_exact": true,
+  "all14_link_stages_reproduced": true,
+  "actual_changed_primitives": [
+    "gemmini_exact_requant_47",
+    "gemmini_exact_requant_50"
+  ],
+  "all52_adapters_50_other_primitives_original_host_runtime_weights_retained": true,
+  "independent_link_review": "root_resnet_stationary_tail_independent_ELF_review.json",
+  "independent_two_actual_ELF_symbols": true,
+  "body_bytes": [
+    13570,
+    13262
+  ],
+  "local_branch_relocation_targets_and_opcode_registers_checked": [
+    11,
+    11
+  ],
+  "root_tests": {
+    "passed": 61,
+    "seconds": 31.12,
+    "tool_session": 55188,
+    "exit_code": 0,
+    "files": [
+      "test_resident_tail_selection.py",
+      "test_resident_tail_placement.py",
+      "test_resident_conv_command_loops.py",
+      "test_resident_weight_packets.py"
+    ]
+  },
+  "harness_refusals_preserved": "Independent verifier first refused a Python helper/local-name collision, then its result metadata was corrected from relocation symbol size to function body size with explicit13570/13262 assertions; both prior scripts/result kept outside published qualifying receipt. Full byte/relocation proof is independently reexecuted at final corrected script",
+  "default_enabled": false,
+  "whole_job": 2095,
+  "whole_cycles": "PENDING",
+  "compiler_rule": "Explicit typed resident flat spatial layout, at least two fulltiles and shorttile; no source/model/golden selectors",
+  "phase_followup": "Immutable typed schedule record should preserve all fields across readout selection; narrow actual choose\u2192emittedIR regression currently closes the omission",
+  "token_usage_available": false
+}

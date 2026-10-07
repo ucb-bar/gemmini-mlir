@@ -79,6 +79,7 @@ def retain_resident_commands(control, *, source_stride_only=False):
         weight_issue_tiles=control.weight_issue_tiles,
         flat_spatial_planes=control.flat_spatial_planes,
         store_plan=control.store_plan,
+        tail_before_last_full=control.tail_before_last_full,
     )
     for name in ("resident_stripe_decision", "source_stride_decision"):
         if hasattr(control, name):
@@ -132,6 +133,7 @@ def issue_resident_weight_packets(control, *, tiles=2, include_flat_planes=True)
             weight_issue_tiles=tiles,
             flat_spatial_planes=control.flat_spatial_planes,
             store_plan=control.store_plan,
+            tail_before_last_full=control.tail_before_last_full,
         )
     except ValueError as failure:
         return control, dict(decision, refusal=str(failure))
@@ -205,6 +207,63 @@ def select_flat_resident_planes(control):
         requested_DMA="Payload only; physical DRAM and overlap UNKNOWN",
     )
     selected.flat_resident_decision = decision
+    return selected, decision
+
+
+def place_resident_spatial_tail(control):
+    """Move a short independent tile within an admitted stationary-B group.
+
+    This explicit modifier retains every source/resource/numeric choice. It
+    leaves unsupported layouts unchanged and does not infer profitability.
+    """
+    decision = {
+        "applied": False,
+        "automatic_policy": False,
+        "performance": "UNKNOWN",
+        "timing_claim": False,
+        "selection": "explicit stationary-B spatial tail placement",
+    }
+    if type(control) is not GoldenResidentConv:
+        return control, dict(decision, refusal="Requires an admitted resident layout")
+    if control.tail_before_last_full:
+        return control, dict(decision, refusal="Short tile placement already selected")
+    try:
+        selected = GoldenResidentConv(
+            control.conv,
+            rows_per_tile=control.rows_per_tile,
+            loop_channels=control.loop_channels,
+            prefetch_b=control.prefetch_b,
+            weight_base=control.explicit_weight_base,
+            source_stride=control.source_stride,
+            row_residue=control.row_residue,
+            compact_commands=control.compact_commands,
+            weight_issue_tiles=control.weight_issue_tiles,
+            flat_spatial_planes=control.flat_spatial_planes,
+            store_plan=control.store_plan,
+            tail_before_last_full=True,
+        )
+    except ValueError as failure:
+        return control, dict(decision, refusal=str(failure))
+    for name in (
+        "resident_stripe_decision",
+        "source_stride_decision",
+        "flat_resident_decision",
+        "weight_issue_decision",
+    ):
+        if hasattr(control, name):
+            setattr(selected, name, getattr(control, name))
+    tiles = len(control.row_tiles)
+    decision.update(
+        applied=True,
+        refusal=None,
+        original_spatial_order=list(range(tiles)),
+        selected_spatial_order=[0, tiles - 1, *range(1, tiles - 1)],
+        source_reduction_order="Increasing HWIO K for every output; no reassociation",
+        lifetime="Same complete immutable A, stationary B and private ACC cells; both stores before reuse and completion fence unchanged",
+        primitive_work="Same complete command multiset and ordered DMA/config/fence/store subsequence",
+        execute_geometry="Short compute followed by garbage preload; actual issue/dispatch/overlap remains unknown",
+    )
+    selected.resident_spatial_tail_decision = decision
     return selected, decision
 
 
