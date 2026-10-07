@@ -1,5 +1,23 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: Smol complete cost negatives and timed source roles
+
+Three source-corrected sparse dyadic group screens preserve the original
+compiled consumer, all eight statistics, three unobserved carrier differences
+and guards, but retire2.820B/2.117B/2.023B instructions versus matched1.747B
+control (+61.40%/+21.12%/+15.79%). All final zero-FSM audits pass. Root closes
+221/142/143 source pins; no full48, new whole or hardware result is claimed.
+Cached/recode core helpers remain isolated prototypes, not Merlin main APIs.
+[Review](perf_records/root_smol_sparse_negative_ROI_review_20261007.json).
+
+The accepted2072 ROI audit conserves1,734,429,991 instructions, including an
+explicit37,607,480 unresolved/shared bucket. All236,079,104 BF16-conversion
+instructions in the whole histogram belong to post-ROI consumer validation.
+Mixed rintf body attribution remains unknown. Dominant provider source roles
+are encoding, softmax observations, interval propagation and dot bounds;
+these are instruction counts, not cycle or accelerator utilization percentages.
+[Executed source roles](perf_records/accepted2072_executed_source_roles.md).
+
 ## 2026-10-07: retained source-stride whole ResNet result
 
 Stock2086 qualifies **29,514,240 whole-model cycles**,103,958 fewer than2081

@@ -25,6 +25,17 @@ semantic observation boundaries, then unchanged whole accuracy and actual
 complete section pricing. Instruction count must not rank mixed FP/issue/control
 work alone:2082 and2085 already reversed that ordering. Never add observed
 section gains to a whole forecast. Preserve failed policies as immutable evidence.
+Root independently closes the complete sparse screens'221/142/143 pins and
+the accepted-source audit's12 pins. All group consumers/guards/eight statistics
+and final zeroFSM pass; original carrier diagnostics stay unchanged. Candidate
+instructions rise61.40%,21.12% and15.79% versus matched normal-owner1.747B,
+which is distinct from historical2072's1.734B. Fewer products/callbacks do not
+remove original encoder and sparse preparation/finish cost. These remain
+negative functional screens without hardware ranking. Generic prototypes are
+not promoted solely because archived experiment scripts depend on them.
+[Root review](perf_records/root_smol_sparse_negative_ROI_review_20261007.json),
+[Executed source roles](perf_records/accepted2072_executed_source_roles.md).
+
 The campaign goal counter observed91,967,723 aggregate tokens at11:18:32UTC;
 it cannot be assigned to OOT, this optimization, a particular agent or billing.
 
