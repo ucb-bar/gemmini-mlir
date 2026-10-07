@@ -30,3 +30,10 @@ Preserve explicit numeric policy selection, immutable original model accuracy ga
 source/catalog bindings, and final-ELF instruction audits when moving an implementation.
 Keep measured optimization notes and negative evidence; simulator instruction counts,
 analytical floors, kernel cycles and full-model FireSim cycles are different quantities.
+
+## Publication authorization
+
+Do not open a pull request in any repository without explicit user approval.
+An instruction to upstream or push code does not authorize creating a PR.
+Preserve reviewed changes on the user-authorized branch and follow the requested
+direct-main integration workflow for Merlin and model2MLIR.

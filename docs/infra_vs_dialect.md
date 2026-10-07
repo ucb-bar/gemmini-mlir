@@ -1,5 +1,45 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 04:26 UTC: quantization quality and typed observation boundaries
+
+The original Smol TorchAO recipe reproduces 1,600 golden words exactly. All303
+registered Linear weights store i8; 302 captured calls are integerized, while
+attention remains floating. Prequantization quality was not separately measured
+before. The recipe's 2.9199% relative L2 loss and 181/1,600 tensor failures are
+separate from compiler fidelity against that quantized golden. Generic capture
+baselines and quality reports belong in model2MLIR; task budgets and whole
+fidelity admission belong in Merlin evaluation. Source arithmetic, QDQ axes,
+dtypes and escapes remain explicit. No TorchAO application bug or robot task
+quality result is asserted.
+[Audit](smol_quantization_audit.md).
+
+Shared typed observation-region analysis belongs in Merlin. Actual Smol
+attention i8 values and scales are internal through output projection on all12
+source closures. Proving all uses establishes a legal boundary; a numerical
+replacement requires a separate theorem. Projection error intervals and
+immutable constant integer product/prefix bounds also belong in Merlin.
+Physical GQA grouping, integer planes, accumulator capacity, tiles, ABI and
+device instructions remain OOT. These topics are in progress; a numerical
+projection theorem and default approximation remain unqualified.
+
+Phase0 preserves separate prequantization quality, quantized Torch and compiled
+source oracles, including nonfinite values, dtype/opmath and ordered reductions.
+Phase1 exposes source i32→BF16/F32 rounding, activation/channel scale axes, source
+use/effect closure, exact weight bindings and overwrite epochs through views.
+Phase2 permits changes to closed observation regions, representation, preparation
+ownership and GQA schedules, pricing complete encoding, readback, replay and
+refinement work. Local floating tolerance does not prove escaping integer bins.
+
+Exact encoder/witness composition uses generic Merlin frontier math and OOT
+target integration, improving Smol group2069→2072 by2.702942%; whole cycles are
+unchanged. Stock2073 prices current masked host attention at4.974002% fewer
+complete block cycles; it does not qualify a new accelerator offload or whole
+gain. Model2MLIR mask PR5 at7cc1b4b passes69 source/69 installed checks with59
+modules exact on actual mainbd50. No model selector or causal attribution to
+current workload failure is introduced. Conservative family counts remain61
+pending explicit deduplication; import repairs and review-driver refusals are
+not additional compiler bug families.
+
 ## 2026-10-07 03:12 UTC: structural algorithms and consumed proofs
 
 Generic completed-plane integer reconstruction is now a clean main-based

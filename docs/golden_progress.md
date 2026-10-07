@@ -11,7 +11,11 @@ source-proven nonnegative operand ranges. Tiny2070 improves to
 **394,765,577 cycles** through source-exact continuation, generic typed
 masked-output contraction scheduling and direct certified integer publication.
 All original outputs and numeric gates pass. Smol whole1906 remains
-**258,621,872,969 cycles**; group2069's **4,027,126,711** is a section result.
+**258,621,872,969 cycles**; group2072's **3,918,275,805** is a section result,
+2.703% below group2069 through exact encoder/witness composition with unchanged
+source coefficients and the existing experimental RMS4 policy. No new whole
+Smol result or default numerical policy is claimed.
+[Group terminal](perf_records/root_smol_fused_encoder_stock2072_terminal_review_20261007.json).
 The source-bound quantizer model predicts the held current4/8 pair within3.73%
 and ranks it correctly. The new entirely held5/7-lane cross-executable test2059
 predicts within6.13% and ranks all three new pairs correctly without refitting.
@@ -145,6 +149,34 @@ These tensor tolerances and stricter local bit-exact transformation checks are
 not measured classification accuracy, perplexity or robot task success. Audit
 observer axes/scales, saturation, rounding and source reductions before changing
 quality policy. Record approximation and lowering errors separately.
+
+The actual TorchAO recipe now reproduces all1600 retained Smol golden words
+exactly. All303 registered Linear modules store i8 weights;302 captured calls
+are integerized, while attention remains floating. The newly measured mixed
+BF16/F32 checkpoint→TorchAO loss is2.9199%relativeL2/maxabs0.1773094, with181/1600
+values beyond the existing tensor tolerance. That comparison is separate from
+compiler fidelity against the quantized golden and does not establish robot
+task quality. No gate is changed. [Quantization audit](smol_quantization_audit.md).
+
+Root attention diagnosis closes760Tiny stage pins and234+80Smol boundary pins.
+Tiny PV-only endpoints all pass the floating tolerance but change75595actual
+consumeri8s;7936changes occur in source-onehot first queries. Smol unchanged
+operands with wide64 reductions independently change81escapingi8s across35/48
+original states, firstsection4at56→57, withzeroescaping scalechanges. Reduction
+order and escaping quantization bins must be included in numerical contracts.
+Stock2073 prices the complete current scalar Tiny attention block:1787454→1698546
+mean cycles across fourABBA windows,4.974002% lower, original16384i8/modes/guards
+passing. This measures one context; Tiny whole2070 remains394765577cycles.
+[Tiny stages](perf_records/root_tiny_attention_consumer_stage_review_20261007.json),
+[Smol boundaries](perf_records/root_smol_attention_boundary_review_20261007.json),
+[complete attention stock](perf_records/root_tiny_complete_attention_stock2073_terminal_review_20261007.json).
+
+Model2MLIR SDPA mask PR5 is independently reviewed at7cc1b4b onactualmainbd50:
+69source/69installed tests and59source/wheel/installed modules match; actual
+remote head/main/body close. The topic fixes all-negative-infinity SDPA rows,
+mask dtype/broadcast admission and opmath casts, retaining genuineNaN/+inf and
+ordinarysoftmax semantics. No causal attribution to currentmodel errors is made.
+[Publication](perf_records/root_model2mlir_sdpa_PR5_dtype_publication_review_20261007.json).
 
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and

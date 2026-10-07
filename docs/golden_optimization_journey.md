@@ -9,6 +9,89 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07 04:26 UTC: TorchAO reproduction and attention observations
+
+Root reapplies the retained Smol loader and recorded TorchAO 0.17 recipe,
+reproducing all 1,600 quantized golden f32 words exactly. All 303 registered
+Linear modules store i8 weights; 302 captured calls are integerized. Attention
+still has 12 SDPA and 64 matmul floating calls, becoming 88 prepared bmm calls.
+The separate prequantization baseline was missing. Comparing the mixed BF16/F32
+checkpoint with the recorded recipe gives 2.919884% relative L2 error, maximum
+absolute error 0.1773094, RMS error 0.0347941, and 181/1,600 failures at the existing
+tensor tolerance. Historical full dependency closure and task quality remain
+UNKNOWN. An import-only logger repair in the owned Diffusers overlay recovers
+the original wheel RECORD after removing exactly 40 added bytes. Root rehashes
+27 source/audit pins and independently derives the metrics. A generic opt-in
+capture quality report is being implemented; the acceptance gate is unchanged.
+[Audit](smol_quantization_audit.md).
+
+Four frozen native arms are compared to both retained oracles. The ordered
+control exactly reproduces the quantized golden; single7, two-digit and wide64
+still fail the original gate on 131, 106 and 144 values. The latter two are
+closer to the prequantization checkpoint on this fixture: 2.6813% and 2.5110%
+relative L2 error versus 2.9199% for the recorded baseline. That does not prove
+robot quality or qualify either policy. Errors are nonadditive; the original
+rejections remain valid.
+[Separate oracles](perf_records/root_smol_quantization_error_oracles_20261007.json).
+
+Root closes 760 Tiny stage pins and 234+80 Smol pins. Original ordered Tiny QK/PV
+and the actual scalar-factor RNE consumer are independently replayed. PV-only
+floating endpoints have zero failures among 360,448 values, yet change 75,595
+consumer i8 values. First queries alone change 7,936 i8 values despite original
+one-hot probabilities. Smol's compiled 54-operation consumer reproduces original
+and first-escape bytes. Wide64 with unchanged operands changes 2,258 BF16
+carriers and 81 escaping i8 values across 48 original states, with zero scale
+changes. Thirty-five groups escape; the first is group 4, row 135, channel 689:
+56→57. Root aggregates all retained states without recomputing every later
+candidate array. These 81 changes do not attribute all 144 sequential whole
+failures. Source axes and views are checked separately.
+[Tiny stages](perf_records/root_tiny_attention_consumer_stage_review_20261007.json),
+[Smol boundaries](perf_records/root_smol_attention_boundary_review_20261007.json).
+
+Exact encoder/witness composition removes duplicate widening and equality work.
+Stock2072 takes 3,918,275,805 cycles, 108,850,906 cycles or 2.702942% below2069.
+Original 786,432 i8 values, 1,024 scales, statistics, carriers and guards pass;
+actual staged ELF/bitstream and zero FSM checks close. The frozen count-ratio
+screen errs 1.303985%; it remains diagnostic, unqualified and unrefitted. This
+complete group uses the unchanged experimental RMS4 policy. Whole1906 remains
+258,621,872,969 cycles.
+[Terminal](perf_records/root_smol_fused_encoder_stock2072_terminal_review_20261007.json).
+
+Stock2073 completes four ABBA windows of the allocation-aware Tiny attention
+block. Control/current means are 1,787,454/1,698,546 cycles, 4.974002% lower;
+retired instructions are 1,217,139/1,130,201. All 16,384 original i8 values, modes,
+sticky flags, guards and common addresses pass. The capsule contains no Gemmini
+custom instructions: it prices current host attention on the stock system.
+No extrapolation to all 22 contexts is qualified. Tiny whole2070 remains
+394,765,577 cycles. Root closes ten terminal and six release pins. An initial
+review-driver filepath argument to the byte-oriented ELF audit refused before
+receipt creation; the corrected argument passes without changing the candidate.
+[Attention stock](perf_records/root_tiny_complete_attention_stock2073_terminal_review_20261007.json).
+
+Model2MLIR mask PR5 at 7cc1b4b is reviewed against actual main bd50, unchanged at
+observation. Root closes 319 pins, 59 source/wheel/installed modules, 69 source
+and 69 installed checks, and actual remote head/body/base. All-negative-infinity
+SDPA rows return zero, genuine NaN/+inf are retained, and mask dtype/opmath
+admission matches source behavior. Ordinary softmax is unchanged. These generic
+fixes are not attributed to current Smol/Tiny failures. Typed observation-boundary
+and constant-projection range topics remain under qualification.
+[Publication](perf_records/root_model2mlir_sdpa_PR5_dtype_publication_review_20261007.json).
+
+Automatic loop requirements: phase0 separates prequantization quality, quantized
+Torch fidelity and compiled source fidelity, including escaping integer bins.
+Phase1 exposes QDQ axes, dtypes, rounding, scale ownership and buffer overwrite
+epochs through views. Phase2 permits proved larger observation regions, source
+integer representations and GQA grouping with complete preparation, readback and
+replay costs. Fixture ranges and golden-selected precision do not grant legality.
+
+Owned token ledger at 04:28:35 UTC covers eight explicit threads: 74,079,216
+uncached input, 3,479,515,136 cache-read and 14,668,848 output tokens; 5,860,061
+reasoning tokens are already included in output. Raw total is 3,568,263,200.
+The completed-request window since03:38:57 adds 1,795,940 uncached input,
+83,646,208 cache-read and 325,199 output tokens, raw total85,767,347. The separate
+goal tracker observes85,107,433. Exclusive OOT/model/topic allocation and billing
+remain UNKNOWN. [Ledger](perf_records/golden_token_usage_20261007T042835Z.json).
+
 ### 2026-10-07: source-domain hardware transfer, publication and attention priority
 
 Stock2071 is independently closed at29698347cycles,193618/0.647726% below2068.
