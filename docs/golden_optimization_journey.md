@@ -1,5 +1,79 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: shared main qualification, complete costs and stock regression
+
+The journal retains reusable compiler changes, manual recipe selections,
+independent shapes, original numeric gates, installed delivery, complete
+measurement scopes and rejected candidates. The [shared compiler status](compiler_recipe_status.md)
+records the remaining gap between a common compiler stack and one freshly
+qualified automatic pipeline for all three. Workload/provenance names cannot
+select production transformations. Earlier timestamped sections below retain
+their original historical statuses.
+
+Local Merlin main `3f6a8db27` integrates exact multi-output product families,
+duplicate finite-point observation elimination and exact BF16 integer observers.
+All 1,227 source plus 1,227 outside-installed checks pass; 1,020 Python and 61
+runtime files match all delivery forms. Four production module ASTs match the
+qualified prototypes, and 12 default emission cases remain byte-identical.
+Root independently closes 2,881 pins. Numerical/effect/storage contracts remain
+explicit and options default-off. No whole FPGA gain is assigned to this
+integration and publication remains blocked by GitHub DNS.
+[Qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json).
+
+| Candidate / mechanism | Complete measured result | Promotion limit |
+| --- | --- | --- |
+| ResNet complete-A lifetime separated from output blocking | Source 299,635→263,691 GSIM cycles (−11.9959%); independent shape 36,937→36,805 (−0.3574%) | Explicit resource option; fresh all-52-kernel installed-core whole build passes original 1,000 words, with whole FPGA cost unknown |
+| ResNet remaining-row weight slots | Source 893,925→849,611 GSIM cycles (−4.9572%); independent shape 18,500→18,992 (+2.6595%) | Legal placement alone does not prove profitability; no default or whole timing promotion |
+| Tiny retained-N CPU command batches of 16 | Native 278,383→239,185 retired instructions (−14.081%) with the same 101,861 primitive commands | Complete GSIM successor pending; full-model timing unknown |
+| Tiny output-stationary resident weights | Complete section 16,045→20,646.5 GSIM cycles (+28.6787%) | Rejected; no blanket dataflow switch |
+| Smol exact BF16 integer observer | Complete 12-head group 1,515,040,109→1,490,248,996 functional retirements (−1.6363%) | Original outputs/effects pass; no FPGA gain claim |
+| Smol finite-point + integer-observer composition | Complete group 1,468,831,808 functional retirements (−3.04997% overall, −0.23789% beyond point alone) | Gains overlap; never add the separate percentages |
+| Smol three Cauchy norm variants | Complete group regressions +2.8531%, +1.4056%, +0.9059% | Rejected despite improved refinement statistics |
+
+All source and independent shape outputs, immutable inputs, guards, descriptors
+and applicable FCSR checks remain part of these receipts. CPU loops emit only
+primitive Gemmini instructions; final ELF FSM/LOOP audits remain mandatory.
+[ResNet lifetime/blocking](perf_records/resnet_resident_a_output_blocks_complete_20261007_qualification.json),
+[fresh whole source gate](perf_records/resnet_resident_a_output_blocks_current_installed_whole_20261007_qualification.json),
+[remaining-row positive and negative](perf_records/resnet_resident_remaining_weight_slots_complete_20261007_qualification.json),
+[Tiny actual CPU costs](perf_records/tiny_retained_n_normal_native_model_20261007.json),
+[Tiny dataflow rejection](perf_records/tiny_os_resident_b_complete_negative_20261007.json),
+[Smol composition](perf_records/smol_bf16_integer_point_composition_group_20261007.json),
+[Smol observer and rejected variants](perf_records/smol_source_observer_norm_journey_20261007.md).
+
+Whole stock Smol2113 finishes at **324,229,555,204 model cycles**, **25.3682%
+slower** than historical best1906, with all 1,600 original f32 words bitwise
+exact. Its simulator total is 324,535,367,732 and its queue duration 11,516.48
+seconds; neither replaces the model timer. The f90 executable, actual staged
+driver/bitstream/bundle and original UART are pinned. This is no new winner and
+does not measure the b154 exact-math candidate. Different whole recipe/object
+versions prevent isolated-transform attribution. Current champions remain
+ResNet28,649,233, Tiny378,946,263 and Smol258,621,872,969. The queue is now idle,
+but this execution UID lacks the FireSim group and cannot submit successors.
+[Stock qualification](perf_records/root_smol_endpoint_stock2113_whole_20261007_qualification.json),
+[UART](perf_records/root_smol_endpoint_stock2113_whole_20261007_uart.txt).
+
+Actual b154 ELF-bound PC census conserves 117,636,499,028 executable retirements:
+37.537B provider, 17.939B evaluation, 9.892B certification and 9.653B encoding.
+The encoder has no floating division and is dominated by integer work/branches;
+optimizing guessed FP division would miss this executable. All 48 source calls
+and 36 frontiers have closed quantized consumers, but the actual 72 BF16 helper
+extents cost only 1.258B retirements (1.06964%); removing their recomputation alone
+cannot account for the remaining 5B whole target. Shared callees remain exclusive,
+and CPU counts establish neither FPGA latency nor host/accelerator percentages.
+[Actual function costs](perf_records/root_smol_exact_math_whole_function_costs_20261007.json),
+[consumer closure](perf_records/root_smol_quantized_consumer_inventory_20261007.json),
+[actual exclusive consumer price](perf_records/root_smol_bf16_consumer_pc_price_20261007.json).
+
+Phase 0 must expose complete source observations and explicit effects. Phase 1
+needs shared multi-output products, exact observer composition and host-loop
+retention/batching interfaces. Phase 2 must price whole producer-to-consumer
+work, executed CPU issue/address/stack traffic, and bank arbitration. Lower
+callback counts, stack bytes or replay counts can each regress complete cost.
+Resource legality and profitability must stay separate. The aggregate campaign
+meter at 19:40:57 UTC is 107,256,545 tokens; exact OOT-only/per-topic allocation
+and billing remain unavailable, so this aggregate is not Gemmini-only spending.
+
 ## 2026-10-07: normal borrowed lanes integrate and issue-loop regression stays visible
 
 Local Merlin main cdf117e3d adds the explicitly contracted borrowed memref

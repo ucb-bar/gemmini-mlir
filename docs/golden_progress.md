@@ -1,5 +1,39 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 19:40 UTC: whole Smol trial completes; shared source topics qualify
+
+| Model | Best whole stock cycles | Latest boundary |
+| --- | ---: | --- |
+| ResNet50 | 28,649,233 (2109) | Two fresh installed-cdf117e3 full original 0/0 successors pass; one freshly builds all 52 target kernels. New whole stock timing is unavailable |
+| TinyLlama | 378,946,263 (2085) | Observer section gains and CPU batching have independent gates; complete GSIM and fresh installed full-model qualification remain in progress |
+| SmolVLA | 258,621,872,969 (1906) | Whole stock2113 completes at 324,229,555,204, a 25.3682% regression, with all 1,600 original words exact. Exact-math b154 has full functional accuracy but no stock timing |
+
+Stock2113's model timer, raw output digest, zero-FSM executable and actual
+staged stock hardware artifacts close independently. Original UART and the
+historical champion stay immutable. The queue is idle after completion; new
+submission refuses this UID's missing FireSim group, and GitHub DNS prevents
+publication. No successor is claimed queued or published.
+[Whole stock receipt](perf_records/root_smol_endpoint_stock2113_whole_20261007_qualification.json).
+
+Local Merlin main `3f6a8db27` integrates the three generic exact source-observation
+topics, with 1,227 source and 1,227 independent installed checks, 1,020 Python
+plus 61 runtime files identical across release forms, and 12 default emission
+cases byte-identical to the prior core. All options remain explicit/default-off;
+no numerical gate is relaxed. This is supported shared infrastructure, with
+automatic profitable whole-model selection still unqualified.
+[Installed source qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json),
+[shared compiler promotion status](compiler_recipe_status.md).
+
+New complete ResNet sections show 11.9959% from separating input residency and
+output blocking, and 4.9572% from legal remaining-row weight placement. The
+latter's independent shape regresses 2.6595%, so it is not a blanket policy.
+Fresh all-52-kernel whole ResNet original output passes with no inherited FPGA
+timing. Tiny output-stationary weights regress 28.6787%; smaller stack and fewer
+callbacks alone are insufficient cost models. Smol observer composition saves
+3.04997% complete group retirements, with overlapping gains and no whole cycle
+claim. The [journey](golden_optimization_journey.md) retains all scopes and
+negative evidence alongside these candidates.
+
 ## 2026-10-07: existing exact-math selection passes whole Smol target gate
 
 Normal ELF b15444e0 completes in 4,065.92 seconds with all 1,600 original f32

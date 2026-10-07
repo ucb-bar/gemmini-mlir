@@ -1,5 +1,48 @@
 # Infrastructure fixes and performance changes
 
+## 2026-10-07 19:40 UTC: exact source observations and reusable scheduling costs
+
+Newest qualified local Merlin main is `3f6a8db27`, not a newly published remote
+head. It integrates generic exact multi-output product contracts, finite-point
+observation composition and exact BF16 integer observation decoding. Numerical
+and effect proofs, immutable operands, disjoint output planes, source ownership
+and host emitters belong in Merlin. All 1,227 source and 1,227 outside-installed
+checks pass; default numerical and selection policy remains unchanged. GitHub
+fetch fails DNS, so publication and current remote ancestry remain unverified.
+[Installed qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json).
+
+OOT owns actual multi-plane instruction schedules, accumulator stripes, physical
+output stride adapters, residency rows/banks, prefetch placement, command batch
+implementation, resource refusals and simulator execution. New ResNet complete-A
+lifetime/output-block separation has independently qualified complete GSIM and
+a fresh installed-core whole original-output gate. Remaining-row weight slots
+also preserve exact command/data ownership, but an independent shape regresses;
+legal placement does not establish general profitability. These explicit options
+are not workload-name dispatch or default promotion.
+[Fresh whole target gate](perf_records/resnet_resident_a_output_blocks_current_installed_whole_20261007_qualification.json),
+[placement cost and refusals](perf_records/resnet_resident_remaining_weight_slots_complete_20261007_qualification.json).
+
+Merlin/CCA needs a portable way to express host-loop retention and command
+batching, plus object/ELF-bound actual CPU dispatch, branch/address and stack
+traffic. Existing dispatch counts and loop-offload flags cannot distinguish
+Tiny schedules with identical primitive commands but different CPU costs.
+Target implementations and resource checks stay in OOT. A smaller-stack variant
+can still regress, so these observations must enter a complete cost model with
+transfer, accelerator service and waits before automatic promotion.
+[Actual Tiny costs](perf_records/tiny_retained_n_normal_native_model_20261007.json).
+
+The current b154 Smol encoder contains no FP division; actual encoding cost is
+mostly integer/branch work. Complete source-provider/evaluation/certification
+costs dominate possible 1.06964% consumer recomputation savings. Reusable source
+representation/preparation and observation-region passes belong in Merlin;
+device scheduling alone does not eliminate their required arithmetic. The full
+stock trial2113 regresses despite exact output, retaining the original numeric
+gate and best historical result. Original gates and complete hardware timing
+remain necessary before making a default compiler decision.
+[Actual Smol census](perf_records/root_smol_exact_math_whole_function_costs_20261007.json),
+[consumer cost](perf_records/root_smol_bf16_consumer_pc_price_20261007.json),
+[whole stock regression](perf_records/root_smol_endpoint_stock2113_whole_20261007_qualification.json).
+
 ## 2026-10-07: invocation-local preparation and explicit layout selection
 
 Local Merlin main `edf0e0ca4` adds a generic fully prepared model callback:

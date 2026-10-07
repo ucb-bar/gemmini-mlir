@@ -32,9 +32,9 @@ within that one compiler.
 
 | Workload | Best verified whole stock cycles | Current qualification boundary |
 | --- | ---: | --- |
-| ResNet50 | 28,649,233 (2109) | Best source recipe pins Merlin eb15a85; fresh shared-interface successor now passes the full original 0/0 target gate, with hardware cost pending |
-| TinyLlama | 378,946,263 (2085) | Generic observer topic is reproduced, with eleven other object leaves retained; a fresh full current-head compiler build remains required |
-| SmolVLA | 258,621,872,969 (1906) | Both f90 and a fresh normal build selecting existing exact-math legalization pass all 1,600 original words in functional target execution; stock2113 measures f90 and remains pending |
+| ResNet50 | 28,649,233 (2109) | Fresh installed cdf117e3 host builds pass all 1,000 original words; a successor also freshly generates all 52 target kernels and passes the whole 0/0 gate. Neither successor has whole stock timing |
+| TinyLlama | 378,946,263 (2085) | Observer and command-batching section candidates have independent gates. A fresh installed cdf117e3 whole build with all target leaves is in progress; current-head automatic qualification remains open |
+| SmolVLA | 258,621,872,969 (1906) | Stock2113 completes at 324,229,555,204 cycles, a 25.3682% regression, with all 1,600 original words exact. Fresh exact-math b154 passes the full functional gate but has no stock timing |
 
 ResNet's original experiment replaced global compiler functions. The explicit
 layout parameter and invocation-local prepared-model callback now reproduce
@@ -68,7 +68,7 @@ host/accelerator percentage. Section savings cannot be added to manufacture a
 whole-model result. Experiment selection is recorded separately from default
 compiler routing and automatic promotion.
 
-The campaign meter at 2026-10-07 17:37:19 UTC is **104,048,865 aggregate tokens**.
+The campaign meter at 2026-10-07 19:40:57 UTC is **107,256,545 aggregate tokens**.
 Per-topic/OOT-only token allocation and billing are unavailable. This aggregate
 must not be attributed to Gemmini dialect work alone.
 
@@ -94,6 +94,56 @@ checks and complete package byte closure. This extends the supported common
 feature system; it does not automatically choose the experimental best recipe.
 [Qualification](perf_records/merlin_borrowed_pointwise_current_main_20261007_qualification.json).
 
-New FireSim submissions currently refuse because execution UID2621 lacks the
-`firesim` group. Existing job2113 continues independently. Prepared packet
-admission and hardware execution status are recorded separately.
+Stock2113 completed at 19:17:56 UTC; the queue is now idle. New FireSim
+submissions still refuse because execution UID2621 lacks the `firesim` group.
+The attempted ResNet submission created no job. GitHub fetch also fails DNS,
+so new local topics are not claimed published. Prepared packet admission, actual
+hardware execution and publication status are recorded separately.
+
+
+## 2026-10-07: shared source-observation topics and remaining promotion work
+
+Local Merlin main `3f6a8db27` now integrates three clean topics on cdf117e3:
+an exact multi-output integer-product family, elimination of duplicate finite
+point observations and exact BF16-to-integer observation decoding. Each has
+explicit numerical, effect and storage contracts, independent shapes and
+refusal cases. All three remain default-off; they choose no workload names.
+The four production module ASTs match the independently measured prototypes.
+All 1,227 source and 1,227 outside-installed checks pass; 1,020 Python and 61
+runtime files match source, wheel, source archive and installation. Twelve
+default emission cases remain byte-identical to the prior core. Root recloses
+2,881 qualification pins. These installed mechanisms do not establish a fresh
+whole-model performance result or automatic profitable selection.
+[Compiler qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json),
+[default and source closure](perf_records/merlin_source_observation_topics_source_reclosure_20261007.json).
+
+The new full ResNet successors use the previous installed cdf117e3, not the
+new 3f6a8db27 package. One verifies the shared eight-lane host recipe; the other
+freshly generates all 52 target kernels, including 11 explicitly selected dense
+output-block changes. Original 1,000-word 0/0 and final zero-FSM gates pass.
+Their receipts close 859 and 4,847 pins respectively. Input capture/source
+bindings remain pinned earlier inputs; this is not a fresh current model2MLIR
+capture. Neither inherits stock2109's timing.
+[Shared host successor](perf_records/root_resnet_current_eight_lane_installed_whole_20261007_qualification.json),
+[fresh target successor](perf_records/resnet_resident_a_output_blocks_current_installed_whole_20261007_qualification.json).
+
+Stock2113's timer is 324,229,555,204 model cycles, rather than the simulator's
+324,535,367,732 total including other work. Its all-1,600-word original digest
+is exact and its queue duration is 11,516.48 seconds. The best historical
+258,621,872,969 result stays the champion; differing whole recipes prevent
+single-transform attribution. The exact-math b154 candidate was not measured
+on this FPGA run. Physical peak-capacity proof remains unknown even though the
+tested run completed correctly.
+[Whole stock receipt](perf_records/root_smol_endpoint_stock2113_whole_20261007_qualification.json),
+[original UART](perf_records/root_smol_endpoint_stock2113_whole_20261007_uart.txt).
+
+For phase 1/2, existing dispatch counts and loop-offload flags miss CPU command
+batching, address work and spills: Tiny variants emit the same 101,861 primitive
+commands but execute different CPU instruction and stack counts. Expose portable
+host-loop retention/batching choices and ELF-bound executed opcode/stack metrics;
+retain target resource checks and actual command generation in OOT. A spill-only
+model is insufficient because one smaller-stack variant regresses. Smol's
+complete cost likewise limits family and observer gains; improving callback or
+refinement counts is not a whole cost theorem.
+[Tiny actual native cost model](perf_records/tiny_retained_n_normal_native_model_20261007.json),
+[Smol complete source observations](perf_records/smol_source_observer_norm_journey_20261007.md).
