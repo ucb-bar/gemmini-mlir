@@ -46,7 +46,13 @@ def main():
     )
     telemetry = json.loads(paths["telemetry"].read_text())
     hist = parse_pc_histogram(paths["histogram"].read_text())
-    symbols = [recipe["route"]["kernel"], "gemmini_golden_rectified_resadd"]
+    rectifier_control = bool(recipe.get("immutable_rectifier_control_recipe"))
+    symbols = [
+        "immutable_rectifier_control_kernel"
+        if rectifier_control
+        else recipe["route"]["kernel"],
+        "gemmini_golden_rectified_resadd",
+    ]
     readelf = "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-readelf"
     ranges = _symbol_ranges(paths["elf"], symbols, readelf)
     fields = (
@@ -124,7 +130,12 @@ def main():
             }
         )
     m, n = recipe["plan"]["m"], recipe["plan"]["n"]
-    assert rows[0]["features"]["array_padded_compute_rows"] == m * n * 39 // 16
+    control_passes = (
+        recipe["plan"]["compute_passes_per_tile"] if rectifier_control else 39
+    )
+    assert (
+        rows[0]["features"]["array_padded_compute_rows"] == m * n * control_passes // 16
+    )
     assert (
         rows[1]["features"]["array_padded_compute_rows"]
         == m * n * recipe["plan"]["compute_passes_per_tile"] // 16

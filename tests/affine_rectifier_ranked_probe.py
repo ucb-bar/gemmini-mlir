@@ -22,6 +22,7 @@ from merlin.perf.layer_bench import build_program, run_on_gsim
 from mlir_oot.golden_device_compile import compile_module
 from mlir_oot.golden_rectified_resadd import Capabilities, Plan, build
 from mlir_oot.no_fsm_audit import audit_elf
+from mlir_oot.spad_fence_coalescing import OrderingContract
 
 
 def command(argv):
@@ -40,6 +41,8 @@ def main():
     cli.add_argument("--workdir", type=Path, required=True)
     cli.add_argument("--timeout", type=int, default=1800)
     cli.add_argument("--build-only", action="store_true")
+    cli.add_argument("--ordering-source", type=Path)
+    cli.add_argument("--rectifier-control-recipe", type=Path)
     args = cli.parse_args()
     work = args.workdir.resolve()
     work.mkdir(parents=True, exist_ok=False)
@@ -66,6 +69,25 @@ def main():
     m, n = route["m"], route["n"]
     plan = Plan(m, n, certificate, Capabilities(*([True] * 6)))
     count = m * n
+    rectifier_control = None
+    control_public = "_mlir_ciface_" + route["symbol"]
+    if args.rectifier_control_recipe:
+        rectifier_control = json.loads(args.rectifier_control_recipe.read_text())
+        if rectifier_control["certificate"] != certificate:
+            raise ValueError("immutable rectifier control source certificate differs")
+        original_kernel = args.rectifier_control_recipe.parent / "candidate/kernel.o"
+        original_adapter = args.rectifier_control_recipe.parent / "candidate_adapter.o"
+        original_source = args.rectifier_control_recipe.parent / "candidate_adapter.c"
+        generated_pins = {
+            row["path"]: row["sha256"] for row in rectifier_control["generated"]
+        }
+        for path in (original_adapter, original_source):
+            assert pin(path)["sha256"] == generated_pins[str(path.resolve())]
+        assert (
+            pin(original_kernel)["sha256"]
+            == rectifier_control["candidate_compilation"]["object_sha256"]
+        )
+        control_public = "rectified_residual"
     capture = json.loads(args.capture_receipt.read_text())
     assert capture["all1000_original_f32_bits_exact"] and capture["elements"] == count
     a_path, b_path = args.inputs / "a.bin", args.inputs / "b.bin"
@@ -76,7 +98,17 @@ def main():
     expected = source_table(**pair["source"])[
         a.astype(np.int16) + 128, b.astype(np.int16) + 128
     ]
-    compilation = compile_module(build(plan), args.llvm_bin, work / "candidate")
+    compilation = compile_module(
+        build(
+            plan,
+            coalesce_internal_spad=bool(args.ordering_source),
+            ordering_contract=OrderingContract(str(args.ordering_source))
+            if args.ordering_source
+            else None,
+        ),
+        args.llvm_bin,
+        work / "candidate",
+    )
     compiler = [
         str(args.llvm_bin / "clang"),
         "--target=riscv64-unknown-elf",
@@ -108,12 +140,37 @@ void rectified_residual(mem2*r,mem2*a,mem2*b,mem2*c){{
         str(tools / "riscv64-unknown-elf-readelf"),
     )
     rebound = work / "control_adapter_rebound.o"
+    control_kernel = original_kernel
+    if rectifier_control:
+        control_kernel = work / "control_kernel_rebound.o"
+        command(
+            [
+                objcopy,
+                "--redefine-sym",
+                "gemmini_golden_rectified_resadd=immutable_rectifier_control_kernel",
+                str(original_kernel),
+                str(control_kernel),
+            ]
+        )
+        control_adapter_kernel = work / "control_adapter_kernel_rebound.o"
+        command(
+            [
+                objcopy,
+                "--redefine-sym",
+                "gemmini_golden_rectified_resadd=immutable_rectifier_control_kernel",
+                str(original_adapter),
+                str(control_adapter_kernel),
+            ]
+        )
+        adapter_for_rebind = control_adapter_kernel
+    else:
+        adapter_for_rebind = original_adapter
     command(
         [
             objcopy,
             "--redefine-sym",
-            "_mlir_ciface_" + route["symbol"] + "=exact_residual",
-            str(original_adapter),
+            control_public + "=exact_residual",
+            str(adapter_for_rebind),
             str(rebound),
         ]
     )
@@ -194,7 +251,7 @@ int main(void){
             probe,
             fixture,
             rebound,
-            original_kernel,
+            control_kernel,
             candidate_object,
             work / "candidate/kernel.o",
         ],
@@ -226,12 +283,22 @@ int main(void){
         "certificate": certificate,
         "plan": plan.attributes(),
         "candidate_compilation": compilation,
+        "immutable_rectifier_control_recipe": pin(args.rectifier_control_recipe)
+        if rectifier_control
+        else None,
+        "internal_spad_fence_policy": bool(args.ordering_source),
         "source_capture": capture,
         "adapter_text_identity": text_pins,
         "selector_offset": offset,
         "ELFs_differ_one_byte": True,
         "audits": audits,
-        "scope": "Complete actual ranked ABI/descriptor checks, current39 or rectifier14 producer, all config/seed/DMA/store/reload/compute/fence and result descriptor. Common addresses and identical warmups; poisoning/exact outputs/input immutability/guards/flags outsideROI. No CPU correction.",
+        "scope": "Complete actual ranked ABI/descriptor checks, "
+        + (
+            "immutable rectifier14 or same-tile coalesced rectifier14"
+            if rectifier_control
+            else "current39 or rectifier14"
+        )
+        + " producer, all config/seed/DMA/store/reload/compute/fence and result descriptor. Common addresses and identical warmups; poisoning/exact outputs/input immutability/guards/flags outsideROI. No CPU correction.",
         "whole_model_route_enabled": False,
         "whole_cycles": "UNKNOWN",
         "physical_DRAM": "UNKNOWN",

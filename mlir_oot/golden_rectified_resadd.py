@@ -191,9 +191,13 @@ class Plan:
         }
 
 
-def build(plan: Plan):
+def build(plan: Plan, *, coalesce_internal_spad: bool = False, ordering_contract=None):
     # Revalidate mutable nested certificate contents at the emission boundary.
     plan.__post_init__()
+    if type(coalesce_internal_spad) is not bool:
+        raise ValueError("SPAD fence policy must be an explicit boolean")
+    if coalesce_internal_spad and ordering_contract is None:
+        raise ValueError("SPAD fence coalescing requires a pinned ordering contract")
     e = GoldenGemm(Shape(plan.m, plan.n, F.DIM, bn=4))
     e.fb = FnBuilder([PTR] * 4)
     a, b, c, tables = e.fb.entry.args
@@ -329,7 +333,10 @@ def build(plan: Plan):
                         place["temporary"][0],
                         real_d=seed_base + index * cols,
                     )
-                    e._rocc("fence", {})
+                    e._rocc(
+                        "fence",
+                        {"internal_spad_stage": 1} if coalesce_internal_spad else {},
+                    )
                     current = place["indicator" + str(index % 2)][0]
                     product(
                         place["temporary"][0],
@@ -337,7 +344,10 @@ def build(plan: Plan):
                         current,
                         real_d=seed_base + 4 * cols if previous is None else previous,
                     )
-                    e._rocc("fence", {})
+                    e._rocc(
+                        "fence",
+                        {"internal_spad_stage": 1} if coalesce_internal_spad else {},
+                    )
                     previous = current
                 e._rocc(
                     "config_ex",
@@ -382,4 +392,11 @@ def build(plan: Plan):
         json.dumps(plan.attributes(), sort_keys=True)
     )
     result.verify()
+    if coalesce_internal_spad:
+        from .spad_fence_coalescing import coalesce
+
+        proof = coalesce(result, ordering_contract, plan.spad_intervals)
+        result.attributes["gemmini.spad_fence_coalescing"] = StringAttr(
+            json.dumps(proof, sort_keys=True)
+        )
     return result

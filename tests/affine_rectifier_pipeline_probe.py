@@ -17,6 +17,7 @@ from mlir_oot.golden_rectified_resadd import Capabilities, Plan, build
 from mlir_oot.golden_wide_resadd import build as control_build
 from mlir_oot.golden_wide_resadd import tables as control_tables
 from mlir_oot.no_fsm_audit import audit_elf
+from mlir_oot.spad_fence_coalescing import OrderingContract
 
 
 def generate(args):
@@ -24,6 +25,8 @@ def generate(args):
     work.mkdir(parents=True, exist_ok=False)
     if args.source_certificate:
         bound = json.loads(args.source_certificate.read_text())
+        if "source_certificate" in bound:
+            bound = bound["source_certificate"]
         source = bound["source"]
         predictor = bound["predictor"]
     else:
@@ -64,7 +67,17 @@ def generate(args):
         raise ValueError(
             "matched legacy control currently has fixed64-column ABI; independentN uses standalone build tests"
         )
-    candidate = compile_module(build(plan), args.llvm_bin, work / "candidate")
+    candidate = compile_module(
+        build(
+            plan,
+            coalesce_internal_spad=bool(args.ordering_source),
+            ordering_contract=OrderingContract(str(args.ordering_source))
+            if args.ordering_source
+            else None,
+        ),
+        args.llvm_bin,
+        work / "candidate",
+    )
     control = compile_module(
         control_build(
             args.m,
@@ -192,6 +205,7 @@ if __name__ == "__main__":
     p.add_argument("--n", type=int, default=64)
     p.add_argument("--source-certificate", type=Path)
     p.add_argument("--inputs", type=Path)
+    p.add_argument("--ordering-source", type=Path)
     p.add_argument("--control-p", type=int, default=2609)
     p.add_argument("--control-q", type=int, default=2180)
     p.add_argument("--control-scale", type=float, default=0.00037060913746245205)

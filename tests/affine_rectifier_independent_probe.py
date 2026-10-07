@@ -17,6 +17,7 @@ from merlin.perf.layer_bench import build_program, run_on_gsim
 from mlir_oot.golden_device_compile import compile_module
 from mlir_oot.golden_rectified_resadd import Capabilities, Plan, build
 from mlir_oot.no_fsm_audit import audit_elf
+from mlir_oot.spad_fence_coalescing import OrderingContract
 
 
 def main():
@@ -25,6 +26,7 @@ def main():
     parser.add_argument("--core", type=Path, required=True)
     parser.add_argument("--llvm-bin", type=Path, required=True)
     parser.add_argument("--workdir", type=Path, required=True)
+    parser.add_argument("--ordering-source", type=Path)
     args = parser.parse_args()
     work = args.workdir.resolve()
     work.mkdir(parents=True, exist_ok=False)
@@ -41,7 +43,17 @@ def main():
     expected = source_table(**proof["source"])[
         a.astype(np.int16) + 128, b.astype(np.int16) + 128
     ]
-    compilation = compile_module(build(plan), args.llvm_bin, work / "device")
+    compilation = compile_module(
+        build(
+            plan,
+            coalesce_internal_spad=bool(args.ordering_source),
+            ordering_contract=OrderingContract(str(args.ordering_source))
+            if args.ordering_source
+            else None,
+        ),
+        args.llvm_bin,
+        work / "device",
+    )
     values = lambda data: ",".join(map(str, np.frombuffer(data, dtype=np.int8)))
     source = work / "probe.c"
     source.write_text(f"""#include <stdint.h>
