@@ -1,5 +1,20 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: normal hierarchy legality closes without a measured win
+
+The source-table hierarchy is legally prepared across all22 contexts and616
+native environment cases. Both whole native compositions preserve all256,000
+original words and the original Torch gate; all155 device bindings and44 source
+producer scans are retained, with the2085 model object byte identical. Root
+recloses83 receipt pins. Whole target ELF and whole hardware timing are absent.
+
+The complete inherited M8 fixture (context21; see the separate typed correction)
+measures2097 ABBA means3,513,995.5 control and3,514,995.5 candidate cycles,
++1,000 cycles/+0.02846%. This is a marginal tie with no measured benefit. Normal
+legality does not grant profitable selection: the hierarchy remains an explicit
+local prototype with no Merlinmain, default or whole-hardware promotion.
+[Normal qualification and hardware disposition](perf_records/source_interval_hierarchy_normal_unpromoted_20261007/receipt.json).
+
 ## 2026-10-07: complete target option records survive compiler factories
 
 Four immutable target emission records cover every constructor keyword and
