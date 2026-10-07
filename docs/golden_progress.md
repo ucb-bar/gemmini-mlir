@@ -1,5 +1,38 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: exact source-row packing measured on stock Rocket
+
+Matched stock2091/2092 measures **3,936,970,420→3,857,281,394** cycles,
+79,689,026 fewer (**2.02412%**) for the complete first12-head attention group.
+Root recloses361 source pins, common data/arena addresses, literal mcycle,
+actual staged stock ELF/bit identities, all eight unchanged provider counters,
+original compiled quantizer/scales, immutable inputs, guards and final zeroFSM.
+Three unchanged internal BF16 differences are unobserved by the original
+consumer. The existing explicit RMS4 approximation is unchanged; the new
+packing/widening row proof is source exact.
+[Stock pair](perf_records/root_smol_exact_row_stock2091_2092_terminal.json).
+
+Merlin main **e9194ac08** integrates the generic explicit finite BF16 row-grid
+proof. Source44/installed44 tests and source/wheel/installed module plus30header
+identities pass. The installed gate also fixes an inherited test's use of a
+checkout-relative header path. Fresh normal source generation preserves all297
+ordinary records/19signatures and15 product objects; native all1,600 words are
+exact across48groups/12preps/23,040products. All48 target execution remains
+under strict validation; these group results do not predict whole cycles.
+
+The first normal target attempt timed out after1,800 seconds, with no output
+gate or instruction histogram. An older original whole target needed2,045.664
+seconds, so the latest row-proof source successor now runs with a7,200-second
+bound. Stock memory binding remains separate. Whole bests stay ResNet2090
+**29,402,206**, Tiny2085 **378,946,263**, Smol1906 **258,621,872,969**.
+
+New preserved negatives include fixed BF16 denominator114/1,600 gate failures,
+per-word exact widening+1.052% instructions, row-amortized bounds3.193B replay
+FMAs, and source-aware P14 PV: direct approximation fails189,885 compiled
+outputs; exact i8-observer successor passes all256,000 whole words but costs
+3.799× complete first-target instructions. These private numeric prototypes
+are unpromoted. The source loop and original final gates remain authoritative.
+
 ## 2026-10-07: resource-derived row-residue whole ResNet result
 
 Stock2090 qualifies **29,402,206 whole-model cycles**,112,034 fewer than2086
