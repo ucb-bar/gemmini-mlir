@@ -1,5 +1,25 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: table hierarchy has no measured complete Tiny win
+
+Stock2097's complete firstM8 ABBA pair measures mean **3,513,995.5** current
+versus **3,514,995.5** hierarchy cycles (+1,000/**0.02846%**). All45,056 original
+i8 outputs, dirty guards, immutable operands,9 common named addresses,2 table
+hashes, actual staged stock identity and final zeroFSM pass. Root recloses322
+V2 pins plus300 original pins and the actual-C validation-scope adjunct. The
+initial actualcandidate gate warms firstM8 requests; fulltable validation occurs
+only after allfour windows. The first validation-scope submission2096 was
+cancelled before a target measurement; both admission and cancellation remain.
+
+The coarse64KiB table certifies90.04% of all22 source points, but increases
+certificate/quantizer work. Logical table regions are not physical cache traffic.
+This marginal onepair result grants no stable regression or whole profitability
+claim. The generic prototype remains isolated, with no default or whole hardware
+promotion. Tiny2085 stays **378,946,263** whole cycles. General follow-up: price
+lookup, observer finishing and exact source continuation together, and expose
+immutable table owners plus runtime context in the automatic loop's cost scope.
+[Stock result](perf_records/root_tiny_source_hierarchy_stock2097_terminal.json).
+
 ## 2026-10-07: stationary-B tail whole ResNet result
 
 Stock2095 verifies **29,243,057 whole-model cycles**,159,149 fewer than2090
