@@ -1,0 +1,168 @@
+{
+  "schema": "bounded_rne_source_word_cells_complete_M8_v1",
+  "status": "pass",
+  "mode_scope": "all5modes/7sticky",
+  "original_i8_words": 45056,
+  "rows": [
+    {
+      "id": "0",
+      "sample": "0",
+      "cycles": "1704292",
+      "instructions": "1704287",
+      "digest": "b702909ca80dfe2a"
+    },
+    {
+      "id": "1",
+      "sample": "1",
+      "cycles": "2064623",
+      "instructions": "2064620",
+      "digest": "b702909ca80dfe2a"
+    },
+    {
+      "id": "1",
+      "sample": "2",
+      "cycles": "2064623",
+      "instructions": "2064620",
+      "digest": "b702909ca80dfe2a"
+    },
+    {
+      "id": "0",
+      "sample": "3",
+      "cycles": "1704295",
+      "instructions": "1704291",
+      "digest": "b702909ca80dfe2a"
+    }
+  ],
+  "objects": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/helpers.o": "3caabd0e095d96327de6ef91a008c9e1c1f3c8ca49b2a197d5a9bdb489842f55",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/target_guard.o": "1bda3cc1ce665b57445cb8de6053df1eeb06a0cfdb74fc2fe9a54cc8a0262b34",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/tables.o": "a090a756d7dc301f16b744bcf5d42537eda8ed2973c2a801dfa0dc19ee5e0534",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/data.o": "cc5cd5094084e29d2e833f6599e40348096870350c0999ce9f003eb91e9ec800",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-lazy-fallback-20261006/candidate.o": "c0dace2b50a5383e310c2dc5a46b2f8357f82965eb851e83098cff1a0a61436b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-lazy-fallback-20261006/target_guard.o": "5e625b83ee1893da43cb8f792f22f51fca08529ec7749e60516cbb1735f1c153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/candidate.o": "c15b9ebbe3120ee83b85cab3b5ca7a7e8a8f4b7138ed98ea0fe477522da47eaa",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/closed-i8-interval-result-20261007/target_guard.o": "8e112313592858dbb773520ee42516633dc8bda4bcf361ec7e6f1ee825752d48",
+    "/scratch/agustin/tmp/gemmini-tiny-finite-domain-20261007/out/artifacts/probes/finite-scale-M8-v2-20261007/candidate.o": "00b0b03b0e45ab2e48c9d4d8abc647e5de7643087886b56e6ec97644c3d56349",
+    "/scratch/agustin/tmp/gemmini-tiny-finite-domain-20261007/out/artifacts/probes/finite-scale-M8-v2-20261007/target_guard.o": "96f25ed5eaa645edf732825dd7da94766eb043eb647cf3ce6ea9938e7675513d",
+    "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/candidate.o": "d96668d1409315587fd5a8c8f72d25bf85a79afa7fdf3a2aeedfcebf332305d9",
+    "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/target_guard.o": "3a97e73d2a8b057c698370a845d7502aada45eb1ef0c37bb6c1c78fad882c37e",
+    "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/all_modes/main.o": "3fe8115a6542fd8cd88d57aa0fbcbbae030bdad33a1e69a18616e4782b700440"
+  },
+  "elf_path": "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/all_modes/build/layer.elf",
+  "elf_sha256": "a9869f392a83cd2129403ee652afd71344b55d35ff1ff27d4fb7884b135563fa",
+  "observer_cells_bytes": 2048,
+  "activation_table_bytes": 524288,
+  "complete_scope": "Both immutable scale scans, original source table, all finishing rounded multiplies, original cold source fallback, frame, dispatch and complete output stores are inside each ROI.",
+  "source_policy": "Existing exact i8 source-observer closure; unsupported rounding original source; explicit unobserved flags/nontrapping permission for omitted second observer.",
+  "stock_cycles": "UNKNOWN",
+  "commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/lookup.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/lookup.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-S",
+      "-emit-llvm",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/scale_guard.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/scale_guard.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-link",
+      "-S",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/selected.ll",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/lookup.ll",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/activation.ll",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/quantize.ll",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/scale_guard.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/linked.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt",
+      "-S",
+      "-passes=always-inline",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/linked.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/inlined.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/late_rne/model.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/candidate.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-objdump",
+      "-dr",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/candidate.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/target_guard.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/target_guard.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/all_modes/main.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/all_modes/main.o"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--isa=rv64gc",
+      "--extension=gemmini",
+      "/scratch/agustin/tmp/gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-observer-cells-M8-v2-20261007/all_modes/build/layer.elf"
+    ]
+  ],
+  "token_usage_available": false
+}
