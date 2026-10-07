@@ -1,5 +1,40 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: shared host compilation and allocator topics reach Merlin main
+
+Merlinmain3430c2ca9 includes two clean generic topics. Calloc rejects unsigned
+count×size overflow before allocation/zeroing; ordinary and zero-size behavior
+remain. The original bug reproduces three overflow failures; then5source/
+5installed allocator/libc checks pass.
+[Allocator evidence](perf_records/merlin_calloc_overflow_main_20261007_qualification.json).
+
+Explicit immutable LLVM helper modules use the normal host-transform callback.
+Shared function types, calling convention, extension attributes and module
+context are checked; original definitions are preserved. Actual upstream
+verify/link/always-inline must remove every required reference. Empty selection
+retains original bytes. Numeric equivalence and final linked-entry qualification
+remain caller obligations. No default policy is selected.
+
+The merged3430 package passes40source/33installed checks, including real normal
+upstream5-f32 lowering, RV64 compilation, recipe/link byte replay and exact
+Spike output. All1,015 Python and61runtime payloads match source, wheel, sdist
+and outside installation. Root recloses2,216 pins; RV64 allocator zeroFSM and
+structure/format/ownership gates pass. Initial missing-default skips remain
+as historical logs; both cases subsequently pass with explicit existing tools.
+No new PR. [Merged qualification](perf_records/merlin_host_llvm_helper_main_20261007_qualification.json).
+
+Smol whole2113 is running under its independently qualifiedf90b ELF/runtime.
+All191 original source and203 admission pins close. Actual stock ELF/bitstream/
+executed driver/bundle were captured during RUNNING. Original1,600-word
+accuracy and whole cycles remain pending. Section2108 is3,550,334,843 cycles.
+Current whole champions: ResNet2109 28,649,233; Tiny2085 378,946,263;
+Smol1906 258,621,872,969.
+[Full admission](perf_records/root_smol_endpoint_stock2113_root_admission.json).
+
+Campaign meter at2026-10-07 16:10:15UTC:101,113,629 aggregate tokens.
+Topic/OOT-only allocation and billing are unavailable; do not attribute this
+aggregate to Gemmini-only optimization work.
+
 ## 2026-10-07: complete Tiny producer/consumer overlap loses on stock
 
 Stock2112 closes six complete same-ELF windows with all90,112 originali32

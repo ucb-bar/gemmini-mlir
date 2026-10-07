@@ -1,0 +1,471 @@
+.FFF                                                                     [100%]
+=================================== FAILURES ===================================
+____________________ test_calloc_overflow_and_zero_size[1] _____________________
+
+tmp_path = PosixPath('/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_0')
+mode = 1
+
+    @pytest.mark.parametrize("mode", [0, 1, 2, 3])
+    def test_calloc_overflow_and_zero_size(tmp_path, mode):
+        cc = shutil.which("cc")
+        if cc is None:
+            pytest.skip("C compiler required")
+        runtime = runtime_dir() / "baremetal/spike"
+        shutil.copy2(runtime / "merlin_malloc.c", tmp_path / "allocator.c")
+        shutil.copy2(runtime / "htif.h", tmp_path / "htif.h")
+        source = tmp_path / "check.c"
+        source.write_text(
+            r"""
+    #include <assert.h>
+    #include <setjmp.h>
+    #include <stdint.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    static unsigned char storage[2048] __attribute__((aligned(64)));
+    #define MERLIN_ARENA_BASE_ADDR ((uintptr_t)storage)
+    #define MERLIN_ARENA_SIZE_BYTES sizeof(storage)
+    #define malloc checked_malloc
+    #define calloc checked_calloc
+    #define aligned_alloc checked_aligned_alloc
+    #define free checked_free
+    #include "allocator.c"
+    #undef malloc
+    #undef calloc
+    #undef aligned_alloc
+    #undef free
+    static jmp_buf failed;
+    static char diagnostic[2048];
+    static size_t used;
+    void htif_putc(char c) { assert(used+1<sizeof(diagnostic)); diagnostic[used++]=c; }
+    void htif_puts(const char *s) { while(*s)htif_putc(*s++); }
+    void htif_putd(long v) { (void)v; }
+    void htif_puthex(unsigned long long v) { (void)v; }
+    __attribute__((noreturn)) void htif_exit(int code) { assert(code==0x900); longjmp(failed,1); }
+    int main(int argc,char **argv) {
+     assert(argc==2);int mode=atoi(argv[1]);memset(storage,0x3c,sizeof(storage));
+     merlin_arena_reset();unsigned char before[2048];memcpy(before,storage,sizeof(storage));
+     if(mode==0){
+      unsigned char *p=checked_calloc(2,7);assert(p==storage);
+      for(size_t i=0;i<14;i++)assert(p[i]==0);
+      for(size_t i=14;i<sizeof(storage);i++)assert(storage[i]==0x3c);
+      memcpy(before,storage,sizeof(storage));
+      assert(checked_calloc(0,SIZE_MAX)!=NULL);
+      assert(checked_calloc(SIZE_MAX,0)!=NULL);
+      assert(!memcmp(before,storage,sizeof(storage)));return 0;
+     }
+     volatile size_t count=mode==1?SIZE_MAX/2+1:SIZE_MAX;
+     volatile size_t width=mode==3?SIZE_MAX:2;
+     if(!setjmp(failed)){checked_calloc(count,width);return 7;}
+     assert(strstr(diagnostic,"calloc size multiplication overflow"));
+     assert(!memcmp(before,storage,sizeof(storage)));
+     assert(checked_malloc(1)==storage);return 0;
+    }
+    """
+        )
+        exe = tmp_path / "check"
+        subprocess.run(
+            [cc, "-O2", "-ffreestanding", "-fno-builtin", "-fsanitize=undefined",
+             "-fno-sanitize-recover=all", str(source), "-o", str(exe)],
+            check=True, capture_output=True,
+        )
+>       subprocess.run([str(exe), str(mode)], check=True, capture_output=True)
+
+merlin/tests/runtime/test_baremetal_calloc_overflow.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_0/check', '1'],)
+kwargs = {'stderr': -1, 'stdout': -1}
+process = <Popen: returncode: 7 args: ['/scratch/agustin/tmp/merlin-calloc-overflow-ma...>
+stdout = b'', stderr = b'', retcode = 7
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_0/check', '1']' returned non-zero exit status 7.
+
+/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/subprocess.py:571: CalledProcessError
+____________________ test_calloc_overflow_and_zero_size[2] _____________________
+
+tmp_path = PosixPath('/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_1')
+mode = 2
+
+    @pytest.mark.parametrize("mode", [0, 1, 2, 3])
+    def test_calloc_overflow_and_zero_size(tmp_path, mode):
+        cc = shutil.which("cc")
+        if cc is None:
+            pytest.skip("C compiler required")
+        runtime = runtime_dir() / "baremetal/spike"
+        shutil.copy2(runtime / "merlin_malloc.c", tmp_path / "allocator.c")
+        shutil.copy2(runtime / "htif.h", tmp_path / "htif.h")
+        source = tmp_path / "check.c"
+        source.write_text(
+            r"""
+    #include <assert.h>
+    #include <setjmp.h>
+    #include <stdint.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    static unsigned char storage[2048] __attribute__((aligned(64)));
+    #define MERLIN_ARENA_BASE_ADDR ((uintptr_t)storage)
+    #define MERLIN_ARENA_SIZE_BYTES sizeof(storage)
+    #define malloc checked_malloc
+    #define calloc checked_calloc
+    #define aligned_alloc checked_aligned_alloc
+    #define free checked_free
+    #include "allocator.c"
+    #undef malloc
+    #undef calloc
+    #undef aligned_alloc
+    #undef free
+    static jmp_buf failed;
+    static char diagnostic[2048];
+    static size_t used;
+    void htif_putc(char c) { assert(used+1<sizeof(diagnostic)); diagnostic[used++]=c; }
+    void htif_puts(const char *s) { while(*s)htif_putc(*s++); }
+    void htif_putd(long v) { (void)v; }
+    void htif_puthex(unsigned long long v) { (void)v; }
+    __attribute__((noreturn)) void htif_exit(int code) { assert(code==0x900); longjmp(failed,1); }
+    int main(int argc,char **argv) {
+     assert(argc==2);int mode=atoi(argv[1]);memset(storage,0x3c,sizeof(storage));
+     merlin_arena_reset();unsigned char before[2048];memcpy(before,storage,sizeof(storage));
+     if(mode==0){
+      unsigned char *p=checked_calloc(2,7);assert(p==storage);
+      for(size_t i=0;i<14;i++)assert(p[i]==0);
+      for(size_t i=14;i<sizeof(storage);i++)assert(storage[i]==0x3c);
+      memcpy(before,storage,sizeof(storage));
+      assert(checked_calloc(0,SIZE_MAX)!=NULL);
+      assert(checked_calloc(SIZE_MAX,0)!=NULL);
+      assert(!memcmp(before,storage,sizeof(storage)));return 0;
+     }
+     volatile size_t count=mode==1?SIZE_MAX/2+1:SIZE_MAX;
+     volatile size_t width=mode==3?SIZE_MAX:2;
+     if(!setjmp(failed)){checked_calloc(count,width);return 7;}
+     assert(strstr(diagnostic,"calloc size multiplication overflow"));
+     assert(!memcmp(before,storage,sizeof(storage)));
+     assert(checked_malloc(1)==storage);return 0;
+    }
+    """
+        )
+        exe = tmp_path / "check"
+        subprocess.run(
+            [cc, "-O2", "-ffreestanding", "-fno-builtin", "-fsanitize=undefined",
+             "-fno-sanitize-recover=all", str(source), "-o", str(exe)],
+            check=True, capture_output=True,
+        )
+>       subprocess.run([str(exe), str(mode)], check=True, capture_output=True)
+
+merlin/tests/runtime/test_baremetal_calloc_overflow.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_1/check', '2'],)
+kwargs = {'stderr': -1, 'stdout': -1}
+process = <Popen: returncode: -6 args: ['/scratch/agustin/tmp/merlin-calloc-overflow-m...>
+stdout = b''
+stderr = b'check: /scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_ca..._overflow_and_zero_1/check.c:43: main: Assertion `strstr(diagnostic,"calloc size multiplication overflow")\' failed.\n'
+retcode = -6
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_1/check', '2']' died with <Signals.SIGABRT: 6>.
+
+/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/subprocess.py:571: CalledProcessError
+____________________ test_calloc_overflow_and_zero_size[3] _____________________
+
+tmp_path = PosixPath('/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_2')
+mode = 3
+
+    @pytest.mark.parametrize("mode", [0, 1, 2, 3])
+    def test_calloc_overflow_and_zero_size(tmp_path, mode):
+        cc = shutil.which("cc")
+        if cc is None:
+            pytest.skip("C compiler required")
+        runtime = runtime_dir() / "baremetal/spike"
+        shutil.copy2(runtime / "merlin_malloc.c", tmp_path / "allocator.c")
+        shutil.copy2(runtime / "htif.h", tmp_path / "htif.h")
+        source = tmp_path / "check.c"
+        source.write_text(
+            r"""
+    #include <assert.h>
+    #include <setjmp.h>
+    #include <stdint.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    static unsigned char storage[2048] __attribute__((aligned(64)));
+    #define MERLIN_ARENA_BASE_ADDR ((uintptr_t)storage)
+    #define MERLIN_ARENA_SIZE_BYTES sizeof(storage)
+    #define malloc checked_malloc
+    #define calloc checked_calloc
+    #define aligned_alloc checked_aligned_alloc
+    #define free checked_free
+    #include "allocator.c"
+    #undef malloc
+    #undef calloc
+    #undef aligned_alloc
+    #undef free
+    static jmp_buf failed;
+    static char diagnostic[2048];
+    static size_t used;
+    void htif_putc(char c) { assert(used+1<sizeof(diagnostic)); diagnostic[used++]=c; }
+    void htif_puts(const char *s) { while(*s)htif_putc(*s++); }
+    void htif_putd(long v) { (void)v; }
+    void htif_puthex(unsigned long long v) { (void)v; }
+    __attribute__((noreturn)) void htif_exit(int code) { assert(code==0x900); longjmp(failed,1); }
+    int main(int argc,char **argv) {
+     assert(argc==2);int mode=atoi(argv[1]);memset(storage,0x3c,sizeof(storage));
+     merlin_arena_reset();unsigned char before[2048];memcpy(before,storage,sizeof(storage));
+     if(mode==0){
+      unsigned char *p=checked_calloc(2,7);assert(p==storage);
+      for(size_t i=0;i<14;i++)assert(p[i]==0);
+      for(size_t i=14;i<sizeof(storage);i++)assert(storage[i]==0x3c);
+      memcpy(before,storage,sizeof(storage));
+      assert(checked_calloc(0,SIZE_MAX)!=NULL);
+      assert(checked_calloc(SIZE_MAX,0)!=NULL);
+      assert(!memcmp(before,storage,sizeof(storage)));return 0;
+     }
+     volatile size_t count=mode==1?SIZE_MAX/2+1:SIZE_MAX;
+     volatile size_t width=mode==3?SIZE_MAX:2;
+     if(!setjmp(failed)){checked_calloc(count,width);return 7;}
+     assert(strstr(diagnostic,"calloc size multiplication overflow"));
+     assert(!memcmp(before,storage,sizeof(storage)));
+     assert(checked_malloc(1)==storage);return 0;
+    }
+    """
+        )
+        exe = tmp_path / "check"
+        subprocess.run(
+            [cc, "-O2", "-ffreestanding", "-fno-builtin", "-fsanitize=undefined",
+             "-fno-sanitize-recover=all", str(source), "-o", str(exe)],
+            check=True, capture_output=True,
+        )
+>       subprocess.run([str(exe), str(mode)], check=True, capture_output=True)
+
+merlin/tests/runtime/test_baremetal_calloc_overflow.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_2/check', '3'],)
+kwargs = {'stderr': -1, 'stdout': -1}
+process = <Popen: returncode: 7 args: ['/scratch/agustin/tmp/merlin-calloc-overflow-ma...>
+stdout = b'', stderr = b'', retcode = 7
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/scratch/agustin/tmp/merlin-calloc-overflow-main-20261007/out/artifacts/calloc-overflow/pytest-before/test_calloc_overflow_and_zero_2/check', '3']' returned non-zero exit status 7.
+
+/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/subprocess.py:571: CalledProcessError
+=============================== warnings summary ===============================
+../../projects/oscar-merlin/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1434
+  /scratch/agustin/projects/oscar-merlin/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1434: PytestConfigWarning: Unknown config option: timeout
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+../../projects/oscar-merlin/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1434
+  /scratch/agustin/projects/oscar-merlin/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1434: PytestConfigWarning: Unknown config option: timeout_method
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED merlin/tests/runtime/test_baremetal_calloc_overflow.py::test_calloc_overflow_and_zero_size[1]
+FAILED merlin/tests/runtime/test_baremetal_calloc_overflow.py::test_calloc_overflow_and_zero_size[2]
+FAILED merlin/tests/runtime/test_baremetal_calloc_overflow.py::test_calloc_overflow_and_zero_size[3]
+3 failed, 1 passed, 2 warnings in 1.54s

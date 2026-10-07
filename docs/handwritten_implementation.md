@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`7625d2d9177f60718202c82a054ce0eedc929aac`.
+`3430c2ca92f5ad5fb33f08f00d74853493b3e7e2`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.
@@ -41,7 +41,15 @@ theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
 `e9194ac08` (44/44 source/installed), and private immutable polynomial contexts
 `eb15a85ce` (30/30 source/installed), and producer-owned endpoint rows
 `7625d2d91` (12/12 source/installed). The endpoint delivery verifies all1,014 Python
-modules and all30 installed header payloads with typed source/effect refusals. These focused checks do not
+modules and all30 installed header payloads with typed source/effect refusals. Later
+`c2ebb73af` rejects calloc multiplication overflow before allocation/zeroing;
+`3430c2ca9` verifies explicitly selected immutable host helper IR linkage and
+actual removal of required references. Its actual merged package passes
+40source/33installed checks, including the normal upstream5-f32 compile/link
+replay and exact functional execution. All1,015 Python and61runtime payloads
+match source, wheel, sdist and outside installation. Default policies remain.
+[Current package qualification](perf_records/merlin_host_llvm_helper_main_20261007_qualification.json).
+These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
 The latest qualified whole-model cycles are ResNet2109 **28,649,233**,
@@ -126,7 +134,9 @@ verified stock FireSim whole observations remain:
 | TinyLlama (2085) | 378,946,263 | about 300M |
 | SmolVLA (1906) | 258,621,872,969 | about 5B |
 
-SmolVLA group 2072 is 3,918,275,805 cycles, using its explicitly recorded
+Latest full12-head SmolVLA section2108 is **3,550,334,843 cycles**. Whole
+stock2113 is running and is not yet a result. Earlier group2072 is
+3,918,275,805 cycles, using its explicitly recorded
 experimental numeric policy. Keep group cycles separate from whole-model cycles.
 Original accuracy gates and source fallback obligations remain unchanged.
 
