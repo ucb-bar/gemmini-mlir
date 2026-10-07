@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`c0f40f8f8d100b841c26fe8bbd6c09e79b6de17c`.
+`e9194ac080c0eb0a006e677284dea68249378481`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.
@@ -37,7 +37,8 @@ Later generic topics are independently qualified before direct-main delivery:
 the audit baseline`3a1e24c77`, finite guards`b1108c60d` (95source/95installed),
 predictor-key corrections`b1b6d1379` (45/45), and explicit rounded-polynomial
 theorem consumption`0a9c14552` (104/104), and exact bounded RNE observer cells
-`c0f40f8f8` (107/107). The last topic verifies both implementation modules and
+`c0f40f8f8` (107/107), and canonical row-grid proof
+`e9194ac08` (44/44 source/installed). The last topic verifies both implementation modules and
 all30 installed header payloads with typed source/effect refusals. These focused checks do not
 relabel an earlier whole-package suite as rerun at the latest head.
 
