@@ -1,5 +1,24 @@
 # Golden compiler optimization journey
 
+## 2026-10-07 22:24 UTC: resource selection closes across current normal all-kernel delivery
+
+Complete reduction-weight residency is now a source-independent OOT schedule
+option in a frozen successor, selected only when the typed shape and scratchpad
+intervals admit it and weight requests fall. The default remains false.
+Outside-installed current `bfe708666` and prior879 reproduce all 52 unchanged
+defaults and preserve candidate source semantics, adapters and ABI. The selected
+actual stride-two object matches the measured emitter. Root closes 2,050 original
+paths and mirrors two receipts exactly. The source/API topic is separate from
+the measured emitter topic; canonical promotion remains open.
+[Delivery](perf_records/resnet_full_weight_flat_normal_current_20261007_qualification.json),
+[reclosure](perf_records/root_resnet_full_weight_flat_normal_current_20261007_reclosure.json),
+[mirrors](perf_records/resnet_full_weight_flat_current_record_mirror_identity_20261007.json).
+
+The actual i8 service's functional retirements improve 3.8245%, but an independent
+small case regresses 9.75%. Fewer weight loads are insufficient for a blanket
+profit policy. Complete GSIM, whole correctness and whole stock timing are
+separate outstanding gates; no gain is added to existing whole totals.
+
 ## 2026-10-07 22:16 UTC: fresh source closure and reusable row/decoder mechanisms
 
 | Change | What it moved | Owner and evidence boundary |

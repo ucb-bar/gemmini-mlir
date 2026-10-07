@@ -1,5 +1,25 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07 22:24 UTC: full-weight residency reaches normal current compiler delivery
+
+The frozen OOT successor exposes complete reduction-weight residency through
+the normal schedule API, bundle builder and CLI. Outside-installed current
+`bfe708666` and prior879 each regenerate all 52 default/candidate kernels;
+default source, IR, LLVM, objects and adapters agree, candidate semantics and
+ABI remain unchanged, and the selected actual stride-two object matches the
+measured owner. Selection uses typed geometry, available scratchpad and fewer
+weight requests; it is explicit/default-false and has no automatic profit claim.
+Root independently closes all 2,050 original declared paths and mirrors both
+receipts exactly. This private successor is not yet promoted to canonical OOT.
+[Normal delivery](perf_records/resnet_full_weight_flat_normal_current_20261007_qualification.json),
+[root reclosure](perf_records/root_resnet_full_weight_flat_normal_current_20261007_reclosure.json),
+[mirror identity](perf_records/resnet_full_weight_flat_current_record_mirror_identity_20261007.json).
+
+The actual i8 service reduces functional retirements 3.8245%; an independent
+small shape regresses 9.75%. GSIM timing remains pending, and no new whole model
+or stock run is attributed. Whole champions remain ResNet **28,649,233**,
+Tiny **378,946,263**, Smol **258,621,872,969** cycles.
+
 ## 2026-10-07 22:16 UTC: fresh normal Tiny passes; current row proofs and decoder forwarding qualify
 
 Fresh installed `458858350` Tiny now discovers all 22 observers from current
