@@ -1,5 +1,24 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: existing exact-math selection passes whole Smol target gate
+
+Normal ELF b15444e0 completes in 4,065.92 seconds with all 1,600 original f32
+words bitwise exact, zero rank mismatches and final zero-FSM. Root recloses
+2,472 unique inherited pins including the actual compiler package. The
+functional counter is 117,635,197,150, not FPGA timing. Stock2113 still
+measures the separate f90 executable. Whole measured champions are unchanged.
+[Whole target gate](perf_records/root_smol_exact_math_normal_whole_target_20261007_qualification.json).
+
+Tiny's ready-i32 observer-only ABBA GSIM measures 3.669892% fewer cycles
+including preparation, copies, 88 consumers, fallback and final drain.
+All original output/input/guard checks pass. Producer GEMM/service/readback
+are excluded and the full compound candidate remains pending; no whole-model
+gain is attributed. [Section receipt](perf_records/tiny_borrowed_observer_gsim_20261007.json).
+
+The [shared compiler record](compiler_recipe_status.md) explicitly retains the
+remaining manual experimental recipes and current-head automatic qualification
+gap, plus phase 0/1/2 promotion requirements.
+
 ## 2026-10-07: explicit shared compiler interfaces preserve fresh ResNet bytes
 
 The shared compiler audit and phase 0/1/2 promotion requirements are recorded

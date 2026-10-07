@@ -1,5 +1,34 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: record shared pipeline limits and completed exact-math gate
+
+The [shared compiler record](compiler_recipe_status.md) now explicitly separates
+the common Merlin/OOT stack from manual experiment selection and retained
+objects. A single fresh current-version automatic configuration across all
+three remains unqualified. Promotion requires supported whole source builds,
+semantic/resource-derived decisions, independent cases, unchanged original
+numerics, final zero-FSM and complete stock timing. Workload names and golden
+values cannot select production transformations.
+
+The new normal Smol exact-math executable b15444e0 completes target execution
+in 4,065.92 seconds, with all 1,600 original f32 words bitwise exact and zero
+rank mismatches. Its final ELF passes zero-FSM. Root recloses 2,472 unique
+inherited pins including the original source bindings, native/build gate,
+admission, previous whole reference and complete 3430 compiler package.
+The functional counter is 117,635,197,150. Different compiler revisions
+prevent isolated pass attribution against f90; this is not FireSim timing.
+Old native-only evidence remains immutable. Existing stock2113 measures f90,
+not this executable. [Whole qualification](perf_records/root_smol_exact_math_normal_whole_target_20261007_qualification.json).
+
+Tiny's actual ready-i32 observer ABBA GSIM section measures mean
+4,419,680 → 4,257,482.5 cycles (**3.669892%**), with all 45,056 original i8
+words, guards and immutable inputs passing. Same ELF/input/table/storage
+addresses retain the complete preparation, dirty initialization, 88 consumers,
+finite checks, lookup/fallback, stores and final drain. Producer GEMM, service
+and readback are excluded; the complete compound successor remains pending.
+Root recloses all six immediate receipt pins. This is a section result, not
+whole stock timing. [Section receipt](perf_records/tiny_borrowed_observer_gsim_20261007.json).
+
 ## 2026-10-07: complete cost limits multi-output and wider-panel gains
 
 The optional finite-point observer retains stable scale/norm/replay checks and

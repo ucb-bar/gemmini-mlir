@@ -15,11 +15,26 @@ automatic selection policy has not been qualified across all three. Captured
 source identities authenticate bindings; model names, provenance IDs and golden
 values must never choose production transformations.
 
+Separate experiment drivers currently choose pass and schedule options and
+bind source-specific providers or retained objects. This manual orchestration
+does not establish that ordinary compilation automatically discovers every
+winning recipe. The shared preparation callback removes global function
+replacement, but it does not supply the legality proofs or selection policy.
+
+To qualify one general compiler, rebuild all three entire models from current
+source through the same supported pipeline and installed packages; report every
+selected or refused transform and its semantic/resource justification; prohibit
+model-name dispatch and unexplained object substitution; then pass the unchanged
+whole accuracy gates, final zero-FSM audits and whole stock performance gates.
+Independent shapes, tails and refusal cases must also qualify each reusable
+transformation. Different decisions justified by the input IR remain valid
+within that one compiler.
+
 | Workload | Best verified whole stock cycles | Current qualification boundary |
 | --- | ---: | --- |
 | ResNet50 | 28,649,233 (2109) | Best source recipe pins Merlin eb15a85; fresh shared-interface successor now passes the full original 0/0 target gate, with hardware cost pending |
 | TinyLlama | 378,946,263 (2085) | Generic observer topic is reproduced, with eleven other object leaves retained; a fresh full current-head compiler build remains required |
-| SmolVLA | 258,621,872,969 (1906) | New source-bound f90 whole executable passes all 1,600 original words in functional target execution; stock2113 remains pending |
+| SmolVLA | 258,621,872,969 (1906) | Both f90 and a fresh normal build selecting existing exact-math legalization pass all 1,600 original words in functional target execution; stock2113 measures f90 and remains pending |
 
 ResNet's original experiment replaced global compiler functions. The explicit
 layout parameter and invocation-local prepared-model callback now reproduce
@@ -30,6 +45,12 @@ pass. The new shared hook is local Merlin commit `edf0e0ca4`, with 17 source and
 source, wheel, source archive and installation. Publication is pending GitHub
 DNS access. [Normal interface qualification](perf_records/root_resnet_shared_preparation_20261007_qualification.json),
 [installed compiler qualification](perf_records/merlin_prepared_model_transform_local_20261007_qualification.json).
+
+The fresh Smol exact-math build now passes its own full target run, with all
+1,600 original words bitwise exact, zero rank mismatches and final zero-FSM.
+Its functional counter is 117,635,197,150; no new FPGA timing or isolated pass
+savings are attributed. The prior native-only receipt remains unchanged.
+[Whole target qualification](perf_records/root_smol_exact_math_normal_whole_target_20261007_qualification.json).
 
 ## What the optimization records retain
 
