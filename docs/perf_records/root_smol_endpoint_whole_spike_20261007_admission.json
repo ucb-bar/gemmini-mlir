@@ -1,0 +1,32 @@
+{
+  "schema": "root_smol_endpoint_dag_whole_target_admission_v1",
+  "status": "native_source_closed_target_pending",
+  "source_packet": "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/docs/perf_records/prepared_endpoint_dag_normal_whole_qualification.json",
+  "source_packet_sha256": "3cb1b2d77e89302cb56d82ed3d99c25edc6c472b1524d1e9fa4dae7cdba056ec",
+  "source_pins_revalidated": 191,
+  "elf": "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/model.elf",
+  "elf_sha256": "f90b8c7e8d6c1ed668a0bb4eaf7918caaa2dc8e3fe4f93b6c14143f995889f07",
+  "engine": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+  "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=15s",
+    "7200s",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "-g",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/model.elf"
+  ],
+  "original_gate": {
+    "elements": 1600,
+    "atol": 0.03125,
+    "rtol": 0.02
+  },
+  "hardware_admission": false,
+  "bound_basis": "Prepared-constants predecessor a90f target completed all1600 original source words in4366.498 seconds. Fresh endpoint-DAG successor has191 closed pins and independent native1600 exact output; no predecessor target pass transferred.7200s is a functional run bound, not a hardware performance forecast; no predecessor pass transferred to successor",
+  "prior_timeout": "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/smol_normal_whole_strict/terminal.json",
+  "scope": "Actual complete normal48 source target, original1600 final gate. Explicit16GiB Spike map is functional only; final stock memory binding and whole eligibility remain pending"
+}
