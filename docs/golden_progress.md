@@ -4,9 +4,10 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 ## Latest verified whole-model results (2026-10-07 UTC)
 
-ResNet2068 improves the whole observation to **29,891,965 cycles** through
+ResNet2071 improves the whole observation to **29,698,347 cycles** through
 generic eight-lane host quantization and exact finite-source residual lowering
-with restricted internal-fence coalescing and four private panels. Tiny2070 improves to
+with restricted internal-fence coalescing, four private panels and consumed
+source-proven nonnegative operand ranges. Tiny2070 improves to
 **394,765,577 cycles** through source-exact continuation, generic typed
 masked-output contraction scheduling and direct certified integer publication.
 All original outputs and numeric gates pass. Smol whole1906 remains
@@ -122,9 +123,28 @@ cycle percentages. The remaining strategy must reduce repeated arithmetic and
 representation work while preserving ordered reductions and escaping scale/i8
 observations. ResNet's next source-domain composition removes products9→3/17→16/
 8→7 with unchanged transfers/storage and original1000words exact. Root releases
-one stock2071 observation; the current measured champion stays2068 pending it.
+one stock2071 observation, now independently closed at29698347cycles,193618cycles/
+0.647726% below2068. All1000 original outputs remain exact; the owned22.387M
+reference gap is7310898cycles.
 [Smol profile](perf_records/root_fused2069_structural_role_review_20261007.json),
 [ResNet release](perf_records/root_resnet_source_domain_stock_release_20261007.json).
+[ResNet terminal](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json).
+
+The generic domain topic is published as [Merlin PR50](https://github.com/ucb-bar/merlin/pull/50).
+Root rechecks1246delivery pins and all960source/wheel/installed Python modules,
+36source/36installed tests, and actual remote main/head/body. One four-file topic
+is based on main7fee; inherited gate failures remain explicit. No main merge or
+default enablement is claimed.
+[Publication review](perf_records/root_merlin_domain_PR50_publication_review_20261007.json).
+
+The latest user direction prioritizes isolated complete attention diagnosis for
+Smol and Tiny: QK, mask/scaling, softmax and PV, comparing each quantization and
+source boundary rather than only final model outputs. Existing acceptance gates
+remain0/0for ResNet and0.03125/0.02for Smol/Tiny pending a task-budget decision.
+These tensor tolerances and stricter local bit-exact transformation checks are
+not measured classification accuracy, perplexity or robot task success. Audit
+observer axes/scales, saturation, rounding and source reductions before changing
+quality policy. Record approximation and lowering errors separately.
 
 Dedicated model work now closes CPU21 stock2029 against the identical strict
 Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
@@ -164,7 +184,7 @@ No new whole-model prediction or automatic ranking is enabled.
 
 | Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
 |---|---:|---|---|
-| ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes and one exact14-product residual with four private panels/coalesced internal fences | 29,891,965 (2068) | All1000 original output words exact;277128cycles/0.91858% below2066. Onlyone active residual targetroute changes; allhost/runtime/weights/other targetobjects preserved. Gap to ownedJack1876 remains7504516cycles | [2068 root review](perf_records/root_resnet_stock2068_four_panel_terminal_review_20261007.json) |
+| ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes, exact14-product/four-panel residual and source-domain coefficient selection | 29,698,347 (2071) | All1000 original output words exact;193618cycles/0.647726% below2068. Three source-proven target routes change; first14batch4 and allhost/runtime/weights/other targetobjects preserved. Gap to ownedJack1876 remains7310898cycles | [2071 root review](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json) |
 | Full 22-layer pretrained TinyLlama, 8 tokens, source 2×4 contractions/K2, B-prefetch, canonical buffers, outlining, source-exact continuation, typed closed mask and direct certified integer publication | 394,765,577 (2070) | All256000 original compiled words unchanged; original Torch gate passes.15381478cycles/3.750235% below2062 in one observation per arm. Only model.o changes;11 other linked objects, staging/output/final noFSM pinned | [2070 root review](perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json) |
 | Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
 

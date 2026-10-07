@@ -9,6 +9,37 @@ contracts and resources; source IDs identify bindings and experiments only.
 
 ## Measured changes and pending compositions
 
+### 2026-10-07: source-domain hardware transfer, publication and attention priority
+
+Stock2071 is independently closed at29698347cycles,193618/0.647726% below2068.
+Original1000f32le words, rawUART/DONE/rank0, actual staged ELF/stockbitstream,
+11terminal/10release pins and final all-executable noFSM pass. The338688 nominal
+row reduction is not a cycle forecast; ownedJack1876 gap remains7310898cycles.
+[Whole terminal](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json).
+
+Merlin generic domain PR50 is open with head2f880046f onactualmain7fee. Root
+rechecks1246delivery pins, all960source/wheel/installed Python modules,36source/
+36installed tests, onefour-file topic and actual remote head/base/body. Existing
+two oversized optional modules and install-tool target literal are independently
+reproduced onmain and unchanged. No mainmerge/force/default enablement.
+[Publication](perf_records/root_merlin_domain_PR50_publication_review_20261007.json).
+
+User asks whether tensor tolerance should permit reasonable quality loss, and
+directs attention diagnosis independently. Existing acceptance thresholds remain
+ResNet0/0 andSmol/Tiny0.03125/0.02; an optional task-budget choice is pending.
+Internal bitexact checks qualify semantics-preserving changes; they are separate
+from real model quality. Three active agents now examine complete Smol/Tiny
+attention, source/reduction/quantization boundaries and shared lowering mappings.
+No silent threshold widening or golden-selected precision ladder. Source stage
+divergence, task-data availability and complete block cost must be recorded.
+
+Owned ledger03:38:57:8threads;72283276uncachedinput/3395868928cache-read/
+14343649output,5754558reasoning(outputsubset), rawtotal3482495853. Window
+03:12:53→03:38:57:914057uncached/37566720cache-read/175210output/
+68143reasoningsubset/raw38655987. Separategoal82991417, notrawsum. Exclusive
+OOT/model/topic allocation and billing remainUNKNOWN.
+[Token ledger](perf_records/golden_token_usage_20261007T033857Z.json).
+
 ### 2026-10-07 03:35 UTC: source ranges consumed and Smol instruction roles
 
 Generic domain topic2f880046f passes36source/36installed checks in a fresh

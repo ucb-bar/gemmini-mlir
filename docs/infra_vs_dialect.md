@@ -34,12 +34,13 @@ assumptions prevented three cheaper routes. Eligibility must come from source
 and producer proofs, not callee/source names or captured values. New20 focused
 checks plus16existing checks pass on a clean main-based core topic. Fresh normal
 and controlled whole compositions pass original1000words bitexact. The controlled
-stock release is pending independent packet review; no whole cycle claim yet.
+stock release now has an independently verified whole result at29698347cycles,
+0.647726% below2068; no additive forecast is claimed.
 
 Root now independently rederives all16actual normal source choices, the three
 admitted32768-pair certificates and actual active finalELF entries;5921pins,
 all1000 original native/strict words and all98304target pairs close. One controlled
-stock2071 observation is released; hardware cycles remainUNKNOWN. A target-free
+stock2071 observation is root-verified. A target-free
 phase1 fact-consumption report should expose producer proof, SSA/view path,
 admitted domain, selected cost and unused facts so automatic agents can discover
 this seam. Stable typed evidence schemas should distinguish one rebinding from

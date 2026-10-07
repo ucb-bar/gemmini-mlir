@@ -2,6 +2,11 @@
 
 ## Complete-cost transfer: 2026-10-07 03:12 UTC
 
+Source-domain current2071 removes338688 nominal rows and preserves transfers/
+fences, but actual whole gain is193618cycles/0.647726%, to29698347. Keep the
+work/cycle distinction and old model domains; no new label is fitted.
+[Whole terminal](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json).
+
 Four-panel residual scheduling predicts a tie under the frozen array-row/B-load
 law because nominalrows/B bytes/productcounts are equal. Fences1571→395 and
 CPU issue/overlap are unpriced. Actual complete802816 GSIM cycles fall17.496%,
