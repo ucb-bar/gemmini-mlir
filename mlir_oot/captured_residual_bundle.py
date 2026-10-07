@@ -104,10 +104,12 @@ def binding_attributes(route, source_sha, receipt_sha):
             'gemmini.qparams':DictionaryAttr(qparams),
             'gemmini.numeric_policy':DictionaryAttr({'kind':StringAttr(numeric['kind']),
                 'max_output_lsb':IntegerAttr(numeric['max_output_lsb'],i64),
-                'domain_pairs':IntegerAttr(65536,i64)})}
+                'domain_pairs':IntegerAttr(route['proof'].get('pairs',65536),i64)})}
     if 'coefficients' in route['proof']:
         coeff=route['proof']['coefficients']
         attrs['gemmini.wide_integer_coefficients']=DictionaryAttr({'p':IntegerAttr(coeff['p'],i64),'q':IntegerAttr(coeff['q'],i64),'scale':FloatAttr(coeff['scale'],F32)})
+    if 'domain_certificate' in route['proof']:
+        attrs['gemmini.source_operand_domains']=StringAttr(canonical(route['proof']['source_domain_traces']))
     if 'physical_layout' in route:attrs['gemmini.residual_layout']=StringAttr(canonical(route['physical_layout']))
     return attrs
 
