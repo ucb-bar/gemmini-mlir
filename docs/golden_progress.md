@@ -1,5 +1,37 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: predictor-key whole ResNet win and generic proof publication
+
+Stock2081 measures **29,618,198** original whole-model cycles, 80,149 fewer
+than2071 (0.269877%). All1,000 original output words remain bit exact at0/0;
+all679 source pins, actual new-entry execution, final zero-FSM ELF and
+pre-teardown ELF/bitstream identities close. Only the selected residual route
+changes. The ZIP reference remains22,387,449, with a7,230,749-cycle gap;
+its source arithmetic and timing differ. The final simulator PASSED counter
+includes validation and is not the model performance metric.
+[Whole terminal](perf_records/root_resnet_predictor_key_stock2081_whole_terminal_20261007.json).
+
+Merlin main is now`0a9c14552`, one additional clean topic consuming explicit
+complete rounded-polynomial monotonicity theorems. It passes104 source and104
+outside-checkout installed tests, with all30 bundled runtime headers identical.
+The caller must supply a complete theorem for the exact rounded source DAG,
+environment and plan; identity hashes authenticate evidence and do not prove it.
+The original source polynomial's whole finite domain was checked independently
+under two compilers, supplemented by18,098 rational source-word checks and
+target environment/refusal tests. Its experimental Smol group preserves all
+original consumer outputs and reduces retired instructions2.58472%; hardware
+cycles and a new whole Smol result remain unknown. Fixed RMS4 remains an
+explicit approximate policy. No default or accuracy gate changes.
+[Generic publication](perf_records/root_merlin_rounded_polynomial_direct_main_publication_20261007.json),
+[source proof qualification](perf_records/rounded_source_polynomial_monotonicity_qualification.json).
+
+The four-product Smol successor with a separately rigorous residual bound is
+also negative: complete group cost rises61.27% despite exact observed outputs.
+It is retained with the earlier40.824% negative. Fewer accelerator products
+do not establish lower complete cost when source replay grows. Rejected
+prototype APIs remain isolated; experiment publication is not core promotion.
+[Residual-bound negative](perf_records/two_signed_byte_rms_residual_negative.json).
+
 ## 2026-10-07: complete residual pair and current Tiny profile
 
 Stock2078/2079 measures the complete original 802,816-element residual section:
@@ -132,10 +164,11 @@ The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_mo
 
 ## Latest verified whole-model results (2026-10-07 UTC)
 
-ResNet2071 improves the whole observation to **29,698,347 cycles** through
+ResNet2081 improves the whole observation to **29,618,198 cycles** through
 generic eight-lane host quantization and exact finite-source residual lowering
-with restricted internal-fence coalescing, four private panels and consumed
-source-proven nonnegative operand ranges. Tiny2076 improves to
+with restricted internal-fence coalescing, four private panels, consumed
+source-proven nonnegative operand ranges and complete predictor-key correction.
+Tiny2076 improves to
 **380,396,343 cycles** through source-exact continuation,generic typed
 masked-output contraction scheduling,direct certified integer publication and
 source-bound immutable broadcast finite guards.

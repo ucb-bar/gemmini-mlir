@@ -2,6 +2,29 @@
 
 ## Current whole-model result
 
+Stock2081 is the latest qualified original-source result: **29,618,198 cycles**,
+80,149/0.269877% below2071. All1,000 original words remain bit exact at0/0,
+all679 source pins close, actual selected newadapter/kernel entries execute,
+and the final zero-FSM ELF and staged stock bitstream match. Complete
+predictor-key correction replaces only one residual route; all unrelated
+accepted objects remain2071. The permitted ZIP diagnostic1876 remains
+**22,387,449**, leaving **7,230,749 cycles**. Numeric arithmetic/timer scope
+differences remain explicit; this is a reference gap, not a proof that any
+particular source-equivalent transformation can recover it.
+[Current whole result](perf_records/root_resnet_predictor_key_stock2081_whole_terminal_20261007.json).
+
+The latest boundary profile is2074 of the preceding accepted2071 objects,
+not a profile of2081. Its convolution/requant callbacks cost20,934,226 cycles,
+residual callbacks4,638,842, and work before the stem2,026,898. These include
+host issue, DMA, device service and waits; neither callbacks nor gaps measure
+pure utilization. The complete original residual stock2078/79 pair saves
+77,826 cycles; the separately measured whole saving is80,149. Do not transplant
+old callback measurements or sum section improvements into a current forecast.
+[Current profile](perf_records/current2071_boundary_profile_20261007.md),
+[complete residual pair](perf_records/root_resnet_predictor_key_stock2078_2079_terminal_20261007.json).
+
+## Historical2055 whole result
+
 The original-source compiler model's best qualified stock result is job2055:
 **30,550,422 cycles**, with all1,000 original output words exact and the final
 ELF/staged ELF/stock bitstream pinned. The permitted ZIP diagnostic job1876

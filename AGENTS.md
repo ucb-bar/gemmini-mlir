@@ -37,3 +37,16 @@ Do not open a pull request in any repository without explicit user approval.
 An instruction to upstream or push code does not authorize creating a PR.
 Preserve reviewed changes on the user-authorized branch and follow the requested
 direct-main integration workflow for Merlin and model2MLIR.
+
+## Integrated worktree cleanup
+
+After useful changes are reviewed, integrated and verified on the requested
+remote branch, remove obsolete delivery/review worktrees that have no active
+agent, process, experiment or artifact dependency. Preserve every working-tree
+file and link, including ignored and untracked outputs, in a verified archive
+with file hashes and explicit original-path-to-archive-member mappings. Retain
+shared Git objects, recovery refs, primary Git stores and active source/runtime
+owners. Immutable historical receipts keep their original bytes; removed paths
+need recorded archive successors. Report logical savings separately from
+filesystem free space. Do not remove an active tree merely because its branch
+has been merged.

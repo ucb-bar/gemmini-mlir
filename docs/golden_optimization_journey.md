@@ -1,5 +1,43 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: whole selection closes and source-polynomial proof reaches main
+
+Stock2081 qualifies29,618,198 whole ResNet cycles,80,149/0.269877% below2071,
+with every original output word exact. Root independently rechecks679 source
+pins and actual executed newadapter/kernel entrycounts1/1, with retained old
+entries0/0. The first controlled-relink recipe had selected a catalog name but
+left the frozen host's different public adapter reaching the old kernel;
+numeric equality alone did not reveal this. That experiment is rejected and
+preserved. Normal compiler selection was already correct. V2 explicitly binds
+the actual source/public entry and retains all unrelated accepted2071 objects.
+Final zeroFSM and staged stockELF/bit identities close before teardown.
+Whole savings closely match the section's absolute78K savings; no additive
+forecast was used. The remaining ZIP reference gap is7,230,749 cycles.
+
+Generic theorem consumption reaches Merlin main`0a9c14552` as one topic, with
+104 source and104 installed checks. Only the supplied exact source-word budget
+can change; otherplans/modes/domains and ordinary emission remain. The new test
+reads packaged resources, and legacy qualification fixtures link only to the
+installed package's30 byte-identical headers, never a source checkout. The
+caller proof is separate from hashes and target capabilities. The original
+finite source polynomial has two complete1,118,743,633-word compiler traces
+with matching digest,18,098 rational checks and actual target mode/refusal
+tests; the rational qualification-only private source dependency is frozen
+explicitly. Smol completegroup instructions improve2.58472%, hardwareunknown.
+
+The four-product residual-aware bound successor still increases complete
+instructions61.27%: its rigorous L1/Linf residual envelope is looser and causes
+more source replay. Both negative variants remain immutable. Future phase1
+representation proposals must account for source/error contracts and complete
+observer closure; phase2 must reject a product-count win when measured replay
+and preparation dominate. General linked-selection evidence belongs in Merlin;
+target instruction/PC capability checking belongs OOT. No new PR, force push,
+approximation permission or default selection was introduced.
+
+[Whole stock receipt](perf_records/root_resnet_predictor_key_stock2081_whole_terminal_20261007.json),
+[main proof qualification](perf_records/root_merlin_rounded_polynomial_upstream_qualification_20261007.json),
+[oracle source dependency](perf_records/rounded_source_polynomial_monotonicity_oracle_dependency.json).
+
 ## 2026-10-07: full-key correction and fresh Tiny cost locations
 
 **ResNet mechanism.** Complete source/predictor enumeration identifies keys at

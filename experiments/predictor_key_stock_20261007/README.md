@@ -1,5 +1,14 @@
 # Original ranked residual comparison
 
+The separately qualified whole candidate runs as stock2081 at29,618,198 model
+cycles, versus29,698,347 in2071. It preserves all1,000 original words at0/0 and
+actual selected-entry execution. The first custom relink recipe left an old
+public adapter reachable despite the new catalog name; it is rejected and
+retained. Normal compiler routing was already correct. The corrected recipe
+binds the actual frozen source/public entry, preserves unrelated semantic
+objects and captures stagedELF/bitstream identities automatically. See the
+root2081 terminal and the679-pin source qualification in`docs/perf_records`.
+
 Frozen root queue and collector recipes require the owned artifacts in the
 112-pin source packet and original absolute paths. Stock2078/2079 includes all
 producer and ranked adapter work, private scratch allocation, seed transfers,

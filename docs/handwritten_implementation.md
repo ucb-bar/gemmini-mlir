@@ -7,7 +7,7 @@ optimization journey, numerical refusals, measured results and token ledgers.
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
-`95e8142d9cd1ae2432527c005e37f77a5af6976d`.
+`0a9c14552e4bf3711cda02d98f9e31911def01d6`.
 The model2MLIR revision is
 `7915e23475c6db446a3c404847b11e8bc72c8a27`.
 The qualified Python environment uses xDSL 0.68.0, NumPy 2.4.6 and PyYAML 6.0.3.
@@ -27,11 +27,24 @@ For explicit commands and resources, read [manifest.yaml](../manifest.yaml).
 The original generated package's certification metadata remains historical;
 it does not certify the combined handwritten branch.
 
-The final wheel preserves all 995 compiler Python modules, 28 runtime headers
+The earlier`95e8142d9` wheel preserves all995 compiler Python modules,28 runtime headers
 and five C templates byte for byte across source, wheel and installation outside
 the checkout. The installed critical gate passes 1,085 checks with no skips or
 failures, covering interval publication, mask/softmax flags, probability/fused
 preparation and exact residual certificates.
+
+Later generic topics are independently qualified before direct-main delivery:
+the audit baseline`3a1e24c77`, finite guards`b1108c60d` (95source/95installed),
+predictor-key corrections`b1b6d1379` (45/45), and explicit rounded-polynomial
+theorem consumption`0a9c14552` (104/104). The last topic verifies all30 installed
+header payloads and caller proof/refusal behavior. These focused checks do not
+relabel an earlier whole-package suite as rerun at the latest head.
+
+The latest qualified whole-model cycles are ResNet2081 **29,618,198**,
+Tiny2076 **380,396,343**, and Smol1906 **258,621,872,969**. Original output gates
+and final zero-FSM instruction audits remain mandatory. All requested whole
+targets are still unmet; explicit experiment recipes do not install a default
+numerical policy or imply that rejected private prototypes reached main.
 
 ## Integrated target and shared mechanisms
 
