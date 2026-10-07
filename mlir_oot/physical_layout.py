@@ -42,16 +42,18 @@ included through their result and operands; no call is erased or modified.
     return {'copies':copies,'output_bytes':total,'producer_boundaries':dict(sorted(barriers.items()))}
 
 
-def rewrite(module):
+def rewrite(module, *, reduction_channel_block=0):
     from merlin.llvmlower.layout_propagation import rewrite_module
-    before=census(module);report=rewrite_module(module)
-    return {'schema':'exact_physical_layout_v1','before':before,'after':census(module),
+    before=census(module);report=rewrite_module(module,reduction_channel_block=reduction_channel_block)
+    result={'schema':'exact_physical_layout_v1','before':before,'after':census(module),
             'rewrite':report.to_dict(),'call_abi_changed':False,'scalar_arithmetic_changed':False}
+    if reduction_channel_block:result['reduction_channel_block']=reduction_channel_block
+    return result
 
 
-def rewrite_file(source,work):
+def rewrite_file(source,work, *, reduction_channel_block=0):
     source,work=Path(source),Path(work);work.mkdir(parents=True,exist_ok=True)
-    data=source.read_bytes();module=parse_module(data.decode());report=rewrite(module)
+    data=source.read_bytes();module=parse_module(data.decode());report=rewrite(module,reduction_channel_block=reduction_channel_block)
     result=work/'layout.mlir';result.write_text(serialize(module,[]))
     reparsed=parse_module(result.read_text());reparsed.verify()
     if census(reparsed)!=report['after']:raise ValueError('layout census changed during serialization')

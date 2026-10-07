@@ -27,8 +27,12 @@ def stage_capture(capture:Path,bundle:Path,destination:Path):
     return destination
 
 
-def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,propagate_layout=False,large_n=False,contraction_calibrations=None):
+def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,propagate_layout=False,reduction_channel_block=0,large_n=False,contraction_calibrations=None):
     """Callbacks for the derived capture; verify fused symbol set before compilation."""
+    if type(reduction_channel_block) is not int or reduction_channel_block < 0:
+        raise ValueError('reduction_channel_block must be a nonnegative integer')
+    if reduction_channel_block and not propagate_layout:
+        raise ValueError('reduction_channel_block requires propagate_layout')
     llvm_bin,requant_bundle=map(Path,(llvm_bin,requant_bundle));state={}
     requant=json.loads((requant_bundle/'requant.json').read_text());requant_sha=sha(requant_bundle/'requant.json')
     def check_requant():
@@ -86,7 +90,7 @@ def merlin_callbacks(llvm_bin:Path,requant_bundle:Path,*,flat_spatial=False,prop
         (identity/'identity_view_report.json').write_text(json.dumps(report.to_dict(),indent=2)+'\n')
         if propagate_layout:
             from .physical_layout import rewrite_file
-            prepared,layout_report=rewrite_file(prepared,Path(work)/'physical_layout')
+            prepared,layout_report=rewrite_file(prepared,Path(work)/'physical_layout',reduction_channel_block=reduction_channel_block)
             state['layout_report']=layout_report
         state.update(direct=direct,manifest=manifest,prepared_sha256=sha(prepared))
         return prepared
