@@ -1,5 +1,24 @@
 # Golden compiler optimization journey
 
+## 2026-10-07: directed observer variants rejected and fixture context corrected
+
+Two source-proved one-edge integer-observer variants preserve all45,056 i8
+outputs, guards, input hashes and original continuations under5 rounding modes
+and7 sticky-flag states. Complete ABBA retirement increases7.2914% for the
+branch variant and11.4590% for the branchless variant. Root recloses168 pins.
+They stay local numerical prototypes: no whole, hardware, main or default
+promotion. Undefined NaN-to-integer source cases remain explicit refusals.
+[Negative variants and source join](perf_records/directed_observer_negatives_20261007/receipt.json).
+
+The inherited isolated M8 fixture used in stock2082/2097 is **captured context21**,
+`forward.extracted.531`, preparation bits1016741769 and quantization bits1133693052,
+with216 source continuations per helper. Its historical label does not mean the
+first layer. Context0 locality counts cannot be attributed to these stock
+observations. Original fixture bytes, source bindings, outputs and measured
+results remain valid; historical receipts are unchanged. Phase0 must join the
+complete source DAG, preparation and compiled context before attaching a
+per-context cost or locality feature.
+
 ## 2026-10-07: compact source polynomial table rejected on complete cost
 
 A fixed256-word source-function partition uses3,339,740 bytes and preserves
