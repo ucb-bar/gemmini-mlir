@@ -1,0 +1,55 @@
+{
+  "schema": "root_current2101_profile_admission_v1",
+  "status": "PASS",
+  "source_packet": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/docs/perf_records/current2101_boundary_profile_qualification.json",
+  "source_packet_sha256": "9ee3b15d5324bbfad9f4429f97020316222f4e5fe68e300e887da81eebd763f2",
+  "source_pins_revalidated": 358,
+  "elf": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/out/current2101_profile/model.elf",
+  "elf_sha256": "808e1008d39a160a14862b1b60cc64dfc4eaa5e931f1bbd9b97c173f3f877ead",
+  "baseline_job": 2101,
+  "baseline_cycles": 28728702,
+  "original_gate": {
+    "atol": 0.0,
+    "rtol": 0.0,
+    "elements": 1000,
+    "raw_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "pass_gate": true
+  },
+  "source_boundaries": 71,
+  "actual_entry_join": {
+    "path": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/out/current2101_profile/actual_entry_join.json",
+    "sha256": "ebfff2b54eb015d49bea7697d90775dfb8c288ed19c1e88431412a8bd48341a2"
+  },
+  "profile_parser": {
+    "path": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/mlir_oot/golden_device_profile.py",
+    "sha256": "23c748beb03fcea3c38f5e85c83b9ba54121b152fbbd781936a4cd7db63e8b9b"
+  },
+  "profile_manifest": {
+    "path": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/out/current2101_profile/profile_manifest.json",
+    "sha256": "b925fb2aea746c7543dff73080192aba3d10326f2160580546c35119d629a0c8"
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "808e1008d39a160a14862b1b60cc64dfc4eaa5e931f1bbd9b97c173f3f877ead",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 425,
+      "1": 1857,
+      "2": 19621,
+      "3": 1296,
+      "4": 12808,
+      "5": 27002,
+      "6": 39810,
+      "7": 80,
+      "14": 100
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "manifest_semantic_object_count": 12,
+  "preliminary_refusal": "Admission metadata corrections before any queue submission: baseline accepted_elf is separate from profile ELF; 12 original manifest objects plus new timer; classifier primitive joins via separately pinned shim and actual wrapper call, not host undefined callee.",
+  "scope": "Boundary diagnostic only; callback includes CPU issue/adapters/readout/DMA/waits. Pure accelerator utilization and causal optimization savings UNKNOWN."
+}

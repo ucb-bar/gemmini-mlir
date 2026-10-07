@@ -1,5 +1,34 @@
 # ResNet remaining gap: measured locations and unresolved attribution
 
+## 2026-10-07: current whole-model boundary profile closes on stock
+
+Stock2104 profiles the exact2101 implementation:12 original linker objects
+remain unchanged and one timer object is added. All1,000 original words,
+71 ordered call boundaries, staged ELF/bitstream and final zeroFSM pass.
+Forward28,767,905 =26,588,302 callbacks +2,179,603 outside callbacks. The
+39,203-cycle difference from uninstrumented2101 is0.1365%; it includes timer,
+link-layout and run perturbations, and is not a separately calibrated overhead.
+The whole champion remains28,728,702. Root recloses358 source pins.
+
+| Current interval | Stock cycles |
+| --- | ---: |
+| Before stem callback |2,027,253|
+| Stem/pool callback |1,446,770|
+|52 convolution/requant callbacks |20,034,823|
+|16 residual callbacks |4,561,370|
+| Global mean callback |66,595|
+| Classifier callback |478,744|
+
+Callbacks include CPU adapters, readout and command issue as well as DMA,
+device service and waits. They do not measure pure accelerator utilization.
+The permitted ZIP residual section costs2,192,393, with differing numerical
+computation/timer boundaries; its2,368,977 difference localizes investigation,
+not guaranteed savings. Geometry-only comparisons also show pointwise+517,061,
+spatial+887,261, stem+363,713 and classifier+48,963. The first residual alone
+costs1,260,144. General exact quantization preparation and target residual
+issue/readout scheduling are the next concrete seams.
+[Current diagnostic](perf_records/root_current2101_stock2104_boundary_diagnostic.json).
+
 ## 2026-10-07: dense short-row scheduling lowers whole ResNet cost
 
 Stock2101 measures **28,728,702 whole model cycles**, down514,355
@@ -94,7 +123,7 @@ differences remain explicit; this is a reference gap, not a proof that any
 particular source-equivalent transformation can recover it.
 [Current whole result](perf_records/root_resnet_predictor_key_stock2081_whole_terminal_20261007.json).
 
-The latest boundary profile is2074 of the preceding accepted2071 objects,
+The then-current boundary profile was2074 of the preceding accepted2071 objects,
 not a profile of2081. Its convolution/requant callbacks cost20,934,226 cycles,
 residual callbacks4,638,842, and work before the stem2,026,898. These include
 host issue, DMA, device service and waits; neither callbacks nor gaps measure

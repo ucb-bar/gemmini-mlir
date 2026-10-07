@@ -1,5 +1,34 @@
 # Primitive-only Gemmini golden: current evidence
 
+## 2026-10-07: current whole-model boundary profile closes on stock
+
+Stock2104 profiles the exact2101 implementation:12 original linker objects
+remain unchanged and one timer object is added. All1,000 original words,
+71 ordered call boundaries, staged ELF/bitstream and final zeroFSM pass.
+Forward28,767,905 =26,588,302 callbacks +2,179,603 outside callbacks. The
+39,203-cycle difference from uninstrumented2101 is0.1365%; it includes timer,
+link-layout and run perturbations, and is not a separately calibrated overhead.
+The whole champion remains28,728,702. Root recloses358 source pins.
+
+| Current interval | Stock cycles |
+| --- | ---: |
+| Before stem callback |2,027,253|
+| Stem/pool callback |1,446,770|
+|52 convolution/requant callbacks |20,034,823|
+|16 residual callbacks |4,561,370|
+| Global mean callback |66,595|
+| Classifier callback |478,744|
+
+Callbacks include CPU adapters, readout and command issue as well as DMA,
+device service and waits. They do not measure pure accelerator utilization.
+The permitted ZIP residual section costs2,192,393, with differing numerical
+computation/timer boundaries; its2,368,977 difference localizes investigation,
+not guaranteed savings. Geometry-only comparisons also show pointwise+517,061,
+spatial+887,261, stem+363,713 and classifier+48,963. The first residual alone
+costs1,260,144. General exact quantization preparation and target residual
+issue/readout scheduling are the next concrete seams.
+[Current diagnostic](perf_records/root_current2101_stock2104_boundary_diagnostic.json).
+
 ## 2026-10-07: exact reconstruction and scaling fusion loses complete cost
 
 Current2098 already consumes fused integer radix reconstruction; there is no
