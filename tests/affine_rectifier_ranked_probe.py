@@ -43,6 +43,7 @@ def main():
     cli.add_argument("--build-only", action="store_true")
     cli.add_argument("--ordering-source", type=Path)
     cli.add_argument("--rectifier-control-recipe", type=Path)
+    cli.add_argument("--panel-batch", type=int, choices=(1, 4), default=1)
     args = cli.parse_args()
     work = args.workdir.resolve()
     work.mkdir(parents=True, exist_ok=False)
@@ -105,6 +106,7 @@ def main():
             ordering_contract=OrderingContract(str(args.ordering_source))
             if args.ordering_source
             else None,
+            panel_batch=args.panel_batch,
         ),
         args.llvm_bin,
         work / "candidate",
@@ -287,6 +289,7 @@ int main(void){
         if rectifier_control
         else None,
         "internal_spad_fence_policy": bool(args.ordering_source),
+        "panel_batch": args.panel_batch,
         "source_capture": capture,
         "adapter_text_identity": text_pins,
         "selector_offset": offset,

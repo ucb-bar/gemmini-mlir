@@ -74,6 +74,7 @@ def generate(args):
             ordering_contract=OrderingContract(str(args.ordering_source))
             if args.ordering_source
             else None,
+            panel_batch=args.panel_batch,
         ),
         args.llvm_bin,
         work / "candidate",
@@ -174,6 +175,7 @@ int main(void){
         "source_certificate": certificate,
         "control_certificate": control_proof,
         "plan": plan.attributes(),
+        "panel_batch": args.panel_batch,
         "candidate_compilation": candidate,
         "control_compilation": control,
         "elf": pin(built.elf),
@@ -206,6 +208,7 @@ if __name__ == "__main__":
     p.add_argument("--source-certificate", type=Path)
     p.add_argument("--inputs", type=Path)
     p.add_argument("--ordering-source", type=Path)
+    p.add_argument("--panel-batch", type=int, choices=(1, 4), default=1)
     p.add_argument("--control-p", type=int, default=2609)
     p.add_argument("--control-q", type=int, default=2180)
     p.add_argument("--control-scale", type=float, default=0.00037060913746245205)

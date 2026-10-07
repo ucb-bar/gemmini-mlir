@@ -191,17 +191,32 @@ class Plan:
         }
 
 
-def build(plan: Plan, *, coalesce_internal_spad: bool = False, ordering_contract=None):
+def build(
+    plan: Plan,
+    *,
+    coalesce_internal_spad: bool = False,
+    ordering_contract=None,
+    panel_batch: int = 1,
+):
     # Revalidate mutable nested certificate contents at the emission boundary.
     plan.__post_init__()
     if type(coalesce_internal_spad) is not bool:
         raise ValueError("SPAD fence policy must be an explicit boolean")
     if coalesce_internal_spad and ordering_contract is None:
         raise ValueError("SPAD fence coalescing requires a pinned ordering contract")
+    if type(panel_batch) is not int or panel_batch not in (1, 4):
+        raise ValueError("explicit panel batch 1 or proved factor 4 required")
+    batch_proof = None
+    place = plan.spad_intervals
+    if panel_batch == 4:
+        from .rectifier_panel_batch import PanelBatch
+
+        batching = PanelBatch(panel_batch)
+        batch_proof = batching.require(plan, ordering_contract)
+        place = batching.reservations(plan)
     e = GoldenGemm(Shape(plan.m, plan.n, F.DIM, bn=4))
     e.fb = FnBuilder([PTR] * 4)
     a, b, c, tables = e.fb.entry.args
-    place = plan.spad_intervals
     cols = plan.panel_columns
     rows = F.DIM
     weight_base = place["weights"][0]
@@ -270,115 +285,153 @@ def build(plan: Plan, *, coalesce_internal_spad: bool = False, ordering_contract
                 attrs.update(bd=real_d + tile * rows, bd_cols=rows, bd_rows=rows)
             e._rocc("compute", attrs)
 
+    def local(name, slot):
+        return place[name][0] + slot * plan.panel_rows
+
+    def load_and_predict(mrow, ncol, slot):
+        for lid, pointer, name in ((0, a, "lhs"), (1, b, "rhs")):
+            e._rocc(
+                "mvin",
+                {
+                    "local": local(name, slot),
+                    "rows": rows,
+                    "cols": cols,
+                    "load_id": lid,
+                },
+                e._ptr(pointer, mrow, plan.n, ncol),
+            )
+        predictor = plan.certificate["predictor"]
+        first = True
+        e._rocc(
+            "config_ex",
+            {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.NO_ACTIVATION},
+        )
+        for source, value in (
+            (local("lhs", slot), predictor["p"]),
+            (local("rhs", slot), predictor["q"]),
+        ):
+            for chunk in _chunks(value):
+                product(
+                    source, chunk, -(slot * plan.panel_rows + 1), accumulate=not first
+                )
+                first = False
+        e._rocc(
+            "config_st",
+            {
+                "stride": plan.n,
+                "acc_act": isa.RELU
+                if plan.certificate["source"]["relu"]
+                else isa.NO_ACTIVATION,
+                "acc_scale": predictor["scale"],
+            },
+        )
+        destination = e._ptr(c, mrow, plan.n, ncol)
+        e._rocc(
+            "mvout",
+            {"local": isa.acc_addr(slot * plan.panel_rows), "rows": rows, "cols": cols},
+            destination,
+        )
+        return destination
+
+    def reload_and_correct(destination, slot):
+        e._rocc(
+            "mvin",
+            {
+                "local": local("prediction", slot),
+                "rows": rows,
+                "cols": cols,
+                "load_id": 0,
+            },
+            destination,
+        )
+        e._rocc("config_ex", {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.RELU})
+        previous = None
+        for index, offset in enumerate(plan.relation["offsets"]):
+            product(
+                local(offset["axis"], slot),
+                offset["coefficient"],
+                local("temporary", slot),
+                real_d=seed_base + index * cols,
+            )
+            e._rocc(
+                "fence", {"internal_spad_stage": 1} if coalesce_internal_spad else {}
+            )
+            current = local("indicator" + str(index % 2), slot)
+            product(
+                local("temporary", slot),
+                -1,
+                current,
+                real_d=seed_base + 4 * cols if previous is None else previous,
+            )
+            e._rocc(
+                "fence", {"internal_spad_stage": 1} if coalesce_internal_spad else {}
+            )
+            previous = current
+        e._rocc(
+            "config_ex", {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.NO_ACTIVATION}
+        )
+        product(
+            previous,
+            plan.relation["correction"],
+            -(slot * plan.panel_rows + 1),
+            real_d=local("prediction", slot),
+        )
+        e._rocc(
+            "config_st",
+            {
+                "stride": plan.n,
+                "acc_act": isa.RELU
+                if plan.certificate["source"]["relu"]
+                else isa.NO_ACTIVATION,
+                "acc_scale": 1.0,
+            },
+        )
+        e._rocc(
+            "mvout",
+            {"local": isa.acc_addr(slot * plan.panel_rows), "rows": rows, "cols": cols},
+            destination,
+        )
+
     def m_body(mrow):
         def n_body(ncol):
-            for lid, pointer, local in (
-                (0, a, place["lhs"][0]),
-                (1, b, place["rhs"][0]),
-            ):
-                e._rocc(
-                    "mvin",
-                    {"local": local, "rows": rows, "cols": cols, "load_id": lid},
-                    e._ptr(pointer, mrow, plan.n, ncol),
-                )
-            predictor = plan.certificate["predictor"]
-            first = True
-            e._rocc(
-                "config_ex",
-                {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.NO_ACTIVATION},
-            )
-            for source, value in (
-                (place["lhs"][0], predictor["p"]),
-                (place["rhs"][0], predictor["q"]),
-            ):
-                for chunk in _chunks(value):
-                    product(source, chunk, -1, accumulate=not first)
-                    first = False
-            e._rocc(
-                "config_st",
-                {
-                    "stride": plan.n,
-                    "acc_act": isa.RELU
-                    if plan.certificate["source"]["relu"]
-                    else isa.NO_ACTIVATION,
-                    "acc_scale": predictor["scale"],
-                },
-            )
-            destination = e._ptr(c, mrow, plan.n, ncol)
-            e._rocc(
-                "mvout",
-                {"local": isa.acc_addr(0), "rows": rows, "cols": cols},
-                destination,
-            )
+            destination = load_and_predict(mrow, ncol, 0)
             e._rocc("fence", {})
             if plan.relation:
-                e._rocc(
-                    "mvin",
-                    {
-                        "local": place["prediction"][0],
-                        "rows": rows,
-                        "cols": cols,
-                        "load_id": 0,
-                    },
-                    destination,
-                )
-                e._rocc(
-                    "config_ex", {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.RELU}
-                )
-                previous = None
-                for index, offset in enumerate(plan.relation["offsets"]):
-                    product(
-                        place[offset["axis"]][0],
-                        offset["coefficient"],
-                        place["temporary"][0],
-                        real_d=seed_base + index * cols,
-                    )
-                    e._rocc(
-                        "fence",
-                        {"internal_spad_stage": 1} if coalesce_internal_spad else {},
-                    )
-                    current = place["indicator" + str(index % 2)][0]
-                    product(
-                        place["temporary"][0],
-                        -1,
-                        current,
-                        real_d=seed_base + 4 * cols if previous is None else previous,
-                    )
-                    e._rocc(
-                        "fence",
-                        {"internal_spad_stage": 1} if coalesce_internal_spad else {},
-                    )
-                    previous = current
-                e._rocc(
-                    "config_ex",
-                    {"dataflow": isa.WEIGHT_STATIONARY, "act": isa.NO_ACTIVATION},
-                )
-                product(
-                    previous,
-                    plan.relation["correction"],
-                    -1,
-                    real_d=place["prediction"][0],
-                )
-                e._rocc(
-                    "config_st",
-                    {
-                        "stride": plan.n,
-                        "acc_act": isa.RELU
-                        if plan.certificate["source"]["relu"]
-                        else isa.NO_ACTIVATION,
-                        "acc_scale": 1.0,
-                    },
-                )
-                e._rocc(
-                    "mvout",
-                    {"local": isa.acc_addr(0), "rows": rows, "cols": cols},
-                    destination,
-                )
+                reload_and_correct(destination, 0)
                 e._rocc("fence", {})
 
         e.fb.for_loop(0, plan.n, cols, n_body)
 
-    e.fb.for_loop(0, plan.m, rows, m_body)
+    def batch_body(mrow, count):
+        def n_body(ncol):
+            destinations = []
+            for slot in range(count):
+                row = mrow if slot == 0 else e.fb.add_i(mrow, e.fb.const(slot * rows))
+                destinations.append(load_and_predict(row, ncol, slot))
+            # Required external-memory completion: do not infer a DDR RAW edge
+            # from local-address reservation-station dependencies.
+            e._rocc("fence", {})
+            for slot, destination in enumerate(destinations):
+                reload_and_correct(destination, slot)
+            # All ACC slots and output tiles remain live until this completion.
+            e._rocc("fence", {})
+
+        e.fb.for_loop(0, plan.n, cols, n_body)
+
+    if panel_batch == 1:
+        e.fb.for_loop(0, plan.m, rows, m_body)
+    else:
+        complete_end = plan.m // (panel_batch * rows) * (panel_batch * rows)
+        if complete_end:
+            e.fb.for_loop(
+                0,
+                complete_end,
+                panel_batch * rows,
+                lambda mrow: batch_body(mrow, panel_batch),
+            )
+        remaining = (plan.m - complete_end) // rows
+        if remaining:
+            batch_body(e.fb.const(complete_end), remaining)
     e._rocc("fence", {})
     function = llvm.FuncOp(
         "gemmini_golden_rectified_resadd",
@@ -395,8 +448,12 @@ def build(plan: Plan, *, coalesce_internal_spad: bool = False, ordering_contract
     if coalesce_internal_spad:
         from .spad_fence_coalescing import coalesce
 
-        proof = coalesce(result, ordering_contract, plan.spad_intervals)
+        proof = coalesce(result, ordering_contract, place)
         result.attributes["gemmini.spad_fence_coalescing"] = StringAttr(
             json.dumps(proof, sort_keys=True)
+        )
+    if batch_proof is not None:
+        result.attributes["gemmini.rectifier_panel_batch"] = StringAttr(
+            json.dumps(batch_proof, sort_keys=True)
         )
     return result

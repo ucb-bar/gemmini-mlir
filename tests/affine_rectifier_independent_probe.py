@@ -27,13 +27,16 @@ def main():
     parser.add_argument("--llvm-bin", type=Path, required=True)
     parser.add_argument("--workdir", type=Path, required=True)
     parser.add_argument("--ordering-source", type=Path)
+    parser.add_argument("--panel-batch", type=int, choices=(1, 4), default=1)
+    parser.add_argument("--m", type=int, default=48)
+    parser.add_argument("--n", type=int, default=128)
     args = parser.parse_args()
     work = args.workdir.resolve()
     work.mkdir(parents=True, exist_ok=False)
     bound = json.loads(args.certificate.read_text())["source_certificate"]
     proof = derive(**bound["source"], **bound["predictor"])
     certificate = synthesize(proof, max_pairs=1, indicator_family="axis_offsets")
-    plan = Plan(48, 128, certificate, Capabilities(*([True] * 6)))
+    plan = Plan(args.m, args.n, certificate, Capabilities(*([True] * 6)))
     count = plan.m * plan.n
     index = np.arange(count, dtype=np.int32)
     a = ((index * 73 + 3) % 256 - 128).astype(np.int8)
@@ -50,6 +53,7 @@ def main():
             ordering_contract=OrderingContract(str(args.ordering_source))
             if args.ordering_source
             else None,
+            panel_batch=args.panel_batch,
         ),
         args.llvm_bin,
         work / "device",
@@ -70,7 +74,7 @@ int main(void){{merlin_benchmark_fill(&r,0xdb,sizeof(r));gemmini_golden_rectifie
  size_t first=merlin_benchmark_first_difference(r.output,expected,N);
  if(first!=N){{printf("INDEPENDENT_FAIL index%lu expected%d actual%d\\n",(unsigned long)first,expected[first],r.output[first]);return 1;}}
  for(unsigned i=0;i<64;i++)if(r.before[i]!=0xdb||r.after[i]!=0xdb)return 2;
- printf("RECTIFIER_INDEPENDENT_PASS M48 N128 all%d guards128\\n",N);return 0;}}
+ printf("RECTIFIER_INDEPENDENT_PASS M{plan.m} N{plan.n} all%d guards128\\n",N);return 0;}}
 """)
     header = args.core / "merlin/runtime/c/benchmark_buffer.h"
     built = build_program(
@@ -99,7 +103,8 @@ int main(void){{merlin_benchmark_fill(&r,0xdb,sizeof(r));gemmini_golden_rectifie
     (work / "spike.stderr").write_text(run.stderr)
     assert (
         run.returncode == 0
-        and "RECTIFIER_INDEPENDENT_PASS M48 N128 all6144 guards128" in run.stdout
+        and f"RECTIFIER_INDEPENDENT_PASS M{plan.m} N{plan.n} all{count} guards128"
+        in run.stdout
     )
     gsim = run_on_gsim(
         built.elf,
@@ -114,12 +119,14 @@ int main(void){{merlin_benchmark_fill(&r,0xdb,sizeof(r));gemmini_golden_rectifie
     passed = (
         gsim.completed
         and gsim.returncode == 0
-        and "RECTIFIER_INDEPENDENT_PASS M48 N128 all6144 guards128" in gsim.stdout_tail
+        and f"RECTIFIER_INDEPENDENT_PASS M{plan.m} N{plan.n} all{count} guards128"
+        in gsim.stdout_tail
     )
     record = {
         "schema": "affine_rectifier_independent_shape_v1",
         "passed": passed,
         "plan": plan.attributes(),
+        "panel_batch": args.panel_batch,
         "certificate": certificate,
         "compilation": compilation,
         "audit": audit,
