@@ -1,0 +1,37 @@
+{
+  "schema": "merlin.support_contract_review.v1",
+  "supersedes": "contract_alignment_migration.json current_files: the elementwise_map declaration changes from composed-only to standalone with evidence paths, in step with Merlin's reviewed reference contracts.",
+  "review": {
+    "decision": "operator decision 2026-10-01 via coordinating session, approving standalone elementwise_map from RTL evidence",
+    "evidence": {
+      "fact": "accumulate_on_load (merlin.targetgen.rtl.semantic_facts, probes in contracts/semantic_probes.yaml)",
+      "store": "AccumulatorMem.scala:183 -- the accumulator store writes the adder's sum when the write's accumulate bit is set",
+      "load_path": "Scratchpad.scala:828 -- the accumulator bank's accumulate bit is the load address's accumulate field (LocalAddr.accumulate); Scratchpad.scala:368 -- the DMA read request delivers it",
+      "readout_scale": "backend/gemmini.py readout_operand_sum, from gemmini_params.h (MVIN_SCALE, f32, half-even, saturating)",
+      "roles": [
+        "operand_load",
+        "config",
+        "readout",
+        "commit"
+      ]
+    },
+    "not_evidence": "LoopMatmulLdA/LdB is_resadd (old-line 9aa1db949): the hardware-loop FSM, role loop_descriptor, which a no-FSM program may not use"
+  },
+  "reviewed_source": {
+    "repository": "merlin",
+    "examples/gemmini/target/contracts/target_contract.yaml": "c08579631c1c85afc5e9a25093c1ab82e19c6bafb51394b27c74fc4feb89b20b",
+    "examples/gemmini/target/contracts/residual.yaml": "4202429301a7fe9761390902f4a5358971cbd7f9212d5645dba612e23dd2eeff"
+  },
+  "replaced": {
+    "contracts/target_contract.yaml": "cf5779ad9581856acdc682e94b4bab8fb6dd153307aca6dfa9a67b27765e63a5",
+    "contracts/residual.yaml": "585dfebd042019347131b33a471d3a9d6419f6bb017449299a4d8387c45e76bc"
+  },
+  "current_files": {
+    "contracts/target_contract.yaml": "554a891747b8687dca215908a9124a2abb82f7892318dc0a73a19c036141b284",
+    "contracts/residual.yaml": "c99e01773740b793ffd0634367f325b271f9c3de1db69cb6b312ea6ed5d790d6"
+  },
+  "qualification": {
+    "hardware_executed": false,
+    "candidate_certification": false
+  }
+}
