@@ -443,3 +443,17 @@ def test_selected_factory_does_not_adopt_transport_callback_as_execution_authori
         feedback.prepare_component_feature_provider(
             execution_service=service, require_normal=True
         )
+
+
+def test_prepared_bound_owner_has_live_context_and_no_mutable_partial_service(tmp_path):
+    from dataclasses import FrozenInstanceError
+
+    service, _ = setup(tmp_path)
+    prepared = feedback.prepare_component_feature_provider(execution_service=service)
+    owner = prepared.__self__
+    assert owner.component_source_pins[service.engine.path] == service.engine.sha256
+    with pytest.raises(FrozenInstanceError):
+        owner.service = None
+    service.engine.path.write_bytes(b"changed selected runtime")
+    with pytest.raises(ValueError, match="changed"):
+        _ = owner.component_source_pins

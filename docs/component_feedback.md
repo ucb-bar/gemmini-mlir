@@ -20,6 +20,10 @@ backend.prepare_component_execution_service(
 backend.prepare_component_feature_provider(execution_service=service)
 ```
 
+The prepared feature provider is a bound method on a frozen owner. Its selected
+service and live source/runtime pins are verified before generic cache reuse;
+callback code identity alone does not bind a mutable execution context.
+
 These are typed frozen host inputs. No JSON module import, callback name or pass
 flag can create executor authority. The target descriptor requires exactly this
 selection section (the paths and full digests must name actual selected files):

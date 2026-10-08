@@ -796,7 +796,7 @@ def component_feedback_dependencies(*, execution_service=None):
     pins = {path: file_digest(path) for root in roots for path in root.rglob("*.py")}
     if execution_service is not None:
         prepared = module.prepare_component_feature_provider(execution_service=execution_service, require_normal=True)
-        pins.update(prepared.component_source_pins)
+        pins.update(prepared.__self__.component_source_pins)
     return pins
 
 

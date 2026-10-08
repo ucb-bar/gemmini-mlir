@@ -1094,6 +1094,28 @@ def component_feature_provider(
     return tuple(result)
 
 
+@dataclass(frozen=True)
+class PreparedComponentFeatureProvider:
+    service: ComponentExecutionService
+
+    @property
+    def component_source_pins(self):
+        self.service.verify()
+        return {
+            artifact.path: artifact.sha256
+            for artifact in (
+                self.service.implementation,
+                self.service.engine,
+                self.service.machine_configuration,
+                *self.service.runtime_dependencies,
+            )
+        }
+
+    def evaluate(self, **kwargs):
+        self.service.verify()
+        return component_feature_provider(service=self.service, **kwargs)
+
+
 def prepare_component_feature_provider(*, execution_service, require_normal=False):
     if type(execution_service) is not ComponentExecutionService:
         raise ValueError("a selected ordinary component execution service is required")
@@ -1105,17 +1127,4 @@ def prepare_component_feature_provider(*, execution_service, require_normal=Fals
         raise ValueError(
             "selected component feedback requires the closed admitted normal execution factory"
         )
-    provider = partial(component_feature_provider, service=execution_service)
-    # The generic host must include these private exact pins in its factory's
-    # explicit dependency mapping. Callback source alone does not bind engine,
-    # ISA/runtime configuration or admitted executor selection.
-    provider.component_source_pins = {
-        artifact.path: artifact.sha256
-        for artifact in (
-            execution_service.implementation,
-            execution_service.engine,
-            execution_service.machine_configuration,
-            *execution_service.runtime_dependencies,
-        )
-    }
-    return provider
+    return PreparedComponentFeatureProvider(execution_service).evaluate
