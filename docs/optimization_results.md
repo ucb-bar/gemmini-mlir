@@ -53,7 +53,7 @@ measurement scope; component measurements do not predict whole-model savings.
 | Change | Verified so far | Remaining gate | Owner |
 | --- | --- | --- | --- |
 | Share scalar approximation tables before normal lowering | All 22 current TinyLlama observers compile with one 196,608-byte table; uncertified cells retain source fallback. Fresh helpers match 991,232 integer observations in each of four host rounding modes. This candidate disables a conflicting lane-packet transform. | Composition with lane scheduling, the original whole output gate, linked runtime predicate and complete timing. Four-mode replay covers supplied observer inputs; upstream producers were replayed in RNE. | Merlin |
-| Compose scalar observations with tensor lane scheduling | The reusable immutable tensor-insertion and bounded-loop route passes 581 source plus 581 independently installed checks. All 44 current packetized TinyLlama observations now compile upstream with one table and the original scheduling features. Default LLVM remains unchanged. | Fresh 44-member numerical replay, original whole output gate, linked runtime predicate and complete timing. The separate 22-member candidate's numerical result does not transfer. | Merlin |
+| Compose scalar observations with tensor lane scheduling | The reusable immutable tensor-insertion and bounded-loop route passes 581 source plus 581 independently installed checks. All 44 current packetized TinyLlama observations compile upstream with one table and the original scheduling features. Fresh helpers match 991,232 integer observations in each of four host rounding modes. Default LLVM remains unchanged. | Original whole output gate, linked runtime predicate and complete timing. Four-mode replay covers supplied observer inputs; upstream producers were replayed in RNE. | Merlin |
 | Preserve source joins through common-subexpression elimination | The current SmolVLA structural experiment merges three equivalent Q/K/V quantizers into one while retaining their source identities and all original calls. | Final public compiler integration, effect admission, original whole output gate and executable timing. | Merlin |
 | Project unused immutable weight arguments | Current prepared ResNet accounting identifies 53 removable obsolete parameter tensors, totaling 106,240 logical bytes. Captured buffers remain until immutable ownership is proved. Normal native/Spike execution and 564 source plus 564 independently installed checks pass. | Actual whole delivery and measured benefit. | Merlin |
 | Generate compact convolution candidates from typed command traces | Source/resource legality, independent cases, upstream lowering and zero-FSM object checks pass. | A complete cost selector and a fresh stock whole run. | OOT dialect |
@@ -66,7 +66,10 @@ retains the supplied-input and RNE producer scope. The separately qualified
 [tensor lane composition](perf_records/scalar_tensor_lane_composition_20261008.json)
 addresses the packetization conflict. The fresh
 [44-member normal compilation](perf_records/tiny_current_normal_packetized44_20261008.json)
-preserves the original scheduling features; its numerical and whole gates remain pending.
+preserves the original scheduling features. Its separate
+[44-member numerical replay](perf_records/tiny_current_normal_packetized_numeric_20261008.json)
+passes with independently authenticated current source and lane coverage;
+the original whole output and hardware gates remain pending.
 The weight projection has a compact
 [qualification summary](perf_records/immutable_weight_projection_20261008.json).
 The input-prefix [runtime attribution](perf_records/resnet_input_prefix_runtime_attribution_20261008.json)

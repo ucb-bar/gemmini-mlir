@@ -4298,3 +4298,14 @@ numerical result does not grant it accuracy or performance credit.
 [Fresh numerical replay](perf_records/tiny_current_normal_scalar_numeric_20261008.json),
 [tensor lane qualification](perf_records/scalar_tensor_lane_composition_20261008.json),
 [normal packetized application](perf_records/tiny_current_normal_packetized44_20261008.json).
+
+### Packetized numerical successor
+
+The fresh44-helper candidate now passes991232 observations in each of four
+native rounding modes, with zero changed integer codes, exact fallback and
+checked readonly inputs/guards. Original source producer roots, extraction
+coordinates, scalar order, scale maps and disjoint/exhaustive lane coverage are
+independently closed; all191 pins reclose. The supplied boundary values are
+shared across modes and upstream replay remainsRNE. Whole256000 accuracy,
+actual whole linked RV64 admission and target costs remain separate next gates.
+[Fresh packetized numerical replay](perf_records/tiny_current_normal_packetized_numeric_20261008.json).

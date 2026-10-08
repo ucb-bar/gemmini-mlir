@@ -234,3 +234,15 @@ and whole gates are pending. The 22-member result must not transfer to this cand
 [Fresh numerical replay](perf_records/tiny_current_normal_scalar_numeric_20261008.json),
 [tensor lane qualification](perf_records/scalar_tensor_lane_composition_20261008.json),
 [normal packetized application](perf_records/tiny_current_normal_packetized44_20261008.json).
+
+The subsequent fresh44 packetized numerical replay also passes:22528 cells per
+current helper and991232 total observations in each of four modes, with zero
+changed integer codes. Current scalar extract/cast/literal/scale order,
+original producer roots/ABI/maps and publication coordinates are authenticated;
+the fresh lanes cover each original domain exactly once. Guards, supplied input
+hashes, runtime predicate and forced source fallback pass. All191 pins reclose.
+The same coefficient bytes were independently derived and checked; no old
+helper or certificate was executed. Scope remains supplied boundary values in
+four modes with upstream producer replayRNE. The256000 original whole output
+gate, actual whole RV64 predicate and complete target cost remain pending.
+[Fresh packetized numerical replay](perf_records/tiny_current_normal_packetized_numeric_20261008.json).
