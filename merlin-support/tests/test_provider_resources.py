@@ -11,7 +11,11 @@ from gemmini_conformance.support import ROOT, backend
 def test_default_harness_is_provider_owned_and_never_chipyard(monkeypatch, tmp_path):
     implementation = importlib.import_module(backend().__name__ + ".gemmini")
     monkeypatch.delenv("MERLIN_GEMMINI_HARNESS_DIR", raising=False)
-    monkeypatch.setattr(implementation, "chipyard_root", lambda: pytest.fail("implicit Chipyard fallback"))
+    monkeypatch.setattr(
+        implementation,
+        "chipyard_root",
+        lambda: pytest.fail("implicit Chipyard fallback"),
+    )
     assert implementation.rocc_tests_dir() == ROOT / "resources/gemmini-rocc-tests"
     assert (implementation.rocc_tests_dir() / "include/gemmini.h").is_file()
     for relative in (
@@ -22,7 +26,9 @@ def test_default_harness_is_provider_owned_and_never_chipyard(monkeypatch, tmp_p
         "rocc-software/src/xcustom.h",
     ):
         assert (implementation.rocc_tests_dir() / relative).is_file()
-    monkeypatch.setattr(implementation, "__file__", str(tmp_path / "backend/gemmini.py"))
+    monkeypatch.setattr(
+        implementation, "__file__", str(tmp_path / "backend/gemmini.py")
+    )
     assert implementation.rocc_tests_dir() == tmp_path / "resources/gemmini-rocc-tests"
     assert not implementation.rocc_tests_dir().exists()
 
@@ -66,14 +72,18 @@ def test_explicit_facts_preserve_stale_hardware_refusal(monkeypatch, tmp_path):
         json.dumps(
             {
                 "inputs": {"core_hw_sha256": "0" * 64},
-                "facts": {"interfaces": [{"name": "funct_decode_table", "hw_source": str(hw)}]},
+                "facts": {
+                    "interfaces": [{"name": "funct_decode_table", "hw_source": str(hw)}]
+                },
             }
         )
     )
     monkeypatch.setenv("MERLIN_RTL_FACTS", str(facts))
     monkeypatch.delenv("MERLIN_GEMMINI_HARNESS_DIR", raising=False)
     module = _conv()
-    with pytest.raises(module.UnsupportedNativeConv, match="stale core hardware identity"):
+    with pytest.raises(
+        module.UnsupportedNativeConv, match="stale core hardware identity"
+    ):
         module.derive_native_conv_contract()
 
 
@@ -92,7 +102,31 @@ def test_calibration_identity_and_inputs_are_provider_owned(monkeypatch):
 
 def test_resource_and_coefficient_bytes_preserved():
     inventory = json.loads((ROOT / "resource_migration.json").read_text())
-    changed = {"cost_model/calibrate.py", "backend/gemmini.py", "backend/gemmini_loop_conv.py"}
+    changed = {
+        "cost_model/calibrate.py",
+        "backend/gemmini.py",
+        "backend/gemmini_loop_conv.py",
+    }
     for row in inventory["files"]:
         if row["destination"] not in changed:
             assert row["source_sha256"] == row["destination_sha256"], row["destination"]
+
+
+def test_handwritten_reference_exposes_no_author_feedback_helpers():
+    implementation = importlib.import_module(backend().__name__ + ".gemmini")
+    for name in (
+        "component_execution_types",
+        "prepare_component_execution_service",
+        "observe_component_execution",
+        "prepare_component_feature_provider",
+        "component_feedback_dependencies",
+        "inspect_component_source_applicability",
+        "verify_component_execution_witness",
+    ):
+        assert not hasattr(implementation, name), name
+    for relative in (
+        "mlir_oot/component_feedback.py",
+        "tests/test_component_feedback.py",
+        "docs/component_feedback.md",
+    ):
+        assert not (ROOT.parent / relative).exists(), relative

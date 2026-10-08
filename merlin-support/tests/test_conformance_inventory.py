@@ -24,22 +24,37 @@ TRANSFORMATIONS = (
     "primitive_helper_migration.json",
     "transport_alignment_migration.json",
     "standalone_elementwise_review.json",
-    "component_feedback_migration.json",
-    "component_feedback_context_migration.json",
-    "component_source_applicability_migration.json",
+    "reference_boundary_removal.json",
 )
 OUTPUT_SCOPES = {
-    "standalone_elementwise_review.json": {"contracts/target_contract.yaml", "contracts/residual.yaml"},
+    "reference_boundary_removal.json": {"backend/gemmini.py", "tests/test_provider_resources.py"},
+    "standalone_elementwise_review.json": {
+        "contracts/target_contract.yaml",
+        "contracts/residual.yaml",
+    },
     "transport_alignment_migration.json": {
         "gemmini_conformance/kernel_slot.py",
         "tests/test_conformance_policy.py",
         "tests/test_provider_resources.py",
         "tests/test_program_build_sources.py",
     },
-    "primitive_helper_migration.json": {"backend/gemmini_primitive_probe.py", "backend/primitive_program.py"},
-    "contract_alignment_migration.json": {"contracts/target_contract.yaml", "contracts/residual.yaml"},
-    "rtl_checks_migration.json": {"backend/rtl_checks.py", "backend/rocc_semantics.py", "tests/test_rtl_checks.py"},
-    "rocc_semantics_migration.json": {"backend/rocc_semantics.py", "backend/__init__.py"},
+    "primitive_helper_migration.json": {
+        "backend/gemmini_primitive_probe.py",
+        "backend/primitive_program.py",
+    },
+    "contract_alignment_migration.json": {
+        "contracts/target_contract.yaml",
+        "contracts/residual.yaml",
+    },
+    "rtl_checks_migration.json": {
+        "backend/rtl_checks.py",
+        "backend/rocc_semantics.py",
+        "tests/test_rtl_checks.py",
+    },
+    "rocc_semantics_migration.json": {
+        "backend/rocc_semantics.py",
+        "backend/__init__.py",
+    },
     "readout_encoding_migration.json": {
         "backend/rocc_semantics.py",
         "backend/gemmini_codegen_mlir.py",
@@ -62,12 +77,18 @@ def evolved_identity(root, path, expected, *, after=None):
         document = json.loads((root / inventory).read_text())
         if inventory in OUTPUT_SCOPES:
             outputs = document["current_files"]
-            assert set(outputs) == OUTPUT_SCOPES[inventory], "unexpected supersession scope"
-            assert document["supersedes"], "output replacement must declare supersession"
+            assert set(outputs) == OUTPUT_SCOPES[inventory], (
+                "unexpected supersession scope"
+            )
+            assert document["supersedes"], (
+                "output replacement must declare supersession"
+            )
             expected = outputs.get(path, expected)
         else:
             changes = {row["destination"]: row for row in document["files"]}
-            assert len(changes) == len(document["files"]), "conflicting destination declarations"
+            assert len(changes) == len(document["files"]), (
+                "conflicting destination declarations"
+            )
             if path in changes:
                 row = changes[path]
                 assert row["source_sha256"] == expected, "discontinuous source identity"
@@ -98,7 +119,9 @@ def test_relocated_owner_inventory(inventory):
         path = root / row["destination"]
         expected = row.get("destination_sha256", row.get("sha256"))
         expected = evolved_identity(root, row["destination"], expected, after=inventory)
-        assert expected and hashlib.sha256(path.read_bytes()).hexdigest() == expected, path
+        assert expected and hashlib.sha256(path.read_bytes()).hexdigest() == expected, (
+            path
+        )
 
 
 @pytest.mark.parametrize("inventory", list(OUTPUT_SCOPES))

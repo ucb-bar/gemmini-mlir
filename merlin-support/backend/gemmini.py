@@ -30,7 +30,6 @@ import tempfile
 import threading
 from collections.abc import Mapping
 from contextlib import contextmanager
-from contextvars import ContextVar
 from pathlib import Path
 from typing import Any
 
@@ -737,79 +736,6 @@ def prepare_short_program_execution(elf, **kwargs):
     return prepare_gsim_command(elf, **kwargs)
 
 
-def _component_feedback_module():
-    """Resolve only this explicitly selected companion's target feature code."""
-    import importlib
-
-    from merlin.targetgen.contract.build_service import load_build_package
-
-    initializer = Path(__file__).resolve().parents[2] / "mlir_oot" / "__init__.py"
-    package = load_build_package(initializer)
-    return importlib.import_module(package.__name__ + ".component_feedback")
-
-
-def component_execution_types():
-    """Private typed ordinary-executor contract; no runtime discovery or execution."""
-    module = _component_feedback_module()
-    return module.Artifact, module.ExecutedComponent, module.ComponentExecutionService
-
-
-def prepare_component_execution_service(*, baseline, qualification, view, runtime, corpus,
-                                        target_experiment, contract_root, source_root, scope, output):
-    """Prepare the closed host-selected ordinary component execution chain."""
-    return _component_feedback_module().prepare_component_execution_service(
-        baseline=baseline, qualification=qualification, view=view, runtime=runtime, corpus=corpus,
-        target_experiment=target_experiment, contract_root=contract_root, source_root=source_root, scope=scope, output=output,
-    )
-
-
-_COMPONENT_OBSERVATION = ContextVar("gemmini_component_execution_observation", default=None)
-
-
-@contextmanager
-def observe_component_execution(*, configuration, dependencies, inputs, regime):
-    """Observe the actual ordinary launch under one explicitly selected regime.
-
-    No environment mutation, candidate callback or cold/warm scope invention.
-    Inner execution must remain serial until context propagation is qualified.
-    """
-    token = _COMPONENT_OBSERVATION.set((configuration, tuple(dependencies), tuple(inputs), regime))
-    try:
-        yield
-    finally:
-        _COMPONENT_OBSERVATION.reset(token)
-
-
-def prepare_component_feature_provider(*, execution_service):
-    """Bind actual admitted execution to this target's ELF/PC/operand decoder."""
-    return _component_feedback_module().prepare_component_feature_provider(
-        execution_service=execution_service, require_normal=True,
-    )
-
-
-def component_feedback_dependencies(*, execution_service=None):
-    """Exact selected source membership required by the generic host binding."""
-    module = _component_feedback_module()
-    from merlin.targetgen.contract.build_service import file_digest
-
-    roots = (Path(__file__).resolve().parent, Path(module.__file__).resolve().parent)
-    pins = {path: file_digest(path) for root in roots for path in root.rglob("*.py")}
-    if execution_service is not None:
-        prepared = module.prepare_component_feature_provider(execution_service=execution_service, require_normal=True)
-        pins.update(prepared.__self__.component_source_pins)
-    return pins
-
-
-def inspect_component_execution_records(**kwargs):
-    """Reopen actual ordinary records; missing semantic facets remain UNKNOWN."""
-    return _component_feedback_module().inspect_component_execution_records(**kwargs)
-
-
-def verify_component_execution_witness(**kwargs):
-    """Refuse any full-stage claim unsupported by actual ordinary target evidence."""
-    return _component_feedback_module().verify_component_execution_witness(**kwargs)
-
-
 def run_elf(elf: str | Path, simulator: str = "verilator", timeout: int = 600) -> str:
     """Run the ELF on the chosen oracle; return raw console output."""
     preexec = None
@@ -835,19 +761,6 @@ def run_elf(elf: str | Path, simulator: str = "verilator", timeout: int = 600) -
         harts, isa = declared_harts(elf), declared_isa(elf)
         machine = [*([f"-p{harts}"] if harts else []), *([f"--isa={isa}"] if isa else [])]
         cmd = [str(spike_path()), *flags, *machine, *memory, str(elf)]
-        observation = _COMPONENT_OBSERVATION.get()
-        if observation is not None:
-            configuration, observed_dependencies, observed_inputs, regime = observation
-            prefix = configuration["spike_argv_prefix"]
-            if (prefix[0] != str(spike_path().resolve()) or prefix[2:2 + len(flags)] != list(flags)
-                    or (isa is not None and isa != configuration["isa"])
-                    or (harts is not None and harts != configuration["harts"])
-                    or (span is not None and list(span) != configuration["memory"])):
-                raise GemminiError("component machine selection differs from actual ordinary ELF/engine configuration")
-            cmd = [*prefix, str(elf)]
-            dependencies.extend(observed_dependencies)
-            dependencies.extend(observed_inputs)
-            stage = "component_" + regime
     elif simulator == "verilator":
         env = dict(os.environ)
         cmd = [str(verilator_path()), str(elf)]
