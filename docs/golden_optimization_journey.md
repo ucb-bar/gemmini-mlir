@@ -1,5 +1,68 @@
 # Golden compiler optimization journey
 
+## 2026-10-08 00:47 UTC: close actual CPU coverage and shared compilation boundaries
+
+Two general Merlin topics now compose on clean local main `ea180dca9`:
+installed read-only resources follow the implementation or an explicit owner,
+and exact scalar contraction schedules preserve ordinary fusion/generalization
+before bufferization. The composition passes400 source +400 independently
+installed checks, with1,026 Python modules/157 public resources/62 runtime files
+byte exact across source/wheel/sdist/install, and four default LLVM cases unchanged.
+The actual ambient-CWD probe reproduces the old resource bug and verifies all
+six resource classes in the new wheel while preserving explicit overrides/work
+roots. The installed dependency environment is explicitly shared with a prior
+qualified installation; current core code/data are independently installed.
+
+The [actual Smol executable audit](smol_fx_lowering_audit.md) confirms62 CPU
+attention products plus patch convolution. Attention is4.03% of full functional
+retirement; patch convolution alone is slightly larger. The vision attention
+provider/reconstruction/certification/encoding functions account for63.77%.
+The new scalar pass first caused48 fallback groups through duplicated physical
+RHS views. Final-output equality missed that loss; the fixed pass restores all
+48 groups/23,040 callbacks and all1,600 bitexact outputs. Complete QK source
+retirement improves11.5955%, independently11.5358%, without hardware/whole credit.
+
+| Candidate | Complete evidence | Scope and decision |
+| --- | --- | --- |
+| Resident prefetch slots beyond complete cached input | GSIM actual527,421→507,686.5cycles,−3.74170%; independenti32−6.20052%,segmentedi8−4.18437% | Positive complete callback; actual CPU+3.41082% remains negative. Defaultoff, stock/whole unmeasured |
+| Padding-border source-prefix callback | GSIM1,911,526→1,418,230,−25.8064%; independent+14.5178% | Tradeoff retained. Old879/custom scoped runtime differs from current whole; selected physical-map source still UNKNOWN |
+| Tiny refined quadratic14 carrier |192KiB table; native256,000 outputs exact; complete source retirement−5.9865%,independent+47.1898% | Explicit approximation with unchanged whole gate; new whole target and hardware pending. No runtime fine table/guard |
+| Tiny quadratic15 carrier |384KiB table; native whole exact; complete source retirement−5.7047%,independent+36.9573% | Independent regression retained; defaultoff/no automatic selection/hardware credit |
+| Current normal ResNet all52 leaves |16directconv/11output-panel/24coalescing selections; all70 writer bindings and original1,000 native/Spike outputs exact; current installed runtime pinned | Fresh HTIF ELF `f631fe9f`,7,843,944 functional retirement proxy. Stock console/provider/source closure and whole cycles pending |
+
+Root independently closes35,342 distinct original declared paths across ten
+receipt roots. Sparse-checkout documentation validation failures are retained;
+only committed auxiliary inputs were populated, and the completed400-source run
+was reused with production files unchanged. Terminal unpinned cache/staging was
+removed; frozen installed test artifacts moved to `/tmp` with every original
+path/readbyte preserved through an explicit alias. No active owner was cleaned.
+
+Phase0 needs semantic capsules covering SCF/FMA/mixed precision and compilation
+resource identity. Phase1 must gate actual callback admission and physical borrows
+alongside final numerical outputs, with unresolved FX→IR edges explicit. Phase2
+needs exclusive CPU observations plus calibrated complete transfers/device costs;
+never treat retired instructions as cycles or add overlapping section savings.
+New table-carrier source APIs and a trace-based target family selector remain
+separate bounded source topics, unpromoted here. A multi-observer carrier must
+explicitly share immutable coefficient storage rather than assume LLVM dedup.
+
+Whole stock champions remain ResNet28,649,233;Tiny378,946,263;
+Smol258,621,872,969 cycles. FireSim daemon is alive and idle, but canonical queue
+write access remains unavailable. Merlin remote briefly advertised4a7cb182;
+subsequent SSH/HTTPS fetches failed DNS, so no new publication is asserted.
+Aggregate thread tokens observed115,046,292 at00:14:47UTC; exact OOT/topic billing
+remains UNKNOWN. No PR was opened.
+
+[Current shared compiler](perf_records/shared_resource_scalar_tensor_stages_composition_20261007.json).
+[Actual ambient-CWD wheel probe](perf_records/shared_installed_resource_ambient_probe_20261007.json).
+[Fresh normal ResNet whole gate](perf_records/resnet_current_common_output_blocks_coalescing_whole_20261007.json).
+[Resident prefetch hardware](perf_records/resnet_remaining_slots_complete_callback_gsim_20261007.json).
+[Padding hardware and negative](perf_records/resnet_padding_border_complete_gsim_20261007.json).
+[Tiny14](perf_records/tiny_refined_quadratic14_current_policy_packet_20261007.json),
+[Tiny15](perf_records/tiny_quadratic15_current_policy_packet_20261007.json).
+[Independent closure](perf_records/root_current_resource_stage_cost_reclosure_20261007.json),
+[terminal artifact alias](perf_records/shared_terminal_test_artifact_alias_20261007.json).
+
 ## 2026-10-07: preserve resident resource witnesses through normal compilation
 
 OOT topic37ff7ee derives prefetch slots beyond the **complete cached input**,

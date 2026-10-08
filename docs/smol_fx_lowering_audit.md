@@ -41,7 +41,48 @@ share is small. Their six typed shape classes contain **40 f32 products and
 operands originated from exact BF16 widening, so the next audit follows their
 producer chains through the current typed IR and emitted calls. The earlier
 executable inventory covered direct linalg multiply/add forms, excluding
-SCF/FMA forms; that exclusion is an evidence gap, not proof of offload.
+SCF/FMA forms; that exclusion was an evidence gap, not proof of offload.
+
+## Current executable coverage and cost
+
+The independently checked current functional executable `b15444e0` contains
+**62 live CPU attention product functions**, including scalar SCF/FMA forms:
+15 text QK,15 text BF16 PV,8 action QK,8 action BF16 PV,8 cross QK and8 cross PV.
+Their bodies contain scalar floating arithmetic and no device imports; actual
+executed PC extents account for4,745,501,325 exclusive retired instructions.
+The remaining graph-to-live-function correspondence for two of the64 prepared
+nonvision products is UNKNOWN. Static function count is not dynamic call count.
+
+The image patch convolution is also on the CPU. Its typed im2col contraction has
+four interleaved K192 lanes and603,979,776 MACs. The current function retires
+4,851,512,883 instructions, slightly more than all62 attention functions combined.
+The attention functions account for4.03% of the117,636,499,028-instruction whole
+executable trace. Vision provider, product reconstruction, frontier certification
+and operand encoding together account for63.77% of that trace. These are exclusive
+CPU function counts, including harness/startup/output in the denominator;
+they are **not host/accelerator time percentages or FireSim cycle allocation**.
+
+The exact optional scalar-accumulator pass initially changed named-copy fusion
+and broke prepared immutable RHS physical identity. All48 groups then used their
+original source fallback, despite exact final outputs. The shared Merlin fix
+places scalarization after ordinary fusion/generalization and before bufferization.
+It restores48 groups,12 preparations and23,040 integer product callbacks, with
+all1,600 original words bitexact and zero fallback/owner errors. Combined clean
+main `ea180dca9` passes400 source +400 independently installed tests.
+
+A complete source-derived QK component, including private seed restoration and
+result publication, improves104,063,475→91,996,770 retired instructions
+(−11.5955%); an independent tail case improves4,369→3,865. Both retain exact
+outputs and zeroFSM. This is a CPU component improvement, not additional offload,
+whole-model speedup or hardware timing. Patch-convolution numerical/lowering
+feasibility is a separate pending gate. An initial native symbol-rebinding seam
+ran zero replacement calls and is invalid for policy coverage; it gives no
+numerical candidate credit.
+
+[Current executable/PC review](perf_records/smol_actual_current_executable_product_review_20261007.json).
+[Scalar-stage source/coverage qualification](perf_records/smol_scalar_tensor_stage_source_topic_20261007.json).
+[Current shared compiler composition](perf_records/shared_resource_scalar_tensor_stages_composition_20261007.json).
+[Complete QK functional cost](perf_records/smol_scalar_qk_complete_functional_cost_20261007.json).
 
 ## Direct PyTorch source inspection
 
