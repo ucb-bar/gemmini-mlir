@@ -4309,3 +4309,50 @@ independently closed; all191 pins reclose. The supplied boundary values are
 shared across modes and upstream replay remainsRNE. Whole256000 accuracy,
 actual whole linked RV64 admission and target costs remain separate next gates.
 [Fresh packetized numerical replay](perf_records/tiny_current_normal_packetized_numeric_20261008.json).
+
+### Whole numerical successor and attention comparison
+
+The current normal 44-observer TinyLlama candidate now passes the original whole
+native and RV64 Spike gates: all 256,000 output words are bit exact to the
+compiled reference and satisfy the unchanged Torch gate. Root independently
+reclosed 719 native, 53 link, 11 target and eight table-storage pins. The first
+functional counter screen is worse than an older complete recipe; it changes
+observer policy, core and runtime and omitted an existing late RNE legalization.
+This is a recipe-composition defect to fix before a matched performance test,
+not a measured stock improvement. Keep the original PASS and negative screen.
+
+The joint SmolVLA probability/denominator approximation is rejected after 122
+of 1,600 whole outputs fail. Root reclosed all 132 pins. Source inspection shows
+BF16 probabilities feeding PV while original unrounded binary32 values feed
+the denominator. A cheaper source-derived rounding certificate is being
+implemented with the original denominator bounds and fallback preserved.
+
+The exact attention device audit closes 92 pins and actual command counts.
+Within-degree full operand residency is now an explicit OOT implementation task;
+requested traffic estimates have no measured hardware benefit yet. The retained
+captures have very different attention work: 1,024-token SmolVLA vision versus
+eight-token TinyLlama, about 3,351 times the rectangular QK/PV arithmetic.
+The selected default integer Gemmini and Rocket FPU have no admitted native
+BF16 arithmetic. Current local hardware sources and capture witnesses are
+separately pinned; this does not regenerate the sealed FPGA bitstream proof.
+
+The generic packet scheduler is qualified in Merlin at 17af4eb9:
+609 source plus 609 independently installed checks, zero skips, package identity
+and default LLVM controls preserved. Its explicit output-axis grouping is
+derived from typed tensor layouts. The complete current-runtime prefix retires
+2.879% fewer instructions; stock cycle benefit remains unknown.
+
+Phase 0 must expose precision boundaries and benchmark sequence length before
+comparing model size. Phase 1 must preserve composed legalizations and explicit
+source observation/ownership contracts. Phase 2 must test complete numerical
+and cost successors, including regressions and software rounding/encoding.
+
+Goal meter observation: 123,252,374 aggregate tokens and 244,668 elapsed seconds.
+This is not provider billing or an exact Gemmini/topic allocation; those remain
+unknown. Best stock whole-model measurements are unchanged.
+
+[Attention comparison](attention_precision_and_cost.md),
+[whole native gate](perf_records/tiny_normal_whole_native_20261008.json),
+[whole RV64 gate](perf_records/tiny_normal_whole_spike_20261008.json),
+[joint rejection](perf_records/smol_joint_probability_rejected_20261008.json),
+[packet scheduler](perf_records/bounded_rne_packet_scheduling_20261008.json).

@@ -53,7 +53,8 @@ measurement scope; component measurements do not predict whole-model savings.
 | Change | Verified so far | Remaining gate | Owner |
 | --- | --- | --- | --- |
 | Share scalar approximation tables before normal lowering | All 22 current TinyLlama observers compile with one 196,608-byte table; uncertified cells retain source fallback. Fresh helpers match 991,232 integer observations in each of four host rounding modes. This candidate disables a conflicting lane-packet transform. | Composition with lane scheduling, the original whole output gate, linked runtime predicate and complete timing. Four-mode replay covers supplied observer inputs; upstream producers were replayed in RNE. | Merlin |
-| Compose scalar observations with tensor lane scheduling | The reusable immutable tensor-insertion and bounded-loop route passes 581 source plus 581 independently installed checks. All 44 current packetized TinyLlama observations compile upstream with one table and the original scheduling features. Fresh helpers match 991,232 integer observations in each of four host rounding modes. Default LLVM remains unchanged. | Original whole output gate, linked runtime predicate and complete timing. Four-mode replay covers supplied observer inputs; upstream producers were replayed in RNE. | Merlin |
+| Compose scalar observations with tensor lane scheduling | The reusable immutable tensor-insertion and bounded-loop route passes 581 source plus 581 independently installed checks. All 44 current packetized TinyLlama observations compile upstream with one table and the original scheduling features. Fresh helpers match 991,232 integer observations in each of four host rounding modes. Whole native and RV64 Spike execution match all 256,000 original output words, with linked runtime predicate and zero FSM. Default LLVM remains unchanged. | Complete cost and a stock whole measurement. The first functional counter comparison regresses but changes observer policy and core/runtime; it also omitted a previously selected late RNE legalization. A composed, matched successor is required. | Merlin |
+| Batch adjacent bounded integer observation packets | The generic typed output-axis scheduler passes 609 source plus 609 independently installed checks, with package identity and default LLVM controls preserved. | Whole delivery and stock timing; the measured complete prefix improvement remains an instruction-count result. | Merlin |
 | Preserve source joins through common-subexpression elimination | The current SmolVLA structural experiment merges three equivalent Q/K/V quantizers into one while retaining their source identities and all original calls. | Final public compiler integration, effect admission, original whole output gate and executable timing. | Merlin |
 | Project unused immutable weight arguments | Current prepared ResNet accounting identifies 53 removable obsolete parameter tensors, totaling 106,240 logical bytes. Captured buffers remain until immutable ownership is proved. Normal native/Spike execution and 564 source plus 564 independently installed checks pass. | Actual whole delivery and measured benefit. | Merlin |
 | Generate compact convolution candidates from typed command traces | Source/resource legality, independent cases, upstream lowering and zero-FSM object checks pass. | A complete cost selector and a fresh stock whole run. | OOT dialect |
@@ -68,12 +69,22 @@ addresses the packetization conflict. The fresh
 [44-member normal compilation](perf_records/tiny_current_normal_packetized44_20261008.json)
 preserves the original scheduling features. Its separate
 [44-member numerical replay](perf_records/tiny_current_normal_packetized_numeric_20261008.json)
-passes with independently authenticated current source and lane coverage;
-the original whole output and hardware gates remain pending.
+passes with independently authenticated current source and lane coverage.
+The new [native whole gate](perf_records/tiny_normal_whole_native_20261008.json)
+and [RV64 whole gate](perf_records/tiny_normal_whole_spike_20261008.json) pass
+all 256,000 outputs. [Linked admission](perf_records/tiny_normal_whole_rv64_link_20261008.json)
+and [readonly table storage](perf_records/tiny_normal_whole_table_storage_20261008.json)
+are closed separately. The functional counter is 223,991,802 versus an older
+122,689,756 control, an 82.568% increase. This changes observer policy, core and
+runtime, and omits previously selected late RNE legalization; it is not an
+isolated transform comparison or a FireSim cycle result. The whole numerical
+PASS is retained while a correctly composed successor is prepared.
 The weight projection has a compact
 [qualification summary](perf_records/immutable_weight_projection_20261008.json).
 The input-prefix [runtime attribution](perf_records/resnet_input_prefix_runtime_attribution_20261008.json)
 records why its measured capsule gain cannot be credited to the current whole build.
+The generic [packet scheduling qualification](perf_records/bounded_rne_packet_scheduling_20261008.json)
+retains the explicit candidate and unchanged default-emission scope.
 Detailed current-source findings are in the
 [FX and lowering audit](fx_quantization_fusion_audit.md).
 
@@ -89,6 +100,8 @@ Detailed current-source findings are in the
 | Treat compilation of an approximation as accuracy validation | A shared table can lower successfully while its numerical and final-output gates remain pending. | Keep compilation, numerical permission, output validation and timing as distinct gates. |
 | Rely on the compiler host's ambient rounding mode | A reproduced xDSL float serialization case changes a binary32 word across modes. | Require checked compiler-host numerical admission; the general dependency fix remains open. |
 | Replace a native test library at a reused path | `dlopen` can return the retained old image, producing a false scheduling failure. The isolated case passes unchanged. | Bind test library paths to the actual LLVM identity; keep the original failure and reproduction. Production loader hardening is a separate infrastructure task. |
+| Use BF16 probabilities for both the PV numerator and denominator | The whole SmolVLA experiment fails 122 of 1,600 outputs; its first source group changes 458 integer codes and nine escaping BF16 scales. | Reject the candidate under the existing gate. Preserve the original unrounded denominator and seek a cheaper certificate. |
+| Replace one LLVM transform without preserving its composed legalizations | A new TinyLlama recipe omitted the existing late RNE legalization; the public rewrite recognizes 203 eligible chains in its emitted LLVM. | Qualify the complete composed recipe before attributing performance to the new observer representation. |
 
 ## Where reusable improvements belong
 
@@ -111,6 +124,15 @@ permission. The [current source/object audit](perf_records/smol_scoped_effect_an
 preserves all 407 SmolVLA calls and proves the two intervening integer callbacks'
 instruction census. It does not grant global effect permission, whole accuracy
 or a speedup. The selected target has no admitted normalization capability.
+
+The [attention precision and cost comparison](attention_precision_and_cost.md)
+records why these captures differ: SmolVLA's 1,024-token vision attention has
+about 3,351 times TinyLlama's rectangular attention work in its eight-token
+capture, with different floating arithmetic and rounding boundaries. The
+selected integer Gemmini and Rocket FPU do not provide native BF16 attention.
+The [device audit](perf_records/smol_attention_device_cost_audit_20261008.json)
+closes actual command counts and legal operand residency. Requested-byte
+reductions remain candidates without measured hardware benefit.
 
 ## Recording a new experiment
 

@@ -1,0 +1,143 @@
+{
+  "schema": "captured_attention_work_and_current_hardware_sources.v1",
+  "status": "PASS_SOURCE_WITNESSES_AND_RECTANGULAR_WORK_RECONSTRUCTION",
+  "tiny": {
+    "forward_layers": 22,
+    "sequence_length": 8,
+    "qk_products": 22,
+    "pv_products": 22,
+    "rectangular_attention_scores": 45056,
+    "rectangular_attention_MACs": 5767168,
+    "arithmetic": "separate f32 multiply then add",
+    "triangular_admission_work_not_recomputed_here": true
+  },
+  "smol_vision": {
+    "layers": 12,
+    "sequence_length": 1024,
+    "source_groups": 48,
+    "heads": 12,
+    "head_depth": 64,
+    "attention_scores": 150994944,
+    "attention_MACs": 19327352832,
+    "source_law": "BF16 Q/K/V storage; ordered f32 FMA; PV uses BF16-rounded probability; denominator uses original unrounded f32 source polynomial"
+  },
+  "rectangular_attention_work_ratio": 3351.2727272727275,
+  "selected_current_source_configuration": {
+    "name": "FireSimGemminiRocketConfig",
+    "chain": [
+      "FireSimGemminiRocketConfig",
+      "GemminiRocketConfig",
+      "DefaultGemminiConfig",
+      "GemminiConfigs.defaultConfig"
+    ],
+    "mesh_input_and_weight": "signed i8",
+    "accumulator": "signed i32",
+    "rocket_FType_formats": [
+      "IEEE FP16: exponent5/significand11",
+      "IEEE FP32: exponent8/significand24",
+      "IEEE FP64: exponent11/significand53"
+    ],
+    "native_BF16_arithmetic": false,
+    "current_huge_rocket_minFLen": 16,
+    "BF16_format_distinct_from_IEEE_FP16": true,
+    "separate_BF16_Gemmini_generator_selected": false
+  },
+  "limitations": [
+    "Current local source facts are not a new sealed FPGA bitstream correspondence proof.",
+    "Rectangular tensor work is not executed masked arithmetic, device encoding overhead, cycles or task quality.",
+    "These captures do not establish equivalence to Jack language model benchmark recipes.",
+    "No compiler policy, numerical tolerance or device format changed."
+  ],
+  "file_pins": [
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/ordered_product_reduction_plan_v2/source_witnesses.json",
+      "sha256": "4013afbbf9f7c25139f2e41f995c824aab06becbc1d0abb738ed4f50d948aba2",
+      "bytes": 51461
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/smol-fx-lowering-20261007/complete_matrix_census_v2/qualification.json",
+      "sha256": "384245f47b2668f7e58f0390247f2dc6a95c77aa213054708de6aa1389179719",
+      "bytes": 1087510
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/bounded_native/installation.json",
+      "sha256": "2b18dbe8dff59337714aeaa826b279ae93cf2d0a0f6b2267313ad8d9930da082",
+      "bytes": 654167
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/source_group_exact.mlir",
+      "sha256": "bbe3c0158bfb62e603f6b63c69a9582dd677526c4223ea13019a2cee1367045e",
+      "bytes": 74559
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/firechip/chip/src/main/scala/TargetConfigs.scala",
+      "sha256": "9e1c8a611463f261d17039a37f1d5ae5cb4a068d5eaaa206d42c64bcbdf9405c",
+      "bytes": 22461
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/0_TargetConfigs.scala",
+      "sha256": "9e1c8a611463f261d17039a37f1d5ae5cb4a068d5eaaa206d42c64bcbdf9405c",
+      "bytes": 22461
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/chipyard/GemminiConfigs.scala",
+      "sha256": "0c9472831c2b53595b075c90a7175b40fd56b7472cfbb3ec14038b23305ba5e6",
+      "bytes": 2259
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/1_GemminiConfigs.scala",
+      "sha256": "0c9472831c2b53595b075c90a7175b40fd56b7472cfbb3ec14038b23305ba5e6",
+      "bytes": 2259
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/Configs.scala",
+      "sha256": "178c21ac741c89c08158efa71fb34da35d27b75bd50bde5116a5e19178f8391b",
+      "bytes": 14307
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/2_Configs.scala",
+      "sha256": "178c21ac741c89c08158efa71fb34da35d27b75bd50bde5116a5e19178f8391b",
+      "bytes": 14307
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ConfigsFP.scala",
+      "sha256": "e86dcf518e9111c42df6725d1c2fb1ed6156a6b4fbce10ebef61926bb082872a",
+      "bytes": 8591
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/3_ConfigsFP.scala",
+      "sha256": "e86dcf518e9111c42df6725d1c2fb1ed6156a6b4fbce10ebef61926bb082872a",
+      "bytes": 8591
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/rocket-chip/src/main/scala/rocket/Configs.scala",
+      "sha256": "78e97e9c2d1fa129629a3ee200a21f89a597aacee43c9ee50f403f74cf098254",
+      "bytes": 14650
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/4_Configs.scala",
+      "sha256": "78e97e9c2d1fa129629a3ee200a21f89a597aacee43c9ee50f403f74cf098254",
+      "bytes": 14650
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/rocket-chip/src/main/scala/tile/FPU.scala",
+      "sha256": "5161b5324c62f887a0d2afd938159d818de43d8d29543d278888eac8b8b35c0a",
+      "bytes": 42565
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/5_FPU.scala",
+      "sha256": "5161b5324c62f887a0d2afd938159d818de43d8d29543d278888eac8b8b35c0a",
+      "bytes": 42565
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/rocket-chip/src/main/scala/rocket/RocketCore.scala",
+      "sha256": "2f88a01afa8da2a4dd9706e19a1707aeac4f1edbfc0d3659e8252de76b5ce243",
+      "bytes": 62895
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/attention-comparison-20261008/hardware_sources/6_RocketCore.scala",
+      "sha256": "2f88a01afa8da2a4dd9706e19a1707aeac4f1edbfc0d3659e8252de76b5ce243",
+      "bytes": 62895
+    }
+  ]
+}
