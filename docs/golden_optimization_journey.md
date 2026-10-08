@@ -4206,3 +4206,20 @@ installed checks, with defaults unchanged. Complete-cost counterexamples,
 scope limits and architectural suggestions for phase0/1/2 are retained in the
 audit. Exact billed topic/OOT token allocation remains UNKNOWN; the active goal
 meter is a separate observation, not provider billing.
+
+### Normal scalar insertion qualification
+
+The generic current-source insertion topicf6c59457 passes530 source and530
+independently installed checks, no skips. All1,031 Python modules,157 public
+resources and62 runtime files are byte exact across source/wheel/sdist/site;
+four parent/current/installed default LLVM cases agree. The actual separate
+parent installation also supplies the two isolated default fixtures. Complete
+current source joins, native producer/resource handles, all-member prevalidation,
+owned-child cleanup and compiler environment restoration are checked. The
+40,838-pin receipt retains the35,785-pin parent closure. This qualifies normal
+compiler insertion, not original whole accuracy or target predicate/cost.
+
+Publication retries for Merlin main and the OOT handwritten branch still fail
+GitHub DNS. These topics are local; no push or hardware result is claimed.
+
+[Current-source insertion qualification](perf_records/scalar_carrier_current_normal_installed_20261008.json).

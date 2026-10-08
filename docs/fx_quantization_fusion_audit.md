@@ -100,8 +100,14 @@ only new helper fragments into the live native session and replaces proved
 private integer leaves, preserving producer/resource handles and source joins.
 Runtime incoming-RNE predicates are provider owned and read per point.
 Compiler-host RNE admission separately restores the full environment. The
-28 source checks pass; independent package/installation qualification and the
-original256,000 whole output gate are pending. No timing result is promoted.
+28 new source checks pass. Topicf6c59457 passes530 source and530 outside-installed
+checks with no skips. All1,031 Python modules,157 public resources and62 runtime
+files match across source, wheel, source distribution and installation. Four
+parent/current/installed default LLVM cases are byte exact; the two additional
+isolated default fixtures use the actual separate parent installation in both
+runs. All35,785 parent pins and40,838 current pins close. Source and installed
+code are frozen. The original256,000 whole output gate, linked runtime predicate
+and complete hardware cost remain pending. No timing result is promoted.
 
 ### Rejected inference from a cache microbenchmark
 
@@ -152,3 +158,4 @@ The22M/5B/300M objective remains active. Separate goal-meter observation at
 [ResNet FX, timer and ABI audit](perf_records/resnet_fx_roi_abi_findings_20261008.json).
 [Fresh exact whole gate](perf_records/resnet_fresh_whole_exact_gate_20261008.json).
 [Current stock preparation successor](perf_records/resnet_current_stock_preflight_successor_20261008.json).
+[Qualified current-source insertion](perf_records/scalar_carrier_current_normal_installed_20261008.json).
