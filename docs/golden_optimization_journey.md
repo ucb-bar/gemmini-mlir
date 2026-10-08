@@ -4223,3 +4223,36 @@ Publication retries for Merlin main and the OOT handwritten branch still fail
 GitHub DNS. These topics are local; no push or hardware result is claimed.
 
 [Current-source insertion qualification](perf_records/scalar_carrier_current_normal_installed_20261008.json).
+
+### Composition and complete host-prefix measurements
+
+Fresh normal Tiny compilation binds all22 current scalar observers to one
+196,608-byte table. The distinct candidate disables only the conflicting
+pointwise packet feature; its coefficient proposal differs from earlier sampled
+fixtures. It certifies16,056 cells and falls back for328. Numerical replay,
+original whole accuracy, linked target predicate and performance remain pending.
+The general compiler action is to support typed tensor-insert/SCF observations
+with complete use/effect/lane ownership proofs, preserving both optimizations.
+
+ResNet's complete input-prefix capsule improves25.8653% in GSIM, from
+1,911,460.5 to1,417,055.5 cycles; its independent case regresses14.4989%.
+Quantization, transposition, padding, allocation and callbacks are priced.
+No default promotion or whole FireSim improvement is inferred. The projection
+prototype's initial ownership scope removes only53 obsolete parameter tensors
+(106,240 logical bytes). The other54 unused unpacked tensors are captured
+buffers, not zero stubs;25,502,912 logical bytes remain until stronger immutable
+ownership evidence is bound. Session state ownership is part of that proof.
+
+Phase0 needs exact source and ABI work accounting. Phase1 needs composable
+observation analysis across scalar scheduling and ownership-aware ABI projection.
+Phase2 must compare complete costs and retain independent regressions. These
+generic changes belong in Merlin; target instructions and execution capabilities
+remain OOT. All original whole gates and cycle measurements remain unchanged.
+
+Active-goal observation during this work:121,138,403 tokensUsed and237,893
+elapsed seconds. This is the session goal meter, not provider billing or an
+exact Gemmini/topic allocation; the latter remains UNKNOWN.
+
+[Normal Tiny compilation](perf_records/tiny_current_normal_scalar_all22_20261008.json),
+[fresh coefficient coverage](perf_records/tiny_current_normal_scalar_coverage_20261008.json),
+[complete ResNet prefix](perf_records/resnet_complete_input_prefix_gsim_20261008.json).

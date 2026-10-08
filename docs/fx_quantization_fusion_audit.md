@@ -109,6 +109,38 @@ runs. All35,785 parent pins and40,838 current pins close. Source and installed
 code are frozen. The original256,000 whole output gate, linked runtime predicate
 and complete hardware cost remain pending. No timing result is promoted.
 
+### Current composition and entry ownership
+
+The current normal Tiny scalar-family route compiles all22 members through
+ordinary upstream lowering with one196,608-byte table. This is a distinct
+candidate: it uses textual preprocessing and disables only the conflicting
+two-lane pointwise packet feature. The original recipe and its refusals remain.
+Fresh interval-derived coefficients certify16,056 of16,384 physical cells;
+the other328 retain the original source expression. Four-mode numerical replay,
+the original256,000-output gate, a whole linked runtime predicate and hardware
+timing remain pending. This compilation check does not establish that the two
+optimizations compose. The generic fix must prove a unique integer observation
+through tensor insertion and SCF lane ownership while preserving scheduling.
+
+The prepared ResNet dead-weight inventory has53 stored-only obsolete parameter
+tensors and54 unpacked tensors classified as captured buffers. The first
+explicit projection scope removes106,240 logical parameter bytes. It retains
+the54 buffers, totaling25,502,912 logical bytes, until immutable ownership is
+bound beyond manifest kind. These are buffers, not generated-zero stubs.
+Session state/stream ownership and changes to ownership source files must be
+checked before any argument removal or live-span repacking. Final LLVM unused
+argument counts are not ownership proofs.
+
+The complete ResNet input-prefix capsule measures1,911,460.5 to1,417,055.5 GSIM
+cycles, a25.8653% improvement. It includes quantization, transposition, padding,
+allocation and output callbacks. Its independent case regresses14.4989%; the
+candidate remains explicit. This is neither stock FireSim timing nor a new
+whole-model result, and savings do not transfer across the ZIP's INT8 entry ABI.
+
+[Fresh normal Tiny compilation](perf_records/tiny_current_normal_scalar_all22_20261008.json),
+[fresh coefficient coverage](perf_records/tiny_current_normal_scalar_coverage_20261008.json),
+[complete input-prefix timing](perf_records/resnet_complete_input_prefix_gsim_20261008.json).
+
 ### Rejected inference from a cache microbenchmark
 
 The generic endpoint narrowing topic3ed806918 passes502 source and502 outside
