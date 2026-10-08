@@ -131,3 +131,14 @@ whole selection; retain qualification and negative results independently.
 The later raw campaign meter observed **96,663,392 aggregate tokens** at
 2026-10-07 13:42:40 UTC. Per-agent, per-topic, OOT-only and billed token
 attribution remain unavailable. This counter is preserved without allocation.
+
+## Mechanism-specific capsules and CPU exploration
+
+The [capsule optimization matrix](capsule_optimization_coverage.md) states the
+patterns, size boundaries, full cost scopes and positive/negative measurements
+for 15 reusable families. It separates applicability, profitability and hidden
+generalization obligations. The [fast search policy](fast_search_policy.md)
+describes bounded parallel native/Spike screens, calibrated intervals, selected
+GSIM shortlists and remaining stock FireSim qualification. These are investigator
+records: generated experimental inputs must remain independently derived and
+exclude validation model identities, capture geometry and measured labels.

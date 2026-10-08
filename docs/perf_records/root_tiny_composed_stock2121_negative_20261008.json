@@ -1,0 +1,524 @@
+{
+  "schema": "stock_tiny_composed2121_negative_optimization.v1",
+  "status": "REJECT_WHOLE_PERFORMANCE_CANDIDATE_ORIGINAL_OUTPUT_GATE_PASS",
+  "experiment_class": "handwritten_investigation_not_fresh_phase2",
+  "job": {
+    "id": 2121,
+    "state": "DONE",
+    "phase": "DONE",
+    "exit_code": 0,
+    "model_ROI_cycles": 573452525,
+    "queue_wall_seconds": 532.1831531524658,
+    "simulator_total_is_model_ROI": false
+  },
+  "champion": {
+    "job": 2085,
+    "model_ROI_cycles": 378946263,
+    "receipt": "root_tiny_rne_zero_stock2085_terminal.json",
+    "sha256": "1eb7a83e9baf7beaee5210ac6fa9d1ebd4f90092e6ad98665d3c72f964d1c1a4"
+  },
+  "regression": {
+    "cycles": 194506262,
+    "fraction": 0.5132819108972186,
+    "accepted_for_performance": false,
+    "best_remains": 378946263
+  },
+  "original_output_gate": {
+    "elements": 256000,
+    "shape": [
+      1,
+      8,
+      32000
+    ],
+    "dtype": "f32le",
+    "bytes": 1024000,
+    "target_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "exact_prefix_words": 1,
+    "compiled_reference_digest_exact": true,
+    "Torch_atol": 0.03125,
+    "Torch_rtol": 0.02,
+    "Torch_pass": true,
+    "max_abs_error": 9.5367431640625e-06,
+    "raw_full_UART_payload_present": false,
+    "scope": "Existing trusted-runtime complete digest plus prefix; no new accuracy threshold."
+  },
+  "actual_hardware_identity": {
+    "alias": "alveo_u250_firesim_gemmini_rocket_stock",
+    "metadata_config": "FireSimGemminiRocketConfig",
+    "staged_bit_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+    "same_observed_bit_and_hwdb_as2085": true,
+    "archive_dirty_build_source_to_elaboration_memory_authority": "UNKNOWN_NOT_GRANTED",
+    "new_scientific_transitive_source_closure": "NOT_GRANTED"
+  },
+  "candidate": {
+    "ELF_sha256": "646e14dfc3c36af8c132302c6a13717631668118d4a380fbc0827b2dfe2fd9e3",
+    "ELF_bytes": 2337128216,
+    "core_head": "52e0e5d863c12868bca59dd98371670ecb9b6bec",
+    "normal_current_source_members": 44,
+    "device_bindings": 155,
+    "features": [
+      "approximate_transcendental_activation",
+      "canonicalize_bufferized_result_identity",
+      "fuse_activation_polynomial_fma",
+      "fuse_quantize_round_convert",
+      "hoist_broadcast_source_rsqrt",
+      "hoist_weight_invariant_quantize",
+      "lower_fma_to_intrinsic",
+      "outline_llvm_loops_merge_identical",
+      "packet_scalar_pointwise_fma_division_2",
+      "packet_scalar_pointwise_multiplication_4",
+      "packet_scalar_pointwise_two_multiplications_4",
+      "respect_captured_quantization_scope",
+      "scalar_contraction_accumulator_2x4_outputs",
+      "scalar_contraction_masked_observation",
+      "scalar_squared_sum_accumulator",
+      "source_observation_closed_scalar_i8",
+      "unroll_scalar_contraction_reduction_by_2"
+    ],
+    "textual": true,
+    "fusion_guard": "0 original recipe",
+    "source_preparation": "Exact retained458 typed prepared source; not new raw capture",
+    "zero_FSM": true,
+    "automatic_profitability_selection": false,
+    "late_RNE_chains": 203,
+    "policy": {
+      "budget": "ScalarCarrierErrorBudget(atol=0.000244140625, rtol=0.015625)",
+      "leading_bits": 14,
+      "proof_leading_bits": 16,
+      "max_table_bytes": 196608,
+      "max_proof_table_bytes": 524288,
+      "approximate_output_permitted": true,
+      "independent_original_output_validation_required": true,
+      "original_source_fallback_retained": true,
+      "target_incoming_rne_predicate_required": true
+    }
+  },
+  "functional_counts_not_hardware_cycles": {
+    "stock2085": 122699096,
+    "current458_exact_source": 122689756,
+    "uncomposed52e_approximate_carrier": 223991802,
+    "composed52e_approximate_carrier": 181783401,
+    "vs2085_fraction_change": 0.48153822583990347,
+    "composition_before_after_fraction_change": -0.18843725807429323,
+    "is_hardware_timing": false
+  },
+  "baseline_identity_correction": "Actual receipt is the approximate carrier before 203-chain late RNE legalization, not a matched exact-interval control.",
+  "binary_inventory": {
+    "stock2085": {
+      "ELF_sha256": "0518189d448bfb8dd387397258bb263218121de832f557c02a57652a7ca4a3c2",
+      "ELF_bytes": 2337421440,
+      "sections": {
+        ".text": {
+          "address": 2147483648,
+          "offset": 4096,
+          "bytes": 326968
+        },
+        ".rodata": {
+          "address": 2147811392,
+          "offset": 331840,
+          "bytes": 591632
+        },
+        ".eh_frame": {
+          "address": 2148403024,
+          "offset": 923472,
+          "bytes": 224
+        },
+        ".data": {
+          "address": 2148403248,
+          "offset": 923696,
+          "bytes": 5460
+        },
+        ".bss": {
+          "address": 2148408768,
+          "offset": 929156,
+          "bytes": 1126040
+        },
+        ".weights": {
+          "address": 2215641088,
+          "offset": 929792,
+          "bytes": 2336468096
+        }
+      }
+    },
+    "stock2121": {
+      "ELF_sha256": "646e14dfc3c36af8c132302c6a13717631668118d4a380fbc0827b2dfe2fd9e3",
+      "ELF_bytes": 2337128216,
+      "sections": {
+        ".text": {
+          "address": 2147483648,
+          "offset": 4096,
+          "bytes": 348956
+        },
+        ".rodata": {
+          "address": 2147835968,
+          "offset": 356416,
+          "bytes": 264008
+        },
+        ".eh_frame": {
+          "address": 2148099976,
+          "offset": 620424,
+          "bytes": 4096
+        },
+        ".data": {
+          "address": 2148104072,
+          "offset": 624520,
+          "bytes": 5460
+        },
+        ".bss": {
+          "address": 2148109568,
+          "offset": 629980,
+          "bytes": 1126040
+        },
+        ".weights": {
+          "address": 2215641088,
+          "offset": 630784,
+          "bytes": 2336468096
+        }
+      }
+    }
+  },
+  "current_table": {
+    "bytes": 196608,
+    "sha256": "b84c663ce5a22b99294f21b6d15b72be788984d180fa938d082797824791fe68",
+    "actual_final_link": {
+      "section": ".rodata",
+      "address": 2147902144,
+      "offset": 422592,
+      "bytes": 196608,
+      "occurrences_in_rodata": 1
+    },
+    "old_interval_table_bytes": 524288,
+    "dynamic_cache_misses": "UNKNOWN"
+  },
+  "current_helper_structure": {
+    "members": 44,
+    "named_point_functions": 44,
+    "named_carrier_functions": 44,
+    "named_expression_functions": 44,
+    "named_observer_functions": 44,
+    "named_function_bytes_sum": 45056,
+    "point_save_frame_bytes": 32,
+    "linked_static_RNE_call_sites": 88,
+    "actual_predicate_bytes": 10,
+    "actual_predicate_instructions": [
+      "frrm",
+      "seqz",
+      "ret"
+    ],
+    "actual_per_point_runtime_RNE": true,
+    "static_symbols_are_dynamic_costs": false
+  },
+  "linked_object_comparison": [
+    {
+      "name": "model_call.o",
+      "byte_exact": true,
+      "status": null,
+      "old": {
+        "sha256": "8e1c7216d0934c0bfa03133e233592259d98db87e7b1fe6e2384826db27ae235",
+        "bytes": 6496
+      },
+      "new": {
+        "sha256": "8e1c7216d0934c0bfa03133e233592259d98db87e7b1fe6e2384826db27ae235",
+        "bytes": 6496
+      }
+    },
+    {
+      "name": "merlin_model.o",
+      "byte_exact": true,
+      "status": null,
+      "old": {
+        "sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "bytes": 3776
+      },
+      "new": {
+        "sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "bytes": 3776
+      }
+    },
+    {
+      "name": "model_main.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "4753f3cda97c78c3ae79f9659e37fe7e44629f8a2b53162cefedc51d1bef5e56",
+        "bytes": 79848
+      },
+      "new": {
+        "sha256": "756c8bd6ae0a1f459d3f3959bb9e8f9d3be5fb7ef914778558ec5701a12ce198",
+        "bytes": 79848
+      }
+    },
+    {
+      "name": "mlir_rt.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "bytes": 7192
+      },
+      "new": {
+        "sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "bytes": 6680
+      }
+    },
+    {
+      "name": "crt.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "bytes": 4344
+      },
+      "new": {
+        "sha256": "98e96247e24a2115e55e1ba4ca29be7d5ec88e86282b882d60de99bb816d745e",
+        "bytes": 4344
+      }
+    },
+    {
+      "name": "console.o",
+      "byte_exact": true,
+      "status": null,
+      "old": {
+        "sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "bytes": 10288
+      },
+      "new": {
+        "sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "bytes": 10288
+      }
+    },
+    {
+      "name": "libc_min.o",
+      "byte_exact": true,
+      "status": null,
+      "old": {
+        "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "bytes": 3864
+      },
+      "new": {
+        "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "bytes": 3864
+      }
+    },
+    {
+      "name": "malloc.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+        "bytes": 9216
+      },
+      "new": {
+        "sha256": "0348526ea488b27cc9540424ae65732209d648c1899e0f4e21bced250c1addc5",
+        "bytes": 10608
+      }
+    },
+    {
+      "name": "model.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "58164f52c253bd54f6440c2477b6f03c838c62493508c46ef4fb31ef22a7b2c9",
+        "bytes": 1098264
+      },
+      "new": {
+        "sha256": "d5233d79059ca6049894385d2527adcc325cc5120703ddd6a5c92aab1643debc",
+        "bytes": 851864
+      }
+    },
+    {
+      "name": "weights_blob.o",
+      "byte_exact": null,
+      "status": "SAME_PINNED_PAYLOAD_OBJECT_REUSED"
+    },
+    {
+      "name": "kernel.o",
+      "byte_exact": true,
+      "status": null,
+      "old": {
+        "sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+        "bytes": 46992
+      },
+      "new": {
+        "sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+        "bytes": 46992
+      }
+    },
+    {
+      "name": "device_catalog_shim.o",
+      "byte_exact": false,
+      "status": null,
+      "old": {
+        "sha256": "1ae900e987d1d0c29b0abc583f3d07289e501fb8ebfc15c9617ee3b214e06a81",
+        "bytes": 8128
+      },
+      "new": {
+        "sha256": "b5136581871db10745765dce0b073bb5ca96e983675c151226eba1a1d504c325",
+        "bytes": 8528
+      }
+    },
+    {
+      "name": "incoming_rne.o",
+      "byte_exact": false,
+      "status": null,
+      "new": {
+        "sha256": "3fc85259d2f748ace3b3252fcc41f01175c8dd2e33d1652369bdcbf3dc6f38c9",
+        "bytes": 1160
+      }
+    }
+  ],
+  "attribution": {
+    "observed": [
+      "Same staged FPGA bit and HWDB identity; original256000 output digest/gate passes; actual model ROI regresses51.3282%.",
+      "Functional retired count rises48.1538% vs2085; smaller coefficient storage does not establish cheaper whole host lowering.",
+      "Fresh source44-member point call/effect implementation, late legalization, runtime/link objects and layout differ; target kernel object is byteexact."
+    ],
+    "plausible_unmeasured": [
+      "Per-point function/CSR service and spill/frame costs; lookup/fallback frequency; lost across-call scheduling; instruction/table/data cache interactions and code-layout effects."
+    ],
+    "unknown": [
+      "Dynamic per-function/callback/exclusive PCs for2121 or2085; misses/replacement/cache service; isolated cause; a current matched52e exact-interval hardware control; repeated timing variance."
+    ],
+    "older_profile_scope": "2076/2080 location-grouped gaps are not bound to these current function bodies and cannot be assigned as2121 causes or pure host fractions."
+  },
+  "existing_region_evidence": {
+    "historical_profile_receipt": "root_tiny_current2076_profile_stock2080_terminal_20261007.json",
+    "profile_original_sha256": "c616fa545a5b9fce97664a6d1ead7eb8c567ffef066cb1819e1e78c360d8b3b5",
+    "profile_base_job": 2076,
+    "profile_job": 2080,
+    "callback_cycles": 179740352,
+    "outside_callback_cycles": 200819005,
+    "profiler_overhead_cycles": 163498,
+    "current2121_binding": "UNKNOWN_NOT_TRANSFERRED",
+    "affine_component_receipt": "tiny_affine18_complete_timing_20261008.json",
+    "affine_source_fraction_change": -0.03509292948037281,
+    "affine_independent_fraction_change": 0.44169155329425214,
+    "affine_source_ROI": {
+      "GEMMs": 2,
+      "i32_product_elements": 90112,
+      "i8_observed_elements": 45056
+    },
+    "same_normal_carrier_candidate": false,
+    "whole_projection": "UNKNOWN"
+  },
+  "required_next_evidence": [
+    "Common exact-source/champion/control recipe and objects, without falsely calling the uncomposed carrier an interval control.",
+    "Matched complete source plus independent component comparisons including producer/consumer, frames/CSR/table/fallback/publication.",
+    "Separate semantically legal call/visibility/scheduling ablations; RNE motion requires explicit current region stability and effects.",
+    "Current typed access sequence plus competing code/data and actual target cache facts, with complete RTL calibration.",
+    "Original256000 final gate and final source/object/ELF/zeroFSM closure before separately authorized stock measurement."
+  ],
+  "ownership": {
+    "Merlin": "Generic source reification, visibility/scheduling, host recipe composition and reusable cost contracts",
+    "OOT": "Target ISA/runtime predicate, resource facts, lowering and execution"
+  },
+  "original_evidence": [
+    {
+      "role": "stock2121",
+      "sha256": "ea28578a5b76ff23367d7e25685a2ce2d63b23997cf93cd2cbf595472d84bd1c",
+      "bytes": 8325,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/artifacts/probes/tiny-composed-stock-observation-v4-v2/qualification.json"
+    },
+    {
+      "role": "stock2085",
+      "sha256": "1eb7a83e9baf7beaee5210ac6fa9d1ebd4f90092e6ad98665d3c72f964d1c1a4",
+      "bytes": 4892,
+      "retained_owner_relative_path": "gemmini-handwritten-delivery-v2-20261008/docs/perf_records/root_tiny_rne_zero_stock2085_terminal.json"
+    },
+    {
+      "role": "champion_source",
+      "sha256": "f61d89e0d3662df9e402700ae164a01c1c42d023fbf9af67db120b3bdcc8525f",
+      "bytes": 58065,
+      "retained_owner_relative_path": "gemmini-rne-observer-cells-20261007/docs/perf_records/rne_zero_observer_whole_2076_20261007/receipt.json"
+    },
+    {
+      "role": "champion_build",
+      "sha256": "9478ec7a6ec613bbb0f35ee27edd00a9260fd4e5ffa1db1117c91019def5261b",
+      "bytes": 19936,
+      "retained_owner_relative_path": "gemmini-rne-observer-cells-20261007/out/artifacts/probes/rne-zero-observer-normal-2076-20261007/whole/build.json"
+    },
+    {
+      "role": "composed_link",
+      "sha256": "298939ef56d6fd7bc13d554489e10ebeb7cc186fdb95fe2efc9de6a3f8ab16fe",
+      "bytes": 13830,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_composed_whole_v1/target_build/qualification.json"
+    },
+    {
+      "role": "composed_spike",
+      "sha256": "7d0d680acb8ff973417c48d76101fdbf91364e4c495e29b872c7242d668e3147",
+      "bytes": 4393,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_composed_whole_v1/target_build/target/qualification.json"
+    },
+    {
+      "role": "uncomposed_carrier_spike",
+      "sha256": "fc4cce011de869f89d830c7798d8a8001869abdf37f0280882bfa8b9697c52f3",
+      "bytes": 4219,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_rv64_whole_v2/target/qualification.json"
+    },
+    {
+      "role": "current458_exact_source_spike",
+      "sha256": "2da0faf4ca833023dc6d30b4448a90205bbabf6b9fba14092eac1d73cbb0a250",
+      "bytes": 4426,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/current_source_all_leaf_v2/target/qualification.json"
+    },
+    {
+      "role": "normal_recipe",
+      "sha256": "d70bb598e7646929d23e04d2954f6fd08b0804dab1a5ef473fa7b3bff8ae0c4a",
+      "bytes": 2052,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_native_whole_v2/concrete_recipe.json"
+    },
+    {
+      "role": "late_legalizer",
+      "sha256": "9249f82a38fcdbbdcda535789196fc1a2e62121c45f6ee2902ea3dfeabea849a",
+      "bytes": 970,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_host_legalizer_v2/composition.json"
+    },
+    {
+      "role": "normal_native",
+      "sha256": "104554e904154f730c62196751399ac611d9a1eb3ac48c5eb62438d9bd0c600b",
+      "bytes": 291148,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_native_whole_v2/qualification.json"
+    },
+    {
+      "role": "actual_predicate_closure",
+      "sha256": "e8a8cedb8d335ff3c56da993d2ca3f0ada0dc9fb32659b16ff8c6752eb6a3fb8",
+      "bytes": 16886,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_composed_whole_v1/target_build/predicate_closure.json"
+    },
+    {
+      "role": "link_recipe",
+      "sha256": "263677bca8a341b66fa57b1d91af1b72e681d8da4df3a3a9a779f791088eb49a",
+      "bytes": 12363,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_composed_whole_v1/target_build/fresh_link_recipe.json"
+    },
+    {
+      "role": "current_table_prior",
+      "sha256": "902f4620982814f57b042cf945ea70b60f6c61479be8461d0f3f80c2805d8bb1",
+      "bytes": 3787,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/normal_carrier_rv64_storage_v1/qualification.json"
+    },
+    {
+      "role": "current_map",
+      "sha256": "d0c877f2f084afcaa53c1f8d098f442c4c8f058e8c9582e691e2ea4a58c3ed61",
+      "bytes": 64097,
+      "retained_owner_relative_path": "merlin-latest-20261004/out/artifacts/probes/tiny-stock-admission-20261008-v2/qualification.json"
+    },
+    {
+      "role": "older_profile",
+      "sha256": "c616fa545a5b9fce97664a6d1ead7eb8c567ffef066cb1819e1e78c360d8b3b5",
+      "bytes": 53819,
+      "retained_owner_relative_path": "gemmini-handwritten-integration-20261007/docs/perf_records/root_tiny_current2076_profile_stock2080_terminal_20261007.json"
+    }
+  ],
+  "read_only_binary_audit": {
+    "retained_owner_relative_path": "merlin-latest-20261004/out/artifacts/probes/tiny-composed-stock-diagnosis-20261008/qualification-v2.json",
+    "sha256": "9e0b4f3abffff7c87f266cfc2e85e74f0aa940725856c8a5e9520515469ca76a",
+    "bytes": 77714,
+    "pins": 61,
+    "no_new_model_execution": true
+  },
+  "token_usage_available": false,
+  "token_usage": null
+}

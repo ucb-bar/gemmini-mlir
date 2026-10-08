@@ -1,0 +1,967 @@
+{
+  "composed_changed_paths": [
+    "build_tools/package_resources.json",
+    "build_tools/scripts/qualify_installed.py",
+    "docs/reference/native_output_readback.md",
+    "merlin/runtime/baremetal/out_bin_memory.h",
+    "merlin/tests/runtime/test_out_bin_memory.py",
+    "merlin/tests/runtime/test_out_packet.py",
+    "merlin/tests/targetgen/test_invocation_readback_policy.py",
+    "packages/merlin-experiments/src/merlin/targetgen/capsule_runner.py",
+    "packages/merlin-experiments/src/merlin/targetgen/native_model_execution.py",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/AGENT.md",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/native_memory_readback.py",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/native_packet_readback.py",
+    "packages/merlin-experiments/tests/test_coherent_output_dump.py",
+    "packages/merlin-experiments/tests/test_phase1_readback_selection.py",
+    "src/merlin/runtime/AGENT.md",
+    "src/merlin/runtime/out_packet.py",
+    "src/merlin/targetgen/contract/AGENT.md",
+    "src/merlin/targetgen/contract/compile.py",
+    "src/merlin/targetgen/contract/readback_policy.py"
+  ],
+  "historical_parent_head": "d1c0d4384a35929d229f092b7f0673a44fd54ba0",
+  "identical_signed_production_hunk_topics": 38,
+  "incoming_changed_paths": [
+    "build_tools/package_resources.json",
+    "build_tools/scripts/qualify_installed.py",
+    "docs/reference/native_output_readback.md",
+    "merlin/runtime/baremetal/out_bin_memory.h",
+    "merlin/tests/runtime/test_out_bin_memory.py",
+    "merlin/tests/runtime/test_out_packet.py",
+    "merlin/tests/targetgen/test_invocation_readback_policy.py",
+    "packages/merlin-experiments/src/merlin/targetgen/capsule_runner.py",
+    "packages/merlin-experiments/src/merlin/targetgen/native_model_execution.py",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/AGENT.md",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/native_memory_readback.py",
+    "packages/merlin-experiments/src/merlin_experiments/phase1/feedback/native_packet_readback.py",
+    "packages/merlin-experiments/tests/test_coherent_output_dump.py",
+    "packages/merlin-experiments/tests/test_phase1_readback_selection.py",
+    "src/merlin/runtime/AGENT.md",
+    "src/merlin/runtime/out_packet.py",
+    "src/merlin/targetgen/contract/AGENT.md",
+    "src/merlin/targetgen/contract/compile.py",
+    "src/merlin/targetgen/contract/readback_policy.py"
+  ],
+  "metadata_probe_correction": "The initial unsealed comparison expected native_model_execution.py as an additional changed topic hunk. Exact original/current topic comparison shows only readback_policy.py; native_model_execution.py changes are inherited from the official incoming commit. No source changed during correction.",
+  "official_ancestor": "fdaf9b569096b39a0b8494d899180996d1b6d6f2",
+  "regression": {
+    "path": "merlin/tests/targetgen/test_invocation_readback_policy.py",
+    "squashed_topic": 38,
+    "test": "test_console_reader_refuses_coherent_memory_before_filesystem_access",
+    "transport_cases": [
+      "coherent_dump_v1",
+      "coherent_packet_v1"
+    ],
+    "unpublished_fixup_only": true
+  },
+  "schema": "merlin.final_memory_packet_source_review.v1",
+  "scope": "Read-only actual composition plus focused generic native codec/build audit tests; no fresh target simulation, hardware, whole model, private participant, performance or publication authority.",
+  "source_checks": {
+    "native_execution": "Native memory execution forwards typed readback policy and selected backend request; unknown or serial-only routes remain refused.",
+    "numerical": "Original accuracy thresholds and finite-operand gate unchanged; packet float32 raw word decode preserves zero/NaN payload representation and does not authorize a numerical pass.",
+    "packet": "Memory admission pins requested source, callback/ELF, output spans, arena/publication and bound transport; packet decoding adds full ordered logical value frames without numerical or process-exit authority.",
+    "receipt": "The selected current build receipt owns policy/codec/ELF validation. Optional native helper retains saved source/recipe and receipt equality before and after run.",
+    "serial_reader": "Both explicitly selected MEMORY_TRANSPORTS refuse before opening a console file; native B64/default and explicit BIN selection retain their prior path."
+  },
+  "source_head": "1e373607f2cc6464974b585ff22049c0319bffcf",
+  "status": "PASS_SCOPED",
+  "topic_count": 39,
+  "topics": [
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "a998e76274a338f7269547518b1f7ae7f2d1c3e7",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/prepared_model_transform.md",
+        "merlin/tests/runtime/test_prepared_model_transform.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/prepared_model_transform.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "original_commit": "bdf898de922248f186283e5b9c60f3bb26c3c4e2",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/prepared_model_transform.md",
+        "merlin/tests/runtime/test_prepared_model_transform.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/prepared_model_transform.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "subject": "feat(llvmlower): expose invocation-local prepared model transforms",
+      "topic": 1
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "f45c617267964d93fb99457594c1ff6b8ae523a6",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/borrowed_pointwise_packet.md",
+        "merlin/tests/ir/test_borrowed_pointwise_packet.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/scalar_pointwise_packet.py"
+      ],
+      "original_commit": "c7eeea87709ddefc5032a79de10a509e52caf1e9",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/borrowed_pointwise_packet.md",
+        "merlin/tests/ir/test_borrowed_pointwise_packet.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/scalar_pointwise_packet.py"
+      ],
+      "subject": "perf(llvmlower): schedule explicitly contracted borrowed pointwise lanes",
+      "topic": 2
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "de58f115036c4c97fb172392bb2e0f658d1f55d4",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/integer-product-families.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_integer_product_family.py",
+        "merlin/tests/ir/test_source_product_family.py",
+        "merlin/tests/runtime/test_source_product_family_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/integer_product_family.py",
+        "src/merlin/llvmlower/source_attention_frontier.py",
+        "src/merlin/llvmlower/source_product_family.py"
+      ],
+      "original_commit": "2dcf35cb5609455892c49258e5c1b93a07837a39",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/integer-product-families.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_integer_product_family.py",
+        "merlin/tests/ir/test_source_product_family.py",
+        "merlin/tests/runtime/test_source_product_family_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/integer_product_family.py",
+        "src/merlin/llvmlower/source_attention_frontier.py",
+        "src/merlin/llvmlower/source_product_family.py"
+      ],
+      "subject": "feat(quant): expose exact multiple output product families",
+      "topic": 3
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "90e23d1f6baa2921e2b7b0356594bfb46636153e",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/frontier-point-observations.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_frontier_point_cells.py",
+        "merlin/tests/runtime/test_frontier_point_cells_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/frontier_point_cells.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "original_commit": "2b7c952ac3ec3f68f5ad6fe2f7f2719e6a2e8ea3",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/frontier-point-observations.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_frontier_point_cells.py",
+        "merlin/tests/runtime/test_frontier_point_cells_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/frontier_point_cells.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "subject": "perf(quant): eliminate duplicate finite point observations",
+      "topic": 4
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "f58054e9cabc80d9425c3cd3749403e0c6c42f3d",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/bf16-integer-observer.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_bf16_integer_observer.py",
+        "merlin/tests/runtime/test_bf16_integer_observer_runtime.py",
+        "merlin/tests/runtime/test_source_product_family_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/bf16_integer_observer.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "original_commit": "927d568cbae6c70a7a253969b9885120d230cead",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/bf16-integer-observer.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/tests/ir/test_bf16_integer_observer.py",
+        "merlin/tests/runtime/test_bf16_integer_observer_runtime.py",
+        "merlin/tests/runtime/test_source_product_family_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/bf16_integer_observer.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "subject": "perf(quant): decode exact BF16 integer observations",
+      "topic": 5
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "b7db37f6d88edde4960ae1f9367bd3e2d01542c9",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/model-mask-effects.md",
+        "merlin/tests/ir/test_masked_contraction.py",
+        "merlin/tests/runtime/test_model_mask_effects.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "original_commit": "406560975c9f2d63a6358bc3ac67a339c11b0ab5",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/model-mask-effects.md",
+        "merlin/tests/ir/test_masked_contraction.py",
+        "merlin/tests/runtime/test_model_mask_effects.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "subject": "feat(lower): forward explicit mask effects through model APIs",
+      "topic": 6
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "879aa0e0ce8f6a60803e9183645e25cfe2aef358",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/checked_pair_readout_alignment.md",
+        "merlin/tests/ir/test_enclosed_readout_alignment.py",
+        "src/merlin/llvmlower/enclosed_readout.py"
+      ],
+      "original_commit": "59053f314a3752d986b9e2236ede8352d3b28d4d",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/checked_pair_readout_alignment.md",
+        "merlin/tests/ir/test_enclosed_readout_alignment.py",
+        "src/merlin/llvmlower/enclosed_readout.py"
+      ],
+      "subject": "perf(readout): add checked aligned packet loads",
+      "topic": 7
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "7d11be133bbc9134e4fbc19fcc48ef6fb543f8ee",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/current-source-observation.md",
+        "merlin/tests/ir/test_source_observation_stage.py",
+        "merlin/tests/runtime/test_source_observation_stage_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/llvmlower/lowering_recipe.py",
+        "src/merlin/llvmlower/pipeline.py",
+        "src/merlin/llvmlower/source_observation_stage.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "original_commit": "939f647cf462a7acef2a37406f225b3fdf97b4b7",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/current-source-observation.md",
+        "merlin/tests/ir/test_source_observation_stage.py",
+        "merlin/tests/runtime/test_source_observation_stage_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/llvmlower/lowering_recipe.py",
+        "src/merlin/llvmlower/pipeline.py",
+        "src/merlin/llvmlower/source_observation_stage.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "subject": "feat(lower): discover observers from current fused source",
+      "topic": 8
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "83a2ea8c5f29a96d96803d0faca097cb4611611c",
+      "current_paths": [
+        "docs/design/current-source-observation.md",
+        "merlin/tests/ir/test_source_observation_helpers.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/source_observation_helpers.py"
+      ],
+      "original_commit": "7ca58e75b35c4fe9560b0fcf3dcd2fa93c401d40",
+      "original_paths": [
+        "docs/design/current-source-observation.md",
+        "merlin/tests/ir/test_source_observation_helpers.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/source_observation_helpers.py"
+      ],
+      "subject": "feat(lower): reify helpers from typed scalar observations",
+      "topic": 9
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "59e5c61f8080520880f236b1a541bcd56aae09cc",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/closed_row_domain.md",
+        "merlin/tests/ir/test_closed_row_domain.py",
+        "merlin/tests/ir/test_row_partition_storage.py",
+        "src/merlin/llvmlower/closed_row_domain.py",
+        "src/merlin/llvmlower/row_partition_storage.py"
+      ],
+      "original_commit": "e0f05793894707c9845667f6dfb05acbf54e8861",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/closed_row_domain.md",
+        "merlin/tests/ir/test_closed_row_domain.py",
+        "merlin/tests/ir/test_row_partition_storage.py",
+        "src/merlin/llvmlower/closed_row_domain.py",
+        "src/merlin/llvmlower/row_partition_storage.py"
+      ],
+      "subject": "feat(llvmlower): prove closed row domains and private partitions",
+      "topic": 10
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "21d717ffd1ef092a460b9420d4d74b80478baec2",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/execution_memory_admission.md",
+        "merlin/tests/runtime/test_execution_memory.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/elf_audit.py",
+        "src/merlin/runtime/execution_memory.py"
+      ],
+      "original_commit": "a1a01d02efbae7e97cf39115c0ad1c016b6fb42a",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/execution_memory_admission.md",
+        "merlin/tests/runtime/test_execution_memory.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/elf_audit.py",
+        "src/merlin/runtime/execution_memory.py"
+      ],
+      "subject": "feat(runtime): admit absolute memory against selected execution maps",
+      "topic": 11
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "9b04904a968827b8fea462dca84067c752e793a7",
+      "current_paths": [
+        "build_tools/package_resources.json",
+        "docs/README.md",
+        "docs/reference/produced_bf16_row_facts.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/runtime/c/source_rms_produced_maximum.h",
+        "merlin/tests/data/produced_bf16_maximum_equivalence.c",
+        "merlin/tests/data/produced_bf16_packing_equivalence.c",
+        "merlin/tests/ir/test_produced_bf16_row_facts.py",
+        "merlin/tests/runtime/test_produced_bf16_row_facts_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/produced_bf16_row_facts.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "original_commit": "43071ab6c6302e2fc0ecc9ffb51852dd47beeb66",
+      "original_paths": [
+        "build_tools/package_resources.json",
+        "docs/README.md",
+        "docs/reference/produced_bf16_row_facts.md",
+        "merlin/runtime/c/AGENT.md",
+        "merlin/runtime/c/source_rms_produced_maximum.h",
+        "merlin/tests/data/produced_bf16_maximum_equivalence.c",
+        "merlin/tests/data/produced_bf16_packing_equivalence.c",
+        "merlin/tests/ir/test_produced_bf16_row_facts.py",
+        "merlin/tests/runtime/test_produced_bf16_row_facts_runtime.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/produced_bf16_row_facts.py",
+        "src/merlin/llvmlower/source_attention_frontier.py"
+      ],
+      "subject": "perf(llvmlower): forward owned BF16 producer facts",
+      "topic": 12
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "0363cc5b3444d3195cccb7fe773dff2031639263",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/repo_structure.md",
+        "merlin/tests/infra/test_installed_resource_ownership.py",
+        "src/merlin/common/paths.py"
+      ],
+      "original_commit": "3d0b37696cd2ec5e9b122c8e869d1141f1222b61",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/repo_structure.md",
+        "merlin/tests/infra/test_installed_resource_ownership.py",
+        "src/merlin/common/paths.py"
+      ],
+      "subject": "fix(resources): keep installed compiler data independent of work roots",
+      "topic": 13
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "44a99ff74519e63e45cb317f1e2231a6a2e44d59",
+      "current_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_scalar_contraction.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/scalar_contraction.py"
+      ],
+      "original_commit": "c5758ea61fc333166a09e28fe932fe095b7453b5",
+      "original_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_scalar_contraction.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/scalar_contraction.py"
+      ],
+      "subject": "fix(lowering): preserve tensor stages in scalar schedules",
+      "topic": 14
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "ef627ee4184cac17f3fdc97ac83bc4f5ece0495d",
+      "current_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_source_scalar_carrier.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/source_scalar_carrier.py",
+        "src/merlin/llvmlower/source_scalar_carrier_policy.py"
+      ],
+      "original_commit": "a4e611157223672e5d5089bbb9f24b2967381266",
+      "original_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_source_scalar_carrier.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/source_scalar_carrier.py",
+        "src/merlin/llvmlower/source_scalar_carrier_policy.py"
+      ],
+      "subject": "feat(llvmlower): reify source-bound scalar carrier families",
+      "topic": 15
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "792e6dfb2774138686deb4614f5e68d47c396023",
+      "current_paths": [
+        "docs/reference/prepared_endpoint_dag.md",
+        "merlin/tests/runtime/test_endpoint_narrowing.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/endpoint_narrowing.py"
+      ],
+      "original_commit": "f9ae3198f79816245e84c1be3e4f5830ad6b075d",
+      "original_paths": [
+        "docs/reference/prepared_endpoint_dag.md",
+        "merlin/tests/runtime/test_endpoint_narrowing.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/endpoint_narrowing.py"
+      ],
+      "subject": "feat(llvmlower): preserve endpoint facts through checked narrowing",
+      "topic": 16
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "049a839b1b263cfa3b070793d39b447dc4d1d637",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/llvmlower/pipeline.py",
+        "src/merlin/llvmlower/source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/source_stage_transport.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "original_commit": "f886e2f7797721e87aadba3d8b9db6972d8f6485",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/ir/test_source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/lower.py",
+        "src/merlin/llvmlower/pipeline.py",
+        "src/merlin/llvmlower/source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/source_stage_transport.py",
+        "src/merlin/runtime/backends/spike_model.py",
+        "src/merlin/runtime/backends/zephyr_model.py"
+      ],
+      "subject": "feat(lowering): bind scalar families to current source regions",
+      "topic": 17
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "98631ea6970751ad38459d074e9a2273eac76bf9",
+      "current_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/runtime/test_entry_weight_projection.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/c_runtime.py",
+        "src/merlin/llvmlower/entry_weight_projection.py",
+        "src/merlin/runtime/backends/spike_model.py"
+      ],
+      "original_commit": "17d2ebdb87990bfdbf981a9b8e384f92f8a1635b",
+      "original_paths": [
+        "docs/reference/lowering_pipeline.md",
+        "merlin/tests/runtime/test_entry_weight_projection.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/c_runtime.py",
+        "src/merlin/llvmlower/entry_weight_projection.py",
+        "src/merlin/runtime/backends/spike_model.py"
+      ],
+      "subject": "perf(runtime): project unused immutable weight arguments",
+      "topic": 18
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "d792d724abb6ed5847a0319e5d55e7e9f0ca2502",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/source_scalar_carrier_lane_publication.md",
+        "merlin/tests/ir/test_scalar_carrier_tensor_insert.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/closed_tensor_insert.py",
+        "src/merlin/llvmlower/source_expression_interval.py",
+        "src/merlin/llvmlower/source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/source_stage_transport.py"
+      ],
+      "original_commit": "542034da5324730ad0f22fff6b85acaf355434dc",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/source_scalar_carrier_lane_publication.md",
+        "merlin/tests/ir/test_scalar_carrier_tensor_insert.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/closed_tensor_insert.py",
+        "src/merlin/llvmlower/source_expression_interval.py",
+        "src/merlin/llvmlower/source_scalar_carrier_binding.py",
+        "src/merlin/llvmlower/source_stage_transport.py"
+      ],
+      "subject": "feat(llvmlower): compose scalar observers with tensor lanes",
+      "topic": 19
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "49c91688cededbe2a7cb8ddf1efdf3d3ff2efc67",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/bounded_rne_packet_scheduling.md",
+        "merlin/tests/ir/test_bounded_rne_maps.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/bounded_rne_maps.py"
+      ],
+      "original_commit": "a3c3e8b3b5d9cff226d72da4c3c253fdd8e3e01e",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/bounded_rne_packet_scheduling.md",
+        "merlin/tests/ir/test_bounded_rne_maps.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/bounded_rne_maps.py"
+      ],
+      "subject": "perf(llvmlower): batch bounded integer observation packets",
+      "topic": 20
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "0ce9dda15a5f3b64eae577c0f29cd68ccdef5dca",
+      "current_paths": [
+        "merlin/contract/integrity_policy.md",
+        "merlin/tests/targetgen/test_compiler_library.py",
+        "src/merlin/targetgen/AGENT.md",
+        "src/merlin/targetgen/compiler_library.py",
+        "src/merlin/targetgen/package_runtime.py"
+      ],
+      "original_commit": "48771177541f5ae2f9ab2e211fc8ba2728d348a7",
+      "original_paths": [
+        "merlin/contract/integrity_policy.md",
+        "merlin/tests/targetgen/test_compiler_library.py",
+        "src/merlin/targetgen/AGENT.md",
+        "src/merlin/targetgen/compiler_library.py",
+        "src/merlin/targetgen/package_runtime.py"
+      ],
+      "subject": "feat(targetgen): admit reviewed compiler library APIs",
+      "topic": 21
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "1bf12a107a8b70a0bd67aa04a12cbe168a92a55e",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/component_compiler_convergence.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_experiment.py",
+        "packages/merlin-experiments/tests/test_component_experiment.py"
+      ],
+      "original_commit": "a83b873dc22d5567a93bfc64a81f1d11287ce328",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/component_compiler_convergence.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_experiment.py",
+        "packages/merlin-experiments/tests/test_component_experiment.py"
+      ],
+      "subject": "feat(experiments): isolate approved component inputs",
+      "topic": 22
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "b8a6c7dd28fb554e25df9d655c4c0b0f7fbbca39",
+      "current_paths": [
+        "docs/design/capsule_phase_split.md",
+        "docs/design/performance_budget_unit.md",
+        "merlin/tests/targetgen/test_phase_policy.py",
+        "src/merlin/targetgen/phase_policy.py"
+      ],
+      "original_commit": "60dc68b3f00dd68ff10d98b086ddb10077cfdaef",
+      "original_paths": [
+        "docs/design/capsule_phase_split.md",
+        "docs/design/performance_budget_unit.md",
+        "merlin/tests/targetgen/test_phase_policy.py",
+        "src/merlin/targetgen/phase_policy.py"
+      ],
+      "subject": "feat(targetgen): admit explicit non-MAC performance objectives",
+      "topic": 23
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "642380fa2196a81876d29f6354fa456a2f995b1f",
+      "current_paths": [
+        "docs/design/perf_phase2_wiring.md",
+        "merlin/tests/dse/test_phase2_portfolio.py",
+        "src/merlin/perf/phase2_portfolio.py"
+      ],
+      "original_commit": "16c37e241fbb55e16e8824247dd062b00f49ff0f",
+      "original_paths": [
+        "docs/design/perf_phase2_wiring.md",
+        "merlin/tests/dse/test_phase2_portfolio.py",
+        "src/merlin/perf/phase2_portfolio.py"
+      ],
+      "subject": "feat(perf): generalize portfolio membership and quality budgets",
+      "topic": 24
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "3686d7a6ec6941c8415559a8440a0ba2690562c6",
+      "current_paths": [
+        "docs/README.md",
+        "docs/reference/polynomial_bf16_buckets.md",
+        "merlin/tests/rvv/test_polynomial_bf16_buckets.py",
+        "src/merlin/llvmlower/polynomial_bf16_buckets.py"
+      ],
+      "original_commit": "c418aae022d267da499a7953fa7fa5b1200a3487",
+      "original_paths": [
+        "docs/README.md",
+        "docs/reference/polynomial_bf16_buckets.md",
+        "merlin/tests/rvv/test_polynomial_bf16_buckets.py",
+        "src/merlin/llvmlower/polynomial_bf16_buckets.py"
+      ],
+      "subject": "feat(llvmlower): derive exact polynomial BF16 observation buckets",
+      "topic": 25
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "0d634ca1eee757b051538bd9e658e2364b312c71",
+      "current_paths": [
+        "docs/README.md",
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/authoring.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/authoring_cli.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/broker_policy.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/stage_inputs.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/stage_prompt.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "original_commit": "67c4ccb535e8a9b1610d36b0459361047d14baa1",
+      "original_paths": [
+        "docs/README.md",
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/authoring.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/authoring_cli.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/broker_policy.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/stage_inputs.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/stage_prompt.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "subject": "feat(phase2): add explicit component-only feedback workflow",
+      "topic": 26
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "8acde3dab00ad800896f0b2fd2f1ac92792c8e0a",
+      "current_paths": [
+        "docs/reference/runtime.md",
+        "merlin/tests/ir/test_host_transform_chain_emission.py",
+        "merlin/tests/runtime/test_host_transform_chain.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/host_transform_chain.py",
+        "src/merlin/llvmlower/lowering_recipe.py",
+        "src/merlin/runtime/backends/spike_model.py"
+      ],
+      "original_commit": "eb9c5a5a9da356729ff756e6e55b3bee26050287",
+      "original_paths": [
+        "docs/reference/runtime.md",
+        "merlin/tests/ir/test_host_transform_chain_emission.py",
+        "merlin/tests/runtime/test_host_transform_chain.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/host_transform_chain.py",
+        "src/merlin/llvmlower/lowering_recipe.py",
+        "src/merlin/runtime/backends/spike_model.py"
+      ],
+      "subject": "feat(llvmlower): enforce ordered host transform composition",
+      "topic": 27
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "700152b7bc3ba7d16c9afed22eeb5a544d65b457",
+      "current_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "original_commit": "e15549ee95a5b88003f9a30f29ae6a9883294290",
+      "original_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "subject": "fix(phase2): bind active component analytical callback identity",
+      "topic": 28
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "713702b03ae84c475393fab8cd4d78eeb2e953fa",
+      "current_paths": [
+        "packages/merlin-experiments/src/merlin_experiments/phase0/spec_drift.py",
+        "packages/merlin-experiments/tests/test_phase0_spec_drift_identity.py"
+      ],
+      "original_commit": "e72f7e80c31e5d66197c1f52759bb6869d616c85",
+      "original_paths": [
+        "packages/merlin-experiments/src/merlin_experiments/phase0/spec_drift.py",
+        "packages/merlin-experiments/tests/test_phase0_spec_drift_identity.py"
+      ],
+      "subject": "fix(phase0): preserve selected evidence during coverage drift derivation",
+      "topic": 29
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "01f306aa112ba2b736f4b8f027416d3a2994d2ab",
+      "current_paths": [
+        "build_tools/package_resources.json",
+        "merlin/contract/README.md",
+        "merlin/contract/schemas/artifact_bundle.schema.json",
+        "merlin/contract/schemas/manifest.schema.json",
+        "merlin/contract/schemas/manifest_v2.schema.json",
+        "merlin/contract/target_artifact_abi.md",
+        "merlin/tests/targetgen/test_artifact_bundle.py",
+        "src/merlin/targetgen/AGENT.md",
+        "src/merlin/targetgen/artifact_bundle.py",
+        "src/merlin/targetgen/contract/schemas.py",
+        "src/merlin/targetgen/package_runtime.py"
+      ],
+      "original_commit": "526ff13713c890cfff1155d883fafa8a40b9bed7",
+      "original_paths": [
+        "build_tools/package_resources.json",
+        "merlin/contract/README.md",
+        "merlin/contract/schemas/artifact_bundle.schema.json",
+        "merlin/contract/schemas/manifest.schema.json",
+        "merlin/contract/schemas/manifest_v2.schema.json",
+        "merlin/contract/target_artifact_abi.md",
+        "merlin/tests/targetgen/test_artifact_bundle.py",
+        "src/merlin/targetgen/AGENT.md",
+        "src/merlin/targetgen/artifact_bundle.py",
+        "src/merlin/targetgen/contract/schemas.py",
+        "src/merlin/targetgen/package_runtime.py"
+      ],
+      "subject": "feat(targetgen): add profile-bound structural artifact contracts",
+      "topic": 30
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "7ed79b64336f59ca1043611f78073db3476232b4",
+      "current_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/adapters.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/__main__.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/component_generation.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/generation.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/corpus.py",
+        "packages/merlin-experiments/tests/test_component_generation.py"
+      ],
+      "original_commit": "c7cc097067c942ec68626edd504395d68c66d922",
+      "original_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/adapters.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/__main__.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/component_generation.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/generation.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/corpus.py",
+        "packages/merlin-experiments/tests/test_component_generation.py"
+      ],
+      "subject": "feat(phase0): generate independent component objective corpora",
+      "topic": 31
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "a69f48bc16de499b6ad0a1fda3dbd3737c40a0d3",
+      "current_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/numerics.py",
+        "packages/merlin-experiments/tests/test_component_generation.py"
+      ],
+      "original_commit": "745a4b126658450337984bc70f4435ae2b2d8f63",
+      "original_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase0/numerics.py",
+        "packages/merlin-experiments/tests/test_component_generation.py"
+      ],
+      "subject": "fix(phase0): preserve floating sweep extents in generated goldens",
+      "topic": 32
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "dd73c0cfdd5fe7e83adfd0cd5bf081bc6bb98f5a",
+      "current_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_cca.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/tests/test_component_cca.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "original_commit": "5ed5c1c5437c131bdc4d10ef922e580b1c3eb234",
+      "original_paths": [
+        "docs/design/component_phase2_workflow.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_cca.py",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/component_workflow.py",
+        "packages/merlin-experiments/tests/test_component_cca.py",
+        "packages/merlin-experiments/tests/test_component_workflow.py"
+      ],
+      "subject": "feat(phase2): expose complete component CCA feedback",
+      "topic": 33
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "b217ddabd44776b7ab495486270eeff6517f7bb8",
+      "current_paths": [
+        "docs/design/component_compiler_convergence.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/numerical_readback.py",
+        "packages/merlin-experiments/tests/test_numerical_readback.py"
+      ],
+      "original_commit": "5c15adffa70b207433db306cea2427fea14f45da",
+      "original_paths": [
+        "docs/design/component_compiler_convergence.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/AGENT.md",
+        "packages/merlin-experiments/src/merlin_experiments/phase2/numerical_readback.py",
+        "packages/merlin-experiments/tests/test_numerical_readback.py"
+      ],
+      "subject": "feat(phase2): reconstruct protected full-readback quality",
+      "topic": 34
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "26c3eed0b0daf05eb6988749b011d250d5d55f75",
+      "current_paths": [
+        "merlin/tests/infra/test_float_accuracy.py",
+        "packages/merlin-experiments/tests/test_numerical_readback.py",
+        "src/merlin/perf/float_accuracy.py"
+      ],
+      "original_commit": "bfc3f228402f6d4e413e21dbd5e74894898091e1",
+      "original_paths": [
+        "merlin/tests/infra/test_float_accuracy.py",
+        "packages/merlin-experiments/tests/test_numerical_readback.py",
+        "src/merlin/perf/float_accuracy.py"
+      ],
+      "subject": "fix(perf): reject nonfinite operands in accuracy gates",
+      "topic": 35
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "391004beb783b39043214639127c9f93f3824476",
+      "current_paths": [
+        "merlin/tests/runtime/test_host_model_images.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/abi.py",
+        "src/merlin/llvmlower/kernel_backend.py"
+      ],
+      "original_commit": "b52767e2ae35b7c7e704f09771023d6698b9367a",
+      "original_paths": [
+        "merlin/tests/runtime/test_host_model_images.py",
+        "src/merlin/llvmlower/AGENT.md",
+        "src/merlin/llvmlower/abi.py",
+        "src/merlin/llvmlower/kernel_backend.py"
+      ],
+      "subject": "fix(runtime): load fresh host builds through private images",
+      "topic": 36
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "8a9bc7f112083dbc0b5fbc3149224e15096e3a75",
+      "current_paths": [
+        "build_tools/package_resources.json"
+      ],
+      "original_commit": "a97ee9f2d6b16574790a425532471f6fe8125356",
+      "original_paths": [
+        "build_tools/package_resources.json"
+      ],
+      "subject": "fix(resources): package the default exactness contract schema",
+      "topic": 37
+    },
+    {
+      "changed_production_signed_hunks": [
+        "src/merlin/targetgen/contract/readback_policy.py"
+      ],
+      "current_commit": "52092563ace76caf43b452019f8085bd80c0b1bb",
+      "current_paths": [
+        "merlin/tests/targetgen/test_invocation_readback_policy.py",
+        "packages/merlin-experiments/src/merlin/targetgen/AGENT.md",
+        "packages/merlin-experiments/src/merlin/targetgen/capsule_grade.py",
+        "packages/merlin-experiments/src/merlin/targetgen/capsule_runner.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_dispatch_accounting.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_model_execution.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_readback.py",
+        "packages/merlin-experiments/tests/test_binary_candidate_tiers.py",
+        "packages/merlin-experiments/tests/test_native_readback.py",
+        "src/merlin/targetgen/contract/readback_policy.py"
+      ],
+      "original_commit": "dc1d129bf60b323260f065a5dbd8c8c3e91e4241",
+      "original_paths": [
+        "merlin/tests/targetgen/test_invocation_readback_policy.py",
+        "packages/merlin-experiments/src/merlin/targetgen/AGENT.md",
+        "packages/merlin-experiments/src/merlin/targetgen/capsule_grade.py",
+        "packages/merlin-experiments/src/merlin/targetgen/capsule_runner.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_dispatch_accounting.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_model_execution.py",
+        "packages/merlin-experiments/src/merlin/targetgen/native_readback.py",
+        "packages/merlin-experiments/tests/test_binary_candidate_tiers.py",
+        "packages/merlin-experiments/tests/test_native_readback.py",
+        "src/merlin/targetgen/contract/readback_policy.py"
+      ],
+      "subject": "fix(readback): preserve selected binary transport in native audits",
+      "topic": 38
+    },
+    {
+      "changed_production_signed_hunks": [],
+      "current_commit": "1e373607f2cc6464974b585ff22049c0319bffcf",
+      "current_paths": [
+        "merlin/tests/infra/test_content_store.py",
+        "src/merlin/common/AGENT.md",
+        "src/merlin/common/content_store.py"
+      ],
+      "original_commit": "d1c0d4384a35929d229f092b7f0673a44fd54ba0",
+      "original_paths": [
+        "merlin/tests/infra/test_content_store.py",
+        "src/merlin/common/AGENT.md",
+        "src/merlin/common/content_store.py"
+      ],
+      "subject": "fix(storage): freeze content-store copy fallbacks read-only",
+      "topic": 39
+    }
+  ]
+}

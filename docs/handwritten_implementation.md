@@ -4,6 +4,10 @@ The public working branch is `handwritten-implementation` in `ucb-bar/gemmini-ml
 It contains the xDSL compiler implementation, source-bound experiment drivers,
 optimization journey, numerical refusals, measured results and token ledgers.
 
+See the [2026-10-08 delivery snapshot](upstream_delivery_status.md) for the
+current qualified source and publication state. Revisions and receipts below
+retain their original historical scopes.
+
 ## Dependencies and compilation
 
 The integrated Merlin source revision is
@@ -157,3 +161,13 @@ return HTTP 404 without authentication, eight already merged records remain
 visible, and no authored PR remains open in either repository. Thirty-one exact
 closed Merlin topic refs and four merged model2MLIR topic refs were removed after
 local preservation and dependency checks.
+
+## Capsule coverage and fast search
+
+[Optimization-to-capsule matrix](capsule_optimization_coverage.md) connects 15
+reusable compiler mechanisms to independent pattern/size/refusal/generalization
+tests and complete-cost feedback. [CPU simulation and model search](fast_search_policy.md)
+records calibrated domains, observed simulator disagreements and the remaining
+requirements for a faster automatic loop. The new composed TinyLlama2121 candidate
+is correct but slower at573,452,525 stock cycles; it is rejected and the378,946,263
+best stays unchanged. [Matched diagnosis](tiny_composed_regression.md).
