@@ -4180,3 +4180,29 @@ or topic allocation. Earlier billing/traffic ledgers remain.
 [Stock preparation successor](perf_records/resnet_normal_stock_static_preflight_20261008.json).
 [Preserved storage audit](perf_records/storage_preserved_receipts_successor_20261008.json).
 [Current original-path closure](perf_records/current_compiler_deliveries_reclosure_20261008.json).
+
+## 2026-10-08 FX to current executable audit
+
+The [current graph and executable audit](fx_quantization_fusion_audit.md) records
+which frontend candidates survive in emitted code, the reused optimizations
+already present, numerical boundaries and general compiler actions. Tiny has
+155 integer dense calls sharing89 activation values, but45 BMMs still bind to
+host loops. Smol's repeated Q/K/V quantization is present in current executable
+code. ResNet retains unused weight packaging and descriptor arguments; its ZIP
+reference times a prequantized image while our original whole path includes
+FP32 input quantization. The original metrics and final gates remain unchanged.
+
+Fresh ResNet normal compilation passes all1,000 original words on native and
+Spike with zero FSM instructions. Static stock preparation passes; queue write
+access is unavailable. No new whole hardware cycle result is available. The
+original22M/5B/300M goal remains unmet. Current-source scalar insertion and
+provenance-preserving CSE use explicit generic contracts, not workload selectors.
+Normal integration and original whole gates precede any promotion.
+
+Real Smol refinement-cache complete native timing improves only0.3454%, despite
+a faster constructed cache case; it does not account for the52× whole gap.
+The independent installed endpoint-narrowing topic passes502 source and502
+installed checks, with defaults unchanged. Complete-cost counterexamples,
+scope limits and architectural suggestions for phase0/1/2 are retained in the
+audit. Exact billed topic/OOT token allocation remains UNKNOWN; the active goal
+meter is a separate observation, not provider billing.

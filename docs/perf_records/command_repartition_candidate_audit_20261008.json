@@ -1,0 +1,1964 @@
+{
+  "schema": "conv_command_repartition_candidate_permission_audit_v1",
+  "status": "PASS_READ_ONLY_AUDIT_NO_PRODUCTION_IMPLEMENTATION",
+  "created_at": "2026-10-08T02:07:05.134239+00:00",
+  "current_installed_core": "4361d5713ffa86dc2145eeacb68ef19da72345c0",
+  "policy_name": "COMMAND_REPARTITION_CANDIDATE",
+  "explicit_default_off": true,
+  "production_patch": false,
+  "compilation": false,
+  "new_model_or_object_copies": false,
+  "hardware_launch": false,
+  "earlier_audit_attempt": {
+    "status": "FAILED_BEFORE_WRITING_QUALIFICATION",
+    "reason": "Audit mistakenly passed target LLVM/Gemmini IR to the upstream-only frontend parser; LLVM/Gemmini dialects were not registered.",
+    "repair": "Explicit existing LLVM/Gemmini dialect registration in this audit only; no compiler input, source, lowering or emission changed."
+  },
+  "existing_prefix_GSIM_session": "36205 remains parent-requested existing live owner; no restart",
+  "definition": {
+    "requires": [
+      "complete constructor/CFG/typed DMA/source virtual-padding/tail/resource legality",
+      "typed requested A/B/output payload and zero fill nonworse",
+      "issued MAC and actual A feed nonworse",
+      "config/flush/fence counts nonworse",
+      "strict requested A transfer reduction"
+    ],
+    "explicitly_allows_unpriced_repartition": [
+      "mvin A/B/zero command counts and dimensions",
+      "preload/compute command counts and geometry partition",
+      "mvout command counts and dimensions",
+      "derived padded-DIM proxy from those command counts"
+    ],
+    "never_proves": [
+      "profitability",
+      "physical bus traffic/cache/overlap",
+      "whole cycle improvement"
+    ],
+    "selection_gate": "A complete actual paired hardware result for the candidate/current baseline, original numeric gates, source/object/ELF closure, and current whole compatibility. Original strict Pareto route remains unchanged."
+  },
+  "cases": [
+    {
+      "case": "independent_i32_tails",
+      "actual_source": false,
+      "shape": {
+        "h": 9,
+        "w": 5,
+        "cin": 80,
+        "cout": 19,
+        "stride": 1,
+        "bn": 2,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "permission": {
+        "candidate_emission_permitted": false,
+        "mandatory_nonworse_components": [
+          "requested_a",
+          "requested_b",
+          "requested_output",
+          "zero_fill",
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_config_ex",
+          "commands_config_ld",
+          "commands_config_st",
+          "commands_flush",
+          "commands_fence"
+        ],
+        "refusals": [
+          "issued_MAC",
+          "A_feed_rows"
+        ],
+        "strict_A_transfer_reduction": true,
+        "all_exact_before_after_delta_components": {
+          "requested_a": [
+            9360,
+            3600,
+            -5760
+          ],
+          "requested_b": [
+            13680,
+            13680,
+            0
+          ],
+          "requested_output": [
+            3420,
+            3420,
+            0
+          ],
+          "zero_fill": [
+            3840,
+            2560,
+            -1280
+          ],
+          "issued_MAC": [
+            615600,
+            725040,
+            109440
+          ],
+          "padded_DIM_issue": [
+            4320,
+            7200,
+            2880
+          ],
+          "A_feed_rows": [
+            4050,
+            4770,
+            720
+          ],
+          "commands_config_ex": [
+            1,
+            1,
+            0
+          ],
+          "commands_config_ld": [
+            3,
+            3,
+            0
+          ],
+          "commands_config_st": [
+            1,
+            1,
+            0
+          ],
+          "commands_flush": [
+            1,
+            1,
+            0
+          ],
+          "commands_fence": [
+            2,
+            2,
+            0
+          ],
+          "commands_mvin": [
+            147,
+            103,
+            -44
+          ],
+          "commands_preload": [
+            270,
+            450,
+            180
+          ],
+          "commands_compute": [
+            270,
+            450,
+            180
+          ],
+          "commands_mvout": [
+            6,
+            18,
+            12
+          ],
+          "commands_mvin_a": [
+            54,
+            18,
+            -36
+          ],
+          "commands_mvin_b": [
+            45,
+            45,
+            0
+          ],
+          "commands_mvin_zero": [
+            48,
+            40,
+            -8
+          ],
+          "primitive_commands": [
+            701,
+            1029,
+            328
+          ]
+        },
+        "every_worse_component_explicit": {
+          "issued_MAC": [
+            615600,
+            725040,
+            109440
+          ],
+          "padded_DIM_issue": [
+            4320,
+            7200,
+            2880
+          ],
+          "A_feed_rows": [
+            4050,
+            4770,
+            720
+          ],
+          "commands_preload": [
+            270,
+            450,
+            180
+          ],
+          "commands_compute": [
+            270,
+            450,
+            180
+          ],
+          "commands_mvout": [
+            6,
+            18,
+            12
+          ],
+          "primitive_commands": [
+            701,
+            1029,
+            328
+          ]
+        },
+        "performance": "UNKNOWN",
+        "profitability_proved": false,
+        "automatic_default": false,
+        "gate_scope": "Explicit search candidate emission only, after actual constructor/source/tail/typed-CFG proofs. Not selection as faster code."
+      },
+      "original_strict_pareto": {
+        "applied": false,
+        "higher_components": [
+          "issued_MAC",
+          "padded_DIM_issue",
+          "A_feed_rows",
+          "commands_preload",
+          "commands_compute",
+          "commands_mvout"
+        ],
+        "lower_components": [
+          "requested_a",
+          "zero_fill",
+          "commands_mvin"
+        ]
+      },
+      "restricted_preload_compute_only_permission": {
+        "higher_forbidden_components": [
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_mvout"
+        ],
+        "candidate_permitted": false
+      },
+      "production_legality_refusal": "Compact candidate has no proved equivalent spatial tail ordering",
+      "original_control_geometry": [
+        {
+          "m": 13,
+          "k": 16,
+          "n": 3,
+          "commands": 45
+        },
+        {
+          "m": 13,
+          "k": 16,
+          "n": 16,
+          "commands": 45
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 3,
+          "commands": 90
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 90
+        }
+      ],
+      "candidate_geometry": [
+        {
+          "m": 5,
+          "k": 16,
+          "n": 3,
+          "commands": 45
+        },
+        {
+          "m": 5,
+          "k": 16,
+          "n": 16,
+          "commands": 45
+        },
+        {
+          "m": 12,
+          "k": 16,
+          "n": 3,
+          "commands": 180
+        },
+        {
+          "m": 12,
+          "k": 16,
+          "n": 16,
+          "commands": 180
+        }
+      ],
+      "typed_storage_bytes": {
+        "0": 3600,
+        "1": 13680,
+        "2": 3420
+      },
+      "unpriced": [
+        "physical transactions/cache misses",
+        "CPU instruction service",
+        "bank arbitration",
+        "preload/compute dispatch pairing",
+        "DMA/execute overlap"
+      ],
+      "existing_functional_and_hardware_capsule": "PASS original guards/FCSR/numeric/source gates; no new execution"
+    },
+    {
+      "case": "independent_i8_tails",
+      "actual_source": false,
+      "shape": {
+        "h": 5,
+        "w": 7,
+        "cin": 32,
+        "cout": 67,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.001953125,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "permission": {
+        "candidate_emission_permitted": false,
+        "mandatory_nonworse_components": [
+          "requested_a",
+          "requested_b",
+          "requested_output",
+          "zero_fill",
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_config_ex",
+          "commands_config_ld",
+          "commands_config_st",
+          "commands_flush",
+          "commands_fence"
+        ],
+        "refusals": [
+          "issued_MAC",
+          "A_feed_rows"
+        ],
+        "strict_A_transfer_reduction": true,
+        "all_exact_before_after_delta_components": {
+          "requested_a": [
+            3040,
+            1120,
+            -1920
+          ],
+          "requested_b": [
+            19296,
+            19296,
+            0
+          ],
+          "requested_output": [
+            2345,
+            2345,
+            0
+          ],
+          "zero_fill": [
+            1664,
+            896,
+            -768
+          ],
+          "issued_MAC": [
+            675360,
+            752544,
+            77184
+          ],
+          "padded_DIM_issue": [
+            4320,
+            4320,
+            0
+          ],
+          "A_feed_rows": [
+            3150,
+            3510,
+            360
+          ],
+          "commands_config_ex": [
+            1,
+            1,
+            0
+          ],
+          "commands_config_ld": [
+            3,
+            3,
+            0
+          ],
+          "commands_config_st": [
+            1,
+            1,
+            0
+          ],
+          "commands_flush": [
+            1,
+            1,
+            0
+          ],
+          "commands_fence": [
+            2,
+            2,
+            0
+          ],
+          "commands_mvin": [
+            67,
+            71,
+            4
+          ],
+          "commands_preload": [
+            270,
+            270,
+            0
+          ],
+          "commands_compute": [
+            270,
+            270,
+            0
+          ],
+          "commands_mvout": [
+            6,
+            10,
+            4
+          ],
+          "commands_mvin_a": [
+            15,
+            5,
+            -10
+          ],
+          "commands_mvin_b": [
+            36,
+            54,
+            18
+          ],
+          "commands_mvin_zero": [
+            16,
+            12,
+            -4
+          ],
+          "primitive_commands": [
+            621,
+            629,
+            8
+          ]
+        },
+        "every_worse_component_explicit": {
+          "issued_MAC": [
+            675360,
+            752544,
+            77184
+          ],
+          "A_feed_rows": [
+            3150,
+            3510,
+            360
+          ],
+          "commands_mvin": [
+            67,
+            71,
+            4
+          ],
+          "commands_mvout": [
+            6,
+            10,
+            4
+          ],
+          "commands_mvin_b": [
+            36,
+            54,
+            18
+          ],
+          "primitive_commands": [
+            621,
+            629,
+            8
+          ]
+        },
+        "performance": "UNKNOWN",
+        "profitability_proved": false,
+        "automatic_default": false,
+        "gate_scope": "Explicit search candidate emission only, after actual constructor/source/tail/typed-CFG proofs. Not selection as faster code."
+      },
+      "original_strict_pareto": {
+        "applied": false,
+        "higher_components": [
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_mvin",
+          "commands_mvout"
+        ],
+        "lower_components": [
+          "requested_a",
+          "zero_fill"
+        ]
+      },
+      "restricted_preload_compute_only_permission": {
+        "higher_forbidden_components": [
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_mvin",
+          "commands_mvout",
+          "commands_mvin_b"
+        ],
+        "candidate_permitted": false
+      },
+      "production_legality_refusal": "Compact candidate has no proved equivalent spatial tail ordering",
+      "original_control_geometry": [
+        {
+          "m": 3,
+          "k": 16,
+          "n": 3,
+          "commands": 18
+        },
+        {
+          "m": 3,
+          "k": 16,
+          "n": 16,
+          "commands": 72
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 3,
+          "commands": 36
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 144
+        }
+      ],
+      "candidate_geometry": [
+        {
+          "m": 7,
+          "k": 16,
+          "n": 3,
+          "commands": 18
+        },
+        {
+          "m": 7,
+          "k": 16,
+          "n": 16,
+          "commands": 72
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 3,
+          "commands": 36
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 144
+        }
+      ],
+      "typed_storage_bytes": {
+        "0": 1120,
+        "1": 19296,
+        "2": 2345
+      },
+      "unpriced": [
+        "physical transactions/cache misses",
+        "CPU instruction service",
+        "bank arbitration",
+        "preload/compute dispatch pairing",
+        "DMA/execute overlap"
+      ],
+      "existing_functional_and_hardware_capsule": "PASS original guards/FCSR/numeric/source gates; no new execution"
+    },
+    {
+      "case": "independent_w7_full_resources",
+      "actual_source": false,
+      "shape": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 16,
+        "output_dtype": "i8",
+        "scale": 0.0015428082551807165,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "permission": {
+        "candidate_emission_permitted": false,
+        "mandatory_nonworse_components": [
+          "requested_a",
+          "requested_b",
+          "requested_output",
+          "zero_fill",
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_config_ex",
+          "commands_config_ld",
+          "commands_config_st",
+          "commands_flush",
+          "commands_fence"
+        ],
+        "refusals": [
+          "issued_MAC",
+          "A_feed_rows"
+        ],
+        "strict_A_transfer_reduction": true,
+        "all_exact_before_after_delta_components": {
+          "requested_a": [
+            68096,
+            25088,
+            -43008
+          ],
+          "requested_b": [
+            2359296,
+            2359296,
+            0
+          ],
+          "requested_output": [
+            25088,
+            25088,
+            0
+          ],
+          "zero_fill": [
+            28672,
+            16384,
+            -12288
+          ],
+          "issued_MAC": [
+            115605504,
+            129761280,
+            14155776
+          ],
+          "padded_DIM_issue": [
+            589824,
+            589824,
+            0
+          ],
+          "A_feed_rows": [
+            451584,
+            506880,
+            55296
+          ],
+          "commands_config_ex": [
+            1,
+            1,
+            0
+          ],
+          "commands_config_ld": [
+            3,
+            3,
+            0
+          ],
+          "commands_config_st": [
+            1,
+            1,
+            0
+          ],
+          "commands_flush": [
+            1,
+            1,
+            0
+          ],
+          "commands_fence": [
+            2,
+            2,
+            0
+          ],
+          "commands_mvin": [
+            2632,
+            4792,
+            2160
+          ],
+          "commands_preload": [
+            36864,
+            36864,
+            0
+          ],
+          "commands_compute": [
+            36864,
+            36864,
+            0
+          ],
+          "commands_mvout": [
+            32,
+            56,
+            24
+          ],
+          "commands_mvin_a": [
+            168,
+            56,
+            -112
+          ],
+          "commands_mvin_b": [
+            2304,
+            4608,
+            2304
+          ],
+          "commands_mvin_zero": [
+            160,
+            128,
+            -32
+          ],
+          "primitive_commands": [
+            76400,
+            78584,
+            2184
+          ]
+        },
+        "every_worse_component_explicit": {
+          "issued_MAC": [
+            115605504,
+            129761280,
+            14155776
+          ],
+          "A_feed_rows": [
+            451584,
+            506880,
+            55296
+          ],
+          "commands_mvin": [
+            2632,
+            4792,
+            2160
+          ],
+          "commands_mvout": [
+            32,
+            56,
+            24
+          ],
+          "commands_mvin_b": [
+            2304,
+            4608,
+            2304
+          ],
+          "primitive_commands": [
+            76400,
+            78584,
+            2184
+          ]
+        },
+        "performance": "UNKNOWN",
+        "profitability_proved": false,
+        "automatic_default": false,
+        "gate_scope": "Explicit search candidate emission only, after actual constructor/source/tail/typed-CFG proofs. Not selection as faster code."
+      },
+      "original_strict_pareto": {
+        "applied": false,
+        "higher_components": [
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_mvin",
+          "commands_mvout"
+        ],
+        "lower_components": [
+          "requested_a",
+          "zero_fill"
+        ]
+      },
+      "restricted_preload_compute_only_permission": {
+        "higher_forbidden_components": [
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_mvin",
+          "commands_mvout",
+          "commands_mvin_b"
+        ],
+        "candidate_permitted": false
+      },
+      "production_legality_refusal": "Compact candidate has no proved equivalent spatial tail ordering",
+      "original_control_geometry": [
+        {
+          "m": 1,
+          "k": 16,
+          "n": 16,
+          "commands": 9216
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 27648
+        }
+      ],
+      "candidate_geometry": [
+        {
+          "m": 7,
+          "k": 16,
+          "n": 16,
+          "commands": 9216
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 27648
+        }
+      ],
+      "typed_storage_bytes": {
+        "0": 25088,
+        "1": 2359296,
+        "2": 25088
+      },
+      "unpriced": [
+        "physical transactions/cache misses",
+        "CPU instruction service",
+        "bank arbitration",
+        "preload/compute dispatch pairing",
+        "DMA/execute overlap"
+      ],
+      "existing_functional_and_hardware_capsule": "PASS original guards/FCSR/numeric/source gates; no new execution"
+    },
+    {
+      "case": "independent_stride2_refusal",
+      "actual_source": false,
+      "shape": {
+        "h": 9,
+        "w": 7,
+        "cin": 48,
+        "cout": 19,
+        "stride": 2,
+        "bn": 2,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "permission": {
+        "candidate_emission_permitted": false,
+        "mandatory_nonworse_components": [
+          "requested_a",
+          "requested_b",
+          "requested_output",
+          "zero_fill",
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_config_ex",
+          "commands_config_ld",
+          "commands_config_st",
+          "commands_flush",
+          "commands_fence"
+        ],
+        "refusals": [
+          "strict_A_transfer_reduction_missing"
+        ],
+        "strict_A_transfer_reduction": false,
+        "all_exact_before_after_delta_components": {
+          "requested_a": [
+            3024,
+            3024,
+            0
+          ],
+          "requested_b": [
+            8208,
+            8208,
+            0
+          ],
+          "requested_output": [
+            1520,
+            1520,
+            0
+          ],
+          "zero_fill": [
+            2736,
+            2736,
+            0
+          ],
+          "issued_MAC": [
+            188784,
+            188784,
+            0
+          ],
+          "padded_DIM_issue": [
+            1728,
+            1728,
+            0
+          ],
+          "A_feed_rows": [
+            1242,
+            1242,
+            0
+          ],
+          "commands_config_ex": [
+            1,
+            1,
+            0
+          ],
+          "commands_config_ld": [
+            3,
+            3,
+            0
+          ],
+          "commands_config_st": [
+            1,
+            1,
+            0
+          ],
+          "commands_flush": [
+            1,
+            1,
+            0
+          ],
+          "commands_fence": [
+            2,
+            2,
+            0
+          ],
+          "commands_mvin": [
+            57,
+            57,
+            0
+          ],
+          "commands_preload": [
+            108,
+            108,
+            0
+          ],
+          "commands_compute": [
+            108,
+            108,
+            0
+          ],
+          "commands_mvout": [
+            10,
+            10,
+            0
+          ],
+          "commands_mvin_a": [
+            9,
+            9,
+            0
+          ],
+          "commands_mvin_b": [
+            27,
+            27,
+            0
+          ],
+          "commands_mvin_zero": [
+            21,
+            21,
+            0
+          ],
+          "primitive_commands": [
+            291,
+            291,
+            0
+          ]
+        },
+        "every_worse_component_explicit": {},
+        "performance": "UNKNOWN",
+        "profitability_proved": false,
+        "automatic_default": false,
+        "gate_scope": "Explicit search candidate emission only, after actual constructor/source/tail/typed-CFG proofs. Not selection as faster code."
+      },
+      "original_strict_pareto": {
+        "applied": false,
+        "higher_components": [],
+        "lower_components": []
+      },
+      "restricted_preload_compute_only_permission": {
+        "higher_forbidden_components": [],
+        "candidate_permitted": false
+      },
+      "production_legality_refusal": "compact resident convolution needs stride1 and width+halo<=DIM",
+      "original_control_geometry": [
+        {
+          "m": 9,
+          "k": 16,
+          "n": 3,
+          "commands": 27
+        },
+        {
+          "m": 9,
+          "k": 16,
+          "n": 16,
+          "commands": 27
+        },
+        {
+          "m": 14,
+          "k": 16,
+          "n": 3,
+          "commands": 27
+        },
+        {
+          "m": 14,
+          "k": 16,
+          "n": 16,
+          "commands": 27
+        }
+      ],
+      "candidate_geometry": [
+        {
+          "m": 9,
+          "k": 16,
+          "n": 3,
+          "commands": 27
+        },
+        {
+          "m": 9,
+          "k": 16,
+          "n": 16,
+          "commands": 27
+        },
+        {
+          "m": 14,
+          "k": 16,
+          "n": 3,
+          "commands": 27
+        },
+        {
+          "m": 14,
+          "k": 16,
+          "n": 16,
+          "commands": 27
+        }
+      ],
+      "typed_storage_bytes": {
+        "0": 3024,
+        "1": 8208,
+        "2": 1520
+      },
+      "unpriced": [
+        "physical transactions/cache misses",
+        "CPU instruction service",
+        "bank arbitration",
+        "preload/compute dispatch pairing",
+        "DMA/execute overlap"
+      ],
+      "existing_functional_and_hardware_capsule": "PASS original guards/FCSR/numeric/source gates; no new execution"
+    },
+    {
+      "case": "actual_current_source28_i8",
+      "actual_source": true,
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "permission": {
+        "candidate_emission_permitted": true,
+        "mandatory_nonworse_components": [
+          "requested_a",
+          "requested_b",
+          "requested_output",
+          "zero_fill",
+          "issued_MAC",
+          "A_feed_rows",
+          "commands_config_ex",
+          "commands_config_ld",
+          "commands_config_st",
+          "commands_flush",
+          "commands_fence"
+        ],
+        "refusals": [],
+        "strict_A_transfer_reduction": true,
+        "all_exact_before_after_delta_components": {
+          "requested_a": [
+            1638400,
+            50176,
+            -1588224
+          ],
+          "requested_b": [
+            589824,
+            589824,
+            0
+          ],
+          "requested_output": [
+            50176,
+            50176,
+            0
+          ],
+          "zero_fill": [
+            167936,
+            15360,
+            -152576
+          ],
+          "issued_MAC": [
+            115605504,
+            115605504,
+            0
+          ],
+          "padded_DIM_issue": [
+            479232,
+            516096,
+            36864
+          ],
+          "A_feed_rows": [
+            451584,
+            451584,
+            0
+          ],
+          "commands_config_ex": [
+            1,
+            1,
+            0
+          ],
+          "commands_config_ld": [
+            3,
+            3,
+            0
+          ],
+          "commands_config_st": [
+            1,
+            1,
+            0
+          ],
+          "commands_flush": [
+            1,
+            1,
+            0
+          ],
+          "commands_fence": [
+            2,
+            2,
+            0
+          ],
+          "commands_mvin": [
+            5456,
+            1328,
+            -4128
+          ],
+          "commands_preload": [
+            29952,
+            32256,
+            2304
+          ],
+          "commands_compute": [
+            29952,
+            32256,
+            2304
+          ],
+          "commands_mvout": [
+            52,
+            56,
+            4
+          ],
+          "commands_mvin_a": [
+            3456,
+            56,
+            -3400
+          ],
+          "commands_mvin_b": [
+            576,
+            1152,
+            576
+          ],
+          "commands_mvin_zero": [
+            1424,
+            120,
+            -1304
+          ],
+          "primitive_commands": [
+            65420,
+            65904,
+            484
+          ]
+        },
+        "every_worse_component_explicit": {
+          "padded_DIM_issue": [
+            479232,
+            516096,
+            36864
+          ],
+          "commands_preload": [
+            29952,
+            32256,
+            2304
+          ],
+          "commands_compute": [
+            29952,
+            32256,
+            2304
+          ],
+          "commands_mvout": [
+            52,
+            56,
+            4
+          ],
+          "commands_mvin_b": [
+            576,
+            1152,
+            576
+          ],
+          "primitive_commands": [
+            65420,
+            65904,
+            484
+          ]
+        },
+        "performance": "UNKNOWN",
+        "profitability_proved": false,
+        "automatic_default": false,
+        "gate_scope": "Explicit search candidate emission only, after actual constructor/source/tail/typed-CFG proofs. Not selection as faster code."
+      },
+      "original_strict_pareto": {
+        "applied": false,
+        "higher_components": [
+          "padded_DIM_issue",
+          "commands_preload",
+          "commands_compute",
+          "commands_mvout"
+        ],
+        "lower_components": [
+          "requested_a",
+          "zero_fill",
+          "commands_mvin"
+        ]
+      },
+      "restricted_preload_compute_only_permission": {
+        "higher_forbidden_components": [
+          "commands_mvout",
+          "commands_mvin_b"
+        ],
+        "candidate_permitted": false
+      },
+      "production_legality_refusal": "Unpriced service/overlap and opposing components require complete paired measurement",
+      "original_control_geometry": [
+        {
+          "m": 4,
+          "k": 16,
+          "n": 16,
+          "commands": 2304
+        },
+        {
+          "m": 16,
+          "k": 16,
+          "n": 16,
+          "commands": 27648
+        }
+      ],
+      "candidate_geometry": [
+        {
+          "m": 14,
+          "k": 16,
+          "n": 16,
+          "commands": 32256
+        }
+      ],
+      "typed_storage_bytes": {
+        "0": 50176,
+        "1": 589824,
+        "2": 50176
+      },
+      "unpriced": [
+        "physical transactions/cache misses",
+        "CPU instruction service",
+        "bank arbitration",
+        "preload/compute dispatch pairing",
+        "DMA/execute overlap"
+      ],
+      "existing_functional_and_hardware_capsule": "PASS original guards/FCSR/numeric/source gates; no new execution"
+    }
+  ],
+  "H14_source_parameter_family": [
+    {
+      "source_label_trace_only": "gemmini_exact_requant_28",
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "original_numeric_contract": {
+        "max_output_lsb_error": 0,
+        "selected_policy_limit": 0,
+        "source_region": "matmul_29"
+      },
+      "fingerprints": {
+        "champion": {
+          "symbol": "gemmini_exact_requant_28_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "8edfd8817322284d8aee3c704f10365fc551b3c11335380fafd7a3abc13c3c56",
+          "excluded_numeric_store_scales": [
+            "0.00120960025 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm14:bn4:bias0:scale0.0012096002465113997:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.resident_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0012096002465113997, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.resident_conv_layout": "\"channel-tile-major padded spatial planes; disjoint input DMA partitions\"",
+            "gemmini.resident_conv_loop_channels": "\"bounded ordinary CPU channel loop\"",
+            "gemmini.resident_conv_prefetch_b": "\"one panel lookahead; disjoint bank2/bank3 weight lifetimes\"",
+            "gemmini.resident_conv_weight_issue_tiles": "\"2\"",
+            "gemmini.resident_conv_compact_commands": "\"retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 288,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 248,
+            "gemmini.mvout": 14,
+            "gemmini.preload": 288,
+            "llvm.add": 1066,
+            "llvm.br": 308,
+            "llvm.cond_br": 154,
+            "llvm.func": 1,
+            "llvm.getelementptr": 142,
+            "llvm.icmp": 154,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 36,
+            "llvm.mul": 876,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        },
+        "fresh": {
+          "symbol": "gemmini_exact_requant_28_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "51160f0baac43fb6687d7b5d8e242749bec66ef8ec37d66b16aa88dabd7bf02e",
+          "excluded_numeric_store_scales": [
+            "0.00120960025 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm13:bn4:bias0:scale0.0012096002465113997:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.virtual_padding": "\"static-zero-pad1-bounded-DMA\"",
+            "gemmini.flat_conv_band_rows": "\"14\"",
+            "gemmini.flat_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0012096002465113997, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.flat_conv_wide_a": "\"True\"",
+            "gemmini.flat_conv_separate_b_bank": "\"True\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 3744,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 682,
+            "gemmini.mvout": 13,
+            "gemmini.preload": 3744,
+            "llvm.add": 1561,
+            "llvm.br": 20,
+            "llvm.cond_br": 10,
+            "llvm.func": 1,
+            "llvm.getelementptr": 517,
+            "llvm.icmp": 10,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 59,
+            "llvm.mul": 1479,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        }
+      },
+      "candidate_permission_by_closed_identical_geometry": true,
+      "actual_linked_champion_and_fresh_bodies": "PASS in separately pinned642-file attribution packet"
+    },
+    {
+      "source_label_trace_only": "gemmini_exact_requant_31",
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0011732920538634062,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "original_numeric_contract": {
+        "max_output_lsb_error": 0,
+        "selected_policy_limit": 0,
+        "source_region": "matmul_32"
+      },
+      "fingerprints": {
+        "champion": {
+          "symbol": "gemmini_exact_requant_31_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "8edfd8817322284d8aee3c704f10365fc551b3c11335380fafd7a3abc13c3c56",
+          "excluded_numeric_store_scales": [
+            "0.00117329205 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm14:bn4:bias0:scale0.0011732920538634062:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.resident_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0011732920538634062, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.resident_conv_layout": "\"channel-tile-major padded spatial planes; disjoint input DMA partitions\"",
+            "gemmini.resident_conv_loop_channels": "\"bounded ordinary CPU channel loop\"",
+            "gemmini.resident_conv_prefetch_b": "\"one panel lookahead; disjoint bank2/bank3 weight lifetimes\"",
+            "gemmini.resident_conv_weight_issue_tiles": "\"2\"",
+            "gemmini.resident_conv_compact_commands": "\"retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 288,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 248,
+            "gemmini.mvout": 14,
+            "gemmini.preload": 288,
+            "llvm.add": 1066,
+            "llvm.br": 308,
+            "llvm.cond_br": 154,
+            "llvm.func": 1,
+            "llvm.getelementptr": 142,
+            "llvm.icmp": 154,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 36,
+            "llvm.mul": 876,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        },
+        "fresh": {
+          "symbol": "gemmini_exact_requant_31_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "51160f0baac43fb6687d7b5d8e242749bec66ef8ec37d66b16aa88dabd7bf02e",
+          "excluded_numeric_store_scales": [
+            "0.00117329205 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm13:bn4:bias0:scale0.0011732920538634062:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.virtual_padding": "\"static-zero-pad1-bounded-DMA\"",
+            "gemmini.flat_conv_band_rows": "\"14\"",
+            "gemmini.flat_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0011732920538634062, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.flat_conv_wide_a": "\"True\"",
+            "gemmini.flat_conv_separate_b_bank": "\"True\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 3744,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 682,
+            "gemmini.mvout": 13,
+            "gemmini.preload": 3744,
+            "llvm.add": 1561,
+            "llvm.br": 20,
+            "llvm.cond_br": 10,
+            "llvm.func": 1,
+            "llvm.getelementptr": 517,
+            "llvm.icmp": 10,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 59,
+            "llvm.mul": 1479,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        }
+      },
+      "candidate_permission_by_closed_identical_geometry": true,
+      "actual_linked_champion_and_fresh_bodies": "PASS in separately pinned642-file attribution packet"
+    },
+    {
+      "source_label_trace_only": "gemmini_exact_requant_34",
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0009134782012552023,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "original_numeric_contract": {
+        "max_output_lsb_error": 0,
+        "selected_policy_limit": 0,
+        "source_region": "matmul_35"
+      },
+      "fingerprints": {
+        "champion": {
+          "symbol": "gemmini_exact_requant_34_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "8edfd8817322284d8aee3c704f10365fc551b3c11335380fafd7a3abc13c3c56",
+          "excluded_numeric_store_scales": [
+            "0.000913478201 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm14:bn4:bias0:scale0.0009134782012552023:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.resident_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0009134782012552023, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.resident_conv_layout": "\"channel-tile-major padded spatial planes; disjoint input DMA partitions\"",
+            "gemmini.resident_conv_loop_channels": "\"bounded ordinary CPU channel loop\"",
+            "gemmini.resident_conv_prefetch_b": "\"one panel lookahead; disjoint bank2/bank3 weight lifetimes\"",
+            "gemmini.resident_conv_weight_issue_tiles": "\"2\"",
+            "gemmini.resident_conv_compact_commands": "\"retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 288,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 248,
+            "gemmini.mvout": 14,
+            "gemmini.preload": 288,
+            "llvm.add": 1066,
+            "llvm.br": 308,
+            "llvm.cond_br": 154,
+            "llvm.func": 1,
+            "llvm.getelementptr": 142,
+            "llvm.icmp": 154,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 36,
+            "llvm.mul": 876,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        },
+        "fresh": {
+          "symbol": "gemmini_exact_requant_34_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "51160f0baac43fb6687d7b5d8e242749bec66ef8ec37d66b16aa88dabd7bf02e",
+          "excluded_numeric_store_scales": [
+            "0.000913478201 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm13:bn4:bias0:scale0.0009134782012552023:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.virtual_padding": "\"static-zero-pad1-bounded-DMA\"",
+            "gemmini.flat_conv_band_rows": "\"14\"",
+            "gemmini.flat_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0009134782012552023, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.flat_conv_wide_a": "\"True\"",
+            "gemmini.flat_conv_separate_b_bank": "\"True\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 3744,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 682,
+            "gemmini.mvout": 13,
+            "gemmini.preload": 3744,
+            "llvm.add": 1561,
+            "llvm.br": 20,
+            "llvm.cond_br": 10,
+            "llvm.func": 1,
+            "llvm.getelementptr": 517,
+            "llvm.icmp": 10,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 59,
+            "llvm.mul": 1479,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        }
+      },
+      "candidate_permission_by_closed_identical_geometry": true,
+      "actual_linked_champion_and_fresh_bodies": "PASS in separately pinned642-file attribution packet"
+    },
+    {
+      "source_label_trace_only": "gemmini_exact_requant_37",
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012214076705276966,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "original_numeric_contract": {
+        "max_output_lsb_error": 0,
+        "selected_policy_limit": 0,
+        "source_region": "matmul_38"
+      },
+      "fingerprints": {
+        "champion": {
+          "symbol": "gemmini_exact_requant_37_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "8edfd8817322284d8aee3c704f10365fc551b3c11335380fafd7a3abc13c3c56",
+          "excluded_numeric_store_scales": [
+            "0.00122140767 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm14:bn4:bias0:scale0.0012214076705276966:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.resident_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0012214076705276966, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.resident_conv_layout": "\"channel-tile-major padded spatial planes; disjoint input DMA partitions\"",
+            "gemmini.resident_conv_loop_channels": "\"bounded ordinary CPU channel loop\"",
+            "gemmini.resident_conv_prefetch_b": "\"one panel lookahead; disjoint bank2/bank3 weight lifetimes\"",
+            "gemmini.resident_conv_weight_issue_tiles": "\"2\"",
+            "gemmini.resident_conv_compact_commands": "\"retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 288,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 248,
+            "gemmini.mvout": 14,
+            "gemmini.preload": 288,
+            "llvm.add": 1066,
+            "llvm.br": 308,
+            "llvm.cond_br": 154,
+            "llvm.func": 1,
+            "llvm.getelementptr": 142,
+            "llvm.icmp": 154,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 36,
+            "llvm.mul": 876,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        },
+        "fresh": {
+          "symbol": "gemmini_exact_requant_37_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "51160f0baac43fb6687d7b5d8e242749bec66ef8ec37d66b16aa88dabd7bf02e",
+          "excluded_numeric_store_scales": [
+            "0.00122140767 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm13:bn4:bias0:scale0.0012214076705276966:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.virtual_padding": "\"static-zero-pad1-bounded-DMA\"",
+            "gemmini.flat_conv_band_rows": "\"14\"",
+            "gemmini.flat_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.0012214076705276966, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.flat_conv_wide_a": "\"True\"",
+            "gemmini.flat_conv_separate_b_bank": "\"True\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 3744,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 682,
+            "gemmini.mvout": 13,
+            "gemmini.preload": 3744,
+            "llvm.add": 1561,
+            "llvm.br": 20,
+            "llvm.cond_br": 10,
+            "llvm.func": 1,
+            "llvm.getelementptr": 517,
+            "llvm.icmp": 10,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 59,
+            "llvm.mul": 1479,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        }
+      },
+      "candidate_permission_by_closed_identical_geometry": true,
+      "actual_linked_champion_and_fresh_bodies": "PASS in separately pinned642-file attribution packet"
+    },
+    {
+      "source_label_trace_only": "gemmini_exact_requant_40",
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.001881117350421846,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "original_numeric_contract": {
+        "max_output_lsb_error": 0,
+        "selected_policy_limit": 0,
+        "source_region": "matmul_41"
+      },
+      "fingerprints": {
+        "champion": {
+          "symbol": "gemmini_exact_requant_40_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "8edfd8817322284d8aee3c704f10365fc551b3c11335380fafd7a3abc13c3c56",
+          "excluded_numeric_store_scales": [
+            "0.00188111735 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm14:bn4:bias0:scale0.001881117350421846:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.resident_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.001881117350421846, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.resident_conv_layout": "\"channel-tile-major padded spatial planes; disjoint input DMA partitions\"",
+            "gemmini.resident_conv_loop_channels": "\"bounded ordinary CPU channel loop\"",
+            "gemmini.resident_conv_prefetch_b": "\"one panel lookahead; disjoint bank2/bank3 weight lifetimes\"",
+            "gemmini.resident_conv_weight_issue_tiles": "\"2\"",
+            "gemmini.resident_conv_compact_commands": "\"retained bounded ordinary CPU K/spatial loops; unchanged primitive order and alternating B lifetimes\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 288,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 248,
+            "gemmini.mvout": 14,
+            "gemmini.preload": 288,
+            "llvm.add": 1066,
+            "llvm.br": 308,
+            "llvm.cond_br": 154,
+            "llvm.func": 1,
+            "llvm.getelementptr": 142,
+            "llvm.icmp": 154,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 36,
+            "llvm.mul": 876,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        },
+        "fresh": {
+          "symbol": "gemmini_exact_requant_40_kernel",
+          "geometry_and_command_body_sha256_excluding_symbol_metadata_and_numeric_scale": "51160f0baac43fb6687d7b5d8e242749bec66ef8ec37d66b16aa88dabd7bf02e",
+          "excluded_numeric_store_scales": [
+            "0.00188111735 : f32"
+          ],
+          "exact_module_metadata": {
+            "gemmini.dim": "16 : i64",
+            "gemmini.golden_shape": "\"196x256x256:i8:bm13:bn4:bias0:scale0.001881117350421846:relu1:wide_store1:reuse_b1:cache_b0:pipeline_m0:cache_a0:prefetch_m0:banked_m0:wide_a0:wide_b0\"",
+            "gemmini.golden_batch": "1 : i64",
+            "gemmini.virtual_padding": "\"static-zero-pad1-bounded-DMA\"",
+            "gemmini.flat_conv_band_rows": "\"14\"",
+            "gemmini.flat_conv_shape": "\"{\\22bn\\22: 4, \\22cin\\22: 256, \\22cout\\22: 256, \\22explicit_halo\\22: false, \\22h\\22: 14, \\22output_dtype\\22: \\22i8\\22, \\22relu\\22: true, \\22scale\\22: 0.001881117350421846, \\22stride\\22: 1, \\22w\\22: 14, \\22wide_b\\22: true}\"",
+            "gemmini.flat_conv_wide_a": "\"True\"",
+            "gemmini.flat_conv_separate_b_bank": "\"True\""
+          },
+          "operation_static_counts": {
+            "builtin.module": 1,
+            "gemmini.compute": 3744,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.mvin": 682,
+            "gemmini.mvout": 13,
+            "gemmini.preload": 3744,
+            "llvm.add": 1561,
+            "llvm.br": 20,
+            "llvm.cond_br": 10,
+            "llvm.func": 1,
+            "llvm.getelementptr": 517,
+            "llvm.icmp": 10,
+            "llvm.inttoptr": 1,
+            "llvm.mlir.constant": 59,
+            "llvm.mul": 1479,
+            "llvm.return": 1
+          },
+          "scope": "Normalized body identity establishes identical command/address/control geometry across the five already pinned sources. It does not equate numeric scales or reprice timing."
+        }
+      },
+      "candidate_permission_by_closed_identical_geometry": true,
+      "actual_linked_champion_and_fresh_bodies": "PASS in separately pinned642-file attribution packet"
+    }
+  ],
+  "source_family_count": 5,
+  "all5_body_geometry_closed_with_original_source_scale_proofs": true,
+  "independent_w7_refused": true,
+  "independent_i8_i32_tails_refused": true,
+  "same_fallback_stride2_refused": true,
+  "preserves_other_families": "Source-proven order/tail and unsupported-family refusals remain mandatory; permission must not replace those proofs.",
+  "current_api_limitation": "Current production resident_input_policy has only compact_channel_planes_frontier strict Pareto; COMMAND_REPARTITION_CANDIDATE is not implemented or exposed yet. No working maxperf normal recipe can claim its effect.",
+  "attribution": "Candidate restores an existing2109 compact schedule versus fresh fallback; not a new champion improvement. Source28 complete hardware gain cannot be multiplied across five without current whole measurement.",
+  "negative_calibration": "w7 compact is +21.376% in complete callback; i8/i32 tails happen to win despite higher work but are conservatively refused by the proposed guard. Stride2 timing drift has no optimization credit.",
+  "phase0": "Preserve source descriptor/numeric/readonly/FCSR/source-bound resource witnesses and complete paired provenance.",
+  "phase1": "Expose semantics/resource candidate permission separately from profitability/default policy; preserve original strict refusal contracts.",
+  "phase2": "Search emitted legal candidates even under UNKNOWN cost, record every worsening dimension, and admit performance only on complete paired hardware plus current original whole gate.",
+  "tokens": "UNKNOWN: no authoritative billing counter exposed",
+  "pins": [
+    {
+      "path": "/scratch/agustin/tmp/merlin-scalar-carrier-family-installed-20261008/venv/lib/python3.12/site-packages/merlin/llvmlower/static_llvm_cfg.py",
+      "sha256": "f7820c35b5560537de896e57a45c024fe64d4c318034e5db7fe6c38d2b61017f",
+      "bytes": 10754
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-command-repartition-permission-20261008/audit_permission.py",
+      "sha256": "2b69b680d888ecec312a7a244e0b820af2e91147e1357c0e699fafdc0f83076e",
+      "bytes": 14155
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-scalar-carrier-family-main-20261008/out/artifacts/probes/scalar-carrier-family-review-v4/qualification.json",
+      "sha256": "e8585baddcd336541af2f51c87b487a91f24ffd401d131e7d5bd9f34a6e65d85",
+      "bytes": 8061072
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-handwritten-integration-20261007/mlir_oot/conv_family_frontier.py",
+      "sha256": "6d88bc4e68e095da40419262dc8baf0dfd4120d4edf5cfe1fe2e5d7507839d2d",
+      "bytes": 11695
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-handwritten-integration-20261007/mlir_oot/captured_requant_bundle.py",
+      "sha256": "fde1d2fc4cfa9259a95762838d11b7a19a9ad7c45f142bffce4f877bade4e862",
+      "bytes": 46159
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-handwritten-integration-20261007/mlir_oot/golden_resident_conv.py",
+      "sha256": "5170b24760cbd38464a4b1ebe5a3e00587e62f1f4dc28a707af3bde412f2f692",
+      "bytes": 51460
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-handwritten-integration-20261007/mlir_oot/frontend/parse.py",
+      "sha256": "b62d224fbe241089cd17d9ea5d4486fdc4dac47e674656675adf9e4ef788537e",
+      "bytes": 2617
+    },
+    {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks_v2/qualification.json",
+      "sha256": "d10137f8af08257164b6c9b8d63e189a5c2e3844d1affb654ce477ddc3fe0bc6",
+      "bytes": 89721
+    },
+    {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks_v2/gsim_admitted_complete.json",
+      "sha256": "f89f8a489398874e094a17f78c78862e3a428b9cf388790e37e5b5242aa35b50",
+      "bytes": 9969
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-champion-fresh-compact-audit-20261007/qualification.json",
+      "sha256": "976c20abb2cc9d2130c17fdefe9ceb52705762e1ddb42f244c31c2c6f66e6349",
+      "bytes": 785393
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_28/kernel.o",
+      "sha256": "387f04bff922650f12ba6255baa4f310860db817016f6b0e9a07622f6abc03df",
+      "bytes": 10576
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_28/kernel.gemmini.mlir",
+      "sha256": "215f5030f682b79eefe8467886a593b058321e5e0352833ae86be74e88925b42",
+      "bytes": 251107
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_28/kernel.o",
+      "sha256": "1c5cbd1a2eebb240991f2a121118e2936c6a84a57e51d566f52776fd676e5c2e",
+      "bytes": 82152
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_28/kernel.gemmini.mlir",
+      "sha256": "275d96b6ec8a5a246276edf82652ba16ce10de90800bbbb407ad6f7e3431ea1c",
+      "bytes": 1213436
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_31/kernel.o",
+      "sha256": "829574e299c01056444e979f28c5b7582f29084c58fc16cc00144f94cb67207a",
+      "bytes": 10576
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_31/kernel.gemmini.mlir",
+      "sha256": "c659a5de684ec7d31193565b7720619c580a7b36fd42de856fd84ef7a0dc1406",
+      "bytes": 251107
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_31/kernel.o",
+      "sha256": "373e4b79d75e04fa3c14ea23af4f642be43603463b7ca08dcbb48d83ad36e2b2",
+      "bytes": 82152
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_31/kernel.gemmini.mlir",
+      "sha256": "9d133b7e393c3be4692db4265ec4427beb8b820c390d07e0f20b30c0ff268d01",
+      "bytes": 1213436
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_34/kernel.o",
+      "sha256": "1bd5b7e4ceca732c9d7caa659bdcaf17cedd60cf0b51af6dca170362b688d0c7",
+      "bytes": 10576
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_34/kernel.gemmini.mlir",
+      "sha256": "56786ee5000a20c8a3d0e6dbb6b3ce3e3db621d8eea420c10e2131582b440948",
+      "bytes": 251108
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_34/kernel.o",
+      "sha256": "f3f53e2c98d12ea9a9091db9f419a744fe11e11943af90095895f7535bfd6b61",
+      "bytes": 82152
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_34/kernel.gemmini.mlir",
+      "sha256": "10488cbf35e867cf4337e47ecb20cb19726b5daeed300a89188da1eee46108c8",
+      "bytes": 1213437
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_37/kernel.o",
+      "sha256": "c4de4c3dfa8c712b72059a945be5bec22953140709135d69829c4806f0b9f2e2",
+      "bytes": 10576
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_37/kernel.gemmini.mlir",
+      "sha256": "4a089f06d17a9cc28bb2240149795be4776b2a0c6a419f1156fae08e7e00f0ec",
+      "bytes": 251107
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_37/kernel.o",
+      "sha256": "960fa23001eb6fd747bc33799c20a353d80bf7c88d72f3dc9279e98d34528457",
+      "bytes": 82152
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_37/kernel.gemmini.mlir",
+      "sha256": "234aa30613a78ea099d05d0eb7610bec48baa8003e34f9514aaa7d615c2f57d2",
+      "bytes": 1213436
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_40/kernel.o",
+      "sha256": "9cb950b26a5db7f4eb52f5e4200334b65ed559a80e82c8176f429e604cf6aeb2",
+      "bytes": 10576
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/out/current_resident_reduction/bundle/gemmini_exact_requant_40/kernel.gemmini.mlir",
+      "sha256": "ccb7ec314780dad4954f474fdb8a473c404e1d1a388674d697a856ad04e820b8",
+      "bytes": 251105
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_40/kernel.o",
+      "sha256": "137de32e200d12a91c8bb49508abdc2029b32016867b68e23db59d7341f694a0",
+      "bytes": 82152
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-common-output-block-coalescing-20261007/out/full_leaf_current/requant_bundle/gemmini_exact_requant_40/kernel.gemmini.mlir",
+      "sha256": "043efbabf357af4e6f13b0460ac3b5452c4e97c69abe7d20cef516952b5b05bb",
+      "bytes": 1213434
+    }
+  ]
+}

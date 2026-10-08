@@ -1,0 +1,107 @@
+{
+  "status": "REPRODUCED_DIAGNOSTIC_ATTRIBUTE_CSE_OBSTRUCTION",
+  "created_utc": "2026-10-08T03:06:50.122001+00:00",
+  "cases": [
+    {
+      "case": "untagged",
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/untagged.mlir",
+        "--cse",
+        "-o",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/untagged.cse.mlir"
+      ],
+      "returncode": 0,
+      "before_generics": 2,
+      "after_generics": 1
+    },
+    {
+      "case": "same_diagnostic",
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/same_diagnostic.mlir",
+        "--cse",
+        "-o",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/same_diagnostic.cse.mlir"
+      ],
+      "returncode": 0,
+      "before_generics": 2,
+      "after_generics": 1
+    },
+    {
+      "case": "distinct_diagnostic",
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/distinct_diagnostic.mlir",
+        "--cse",
+        "-o",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/distinct_diagnostic.cse.mlir"
+      ],
+      "returncode": 0,
+      "before_generics": 2,
+      "after_generics": 2
+    }
+  ],
+  "scope": "Independent exact integer pure tensor fixture; native CSE merges identical untagged/same-tag operations but keeps equal computations with different diagnostic region IDs.",
+  "limits": [
+    "Actual workload duplicate retention is not established by this fixture.",
+    "Removing diagnostic attributes without preserving source-origin joins is not an authorized fix."
+  ],
+  "file_pins": [
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/probe_provenance_cse.py",
+      "sha256": "506c6755e7b785eb30c61a7affcdf6cf44da9d7c71ef3a2cffdc14fba0d535b4",
+      "bytes": 3023
+    },
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt",
+      "sha256": "c82b34f2100784f6191c496e3406c79db9cdbcca4cd279646565e5fb56d07d7a",
+      "bytes": 307569528
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/distinct_diagnostic.cse.mlir",
+      "sha256": "446bd136f7a09739b1632dd65ab677ab543234d55cc67a9b16866068c3e8e20f",
+      "bytes": 893
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/distinct_diagnostic.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/distinct_diagnostic.mlir",
+      "sha256": "e6db179c47929932674ad1173288ca3ee9a5d9765930f35013caf39f511064c4",
+      "bytes": 897
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/same_diagnostic.cse.mlir",
+      "sha256": "4a0c973bf89b87a59ceca90dcd8f6c6645a3d21ea44bb4d599fa54b32b12c60a",
+      "bytes": 553
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/same_diagnostic.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/same_diagnostic.mlir",
+      "sha256": "1d0ce2c17a7ba2682c45554219da2aa0939457b4928eed75f9f31a326ab80d48",
+      "bytes": 894
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/untagged.cse.mlir",
+      "sha256": "b577222f452984d3c888e9997666b08e0f983b97ae0c09d1f11573e7f70c42b1",
+      "bytes": 518
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/untagged.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/fx-shared-quantization-20261008/native_cse/untagged.mlir",
+      "sha256": "31835a9e59056e001d8bee4046768026d0171cdf8d4a95db032fdce8a524723c",
+      "bytes": 844
+    }
+  ]
+}
