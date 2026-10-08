@@ -202,7 +202,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         raise ValueError('resident options require explicitly selected source regions')
     if any(not isinstance(o,ResidentConvOptions) for o in resident_input_options.values()):
         raise ValueError('resident options require typed ResidentConvOptions')
-    if resident_input_policy not in (None, 'compact_channel_planes', 'compact_channel_planes_prefetch_b'):
+    if resident_input_policy not in (None, 'compact_channel_planes', 'compact_channel_planes_prefetch_b', 'compact_channel_planes_frontier'):
         raise ValueError('unknown resident compiler policy')
     if dense_input_policy not in (None, 'banked_command_cost', 'resident_a_command_cost', 'transfer_command_cost'):
         raise ValueError('unknown dense compiler policy')
@@ -284,7 +284,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
                 if virtual_input is None:raise ValueError('resident input requires source-proven virtual padding')
                 options=resident_input_options.get(rid,ResidentConvOptions())
                 generator=GoldenResidentConv(schedule,**asdict(options));schedule_kind='resident_input_channel_planes'
-            elif resident_input_policy is not None:
+            elif resident_input_policy is not None and resident_input_policy != 'compact_channel_planes_frontier':
                 if virtual_input is None:
                     policy_refusal='source-proven virtual padding unavailable'
                 else:
@@ -380,6 +380,17 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
             generator,dense_tail_decision=select_stationary_b_spatial_tail(generator)
             if dense_tail_decision['applied']:
                 schedule_kind+=',stationary_b_spatial_tail'
+        frontier_decision=None
+        if direct and resident_input_policy == 'compact_channel_planes_frontier':
+            from .conv_family_frontier import choose_compact_frontier
+            generator,frontier_decision=choose_compact_frontier(generator,
+                source_virtual_padding=virtual_input is not None,
+                compact_commands=compact_resident_commands,
+                weight_issue_tiles=resident_weight_issue_tiles)
+            schedule=generator.conv
+            policy_refusal=frontier_decision['refusal']
+            if frontier_decision['applied']:
+                schedule_kind+=',compact_channel_planes_frontier'
         device=generator.build();device.body.block.first_op.properties['sym_name']=StringAttr(kernel)
         compilation=compile_module(device,llvm_bin,work)
         producer_range=None;producer_decision=None
@@ -435,6 +446,8 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
         if direct and resident_input_policy is not None:
             routes[-1]['resident_policy']=resident_input_policy
             routes[-1]['resident_policy_refusal']=policy_refusal
+            if frontier_decision is not None:
+                routes[-1]['resident_frontier_decision']=frontier_decision
             if policy_options is not None:
                 routes[-1]['resident_options']=asdict(policy_options)
         if direct and flat_resident_planes:
@@ -513,7 +526,7 @@ def build(capture:Path,llvm_bin:Path,output:Path,*,flat_spatial=False,max_output
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--readout-pair-policy',choices=('source_proven',));p.add_argument('--pair-scan-checked-alignment',action='store_true');p.add_argument('--spatial-command-loops',action='store_true');p.add_argument('--compact-resident-commands',action='store_true');p.add_argument('--compact-source-stride-commands',action='store_true');p.add_argument('--dense-accumulator-stripes',action='store_true');p.add_argument('--dense-cached-b-capacity',action='store_true');p.add_argument('--resident-weight-issue-tiles',type=int,choices=(1,2,3,4));p.add_argument('--flat-resident-planes',action='store_true');p.add_argument('--resident-stripe-reduction-loops',action='store_true');p.add_argument('--resident-tail-before-last-full',action='store_true');p.add_argument('--dense-tail-before-last-full',action='store_true');p.add_argument('--dense-resident-output-channel-tiles',type=int,choices=range(1,5));p.add_argument('--resident-weight-issue-channel-planes-only',action='store_true',help='Constrain explicit packet scheduling to channel-plane layouts, preserving selected flat-spatial-plane schedules');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('capture',type=Path);p.add_argument('--llvm-bin',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--banked-prefetch',action='store_true');p.add_argument('--grouped-b',action='store_true');p.add_argument('--dense-input-policy',choices=('banked_command_cost','resident_a_command_cost','transfer_command_cost'));p.add_argument('--dense-b-slot-policy',choices=('remaining_rows',));p.add_argument('--full-k-banked-region',action='append',default=[]);p.add_argument('--resident-input-policy',choices=('compact_channel_planes','compact_channel_planes_prefetch_b','compact_channel_planes_frontier'));p.add_argument('--resident-stripes',action='store_true');p.add_argument('--resident-input-region',action='append',default=[]);p.add_argument('--separate-b-bank',action='store_true');p.add_argument('--virtual-padding',action='store_true');p.add_argument('--flat-spatial',action='store_true');p.add_argument('--exact-integer-readout',action='store_true');p.add_argument('--readout-saturation-first',action='store_true');p.add_argument('--readout-packet',type=int,choices=(1,2,4,8),default=1);p.add_argument('--max-output-lsb',type=int,choices=(0,1),default=0,help='Explicit local error limit; a separate full-model quality gate is required');p.add_argument('--source-stride-resident',action='store_true');p.add_argument('--source-stride-row-residue',action='store_true');p.add_argument('--resident-a-load-coalescing',action='store_true');p.add_argument('--readout-domain-policy',choices=('source_proven',));p.add_argument('--readout-pair-policy',choices=('source_proven',));p.add_argument('--pair-scan-checked-alignment',action='store_true');p.add_argument('--spatial-command-loops',action='store_true');p.add_argument('--compact-resident-commands',action='store_true');p.add_argument('--compact-source-stride-commands',action='store_true');p.add_argument('--dense-accumulator-stripes',action='store_true');p.add_argument('--dense-cached-b-capacity',action='store_true');p.add_argument('--resident-weight-issue-tiles',type=int,choices=(1,2,3,4));p.add_argument('--flat-resident-planes',action='store_true');p.add_argument('--resident-stripe-reduction-loops',action='store_true');p.add_argument('--resident-tail-before-last-full',action='store_true');p.add_argument('--dense-tail-before-last-full',action='store_true');p.add_argument('--dense-resident-output-channel-tiles',type=int,choices=range(1,5));p.add_argument('--resident-weight-issue-channel-planes-only',action='store_true',help='Constrain explicit packet scheduling to channel-plane layouts, preserving selected flat-spatial-plane schedules');a=p.parse_args()
     result=build(a.capture,a.llvm_bin,a.output,flat_spatial=a.flat_spatial,max_output_lsb=a.max_output_lsb,exact_integer_readout=a.exact_integer_readout,virtual_padding=a.virtual_padding,banked_prefetch=a.banked_prefetch,grouped_b=a.grouped_b,separate_b_bank=a.separate_b_bank,full_k_banked_regions=a.full_k_banked_region,resident_input_regions=a.resident_input_region,resident_input_policy=a.resident_input_policy,dense_input_policy=a.dense_input_policy,resident_stripes=a.resident_stripes,dense_b_slot_policy=a.dense_b_slot_policy,source_stride_resident=a.source_stride_resident,source_stride_row_residue=a.source_stride_row_residue,resident_a_load_coalescing=a.resident_a_load_coalescing,readout_domain_policy=a.readout_domain_policy,readout_pair_policy=a.readout_pair_policy,pair_scan_checked_alignment=a.pair_scan_checked_alignment,spatial_command_loops=a.spatial_command_loops,compact_resident_commands=a.compact_resident_commands,compact_source_stride_commands=a.compact_source_stride_commands,dense_accumulator_stripes=a.dense_accumulator_stripes,dense_cached_b_capacity=a.dense_cached_b_capacity,resident_weight_issue_tiles=a.resident_weight_issue_tiles,flat_resident_planes=a.flat_resident_planes,resident_weight_issue_flat_planes=not a.resident_weight_issue_channel_planes_only,resident_stripe_reduction_loops=a.resident_stripe_reduction_loops,resident_tail_before_last_full=a.resident_tail_before_last_full,dense_tail_before_last_full=a.dense_tail_before_last_full,dense_resident_output_channel_tiles=a.dense_resident_output_channel_tiles,readout_options=({'saturation_first':a.readout_saturation_first,'packet':a.readout_packet} if a.readout_saturation_first or a.readout_packet!=1 else None));print(json.dumps(dict(routes=len(result['routes']),direct=sum(x['direct_conv'] for x in result['routes']),refused=len(result['refused']),object_sha256=result['object_sha256']),indent=2))
 
 if __name__=='__main__':main()
