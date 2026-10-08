@@ -1,0 +1,617 @@
+{
+  "schema": "packet4_complete_source_proxy_and_budget_refusal_v1",
+  "status": "SOURCE_PASS_BUDGET_REFUSED",
+  "capsule": {
+    "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/qualification.json",
+    "sha256": "15819576354af8b33b55f07afa262fbf72c62e402e0028096f055d1f133faf81",
+    "bytes": 40066
+  },
+  "complete_source_functional_admission": {
+    "complete": true,
+    "elf": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/layer.elf",
+      "sha256": "4eccc45b06a04e9dd11e60f90c95de6bfbaf88cef3d1129804fe5c842d6d0911",
+      "bytes": 1423800
+    },
+    "cases": [
+      {
+        "case": "independent_i8_tails",
+        "actual_source_capture": false,
+        "rows": [
+          {
+            "case": "independent_i8_tails",
+            "window": 0,
+            "arm": 0,
+            "cycles": 1268,
+            "instructions": 1266,
+            "output": 2345,
+            "inputs": 20416,
+            "guards": 4096
+          },
+          {
+            "case": "independent_i8_tails",
+            "window": 1,
+            "arm": 1,
+            "cycles": 1311,
+            "instructions": 1309,
+            "output": 2345,
+            "inputs": 20416,
+            "guards": 4096
+          },
+          {
+            "case": "independent_i8_tails",
+            "window": 2,
+            "arm": 1,
+            "cycles": 1311,
+            "instructions": 1309,
+            "output": 2345,
+            "inputs": 20416,
+            "guards": 4096
+          },
+          {
+            "case": "independent_i8_tails",
+            "window": 3,
+            "arm": 0,
+            "cycles": 1268,
+            "instructions": 1266,
+            "output": 2345,
+            "inputs": 20416,
+            "guards": 4096
+          }
+        ],
+        "means": {
+          "cycles": {
+            "0": 1268.0,
+            "1": 1311.0
+          },
+          "instructions": {
+            "0": 1266.0,
+            "1": 1309.0
+          }
+        },
+        "delta_percent": {
+          "cycles": 3.391167192429023,
+          "instructions": 3.3965244865718835
+        }
+      },
+      {
+        "case": "actual_current_source28_i8",
+        "actual_source_capture": true,
+        "rows": [
+          {
+            "case": "actual_current_source28_i8",
+            "window": 0,
+            "arm": 0,
+            "cycles": 200281,
+            "instructions": 200279,
+            "output": 50176,
+            "inputs": 640000,
+            "guards": 4096
+          },
+          {
+            "case": "actual_current_source28_i8",
+            "window": 1,
+            "arm": 1,
+            "cycles": 198499,
+            "instructions": 198497,
+            "output": 50176,
+            "inputs": 640000,
+            "guards": 4096
+          },
+          {
+            "case": "actual_current_source28_i8",
+            "window": 2,
+            "arm": 1,
+            "cycles": 198499,
+            "instructions": 198497,
+            "output": 50176,
+            "inputs": 640000,
+            "guards": 4096
+          },
+          {
+            "case": "actual_current_source28_i8",
+            "window": 3,
+            "arm": 0,
+            "cycles": 200281,
+            "instructions": 200279,
+            "output": 50176,
+            "inputs": 640000,
+            "guards": 4096
+          }
+        ],
+        "means": {
+          "cycles": {
+            "0": 200281.0,
+            "1": 198499.0
+          },
+          "instructions": {
+            "0": 200279.0,
+            "1": 198497.0
+          }
+        },
+        "delta_percent": {
+          "cycles": -0.8897499013885479,
+          "instructions": -0.8897587864928447
+        }
+      }
+    ],
+    "scope": "Complete ranked callback including descriptor validation/return and current generated primitive setup/transfers/compute/stores/final drain; fixed original operands/output bytes, guards/immutable-input/descriptors/FCSR0 checks outside matched timers. Whole timing is separate.",
+    "original_capture": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/actual_h14_capture/receipt.json",
+      "sha256": "b9ed3e885fc4a91dff0fcc2d57777c28865fff63aacf1814399dee09add6ee2e",
+      "bytes": 17452
+    }
+  },
+  "actual_ELF": {
+    "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/layer.elf",
+    "sha256": "4eccc45b06a04e9dd11e60f90c95de6bfbaf88cef3d1129804fe5c842d6d0911",
+    "bytes": 1423800
+  },
+  "current_core": "ea180dca9a342d188d20c270c195955d789013af; independently installed",
+  "source_control": "Packet2 compact predecessor candidate, not normal flat provider; exact actual-source targetIR/LLVM/object bytes reclosed before linking.",
+  "original_source_operands": "Actual read-only original source28 capture; all1000 whole words preserved by prior capture receipt. No new whole build or timing.",
+  "independent_input_scope": "Separate synthetic N-tail, not original workload data.",
+  "budget": {
+    "requested_bytes": 4194304,
+    "observed_new_nonsymlink_files_before_seal": 5654503,
+    "outer_invocation_returncode": 1,
+    "cause": "Required linked readonly operand object/ELF plus target/LLVM intermediate artifacts exceeded the estimate.",
+    "evidence_deleted": false,
+    "repeated_build": false
+  },
+  "final_static_zeroFSM": true,
+  "guard_bytes": 8192,
+  "readonly_inputs_and_descriptors": true,
+  "FCSR0": true,
+  "source_CPU_proxy": "Actual callback retired200279\u2192198497 (\u22120.8898%); NOT cycles.",
+  "independent_CPU_proxy": "Retired1266\u21921309 (+3.3965%) regression retained.",
+  "linked_object_relocation_theorem": "NOT_RUN; numeric linked ABI/source/object pins do not assert full relocation equivalence.",
+  "hardware": "NOT_LAUNCHED",
+  "stock": "UNMEASURED",
+  "whole": "NO_NEW_WHOLE",
+  "default_promotion": false,
+  "quantitative_timing_prediction": false,
+  "token_usage": "UNKNOWN: exact billed counters unavailable",
+  "file_pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/seal_source.py": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/seal_source.py",
+      "sha256": "517da19b2d703411f8d345b1dd211bc943755adece92735811db0d4df237a004",
+      "bytes": 3951
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/build.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/build.log",
+      "sha256": "4e75c5352f263421e948755b3c83561da11f5e2934eb52433ca3829b9bd2ba14",
+      "bytes": 549
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/build_callback.py": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/build_callback.py",
+      "sha256": "d86d08c8f0e1e633b997766040656363191e89bec183279ea8ea147f3b432cfb",
+      "bytes": 11483
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/driver_derivation.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/driver_derivation.json",
+      "sha256": "4a441d7b158bc814ec0b3f97f9ae6af738b3dbed4b51228c2222c0047db9380e",
+      "bytes": 1245
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/prepare_driver.py": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/prepare_driver.py",
+      "sha256": "b126f0805bfd7b63b21569ca4c399d31525de9d319085feddcad5e720ace2922",
+      "bytes": 5170
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/invocation.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/invocation.json",
+      "sha256": "0a4dc1574fce06fa02cb9e9d52ad698292a142b78bf3cc9ff81af13e34f9a0a3",
+      "bytes": 1181
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/driver_derivation.patch": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/driver_derivation.patch",
+      "sha256": "50772683f303857734f492aefc414af41cc5077b00b5d5c16966b1ae1d0ce52a",
+      "bytes": 12579
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename1.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/benchmark_buffer.h": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/benchmark_buffer.h",
+      "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+      "bytes": 3240
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename1.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename0.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename0.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename1.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename0.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename0.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/spike.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/spike.argv.json",
+      "sha256": "eec5cc8ac4ca8831ebf8a3c942655063b0fd6a9f0155ef2773ec9ab8e8bf592b",
+      "bytes": 289
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename1.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename1.argv.json",
+      "sha256": "d3821ba7fd10182a7711d70e38b3931c3405e16dd4e964fa29d2a7077d853774",
+      "bytes": 638
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/spike.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/spike.log",
+      "sha256": "c36e780be0fc5d72f5445655e42b7ced87b8f7cb1eef118bb66f1ca02cd0ec47",
+      "bytes": 1140
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename0.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename0.argv.json",
+      "sha256": "85851882ad6f04aadbd685b29eb87862ac3e09a33ee334fdce2cd5aeade601ce",
+      "bytes": 638
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/main.c": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/main.c",
+      "sha256": "15ddac243071786f3756275350e04b21bc283e2e03709f4f39ec814a805d6ee9",
+      "bytes": 5389
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename0.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename0.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename0.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename0.argv.json",
+      "sha256": "f2f038e4b10f83c8723bfe5a5eeced3bc1198692698a634e0a56356ee7e50d0a",
+      "bytes": 521
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/qualification.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/qualification.json",
+      "sha256": "15819576354af8b33b55f07afa262fbf72c62e402e0028096f055d1f133faf81",
+      "bytes": 40066
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/inputs.S": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/inputs.S",
+      "sha256": "337a3a8bd02e0969f081c2d0d37d3f5df38e5b877feeb56917426a085da746de",
+      "bytes": 2836
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename1.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename1.argv.json",
+      "sha256": "03c0507bb15e22398e255a5822764485daedf9e4e2a2998bd65d06b692c5e451",
+      "bytes": 606
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/nofsm_audit.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/nofsm_audit.json",
+      "sha256": "c15acb9c1f50251f6443dfcfde3b31c2c9b30813dc8f5dea8b296a3383c2f16c",
+      "bytes": 353
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename1.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename1.argv.json",
+      "sha256": "13995d69d8ab66f689ee07be4cf530d336e463249f1558e40793b23fc99abc7e",
+      "bytes": 543
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename0.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_adapter_rename0.argv.json",
+      "sha256": "d758761a1832d61b998dcc8da24477a49d35e7d77165eabede7c3f639b2d18e1",
+      "bytes": 606
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename0.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_kernel_rename0.argv.json",
+      "sha256": "a34269c87e7f7b4db7fc6f1c740a2e1a640f26a491c8546fad3c25dac07aafc6",
+      "bytes": 543
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename1.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename0.log": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8_adapter_rename0.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename1.argv.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails_kernel_rename1.argv.json",
+      "sha256": "b72c2b0069f99fb3f33746b63cdb96578e5dd94fb1f1d7032d7da51d1c0fd7d2",
+      "bytes": 521
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/b.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/b.bin",
+      "sha256": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+      "bytes": 589824
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/expected.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/expected.bin",
+      "sha256": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+      "bytes": 50176
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/a.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/actual_current_source28_i8/a.bin",
+      "sha256": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+      "bytes": 50176
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/inputs.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/inputs.o",
+      "sha256": "d130687456841c690324b66d1d3d61e6f247585d381b7169b63c22b637efab86",
+      "bytes": 1375640
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/syscalls.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/syscalls.o",
+      "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+      "bytes": 19024
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/layer.elf": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/layer.elf",
+      "sha256": "4eccc45b06a04e9dd11e60f90c95de6bfbaf88cef3d1129804fe5c842d6d0911",
+      "bytes": 1423800
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/link.derived.ld": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/link.derived.ld",
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/main.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/main.o",
+      "sha256": "7f26066636ccf37799636905099c7a506dafddf5d0f88d32fa8104db50920b33",
+      "bytes": 13728
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/crt.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/linked/crt.o",
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/b.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/b.bin",
+      "sha256": "4c6e0f84691f1e7e145181d728f407d39c9a2c7b663bd8f0de77921a4528f73a",
+      "bytes": 19296
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/expected.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/expected.bin",
+      "sha256": "4852748c118f5e7b183b35aefa8382615ea5032d2f425ff87216bf0bb78eaf79",
+      "bytes": 2345
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/a.bin": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks/independent_i8_tails/a.bin",
+      "sha256": "435d413e401f0faa68793774622ad3785d57406fb968fd00d60033304172fe48",
+      "bytes": 1120
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/adapter.c": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/adapter.c",
+      "sha256": "ffd76b547d9974afabcafb08cd80fe42046b8c544875276420233b6ba0b31290",
+      "bytes": 1155
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/selected_kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/selected_kernel.o",
+      "sha256": "7b34f52af70beaf0112b3674dc9f11850eb8f25a70f8632d5a2893053d63d49b",
+      "bytes": 10200
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/selected_adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/selected_adapter.o",
+      "sha256": "cce85afb2a3cfc0fa17ce7096da7697b8773f529a78cd9905b5e19bc8b0ef320",
+      "bytes": 2288
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/adapter.o",
+      "sha256": "dc564538b0ef337c38539a1bb59ab034ddbdab073f072d5c7e5b236a0bc72652",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/adapter.c": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/adapter.c",
+      "sha256": "ffd76b547d9974afabcafb08cd80fe42046b8c544875276420233b6ba0b31290",
+      "bytes": 1155
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/selected_kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/selected_kernel.o",
+      "sha256": "8958e8bd1fcf9cefd049d2abfb985cd314230879a5270062f2da4997a9c51641",
+      "bytes": 10576
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/selected_adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/selected_adapter.o",
+      "sha256": "e05ed8da6f8ef2e876fda4cfd6af2dee49661721d52b4e36c6b4bba3cbafa00c",
+      "bytes": 2288
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/adapter.o",
+      "sha256": "dc564538b0ef337c38539a1bb59ab034ddbdab073f072d5c7e5b236a0bc72652",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.ll": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.ll",
+      "sha256": "979d0c7f02e3cd47ae967dd96e9fbc1cd06da7ab1089435fa1da9fbcc9d031bc",
+      "bytes": 202535
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/device_compile.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/device_compile.json",
+      "sha256": "07d8ebe66b213efd1e954f0bb4b5854bcfd1f0cabe6fd0f16b0cee2e5aa04da6",
+      "bytes": 1789
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.gemmini.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.gemmini.mlir",
+      "sha256": "78438ddf4f2925f7bbb18fd145159ca16ae77d6c4a1e5e95ba07ee549b42a482",
+      "bytes": 235783
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.llvm.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.llvm.mlir",
+      "sha256": "e6e5aedbfa190fd1acdca352fbdf11a4f8c944b1ca635d5b085ca66f16e1f04b",
+      "bytes": 319008
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/kernel.o",
+      "sha256": "17ad29db25a42dc329e2766d3d123beafc126a3e763dacd2ac931f1f5b17c0df",
+      "bytes": 10200
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/object_nofsm_audit.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm1/device/object_nofsm_audit.json",
+      "sha256": "9b1696d09e4d58ffe42fd0b8bd9cdabe431c862fecfa4321e8346f972ae525ca",
+      "bytes": 350
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.ll": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.ll",
+      "sha256": "5bc44a304eb16df34047c9365f83840257d49955703d37a1b7f3e758476aa78e",
+      "bytes": 213891
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/device_compile.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/device_compile.json",
+      "sha256": "9d7dd9837b72056e26555810284d2ac0138ab54d2c1c0b1937146b143382cf23",
+      "bytes": 1789
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.gemmini.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.gemmini.mlir",
+      "sha256": "215f5030f682b79eefe8467886a593b058321e5e0352833ae86be74e88925b42",
+      "bytes": 251107
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.llvm.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.llvm.mlir",
+      "sha256": "7ee76165c298556ef65e096da177cd4eb3d9f5f6f3566e471598d41408621767",
+      "bytes": 338234
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/kernel.o",
+      "sha256": "387f04bff922650f12ba6255baa4f310860db817016f6b0e9a07622f6abc03df",
+      "bytes": 10576
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/object_nofsm_audit.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/actual_current_source28_i8/arm0/device/object_nofsm_audit.json",
+      "sha256": "b4daeca29bbefa408f1b2f2988e610ecb962b5d4268d928b570085284e656ed0",
+      "bytes": 350
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/adapter.c": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/adapter.c",
+      "sha256": "73107851c23c9f71d05847d589792fd38fd84c4bfbd9a58684777bd269744a42",
+      "bytes": 1128
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/selected_kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/selected_kernel.o",
+      "sha256": "00250ebab206dec78f8ed9a2b878269deb36433bff1edfc83fc7a7f49b39f8b1",
+      "bytes": 5096
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/selected_adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/selected_adapter.o",
+      "sha256": "2b2459d8099f28566733073ec84f7464ebb5161bb6e37d8c6e16058ab62ae2ea",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/adapter.o",
+      "sha256": "d3619f7127bbb5440f9e370fe590ef51f85c6f617044c9df800ec8fbf7a429b2",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/adapter.c": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/adapter.c",
+      "sha256": "73107851c23c9f71d05847d589792fd38fd84c4bfbd9a58684777bd269744a42",
+      "bytes": 1128
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/selected_kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/selected_kernel.o",
+      "sha256": "4eabb92026d477797b9283476d0d1651e4f3eea543ccb49bbe3c32e1264af54d",
+      "bytes": 5032
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/selected_adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/selected_adapter.o",
+      "sha256": "8e00288f2bcb61ab426143722e56c2bf65e363f6e0a0c8348de820c3b85b981f",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/adapter.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/adapter.o",
+      "sha256": "d3619f7127bbb5440f9e370fe590ef51f85c6f617044c9df800ec8fbf7a429b2",
+      "bytes": 2280
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.ll": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.ll",
+      "sha256": "37dd0f54647cba466a8083588ceafebe8981336482d8357b9bbb93d86d27f85b",
+      "bytes": 125281
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/device_compile.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/device_compile.json",
+      "sha256": "ae3f81a64550583ee06317fe00c08c997c2606165e3c8dfb85048aca96fbc7f9",
+      "bytes": 1765
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.gemmini.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.gemmini.mlir",
+      "sha256": "e044489b3a52f323bd26aaa79ef3918470eedd657b20a46b19cc5f938bf2fc03",
+      "bytes": 168891
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.llvm.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.llvm.mlir",
+      "sha256": "30535faf7b44dda7182adaeea98125f664edb30b11c992bf4a38bd05c64e25b7",
+      "bytes": 232425
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/kernel.o",
+      "sha256": "57ea4af847cef012be79d2f153abb583732dcfb7a0418b36b52e7e1ab0723053",
+      "bytes": 5096
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/object_nofsm_audit.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm1/device/object_nofsm_audit.json",
+      "sha256": "dea59b38c0e03589a1be93f8ba8cb038c9dcb81c42a3dfc49347eade91cd3940",
+      "bytes": 348
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.ll": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.ll",
+      "sha256": "0d3c9f26a5936d3f792f5e86c5d37b74995601df90df42d267221722c5cb817a",
+      "bytes": 128630
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/device_compile.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/device_compile.json",
+      "sha256": "0d4e5604ebaca22a86ee3fc6b048a4fc30441fa2f9e676e5995a60aad72ea3c7",
+      "bytes": 1765
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.gemmini.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.gemmini.mlir",
+      "sha256": "94047336def7b56dfdbe94556c1a7ed37929ca7d2f8567c676723df88c557e80",
+      "bytes": 176453
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.llvm.mlir": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.llvm.mlir",
+      "sha256": "18fbd0e90459175f9d598add8bfc0e165154395f79bd15cedf9c42ca9a9a27d0",
+      "bytes": 242201
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.o": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/kernel.o",
+      "sha256": "5d7f525ebf62e95ee05cc152f763f5abb41cd9091014aa5654be4adbb74a2c25",
+      "bytes": 5032
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/object_nofsm_audit.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-source-20261007/out/complete_callback/independent_i8_tails/arm0/device/object_nofsm_audit.json",
+      "sha256": "ee88a616c1f7ac2dc2cadc6106e49d9543c0bece0ae3129e3d47b6a0dcb4a661",
+      "bytes": 348
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/experiments/admit.py": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/experiments/admit.py",
+      "sha256": "54d33cc81aa4c49ff7e019af84625641e0895f64cc805d92d41dbd2463aef2a8",
+      "bytes": 2946
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/mlir_oot/golden_resident_conv.py": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/mlir_oot/golden_resident_conv.py",
+      "sha256": "5170b24760cbd38464a4b1ebe5a3e00587e62f1f4dc28a707af3bde412f2f692",
+      "bytes": 51460
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/actual_h14_capture/receipt.json": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/actual_h14_capture/receipt.json",
+      "sha256": "b9ed3e885fc4a91dff0fcc2d57777c28865fff63aacf1814399dee09add6ee2e",
+      "bytes": 17452
+    },
+    "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks_v2/qualification.json": {
+      "path": "/tmp/gemmini-compact-family-frontier-20261007/out/complete_callbacks_v2/qualification.json",
+      "sha256": "d10137f8af08257164b6c9b8d63e189a5c2e3844d1affb654ce477ddc3fe0bc6",
+      "bytes": 89721
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-trace-20261007/qualification.json": {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-resident-packet4-trace-20261007/qualification.json",
+      "sha256": "e450285ef6053437a21d23cc51c655a3e6491ec9f0def3383387bf0a806d1254",
+      "bytes": 24811
+    },
+    "/scratch/agustin/tmp/merlin-resource-scalar-placement-main-20261007/out/artifacts/probes/resource-scalar-stages-review-v3/qualification.json": {
+      "path": "/scratch/agustin/tmp/merlin-resource-scalar-placement-main-20261007/out/artifacts/probes/resource-scalar-stages-review-v3/qualification.json",
+      "sha256": "cddf34bd6f40237fea0d5b5f9f47998f0f3652af6e860317f262487d7bcd379c",
+      "bytes": 6731646
+    }
+  }
+}

@@ -153,3 +153,37 @@ benchmark counts must never select a production strategy.
 [Packing-only complete GSIM receipt](perf_records/smol_produced_packing_complete_gsim_20261007.json).
 [Sealed rejected accumulation controls](perf_records/smol_ordered_partition_controls_seal_20261007.json).
 [Independent root closure of their 184 original declared paths](perf_records/root_smol_ordered_partition_controls_reclosure_20261007.json).
+
+## 2026-10-08 source observer and complete cost results
+
+The actual patch call is covered by an exact BF16 observer prototype. Its
+certificate accepts528,217 of786,432 patch words and replays258,215 through all
+four original K192 lanes. All patch words and all1,600 whole output words match
+the original bits. Complete target cost remains unmeasured;198,309,120 replay
+MACs and certificate work must be included. The once-rounded real-dot alternative
+fails82 whole outputs and is rejected.
+
+The PV frontier has six ordered FMA partials, source rescaling/left-fold additions,
+a denominator/reciprocal and a final BF16 observer. A retained16-query/head slice
+certifies752 of1,024 words and replays272. Private-f64 interval fusion preserves
+all outputs but regresses1.40% in its complete native diagnostic comparison.
+Device products were emulated; this is neither accelerator timing nor an admitted
+optimization.
+
+That slice deliberately requests an exact denominator on every row. Its
+16,281/16,384 QK replay count **is not the whole model's replay rate**. The actual
+whole provider refines denominators only after pending quantizer decisions.
+The historical whole replay count is506.37M FMAs versus19.327B vision attention
+MACs. Proof and dual-endpoint evaluation remain expensive despite matrix offload.
+
+The typed polynomial result has two observations: BF16 probability readout and
+an unrounded f32 denominator fold. A source f32 maximum controls shifts/rescaling.
+A final BF16 use does not make those other observations private. Exact source
+semantics and an explicitly approximate joint attention policy are distinct
+compiler choices; both retain the original whole-model gate.
+
+[Patch source/whole qualification](perf_records/smol_patch_observer_qualification_20261008.json).
+[PV source observer](perf_records/smol_pv_closed_observer_20261008.json).
+[Retained native slice](perf_records/smol_pv_native_observer_20261008.json).
+[Complete native non-improvement](perf_records/smol_pv_fused_interval_negative_20261008.json).
+[QK and softmax observations](perf_records/smol_qk_softmax_observation_audit_20261008.json).

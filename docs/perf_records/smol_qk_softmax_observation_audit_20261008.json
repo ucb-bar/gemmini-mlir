@@ -1,0 +1,207 @@
+{
+  "schema": "qk_softmax_source_observations_readonly_audit_v1",
+  "status": "SOURCE_CONSTRAINT_AUDIT_ONLY",
+  "experiment_source_symbol": "source_attention_frontier_fallback",
+  "qk": [
+    {
+      "op_index": 62,
+      "input_types": [
+        "tensor<1x12x256x64xbf16>",
+        "tensor<1x12x512x64xbf16>"
+      ],
+      "output_type": "tensor<1x12x256x512xf32>",
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ]
+    },
+    {
+      "op_index": 86,
+      "input_types": [
+        "tensor<1x12x256x64xbf16>",
+        "tensor<1x12x512x64xbf16>"
+      ],
+      "output_type": "tensor<1x12x256x512xf32>",
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ]
+    }
+  ],
+  "max_reductions": [
+    {
+      "op_index": 65,
+      "scalar_dag": [
+        "arith.maximumf",
+        "linalg.yield"
+      ],
+      "input_types": [
+        "tensor<1x12x256x512xf32>",
+        "tensor<1x12x256xf32>"
+      ],
+      "source_maximum_winner_and_value_required": true
+    },
+    {
+      "op_index": 89,
+      "scalar_dag": [
+        "arith.maximumf",
+        "linalg.yield"
+      ],
+      "input_types": [
+        "tensor<1x12x256x512xf32>",
+        "tensor<1x12x256xf32>"
+      ],
+      "source_maximum_winner_and_value_required": true
+    }
+  ],
+  "polynomial_readouts": [
+    {
+      "polynomial_op_index": 69,
+      "scalar_dag": [
+        "arith.constant",
+        "arith.constant",
+        "arith.cmpf",
+        "arith.select",
+        "arith.constant",
+        "arith.mulf",
+        "math.floor",
+        "arith.subf",
+        "arith.constant",
+        "arith.constant",
+        "math.fma",
+        "arith.constant",
+        "math.fma",
+        "arith.constant",
+        "math.fma",
+        "arith.subf",
+        "arith.constant",
+        "arith.constant",
+        "math.fma",
+        "arith.fptosi",
+        "arith.bitcast",
+        "arith.select",
+        "linalg.yield"
+      ],
+      "uses": [
+        {
+          "kind": "bf16_probability_observation",
+          "consumer_op_index": 75,
+          "output_type": "tensor<1x12x256x512xbf16>",
+          "must_retain_original_bf16_rounding": true
+        },
+        {
+          "kind": "unrounded_f32_denominator_observation",
+          "consumer_op_index": 70,
+          "lane_fold_index": 71,
+          "lane_combine_index": 72,
+          "lane_fold_type": "tensor<1x12x256x8xf32>",
+          "lane_combine_scalar_dag": [
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "linalg.yield"
+          ],
+          "must_retain_original_source_precision": true
+        }
+      ]
+    },
+    {
+      "polynomial_op_index": 93,
+      "scalar_dag": [
+        "arith.constant",
+        "arith.constant",
+        "arith.cmpf",
+        "arith.select",
+        "arith.constant",
+        "arith.mulf",
+        "math.floor",
+        "arith.subf",
+        "arith.constant",
+        "arith.constant",
+        "math.fma",
+        "arith.constant",
+        "math.fma",
+        "arith.constant",
+        "math.fma",
+        "arith.subf",
+        "arith.constant",
+        "arith.constant",
+        "math.fma",
+        "arith.fptosi",
+        "arith.bitcast",
+        "arith.select",
+        "linalg.yield"
+      ],
+      "uses": [
+        {
+          "kind": "bf16_probability_observation",
+          "consumer_op_index": 99,
+          "output_type": "tensor<1x12x256x512xbf16>",
+          "must_retain_original_bf16_rounding": true
+        },
+        {
+          "kind": "unrounded_f32_denominator_observation",
+          "consumer_op_index": 94,
+          "lane_fold_index": 95,
+          "lane_combine_index": 96,
+          "lane_fold_type": "tensor<1x12x256x8xf32>",
+          "lane_combine_scalar_dag": [
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "arith.addf",
+            "linalg.yield"
+          ],
+          "must_retain_original_source_precision": true
+        }
+      ]
+    }
+  ],
+  "constraint": "Final BF16 attention output does not make the unrounded polynomial matrix semantically removable. Each source f32 polynomial value also enters its original eight interleaved lane folds, seven-add combination, and online denominator FMA. QK source max values also select shifts and alpha. These are distinct required source observation/reduction paths, even with no public f32 tensor escape.",
+  "current_physical_dual_endpoints": "Prepared polynomial computes original source scalar DAG at both admitted score endpoints; current monotone source-word plan proves matching exact coefficient policy. Private endpoint storage may change only with a certificate covering both probability BF16 and original f32 denominator/max paths.",
+  "actual_bounded_current_producer_counters": [
+    25,
+    0,
+    78,
+    16281,
+    1041984,
+    16,
+    0,
+    0
+  ],
+  "bounded_denominator_source_qk_replays": 16281,
+  "bounded_denominator_source_qk_replay_mac": 1041984,
+  "bounded_total_source_scores": 16384,
+  "bounded_replay_fraction": 0.99371337890625,
+  "bounded_evidence_scope": "Original first-source head0 rows0:16 only; not whole48 multiplicity or extrapolated whole cycle savings.",
+  "global_static_work_from_parent_audit": {
+    "vision_score_cells": 150994944,
+    "potential_two_endpoint_polynomial_values": 301989888,
+    "scope": "Static full requested vision work; cutoff/point/source fallback can change actual execution. Not measured PC counts."
+  },
+  "current_source_work_not_a_new_policy": "The original provider already specializes an admitted monotone source-word polynomial, batches4scores/8endpoints and supplies BF16 point witnesses. Replacing it with a midpoint or unrounded real polynomial would be a new numerical policy and is not admitted by this audit.",
+  "next_possible_shared_optimization": "A closed observation region can share/collapse endpoint work only after proving both BF16 probability and f32 ordered denominator/max observations. Read-only hypothesis: eliminate redundant endpoint arithmetic when the exact source-word input range maps to one source word, while retaining source replay on uncertain lanes/rows; complete source cost still required.",
+  "source_or_target_change": false,
+  "new_numeric_candidate_tested": false,
+  "performance_gain": null,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-pv-observer-fused-20261007/audit_qk_observations.py": "0c30b94f95b2311ce0a61fcd0a3fac9d1447af641631b18567dcda2976cef7ac",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/source/normal_prepared.mlir": "fe89f3893a31df658afb94a9d64999aaad2d6db7ef8c39f07eca8b6499fa1ba4",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-pv-observer-20261007/native_qualification.json": "db2b94a4cad030a11e70c40558c6e97401c043cb6450774f9b68d915ea0edeca",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/provider/native_numeric/prepared_polynomial_constants.h": "529c1c7280d1165786f46dbcff2594e16b667184f02af5f28a1b87b663bc0e0b",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/provider/native_numeric/prepared_polynomial_batch.h": "e6b8b5e63112d5d5d932e4aecfda3b1d0c33f24517eac236b9bcf646cd3c95f0",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/provider/native_numeric/monotone_bit_polynomial.h": "7553ce4eb4d813953467e5b7388b1d54707f9d2cec4c327d783930678f580abd"
+  }
+}

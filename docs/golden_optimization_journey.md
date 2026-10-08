@@ -4102,3 +4102,81 @@ products/observer/refinement/stores. Group retirement−2.895% differs from stoc
 −1.687%; neither predicts whole-model timing by multiplication. Core7625 main
 and OOT source/normal integration are delivered. Fresh whole f90b original1600
 strict gate is still running; whole hardware remains unmeasured.
+
+## 2026-10-08 current families, attribution and stock preparation
+
+Best whole stock results remain ResNet50 **28,649,233**, TinyLlama
+**378,946,263**, and SmolVLA **258,621,872,969** model cycles. The22M/300M/5B
+targets remain unmet. Component and functional instruction results do not
+replace these measurements.
+
+Merlin's clean scalar-carrier-family topic4361d571 passes444 source and444
+independently installed checks, with no skips. All1,028 Python modules,157 public
+resources and62 runtime files agree across source, wheel, source distribution
+and installation; four default LLVM cases remain exact. The explicit policy
+derives proof from each current scalar expression and reifies one immutable
+table before upstream lowering. Original finishing operations, source fallback,
+rounding/effect requirements and whole validation remain. Source-derived all22
+Tiny binding is a separate pending gate.
+
+Compact convolution actual14×14 source improves685,067.5→470,524.5 GSIM cycles
+(**−31.317%**), while independent7×7 regresses **21.376%**. Stock2109 already
+used the compact family in all five corresponding convolutions; actual linked
+bodies and original object/IR identities close independently. This recovers a
+known champion strategy in the fresh general route, **not a new champion gain**.
+The strict selector compares complete typed DMA/command traces, reports opposing
+components as UNKNOWN, and passes54 independent root integration checks.
+
+Compact residency saves input transfers while repartitioning B transfers, stores
+and compute commands. Explicit search permission can generate that legal
+candidate; it cannot prove profit. Model names, region IDs, goldens and benchmark
+ordinals never select a production strategy.
+
+Tiny's complete affine18 source producer pair and observer improves
+8,589,793→8,288,352 GSIM cycles (**−3.509%**); its independent small case regresses
+**44.169%**. The source ROI contains two M8×K2048×N5632 producers and one45,056
+element observer, not all22 layers. Quadratic alternatives remain independently
+running. No extrapolation or default promotion is admitted.
+
+Fresh normal ResNet f631 passes exact stock bitstream/HWDB/zeroFSM preflight.
+Its HTIF SYS_write request/exit protocol agrees with successful stock2109; current
+evidence does not require a UART rebuild. The original recipe remains immutable
+with an additive corrected successor. Queue database/jobs write access remains
+unavailable. GitHub DNS blocks publication; newer local topics are unpushed and
+remote Merlin main must be fetched before integration/push.
+
+Storage recovery preserved original receipt bytes/paths while sharing4,063
+duplicate JSON paths, releasing1,187,799,040 allocated bytes. Explicit aliases
+retain terminal test artifacts moved out of/tmp. Active owners and qualified
+code, models, executables and receipts remain. Free capacity changes independently.
+
+### Requirements for the automatic compiler loops
+
+- Phase0: current source-to-executable binding, actual memory/console admission,
+  and capsules including mixed precision observations.
+- Phase1: semantic candidate generation even without structural dominance;
+  separate legality, numerical permission and measured profit. Represent one
+  shared table before lowering with storage/effects visible to every target.
+- Phase2: complete producer/consumer timing including initialization, packing,
+  cache/table costs, readouts, certification and fallback; retain independent
+  regressions and unchanged-fallback positional drift.
+- Prepared facts: ownership/epochs and interval-containment capabilities. Verified
+  narrowing may retain a conservative bound; replacement, widening, source/effect
+  mutation and stale aliases must invalidate.
+- Target ISA, device resources and commands remain OOT. Generic host codegen,
+  numerical permissions, packing, runtime, ownership and orchestration remain
+  Merlin. Capture/quantization correspondence remains model2MLIR. These are
+  compiler transformations across workloads.
+
+Exact billed OOT/topic token allocation is UNKNOWN. Separate active-goal
+observation at01:54:17UTC reports117,165,239 tokensUsed; it is not a provider bill
+or topic allocation. Earlier billing/traffic ledgers remain.
+
+[Qualified generic family](perf_records/shared_scalar_carrier_family_20261008.json).
+[Compact complete timing](perf_records/resnet_compact_family_complete_20261008.json).
+[Root public integration](perf_records/resnet_compact_family_root_integration_20261008.json).
+[Champion/fresh actual body binding](perf_records/resnet_champion_fresh_compact_binding_20261008.json).
+[Tiny complete timing](perf_records/tiny_affine18_complete_timing_20261008.json).
+[Stock preparation successor](perf_records/resnet_normal_stock_static_preflight_20261008.json).
+[Preserved storage audit](perf_records/storage_preserved_receipts_successor_20261008.json).
+[Current original-path closure](perf_records/current_compiler_deliveries_reclosure_20261008.json).

@@ -1,0 +1,401 @@
+{
+  "schema": "actual_vision_pv_closed_bf16_observer_source_audit_v1",
+  "status": "PASS_TYPED_SOURCE_CLOSURE_ONLY",
+  "merlin_revision": "ea180dca9a342d188d20c270c195955d789013af",
+  "merlin_observer_api": "/scratch/agustin/tmp/merlin-resource-scalar-stages-installed-20261007/venv/lib/python3.12/site-packages/merlin/llvmlower/observation_boundary.py",
+  "experiment_source_symbol": "source_attention_frontier_fallback",
+  "source_plan": [
+    {
+      "function_op_index": 78,
+      "lhs": "tensor<1x12x256x192xbf16>",
+      "rhs": "tensor<1x12x192x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 79,
+          "operand_index": 0
+        }
+      ]
+    },
+    {
+      "function_op_index": 81,
+      "lhs": "tensor<1x12x256x192xbf16>",
+      "rhs": "tensor<1x12x192x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 82,
+          "operand_index": 0
+        }
+      ]
+    },
+    {
+      "function_op_index": 84,
+      "lhs": "tensor<1x12x256x128xbf16>",
+      "rhs": "tensor<1x12x128x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 85,
+          "operand_index": 0
+        }
+      ]
+    },
+    {
+      "function_op_index": 102,
+      "lhs": "tensor<1x12x256x192xbf16>",
+      "rhs": "tensor<1x12x192x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 103,
+          "operand_index": 0
+        }
+      ]
+    },
+    {
+      "function_op_index": 105,
+      "lhs": "tensor<1x12x256x192xbf16>",
+      "rhs": "tensor<1x12x192x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 106,
+          "operand_index": 0
+        }
+      ]
+    },
+    {
+      "function_op_index": 108,
+      "lhs": "tensor<1x12x256x128xbf16>",
+      "rhs": "tensor<1x12x128x64xbf16>",
+      "output": "tensor<1x12x256x64xf32>",
+      "maps": [
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d4)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d4, d3)>",
+        "affine_map<(d0, d1, d2, d3, d4) -> (d0, d1, d2, d3)>"
+      ],
+      "iterators": [
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<parallel>",
+        "#linalg.iterator_type<reduction>"
+      ],
+      "scalar_dag": [
+        "arith.extf",
+        "arith.extf",
+        "math.fma",
+        "linalg.yield"
+      ],
+      "source_seed": "0.000000e+00 : f32",
+      "source_products": "Exact BF16 extension followed by ordered binary32 fused multiply-add; no separate product rounding.",
+      "uses": [
+        {
+          "operation": "linalg.generic",
+          "function_op_index": 109,
+          "operand_index": 0
+        }
+      ]
+    }
+  ],
+  "observer_inputs": [
+    "tensor<1x12x256xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256xf32>",
+    "tensor<1x12x256xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>"
+  ],
+  "unchanged_observer_parameters": [
+    "tensor<1x12x256xf32>",
+    "tensor<1x12x256xf32>",
+    "tensor<1x12x256xf32>"
+  ],
+  "source_values": [
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>",
+    "tensor<1x12x256x64xf32>"
+  ],
+  "requested_outputs": [
+    "tensor<1x12x256x64xbf16>"
+  ],
+  "observer_ops": [
+    {
+      "function_op_index": 12,
+      "operation": "arith.constant",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 13,
+      "operation": "tensor.splat",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 42,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 43,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 44,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 45,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 56,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 57,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 58,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 59,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 60,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 61,
+      "operation": "tensor.empty",
+      "scalar_dag": []
+    },
+    {
+      "function_op_index": 76,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.mulf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 79,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 82,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 85,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 100,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.mulf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 103,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 106,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 109,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.addf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 110,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.constant",
+        "arith.constant",
+        "arith.cmpf",
+        "arith.select",
+        "arith.divf",
+        "linalg.yield"
+      ]
+    },
+    {
+      "function_op_index": 111,
+      "operation": "linalg.generic",
+      "scalar_dag": [
+        "arith.mulf",
+        "arith.truncf",
+        "linalg.yield"
+      ]
+    }
+  ],
+  "no_external_f32_product_or_accumulator_observation": true,
+  "boundary_location": "After all six original ordered PV reductions, the exact online alpha rescale/three-segment addition order and original denominator-zero selection/reciprocal; final binary32 product then BF16 RNE observation.",
+  "per_segment_bf16_boundary": false,
+  "source_effects_and_physical_contract": "Pure typed scalar operations and no strict FP context proved by current observation API. Stable RNE, nontrapping gradual arithmetic, unobserved flags, allocation/alias/source lifetime and immutable epochs require separate proof before replacement.",
+  "provider_existing_mechanism": "Current provider already propagates product intervals through endpoint_intervals and BF16 bins, then certifies cross-head quantizer; ambiguous cells replay exact source partials and denominator. A new certificate must replace expensive product bound/representation work, rather than duplicate this endpoint observation.",
+  "source_precision_separation": "Original probability BF16 words, online alpha and denominator/polynomial DAG stay authoritative unchanged. Exact representation of A/B and product center is separate from ordered FMA source-roundoff radius; reconstructed equality must be proved dynamically, never inferred from BF16 dtype alone.",
+  "prepared_rhs_lifetime": "Existing ready/epoch/next/uses owner plus exact source views (data, offset, shape, strides) and disjoint source/output/workspace spans. No SRAM residency or new lifetime permission inferred.",
+  "generic_shared_contract": "Typed closed observer plus explicit ordered reduction arithmetic policy and exact product/representation witnesses; retain original source observer DAG and sparse original replay. Supports nonfused patch and fused PV only with their distinct rounding policies.",
+  "automatic_strategy_binding": false,
+  "production_name_shape_or_provenance_selector": false,
+  "numeric_candidate_tested": false,
+  "cost_or_cycle_gain": null,
+  "no_policy_or_target_changes": true,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-patch-observer-20261007/derive_pv_observer.py": "a2d917a6fd32c70e82761989e47011c061769c7029d17f723bcc8aec84f95a79",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/source/normal_prepared.mlir": "fe89f3893a31df658afb94a9d64999aaad2d6db7ef8c39f07eca8b6499fa1ba4",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/provider/native_numeric/provider.c": "489f2677f5b85d3d33158608bd64b11ced6f2e87d28f7dc731a98fe206ed111b",
+    "/scratch/agustin/tmp/merlin-resource-scalar-stages-installed-20261007/venv/lib/python3.12/site-packages/merlin/llvmlower/observation_boundary.py": "4080488bb954d0ccb72d141419db7838b8078872d86990e53623213b70d2690b"
+  }
+}
