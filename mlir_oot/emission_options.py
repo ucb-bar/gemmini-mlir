@@ -33,6 +33,7 @@ class FlatConvEmissionOptions:
     pingpong_b: bool = False
     loop_spatial: bool = False
     store_plan: PairedReadoutPlan | None = None
+    cached_reduction_weights: bool = False
 
 
 @dataclass(frozen=True, kw_only=True)

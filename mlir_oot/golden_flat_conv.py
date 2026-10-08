@@ -77,8 +77,16 @@ class GoldenFlatConv(GoldenGemm):
     emission_options_type = FlatConvEmissionOptions
     emission_shape_attribute = "conv"
 
-    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False, store_plan=None):
+    def __init__(self, s, *, wide_a=False, separate_b_bank=False, band_rows=None, virtual_padding=False, pingpong_b=False, loop_spatial=False, store_plan=None, cached_reduction_weights=False):
         s.validate()
+        if type(cached_reduction_weights) is not bool:
+            raise ValueError("cached convolution weights require explicit boolean")
+        if cached_reduction_weights and (s.cin % F.DIM or separate_b_bank or pingpong_b):
+            raise ValueError("cached convolution weights need aligned Cin and exclusive scratchpad placement")
+        self.cached_reduction_weights = cached_reduction_weights
+        self.weight_nt = _ceil_div(s.cout, F.DIM)
+        self.weight_rows = 9 * _ceil_div(s.cin, F.DIM) * self.weight_nt * F.DIM
+        self.weight_base = F.SPAD_ROWS - self.weight_rows
         if type(loop_spatial) is not bool:
             raise ValueError("spatial command loop selection must be boolean")
         if store_plan is not None:
@@ -103,6 +111,8 @@ class GoldenFlatConv(GoldenGemm):
             output_dtype=s.output_dtype, scale=s.scale, relu=s.relu,
             wide_store=True, reuse_b=True))
         self.second_output = self.fb.entry.insert_arg(PTR, 3) if store_plan is not None else None
+        if cached_reduction_weights and self.shape.bm * (4 if wide_a else 1) * F.DIM > self.weight_base:
+            raise ValueError('flat activation panel and complete reduction weights exceed scratchpad')
         if (self.shape.bm * (4 if wide_a else 1) + s.bn) * F.DIM > F.SPAD_ROWS:
             raise ValueError('flat A panel and B channel block exceed scratchpad')
 
@@ -111,12 +121,21 @@ class GoldenFlatConv(GoldenGemm):
         self._emit_config()
         self._rocc('config_ld', {'stride':s.stride*s.cin, 'load_id':0})
         zero=self.fb.add(llvm.IntToPtrOp(self.fb.const(0))).results[0] if self.virtual_padding else None
+        if self.cached_reduction_weights:
+            # Full HWIO weights have one immutable owner across every spatial
+            # band. Wide DMA places adjacent N tiles at the declared DIM stride.
+            for k in range(0, 9*s.cin, F.DIM):
+                for n in range(0, s.cout, 4*F.DIM):
+                    ptr=self._ptr(self.b,self.fb.const(k),s.cout,self.fb.const(n))
+                    self._rocc('mvin', {'local':self.weight_base+k*self.weight_nt+n,
+                        'rows':F.DIM,'cols':min(4*F.DIM,s.cout-n),'load_id':1},ptr)
         def band(y0, band_height, sample_y=0):
             widths = tuple(min(F.DIM, band_height*s.ow-start) for start in range(0, band_height*s.ow, F.DIM))
             runs = spatial_runs(s,band_height)
             panel_tiles = 4 if self.wide_a else 1
             panel_width = panel_tiles * F.DIM
-            bbase = F.SPAD_ROWS // 2 if self.separate_b_bank else len(widths) * panel_width
+            bbase = (self.weight_base if self.cached_reduction_weights else
+                F.SPAD_ROWS // 2 if self.separate_b_bank else len(widths) * panel_width)
             if len(widths)*panel_width > bbase or bbase+s.bn*F.DIM > F.SPAD_ROWS:
                 raise ValueError("A and B scratchpad ranges overlap or exceed capacity")
 
@@ -139,7 +158,7 @@ class GoldenFlatConv(GoldenGemm):
                                 current_bbase=bbase+(ki%2)*F.SPAD_BANK_ROWS if self.pingpong_b else bbase
                                 kr = min(F.DIM, channels-ki*F.DIM)
                                 krow = self.fb.add_i(ci, self.fb.const((kh*3+kw)*s.cin+ki*F.DIM))
-                                for d in range(0, len(nr), 4):
+                                for d in (() if self.cached_reduction_weights else range(0, len(nr), 4)):
                                     ptr = self._ptr(self.b, krow, s.cout, self._tile(n0,d))
                                     self._rocc('mvin', {'local':current_bbase+d*F.DIM,
                                         'rows':kr, 'cols':sum(nr[d:d+4]), 'load_id':1}, ptr)
@@ -158,10 +177,19 @@ class GoldenFlatConv(GoldenGemm):
                                                 'a_max':(len(widths)-1)*panel_width+ki*F.DIM,
                                                 'a_reserved_rows':len(widths)*panel_width},address)
                                             return
-                                        self._rocc('preload', {
-                                            'bd':current_bbase+d*F.DIM if a==0 else isa.GARBAGE_ADDR,
-                                            'c':isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=initialize),
-                                            'bd_cols':cols, 'bd_rows':kr, 'c_cols':cols, 'c_rows':rows})
+                                        if self.cached_reduction_weights and a==0:
+                                            attrs = dict(c=isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=initialize),
+                                                bd_cols=cols,bd_rows=kr,c_cols=cols,c_rows=rows)
+                                            bd=self.fb.add_i(self.fb.const(self.weight_base),
+                                                self.fb.add_i(self.fb.mul_i(krow,self.fb.const(self.weight_nt)),self._tile(n0,d)))
+                                            attrs.update(bd_min=self.weight_base,bd_max=F.SPAD_ROWS-F.DIM,
+                                                bd_reserved_rows=F.SPAD_ROWS,bd_alignment=F.DIM)
+                                            self._rocc('preload',attrs,bd)
+                                        else:
+                                            self._rocc('preload', {
+                                                'bd':current_bbase+d*F.DIM if a==0 else isa.GARBAGE_ADDR,
+                                                'c':isa.acc_addr((a*s.bn+d)*F.DIM, accumulate=initialize),
+                                                'bd_cols':cols, 'bd_rows':kr, 'c_cols':cols, 'c_rows':rows})
                                         self._rocc('compute', {'a':a*panel_width+ki*F.DIM,
                                             'a_cols':kr, 'a_rows':rows, 'accumulate':a!=0})
                                     if self.loop_spatial:
@@ -216,6 +244,10 @@ class GoldenFlatConv(GoldenGemm):
         module.attributes['gemmini.flat_conv_band_rows'] = StringAttr(str(self.band_rows))
         module.attributes['gemmini.flat_conv_shape'] = StringAttr(json.dumps(asdict(s),sort_keys=True))
         module.attributes['gemmini.flat_conv_wide_a'] = StringAttr(str(self.wide_a))
+        if self.cached_reduction_weights:
+            module.attributes['gemmini.flat_conv_cached_weights']=StringAttr(json.dumps(
+                dict(weight_interval=[self.weight_base,F.SPAD_ROWS],activation_interval=[0,self.shape.bm*(4 if self.wide_a else 1)*F.DIM],
+                    original_HWIO_order=True,automatic_selection=False,performance='UNKNOWN'),sort_keys=True))
         if self.pingpong_b:module.attributes['gemmini.flat_conv_pingpong_b']=StringAttr('two-independent-banks')
         if self.loop_spatial:module.attributes['gemmini.flat_conv_loop_spatial']=StringAttr('exact bounded ordinary CPU spatial command loop')
         module.attributes['gemmini.flat_conv_separate_b_bank'] = StringAttr(str(self.separate_b_bank))
@@ -228,8 +260,13 @@ class GoldenFlatConv(GoldenGemm):
         return module
 
 
-def command_counts(s, *, wide_a=False, band_rows=None,virtual_padding=False):
+def command_counts(s, *, wide_a=False, band_rows=None,virtual_padding=False,cached_reduction_weights=False):
     s.validate()
+    if type(cached_reduction_weights) is not bool:
+        raise ValueError('cached convolution weights require explicit boolean')
+    if cached_reduction_weights:
+        GoldenFlatConv(s,wide_a=wide_a,band_rows=band_rows,
+            virtual_padding=virtual_padding,cached_reduction_weights=True)
     if not eligible(s,band_rows,virtual_padding=virtual_padding):
         raise ValueError('spatial band exceeds capacity or lacks explicit halo')
     rows = s.oh if band_rows is None else band_rows
@@ -249,7 +286,7 @@ def command_counts(s, *, wide_a=False, band_rows=None,virtual_padding=False):
             for kh in range(3) for kw in range(3))
     return dict(compute=compute, preload=compute,
         mvin_a=aloads*_ceil_div(s.cin,64 if wide_a else 16)*groups,
-        mvin_b=9*kt*bloads*len(bands), mvout=mt*(nt if s.output_dtype=='i32' else bloads),
+        mvin_b=9*kt*(_ceil_div(nt,4) if cached_reduction_weights else bloads*len(bands)), mvout=mt*(nt if s.output_dtype=='i32' else bloads),
         padded_array_issue_cycles=compute*F.DIM, host_im2col_bytes=0,
-        weight_bytes=9*s.cin*s.cout*len(bands), spatial_tiles=mt,
+        weight_bytes=9*s.cin*s.cout*(1 if cached_reduction_weights else len(bands)), spatial_tiles=mt,
         gather_fragments=runs, band_rows=rows, bands=len(bands))

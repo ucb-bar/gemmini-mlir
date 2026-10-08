@@ -150,8 +150,51 @@ def choose_source_stride_resident(control, *, row_residue=False):
     return (candidate if decision['applied'] else control),decision
 
 
+def select_cached_reduction_weights(control):
+    """Rank an explicit admitted complete-weight placement by issued B traffic.
+
+    Existing flat spatial geometry, source K and all numeric facts are retained.
+    Requested transfers establish this candidate's search rank, not measured
+    profitability: bank service, code size and overlap remain separate gates.
+    """
+    decision=dict(applied=False,automatic_policy=False,performance='UNKNOWN',
+        timing_claim=False,selection='explicit complete reduction weights; rank by B requests')
+    if not isinstance(control,GoldenFlatConv):
+        decision['refusal']='requires the selected flat convolution family'
+        return control,decision
+    try:
+        candidate=control.with_emission_options(cached_reduction_weights=True)
+    except ValueError as error:
+        decision['refusal']=str(error)
+        return control,decision
+    from .golden_flat_conv import command_counts
+    def counts(cached):
+        return command_counts(control.conv,wide_a=control.wide_a,
+            band_rows=control.band_rows,virtual_padding=control.virtual_padding,
+            cached_reduction_weights=cached)
+    old,new=counts(False),counts(True)
+    decision.update(control=dict(mvin_b=old['mvin_b'],weight_bytes=old['weight_bytes']),
+        candidate=dict(mvin_b=new['mvin_b'],weight_bytes=new['weight_bytes']),
+        resources=dict(weight_interval=[candidate.weight_base,F.SPAD_ROWS],
+            activation_interval=[0,candidate.shape.bm*(4 if candidate.wide_a else 1)*F.DIM]),
+        compute=old['compute'],padded_array_issue_cycles=old['padded_array_issue_cycles'])
+    decision['applied']=(new['weight_bytes'],new['mvin_b'])<(old['weight_bytes'],old['mvin_b'])
+    decision['refusal']=None if decision['applied'] else 'complete weights do not lower requested B work'
+    return (candidate if decision['applied'] else control),decision
+
+
 def select_kernel(shape, *, flat_spatial=False, virtual_padding=False, resident_stripes=False,
-        source_stride_resident=False, source_stride_row_residue=False, spatial_command_loops=False):
+        source_stride_resident=False, source_stride_row_residue=False, spatial_command_loops=False,
+        cached_reduction_weights=False):
+    if type(cached_reduction_weights) is not bool or (cached_reduction_weights and not flat_spatial):
+        raise ValueError('cached convolution weights need boolean selection and flat scheduling')
+    if cached_reduction_weights:
+        control,kind=select_kernel(shape,flat_spatial=flat_spatial,virtual_padding=virtual_padding,
+            resident_stripes=resident_stripes,source_stride_resident=source_stride_resident,
+            source_stride_row_residue=source_stride_row_residue,spatial_command_loops=spatial_command_loops)
+        selected,decision=select_cached_reduction_weights(control)
+        selected.cached_reduction_weight_decision=decision
+        return selected,'spatial_flat_cached_reduction_weights' if decision['applied'] else kind
     if type(spatial_command_loops) is not bool or (spatial_command_loops and not flat_spatial):
         raise ValueError('spatial command loops require boolean selection and flat spatial scheduling')
     if type(resident_stripes) is not bool:
