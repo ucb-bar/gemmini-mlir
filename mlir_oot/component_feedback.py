@@ -318,6 +318,7 @@ def inspect_component_execution_records(
     frontend,
     required_effects,
     timeout_s,
+    source_applicability=None,
 ):
     """Reopen actual ordinary artifacts without granting missing semantic facets.
 
@@ -365,6 +366,27 @@ def inspect_component_execution_records(
         raise ValueError(
             "component source differs from the independent admitted program"
         )
+    source_record = None
+    if source_applicability is not None:
+        try:
+            from merlin_experiments.phase1.component_source_applicability import (
+                ComponentSourceApplicability,
+            )
+        except ImportError as error:
+            raise ValueError(
+                "selected independent source applicability evaluator unavailable"
+            ) from error
+        if (
+            type(source_applicability) is not ComponentSourceApplicability
+            or source_applicability.source != source
+            or source_applicability.source_program_sha256 != member["program_sha256"]
+            or source_applicability.frontend != frontend
+        ):
+            raise ValueError(
+                "component source applicability differs from the exact independent observed source"
+            )
+        source_applicability.verify()
+        source_record = source_applicability.record()
     generated = result_path.parent / "generated"
     if generated.is_symlink() or not generated.is_dir():
         raise ValueError("ordinary component generated artifacts are absent")
@@ -479,6 +501,7 @@ def inspect_component_execution_records(
         "compiler_sha256": candidate_sha256,
         "target_descriptor_sha256": _sha(target_descriptor),
         "result_sha256": _sha(result_path),
+        "source_applicability": source_record,
         "observed_file_joins": {
             "admitted_source_to_input": source_join,
             "target_stdout_to_file": target_join,

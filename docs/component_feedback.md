@@ -84,6 +84,12 @@ an evaluated stage timeline.
 
 `evaluate_component_execution_stages` independently reopens actual source,
 conversion, command-buffer, artifact, object/link and engine invocation records.
+The optional typed `ComponentSourceApplicability` is independently rerun and
+joined to the exact observed source path, digest and frontend. Its private facts
+can establish source-only applicability of pure closed tensor SSA; physical
+runtime obligations remain UNKNOWN. Dictionaries, pass flags and observations
+from another source path cannot supply this authority.
+
 It issues a typed observed assessment with per-facet missing authorities. This
 source inspection runs before completed functional qualification and therefore
 does not bootstrap qualification from itself. `verify_component_execution_witness`

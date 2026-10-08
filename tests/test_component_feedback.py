@@ -207,8 +207,8 @@ def test_selected_full_support_resolves_companion_decoder_and_requires_service(
         backend.prepare_component_feature_provider(execution_service=None)
 
 
-def test_observed_stage_products_and_positive_metadata_cannot_fill_semantic_gaps(
-    tmp_path,
+def inspection_arguments(
+    tmp_path, *, source_text="fixture source bytes; no semantic witness claimed"
 ):
     from merlin_experiments.phase2 import contracts
 
@@ -220,7 +220,7 @@ def test_observed_stage_products_and_positive_metadata_cannot_fill_semantic_gaps
     capsule = tmp_path / "capsule"
     capsule.mkdir()
     source = capsule / "program.mlir"
-    source.write_text("fixture source bytes; no semantic witness claimed")
+    source.write_text(source_text)
     (capsule / "capsule.yaml").write_text("interface_mlir: program.mlir\n")
     grade = tmp_path / "grade"
     generated = grade / "case" / "generated"
@@ -258,6 +258,13 @@ def test_observed_stage_products_and_positive_metadata_cannot_fill_semantic_gaps
         "required_effects": ("alias", "epoch", "repeated_invocation"),
         "timeout_s": 3,
     }
+    return arguments
+
+
+def test_observed_stage_products_and_positive_metadata_cannot_fill_semantic_gaps(
+    tmp_path,
+):
+    arguments = inspection_arguments(tmp_path)
     inspection = feedback.inspect_component_execution_records(**arguments)
     assert inspection["observed_file_joins"]["admitted_source_to_input"]
     assert inspection["observed_file_joins"]["target_stdout_to_file"]
@@ -457,3 +464,68 @@ def test_prepared_bound_owner_has_live_context_and_no_mutable_partial_service(tm
     service.engine.path.write_bytes(b"changed selected runtime")
     with pytest.raises(ValueError, match="changed"):
         _ = owner.component_source_pins
+
+
+def test_source_applicability_dict_flags_cannot_supply_independent_source_authority(
+    tmp_path,
+):
+    arguments = inspection_arguments(tmp_path)
+    with pytest.raises(ValueError, match="source applicability"):
+        feedback.inspect_component_execution_records(
+            **arguments,
+            source_applicability={
+                "observable_input_mutation": "N_A",
+                "all_runtime_effects": "PASS",
+            },
+        )
+
+
+def test_actual_source_applicability_join_retains_physical_runtime_unknowns(tmp_path):
+    from merlin_experiments.phase1.component_source_applicability import (
+        evaluate_component_source_applicability,
+    )
+
+    arguments = inspection_arguments(
+        tmp_path,
+        source_text=(
+            "module { func.func @identity(%arg0: tensor<2xf32>) -> tensor<2xf32> "
+            "{ func.return %arg0 : tensor<2xf32> } }"
+        ),
+    )
+    source = arguments["capsule_root"] / "program.mlir"
+    authority = evaluate_component_source_applicability(
+        source=source,
+        source_program_sha256=arguments["member"]["program_sha256"],
+        frontend="mlir",
+    )
+    record = feedback.inspect_component_execution_records(
+        **arguments, source_applicability=authority
+    )
+    source_only = record["source_applicability"]
+    assert source_only["facts"]["static_input_domain"]["status"] == "PASS"
+    assert source_only["facts"]["observable_input_mutation"]["status"] == "N_A"
+    assert set(source_only["runtime_effects"].values()) == {"UNKNOWN"}
+    assert "effect obligation UNKNOWN: alias" in record["unresolved"]
+    with pytest.raises(NotImplementedError, match="effect obligation UNKNOWN: alias"):
+        feedback.verify_component_execution_witness(
+            **arguments, source_applicability=authority
+        )
+
+
+def test_source_applicability_cannot_be_reused_for_different_observed_source(tmp_path):
+    from merlin_experiments.phase1.component_source_applicability import (
+        evaluate_component_source_applicability,
+    )
+
+    arguments = inspection_arguments(tmp_path)
+    other = tmp_path / "different_source.mlir"
+    other.write_bytes((arguments["capsule_root"] / "program.mlir").read_bytes())
+    authority = evaluate_component_source_applicability(
+        source=other,
+        source_program_sha256=arguments["member"]["program_sha256"],
+        frontend="mlir",
+    )
+    with pytest.raises(ValueError, match="exact independent observed source"):
+        feedback.inspect_component_execution_records(
+            **arguments, source_applicability=authority
+        )
