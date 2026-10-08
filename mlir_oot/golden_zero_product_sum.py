@@ -9,14 +9,17 @@ conditionally loading/computing terms. Every logical output is always stored.
 Encoded inputs and flags must be immutable together and must not overlap the
 complete destination span. This API does not infer that alias/lifetime proof.
 """
+from collections import Counter
+
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import IntegerAttr, ModuleOp, StringAttr, i64
 from xdsl.ir import Block
-from collections import Counter
-from .codegen.builder import FnBuilder, PTR
-from .golden_product_sum import GoldenProductSum
+
+from .codegen.builder import PTR, FnBuilder
 from .golden_gemm import _ceil_div
-from .tables import isa, rtl_facts as F
+from .golden_product_sum import GoldenProductSum
+from .tables import isa
+from .tables import rtl_facts as F
 
 
 def command_census(shape, pairs, lhs_nonzero, rhs_nonzero):
@@ -58,6 +61,11 @@ def command_census(shape, pairs, lhs_nonzero, rhs_nonzero):
 
 class GoldenZeroProductSum(GoldenProductSum):
     def __init__(self, shape, **kwargs):
+        if kwargs.get("resident_operands", False):
+            raise ValueError(
+                "encoded zero metadata has a distinct panel placement; "
+                "resident operand composition requires a separate contract"
+            )
         super().__init__(shape, **kwargs)
         self.fb = FnBuilder([PTR] * 5)
         self.a,self.b,self.c,self.aflags,self.bflags=self.fb.entry.args
