@@ -24,6 +24,7 @@ TRANSFORMATIONS = (
     "primitive_helper_migration.json",
     "transport_alignment_migration.json",
     "standalone_elementwise_review.json",
+    "component_feedback_migration.json",
 )
 OUTPUT_SCOPES = {
     "standalone_elementwise_review.json": {"contracts/target_contract.yaml", "contracts/residual.yaml"},

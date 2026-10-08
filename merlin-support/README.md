@@ -128,3 +128,16 @@ and archived candidate manifests under `out/artifacts/targets/gemmini`. These ar
 rewritten or moved; several have unrelated remaining consumers. Backend implementation comes
 only from this support provider, not that fixture checkout. Missing real facts remain a refusal,
 not a synthetic replacement or a passing hardware test.
+
+## Independent component feedback
+
+The selected `prepare_component_execution_service` capability binds the ordinary
+Merlin development executor to exact independent qualification/corpus/runtime
+and certificate inputs. `prepare_component_feature_provider` requires that
+closed service, uses actual ordinary Spike observations, and preserves unknown
+cold/warm stage costs and runtime effects. The target decoder requires this
+OOT checkout's pinned `mlir_oot` companion; a standalone support copy refuses a
+missing companion. See `../docs/component_feedback.md` for the closed descriptor
+and remaining semantic/warm qualification prerequisites.
+`component_feedback_migration.json` records this source evolution. No hardware
+qualification or new calibration is established by this capability or its tests.
