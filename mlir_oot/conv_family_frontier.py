@@ -154,14 +154,19 @@ def footprint(generator, *, max_steps=10000000):
 
 
 def choose_compact_frontier(control, *, source_virtual_padding=False, prefetch_b=False,
-                            compact_commands=False, weight_issue_tiles=None, max_steps=10000000):
+                            compact_commands=False, weight_issue_tiles=None, max_steps=10000000,
+                            allow_command_repartition=False):
     """Select only a componentwise nonworse candidate; tradeoffs stay UNKNOWN.
 
     This opt-in policy is a resource/structural ranking. It does not claim that
     equal command counts or fewer requested bytes predict hardware cycles.
-    The default compiler path does not invoke it.
+    The default compiler path does not invoke it. Explicit command repartition
+    permission can generate a candidate with lower A traffic and nonworse payload,
+    arithmetic, configuration and synchronization bounds. Its increased transfer,
+    preload, compute and store command counts remain unpriced, so this is a search
+    candidate requiring complete measurement, never a profitability proof.
     """
-    if any(type(v) is not bool for v in (source_virtual_padding, prefetch_b, compact_commands)):
+    if any(type(v) is not bool for v in (source_virtual_padding, prefetch_b, compact_commands, allow_command_repartition)):
         raise ValueError('Family selection requires explicit boolean source and prefetch facts')
     decision = dict(applied=False, automatic_policy=False, performance='UNKNOWN', timing_claim=False,
                     policy='compact_channel_planes_frontier', rank='componentwise nonworse; no scalar cycle score')
@@ -194,6 +199,27 @@ def choose_compact_frontier(control, *, source_virtual_padding=False, prefetch_b
                     resource_legality='Both actual constructors and complete typed DMA bounds pass',
                     unpriced=before['unpriced'])
     decision['applied'] = bool(better) and not worse
+    if allow_command_repartition:
+        repartitioned = {'commands_mvin', 'commands_preload', 'commands_compute',
+                         'commands_mvout', 'padded_DIM_issue'}
+        protected_worse = [key for key in worse if key not in repartitioned]
+        permitted_candidate = (new['requested_a'] < old['requested_a']
+                               and not protected_worse)
+        decision['command_repartition_permission'] = dict(
+            explicit=True, candidate=permitted_candidate,
+            protected_higher_components=protected_worse,
+            unpriced_higher_components=[key for key in worse if key in repartitioned],
+            primitive_commands_delta=after['primitive_commands']-before['primitive_commands'],
+            command_count_deltas={key: after['command_counts'].get(key,0)-before['command_counts'].get(key,0)
+                                  for key in sorted(before['command_counts'].keys()|after['command_counts'].keys())},
+            unpriced_higher_command_counts={key: after['command_counts'].get(key,0)-before['command_counts'].get(key,0)
+                                           for key in sorted(before['command_counts'].keys()|after['command_counts'].keys())
+                                           if after['command_counts'].get(key,0)>before['command_counts'].get(key,0)},
+            profitability='UNKNOWN; complete paired measurement required')
+        if permitted_candidate and not decision['applied']:
+            decision.update(applied=True, comparison='UNPRICED_COMMAND_REPARTITION_CANDIDATE',
+                            refusal=None)
+            return candidate, decision
     decision['comparison'] = 'STRUCTURAL_DOMINANCE' if decision['applied'] else ('UNKNOWN_TRADEOFF' if better and worse else 'NO_STRUCTURAL_GAIN')
     decision['refusal'] = None if decision['applied'] else ('Unpriced service/overlap and opposing components require complete paired measurement' if better and worse else 'No componentwise strict reduction')
     return (candidate if decision['applied'] else control), decision

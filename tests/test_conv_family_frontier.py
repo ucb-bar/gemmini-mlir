@@ -86,6 +86,35 @@ def test_packet_and_compact_options_are_compared_after_actual_emission_choices()
  assert d['candidate_options']['weight_issue_tiles']==2 and d['candidate_options']['compact_commands']
  assert d['candidate']['complete'] and d['control']['complete']
 
+@pytest.mark.parametrize('dtype,scale',[('i32',1.),('i8',.001)])
+def test_explicit_command_repartition_emits_a_legal_unpriced_candidate(dtype,scale):
+ c=GoldenFlatConv(ConvShape(14,14,256,256,bn=4,output_dtype=dtype,scale=scale),wide_a=True,separate_b_bank=True,virtual_padding=True)
+ strict,baseline=choose_compact_frontier(c,source_virtual_padding=True,compact_commands=True,weight_issue_tiles=2)
+ selected,d=choose_compact_frontier(c,source_virtual_padding=True,compact_commands=True,weight_issue_tiles=2,allow_command_repartition=True)
+ assert strict is c and not baseline['applied'] and baseline['comparison']=='UNKNOWN_TRADEOFF'
+ assert type(selected) is GoldenResidentConv and d['applied']
+ assert d['comparison']=='UNPRICED_COMMAND_REPARTITION_CANDIDATE'
+ assert d['performance']=='UNKNOWN' and not d['timing_claim'] and not d['automatic_policy']
+ p=d['command_repartition_permission']
+ assert p['candidate'] and not p['protected_higher_components']
+ assert {'commands_mvin','commands_mvout','commands_preload','commands_compute'}.intersection(p['unpriced_higher_components'])
+ assert p['command_count_deltas']['mvin_b']>0
+ assert p['unpriced_higher_command_counts']['mvin_b']==p['command_count_deltas']['mvin_b']
+ assert 'paired measurement' in p['profitability']
+ assert d['control']==baseline['control'] and d['candidate']==baseline['candidate']
+
+@pytest.mark.parametrize('s',[ConvShape(7,7,512,512,bn=16,output_dtype='i8',scale=.001),ConvShape(5,7,32,67,bn=4,output_dtype='i8',scale=.01),ConvShape(5,5,48,33,bn=3,output_dtype='i32')])
+def test_command_repartition_does_not_admit_more_arithmetic_or_input_feed(s):
+ c,_=select_kernel(s,flat_spatial=True,virtual_padding=True)
+ c,_=select_flat_resident_planes(c)
+ selected,d=choose_compact_frontier(c,source_virtual_padding=True,compact_commands=True,weight_issue_tiles=2,allow_command_repartition=True)
+ assert selected is c and not d['applied']
+ assert set(d['command_repartition_permission']['protected_higher_components']).intersection({'issued_MAC','A_feed_rows'})
+
+def test_command_repartition_permission_requires_a_boolean():
+ c=GoldenFlatConv(ConvShape(3,3,16,17,bn=2),virtual_padding=True)
+ with pytest.raises(ValueError):choose_compact_frontier(c,allow_command_repartition=1)
+
 @pytest.mark.parametrize('w',[1,3,7,14])
 def test_independent_single_row_componentwise_dominance(w):
  s=ConvShape(1,w,32,19,bn=2,output_dtype='i8',scale=.01)
