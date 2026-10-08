@@ -1,0 +1,366 @@
+{
+  "schema": "resnet.prefix_memset_linked_attribution.v1",
+  "status": "PASS",
+  "scope": "Readonly final-symbol/object/branch closure and source/runtime attribution; no new executable or run",
+  "engine": "Existing complete GSIM paired SDK capsule; current whole timing UNMEASURED",
+  "cases": {
+    "SDK_capsule": {
+      "object": {
+        "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/syscalls.o",
+        "bytes": 19024,
+        "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153"
+      },
+      "ELF": {
+        "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/layer.elf",
+        "bytes": 1402808,
+        "sha256": "8405c66b96d1faa082003232a189b914020af5d74d4311f442e2f40272e67935"
+      },
+      "source_current_readonly": {
+        "path": "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/benchmarks/common/syscalls.c",
+        "bytes": 9179,
+        "sha256": "71b02fbad1f1d29c7f13fb6ab96a18f90cd7c257398b4a52cd8c9f2b459dfcab"
+      },
+      "final_symbol": "memset",
+      "final_address": 2147493166,
+      "body_bytes": 80,
+      "object_to_final_literal_body_bytes_exact": true,
+      "all_branch_register_bytes_and_targets_exact": true,
+      "local_relocations": [
+        {
+          "offset": 8,
+          "kind": 44,
+          "actual_and_expected_target": 2147493198
+        },
+        {
+          "offset": 16,
+          "kind": 16,
+          "actual_and_expected_target": 2147493244
+        },
+        {
+          "offset": 26,
+          "kind": 16,
+          "actual_and_expected_target": 2147493186
+        },
+        {
+          "offset": 60,
+          "kind": 16,
+          "actual_and_expected_target": 2147493196
+        },
+        {
+          "offset": 72,
+          "kind": 16,
+          "actual_and_expected_target": 2147493232
+        }
+      ],
+      "body_sha256": "8b92d0ed917eca8631ae329a57c6fca369b9b0167dc3362b275ee4d18f43028f"
+    },
+    "current611f_whole": {
+      "object": {
+        "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-command-repartition-current-normal-20261008/out/full_leaf_whole/normal_4361_explicit_sdk/build_direct/libc_min.o",
+        "bytes": 3864,
+        "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+      },
+      "ELF": {
+        "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-command-repartition-current-normal-20261008/out/full_leaf_whole/normal_4361_explicit_sdk/build_direct/model.elf",
+        "bytes": 53433888,
+        "sha256": "611f30402c0e7ceb922244d924df91afb897703e55995bbc2bf612a583ec4c1b"
+      },
+      "source_current_readonly": {
+        "path": "/scratch/agustin/tmp/merlin-scalar-carrier-family-installed-20261008/venv/lib/python3.12/site-packages/merlin/_data/runtime/baremetal/spike/libc_min.c",
+        "bytes": 3949,
+        "sha256": "6326f21c6914f3cd0ac4351d5ca2ac2158cd38305168638e4c512bff84e1be7a"
+      },
+      "final_symbol": "memset",
+      "final_address": 2147489350,
+      "body_bytes": 106,
+      "object_to_final_literal_body_bytes_exact": true,
+      "all_branch_register_bytes_and_targets_exact": true,
+      "local_relocations": [
+        {
+          "offset": 28,
+          "kind": 44,
+          "actual_and_expected_target": 2147489406
+        },
+        {
+          "offset": 34,
+          "kind": 44,
+          "actual_and_expected_target": 2147489408
+        },
+        {
+          "offset": 38,
+          "kind": 45,
+          "actual_and_expected_target": 2147489392
+        },
+        {
+          "offset": 40,
+          "kind": 44,
+          "actual_and_expected_target": 2147489410
+        },
+        {
+          "offset": 54,
+          "kind": 44,
+          "actual_and_expected_target": 2147489390
+        },
+        {
+          "offset": 62,
+          "kind": 16,
+          "actual_and_expected_target": 2147489452
+        },
+        {
+          "offset": 80,
+          "kind": 16,
+          "actual_and_expected_target": 2147489426
+        },
+        {
+          "offset": 86,
+          "kind": 44,
+          "actual_and_expected_target": 2147489406
+        },
+        {
+          "offset": 96,
+          "kind": 16,
+          "actual_and_expected_target": 2147489440
+        },
+        {
+          "offset": 104,
+          "kind": 45,
+          "actual_and_expected_target": 2147489438
+        }
+      ],
+      "body_sha256": "c9592c75fe6804fd9c1f17b7866cee7090d23bcdbe67193eb6168c7443a5daf2"
+    }
+  },
+  "ea_and4361_Merlin_libc_source_bytes_exact": true,
+  "SDK_baseline": "SDK requires both destination and entire length aligned8; len158700%8=4 therefore selects byte stores",
+  "whole_baseline": "Current Merlin runtime byte head/aligned word body/byte tail; original zero span158700 at64aligned private allocation uses19837 word stores plus4 byte stores",
+  "SDK_source_original_compile_receipt": "UNKNOWN: original capsule did not retain support compile argv/source pin; exact original syscalls.o-to-final body is independently closed",
+  "retained_measurement": [
+    {
+      "case": "source",
+      "rows": [
+        {
+          "case": "source",
+          "window": 0,
+          "arm": 0,
+          "cycles": 1910175,
+          "instructions": 1443501,
+          "frm": 0,
+          "flags": 1,
+          "output": 158700,
+          "input": 602112,
+          "digest": "4a0275164d024dff"
+        },
+        {
+          "case": "source",
+          "window": 1,
+          "arm": 1,
+          "cycles": 1417109,
+          "instructions": 998207,
+          "frm": 0,
+          "flags": 1,
+          "output": 158700,
+          "input": 602112,
+          "digest": "4a0275164d024dff"
+        },
+        {
+          "case": "source",
+          "window": 2,
+          "arm": 1,
+          "cycles": 1417002,
+          "instructions": 998207,
+          "frm": 0,
+          "flags": 1,
+          "output": 158700,
+          "input": 602112,
+          "digest": "4a0275164d024dff"
+        },
+        {
+          "case": "source",
+          "window": 3,
+          "arm": 0,
+          "cycles": 1912746,
+          "instructions": 1443498,
+          "frm": 0,
+          "flags": 1,
+          "output": 158700,
+          "input": 602112,
+          "digest": "4a0275164d024dff"
+        }
+      ],
+      "means": {
+        "cycles": {
+          "0": 1911460.5,
+          "1": 1417055.5
+        },
+        "instructions": {
+          "0": 1443499.5,
+          "1": 998207.0
+        }
+      },
+      "delta_percent": {
+        "cycles": -25.86530038156687,
+        "instructions": -30.84812291240835
+      }
+    },
+    {
+      "case": "independent",
+      "rows": [
+        {
+          "case": "independent",
+          "window": 0,
+          "arm": 0,
+          "cycles": 14521,
+          "instructions": 8440,
+          "frm": 0,
+          "flags": 1,
+          "output": 2160,
+          "input": 4680,
+          "digest": "c79385e22b2f74a4"
+        },
+        {
+          "case": "independent",
+          "window": 1,
+          "arm": 1,
+          "cycles": 16053,
+          "instructions": 10824,
+          "frm": 0,
+          "flags": 1,
+          "output": 2160,
+          "input": 4680,
+          "digest": "c79385e22b2f74a4"
+        },
+        {
+          "case": "independent",
+          "window": 2,
+          "arm": 1,
+          "cycles": 15551,
+          "instructions": 10824,
+          "frm": 0,
+          "flags": 1,
+          "output": 2160,
+          "input": 4680,
+          "digest": "c79385e22b2f74a4"
+        },
+        {
+          "case": "independent",
+          "window": 3,
+          "arm": 0,
+          "cycles": 13081,
+          "instructions": 8440,
+          "frm": 0,
+          "flags": 1,
+          "output": 2160,
+          "input": 4680,
+          "digest": "c79385e22b2f74a4"
+        }
+      ],
+      "means": {
+        "cycles": {
+          "0": 13801.0,
+          "1": 15802.0
+        },
+        "instructions": {
+          "0": 8440.0,
+          "1": 10824.0
+        }
+      },
+      "delta_percent": {
+        "cycles": 14.498949351496272,
+        "instructions": 28.246445497630333
+      }
+    }
+  ],
+  "accuracy": "Exact source/independent outputs and all5FRM\u00d7sticky states;16384guards PASS in retained run",
+  "attribution": "The SDK-capsule gain is not a measured improvement relative to current611f memset or stock2109",
+  "promotion": "Default off; independent SDK case regresses14.4989%; current whole benefit UNKNOWN",
+  "stock_cycles_unchanged": 28649233,
+  "original_whole_FP32_timer_unchanged": true,
+  "next_quantizer_plan": {
+    "current": "Eight FLW/FMUL.S/FMAX.S/FMIN.S/FCVT.W.S_RNE/SB lanes; no floor/round-even libcall or expanded ties logic",
+    "source_axis": "Contiguous NCHW W packets, NHWC output stores stride3;18816packet iterations",
+    "candidate": "Explicit typed input-contiguous packet plus bounded output-minor-axis batch, preserving exact per-lane arithmetic and gathering adjacent output channels before publication",
+    "API_scope": "Generic bounded_rne_maps transform, ordinary typed tensor/SCF operations; target register/ISA rules remain OOT",
+    "static_shape_example": "8W\u00d73C yields6272 groups,12544fewer packet-loop backedges than current18816; loads/arithmetic/output bytes unchanged",
+    "refusals": "Unknown alias/effects, dynamic/permutation ambiguity, partial ownership or missing resource contract; tails stay exact and independent",
+    "risks": "24live integer results may spill; interior starts at2079byte offset so word publication cannot assume alignment; independent shapes may regress",
+    "performance": "UNKNOWN; first small source/independent compiler-emission+retirement screen needed, no coefficient/cycle forecast",
+    "not_implemented": true
+  },
+  "file_pins": [
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-prefix-runtime-attribution-20261008/audit.py",
+      "bytes": 9299,
+      "sha256": "3b1c6feaf89ac9d222079fbdff01b830a8fd6fb2b3553463da9c2c37f1004349"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/gsim_admitted_complete.json",
+      "bytes": 9930,
+      "sha256": "78dbcb96bdbd5b6510e253f87144dfb4668a481d1e69a22d56eaced61704a587"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/gsim_run.json",
+      "bytes": 6393,
+      "sha256": "b0a8246bcfcd7801ab14a5b4d62e73435c1ef04bc66592587dfd632500832bcd"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/gsim.stdout",
+      "bytes": 2420,
+      "sha256": "ffa90f4e2d90c1fdf313596c80d6f289e9cf9bedb51fda573064e98352a4e126"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/qualification.json",
+      "bytes": 14589,
+      "sha256": "e4e1212283edc9775bf28b451dcdf21530be3c2548553d53d20d82d677deb7bd"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/syscalls.o",
+      "bytes": 19024,
+      "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-current-runtime-border-prefix-20261007/complete_capsule/layer.elf",
+      "bytes": 1402808,
+      "sha256": "8405c66b96d1faa082003232a189b914020af5d74d4311f442e2f40272e67935"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-command-repartition-current-normal-20261008/out/full_leaf_whole/normal_4361_explicit_sdk/build_direct/compilation_recipe.json",
+      "bytes": 42126,
+      "sha256": "1095166c97ddb04593deb3dfc31c8000103081d61f57cc6faf565db8a4ee485d"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-command-repartition-current-normal-20261008/out/full_leaf_whole/normal_4361_explicit_sdk/build_direct/libc_min.o",
+      "bytes": 3864,
+      "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-command-repartition-current-normal-20261008/out/full_leaf_whole/normal_4361_explicit_sdk/build_direct/model.elf",
+      "bytes": 53433888,
+      "sha256": "611f30402c0e7ceb922244d924df91afb897703e55995bbc2bf612a583ec4c1b"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-scalar-carrier-family-installed-20261008/venv/lib/python3.12/site-packages/merlin/_data/runtime/baremetal/spike/libc_min.c",
+      "bytes": 3949,
+      "sha256": "6326f21c6914f3cd0ac4351d5ca2ac2158cd38305168638e4c512bff84e1be7a"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-resource-scalar-stages-installed-20261007/venv/lib/python3.12/site-packages/merlin/_data/runtime/baremetal/spike/libc_min.c",
+      "bytes": 3949,
+      "sha256": "6326f21c6914f3cd0ac4351d5ca2ac2158cd38305168638e4c512bff84e1be7a"
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/benchmarks/common/syscalls.c",
+      "bytes": 9179,
+      "sha256": "71b02fbad1f1d29c7f13fb6ab96a18f90cd7c257398b4a52cd8c9f2b459dfcab"
+    },
+    {
+      "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objdump",
+      "bytes": 2137992,
+      "sha256": "1c0a65ea4d86a0fdc57e22a49b777f80881b0a3df9b2ac0634dc651b295c0410"
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/resnet-manual-fx-20261008/actual_forward.dis",
+      "bytes": 193896,
+      "sha256": "c8b6ec3ca8a7c89f94ab8fd903b102e2f3d396d991dce4cc95ccb976430e853b"
+    }
+  ]
+}

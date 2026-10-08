@@ -46,19 +46,31 @@ measurement scope; component measurements do not predict whole-model savings.
 | Shared affine representation for a producer pair and integer observer | Complete TinyLlama producer/observer capsule, GSIM | 8,589,793 → 8,288,352 cycles (**−3.509%**); independent case **+44.169%** | Explicit candidate; no whole promotion. Shared tables and observer proofs generalize, while table/cache costs require independent measurements. | [Complete component](perf_records/tiny_affine18_complete_timing_20261008.json) |
 | Retain interval facts through subset refinement | Complete original SmolVLA 16-row slice, native timing | 242.300191 → 241.463285 ms (**−0.345%**) | Small component gain, with extra metadata and allocations. It does not explain the whole-model gap. | [Complete cost](perf_records/smol_real_frontier_narrowing_20261008.json) |
 | Change input quantization/padding and initialization | Complete ResNet input-prefix capsule, GSIM | 1,911,460.5 → 1,417,055.5 cycles (**−25.865%**); independent case **+14.499%** | Capsule gain only. Its SDK control uses byte-wise clearing for the tested length; the current whole-model runtime already uses word stores. No current whole gain is assigned. | [Capsule timing](perf_records/resnet_complete_input_prefix_gsim_20261008.json) |
+| Batch adjacent integer quantization packets | Complete ResNet input prefix, Spike retired instructions | 1,026,939.5 → 997,369 (**−2.879%**); independent cases **−4.439% / −1.018%** | Explicit generic loop-scheduling candidate. Both executables use support objects identical to the current whole runtime. Default stays unchanged; instruction savings are not measured Rocket cycle savings. | [Current runtime component](perf_records/resnet_current_runtime_packet_batch_20261008.json) |
 
 ## Compiler improvements awaiting performance validation
 
 | Change | Verified so far | Remaining gate | Owner |
 | --- | --- | --- | --- |
-| Share scalar approximation tables before normal lowering | All 22 current TinyLlama observers compile with one 196,608-byte table; uncertified cells retain source fallback. The candidate currently disables a conflicting lane-packet transform. | Numerical replay, composition with lane scheduling, the original whole output gate, linked runtime predicate and complete timing. | Merlin |
+| Share scalar approximation tables before normal lowering | All 22 current TinyLlama observers compile with one 196,608-byte table; uncertified cells retain source fallback. Fresh helpers match 991,232 integer observations in each of four host rounding modes. This candidate disables a conflicting lane-packet transform. | Composition with lane scheduling, the original whole output gate, linked runtime predicate and complete timing. Four-mode replay covers supplied observer inputs; upstream producers were replayed in RNE. | Merlin |
+| Compose scalar observations with tensor lane scheduling | The reusable immutable tensor-insertion and bounded-loop route passes 581 source plus 581 independently installed checks. All 44 current packetized TinyLlama observations now compile upstream with one table and the original scheduling features. Default LLVM remains unchanged. | Fresh 44-member numerical replay, original whole output gate, linked runtime predicate and complete timing. The separate 22-member candidate's numerical result does not transfer. | Merlin |
 | Preserve source joins through common-subexpression elimination | The current SmolVLA structural experiment merges three equivalent Q/K/V quantizers into one while retaining their source identities and all original calls. | Final public compiler integration, effect admission, original whole output gate and executable timing. | Merlin |
-| Project unused immutable weight arguments | Current prepared ResNet accounting identifies 53 removable obsolete parameter tensors, totaling 106,240 logical bytes. Captured buffers remain until immutable ownership is proved. Independent small normal native/Spike execution passes. | Released package qualification, actual whole delivery and measured benefit. | Merlin |
+| Project unused immutable weight arguments | Current prepared ResNet accounting identifies 53 removable obsolete parameter tensors, totaling 106,240 logical bytes. Captured buffers remain until immutable ownership is proved. Normal native/Spike execution and 564 source plus 564 independently installed checks pass. | Actual whole delivery and measured benefit. | Merlin |
 | Generate compact convolution candidates from typed command traces | Source/resource legality, independent cases, upstream lowering and zero-FSM object checks pass. | A complete cost selector and a fresh stock whole run. | OOT dialect |
 
 The table-sharing [normal compilation](perf_records/tiny_current_normal_scalar_all22_20261008.json)
 and [coefficient coverage](perf_records/tiny_current_normal_scalar_coverage_20261008.json)
 are separate from the [installed compiler qualification](perf_records/scalar_carrier_current_normal_installed_20261008.json).
+The fresh [22-member numerical replay](perf_records/tiny_current_normal_scalar_numeric_20261008.json)
+retains the supplied-input and RNE producer scope. The separately qualified
+[tensor lane composition](perf_records/scalar_tensor_lane_composition_20261008.json)
+addresses the packetization conflict. The fresh
+[44-member normal compilation](perf_records/tiny_current_normal_packetized44_20261008.json)
+preserves the original scheduling features; its numerical and whole gates remain pending.
+The weight projection has a compact
+[qualification summary](perf_records/immutable_weight_projection_20261008.json).
+The input-prefix [runtime attribution](perf_records/resnet_input_prefix_runtime_attribution_20261008.json)
+records why its measured capsule gain cannot be credited to the current whole build.
 Detailed current-source findings are in the
 [FX and lowering audit](fx_quantization_fusion_audit.md).
 
@@ -73,6 +85,7 @@ Detailed current-source findings are in the
 | Attribute a capsule gain to a different runtime baseline | The input-prefix capsule and current whole executable link different `memset` implementations. | Bind the actual support-library bodies before transferring a performance claim. |
 | Treat compilation of an approximation as accuracy validation | A shared table can lower successfully while its numerical and final-output gates remain pending. | Keep compilation, numerical permission, output validation and timing as distinct gates. |
 | Rely on the compiler host's ambient rounding mode | A reproduced xDSL float serialization case changes a binary32 word across modes. | Require checked compiler-host numerical admission; the general dependency fix remains open. |
+| Replace a native test library at a reused path | `dlopen` can return the retained old image, producing a false scheduling failure. The isolated case passes unchanged. | Bind test library paths to the actual LLVM identity; keep the original failure and reproduction. Production loader hardening is a separate infrastructure task. |
 
 ## Where reusable improvements belong
 
@@ -86,6 +99,15 @@ For automatic optimization, phase 0 needs exact graph-to-executable and benchmar
 scope accounting. Phase 1 needs composable representation, ownership and source
 observation contracts. Phase 2 needs complete costs, analytical bounds calibrated
 against hardware, independent regressions and immutable correctness gates.
+
+The [scoped effects and joint attention design](perf_records/smol_scoped_effect_and_joint_attention_plan_20261008.md)
+records concrete next changes: bind provider effects to source/object/ABI and
+target facts, partition FP rounding epochs at unknown callbacks, and test a
+distinct joint numerator/denominator representation under explicit numerical
+permission. The [current source/object audit](perf_records/smol_scoped_effect_and_joint_attention_plan_20261008.json)
+preserves all 407 SmolVLA calls and proves the two intervening integer callbacks'
+instruction census. It does not grant global effect permission, whole accuracy
+or a speedup. The selected target has no admitted normalization capability.
 
 ## Recording a new experiment
 

@@ -136,10 +136,28 @@ cycles, a25.8653% improvement. It includes quantization, transposition, padding,
 allocation and output callbacks. Its independent case regresses14.4989%; the
 candidate remains explicit. This is neither stock FireSim timing nor a new
 whole-model result, and savings do not transfer across the ZIP's INT8 entry ABI.
+The additive final-symbol audit further closes a runtime baseline mismatch:
+the capsule's SDK `memset` selects byte stores for the158,700-byte span, while
+the current whole executable's Merlin runtime already uses19,837 word stores
+and four byte stores. Original SDK compilation source/argv lineage remains
+unknown; actual object-to-linked bodies and local branches are exact. The
+capsule saving receives no current whole-model credit.
 
 [Fresh normal Tiny compilation](perf_records/tiny_current_normal_scalar_all22_20261008.json),
 [fresh coefficient coverage](perf_records/tiny_current_normal_scalar_coverage_20261008.json),
 [complete input-prefix timing](perf_records/resnet_complete_input_prefix_gsim_20261008.json).
+[Runtime attribution correction](perf_records/resnet_input_prefix_runtime_attribution_20261008.json).
+
+The immutable parameter projection topicc123ebe4 passes564 source and564
+outside-installed checks with zero skips. All1,032 Python modules,157 public
+resources and62 runtime files match across source/wheel/sdist/site. Four
+parent/current/installed default LLVM cases are exact. The complete46,192-pin
+receipt retains the40,838-pin parent closure; normal native/Spike execution
+uses the same original output ABI with multiple invocations and readonly input
+guards. Optional ownership-file absence/presence, session roles and all generated
+consumers are checked. Full projected workload accuracy and hardware timing
+remain pending; this grants no permission to remove captured buffers.
+[Qualification summary](perf_records/immutable_weight_projection_20261008.json).
 
 ### Rejected inference from a cache microbenchmark
 
@@ -191,3 +209,28 @@ The22M/5B/300M objective remains active. Separate goal-meter observation at
 [Fresh exact whole gate](perf_records/resnet_fresh_whole_exact_gate_20261008.json).
 [Current stock preparation successor](perf_records/resnet_current_stock_preflight_successor_20261008.json).
 [Qualified current-source insertion](perf_records/scalar_carrier_current_normal_installed_20261008.json).
+
+### Fresh observer replay and scheduling composition
+
+The separately prepared 22-member Tiny candidate now passes fresh native helper
+replay: 991,232 observations in each of four host rounding modes, with zero
+changed integer codes, original fallback, input hashes and guards checked. The
+four modes share supplied observer-boundary values; upstream integer/cast/scale
+producers were replayed in RNE. This does not establish whole upstream behavior
+in four modes, the original 256,000-output gate, linked RV64 admission or speed.
+All 191 receipt pins reclose. No old helper or coefficient body was executed.
+
+The general tensor-insertion/SCF composition topic52e0e5d8 independently passes
+581 source and581 outside-installed checks, zero skips. All1,033 Python modules,
+157 public resources and62 runtime files match source/wheel/sdist/site. Four
+default LLVM controls remain exact; the51,711-pin receipt retains its46,192-pin
+parent closure. The native rewrite preserves current producers, control,
+resource handles and destination storage, replacing only proved private integer
+observations. Subsequent actual packetized model application passes upstream for
+all44 fresh observations under the independently installed compiler, preserving
+the original textual route and all17 scheduling features. Its fresh numerical
+and whole gates are pending. The 22-member result must not transfer to this candidate.
+
+[Fresh numerical replay](perf_records/tiny_current_normal_scalar_numeric_20261008.json),
+[tensor lane qualification](perf_records/scalar_tensor_lane_composition_20261008.json),
+[normal packetized application](perf_records/tiny_current_normal_packetized44_20261008.json).

@@ -4256,3 +4256,45 @@ exact Gemmini/topic allocation; the latter remains UNKNOWN.
 [Normal Tiny compilation](perf_records/tiny_current_normal_scalar_all22_20261008.json),
 [fresh coefficient coverage](perf_records/tiny_current_normal_scalar_coverage_20261008.json),
 [complete ResNet prefix](perf_records/resnet_complete_input_prefix_gsim_20261008.json).
+
+### Additive runtime attribution and immutable entry qualification
+
+Actual linked `memset` bodies explain a baseline mismatch in the input-prefix
+capsule: its SDK control selects158,700 byte stores, while the current whole
+runtime already uses19,837 word stores and four byte stores. The original paired
+GSIM timing is preserved, with no current whole-model gain credited. SDK original
+source/compile-argv lineage remains unknown; final object/body/branch closure is
+exact. This is a phase0 attribution requirement before phase2 transfers a gain.
+
+The generic immutable entry projection topicc123ebe4 passes564 source and564
+independently installed checks, no skips, with1,032 modules/157 public resources/
+62 runtime files byte exact across all package surfaces. Default LLVM controls
+agree. Session ownership and optional file absence/presence are rebound before
+ABI edits and runtime generation. The current captured-buffer removal permission,
+whole accuracy and measured speedup remain pending.
+
+The concise outward-facing [optimization ledger](optimization_results.md)
+summarizes positive, negative and pending results with exact scopes and decisions.
+[Runtime attribution](perf_records/resnet_input_prefix_runtime_attribution_20261008.json),
+[immutable projection summary](perf_records/immutable_weight_projection_20261008.json).
+
+### Fresh Tiny numerical gate and general lane composition
+
+The distinct normal 22-observer candidate passes991,232 native observations in
+each of four rounding modes, with zero changed integer codes and checked
+fallback/guards/input hashes. The boundary values are common across modes;
+upstream producer replay remains RNE. Its191 file pins reclose. Original whole
+accuracy, linked runtime admission and complete performance remain pending.
+
+The reusable tensor-insertion/SCF route is now qualified separately in Merlin:
+581 source and581 outside-installed checks, zero skips,1,033 module/157 public/
+62 runtime bytes identical across package surfaces and unchanged default LLVM.
+This makes the two representations composable under source/use/effect/ownership
+proofs. Actual current packetized application now passes upstream for all44
+fresh witnesses with the original17 scheduling features and one shared table.
+Its fresh numerical and output validation remain pending; the 22-member
+numerical result does not grant it accuracy or performance credit.
+
+[Fresh numerical replay](perf_records/tiny_current_normal_scalar_numeric_20261008.json),
+[tensor lane qualification](perf_records/scalar_tensor_lane_composition_20261008.json),
+[normal packetized application](perf_records/tiny_current_normal_packetized44_20261008.json).
