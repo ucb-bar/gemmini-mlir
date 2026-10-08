@@ -33,10 +33,11 @@ instruction audit. Upstream contraction and capture export commands are declared
 in [manifest.yaml](manifest.yaml). The compatible dependency revisions and
 publication checks are recorded in [the branch publication notes](docs/handwritten_implementation.md).
 
-The latest verified whole-model observations are ResNet50 **29,698,347**,
-TinyLlama **394,765,577**, and SmolVLA **258,621,872,969** stock FireSim cycles.
-SmolVLA group 2072 takes **3,918,275,805** cycles; that is a section result.
-The 22M/300M/5B whole-model goals remain unmet. Read the
+The best verified whole-model observations are ResNet50 **28,649,233**,
+TinyLlama **378,946,263**, and SmolVLA **258,621,872,969** stock FireSim cycles.
+The 22M/300M/5B whole-model goals remain unmet. Start with the
+[optimization results](docs/optimization_results.md) for gains, regressions,
+accuracy gates, experiment scope and promotion decisions. Detailed records include the
 [performance evidence](docs/golden_progress.md),
 [optimization journey](docs/golden_optimization_journey.md), and
 [fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md), and
