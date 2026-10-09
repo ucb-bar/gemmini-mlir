@@ -1,0 +1,484 @@
+artifact_type: mlir_oot_target_backend
+authoring:
+  author: capsule_bench agent (arm4 merlin_assisted_rtlchecks)
+  generated_by_agent: true
+  mode: agent_generated_from_rtl_facts
+commands:
+  build_golden_model:
+    argv:
+    - '{model_tool}'
+    - '{capture_dir}'
+    - '{requant_bundle}'
+    - --work
+    - '{output_dir}'
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --spike
+    - '{spike}'
+  export_golden_contraction:
+    argv:
+    - '{tool}'
+    - --export-golden-contraction
+    - --region
+    - '{region_id}'
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --workdir
+    - '{output_dir}'
+    - '{input_mlir}'
+  export_golden_capture:
+    argv:
+    - '{tool}'
+    - --export-golden-capture
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --workdir
+    - '{output_dir}'
+    - '{input_mlir}'
+  export_golden_inventory:
+    argv:
+    - '{tool}'
+    - --emit-golden-inventory
+    - '{output_json}'
+  optimize_golden_contraction:
+    argv:
+    - '{tool}'
+    - --optimize-golden-contraction
+    - --region
+    - '{region_id}'
+    - --llvm-bin
+    - '{llvm_bin}'
+    - --workdir
+    - '{output_dir}'
+    - --calibration
+    - '{calibration_json}'
+    - '{input_mlir}'
+  emit_command_buffer:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+  lower_interface_to_target:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - '{input_mlir}'
+  lower_target_to_llvm:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-target-artifact
+    - '{input_mlir}'
+  parse:
+    argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+components:
+  build_golden_model:
+  - manifest.yaml
+  - gemmini-model-build
+  - tests/fused_whole_model_probe.py
+  - mlir_oot/__init__.py
+  - mlir_oot/golden_model_plan.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/fused_mixed_catalog.py
+  - mlir_oot/direct_conv_bundle.py
+  - mlir_oot/direct_conv_binding.py
+  - mlir_oot/golden_device_catalog.py
+  - mlir_oot/golden_calibrated_catalog.py
+  - mlir_oot/golden_calibrated_plan.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/stem_mixed_catalog.py
+  - mlir_oot/stem_pool_mixed_catalog.py
+  - mlir_oot/stem_pool_bundle.py
+  - mlir_oot/captured_residual_bundle.py
+  - mlir_oot/residual_mixed_catalog.py
+  - mlir_oot/conv_schedule.py
+  - mlir_oot/golden_conv.py
+  - mlir_oot/golden_flat_conv.py
+  - mlir_oot/golden_resident_conv.py
+  - mlir_oot/golden_resident_stripe_conv.py
+  - mlir_oot/physical_layout.py
+  - mlir_oot/late_quant_rne.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  export_golden_inventory:
+  - manifest.yaml
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/golden_compiler_export.py
+  export_golden_contraction:
+  - manifest.yaml
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  optimize_golden_contraction:
+  - manifest.yaml
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/golden_calibrated_plan.py
+  export_golden_capture:
+  - manifest.yaml
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/golden_compiler_export.py
+  - mlir_oot/golden_contraction_upstream.py
+  - mlir_oot/contraction_patterns.py
+  - mlir_oot/dense_schedule.py
+  - mlir_oot/b_slot_placement.py
+  - mlir_oot/golden_gemm.py
+  - mlir_oot/golden_resident_stripe_gemm.py
+  - mlir_oot/resident_accumulator_policy.py
+  - mlir_oot/golden_tuning.py
+  - mlir_oot/golden_batched_gemm.py
+  - mlir_oot/golden_device_compile.py
+  - mlir_oot/golden_device_lower.py
+  - mlir_oot/golden_resadd.py
+  - mlir_oot/no_fsm_audit.py
+  - mlir_oot/captured_requant_bundle.py
+  - mlir_oot/captured_requant.py
+  - mlir_oot/golden_requant.py
+  - mlir_oot/direct_conv_binding.py
+  - mlir_oot/conv_schedule.py
+  - mlir_oot/golden_conv.py
+  - mlir_oot/golden_flat_conv.py
+  - mlir_oot/golden_resident_conv.py
+  - mlir_oot/golden_resident_stripe_conv.py
+  - mlir_oot/virtual_padding.py
+  - mlir_oot/exact_integer_readout.py
+  - mlir_oot/captured_residual_bundle.py
+  - mlir_oot/frontend/
+  - mlir_oot/codegen/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  emit_command_buffer:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/cmdbuf.py
+  - mlir_oot/tables/
+  - mlir_oot/ir/
+  - mlir_oot/codegen/
+  lower_interface_to_target:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/codegen/
+  lower_target_to_llvm:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+  - mlir_oot/lowering/
+  - mlir_oot/ir/
+  - mlir_oot/tables/
+  - mlir_oot/codegen/
+  parse:
+  - manifest.yaml
+  - REPORT.md
+  - docs/
+  - gemmini-opt
+  - mlir_oot/__init__.py
+  - mlir_oot/__pycache__/
+  - mlir_oot/gemmini_opt.py
+  - mlir_oot/frontend/
+entrypoints:
+  tool: gemmini-opt
+  model_tool: gemmini-model-build
+family: tensor_resident
+grading:
+  gradeable: true
+  graded_by: merlin.targetgen.capsule_grade
+  hardware_citation: 'gemmini_rtl 8c3f9923a44a2fe2c7930587be297d6d4f8c09ca (checkout HEAD is 63f0b68a68f1) plus these bytes: src/main/scala/gemmini/LoadController.scala@780ee0a292d8653f; gemmini_isa_headers 7c540b3adf1b86ad93d07f893abe3a73489b568e (checkout HEAD is 6b477a8b43ed) plus these bytes: include/gemmini.h@007826db4fdaf357'
+  hidden:
+    functional_pass: 1
+    graded_after_freeze: true
+    highest_tier: L3
+    n_capsules: 14
+    n_passed: 14
+    rtl_backed_passes: 14
+    score: 14/14
+  integrity_status: clean
+  l3_engine: gsim
+  l3_engine_note: L3 ran on GSIM, an elaborated-RTL engine. Verilator is the citable instrument for CYCLE counts (GSIM runs a slightly different elaborated design); never mix the two engines in one cycle comparison.
+  public:
+    cheap_tier_only_passes: 7
+    declined_capsules:
+    - GN0_layernorm_host_only_bf16_pt
+    - SY_host_lane_attention_bf16
+    - SY_host_lane_contraction_bf16
+    - SY_host_lane_contraction_f32
+    - SY_host_lane_elementwise_map_bf16
+    - SY_host_lane_elementwise_map_f32
+    - SY_host_lane_reduction_bf16
+    - SY_host_lane_reduction_f32
+    - SY_host_lane_softmax_bf16
+    - SY_host_only_normalization
+    failed_capsules:
+    - M3_host_island_seam_gemmini
+    - SY_epilogue_bias_add
+    - SY_micro_model
+    first_failure_planes:
+      backend_declined: 10
+      model: 1
+      model_execution: 1
+      spike: 1
+    headline: 83/96 (no tier cleared by every capsule; RTL-backed 76/83 — the other 7 passed on cheap tiers only; 10 DECLINED by the backend (never lowered, not wrong answers))
+    n_capsules: 96
+    n_declined: 10
+    n_failed: 3
+    n_passed: 83
+    rtl_backed_passes: 76
+    score: 83/96
+    tier_reached:
+      L0: 83
+      L1: 83
+      L2: 82
+      L3: 78
+      L4: 0
+      L5: 0
+  run_id: merlincirct_g4p1_20260905
+  submission_files: 31
+  submission_sha256: 77004328583d48abea47f7c267271c6ec78dbb337ffff04dfd0b2096c3dd6bf7
+integrity_exempt: false
+language: python
+layout_version: '1.0'
+package_id: gemmini_xdsl_oot_v0
+promotion:
+  evidence:
+    detail: 83/96 passed with tier evidence
+    labels_graded:
+    - dev
+    - public
+    n_capsules: 96
+    n_passed: 83
+  from: out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/submission
+  promoted_by: merlin-target-publish materialize
+  score: out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/grading_public/score_capsule.json
+  source_package_id: gemmini_xdsl_oot_v0
+provenance:
+  all_pins_ok: null
+  hardware_pins: {}
+  installed_from_run: merlincirct_g4p1_20260905
+  merlin:
+    commit: 6ca662e5c625b3f5899334785adabbd6acf48929
+    dirty_files: 15
+  pin_citations: {}
+  source_digest: 5f070ed06b3c0685caf2bbf581c9f93a562b591a26c0f9afd71849fe3e301b6e
+  sources:
+  - out/runs/gemmini/capsule-bench/merlin_assisted/merlincirct_g4p1_20260905/submission
+publication:
+  certification: not_certified
+  certification_detail: No oot_runner.certify run exists for this package. The tier block below describes the GRADING oracle that produced the capsule verdicts, not a certification.
+  certification_tier:
+    cycle_accurate: true
+    derived_from_rtl: true
+    oracles:
+    - rtl_gsim
+    scope: the L3 tier of the capsule grade, not a certification
+  certified_by_run: NOT_CERTIFIED_graded_by_merlincirct_g4p1_20260905
+  champion: false
+  graded_by_run: merlincirct_g4p1_20260905
+status: capsule_graded_l3_partial
+status_detail: Graded by merlin.targetgen.capsule_grade against the gemmini capsule corpus; it has NOT been through merlin.targetgen.oot_runner.certify and is NOT rtl_certified. It cleared L3 (elaborated RTL, engine gsim) on part of the admitted public cohort and on all of the held-out cohort -- hence 'l3_partial'. Deliberately NOT a value _STATUS_RANK knows, so the publish gate refuses it and select_champion never picks it.
+target: gemmini
+version: 0
+optimization_surfaces:
+- id: golden_calibrated_model_catalog
+  scope: codegen
+  path: mlir_oot/golden_calibrated_catalog.py
+  symbol: compile_calibrated_catalog
+  effects: [tiling, movement, residency, latency_hiding]
+  cca_axes: [compute.register_block, dispatch.dma_overlap, memory.capacity_fit]
+  mechanism: Bind explicit prepared-source calibrations to the ordinary model catalog and invoke the existing shared selector for each covered contraction.
+  emitted_delta: Replaces the actual selected object and source-call symbol while retaining every required unselected implementation in the linked catalog.
+  validation: Require exact source and operation bindings, selected receipt/object pins, complete default coverage, unique symbols and final executable closure with original numeric gates.
+  abandonment: Refuse stale or incomplete calibration; keep whole-graph costs, alias analysis and shared whole-model selection unknown rather than summing capsule measurements.
+- id: golden_calibrated_source_selection
+  scope: heuristic
+  path: mlir_oot/golden_calibrated_plan.py
+  symbol: optimize_contraction
+  effects: [tiling, movement, residency, latency_hiding]
+  cca_axes: [compute.register_block, dispatch.dma_overlap, memory.capacity_fit]
+  mechanism: Bind legal same-source compiler alternatives to exact measured fixture prices and invoke Merlin's existing exact-cover search.
+  emitted_delta: Compiles the selected actual target implementation and requires its calibrated object identity.
+  validation: Preserve source, fixture, compiler and engine pins; refuse unpriced, duplicate, changed or incomplete alternatives and validate the emitted object.
+  abandonment: Refuse incompatible calibration; keep physical floor, internal engine occupancy and whole-model costs unknown until independently established.
+- id: golden_dense_shape
+  scope: heuristic
+  path: mlir_oot/golden_contraction_upstream.py
+  symbol: choose_shape
+  effects: [tiling, movement, residency]
+  cca_axes: [compute.register_block, memory.capacity_fit]
+  mechanism: Select resource-legal blocking and input reuse from the matched integer contraction shape.
+  emitted_delta: Changes primitive panel loads, repeated operand transfers and M/N blocking in the exported object.
+  validation: Preserve the source dimensions and numeric contract; independently qualify tails and actual emitted objects.
+  abandonment: Refuse an illegal candidate and retain the prior resource-legal schedule; command estimates are not cycle evidence.
+- id: golden_dense_transfer_family
+  scope: heuristic
+  path: mlir_oot/dense_schedule.py
+  symbol: select_kernel
+  effects: [tiling, movement, residency, issue, latency_hiding]
+  cca_axes: [compute.accumulator_resident, dispatch.dma_overlap, memory.capacity_fit]
+  mechanism: Select explicit legal transfer and residency families using primitive command and requested-byte costs.
+  emitted_delta: Changes A/B load order, bank placement, output blocking and generated prefetch commands.
+  validation: Require resource proofs, identical arithmetic and source binding, complete numeric checks and paired hardware measurements.
+  abandonment: Retain the control on resource refusal or rejected cost policy; fewer commands do not establish lower latency.
+- id: golden_remaining_b_slots
+  scope: heuristic
+  path: mlir_oot/b_slot_placement.py
+  symbol: select_remaining_b_slots
+  effects: [memory_planning, residency, latency_hiding, issue]
+  cca_axes: [dispatch.double_buffered_banks, memory.capacity_fit]
+  mechanism: Prove two complete disjoint B slots outside the live cached A extent using target bank resources.
+  emitted_delta: Changes next-K B slot addresses and primitive load/preload ordering while preserving contraction order.
+  validation: Check full reserved extents, bank boundaries, tails, exact source-order command traces and hardware performance.
+  abandonment: Retain default placement whenever complete slot disjointness or schedule prerequisites cannot be proved.
+- id: golden_dense_output_schedule
+  scope: codegen
+  path: mlir_oot/golden_gemm.py
+  symbol: GoldenGemm._output_block
+  effects: [tiling, residency, issue, latency_hiding]
+  cca_axes: [compute.register_block, compute.accumulator_resident, dispatch.dma_overlap]
+  mechanism: Emit the selected primitive contraction loop and explicit next-K prefetch lifetime.
+  emitted_delta: Changes executable load, preload, compute and output-store order in the generated target module.
+  validation: Preserve source K order, rounding and saturation; compare executed command traces, full output checks and final ELF no-FSM audits.
+  abandonment: Reject an unprovable lifetime or semantic change; never promote an instruction-count-only performance claim.
+- id: golden_conv_schedule
+  scope: heuristic
+  path: mlir_oot/conv_schedule.py
+  symbol: select_kernel
+  effects: [layout, tiling, movement, residency]
+  cca_axes: [memory.capacity_fit, memory.onchip_resident, layout.operand_major]
+  mechanism: Choose convolution transfer families from proven source geometry and bounded target scratchpad resources.
+  emitted_delta: Changes spatial stripe width, input residency and primitive convolution operand transfers.
+  validation: Retain exact source padding and K order; qualify independent spatial/channel tails and full original-model accuracy.
+  abandonment: Refuse unsupported geometry or resource placement and preserve the existing legal convolution family.
+- id: golden_conv_resident_stripe
+  scope: codegen
+  path: mlir_oot/golden_resident_stripe_conv.py
+  symbol: GoldenResidentStripeConv.build
+  effects: [layout, tiling, movement, residency, issue]
+  cca_axes: [compute.accumulator_resident, memory.onchip_resident, memory.capacity_fit]
+  mechanism: Lower a resource-proven resident convolution stripe to explicit target primitive commands.
+  emitted_delta: Reuses resident input stripes across bounded accumulator/output groups and changes real operand load traffic.
+  validation: Check complete scratchpad intervals, exact padded source contraction, all outputs/guards, strict execution and final no-FSM audit.
+  abandonment: Decline a stripe without exact padding, bounds or arithmetic preservation; keep negative timing evidence.
+
+- id: golden_dense_resident_accumulator_admission
+  scope: heuristic
+  path: mlir_oot/resident_accumulator_policy.py
+  symbol: select_resident_accumulator_stripes
+  effects: [tiling, movement, residency]
+  cca_axes: [compute.accumulator_resident, memory.capacity_fit]
+  mechanism: Admit an explicitly requested dense stripe family from existing cached A, narrow stores, complete scratchpad bank extents and accumulator bounds.
+  emitted_delta: Replaces the actual generated kernel with full-A, full-reduction-B and bounded wide output stripes; original source numeric proof and public ABI remain bound.
+  validation: Require default object identity, complete source K order, independent i8/i32 tails, exact original full-model gates and final zero-FSM audit.
+  abandonment: Preserve the existing generator on typed layout/resource refusal; explicit admission is not inferred profitability or a shared-solver decision.
+- id: golden_dense_resident_accumulator_emission
+  scope: codegen
+  path: mlir_oot/golden_resident_stripe_gemm.py
+  symbol: GoldenResidentStripeGemm.build
+  effects: [tiling, movement, residency, issue]
+  cca_axes: [compute.accumulator_resident, memory.onchip_resident, memory.capacity_fit]
+  mechanism: Emit complete input planes and full-K current-channel weights across accumulator-bounded M stripes using primitive instructions.
+  emitted_delta: Changes actual load widths/counts, live storage placement and output store grouping while retaining increasing reduction order.
+  validation: Check all declared reserved extents, emitted and executed primitive multiplicities, exact source outputs, guards and immutable inputs on matched complete capsules.
+  abandonment: Refuse invalid storage or nonzero seed; retain independent negative schedules and never transfer capsule gains to whole-model costs.
+- id: golden_dense_cached_b_capacity_admission
+  scope: heuristic
+  path: mlir_oot/dense_schedule.py
+  symbol: choose_capacity_cached_b
+  effects: [tiling, movement, residency, issue]
+  cca_axes: [compute.accumulator_resident, memory.onchip_resident, memory.capacity_fit]
+  mechanism: Admit explicitly requested complete-K/N B residency beyond the legacy static tile budget using actual placed scratchpad and accumulator intervals.
+  emitted_delta: The normal capture compiler selects the complete-weight kernel, coalesced disjoint A slots when aligned, and exact single-panel A for K tails; source arithmetic remains unchanged.
+  validation: Require default object identity, decoded tensor cell/source-K/lifetime proof, complete matched original and independent tail capsules, original whole-model gate and final zero-FSM audit.
+  abandonment: Preserve cached input/weights or refuse incompatible dense/bias/view/resource facts; admission and command counts do not establish timing profitability.
+- id: golden_resident_weight_packet_issue
+  scope: heuristic
+  path: mlir_oot/golden_resident_conv.py
+  symbol: issue_resident_weight_packets
+  effects: [movement, residency, issue]
+  cca_axes: [memory.onchip_resident, memory.capacity_fit, compute.accumulator_resident]
+  mechanism: Explicitly issue smaller next weight packets into alternate scratchpad banks while retaining the same complete input and output panel.
+  emitted_delta: The normal capture command selects bounded ordinary K/spatial loops and packet DMA/compute interleaving without changing any output's source K order or numeric fields.
+  validation: Decode actual emitted source cells and lifetimes, close all outputs/guards/inputs on matched original and independent tail capsules, retain default object identity and original full model gate.
+  abandonment: Refuse incompatible family or placement; retain negative small-shape evidence and unknown timing until the current source-qualified scope is measured.
+- id: golden_flat_resident_kw_planes
+  scope: heuristic
+  path: mlir_oot/golden_resident_conv.py
+  symbol: select_flat_resident_planes
+  effects: [movement, residency, issue]
+  cca_axes: [memory.onchip_resident, memory.capacity_fit, compute.accumulator_resident]
+  mechanism: Reserve three horizontal-tap input planes with only valid output columns, allowing complete resident input to feed flat output tiles across logical row boundaries.
+  emitted_delta: The opt-in normal capture route removes repeated input panel loads while preserving increasing source K, accumulator destinations, typed stores and bounded CPU command loops.
+  validation: Prove every emitted source cell, disjoint input DMA partitions and live extents; qualify default object identity, independent non-square/tail cases and unchanged original whole-model accuracy.
+  abandonment: Preserve the previous generator on unproved padding, incompatible source stride, paired readout or declared storage capacity refusal; no profitability or physical traffic claim follows from fewer requested input bytes.

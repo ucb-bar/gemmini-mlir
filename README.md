@@ -1,48 +1,97 @@
 # gemmini-mlir
 
-Merlin's published codegen packages for the **gemmini** target.
+## Handwritten implementation
 
-This repository is **generated** by Merlin's `merlin-target-publish` bridge. It uses **branch-per-version** publishing, so *this* branch is only a directory — the packages themselves live on the branches below. Check one out to get a standalone, buildable out-of-tree tree plus its provenance under `.merlin/`.
+The `main` branch contains the handwritten xDSL Gemmini backend, source-bound
+upstream lowering, primitive device schedules, and recorded optimization
+experiments. The `handwritten-implementation` branch retains the original
+development history. The golden device path emits configuration,
+DMA, preload, compute and fence instructions. Ordinary RISC-V loops repeat the
+schedule; Gemmini FSM loop instructions have no lowering in this path. Every
+device object and final linked ELF must pass the executable-section
+[zero-FSM audit](mlir_oot/no_fsm_audit.py).
 
-## Published packages
+Start with [the compiler export API](mlir_oot/golden_compiler_export.py),
+[device lowering](mlir_oot/golden_device_lower.py), and
+[device compilation](mlir_oot/golden_device_compile.py). Target implementations
+live here; reusable proofs, host compilation, packing, runtime and dispatch live
+in [Merlin](https://github.com/ucb-bar/merlin). Frontend capture fixes live in
+[model2MLIR](https://github.com/ucb-bar/model2MLIR). Production decisions use input
+semantics, shapes, numeric contracts and hardware capabilities. Model selections
+and measured recipes remain explicit experiments.
 
-| branch | package | dtype | status | what it is |
-|---|---|---|---|---|
-| `baseline` | `hand_v0` | `fp32` | `rtl_certified` | frozen unoptimized control (the before/after reference) |
-| `stable/agent_spec_v1_mlir_oot` | `agent_spec_v1_mlir_oot` | `fp32` | `certified (cycle-accurate RTL, 3 rungs, rtl_verilator)` | certified champion |
-| `stable/gemmini_xdsl_rtl_v0` | `gemmini_xdsl_rtl_v0` | `fp32` | `certified (cycle-accurate RTL, 5 rungs, rtl_verilator)` | certified champion |
-
-## Using a package
+Use Python with Merlin installed and the compatible xDSL dependencies, plus an
+LLVM installation containing `mlir-translate` and a RISC-V-capable `clang`:
 
 ```sh
-git clone -b <branch> <this-repo> gemmini-mlir
+python -m mlir_oot.golden_device_compile \
+  --kernel gemm --m 17 --n 73 --k 65 --output-dtype i32 \
+  --llvm-bin "$LLVM_BIN" --workdir out/handwritten-gemm
+```
+
+This produces typed Gemmini/LLVM IR, a RISC-V object, compiler hashes and its
+instruction audit. Upstream contraction and capture export commands are declared
+in [manifest.yaml](manifest.yaml). The compatible dependency revisions and
+publication checks are recorded in [the publication notes](docs/handwritten_implementation.md).
+
+The best verified whole-model observations are ResNet50 **28,649,233**,
+TinyLlama **378,946,263**, and SmolVLA **258,621,872,969** stock FireSim cycles.
+The 22M/300M/5B whole-model goals remain unmet. Start with the
+[optimization results](docs/optimization_results.md) for gains, regressions,
+accuracy gates, experiment scope and promotion decisions. Detailed records include the
+[performance evidence](docs/golden_progress.md),
+[optimization journey](docs/golden_optimization_journey.md), and
+[fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md), and
+[Tiny observer reproduction recipe](experiments/tiny_closed_observer/README.md).
+
+## Published parent provenance
+
+Standalone, buildable out-of-tree Merlin codegen backend for **gemmini** (family `tensor_resident`).
+
+> ## ⚠ NOT CERTIFIED — published with `--no-gate`
+>
+> This package did **not** pass Merlin's publication certification gate, and was exported anyway with `--no-gate`. It is **not a champion** and it is **not the baseline**.
+>
+> Gate refusal, verbatim: `mlir_oot gate: status='capsule_graded_l3_partial' certification='not_certified' (need rtl_certified or oot_runner.certify pass)`
+>
+> Recorded status: `capsule_graded_l3_partial`. Whatever this package earned is recorded under `.merlin/certification.yaml` and in the `grading:` block of `manifest.yaml` — read those before citing any number from it. A certification gate is not a formality here: a functional pass, a graded pass and a cycle-accurate RTL certification are three different claims.
+
+This repository is **generated** by Merlin's `merlin-target-publish` bridge. The buildable tree at the repo root *is* the content; the package manifest + provenance ride along under `.merlin/`.
+
+## What
+
+- Package: `gemmini_xdsl_oot_v0`
+- Family: `tensor_resident`
+- Recorded status: `capsule_graded_l3_partial`
+- Merlin git sha (this export): `6ca662e`
+
+## How to run it
+
+No build step: `gemmini-opt` is a script and the tree it imports ships beside it.
+
+```sh
+git clone <this-repo> gemmini-mlir
 cd gemmini-mlir
+./gemmini-opt --help
 ```
 
-## Compiling a model with it
-
-This repository is the **backend**: the target's codegen payload plus its capability contract. The thing that compiles a model is Merlin, which consumes this repo. You need both, and the loop is three commands.
-
-```sh
-# 1. Merlin itself (the driver, the frontend, the runtime)
-git clone https://github.com/ucb-bar/merlin.git && cd merlin
-cp .env.example .env          # then point MERLIN_* at your toolchain / simulators
-
-# 2. Fetch THIS repo as the target's out-of-tree backend
-merlin-target-fetch gemmini --champion <branch from the table above>
-
-# 3. Compile a workload onto it
-merlin-compile --workload <workload> --target gemmini --verify
-```
-
-`merlin-target-fetch` clones the chosen branch into `out/build/generated/gemmini/`, and the target registry then resolves the capability contract and this codegen payload together — so which champion you compile against is the branch you fetched, recorded rather than implied.
-
-`merlin-compile` takes `--run {none,host,spike,verilator,zephyr,k1}` and `--verify`. Start with `--run host` to check the lowering is numerically right, then move up the oracle ladder; `--verify` gates the answer against the workload's golden rather than reporting that something merely ran.
-
-**What you need beyond this repo**: an LLVM/MLIR install matching the `llvm:` block of the package manifest (the out-of-tree C++ API moves between versions), a RISC-V toolchain, and whichever simulator your chosen `--run` needs. Merlin's `docs/guides/getting_started.md` is the base install; `docs/guides/adding_a_target.md` explains the contract this repo carries.
+`manifest.yaml` declares the entrypoint and the argv of every command the experiment ABI expects; run those, not a build.
 
 ## Provenance
 
-Each commit on a package branch is one promotion, and its message embeds the champion package id, the internal run id, the Merlin git sha and the certification summary. History is the provenance trail; the branch tip is the current champion.
+- Certification: `not_certified`
+- Graded by run: `NOT_CERTIFIED_graded_by_merlincirct_g4p1_20260905`
+- Oracle behind that tier: cycle-accurate RTL (`rtl_gsim`)
+- Fingerprint: `n/a`
 
-Generated from Merlin `02454ab`.
+See `.merlin/provenance.yaml` and `.merlin/certification.yaml` for the full lineage. Each commit on this repo is one promotion; the history is the provenance trail.
+
+## Experimental no-FSM golden branch
+
+Implementation ownership is mandatory: target-specific dialects, instructions, kernels,
+schedules and ABI glue live here; reusable host code generation, packing, requantization,
+global optimization, dispatch and runtime infrastructure live in Merlin. See [AGENTS.md](AGENTS.md).
+The backend must generalize: production passes select from input semantics, shapes, layouts,
+numeric contracts and hardware capabilities; workload-specific selections stay in experiments.
+
+The `golden/nofsm-wholemodels` working branch adds an **uncertified candidate** beside the published capsule backend. See [docs/golden_progress.md](docs/golden_progress.md) for the exact Jack ZIP reference, reproducible commands, measured probes, upstream lowering results, and remaining model work. The [optimization log](docs/golden_optimization_log.md) records each measured schedule change and the compiler or infrastructure abstraction needed to automate it. The historical `manifest.yaml` grading above applies to the published parent, not this branch.

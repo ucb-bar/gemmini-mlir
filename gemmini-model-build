@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Normal golden captured-model build with source-bound plan/accounting checks."""
+from pathlib import Path
+import runpy
+import sys
+
+sys.dont_write_bytecode=True
+root=Path(__file__).resolve().parent
+sys.path.insert(0,str(root))
+main=runpy.run_path(str(root/'tests/fused_whole_model_probe.py'))['main']
+main()

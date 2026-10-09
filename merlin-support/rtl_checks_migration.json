@@ -1,0 +1,28 @@
+{
+  "schema": "merlin.rtl_checks_migration.v1",
+  "supersedes": "Earlier rocc_semantics output identities precede this RTL-check capability export; current_files commits the evolved outputs without asserting an input-hash chain.",
+  "merlin_source_revision": "11ee5c4100414a8b665fddc5e52f015a5926554c",
+  "sources": {
+    "src/merlin/targetgen/rtl_checks.py": "cf275179aec409a6a655486a1d6325ab667a8e4ac721113a48f49902bc9db21c",
+    "src/merlin/targetgen/rtl_check_compiler.py": "450eda580edf30c6522b55df47a2e1a5df4c43f2a70f09477a2516ec08dfc80b",
+    "src/merlin/targetgen/rtl_check_runner.py": "0a122a169cb162887091688d1e5a35104344ead766d587b3610f3f78f93fec5e"
+  },
+  "current_files": {
+    "backend/rtl_checks.py": "66b5772ea0e6c3fb8cb9ed24deb5744bf018b93396cce480f0cf7d8162ced2a1",
+    "backend/rocc_semantics.py": "7c1e3e3714b08c70d587513c9ea0ad149d63cd16ead03d58494c1c6c14312b6f",
+    "tests/test_rtl_checks.py": "6839d62eb23259507761c38f80f6b30c18a1765ea420e00d24f17e8a30a89567"
+  },
+  "relocated_behavior": [
+    "Gemmini structural screen and helper closure",
+    "Gemmini TRACE assertion compiler",
+    "Gemmini decoded-trace renderer"
+  ],
+  "interface_adaptation": "Shared Check/CheckReport and two declaration helpers imported from Merlin core. Targetgen imports absolute; compiler and renderer invoke local relocated helpers. Capability exposed lazily as rocc_semantics.rtl_checks. Fact projection renamed project_facts as the public selected-provider operation.",
+  "qualification": {
+    "hardware_executed": false,
+    "candidate_certification": false,
+    "relocated_functions_ast_equal_after_import_adaptation": 49,
+    "synthetic_companion_tests_passed": 6,
+    "process_and_socket_bind_globally_blocked": true
+  }
+}
