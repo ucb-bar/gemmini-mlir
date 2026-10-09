@@ -1,5 +1,27 @@
 # Infrastructure fixes and performance changes
 
+## Shared host CPU arithmetic ownership
+
+The source FMA pair, eight-lane FMA implementation and directed certificate
+arithmetic now delegate to Merlin's `runtime.host_arithmetic` and
+`runtime.host_outward`. This repository keeps only its existing symbol bindings.
+The CPU implementations require an explicit supported ISA/ABI and unchanged
+source/effect permissions; accelerator selection does not choose host policy.
+Use a Merlin installation containing these APIs with this backend revision.
+
+Migration checks passed 26 shared native controls and 32 existing OOT controls.
+All three existing generated headers and the compiled native diagnostic objects
+are byte-identical before and after delegation. This is an ownership change;
+no new whole-model timing or numerical qualification is claimed. Existing
+historical source pins remain historical and do not describe the new import
+closure. Authoring library grants remain separately controlled.
+
+The older host linalg path still combines generic scalar lowering with the
+target's padded pointer layout and single-block lowering constraints. Its
+layout bridge needs an explicit contract before the remaining generic lowering
+can be shared. Device instruction encodings, device layouts, store legality and
+accelerator schedules continue to belong in this repository.
+
 ## 2026-10-07 22:16 UTC: current row legality and canonical decoder delivery
 
 Merlin local main `bfe708666` integrates generic typed closed rows, complete
