@@ -1,0 +1,74 @@
+diff --git a/mlir_oot/golden_stem_pool.py b/mlir_oot/golden_stem_pool.py
+index 9d7a105..1c787aa 100644
+--- a/mlir_oot/golden_stem_pool.py
++++ b/mlir_oot/golden_stem_pool.py
+@@ -18,6 +18,7 @@ class StemPoolShape:
+     cout:int=64
+     scale:float=1.0
+     pooled_rows:int=4
++    banked_pool:bool=False
+     @property
+     def oh(self):return (self.h+1)//2
+     @property
+@@ -33,6 +34,7 @@ class StemPoolShape:
+         if self.cout>64:raise ValueError('pooled stem supports at most64 output channels')
+         if max(self.oh,self.ow,self.ph,self.pw)>255:raise ValueError('pool configuration dimension overflow')
+         rows=max(end-start for _,_,start,end in self.bands());mt=_ceil_div(self.ow,16);nt=_ceil_div(self.cout,16)
++        if self.banked_pool and (F.ACC_BANKS!=2 or rows*self.ow>F.ACC_BANK_ROWS):raise ValueError('banked pool band must fit one independently tracked accumulator bank')
+         if rows*self.ow>F.ACC_ROWS:raise ValueError('spatial accumulator band exceeds capacity')
+         if rows*7*mt*2*16+14*nt*16>F.SPAD_ROWS:raise ValueError('cached band and weights exceed scratchpad')
+         if self.scale<=0:raise ValueError('positive proven scalar scale required')
+@@ -66,12 +68,13 @@ class GoldenStemPool(GoldenGemm):
+             # Channel blocks are static so every scratch/accumulator address is proven.
+             for d in range(nt):
+                 cols=min(16,s.cout-d*16)
++                acc_base=(d%F.ACC_BANKS)*F.ACC_BANK_ROWS if s.banked_pool else 0
+                 for kh in range(7):
+                     for ki,kr in [(0,16),(1,5)]:
+                         for ry in range(rows):
+                             for a,nrows in enumerate(widths):
+                                 first=ry==0 and a==0
+-                                self._rocc('preload',{'bd':bbase+((kh*2+ki)*nt+d)*16 if first else isa.GARBAGE_ADDR,'c':isa.acc_addr(ry*s.ow+a*16,accumulate=not(kh==0 and ki==0)),'bd_cols':cols,'bd_rows':kr,'c_cols':cols,'c_rows':nrows})
++                                self._rocc('preload',{'bd':bbase+((kh*2+ki)*nt+d)*16 if first else isa.GARBAGE_ADDR,'c':isa.acc_addr(acc_base+ry*s.ow+a*16,accumulate=not(kh==0 and ki==0)),'bd_cols':cols,'bd_rows':kr,'c_cols':cols,'c_rows':nrows})
+                                 self._rocc('compute',{'a':(((kh*rows+ry)*mt+a)*2+ki)*16,'a_cols':kr,'a_rows':nrows,'accumulate':not first})
+                 # <=2 pooled rows keeps one command's window visits <=1024.
+                 for q in range(0,count,2):
+@@ -79,14 +82,14 @@ class GoldenStemPool(GoldenGemm):
+                     if pc*s.pw*9>1024:raise ValueError('pool command exceeds tracker bound')
+                     self._rocc('config_st',{'stride':s.cout,'acc_act':isa.RELU,'acc_scale':s.scale,'pool_stride':2,'pool_size':3,'pool_out_dim':s.pw,'porows':pc,'pocols':s.pw,'orows':rows-offset,'ocols':s.ow,'upad':pad,'lpad':1})
+                     py=self.fb.add_i(p,self.fb.const(q));ptr=self._ptr(self.c,py,s.pw*s.cout,self.fb.const(d*16))
+-                    self._rocc('mvout',{'local':isa.acc_addr(offset*s.ow),'rows':1,'cols':cols},ptr)
++                    self._rocc('mvout',{'local':isa.acc_addr(acc_base+offset*s.ow),'rows':1,'cols':cols},ptr)
+                 # Stock RS models pooling as reading to the end of its start bank.
+                 # A spatial band may cross that bank, so drain before C reuse.
+-                self._rocc('fence',{})
++                if not s.banked_pool:self._rocc('fence',{})
+         for start,stop,(count,rows,upad) in groups:self.fb.for_loop(start,stop,s.pooled_rows,lambda p,c=count,r=rows,u=upad:band(p,c,r,u))
+         module=self._finish('gemmini_golden_stem_pool');module.attributes['gemmini.stem_pool_shape']=StringAttr(json.dumps(asdict(s),sort_keys=True));return module
+ 
+ 
+ def command_counts(s):
+     s.validate();rows=sum(end-start for _,_,start,end in s.bands());mt=_ceil_div(s.ow,16);nt=_ceil_div(s.cout,16);computes=rows*mt*nt*14
+-    return {'compute':computes,'preload':computes,'mvin_a':rows*mt*7,'mvin_b':14,'pool_mvout':sum(_ceil_div(count,2)*nt for _,count,_,_ in s.bands()),'convolution_rows_computed':rows,'convolution_rows_required':s.oh,'padded_array_issue_cycles':computes*16,'phase_fences':len(s.bands())*nt,'host_intermediate_bytes':0,'host_im2col_bytes':0}
++    return {'compute':computes,'preload':computes,'mvin_a':rows*mt*7,'mvin_b':14,'pool_mvout':sum(_ceil_div(count,2)*nt for _,count,_,_ in s.bands()),'convolution_rows_computed':rows,'convolution_rows_required':s.oh,'padded_array_issue_cycles':computes*16,'phase_fences':0 if s.banked_pool else len(s.bands())*nt,'host_intermediate_bytes':0,'host_im2col_bytes':0}
+diff --git a/tests/gsim_stem_pool_probe.py b/tests/gsim_stem_pool_probe.py
+index 7355c91..e4d0a13 100644
+--- a/tests/gsim_stem_pool_probe.py
++++ b/tests/gsim_stem_pool_probe.py
+@@ -18,13 +18,15 @@ def main():
+     for key, value in [('h',5),('w',35),('cout',19)]:
+         ap.add_argument('--'+key,type=int,default=value)
+     ap.add_argument('--scale',type=float,default=0.03125)
++    ap.add_argument('--pooled-rows',type=int,default=4)
++    ap.add_argument('--banked-pool',action='store_true')
+     ap.add_argument('--build-only',action='store_true')
+     ap.add_argument('--max-cycles',type=int,default=3000000)
+     ap.add_argument('--timeout-s',type=int,default=600)
+     ap.add_argument('--source-scales',nargs='+',type=float,default=[1.0])
+     ap.add_argument('--output-reciprocal',type=float,default=0.03125)
+     a = ap.parse_args()
+-    s = StemPoolShape(a.h,a.w,a.cout,scale=a.scale)
++    s = StemPoolShape(a.h,a.w,a.cout,scale=a.scale,pooled_rows=a.pooled_rows,banked_pool=a.banked_pool)
+     out = a.workdir.resolve()
+     out.mkdir(parents=True,exist_ok=False)
+     receipt = compile_module(GoldenStemPool(s).build(),a.llvm_bin,out)

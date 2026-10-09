@@ -1,0 +1,869 @@
+{
+  "schema": "source_bound_resident_a_dma_coalescing_whole_qualification_v1",
+  "timestamp_utc": "2026-10-06T01:19:50.527343+00:00",
+  "owner": "reference_parity",
+  "oot_commit": "c3f973ca247e4e8f80cc1d16cd1eefb64447a7ef",
+  "compiler_runtime_core": "f5d2f0650a6b338b5c6c366dc46bbe57f9d6ab65",
+  "hypothesis": "Four adjacent cached-A K tiles share one exact DMA packet with the same resident cells, B placement and source arithmetic",
+  "control_job": 1897,
+  "control_cycles": 38468933,
+  "control_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model.elf",
+    "sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802"
+  },
+  "candidate_elf": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model.elf",
+    "sha256": "d11a4bb216e9e99ffad309ac0f73fc17f225163150a31aa1c98affa9e7e939a0"
+  },
+  "candidate_catalog": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/device_catalog/device_catalog.json",
+    "sha256": "4629a71f2168c4c9ab3cf682cfc7e5bd42a02812735ec1444f70d7bc62149234"
+  },
+  "actual_prepared_source": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/device_catalog/catalog_source.mlir",
+    "sha256": "bc24c0043f13b2f4813b8ee05860a6cbbc640dca6072b2f3d699818494ae75d9"
+  },
+  "source_boundary_equal_control": true,
+  "selected_compiler_options": {
+    "resident_a_load_coalescing": true
+  },
+  "changed_device_regions": [
+    "matmul_13",
+    "matmul_14",
+    "matmul_17",
+    "matmul_20",
+    "matmul_23",
+    "matmul_26",
+    "matmul_27",
+    "matmul_28",
+    "matmul_30",
+    "matmul_31",
+    "matmul_33",
+    "matmul_34",
+    "matmul_36",
+    "matmul_37",
+    "matmul_39",
+    "matmul_40",
+    "matmul_42",
+    "matmul_43",
+    "matmul_45",
+    "matmul_46",
+    "matmul_47",
+    "matmul_49",
+    "matmul_50",
+    "matmul_52"
+  ],
+  "device_kernel_objects": [
+    {
+      "region": "matmul_1",
+      "symbol": "gemmini_exact_requant_0_kernel",
+      "changed": false,
+      "candidate_sha256": "60104b23e8f6ba19d5299f170d3cb34809c71613ba007f2877c7a5ad639ece8b",
+      "control_sha256": "60104b23e8f6ba19d5299f170d3cb34809c71613ba007f2877c7a5ad639ece8b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_2",
+      "symbol": "gemmini_exact_requant_1_kernel",
+      "changed": false,
+      "candidate_sha256": "6e46a9c34024aee44b8930c264dc7deb60e0b88d435b51a469aff4c0e8f4eed2",
+      "control_sha256": "6e46a9c34024aee44b8930c264dc7deb60e0b88d435b51a469aff4c0e8f4eed2",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_3",
+      "symbol": "gemmini_exact_requant_2_kernel",
+      "changed": false,
+      "candidate_sha256": "1eb62a0f872cb3225cd369f2f508b05ea67802fbff4dbf6484b72e0dbb086f26",
+      "control_sha256": "1eb62a0f872cb3225cd369f2f508b05ea67802fbff4dbf6484b72e0dbb086f26",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_4",
+      "symbol": "gemmini_exact_requant_3_kernel",
+      "changed": false,
+      "candidate_sha256": "b88d4aeefb9f27fb796c1890358be5bb623312b9888fcc2158f7173301b4d14e",
+      "control_sha256": "b88d4aeefb9f27fb796c1890358be5bb623312b9888fcc2158f7173301b4d14e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_5",
+      "symbol": "gemmini_exact_requant_4_kernel",
+      "changed": false,
+      "candidate_sha256": "5f69901612b22ad8d273b41c42b3f149dd14a973daf10b64561e72d77a850290",
+      "control_sha256": "5f69901612b22ad8d273b41c42b3f149dd14a973daf10b64561e72d77a850290",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_6",
+      "symbol": "gemmini_exact_requant_5_kernel",
+      "changed": false,
+      "candidate_sha256": "2140e124c8a94da9811f6400cba98d8818d78da0bc05149dcd602fd412ddd542",
+      "control_sha256": "2140e124c8a94da9811f6400cba98d8818d78da0bc05149dcd602fd412ddd542",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_7",
+      "symbol": "gemmini_exact_requant_6_kernel",
+      "changed": false,
+      "candidate_sha256": "6d33e8b5108f2bce13b91c24d6a4bbbeba59163b485a287c3dbf90a5c905fc92",
+      "control_sha256": "6d33e8b5108f2bce13b91c24d6a4bbbeba59163b485a287c3dbf90a5c905fc92",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_8",
+      "symbol": "gemmini_exact_requant_7_kernel",
+      "changed": false,
+      "candidate_sha256": "af96964326ea9c7716866907811a7f1b9ab3c3921ff8781d766630acd238119a",
+      "control_sha256": "af96964326ea9c7716866907811a7f1b9ab3c3921ff8781d766630acd238119a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_9",
+      "symbol": "gemmini_exact_requant_8_kernel",
+      "changed": false,
+      "candidate_sha256": "544baa115de7e39213e922950980dca507abd99f52f767be8da787e0d337811a",
+      "control_sha256": "544baa115de7e39213e922950980dca507abd99f52f767be8da787e0d337811a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_10",
+      "symbol": "gemmini_exact_requant_9_kernel",
+      "changed": false,
+      "candidate_sha256": "5882d72b48627fdf5a6365a66d4611631d30b78ba943ca08b4a2fb750659866f",
+      "control_sha256": "5882d72b48627fdf5a6365a66d4611631d30b78ba943ca08b4a2fb750659866f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_11",
+      "symbol": "gemmini_exact_requant_10_kernel",
+      "changed": false,
+      "candidate_sha256": "3c7cbf793d35a74b10787aaab6a0dd642a9d3bfa67e8020987a48b26d75f9af8",
+      "control_sha256": "3c7cbf793d35a74b10787aaab6a0dd642a9d3bfa67e8020987a48b26d75f9af8",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_12",
+      "symbol": "gemmini_exact_requant_11_kernel",
+      "changed": false,
+      "candidate_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "control_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_13",
+      "symbol": "gemmini_exact_requant_12_kernel",
+      "changed": true,
+      "candidate_sha256": "e8317004fdba66f3ecf9099cc91c7bbac4487ea9aa180322c5ece59f9d3bb5b0",
+      "control_sha256": "cb1b4785d6222f410eae09e0e44ec4ba08dedd3d1932513b344fa6a032522909",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_14",
+      "symbol": "gemmini_exact_requant_13_kernel",
+      "changed": true,
+      "candidate_sha256": "425e805176e1616fe17f7126d3e4c9e554e5085aafbf7e34f211487d30da76c1",
+      "control_sha256": "5f14c3cc34b2e3a5b8d87620b6badbec0db95eaf9f201a974e9786375b5b7c24",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_15",
+      "symbol": "gemmini_exact_requant_14_kernel",
+      "changed": false,
+      "candidate_sha256": "be4ef2d0740381109909bb4e48771b36e1feeb58118252a6691ea96553e7c78d",
+      "control_sha256": "be4ef2d0740381109909bb4e48771b36e1feeb58118252a6691ea96553e7c78d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_16",
+      "symbol": "gemmini_exact_requant_15_kernel",
+      "changed": false,
+      "candidate_sha256": "dd0363ac3397ec8f2e1cec2109ef10a0603853f69eb7af352d9135138e4d96bb",
+      "control_sha256": "dd0363ac3397ec8f2e1cec2109ef10a0603853f69eb7af352d9135138e4d96bb",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_17",
+      "symbol": "gemmini_exact_requant_16_kernel",
+      "changed": true,
+      "candidate_sha256": "953ad3c69f2fa4486af32dbade8c887d17499be30dc51a35b0c5a68bb888eef2",
+      "control_sha256": "34466c2748f3c6d5b6ebb2d4f2f19cf6a7118b1d9bc2b14b7a62a0ecf4dea568",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_18",
+      "symbol": "gemmini_exact_requant_17_kernel",
+      "changed": false,
+      "candidate_sha256": "1b0ddf0850e1ccdc39ff30d80f14c729d4945900ec09d76d509e459430e5d6ef",
+      "control_sha256": "1b0ddf0850e1ccdc39ff30d80f14c729d4945900ec09d76d509e459430e5d6ef",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_19",
+      "symbol": "gemmini_exact_requant_18_kernel",
+      "changed": false,
+      "candidate_sha256": "6ef585e45c50da8afe19cfac3e1a8c8759944573a34ae85d894b83717022c92b",
+      "control_sha256": "6ef585e45c50da8afe19cfac3e1a8c8759944573a34ae85d894b83717022c92b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_20",
+      "symbol": "gemmini_exact_requant_19_kernel",
+      "changed": true,
+      "candidate_sha256": "850c2d637d5d2067aa89c03332938a3910f4516bdd6e8df5cfd8035c9fe1e968",
+      "control_sha256": "f0bdbea931fd18645c2b801bace906b99690ff7e530dac4606dd9b6f4cfcf0c6",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_21",
+      "symbol": "gemmini_exact_requant_20_kernel",
+      "changed": false,
+      "candidate_sha256": "c5c260b36d94fa1e62df8d1bf1b2e14c0d500e6d9afd6970bde03050844beb34",
+      "control_sha256": "c5c260b36d94fa1e62df8d1bf1b2e14c0d500e6d9afd6970bde03050844beb34",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_22",
+      "symbol": "gemmini_exact_requant_21_kernel",
+      "changed": false,
+      "candidate_sha256": "9d9d23edbbf32db1ac12691d661651c1e97311e54e8167e13461b1edee967232",
+      "control_sha256": "9d9d23edbbf32db1ac12691d661651c1e97311e54e8167e13461b1edee967232",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_23",
+      "symbol": "gemmini_exact_requant_22_kernel",
+      "changed": true,
+      "candidate_sha256": "8951f25737f0e9c105c91663426ce1094330e103720b3bededaeadcb0cc943c9",
+      "control_sha256": "0b1d3c84d2dc8a2239a990b1348c76a66436f6d87599e09982f537090faf0e0a",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_24",
+      "symbol": "gemmini_exact_requant_23_kernel",
+      "changed": false,
+      "candidate_sha256": "befeed51cff0839892c55ab27d4b5d76be1d9bb8cbfdb2f58ac76294fe4e74ee",
+      "control_sha256": "befeed51cff0839892c55ab27d4b5d76be1d9bb8cbfdb2f58ac76294fe4e74ee",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_25",
+      "symbol": "gemmini_exact_requant_24_kernel",
+      "changed": false,
+      "candidate_sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3",
+      "control_sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_26",
+      "symbol": "gemmini_exact_requant_25_kernel",
+      "changed": true,
+      "candidate_sha256": "273caabd4f733a48ae2617c0faa1487645997df8f3a5e31722879385e29a56c4",
+      "control_sha256": "dda996c9b1325da89e965dced51f8e7847c6fb91a756cc6334045c759b101f4e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_27",
+      "symbol": "gemmini_exact_requant_26_kernel",
+      "changed": true,
+      "candidate_sha256": "a17fdef0289341e0ab34e88479a259a5757845a6ee7d67f20658f0524a2c0f64",
+      "control_sha256": "f3c5bb6a5ffd8fedd54e98e97a19e17b67e2f0aed91581a314cf5083fe1e5036",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_28",
+      "symbol": "gemmini_exact_requant_27_kernel",
+      "changed": true,
+      "candidate_sha256": "a3c67ddcb277f584474829e96d38330b1ceda59f40cf0e8b709137fb29cfedd3",
+      "control_sha256": "73fb5f259c3a120857ad4c5593065457c6602a3f42a1a3e3f91e28a68fd2805e",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_29",
+      "symbol": "gemmini_exact_requant_28_kernel",
+      "changed": false,
+      "candidate_sha256": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+      "control_sha256": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_30",
+      "symbol": "gemmini_exact_requant_29_kernel",
+      "changed": true,
+      "candidate_sha256": "713a448748a3207d9c9b2495eb46df0fd7a4ccddd4c342a212e9e93a578b6202",
+      "control_sha256": "1b716c69e6b7e0170a0d2a07775a2e44a2273af6307f279697f38e7b63d1bacc",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_31",
+      "symbol": "gemmini_exact_requant_30_kernel",
+      "changed": true,
+      "candidate_sha256": "18a78d985ab0df6cb1f8da91b6358152b3f0325736dbff48ce325488c0041390",
+      "control_sha256": "693a28c8c4453211689e73e1ef02b7dc8654effd5dff53319e6cfe5297720adf",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_32",
+      "symbol": "gemmini_exact_requant_31_kernel",
+      "changed": false,
+      "candidate_sha256": "25e6eec00956da450e0970f98688967e85dfadea2c85a0a6ef2a81ce79a7c61f",
+      "control_sha256": "25e6eec00956da450e0970f98688967e85dfadea2c85a0a6ef2a81ce79a7c61f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_33",
+      "symbol": "gemmini_exact_requant_32_kernel",
+      "changed": true,
+      "candidate_sha256": "089434bce69f932d21f6259ba6c91149c3c5104fee4b4375c44540b421d6646a",
+      "control_sha256": "df2f38646b4e38f3d6e52223404b94dfc40b7ebbc4696f36f0c245ee676e57d1",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_34",
+      "symbol": "gemmini_exact_requant_33_kernel",
+      "changed": true,
+      "candidate_sha256": "118ff2ca55c6226c8c211ee57c9bb67eb090774639f013a175addef00a61e6b0",
+      "control_sha256": "aef439c71cebaaa93b6b5d5431d3093e8e71dddbb17d4be28da0fddb1a747a1f",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_35",
+      "symbol": "gemmini_exact_requant_34_kernel",
+      "changed": false,
+      "candidate_sha256": "73908b7e644dabad829ae08a6c3bf6dc64158d37ef039874a9af647896b4b3bc",
+      "control_sha256": "73908b7e644dabad829ae08a6c3bf6dc64158d37ef039874a9af647896b4b3bc",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_36",
+      "symbol": "gemmini_exact_requant_35_kernel",
+      "changed": true,
+      "candidate_sha256": "5642ea3aa39142e7b3e2842705cd2ed14065b24204e67cae319012019fbce410",
+      "control_sha256": "cf5415ddca9343f8f056ccf3d38c7942b926e139100ee54c248c7112cd31a919",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_37",
+      "symbol": "gemmini_exact_requant_36_kernel",
+      "changed": true,
+      "candidate_sha256": "0feecfafaa0f2587928f8879ac39fdbb073c14f0c1fec572f07137d2efba640e",
+      "control_sha256": "941e7fe7964e5138d6b0040a0094495424e7535a829032398a3c02aaace41018",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_38",
+      "symbol": "gemmini_exact_requant_37_kernel",
+      "changed": false,
+      "candidate_sha256": "b81144ddd6b567e1d1f15b1a177aa99eae1710b3ed684c7ae382fe06c0399deb",
+      "control_sha256": "b81144ddd6b567e1d1f15b1a177aa99eae1710b3ed684c7ae382fe06c0399deb",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_39",
+      "symbol": "gemmini_exact_requant_38_kernel",
+      "changed": true,
+      "candidate_sha256": "b123b00b74beef2b24c377194a3fd8a5d7403d79f2d01c6fdd4c435abe559579",
+      "control_sha256": "702ec98ed52868683c2e267af61722e89d343cc969c0057e539308d59b5c5fea",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_40",
+      "symbol": "gemmini_exact_requant_39_kernel",
+      "changed": true,
+      "candidate_sha256": "9c81541f1682d0a0793b93857c645429ae5b9b634093a49fd891aee678f4a0f2",
+      "control_sha256": "e9a94632d6998738e18f1d10675b6216b3c980d48503169e0f60e8d42561ee1d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_41",
+      "symbol": "gemmini_exact_requant_40_kernel",
+      "changed": false,
+      "candidate_sha256": "5fc68d57a0de4ba4b783564f1d9f6af5111674831f66ae3e247b11183aa78327",
+      "control_sha256": "5fc68d57a0de4ba4b783564f1d9f6af5111674831f66ae3e247b11183aa78327",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_42",
+      "symbol": "gemmini_exact_requant_41_kernel",
+      "changed": true,
+      "candidate_sha256": "30dd43f5dd592f50e7464b99ed14862d07bfef2af077440d128252b163a52eb7",
+      "control_sha256": "87c70f25e56ef72cc14d9c46a520078b6d39d486e78fc8b050ce1705a20c3792",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_43",
+      "symbol": "gemmini_exact_requant_42_kernel",
+      "changed": true,
+      "candidate_sha256": "516612890f04f3ef8042695952e53fb4320f712d81896eb7055d0a16fcd1ed73",
+      "control_sha256": "1ed346063145d28801d793db4b9ddf7cb41e0bf6548c42a74bf01669be4fe9f7",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_44",
+      "symbol": "gemmini_exact_requant_43_kernel",
+      "changed": false,
+      "candidate_sha256": "d070b39c3a595d28505ee3902442cbea1ff3202964eee0d2cadda83179defa2b",
+      "control_sha256": "d070b39c3a595d28505ee3902442cbea1ff3202964eee0d2cadda83179defa2b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_45",
+      "symbol": "gemmini_exact_requant_44_kernel",
+      "changed": true,
+      "candidate_sha256": "3e62b9d5949d870b08060736fd11cc4a3c6e53a160ea1093a89994792a811846",
+      "control_sha256": "d03c49cf92a731b9758f3a7876f27aa29258a1f2893fb9e95a93b36e4fa1a83b",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_46",
+      "symbol": "gemmini_exact_requant_45_kernel",
+      "changed": true,
+      "candidate_sha256": "c01a7b6602eb01ee2e1c2e0f2617afac0d14e952d0a19f7c3a9b6e2244865b34",
+      "control_sha256": "e251fa42f8201e595017462503f371c3ad89e3de5e9af664b0782ea00c866332",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_47",
+      "symbol": "gemmini_exact_requant_46_kernel",
+      "changed": true,
+      "candidate_sha256": "41cc781a682e8261c291de6aa1246fd587e5958bbbbd97a31941b266ad581efd",
+      "control_sha256": "9cbdd36b51c1ca9f3c52241c9e24b933986a3e5066b039b992d8e6c080283ba6",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_48",
+      "symbol": "gemmini_exact_requant_47_kernel",
+      "changed": false,
+      "candidate_sha256": "a11e0c00c0e638b82b6d8f6bd8271e7aa9f872ff2fe01811939cd0be34ddb73d",
+      "control_sha256": "a11e0c00c0e638b82b6d8f6bd8271e7aa9f872ff2fe01811939cd0be34ddb73d",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_49",
+      "symbol": "gemmini_exact_requant_48_kernel",
+      "changed": true,
+      "candidate_sha256": "55e9765d4072188c77638c0c1607e0d4cab44afe3a25138ba9d15b3a7a3c3529",
+      "control_sha256": "16baf0688ff3445ecafd2305e1c0940f45629acec711a480dd89a20a90b9a3be",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_50",
+      "symbol": "gemmini_exact_requant_49_kernel",
+      "changed": true,
+      "candidate_sha256": "cbd8db489c92716802c651683ba9c94dfe17c88bcb9f0c146871488747cb79a0",
+      "control_sha256": "08de1fbaaeb91430c801250b088f63183ac2511723801e7080d0312bc303be7c",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_51",
+      "symbol": "gemmini_exact_requant_50_kernel",
+      "changed": false,
+      "candidate_sha256": "2db2e3d42d8f3df2516abf8e039279852e47848bea98b7f83ff72fa27c83f494",
+      "control_sha256": "2db2e3d42d8f3df2516abf8e039279852e47848bea98b7f83ff72fa27c83f494",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    },
+    {
+      "region": "matmul_52",
+      "symbol": "gemmini_exact_requant_51_kernel",
+      "changed": true,
+      "candidate_sha256": "cfaf117ac19dc31e2ecff7f083c28a045d8eefe59834532ee317a84eedfc94d0",
+      "control_sha256": "b84d4feecf7cee03ca6c861aa2d7638708dc1a54fce0662b1b5a88d3c4153335",
+      "adapter_identical": true,
+      "source_numeric_proof_identical": true,
+      "geometry_identical": true
+    }
+  ],
+  "unchanged_other_18_device_contracts": true,
+  "controlled_link": {
+    "schema": "controlled_resident_a_dma_coalescing_final_link_v1",
+    "control_job": 1897,
+    "control_cycles": 38468933,
+    "control_elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "candidate_elf_sha256": "d11a4bb216e9e99ffad309ac0f73fc17f225163150a31aa1c98affa9e7e939a0",
+    "original_control_relinked_byte_exact": true,
+    "baseline_relink_argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+      "-O2",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-nostdlib",
+      "-nostartfiles",
+      "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x84200000",
+      "-Wl,--defsym,MERLIN_STACK_BYTES=0x1000000",
+      "-T",
+      "/scratch/agustin/tmp/merlin-resnet-qualified-runtime-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model_call.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/merlin_model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model_main.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/mlir_rt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/crt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/console.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/libc_min.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/malloc.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/weights_blob.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/device_catalog/guarded_mean_mixed.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/device/device_catalog_shim.o",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/control_relink.elf"
+    ],
+    "candidate_link_argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+      "-O2",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-nostdlib",
+      "-nostartfiles",
+      "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x84200000",
+      "-Wl,--defsym,MERLIN_STACK_BYTES=0x1000000",
+      "-T",
+      "/scratch/agustin/tmp/merlin-resnet-qualified-runtime-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model_call.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/merlin_model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model_main.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/mlir_rt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/crt.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/console.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/libc_min.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/malloc.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/weights_blob.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/device_catalog/guarded_mean_mixed.o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/device/device_catalog_shim.o",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model.elf"
+    ],
+    "host_and_runtime_and_weights_object_pins": {
+      "model_call.o": {
+        "control_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "candidate_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "identical": true
+      },
+      "merlin_model.o": {
+        "control_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "candidate_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "identical": true
+      },
+      "model_main.o": {
+        "control_sha256": "478c17d41496743c4821450b8af13591834b49c2483dde2e4350bec89b5b2014",
+        "candidate_sha256": "478c17d41496743c4821450b8af13591834b49c2483dde2e4350bec89b5b2014",
+        "identical": true
+      },
+      "mlir_rt.o": {
+        "control_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "candidate_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "identical": true
+      },
+      "crt.o": {
+        "control_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "identical": true
+      },
+      "console.o": {
+        "control_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "identical": true
+      },
+      "libc_min.o": {
+        "control_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "candidate_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "identical": true
+      },
+      "malloc.o": {
+        "control_sha256": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+        "candidate_sha256": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+        "identical": true
+      },
+      "model.o": {
+        "control_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "candidate_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "identical": true
+      },
+      "weights_blob.o": {
+        "control_sha256": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+        "candidate_sha256": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+        "identical": true
+      },
+      "device/device_catalog_shim.o": {
+        "control_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "candidate_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "identical": true
+      },
+      "host_llvm/model.linked.ll": {
+        "control_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "candidate_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "identical": true
+      },
+      "host_llvm/model.ll": {
+        "control_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "candidate_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "identical": true
+      },
+      "host_llvm/model.native.ll": {
+        "control_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "candidate_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "identical": true
+      }
+    },
+    "normal_build_elf_sha256": "c3a1db34b62c58c72bca76ebec5cfdaefbda96149cfbc8c50d07fbdf34aec59e",
+    "normal_build_source_catalog_sha256": "4629a71f2168c4c9ab3cf682cfc7e5bd42a02812735ec1444f70d7bc62149234",
+    "actual_selected_device_aggregate_sha256": "3f3a4ecfaa043d76f8f752e344115e6d1be96af27290a93b6d290b0da609ce80",
+    "actual_selected_device_aggregate_byte_identical_normal_build": true,
+    "host_drift_scope": "Normal build preserves capture/fresh/prepared/catalog-source bytes, but actualhostLLVM changed under presentcompilerrecipe. Preserve that fresh qualification separately; controlled final link retains exact1897host/runtime/weights/harness and uses its unchangedsourceABI with newlycompiledcatalog.",
+    "retained_control_build_marker": "8780640a6c31",
+    "marker_scope": "Baseline marker retained because harness object is exact control. Unique finalELFSHA and complete selectedobject pins identify candidate; marker alone is not candidateidentity.",
+    "nofsm_status": "pass"
+  },
+  "controlled_link_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/controlled_link_receipt.json",
+    "sha256": "808e8f24e13bd6812e7dda2df7852f412731e1d9885a005011740c6ec1a87b74"
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "native_pins": {
+    "validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/native_validation.json",
+      "sha256": "d276a3f427707714771efc43a3b29a9c38072add3022bf93df3046110e94cd3d"
+    },
+    "output": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/host/output.npy",
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+    },
+    "host_object": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/host/model.o",
+      "sha256": "05fb8d7b38c397db99fd791893b9bbd92ad56f5d17e8f1dcca93fcb55ce2eff9"
+    }
+  },
+  "strict_spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "d11a4bb216e9e99ffad309ac0f73fc17f225163150a31aa1c98affa9e7e939a0",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10056792",
+      "METRIC build_hash 8780640a6c31",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/spike.log",
+    "spike_console_sha256": "55d15730c5216961aad35a16b768ce7f952b3764751091c50671088f2541ff6b",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "strict_spike_pins": {
+    "validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/spike_validation.json",
+      "sha256": "5853765a68d0c388789eafc6d16b8e839a23a7cc70f92d796905ef66c7f4d3cb"
+    },
+    "log": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/spike.log",
+      "sha256": "55d15730c5216961aad35a16b768ce7f952b3764751091c50671088f2541ff6b"
+    }
+  },
+  "original_golden": {
+    "path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+  },
+  "nofsm_audit": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing_controlled_link/build_direct/model.nofsm_audit.json",
+    "sha256": "cd9215f7734770d301f1bf0ac8c8e91bb60d82ae673edc2c2e9e012f6ea8c7d3"
+  },
+  "source_bundle_closure": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/bundle_source_closure.json",
+    "sha256": "0e160c74c7bd23176bbaf8f6ad874002bcc402d24b8f1527618010a95e187c05"
+  },
+  "capsule_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/docs/perf_records/resident_a_dma_coalescing_capsule.json",
+    "sha256": "78b00004c39a3a0c756034f795a693b30d8a80c2bf2bb951190c3c140c052267"
+  },
+  "fresh_normal_build": {
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing/build_direct/model.elf",
+      "sha256": "c3a1db34b62c58c72bca76ebec5cfdaefbda96149cfbc8c50d07fbdf34aec59e"
+    },
+    "native_validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing/native_validation.json",
+      "sha256": "d276a3f427707714771efc43a3b29a9c38072add3022bf93df3046110e94cd3d"
+    },
+    "spike_validation": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_a_dma_coalescing/spike_validation.json",
+      "sha256": "abd5c8fc9355b24c2ffb5f58a0885affa283cac652f38e52e223453c3094c32e"
+    },
+    "source_and_catalog_bytes_equal_control": true,
+    "selected_device_aggregate_identical_controlled_link": true,
+    "host_object_equal_control": false,
+    "scope": "Fresh normal build successfully compiles/executes selectedcatalog/all1000original outputs; changedhostcode under presentcompilerrecipe is preserved separately. Hardware arm uses frozen1897hostobject instead."
+  },
+  "scope": "Uninstrumented controlled final link of exact1897 host/runtime/weights/harness plus actual normal-build selectedcatalog; original output contract and all existing nonselected implementations unchanged. Retained baseline buildmarker is not candidateidentity; finalELFSHA is authoritative.",
+  "metric_scope": "Separate matched cached-input DMA capsule improvements only; no additive gain claim; strictSpike counters are functional retired instructions, no whole hardware cycle claim.",
+  "outcome": "Qualified for ONE stockFireSim comparison against1897",
+  "hardware_status": "not yet submitted",
+  "token_usage_available": false,
+  "token_scope": "Root retains owned-thread counters separately; no exclusive peroptimization attribution",
+  "owned_recipe_pins": {
+    "prepare_bundle.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/prepare_bundle.py",
+      "sha256": "69d2c22cd0d6e97a3ca5c55bc9c07cc17ba962bd6a79ec34b612922feefafa3c"
+    },
+    "build_whole.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/build_whole.py",
+      "sha256": "1ca2210ef098d7188a418d39bfda4b2da00673546cc4ed1660ec7d14d9f1bc84"
+    },
+    "controlled_link.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/controlled_link.py",
+      "sha256": "cb0480b02d10011fd59eead977a375ee1a7fac89844631e0be8776873141667a"
+    },
+    "validate_whole.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/validate_whole.py",
+      "sha256": "227a1512f54ed5a21f50b64be8b6ed776780e9d05af077876d5d731a5e355991"
+    },
+    "validate_controlled_link.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/validate_controlled_link.py",
+      "sha256": "9c5a2b89f34407d1403843061391091a3e9cce16a19e06d903be51b4c49e8040"
+    },
+    "write_whole_qualification.py": {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/resident_a_dma_coalescing/write_whole_qualification.py",
+      "sha256": "ece5bd0afe139ea9ea8d76de536a13e83466764547d7c3b42e4aa477203c5713"
+    }
+  }
+}

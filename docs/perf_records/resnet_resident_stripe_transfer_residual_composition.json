@@ -1,0 +1,581 @@
+{
+  "schema": "resnet_resident_stripe_transfer_residual_composition_gate_v1",
+  "owner": "/root/reference_parity",
+  "checkpoint_utc": "2026-10-05 20:22:52 UTC",
+  "token_checkpoint": {
+    "token_usage_available": false,
+    "reason": "Root owns cumulative shared goal snapshots; no exclusive attribution is available to this subagent."
+  },
+  "hypothesis": "Compose independent source-qualified complete-input/full-K convolution residency with transfer-aware dense schedules and banked residual M prefetch. Interactions require actual whole-model timing; local gains are not assumed additive.",
+  "implementation_ownership": {
+    "target_schedule_and_ISA": "OOT Gemmini compiler backend",
+    "shared_host_and_runtime": "Merlin normal builder pinned to existing qualified baseline"
+  },
+  "control1861": {
+    "elf_sha256": "aabd9b15d947695ae20e37903fecc66bd63f200c0d6646b5f2797cb5a52631b2",
+    "metric_scope": "Original whole-model stock FireSim",
+    "cycles": null
+  },
+  "control1853": {
+    "firesim_job": 1853,
+    "cycles": 40479548,
+    "metric_scope": "Original whole-model stock FireSim"
+  },
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/build_direct/model.elf",
+    "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "model_marker": "8780640a6c31",
+    "core_commit": "f5d2f0650a6b338b5c6c366dc46bbe57f9d6ab65",
+    "memory_bytes": 2147483648,
+    "arena_mb": 256,
+    "stack_mb": 16,
+    "isa": "rv64gc",
+    "console": "htif"
+  },
+  "source": {
+    "schema": "resident_stripe_policy_source_screen_v1",
+    "policy": "resident_stripes",
+    "selection_inputs": "Source convolution shape/padding/epilogue, target resources and issue/requested-traffic estimate; no convolution source IDs supplied",
+    "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+    "control_manifest": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle/requant.json",
+    "control_manifest_sha256": "c76ab2f6b118eb4b3bb6aba3241bb378df99f9dec596d2196f3d323961a726bc",
+    "routes": 52,
+    "numeric_proofs_unchanged": true,
+    "rewritten_ir_byte_identical": true,
+    "changed_device_regions": [
+      "matmul_2",
+      "matmul_6",
+      "matmul_9",
+      "matmul_16",
+      "matmul_19",
+      "matmul_22"
+    ],
+    "object_sha256": "051b1b9509f8d4ab0e547eee21d11be5cb131d08fb4b01317c8924c8b291d889",
+    "decisions": [
+      {
+        "region": "matmul_2",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2480384,
+            "score": 606608
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 438272,
+            "score": 543488
+          },
+          "counts": {
+            "mvin_a": 344,
+            "mvin_b": 36,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 224,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 200704,
+            "weight_dram_bytes": 36864,
+            "input_plane_stride": 3364,
+            "resident_input_rows": 13456,
+            "resident_weight_rows": 2304,
+            "weight_base_row": 14080,
+            "stripe_rows": 4,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_6",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2480384,
+            "score": 606608
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 438272,
+            "score": 543488
+          },
+          "counts": {
+            "mvin_a": 344,
+            "mvin_b": 36,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 224,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 200704,
+            "weight_dram_bytes": 36864,
+            "input_plane_stride": 3364,
+            "resident_input_rows": 13456,
+            "resident_weight_rows": 2304,
+            "weight_base_row": 14080,
+            "stripe_rows": 4,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_9",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2480384,
+            "score": 606608
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 438272,
+            "score": 543488
+          },
+          "counts": {
+            "mvin_a": 344,
+            "mvin_b": 36,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 224,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 200704,
+            "weight_dram_bytes": 36864,
+            "input_plane_stride": 3364,
+            "resident_input_rows": 13456,
+            "resident_weight_rows": 2304,
+            "weight_base_row": 14080,
+            "stripe_rows": 4,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_12",
+        "decision": {
+          "applied": false,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "refusal": "resident stripes need unpadded stride1 and aligned Cin"
+        }
+      },
+      {
+        "region": "matmul_16",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2411520,
+            "score": 602304
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 348160,
+            "score": 537856
+          },
+          "counts": {
+            "mvin_a": 232,
+            "mvin_b": 144,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 112,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 100352,
+            "weight_dram_bytes": 147456,
+            "input_plane_stride": 900,
+            "resident_input_rows": 7200,
+            "resident_weight_rows": 4608,
+            "weight_base_row": 11776,
+            "stripe_rows": 8,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_19",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2411520,
+            "score": 602304
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 348160,
+            "score": 537856
+          },
+          "counts": {
+            "mvin_a": 232,
+            "mvin_b": 144,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 112,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 100352,
+            "weight_dram_bytes": 147456,
+            "input_plane_stride": 900,
+            "resident_input_rows": 7200,
+            "resident_weight_rows": 4608,
+            "weight_base_row": 11776,
+            "stripe_rows": 8,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_22",
+        "decision": {
+          "applied": true,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "control": {
+            "padded_issue": 451584,
+            "requested_bytes": 2411520,
+            "score": 602304
+          },
+          "candidate": {
+            "padded_issue": 516096,
+            "requested_bytes": 348160,
+            "score": 537856
+          },
+          "counts": {
+            "mvin_a": 232,
+            "mvin_b": 144,
+            "compute": 32256,
+            "preload": 32256,
+            "mvout": 112,
+            "padded_array_issue_cycles": 516096,
+            "activation_dram_bytes": 100352,
+            "weight_dram_bytes": 147456,
+            "input_plane_stride": 900,
+            "resident_input_rows": 7200,
+            "resident_weight_rows": 4608,
+            "weight_base_row": 11776,
+            "stripe_rows": 8,
+            "host_im2col_bytes": 0
+          },
+          "refusal": null
+        }
+      },
+      {
+        "region": "matmul_25",
+        "decision": {
+          "applied": false,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "refusal": "resident stripes need unpadded stride1 and aligned Cin"
+        }
+      },
+      {
+        "region": "matmul_29",
+        "decision": {
+          "applied": false,
+          "refusal": "previous explicit resident schedule retained"
+        }
+      },
+      {
+        "region": "matmul_32",
+        "decision": {
+          "applied": false,
+          "refusal": "previous explicit resident schedule retained"
+        }
+      },
+      {
+        "region": "matmul_35",
+        "decision": {
+          "applied": false,
+          "refusal": "previous explicit resident schedule retained"
+        }
+      },
+      {
+        "region": "matmul_38",
+        "decision": {
+          "applied": false,
+          "refusal": "previous explicit resident schedule retained"
+        }
+      },
+      {
+        "region": "matmul_41",
+        "decision": {
+          "applied": false,
+          "refusal": "previous explicit resident schedule retained"
+        }
+      },
+      {
+        "region": "matmul_44",
+        "decision": {
+          "applied": false,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "refusal": "narrow spatial planes retain their existing schedule family"
+        }
+      },
+      {
+        "region": "matmul_48",
+        "decision": {
+          "applied": false,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "refusal": "narrow spatial planes retain their existing schedule family"
+        }
+      },
+      {
+        "region": "matmul_51",
+        "decision": {
+          "applied": false,
+          "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+          "timing_claim": false,
+          "refusal": "narrow spatial planes retain their existing schedule family"
+        }
+      }
+    ],
+    "scope": "Explicit general resident stripe compiler search option; issue/traffic costs are not hardware cycle predictions. Resident source selections retain the1836 experimental control. Whole-model gates/hardware are separate."
+  },
+  "fresh_writer_calls": 70,
+  "contract_manifests": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/exact52_resident_stripe_policy_bundle/requant.json",
+      "sha256": "1124ff21c1632c0150948faf9c709ef3fe5e779b57a8c65bfb2be8af1846035f",
+      "provider": "requant"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-residual-coefficient-20261005/out/artifacts/probes/residual-m-prefetch/residual_bundle/residual.json",
+      "sha256": "9fecd068c12e17ef453c58894d42216a38307cdc542b87123b2dbb4aff800765",
+      "provider": "residual"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-prestem-fusion-20261005/out/prestem_classifier_identity/stem_pool_bundle/stem_pool.json",
+      "sha256": "2a4f5796b953128d495395dd8a769027953f59a2bd0b3673b5a07b28cf9b2c27",
+      "provider": "stem"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/mean_bundle/mean.json",
+      "sha256": "15d94f944a6fa5763279f9468a7afe1256e2ab1e65dc47bc4757ec2d477a314f",
+      "provider": "mean"
+    }
+  ],
+  "controlled_objects": {
+    "schema": "resident_stripe_composition_object_comparison_v1",
+    "host_objects": {
+      "model.o": {
+        "candidate_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "control1861_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "control1853_sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "host_llvm/model.linked.ll": {
+        "candidate_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "control1861_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "control1853_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "host_llvm/model.ll": {
+        "candidate_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "control1861_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "control1853_sha256": "d67b8ccb44841c52531940f30b84a02c438cd6a324b1b267460eb390e804d592",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "host_llvm/model.native.ll": {
+        "candidate_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "control1861_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "control1853_sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "device/device_catalog_shim.o": {
+        "candidate_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "control1861_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "control1853_sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "cgen/weights.bin": {
+        "candidate_sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+        "control1861_sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+        "control1853_sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "cgen/model_io.h": {
+        "candidate_sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+        "control1861_sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+        "control1853_sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "crt.o": {
+        "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "control1861_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "control1853_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "mlir_rt.o": {
+        "candidate_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "control1861_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "control1853_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "libc_min.o": {
+        "candidate_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "control1861_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "control1853_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "console.o": {
+        "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "control1861_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "control1853_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "identical1861": true,
+        "identical1853": true
+      },
+      "model_call.o": {
+        "candidate_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "control1861_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "control1853_sha256": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+        "identical1861": true,
+        "identical1853": true
+      }
+    },
+    "aggregate_objects": {
+      "device_catalog/kernel.o": {
+        "candidate_sha256": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3",
+        "control1861_sha256": "bf2e6898eba94336c7b4a71967fd53f2a3db242935f7ede2820dcd032956b4c3",
+        "identical1861": true
+      },
+      "device_catalog/fused_mixed_kernel.o": {
+        "candidate_sha256": "ce1cfa633243f2f482b58e5f36d051bb69be621e462e9a7a899f0efc3435b6ac",
+        "control1861_sha256": "44171a1e02a1a1de6bb4f2cf60c0724f758d9922df260865516dda79f70f7da0",
+        "identical1861": false
+      },
+      "device_catalog/pool_fused_mixed.o": {
+        "candidate_sha256": "61b4df6713fa54e630abf8917ca9a6f05164cc2b0e2ef5a67a0aa7ea7c7f649a",
+        "control1861_sha256": "3270a4bf7b29ec8da68d37c93179117e9af039dfe73d82c413dc074c36b4834c",
+        "identical1861": false
+      },
+      "device_catalog/residual_mixed.o": {
+        "candidate_sha256": "c216d14f6d1032894d813e9dfbdb766f3ef1ad262564db936d55e638ceb815d0",
+        "control1861_sha256": "1ebefbfdfcd3e85b6c15ab4a1cdac08f9dc9cfd5950cdb0a03fe6bd1c3d9517d",
+        "identical1861": false
+      },
+      "device_catalog/guarded_mean_mixed.o": {
+        "candidate_sha256": "294bb1371ed270973a5e9989844a4a20d5d4daf810fc042d2215773babb5ddc9",
+        "control1861_sha256": "be448c32eb5903d60917f78af169eb628c0f6143d5c30c4fa50872471cd1e8e1",
+        "identical1861": false
+      }
+    },
+    "reused_provider_pins": {
+      "residual_manifest_sha256": "9fecd068c12e17ef453c58894d42216a38307cdc542b87123b2dbb4aff800765",
+      "pool_manifest_sha256": "2a4f5796b953128d495395dd8a769027953f59a2bd0b3673b5a07b28cf9b2c27",
+      "mean_bundle/adapter.o": "dd82ab4a9a8b38acbea649b84f2adc282a057b80e17ee7093d044a7d479d8c8f",
+      "mean_bundle/adapter.c": "65c5a8a97fef32caeafd72c7ef8e48cdf0cefb69cefb6da4bad1ef5d5000ed93",
+      "mean_bundle/rewritten.mlir": "73af94f7b3ce88bfbb5134e67a23430eda83f111b32f968a593aabd6db4e4785"
+    },
+    "aggregate_scope": "Each later pool/residual/mean aggregate incorporates the changed fused convolution object; their aggregate bytes therefore also differ. Atomic reused provider manifest/object pins below establish unchanged stem/residual/mean/classifier strategies.",
+    "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802"
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "strict_spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10083902",
+      "METRIC build_hash 8780640a6c31",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/spike.log",
+    "spike_console_sha256": "73a4f018ece888753428e09920e7a89e4821c25d46ce04137854572a1acef4d1",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/whole_resident_stripe_transfer_residual_composed/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "final_linked_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2624,
+      "2": 16719,
+      "3": 1182,
+      "4": 12944,
+      "5": 98664,
+      "6": 111608,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "recipes": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/build_resident_stripe_transfer_residual_composed.py",
+      "sha256": "fda732b67fc9cc942de89fdf512308d0e2a3060a500287ad608e67eb4d8748af"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/validate_resident_stripe_transfer_residual_composed.py",
+      "sha256": "6c8d315b35f2ab8364a93f2879de08600f15f5f8eb3ce6de83549f28c8026e7b"
+    }
+  ],
+  "hardware": {
+    "status": "held",
+    "job_id": null,
+    "cycles": null,
+    "reason": "Await isolated stock measurements before root decides composition admission. All required original-model correctness gates have passed."
+  },
+  "outcome": "Qualified composition; stock submission held at parent direction",
+  "why": "Immutable full model and runtime are preserved. Only the six generically admitted convolution kernels differ from the existing source-bound transfer+residual composition."
+}

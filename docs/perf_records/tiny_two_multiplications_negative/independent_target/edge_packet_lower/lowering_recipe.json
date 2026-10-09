@@ -1,0 +1,68 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/scratch/agustin/projects/model2MLIR/.venv/bin/python",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/run_lowering.py",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/model.mlir",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/model.ll",
+        "canonicalize,cse,func.func(linalg-fuse-elementwise-ops),func.func(linalg-generalize-named-ops),__merlin_pointwise_two_multiplications_packet_4__,one-shot-bufferize{bufferize-function-boundaries function-boundary-type-conversion=identity-layout-map},buffer-results-to-out-params{modify-public-functions hoist-static-allocs},ownership-based-buffer-deallocation,buffer-deallocation-simplification,bufferization-lower-deallocations,func.func(buffer-hoisting,buffer-loop-hoisting),func.func(convert-linalg-to-loops),convert-scf-to-cf,expand-strided-metadata,lower-affine,convert-math-to-libm,convert-math-to-llvm,convert-index-to-llvm,convert-arith-to-llvm,finalize-memref-to-llvm,convert-func-to-llvm,convert-cf-to-llvm,reconcile-unrealized-casts,canonicalize,cse,symbol-dce",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_GEMMINI_HARNESS_DIR": "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests",
+        "MERLIN_GEMMINI_LOAD_ADDRESS": "0x80000000",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "MERLIN_TARGET_PATH": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/support/gemmini_gsim"
+      },
+      "environment_digest": "24059178f7d7aa45",
+      "executable": {
+        "bytes": 27816648,
+        "path": "/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+        "sha256": "9ed008e5a8685235361f0c53771b520ab082dd99a877ad2fd796a93fa4c0b488"
+      }
+    }
+  ],
+  "features": [
+    "packet_scalar_pointwise_two_multiplications_4"
+  ],
+  "returned_llvm_ir": {
+    "bytes": 16416,
+    "sha256": "8e18a86de17e5209da5ace2f381c2c54544ef4fa4deb8c6ab1e61ad821376135"
+  },
+  "schema": "merlin.lowering_recipe.v1",
+  "scope": "upstream lowering through returned LLVM IR; not final codegen or link",
+  "sources": {
+    "pipeline_driver": {
+      "bytes": 102126,
+      "path": "/scratch/agustin/tmp/merlin-tiny-two-multiply-20261006/src/merlin/llvmlower/pipeline.py",
+      "sha256": "b7db32ca01c2b2439b3146533be3feca8d28dfe41e8f0d5402e79a269627793e"
+    },
+    "prepared_mlir": {
+      "bytes": 1033,
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/model.mlir",
+      "sha256": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254"
+    },
+    "runner": {
+      "bytes": 116257,
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/independent_target/edge_packet_lower/run_lowering.py",
+      "sha256": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e"
+    }
+  },
+  "status": "returned"
+}

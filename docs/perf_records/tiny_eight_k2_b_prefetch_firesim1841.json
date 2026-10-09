@@ -1,0 +1,43 @@
+{
+  "schema": "golden_firesim_verified_probe_v1",
+  "job_id": 1841,
+  "state": "DONE",
+  "phase": "DONE",
+  "exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/model.elf",
+  "elf_sha256": "faf4e81a2142353e7edd8741d1e7ce502c793e8a3a23abed61730f7300f8cd6e",
+  "actual_simulated_elf": "/scratch/firesim_queue/jobs/1841/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+  "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "uart": "/scratch/firesim_queue/jobs/1841/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "1018b508c27bad25be5bef9af4a158da1f1ed999caef0b8c4b761d487a425e9c",
+  "marker_kind": "WHOLE_MODEL",
+  "kernel_cycles": 571097507,
+  "numeric_pass": "full f32le SHA256 match: 256000 outputs versus /scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/host/output.npy",
+  "output_digest_evidence": {
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "reference": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/host/output.npy",
+    "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+    "validation": "/scratch/agustin/tmp/firesim-golden-recovery-20261005/tiny_eight_k2_b_prefetch_strict_validation.json",
+    "validation_sha256": "c8e366f08ab6ebcebb431c07b14c8e89498755f8d7f315e52ae0cbbfdea4adf2"
+  },
+  "build_hash": "5ce326d4742e",
+  "comparison": {
+    "1839": {
+      "cycles": 572814021,
+      "saved_cycles": 1716514,
+      "fraction_reduction": 0.0029966340506179753
+    },
+    "1835": {
+      "cycles": 610246484,
+      "saved_cycles": 39148977,
+      "fraction_reduction": 0.06415272848995227
+    }
+  },
+  "scope": "Eight-output/K2 host composed with independently measured B-prefetch device. Full256000 output bits, unchanged original Torch tolerance, final zeroFSM and exact stock staged closure. Single hardware run; marginal 0.300% lead over1839 is not a variance claim.",
+  "source_receipt": "docs/perf_records/tiny_eight_outputs_unroll2_b_prefetch_spike.json"
+}

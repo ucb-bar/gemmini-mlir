@@ -1,0 +1,182 @@
+{
+  "schema": "source_bound_integer_readout_whole_v1",
+  "core_commit": "e669dfced",
+  "provider_commit": "3e85e39",
+  "control_job": 1903,
+  "control_reproduced_byte_exact": true,
+  "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/build/model.elf",
+  "elf_sha256": "30a664c493dd651a48047f5078ce2ae47a17eba5a5e2019e3ace737babad8dc4",
+  "inherited_marker": "273e514ef18f; final ELF/component pins are authoritative",
+  "native_original1000_bitexact": true,
+  "strict_original1000_bitexact": true,
+  "no_fsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "30a664c493dd651a48047f5078ce2ae47a17eba5a5e2019e3ace737babad8dc4",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3272,
+      "2": 19887,
+      "3": 1293,
+      "4": 14672,
+      "5": 117672,
+      "6": 132344,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "producer_contracts": [
+    {
+      "schema": "bound_integer_readout_producer_v1",
+      "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+      "region_trace_only": "matmul_25",
+      "kernel_symbol": "gemmini_exact_requant_24_kernel",
+      "kernel_object": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle/gemmini_exact_requant_24/kernel.o",
+      "kernel_object_sha256": "f9ae849019eba6d3d2c17404eb05d9f692ac1d045ce813898503e38f2de861c3",
+      "kernel_ir_sha256": "67c5a8424b71c71d39ca7f8473f49936b4794b58656d467f3cf4ccf888cfc814",
+      "bias_payload_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "integer_sum_products": {
+        "terms": 2304,
+        "lhs_min": -128,
+        "lhs_max": 127,
+        "rhs_min": -128,
+        "rhs_max": 127,
+        "initial_min": 0,
+        "initial_max": 0
+      },
+      "proven_interval": [
+        -37453824,
+        37748736
+      ],
+      "readout_domain": [
+        -37748736,
+        37748736
+      ],
+      "storage_contract": "Existing caller-owned exclusive i32 scratch, producer writes and fences before this adapter invokes its private readout",
+      "numeric_contract": "Exact signed-i8 operands including -128; zero accumulator seed; source-derived K; every product/prefix fits signed-i32; no scale, bias or ReLU before readout"
+    },
+    {
+      "schema": "bound_integer_readout_producer_v1",
+      "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+      "region_trace_only": "matmul_48",
+      "kernel_symbol": "gemmini_exact_requant_47_kernel",
+      "kernel_object": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_transfer_command_policy_bundle/gemmini_exact_requant_47/kernel.o",
+      "kernel_object_sha256": "a11e0c00c0e638b82b6d8f6bd8271e7aa9f872ff2fe01811939cd0be34ddb73d",
+      "kernel_ir_sha256": "9eee4fc091095bf87bb7622ead0b1a60995c3701f77768c30669d38625ab05e3",
+      "bias_payload_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+      "integer_sum_products": {
+        "terms": 4608,
+        "lhs_min": -128,
+        "lhs_max": 127,
+        "rhs_min": -128,
+        "rhs_max": 127,
+        "initial_min": 0,
+        "initial_max": 0
+      },
+      "proven_interval": [
+        -74907648,
+        75497472
+      ],
+      "readout_domain": [
+        -75497472,
+        75497472
+      ],
+      "storage_contract": "Existing caller-owned exclusive i32 scratch, producer writes and fences before this adapter invokes its private readout",
+      "numeric_contract": "Exact signed-i8 operands including -128; zero accumulator seed; source-derived K; every product/prefix fits signed-i32; no scale, bias or ReLU before readout"
+    }
+  ],
+  "source_binding_checks": {
+    "pass": 18,
+    "cases": "Two source-proven routes, each with8malformed/hash/numeric/domain refusals"
+  },
+  "generic_tests": {
+    "pass": 29,
+    "default_source_byte_identity_option_combinations": 64
+  },
+  "control_spike_instructions": 9246562,
+  "candidate_spike_instructions": 9096018,
+  "delta_instructions": -150544,
+  "metric_scope": "Spike retired instructions; not stock cycles",
+  "hardware": "not admitted",
+  "source_diff": "Exactly2domain trap lines removed from already-qualified SAT8 adapters; source exact_source_diff.json pins complete old/new C. SAT8 rounding/saturation/threshold/correction and load/store order unchanged.",
+  "ownership": "Merlin generic integer interval/readout; OOT actual signed-i8 convolution source/kernel/scratch binding. No public readout default change. Explicit caller-bound producer contract only.",
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/whole.py": "81be409fbcb9d1db2c1321aa00c4610fc1232638833d4ad0556b224c140132e3",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/run.sh": "853a8cc68139da89e6d6ccc0c3c07ca69d6af68cbfa197a9af647c1804ac4230",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/qualification.json": "f92f65c9fb1d8b64b7d20faa9ffaccc2e7237d4eace8e607e1e869fccdccd4b6",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/spike_validation.json": "8ab291e6b7abb4c393b3adbb628d52cc22a1325502a80b6ae347cb51ec7a0cd2",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/spike.log": "eb2fdeccdc3e65b0f998a4c009dbbc3321ab5da5ee773defccbd9276d1ccdeab",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/host/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/host/validation.json": "20e9064386cf6ba23643c2c9a502aa09193f0271c37ce8eb317b610979f59482",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/build/model.elf": "30a664c493dd651a48047f5078ce2ae47a17eba5a5e2019e3ace737babad8dc4",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/build/model.nofsm_audit.json": "bdf241aedeb6a33a8070e7f90d4125e789cda78d69cc02af0a5f4ad92d8145da",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/reproduced_control.elf": "7ee47ff7c904053c680200bb2ef2bfa207c081ef43f6711ba38d8d07c3e30d97",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/check_bindings.py": "c60ef1abd0ca4a836676dcf6cde8b2201ef0fd8df3e43cef96b1617683d2dbb9",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/check_bindings.json": "4e7da56eb71f62017145394d48aeb2965c529c336ad7c57b15b7978c84e5559e",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/exact_source_diff.json": "8c83aff0adb4a1e87d469d5c1242a58c0bfee8503ca9259369af275191c61693",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/readout_producer_range/storage_binding.json": "b6613f2cdc32953a8f37790031d88dea41ea649356d4a32c16c21e13db63be67"
+  },
+  "unchanged_host_runtime_objects": {
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model_call.o": "9136456851bbf93f9ca8385b20d17e9a6148607ae7527ee289c9074a7e4b1bbb",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model_main.o": "8d683f22fd7ecb1a5cf3f988906a391a40d1c481ce7793579516822b5e10e44b",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/libc_min.o": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/malloc.o": "6a7e5842ac8d9d97790162158e481a247a9521b128ecc1afcb5a6f99b12987e2",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/model.o": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/weights_blob.o": "8ba0acbc491761e2f72a0e5c09a8cffecaa4ecb2719cf60986e298cd999272ee",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/build_direct/device/device_catalog_shim.o": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62"
+  },
+  "token_usage_available": false,
+  "storage_binding": {
+    "schema": "readout_storage_binding_v1",
+    "fresh_source": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/fresh.mlir",
+    "fresh_source_sha256": "aa1996398bbf274309b70ff37431301e2df0ba7d7e151e01463703cae60dff12",
+    "fresh_receipt": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/whole_quant_packet_live_transfer/fresh_receipt.json",
+    "fresh_receipt_sha256": "4f5b91aec72ab1e5e65f10421064ccfd4f4eecb4a4224c4ae262a567ccc847df",
+    "actual_unchanged_model_object_sha256": "eaa48b22d8ea2392ea40cc6d68f55e8dd8ac8eacfd73b2ae27a23830d415d7fc",
+    "routes": [
+      {
+        "symbol": "gemmini_exact_requant_24",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_24__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      },
+      {
+        "symbol": "gemmini_exact_requant_47",
+        "calls": 1,
+        "fresh_writers": [
+          2,
+          3
+        ],
+        "result_argument": 3,
+        "borrowed_symbol": "gemmini_exact_requant_47__borrowed_write",
+        "argument_ranks": [
+          4,
+          4,
+          2,
+          2
+        ],
+        "result_rank": 2
+      }
+    ],
+    "contract": "Prequalified current adapters fully write and return the passed descriptor; all writable call operands are sole-use tensor.empty; fresh memref.alloc owns every writer; borrowed void shim suppresses duplicate return ownership",
+    "scope": "Existing explicit writer transform proves both writable arguments are sole-use tensor.empty and allocates fresh distinct memrefs; compiled host model.o is byte-identical control1903. No caller-range certificate alone establishes this."
+  }
+}

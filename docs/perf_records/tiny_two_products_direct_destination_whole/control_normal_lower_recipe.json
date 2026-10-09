@@ -1,0 +1,64 @@
+{
+  "schema": "two_products_direct_destination_normal_source_lower_v1",
+  "core_commit": "9aa9a16d3",
+  "features": [
+    "fuse_activation_polynomial_fma",
+    "fuse_quantize_round_convert",
+    "hoist_broadcast_source_rsqrt",
+    "hoist_weight_invariant_quantize",
+    "packet_scalar_pointwise_fma_division_2",
+    "packet_scalar_pointwise_multiplication_4",
+    "respect_captured_quantization_scope",
+    "scalar_contraction_accumulator_8_outputs",
+    "unroll_scalar_contraction_reduction_by_2"
+  ],
+  "source_abi_pins": {
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_host_abi/model.mlir": "9b40fddfd8494ffc8f24a7d377609cd1a4cd5074b6183c7d8324c1bd4b089cbb",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/model.prepared.mlir": "c2b9f7480d04e1292484d8ef7e123ed5dc121b6de101d6c52ed78cbfc9cfa1f6",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_host_abi/borrowed.c": "d0cc2bb2aa14602702f379d44de6af714c11f000b8d83e8ec0b6bfa1f7043ef8",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_host_abi/writer_contracts.json": "69287edbe51737b6bd804d45e608ba0732b85dbf8ab45cb39954bd00dbeb0808",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_signatures.json": "f3010c255ba61414a57e2f22ac8c9dd5ff979c0f6b81a1a5c4c7653fad202332",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/device_catalog.json": "8e533fb743cbb13aecd6c239fbc2ec7efc0d2be08f1982c75883f501413aaa24",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device/catalog_binding.json": "ad0d7430aae836eebb4b1d8dd04add570070f0e8b8b1ac756f31df20fd449b1c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/host_llvm/receipt.json": "2b2436074cb026f3da28fc507619fd13208fb75ae10465f3704866218d20f04e",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/host_llvm/expanded_bridge.ll": "a538515527a82be886a1568741b4626906ffb40e7c3a719b2c6b6326a629b708",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/host_llvm/expanded_bridge.native.ll": "08b9a1ea684789374ed83c6c97c8449de1356cce9fcb67bce14acba57b1d699e",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/quant_hoist_args.json": "d8443f70fbeac5059b3f9b34e783d1588f283ea7ff93648f182f3e788495a744"
+  },
+  "source_seam": "Fresh normal lower_model on immutable original1880post-offload source. Original1967hoist/puremultiplication4/RNE/writer retained. Add exactly-two-productpacket4 plus generalbufferizedresultidentity exposure before output conversion; originalFMA/divisionpacket2 unchanged.",
+  "normal_lower_stats": {
+    "dead_tensor_ops_pruned": 2193,
+    "quant_ext_lowered": 0,
+    "c_interface_funcs": 11,
+    "ciface_boundary_inline": {
+      "schema": "wide_ciface_inline_v1",
+      "max_flattened_arguments": 256,
+      "inlined": [
+        {
+          "implementation": "forward",
+          "wrapper": "_mlir_ciface_forward",
+          "flattened_arguments": 3973
+        }
+      ],
+      "count": 1
+    }
+  },
+  "candidate_compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "--target=riscv64-unknown-elf",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-mcmodel=medany",
+    "-O3",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-whole-20261006/control/host_llvm/expanded.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-whole-20261006/control/model.o"
+  ],
+  "raw_llvm_sha256": "30c6b768ea59f1e2bdd92e4fe1f3a825ae11f9102525c953ac365b1f7316bc39",
+  "selected_target_llvm_sha256": "75fbe5fa16e8277cf61d460e4c8e9b575bbf1a136d146df46bf335fb0d48a14c",
+  "selected_native_llvm_sha256": "a3108a73353e8736d191215cc1de775e46152c7897ffc2c37d951c9d16384f64",
+  "token_usage_available": false
+}

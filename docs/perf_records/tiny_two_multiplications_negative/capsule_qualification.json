@@ -1,0 +1,69 @@
+{
+  "schema": "source_exact_two_multiplications_complete_capsule_v1",
+  "shape": [
+    1,
+    8,
+    2048
+  ],
+  "native_original_f32_words": 16384,
+  "strict_compared_words": 81920,
+  "all_five_rounding_modes_and_sticky_flags_match": true,
+  "dirty_output_guard_bytes": 128,
+  "dirty_private_arena": true,
+  "immutable_input_bytes": 139264,
+  "source_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+  "source_receipt_sha256": "141d63e2032e2e596a6f1b62842c6835174217f862e2f8ecdfcf17092aee4c6f",
+  "capsule_abi_sha256": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+  "capture_sha256": "8847316fcdf1ee5012478fb14d0c908d35c18abae6e334c53399e82759e684d5",
+  "cases": [
+    {
+      "name": "control",
+      "native_original_words_exact": 16384,
+      "llvm_sha256": "f3864e76311af4dd3923955a7ae25bc4c50c2255c7d9339aaeea4074b7188b65",
+      "object_sha256": "5de693747a7585da91b641eb08e19df92bcae472501625c249a2afd76efb79f0",
+      "so_sha256": "f328eb154a55c2b17069ea000d6e63acd7dd6d5fae0af51f64d0384d5a1c0ab7",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.o"
+      ]
+    },
+    {
+      "name": "packet",
+      "native_original_words_exact": 16384,
+      "llvm_sha256": "46a6fa7604d8cd2492f54d483bb648ec3ce1fcdd151f652eea5d0b7aadcdfcf2",
+      "object_sha256": "c12214fd740b6ee09d65abf086d10493b1bf6b3250ae9e785e2b37d15ec90dd5",
+      "so_sha256": "c4c28e51014f72cc0e021b5befb8ee961775251c389b483464d53f30d2ddca45",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.o"
+      ]
+    }
+  ],
+  "elf_sha256": "f3dcb02559338d74939d070e77e72119e504877cb63e33c5fba04874b4b1d5a8",
+  "zero_FSM": true,
+  "scope": "Complete original dequant/residual body: i32-to-f32 conversion, source constant scale, two separately rounded f32 multiplications, source residual addition, all input reads/stores, temporary allocation and final output copy. Exact1967 source data/control; no source reciprocal or precision change. GSIM capsule allocator/memory regime is separately scoped, not stock whole-model timing.",
+  "whole_hardware_prediction": null,
+  "token_usage_available": false
+}

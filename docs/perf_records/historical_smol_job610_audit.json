@@ -1,0 +1,136 @@
+{
+  "schema": "historical_smol_provenance_audit_v1",
+  "token_usage_available": false,
+  "scope": "Owned job610 evidence; not identification of the separate Exo near4B implementation",
+  "pins": [
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/measurement.json",
+      "sha256": "0173eff83f9e87dae6f75b60a9846cb9c38adb4126b4caa3616413332412460d"
+    },
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/gate.json",
+      "sha256": "e08cf2abbec72f4ea276487769ae2c5b0c2b06c0d6fd641bdc271d6e036980cf"
+    },
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/plan.json",
+      "sha256": "5a88ba0de07611746369720238e157ea1a03f5fdc5d2e6798fceb3c167d30233"
+    },
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/uartlog_job610.txt",
+      "sha256": "22addfb3e58474eb153df9460370249859fb7cab80d08ae01fe451b8496d8f60"
+    },
+    {
+      "path": "/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-bench/gemmini/smolvla_flowdenoise_firesim_20260909/smolvla_flow_denoise_warm1_measure1.elf",
+      "sha256": "d27439fee438a28452bc78054df4e32dd3037004d6fbd27f65243b5eb245d66c"
+    }
+  ],
+  "hardware_cycles": 33085199302,
+  "hardware_design": "FireSimGemminiRocketConfig",
+  "gate": {
+    "schema": "merlin_bundle_correctness_gate_v1",
+    "model": "smolvla",
+    "datapath": "w8a8",
+    "reference_kind": "eager_same_precision",
+    "reference_file": "session_goldens.npz",
+    "reference_scope": "a multi-step trajectory, keyed by the session contract's declared output",
+    "reference_generator": "the capture's session contract",
+    "comparison": "trajectory",
+    "comparison_licence": "a declared key over a multi-step session, compared step by step; a single step is not the trajectory and must not be reported as it",
+    "atol": 0.06,
+    "rtol": 0.05,
+    "output_elements": 1600,
+    "rows": 1,
+    "elements_per_row": 1600,
+    "prints_values": true,
+    "console_dump_cap": 4096,
+    "expected_argmax": null,
+    "steps": 10,
+    "session_key": "actions",
+    "scope_note": "did the device compute what the compiler's precision says it should; over the contract-declared 10-step trajectory of output 0, key 'actions'; the capture's own two references differ by up to 0.053565 (cosine 0.999945418), which is the floor this tolerance was checked against",
+    "channel": "correctness",
+    "channel_asks": "did the device compute what the compiler's precision says it should",
+    "declared": "before the run; a tolerance chosen after seeing the result is not a gate"
+  },
+  "carried": [
+    {
+      "state": "prefix_kv_cache",
+      "input_arg": 809,
+      "output_index": 1,
+      "seed_tensor": "__seed_prefix_kv_cache",
+      "output_tensor": "Y1",
+      "dtype": "bf16",
+      "shape": [
+        2,
+        16,
+        1,
+        113,
+        5,
+        64
+      ],
+      "in_place": true,
+      "seed_offset": 502984832,
+      "working_offset": 6400,
+      "output_offset": 6400,
+      "bytes": 2314240
+    },
+    {
+      "state": "flow_state",
+      "input_arg": 810,
+      "output_index": 0,
+      "seed_tensor": "arg810",
+      "output_tensor": "Y0",
+      "dtype": "f32",
+      "shape": [
+        1,
+        50,
+        32
+      ],
+      "seed_offset": 502978368,
+      "working_offset": 158456320,
+      "output_offset": 0,
+      "bytes": 6400
+    },
+    {
+      "state": "timestep",
+      "input_arg": 811,
+      "output_index": 2,
+      "seed_tensor": "arg811",
+      "output_tensor": "Y2",
+      "dtype": "f32",
+      "shape": [
+        1
+      ],
+      "seed_offset": 502984768,
+      "working_offset": 158462720,
+      "output_offset": 2320640,
+      "bytes": 64
+    }
+  ],
+  "static_isa_census": {
+    "opcode": "0x7b",
+    "funct7_counts": {
+      "0": 240,
+      "7": 1,
+      "8": 1868,
+      "9": 1868,
+      "10": 1868,
+      "11": 1868,
+      "12": 1868,
+      "13": 1868
+    }
+  },
+  "no_fsm_eligible": false,
+  "boundary_caveat": "Owned gate declares10steptrajectory. Adjacent older harness explicitly brackets10steps with uint64rdcycle, but its linkreceipt ELF differsactual610; cannot claim exact linked-source closure from siblingharness. 3.3085199302B perstep is an arithmetic average, not a separately measured result.",
+  "current1906": {
+    "cycles": 258621872969,
+    "gate_atol": 0.03125,
+    "gate_rtol": 0.02,
+    "source_gate_unchanged": true
+  },
+  "unknown": [
+    "Exact near4B Exo source/ELF/gate available in permitted ownedarchive",
+    "Whole precision/source and timing scope equivalence to1906",
+    "Exact staged610 bitstream bytes"
+  ],
+  "policy": "Do not access Jack-owned folders/UART; shared database metadata only."
+}

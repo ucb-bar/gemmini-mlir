@@ -1,0 +1,3935 @@
+{
+  "schema": "smol_actual_fx_quantization_live_binding_and_frontier_cost_v1",
+  "status": "BOUND_FIRST_QKV_DUPLICATE_LIVE_QUANTIZATION_HELPERS",
+  "prepared_quantization_chains": [
+    [
+      {
+        "id": "g:prepared:root:n892",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n892:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n893",
+        "target": "aten.amin.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n892",
+            "value_id": "g:prepared:root:n892:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n893:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n894",
+        "target": "aten.amax.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n892",
+            "value_id": "g:prepared:root:n892:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n894:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n895",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n893",
+            "value_id": "g:prepared:root:n893:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n895:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n896",
+        "target": "aten.minimum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n893",
+            "value_id": "g:prepared:root:n893:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n895",
+            "value_id": "g:prepared:root:n895:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n896:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n897",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n894",
+            "value_id": "g:prepared:root:n894:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n897:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n898",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n894",
+            "value_id": "g:prepared:root:n894:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n897",
+            "value_id": "g:prepared:root:n897:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n898:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n899",
+        "target": "aten.neg.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n896",
+            "value_id": "g:prepared:root:n896:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n899:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n900",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n899",
+            "value_id": "g:prepared:root:n899:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n898",
+            "value_id": "g:prepared:root:n898:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n900:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n901",
+        "target": "aten.div.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n900",
+            "value_id": "g:prepared:root:n900:v0"
+          },
+          127.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n901:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n902",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n901",
+            "value_id": "g:prepared:root:n901:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n902:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803",
+          "g:quantized:root:n1805"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n903",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n901",
+            "value_id": "g:prepared:root:n901:v0"
+          },
+          1e-05
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n903:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1803",
+          "g:quantized:root:n1804"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n904",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n904:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n905",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n903",
+            "value_id": "g:prepared:root:n903:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n905:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n906",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n902",
+            "value_id": "g:prepared:root:n902:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n906:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n907",
+        "target": "aten.reciprocal.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n905",
+            "value_id": "g:prepared:root:n905:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n907:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n908",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n907",
+            "value_id": "g:prepared:root:n907:v0"
+          },
+          1.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n908:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n909",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n904",
+            "value_id": "g:prepared:root:n904:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n908",
+            "value_id": "g:prepared:root:n908:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n909:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n910",
+        "target": "aten.round.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n909",
+            "value_id": "g:prepared:root:n909:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n910:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n911",
+        "target": "aten.add.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n910",
+            "value_id": "g:prepared:root:n910:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n906",
+            "value_id": "g:prepared:root:n906:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n911:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n912",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n911",
+            "value_id": "g:prepared:root:n911:v0"
+          },
+          -127,
+          127
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n912:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n913",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n912",
+            "value_id": "g:prepared:root:n912:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n913:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n914",
+        "target": "aten._to_copy.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n913",
+            "value_id": "g:prepared:root:n913:v0"
+          }
+        ],
+        "kwargs": {
+          "dtype": {
+            "kind": "dtype",
+            "value": "torch.int8"
+          }
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n914:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1806"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n915",
+        "target": "aten.permute.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n10",
+            "value_id": "g:prepared:root:n10:v0"
+          },
+          [
+            1,
+            0
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n915:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              768,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              1,
+              768
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1807"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n916",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n914",
+            "value_id": "g:prepared:root:n914:v0"
+          },
+          [
+            -1,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n916:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1808"
+        ]
+      }
+    ],
+    [
+      {
+        "id": "g:prepared:root:n930",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n930:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n931",
+        "target": "aten.amin.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n930",
+            "value_id": "g:prepared:root:n930:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n931:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n932",
+        "target": "aten.amax.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n930",
+            "value_id": "g:prepared:root:n930:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n932:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n933",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n931",
+            "value_id": "g:prepared:root:n931:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n933:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n934",
+        "target": "aten.minimum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n931",
+            "value_id": "g:prepared:root:n931:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n933",
+            "value_id": "g:prepared:root:n933:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n934:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n935",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n932",
+            "value_id": "g:prepared:root:n932:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n935:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n936",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n932",
+            "value_id": "g:prepared:root:n932:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n935",
+            "value_id": "g:prepared:root:n935:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n936:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n937",
+        "target": "aten.neg.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n934",
+            "value_id": "g:prepared:root:n934:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n937:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n938",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n937",
+            "value_id": "g:prepared:root:n937:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n936",
+            "value_id": "g:prepared:root:n936:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n938:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n939",
+        "target": "aten.div.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n938",
+            "value_id": "g:prepared:root:n938:v0"
+          },
+          127.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n939:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n940",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n939",
+            "value_id": "g:prepared:root:n939:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n940:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824",
+          "g:quantized:root:n1826"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n941",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n939",
+            "value_id": "g:prepared:root:n939:v0"
+          },
+          1e-05
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n941:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1824",
+          "g:quantized:root:n1825"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n942",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n942:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n943",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n941",
+            "value_id": "g:prepared:root:n941:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n943:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n944",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n940",
+            "value_id": "g:prepared:root:n940:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n944:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n945",
+        "target": "aten.reciprocal.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n943",
+            "value_id": "g:prepared:root:n943:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n945:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n946",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n945",
+            "value_id": "g:prepared:root:n945:v0"
+          },
+          1.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n946:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n947",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n942",
+            "value_id": "g:prepared:root:n942:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n946",
+            "value_id": "g:prepared:root:n946:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n947:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n948",
+        "target": "aten.round.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n947",
+            "value_id": "g:prepared:root:n947:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n948:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n949",
+        "target": "aten.add.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n948",
+            "value_id": "g:prepared:root:n948:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n944",
+            "value_id": "g:prepared:root:n944:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n949:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n950",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n949",
+            "value_id": "g:prepared:root:n949:v0"
+          },
+          -127,
+          127
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n950:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n951",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n950",
+            "value_id": "g:prepared:root:n950:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n951:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n952",
+        "target": "aten._to_copy.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n951",
+            "value_id": "g:prepared:root:n951:v0"
+          }
+        ],
+        "kwargs": {
+          "dtype": {
+            "kind": "dtype",
+            "value": "torch.int8"
+          }
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n952:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1827"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n953",
+        "target": "aten.permute.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n4",
+            "value_id": "g:prepared:root:n4:v0"
+          },
+          [
+            1,
+            0
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n953:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              768,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              1,
+              768
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1828"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n954",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n952",
+            "value_id": "g:prepared:root:n952:v0"
+          },
+          [
+            -1,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n954:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1829"
+        ]
+      }
+    ],
+    [
+      {
+        "id": "g:prepared:root:n968",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n968:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n969",
+        "target": "aten.amin.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n968",
+            "value_id": "g:prepared:root:n968:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n969:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n970",
+        "target": "aten.amax.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n968",
+            "value_id": "g:prepared:root:n968:v0"
+          },
+          [
+            2
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n970:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n971",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n969",
+            "value_id": "g:prepared:root:n969:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n971:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n972",
+        "target": "aten.minimum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n969",
+            "value_id": "g:prepared:root:n969:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n971",
+            "value_id": "g:prepared:root:n971:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n972:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n973",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n970",
+            "value_id": "g:prepared:root:n970:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "memory_format": {
+            "kind": "memory_format",
+            "value": "torch.preserve_format"
+          },
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n973:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n974",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n970",
+            "value_id": "g:prepared:root:n970:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n973",
+            "value_id": "g:prepared:root:n973:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n974:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n975",
+        "target": "aten.neg.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n972",
+            "value_id": "g:prepared:root:n972:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n975:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n976",
+        "target": "aten.maximum.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n975",
+            "value_id": "g:prepared:root:n975:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n974",
+            "value_id": "g:prepared:root:n974:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n976:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n977",
+        "target": "aten.div.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n976",
+            "value_id": "g:prepared:root:n976:v0"
+          },
+          127.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n977:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n978",
+        "target": "aten.full_like.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n977",
+            "value_id": "g:prepared:root:n977:v0"
+          },
+          0
+        ],
+        "kwargs": {
+          "pin_memory": false
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n978:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845",
+          "g:quantized:root:n1847"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n979",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n977",
+            "value_id": "g:prepared:root:n977:v0"
+          },
+          1e-05
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n979:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1845",
+          "g:quantized:root:n1846"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n980",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n891",
+            "value_id": "g:prepared:root:n891:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n980:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n981",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n979",
+            "value_id": "g:prepared:root:n979:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n981:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n982",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n978",
+            "value_id": "g:prepared:root:n978:v0"
+          },
+          [
+            1,
+            1024,
+            1
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n982:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n983",
+        "target": "aten.reciprocal.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n981",
+            "value_id": "g:prepared:root:n981:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n983:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n984",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n983",
+            "value_id": "g:prepared:root:n983:v0"
+          },
+          1.0
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n984:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              1
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              1024,
+              1,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n985",
+        "target": "aten.mul.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n980",
+            "value_id": "g:prepared:root:n980:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n984",
+            "value_id": "g:prepared:root:n984:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n985:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n986",
+        "target": "aten.round.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n985",
+            "value_id": "g:prepared:root:n985:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n986:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n987",
+        "target": "aten.add.Tensor",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n986",
+            "value_id": "g:prepared:root:n986:v0"
+          },
+          {
+            "node_id": "g:prepared:root:n982",
+            "value_id": "g:prepared:root:n982:v0"
+          }
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n987:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n988",
+        "target": "aten.clamp.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n987",
+            "value_id": "g:prepared:root:n987:v0"
+          },
+          -127,
+          127
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n988:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n989",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n988",
+            "value_id": "g:prepared:root:n988:v0"
+          },
+          [
+            1,
+            1024,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "bfloat16",
+            "id": "g:prepared:root:n989:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "bfloat16",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n990",
+        "target": "aten._to_copy.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n989",
+            "value_id": "g:prepared:root:n989:v0"
+          }
+        ],
+        "kwargs": {
+          "dtype": {
+            "kind": "dtype",
+            "value": "torch.int8"
+          }
+        },
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n990:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1,
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              786432,
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1848"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n991",
+        "target": "aten.permute.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n7",
+            "value_id": "g:prepared:root:n7:v0"
+          },
+          [
+            1,
+            0
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n991:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              768,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              1,
+              768
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1849"
+        ]
+      },
+      {
+        "id": "g:prepared:root:n992",
+        "target": "aten.view.default",
+        "args": [
+          {
+            "node_id": "g:prepared:root:n990",
+            "value_id": "g:prepared:root:n990:v0"
+          },
+          [
+            -1,
+            768
+          ]
+        ],
+        "kwargs": {},
+        "results": [
+          {
+            "compute_dtype": null,
+            "device": "cpu",
+            "dtype": "int8",
+            "id": "g:prepared:root:n992:v0",
+            "kind": "tensor",
+            "layout": "torch.strided",
+            "shape": [
+              1024,
+              768
+            ],
+            "storage_dtype": "int8",
+            "stride": [
+              768,
+              1
+            ]
+          }
+        ],
+        "origin_node_ids": [
+          "g:quantized:root:n1850"
+        ]
+      }
+    ]
+  ],
+  "quantized_origins_with_local_retained_edges": [
+    {
+      "id": "g:quantized:root:n1803",
+      "target": "torchao.choose_qparams_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        "SYMMETRIC",
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127,
+        1e-05
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1803:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        },
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1803:v1",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1804",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1803",
+          "value_id": "g:quantized:root:n1803:v0"
+        },
+        0
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1804:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1805",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1803",
+          "value_id": "g:quantized:root:n1803:v1"
+        },
+        1
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1805:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1806",
+      "target": "torchao.quantize_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "node_id": "g:quantized:root:n1804",
+          "value_id": "g:quantized:root:n1804:v0"
+        },
+        {
+          "node_id": "g:quantized:root:n1805",
+          "value_id": "g:quantized:root:n1805:v0"
+        },
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1806:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            786432,
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1807",
+      "target": "aten.t.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n523",
+          "value_id": "g:quantized:root:n523:v0"
+        }
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1807:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            768,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            1,
+            768
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1808",
+      "target": "aten.reshape.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1806",
+          "value_id": "g:quantized:root:n1806:v0"
+        },
+        [
+          -1,
+          768
+        ]
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1808:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1824",
+      "target": "torchao.choose_qparams_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        "SYMMETRIC",
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127,
+        1e-05
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1824:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        },
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1824:v1",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1825",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1824",
+          "value_id": "g:quantized:root:n1824:v0"
+        },
+        0
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1825:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1826",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1824",
+          "value_id": "g:quantized:root:n1824:v1"
+        },
+        1
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1826:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1827",
+      "target": "torchao.quantize_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "node_id": "g:quantized:root:n1825",
+          "value_id": "g:quantized:root:n1825:v0"
+        },
+        {
+          "node_id": "g:quantized:root:n1826",
+          "value_id": "g:quantized:root:n1826:v0"
+        },
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1827:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            786432,
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1828",
+      "target": "aten.t.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n515",
+          "value_id": "g:quantized:root:n515:v0"
+        }
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1828:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            768,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            1,
+            768
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1829",
+      "target": "aten.reshape.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1827",
+          "value_id": "g:quantized:root:n1827:v0"
+        },
+        [
+          -1,
+          768
+        ]
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1829:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1845",
+      "target": "torchao.choose_qparams_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        "SYMMETRIC",
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127,
+        1e-05
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1845:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        },
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1845:v1",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1846",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1845",
+          "value_id": "g:quantized:root:n1845:v0"
+        },
+        0
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1846:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1847",
+      "target": "<built-in function getitem>",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1845",
+          "value_id": "g:quantized:root:n1845:v1"
+        },
+        1
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "bfloat16",
+          "id": "g:quantized:root:n1847:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024
+          ],
+          "storage_dtype": "bfloat16",
+          "stride": [
+            1024,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1848",
+      "target": "torchao.quantize_affine.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1802",
+          "value_id": "g:quantized:root:n1802:v0"
+        },
+        [
+          1,
+          1,
+          768
+        ],
+        {
+          "node_id": "g:quantized:root:n1846",
+          "value_id": "g:quantized:root:n1846:v0"
+        },
+        {
+          "node_id": "g:quantized:root:n1847",
+          "value_id": "g:quantized:root:n1847:v0"
+        },
+        {
+          "kind": "dtype",
+          "value": "torch.int8"
+        },
+        -127,
+        127
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1848:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1,
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            786432,
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1849",
+      "target": "aten.t.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n519",
+          "value_id": "g:quantized:root:n519:v0"
+        }
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1849:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            768,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            1,
+            768
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    },
+    {
+      "id": "g:quantized:root:n1850",
+      "target": "aten.reshape.default",
+      "args": [
+        {
+          "node_id": "g:quantized:root:n1848",
+          "value_id": "g:quantized:root:n1848:v0"
+        },
+        [
+          -1,
+          768
+        ]
+      ],
+      "kwargs": {},
+      "results": [
+        {
+          "compute_dtype": null,
+          "device": "cpu",
+          "dtype": "int8",
+          "id": "g:quantized:root:n1850:v0",
+          "kind": "tensor",
+          "layout": "torch.strided",
+          "shape": [
+            1024,
+            768
+          ],
+          "storage_dtype": "int8",
+          "stride": [
+            768,
+            1
+          ]
+        }
+      ],
+      "origin_node_ids": []
+    }
+  ],
+  "first_source_getitem": {
+    "id": "g:prepared:root:n891",
+    "target": "<built-in function getitem>",
+    "args": [
+      {
+        "node_id": "g:prepared:root:n890",
+        "value_id": "g:prepared:root:n890:v0"
+      },
+      0
+    ],
+    "results": [
+      {
+        "compute_dtype": null,
+        "device": "cpu",
+        "dtype": "bfloat16",
+        "id": "g:prepared:root:n891:v0",
+        "kind": "tensor",
+        "layout": "torch.strided",
+        "shape": [
+          1,
+          1024,
+          768
+        ],
+        "storage_dtype": "bfloat16",
+        "stride": [
+          786432,
+          768,
+          1
+        ]
+      }
+    ],
+    "origin_node_ids": [
+      "g:quantized:root:n1802"
+    ]
+  },
+  "original_to_quantized_complete_correspondence": "UNKNOWN; original trace blockers remain, module names are not a substitute for missing per-node edges.",
+  "f90_current_live_activation_producers": [
+    {
+      "device_call_line": 910,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 887,
+      "producer_symbol": "forward.extracted.4109",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "ccdb91c36fd0afd1d69ba4f3c3ec0a0ab6583b61255bb915062fe04e2d8ba5e5",
+      "helper_definition_line": 350122,
+      "helper_lines": 61,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5157",
+        "ptr %5162",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5164",
+        "ptr %5169",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    },
+    {
+      "device_call_line": 999,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 976,
+      "producer_symbol": "forward.extracted.4101",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "ccdb91c36fd0afd1d69ba4f3c3ec0a0ab6583b61255bb915062fe04e2d8ba5e5",
+      "helper_definition_line": 349704,
+      "helper_lines": 61,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5196",
+        "ptr %5201",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5203",
+        "ptr %5208",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    },
+    {
+      "device_call_line": 1088,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 1065,
+      "producer_symbol": "forward.extracted.4093",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "ccdb91c36fd0afd1d69ba4f3c3ec0a0ab6583b61255bb915062fe04e2d8ba5e5",
+      "helper_definition_line": 349286,
+      "helper_lines": 61,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5235",
+        "ptr %5240",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5242",
+        "ptr %5247",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    }
+  ],
+  "b154_current_live_activation_producers": [
+    {
+      "device_call_line": 904,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 881,
+      "producer_symbol": "forward.extracted.4109",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "7fc72e53dac4da0b0464932f0f8c84f59dbc2dbbbe0973731a9f2e5b3b3eec69",
+      "helper_definition_line": 444863,
+      "helper_lines": 155,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5157",
+        "ptr %5162",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5164",
+        "ptr %5169",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    },
+    {
+      "device_call_line": 993,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 970,
+      "producer_symbol": "forward.extracted.4101",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "7fc72e53dac4da0b0464932f0f8c84f59dbc2dbbbe0973731a9f2e5b3b3eec69",
+      "helper_definition_line": 444117,
+      "helper_lines": 155,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5196",
+        "ptr %5201",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5203",
+        "ptr %5208",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    },
+    {
+      "device_call_line": 1082,
+      "activation_allocation": "%5150",
+      "activation_aligned": "%5155",
+      "producer_call_line": 1059,
+      "producer_symbol": "forward.extracted.4093",
+      "source_operand": "%5120",
+      "reciprocal_operand": "%5148",
+      "normalized_helper_sha256": "7fc72e53dac4da0b0464932f0f8c84f59dbc2dbbbe0973731a9f2e5b3b3eec69",
+      "helper_definition_line": 443371,
+      "helper_lines": 155,
+      "i8_store_instruction_count": 1,
+      "raw_device_arguments": [
+        "ptr %5150",
+        "ptr %5155",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5235",
+        "ptr %5240",
+        "i64 0",
+        "i64 768",
+        "i64 768",
+        "i64 768",
+        "i64 1",
+        "ptr %5242",
+        "ptr %5247",
+        "i64 0",
+        "i64 1024",
+        "i64 768",
+        "i64 768",
+        "i64 1"
+      ]
+    }
+  ],
+  "f90_features": [
+    "lower_fma_to_intrinsic",
+    "outline_llvm_loops",
+    "respect_captured_quantization_scope"
+  ],
+  "b154_features": [
+    "lower_exact_math_inline",
+    "lower_fma_to_intrinsic",
+    "outline_llvm_loops",
+    "respect_captured_quantization_scope"
+  ],
+  "existing_cse_feature_enabled_in_these_lowering_recipes": false,
+  "same_buffer_is_not_value_reuse": "The sameAallocation/alignedpointer is passed to each devicecall, but three distinct alpha-normalized identical quantization helpers overwrite it before those calls. No arithmetic reuse is inferred from pointeridentity.",
+  "actual_b154_executed_first_quantization_helper_extents": [
+    {
+      "symbols": [
+        "forward.extracted.4101"
+      ],
+      "start": 2149522920,
+      "end": 2149523360,
+      "static_bytes": 440,
+      "retired_instructions": 66074645,
+      "touched_instruction_bytes": 366,
+      "cpu_opcode_classes": {
+        "load_integer": 1572865,
+        "integer": 30683149,
+        "fp_move_class": 9437188,
+        "branch_direct": 3146753,
+        "store_integer": 786433,
+        "branch_indirect": 1,
+        "branch_conditional": 7865344,
+        "fp_sign": 3932160,
+        "fp_compare": 3145728,
+        "fp_convert": 2359296,
+        "fp_mul": 786432,
+        "fp_add_sub": 786432,
+        "fp_minmax": 1572864
+      }
+    },
+    {
+      "symbols": [
+        "forward.extracted.4109"
+      ],
+      "start": 2149524624,
+      "end": 2149525064,
+      "static_bytes": 440,
+      "retired_instructions": 66074645,
+      "touched_instruction_bytes": 366,
+      "cpu_opcode_classes": {
+        "integer": 30683149,
+        "fp_move_class": 9437188,
+        "load_integer": 1572865,
+        "branch_indirect": 1,
+        "store_integer": 786433,
+        "branch_direct": 3146753,
+        "branch_conditional": 7865344,
+        "fp_sign": 3932160,
+        "fp_add_sub": 786432,
+        "fp_convert": 2359296,
+        "fp_compare": 3145728,
+        "fp_minmax": 1572864,
+        "fp_mul": 786432
+      }
+    },
+    {
+      "symbols": [
+        "forward.extracted.4093"
+      ],
+      "start": 2149521216,
+      "end": 2149521656,
+      "static_bytes": 440,
+      "retired_instructions": 66074645,
+      "touched_instruction_bytes": 366,
+      "cpu_opcode_classes": {
+        "store_integer": 786433,
+        "branch_indirect": 1,
+        "integer": 30683149,
+        "fp_move_class": 9437188,
+        "load_integer": 1572865,
+        "branch_direct": 3146753,
+        "branch_conditional": 7865344,
+        "fp_sign": 3932160,
+        "fp_convert": 2359296,
+        "fp_minmax": 1572864,
+        "fp_compare": 3145728,
+        "fp_mul": 786432,
+        "fp_add_sub": 786432
+      }
+    }
+  ],
+  "actual_b154_first_three_helper_exclusive_retired_total": 198223935,
+  "retirement_scope": "Only these3first-vision activation-encoding helpers in actual117.6BfunctionalPCcensus. Shared libm/helpers, reductions and other duplicatedchains excluded; no cycles or removable-cost claim.",
+  "complete_real_frontier_native_phase_medians_ns": {
+    "original_control": {
+      "all_initial_allocation_and_original_bf16_gather": 1326959.0,
+      "qk_packing_products_bounds_original_softmax": 143782991.0,
+      "pv_packing_products_bounds_capability_init": 95680782.5,
+      "actual_observer_crosshead_quantizer_original_lazy_refinement": 1153841.0,
+      "public_output_copy_and_all_frees": 401135.5
+    },
+    "candidate": {
+      "all_initial_allocation_and_original_bf16_gather": 1493640.0,
+      "qk_packing_products_bounds_original_softmax": 142965414.0,
+      "pv_packing_products_bounds_capability_init": 95627663.0,
+      "actual_observer_crosshead_quantizer_original_lazy_refinement": 985407.0,
+      "public_output_copy_and_all_frees": 431517.5
+    }
+  },
+  "real_frontier_conclusion": "Three realpasses with16/9/2quantizerrows and11/2/0pendingcells. Nativecomplete median\u2212.3454% is not a cache-profit/wholeclaim; original replay decisions unchanged. Observerphase\u22481.154ms/242.300ms baseline is a small component; newinitialallocation/gather overhead offsets the localobserver reduction. No target/hardware extrapolation.",
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-real-frontier-narrowing-20261008/audit_live_quantization.py": "d95a106a81f8e762c48f664752accb714e81b63ef984fab39a550a311e437784",
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/bundle/frontend-trace.json": "7a32bb89a810f69e6b80cf1ea6cae4403f39316dcdaffc4722c111df519efddb",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/source/normal_prepared.mlir": "fe89f3893a31df658afb94a9d64999aaad2d6db7ef8c39f07eca8b6499fa1ba4",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/source/normal_prepared_original.mlir": "fe89f3893a31df658afb94a9d64999aaad2d6db7ef8c39f07eca8b6499fa1ba4",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/lower/model.mlir": "52480b060002b053bbf964cafad29bf78e6f9d363cc70e2f718ba5e255530e79",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/lower/model.upstream.mlir": "52480b060002b053bbf964cafad29bf78e6f9d363cc70e2f718ba5e255530e79",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/lower/model.ll": "44045c9bbd62df2c18f93ff33e822469c43626829abcd6e694b175adbffd3e08",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/artifacts/probes/prepared-endpoint-normal/build_v3/lower/lowering_recipe.json": "0c11a80dd1ceffbe0588addcc9ab57f8189b2bb8e27036f07a65e3fab03fe527",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-exact-math-normal-20261007/build/lower/model.mlir": "52480b060002b053bbf964cafad29bf78e6f9d363cc70e2f718ba5e255530e79",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-exact-math-normal-20261007/build/lower/model.ll": "d0ae6c7197226761256b4da741c51f71d4112777f5805694a2e1cf91f679e185",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-exact-math-normal-20261007/build/lower/lowering_recipe.json": "95b9829ee30eb8d4b6e309dc67fd1825952c33eb43eafd64948a81ad9bbb3430",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-exact-math-normal-20261007/actual_function_costs/qualification.json": "202db77bf0e246aafbee039a89018f59aaef56139649825c40bd1bbcf64a20a3",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-exact-math-normal-20261007/build/model.elf": "b15444e0b804a416389e9bf06e91b6aebb582d749f15bb4b4a87fbceeb6c9064",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/probes/smol-real-frontier-narrowing-20261008/qualification.json": "82d77c0334eb0ee4c487a10edb18be28559d20c4fc6a634c90e68938b8ca21cc"
+  }
+}

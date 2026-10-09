@@ -1,0 +1,161 @@
+{
+  "schema": "complete_affine18_terminal_timing_calibration_v1",
+  "status": "PASS_SCOPED_COMPONENT_TIMING_NO_WHOLE_PROMOTION",
+  "utc": "2026-10-08T01:46:56.746386+00:00",
+  "engine_config": "GemminiGsimSerialClkConfig",
+  "fir_reclosure": {
+    "historical_receipt_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+    "actual_retained_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/model.fir",
+    "sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+    "actual_bytes_match_build_receipt_digest": true,
+    "preserved_initial_seal_refusal": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine18_terminal_seal_v1_failure.json"
+  },
+  "original_core_attribution": "45885835074803e6e60c5dffcd8f34bdd33bbf3e",
+  "calibration": {
+    "0": {
+      "arms": {
+        "0": {
+          "cycles": [
+            8542452,
+            8637134
+          ],
+          "mean_cycles": 8589793.0,
+          "spread_cycles": 94682,
+          "mean_retired_instructions": 2799389.0,
+          "cycles_per_retired_instruction": 3.0684527945205184
+        },
+        "1": {
+          "cycles": [
+            8289417,
+            8287287
+          ],
+          "mean_cycles": 8288352.0,
+          "spread_cycles": 2130,
+          "mean_retired_instructions": 2429285.5,
+          "cycles_per_retired_instruction": 3.4118476399747992
+        }
+      },
+      "cycle_fraction_change": -0.03509292948037281,
+      "retired_fraction_change": -0.13220867124933333
+    },
+    "1": {
+      "arms": {
+        "0": {
+          "cycles": [
+            28557,
+            25689
+          ],
+          "mean_cycles": 27123.0,
+          "spread_cycles": 2868,
+          "mean_retired_instructions": 12196.5,
+          "cycles_per_retired_instruction": 2.2238347066781454
+        },
+        "1": {
+          "cycles": [
+            42427,
+            35779
+          ],
+          "mean_cycles": 39103.0,
+          "spread_cycles": 6648,
+          "mean_retired_instructions": 16436.0,
+          "cycles_per_retired_instruction": 2.3791068386468726
+        }
+      },
+      "cycle_fraction_change": 0.44169155329425214,
+      "retired_fraction_change": 0.34759972123150074
+    }
+  },
+  "complete_program_cycles": 162000514,
+  "wall_seconds": 11141.87,
+  "per_source_roi": {
+    "gemm_calls": 2,
+    "observer_calls": 1,
+    "gemm_shape": [
+      8,
+      2048,
+      5632
+    ],
+    "i32_product_elements": 90112,
+    "i8_output_elements": 45056
+  },
+  "per_independent_roi": {
+    "gemm_calls": 2,
+    "observer_calls": 1,
+    "gemm_shape": [
+      4,
+      64,
+      96
+    ],
+    "i32_product_elements": 768,
+    "i8_output_elements": 384
+  },
+  "scope": "Current actual M8K2048N5632 paired GEMMs and complete original scalar observer versus explicit affine representation, plus independent M4K64N96 paired GEMMs and independent typed square observer. All producer initialization/config/DMA/compute/stores/readback/fence, observer arithmetic/scans/mode fallback/stores and publication timed. All products/outputs/guards checked after each ROI; full inputs/tables snapshotted before and exact-compared after all controls/ABBA arms. Qualification ELF reruns35environments with identical observer/device/data objects; timing ELF prices normal complete controls andABBA with that prior gate pinned. No whole hardware forecast or automatic selection claim.",
+  "original_whole_gate": {
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "unchanged": true
+  },
+  "whole_stock_best": {
+    "job": 2085,
+    "cycles": 378946263,
+    "new_measurement": false
+  },
+  "automatic_or_default_policy_promotion": false,
+  "cache_attribution": "HYPOTHESIS_ONLY_NO_MEASURED_MISS_ATTRIBUTION",
+  "phase0": "Complete runtime, source/effect/output and immutable delivery admission",
+  "phase1": "Representation candidates need table/cache service and full producer/consumer costs",
+  "phase2": "Independent regressions prohibit blanket promotion; require original whole gate",
+  "token_usage": null,
+  "token_usage_available": false,
+  "parent_closures": [
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/gsim_receipt.json",
+      "sha256": "c4c2b9b0595c7922e02c76cbb5c6657e4f139c20137420846d542c48750271be",
+      "pins_reclosed": 6
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/qualification.json",
+      "sha256": "5bdc5e82b2dac8a37fbfcce6f5c222d25338237728e5f58781972fd3ddc6f482",
+      "pins_reclosed": 19
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v3/qualification.json",
+      "sha256": "7ac473acb4a66cbf75f891d94a7e4f38435e367310bd79fd77f0823fe9b38ceb",
+      "pins_reclosed": 68
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/source_pair_10_v1/qualification.json",
+      "sha256": "dd79edeb8a94a60412cfc70a2a08decb41365c00dabea12dc1689e436e3df091",
+      "pins_reclosed": 21
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/source_carrier_cache_pressure_v1/qualification.json",
+      "sha256": "1ab0020d9074dd888c49b7fe54211714ef06f28d96bebffb1c236e1dfcd2f111",
+      "pins_reclosed": 36
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/qualified_policy_packet_v1/delivery_packet.json",
+      "sha256": "667c3156807a6e1daa462319de65f49a6665dbb051c91839644673d26bb86169",
+      "pins_reclosed": 11794
+    }
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/seal_affine18_terminal_timing_v1.py": "700638f91d432264d85f899bfedcf688e982127d4e5f621bc767cf84a6336454",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/gsim_receipt.json": "c4c2b9b0595c7922e02c76cbb5c6657e4f139c20137420846d542c48750271be",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/qualification.json": "5bdc5e82b2dac8a37fbfcce6f5c222d25338237728e5f58781972fd3ddc6f482",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v3/qualification.json": "7ac473acb4a66cbf75f891d94a7e4f38435e367310bd79fd77f0823fe9b38ceb",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/source_pair_10_v1/qualification.json": "dd79edeb8a94a60412cfc70a2a08decb41365c00dabea12dc1689e436e3df091",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/source_carrier_cache_pressure_v1/qualification.json": "1ab0020d9074dd888c49b7fe54211714ef06f28d96bebffb1c236e1dfcd2f111",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/qualified_policy_packet_v1/delivery_packet.json": "667c3156807a6e1daa462319de65f49a6665dbb051c91839644673d26bb86169",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/model.fir": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine18_terminal_seal_v1_failure.json": "d0b5e27a4a450ad4ac9f48d9cd9f3f856092b96ea4feb605400e8a1d04db4c50",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/run_affine_complete_gsim_v4.py": "d9b18bc477d80fa223d959e2118bfaf0e11303edc431637abfc960eebc3b422f",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/build/layer.elf": "6eb1e7d675d59353127cb70b94928291cf1b5475d60af5e875272287258082a9",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/gsim_started.json": "abbd13f1a417fddcc26062b1a00f83f092507a3e09ec9e81f72cfd10e2e19064",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/gsim_admitted.json": "b8968777d855b2a43c2b98332cf7edc2a71ba9cc96767d3b2fd19cb65907bbea",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine_numeric_screens/complete_cost_v4/gsim.stdout": "43ca00b14d314ff630cfafef39bdc481f8aebd8ae66107bd2935a67ff7ead38d",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/affine18_terminal_timing_v1/journey.md": "73626361c0ff0193f7411159aca4048d16a2f89630e445807a94bc166bf59031"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "root_closed_quant_prefix_stock_admission_v1",
+  "status": "PASS",
+  "source_packet": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/out/current_quant_prefix_seal_v2/qualification.json",
+  "source_packet_sha256": "1bf3258b7ff9f3fc19080e1c15f8f8b828125bacf23b4f0b3822440546d9b88d",
+  "source_pins_revalidated": 195,
+  "source_and_table_rederived": true,
+  "source_fallback_llvm_diff": "PASS",
+  "hot_lookup_calls": 0,
+  "same_elf_selector_only": true,
+  "protocol": {
+    "parser": "mlir_oot.quant_prefix_capsule.parse",
+    "kwargs": {
+      "input_bytes": 602112,
+      "quant_elements": 150528,
+      "padded_elements": 158700,
+      "guard_bytes": 16384,
+      "expected_digest": "4a0275164d024dff"
+    },
+    "counter_rows": 2,
+    "mode_rows": 10,
+    "final_marker": "PREFIX_PASS quant=150528 padded=158700 guards=16384 immutable=602112 modes=10"
+  },
+  "parser": "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/mlir_oot/quant_prefix_capsule.py",
+  "parser_sha256": "eecb0dd90c6e16d8f9a83260986cda2c5d1a96681ea95aad80a7ea2a86ed9c6e",
+  "original_quant150528_padded158700_inputs602112_guards16384": true,
+  "compiled_finite_executor_values": 4177920,
+  "numeric_contract": "original integer observation exact; no floating escape; RNE/gradual/nontrapping and flags/signed-zero unobservable explicit; unsupported cells/modes use original scalar callback",
+  "scope": "complete quantization+layout+zero padding+allocator+ranked output copy; all table/fallback costs included; checks/UART outside timers",
+  "control_scope": "source-derived ranked complete pre-stem map with current eight-lane scalar schedule; isolated map allocation/copy graph may differ from whole-model bufferization",
+  "retirement_delta_percent": 38.68574238453416,
+  "whole_cycles": "UNKNOWN"
+}

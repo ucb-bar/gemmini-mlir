@@ -1,0 +1,227 @@
+{
+  "schema": "gemmini_virtual_padding_v1",
+  "scope": "source-bound exact zero pad1; no hardware measurement",
+  "copy_probe": {
+    "scalar": {
+      "spike_retired_instructions": 165257880,
+      "full_interiors_pass": true,
+      "runtime_sha256": "46d1443f751be6e7e0690904580da1fbc88efa85b8051a549b3f44163cfa622c",
+      "probe_sha256": "7b4b132a935abe3b379709093903032964557c314075e4657757622983c44120",
+      "nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "59da7d1949f169d3d3f9f4409c4639c945ea9c623f067b314763e4756e2c87fe",
+        "executable_sections": 5,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "coalesced": {
+      "spike_retired_instructions": 1985883,
+      "full_interiors_pass": true,
+      "runtime_sha256": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+      "probe_sha256": "7b4b132a935abe3b379709093903032964557c314075e4657757622983c44120",
+      "nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "0529006f0ad7e4f6cfb222f86a1b92350fc06c093259904695f87bfd6d3764c4",
+        "executable_sections": 5,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    }
+  },
+  "kernel_probes": {
+    "virtual_tail": {
+      "gsim_kernel_cycles": 6225,
+      "gsim_pass": true,
+      "strict_spike_pass": true,
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "8a85a420c13f9f93a2acc8c3fa63fb6b5e56704fc8980693d4a9fb7ca8a81d16",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 18,
+          "2": 68,
+          "3": 8,
+          "4": 36,
+          "5": 108,
+          "6": 144,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "virtual_stride2": {
+      "gsim_kernel_cycles": 19757,
+      "gsim_pass": true,
+      "strict_spike_pass": true,
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "2c76aca29cd30e60564f7e1f7cba1d0b1e2ab37329fce6da9634d565600f650e",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 90,
+          "2": 100,
+          "3": 3,
+          "4": 270,
+          "5": 135,
+          "6": 405,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "virtual_single": {
+      "gsim_kernel_cycles": 2725,
+      "gsim_pass": true,
+      "strict_spike_pass": true,
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "5999519af74698c0f4ca11eb54dbd52965a0228795e75ec1c340d612cede3ce4",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 18,
+          "2": 9,
+          "3": 2,
+          "4": 36,
+          "6": 36,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "virtual56": {
+      "gsim_kernel_cycles": 619364,
+      "gsim_pass": true,
+      "strict_spike_pass": true,
+      "final_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "1b3a3a5e6e80539b818e495305d1e18893085dc53a63534104e789cd798552c7",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 108,
+          "2": 500,
+          "3": 42,
+          "4": 432,
+          "5": 5616,
+          "6": 6048,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    }
+  },
+  "whole_model": {
+    "native": {
+      "scope": "native whole model with scalar device standins",
+      "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source"
+    },
+    "spike": {
+      "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+      "elf_sha256": "a0ad62abdc8443018ee9af5b534a3be7f0e91ec4f860bb6c1258acf1a862e1a1",
+      "target_native_exact": true,
+      "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source",
+      "metrics": [
+        "METRIC cycles 65232457",
+        "METRIC build_hash 03ac290220bc",
+        "METRIC memref_rank_mismatch 0"
+      ]
+    },
+    "nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "a0ad62abdc8443018ee9af5b534a3be7f0e91ec4f860bb6c1258acf1a862e1a1",
+      "executable_sections": 1,
+      "custom_funct_counts": {
+        "0": 249,
+        "1": 3940,
+        "2": 12503,
+        "3": 1334,
+        "4": 11870,
+        "5": 100392,
+        "6": 112262,
+        "7": 54
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "eliminated_direct_pad_buffers": 16,
+    "remaining_stem_pad_bytes": 158700
+  },
+  "isolated_fast_runtime_comparison": {
+    "baseline_padded": {
+      "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+      "elf_sha256": "63b4e63ef013a4f2ecb135cb27ddddc6b74bc3e3ccaeee8c89eab1e82890e47e",
+      "target_native_exact": true,
+      "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source",
+      "metrics": [
+        "METRIC cycles 67090426",
+        "METRIC build_hash f087e744d761",
+        "METRIC memref_rank_mismatch 0"
+      ]
+    },
+    "baseline_native": {
+      "scope": "native whole model with scalar device standins",
+      "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.0,
+      "rtol": 0.0,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "exact_source"
+    },
+    "baseline_instructions": 67090426,
+    "candidate_instructions": 65232457,
+    "delta_instructions": 1857969,
+    "percent_reduction": 2.769350428628967
+  }
+}

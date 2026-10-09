@@ -1,0 +1,78 @@
+{
+  "schema": "original1989_source_exact_host_contraction_readonly_tap_v1",
+  "status": "pass",
+  "recorded_utc": "2026-10-06T14:39:49.644753+00:00",
+  "scope": "Fresh native compiler build from immutable qualified1989 nativeLLVM; only two source-exact arithmetic helper exports and readonly before/after taps, all22calls per helper preserved. Original inputs/weights/source ABI/runtime/device standins/output gate unchanged. No performance claim. Source helper names select experimental taps only.",
+  "compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-O2",
+    "-fPIC",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/tap.native.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/model.o"
+  ],
+  "link_argv": [
+    "cc",
+    "-O3",
+    "-march=native",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/model.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/tap.c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/model.so"
+  ],
+  "helpers": {
+    "qk": {
+      "source_symbol": "forward.extracted.118",
+      "original_body_sha256": "7f80ac8344525de2bae724b1fcbe4be89a8d86e72df6b6d89f3881d7713bcad5",
+      "sizes_f32": [
+        2048,
+        16384,
+        16384
+      ],
+      "calls": 22
+    },
+    "pv": {
+      "source_symbol": "forward.extracted.112",
+      "original_body_sha256": "7ffcda69b43d4fdcff42dca06f5ed8ed5a4a2d96b79708371b37692f4022a820",
+      "sizes_f32": [
+        16384,
+        2048,
+        16384
+      ],
+      "calls": 22
+    }
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-outline-composed-whole-20261006/whole/host_llvm/expanded.native.ll": "268e44b050a6b3c65923e1f19911c80144f03000aa19f605ac6e5ffbaacf4311",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/tap.native.ll": "544b6e9906f5c78d956b36e62daad2a54b2f64fad931c96a1e5d62c98b7348f8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/tap.c": "9bd3233a09412ccd6d27cfa52a4bc87beebb5e941dadc77912b61642d620c6d4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/model.o": "2491ef5224d58b76026db720e9ec28fc8966c601e43dc2a68c5408def0568a90",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/model.so": "8980a617bb25f1c18e466e34fb0c0ba6df222c7fb37d1ebbcd53e85da261bc41",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/quant_hoist_args.json": "d8443f70fbeac5059b3f9b34e783d1588f283ea7ff93648f182f3e788495a744",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/pv_expected.bin": "307e4fd8002ca024a9b7831453560e3571cfa669d31a36b04f46daec05cb9bc6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/pv_b.bin": "a5b40ea56a16c0c1e54cca85ff72fcb1bf88dd9c30dde82fa5897ab8f2ce77f0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/qk_expected.bin": "673a8f534523d8460c507707fc77c0471f0de52cbdc103b8d820596b41ab72b3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/qk_b.bin": "68123345c5a264dc5724f442e2c5b6f84a2607c9c2ad9e2a04be501c0666888c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/qk_a.bin": "f729b28d5085d535d35bf8a143172386a07ce8b2a8fa8f92fc998dbf39396531",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/pv_a.bin": "b2187034a1159b98b833058d6c15abab9a9be9c3d40a08e313c34addf2300f50",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/qk_initial.bin": "9f1dcbc35c350d6027f98be0f5c8b43b42ca52b7604459c0c42be3aa88913d47",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/capture/pv_initial.bin": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+  },
+  "original256000_words": true,
+  "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "torch_gate": true,
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "token_usage_available": false
+}

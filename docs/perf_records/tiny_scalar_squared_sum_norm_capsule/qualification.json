@@ -1,0 +1,55 @@
+{
+  "schema": "source_bound_scalar_squared_sum_complete_norm_capsule_v1",
+  "scope": "Exact first normalization extracted through typed dependencies; pinned original8x2048embedding/weights; actualcurrent1983-compatible hoist/puremul4/identity/RNE control, add only typed squared-sum scalaraccumulator. Complete reduction/divide/epsilon/rsqrt/weight multiplication/quant RNE/output incl allocations/traffic and original1880runtime object. Five strict rounding modes and matching sticky flags, all16384i8 results plus128 dirtyguards.",
+  "native_all_exact": true,
+  "strict_all_exact": true,
+  "strict_all5_rounding_modes_and_flags": true,
+  "original_runtime_object": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/mlir_rt.o",
+  "original_runtime_object_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+  "elf_sha256": "d4d2cc22a0710cb193786a2250f93a011fc9ee2808b78a6bee5d6a52e09d4f78",
+  "proofs": [
+    {
+      "arm": "control",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "fuse_activation_polynomial_fma",
+        "fuse_quantize_round_convert",
+        "hoist_broadcast_source_rsqrt",
+        "packet_scalar_pointwise_fma_division_2",
+        "packet_scalar_pointwise_multiplication_4",
+        "packet_scalar_pointwise_two_multiplications_4"
+      ],
+      "target_rne_sites": 4,
+      "llvm_sha256": "03e18ae4aa1768185d2dbe12b918b468538dffd89072d803443b8928318ba39f",
+      "target_llvm_sha256": "8a7266e931282928e3918c945581f2294b3ad504ffdce9ef7ce74a9e7844df46",
+      "native_output_sha256": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98"
+    },
+    {
+      "arm": "accumulated",
+      "features": [
+        "canonicalize_bufferized_result_identity",
+        "fuse_activation_polynomial_fma",
+        "fuse_quantize_round_convert",
+        "hoist_broadcast_source_rsqrt",
+        "packet_scalar_pointwise_fma_division_2",
+        "packet_scalar_pointwise_multiplication_4",
+        "packet_scalar_pointwise_two_multiplications_4",
+        "scalar_squared_sum_accumulator"
+      ],
+      "target_rne_sites": 4,
+      "llvm_sha256": "739e66402a7e7ccc3246184e4ec9bf97750cdd6a8c7fd1abefeab9ce615a06d9",
+      "target_llvm_sha256": "cdcd10f5e79bef2d052b16e3c53a910f336fd5d47cacd46dc3f63c62ee9e06a2",
+      "native_output_sha256": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98"
+    }
+  ],
+  "audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "d4d2cc22a0710cb193786a2250f93a011fc9ee2808b78a6bee5d6a52e09d4f78",
+    "executable_sections": 9,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "token_usage_available": false
+}

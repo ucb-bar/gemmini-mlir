@@ -1,0 +1,1782 @@
+{
+  "schema": "gemmini_golden_device_catalog_v1",
+  "abi": {
+    "argument_order": [
+      "lhs",
+      "rhs",
+      "out"
+    ],
+    "pointee_layout": "dense_row_major",
+    "batch_call": "whole_batch",
+    "dtypes": [
+      "i8",
+      "i8",
+      "i32"
+    ],
+    "writer_effects": {
+      "schema": "complete_output_writer_v1",
+      "fully_written_arguments": [
+        2
+      ],
+      "retains_arguments": false,
+      "frees_arguments": false
+    }
+  },
+  "source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+  "schedule_policy": "large_n_grouped_b_v1",
+  "prefetch_b_kernels": 4,
+  "matched_contractions": 155,
+  "covered_contractions": 155,
+  "coverage_complete": true,
+  "unique_kernels": 5,
+  "kernels": [
+    {
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "dimensions": {
+        "batch": 1,
+        "m": 8,
+        "n": 2048,
+        "k": 2048
+      },
+      "schedule": {
+        "m": 8,
+        "n": 2048,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 64,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "batched": false
+    },
+    {
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "dimensions": {
+        "batch": 1,
+        "m": 8,
+        "n": 256,
+        "k": 2048
+      },
+      "schedule": {
+        "m": 8,
+        "n": 256,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 16,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": false,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": false
+      },
+      "batched": false
+    },
+    {
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "dimensions": {
+        "batch": 1,
+        "m": 8,
+        "n": 5632,
+        "k": 2048
+      },
+      "schedule": {
+        "m": 8,
+        "n": 5632,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 64,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "batched": false
+    },
+    {
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "dimensions": {
+        "batch": 1,
+        "m": 8,
+        "n": 2048,
+        "k": 5632
+      },
+      "schedule": {
+        "m": 8,
+        "n": 2048,
+        "k": 5632,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 64,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "batched": false
+    },
+    {
+      "symbol": "gemmini_golden_e738f13ad92e3128",
+      "dimensions": {
+        "batch": 1,
+        "m": 8,
+        "n": 32000,
+        "k": 2048
+      },
+      "schedule": {
+        "m": 8,
+        "n": 32000,
+        "k": 2048,
+        "output_dtype": "i32",
+        "bm": 1,
+        "bn": 64,
+        "bias": false,
+        "scale": 1.0,
+        "relu": false,
+        "wide_store": false,
+        "reuse_b": false,
+        "cache_b": false,
+        "cache_a": true,
+        "pipeline_m": false,
+        "prefetch_m": false,
+        "banked_m": false,
+        "wide_a": false,
+        "wide_b": true,
+        "separate_b_bank": false,
+        "prefetch_b": true
+      },
+      "batched": false
+    }
+  ],
+  "bindings": [
+    {
+      "source_operation_ordinal": 1397,
+      "region": "matmul_1",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1431,
+      "region": "matmul_2",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1465,
+      "region": "matmul_3",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1693,
+      "region": "matmul_6",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1823,
+      "region": "matmul_7",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1864,
+      "region": "matmul_8",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 1948,
+      "region": "matmul_9",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2089,
+      "region": "matmul_10",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2123,
+      "region": "matmul_11",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2157,
+      "region": "matmul_12",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2385,
+      "region": "matmul_15",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2515,
+      "region": "matmul_16",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2556,
+      "region": "matmul_17",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2640,
+      "region": "matmul_18",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2781,
+      "region": "matmul_19",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2815,
+      "region": "matmul_20",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 2849,
+      "region": "matmul_21",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3077,
+      "region": "matmul_24",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3207,
+      "region": "matmul_25",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3248,
+      "region": "matmul_26",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3332,
+      "region": "matmul_27",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3473,
+      "region": "matmul_28",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3507,
+      "region": "matmul_29",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3541,
+      "region": "matmul_30",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3769,
+      "region": "matmul_33",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3899,
+      "region": "matmul_34",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 3940,
+      "region": "matmul_35",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4024,
+      "region": "matmul_36",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4165,
+      "region": "matmul_37",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4199,
+      "region": "matmul_38",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4233,
+      "region": "matmul_39",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4461,
+      "region": "matmul_42",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4591,
+      "region": "matmul_43",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4632,
+      "region": "matmul_44",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4716,
+      "region": "matmul_45",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4857,
+      "region": "matmul_46",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4891,
+      "region": "matmul_47",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 4925,
+      "region": "matmul_48",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5153,
+      "region": "matmul_51",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5283,
+      "region": "matmul_52",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5324,
+      "region": "matmul_53",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5408,
+      "region": "matmul_54",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5549,
+      "region": "matmul_55",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5583,
+      "region": "matmul_56",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5617,
+      "region": "matmul_57",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5845,
+      "region": "matmul_60",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 5975,
+      "region": "matmul_61",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6016,
+      "region": "matmul_62",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6100,
+      "region": "matmul_63",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6241,
+      "region": "matmul_64",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6275,
+      "region": "matmul_65",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6309,
+      "region": "matmul_66",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6537,
+      "region": "matmul_69",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6667,
+      "region": "matmul_70",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6708,
+      "region": "matmul_71",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6792,
+      "region": "matmul_72",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6933,
+      "region": "matmul_73",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 6967,
+      "region": "matmul_74",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7001,
+      "region": "matmul_75",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7229,
+      "region": "matmul_78",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7359,
+      "region": "matmul_79",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7400,
+      "region": "matmul_80",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7484,
+      "region": "matmul_81",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7625,
+      "region": "matmul_82",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7659,
+      "region": "matmul_83",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7693,
+      "region": "matmul_84",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 7921,
+      "region": "matmul_87",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8051,
+      "region": "matmul_88",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8092,
+      "region": "matmul_89",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8176,
+      "region": "matmul_90",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8317,
+      "region": "matmul_91",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8351,
+      "region": "matmul_92",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8385,
+      "region": "matmul_93",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8613,
+      "region": "matmul_96",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8743,
+      "region": "matmul_97",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8784,
+      "region": "matmul_98",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 8868,
+      "region": "matmul_99",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9009,
+      "region": "matmul_100",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9043,
+      "region": "matmul_101",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9077,
+      "region": "matmul_102",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9305,
+      "region": "matmul_105",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9435,
+      "region": "matmul_106",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9476,
+      "region": "matmul_107",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9560,
+      "region": "matmul_108",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9701,
+      "region": "matmul_109",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9735,
+      "region": "matmul_110",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9769,
+      "region": "matmul_111",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 9997,
+      "region": "matmul_114",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10127,
+      "region": "matmul_115",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10168,
+      "region": "matmul_116",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10252,
+      "region": "matmul_117",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10393,
+      "region": "matmul_118",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10427,
+      "region": "matmul_119",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10461,
+      "region": "matmul_120",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10689,
+      "region": "matmul_123",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10819,
+      "region": "matmul_124",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10860,
+      "region": "matmul_125",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 10944,
+      "region": "matmul_126",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11085,
+      "region": "matmul_127",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11119,
+      "region": "matmul_128",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11153,
+      "region": "matmul_129",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11381,
+      "region": "matmul_132",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11511,
+      "region": "matmul_133",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11552,
+      "region": "matmul_134",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11636,
+      "region": "matmul_135",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11777,
+      "region": "matmul_136",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11811,
+      "region": "matmul_137",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 11845,
+      "region": "matmul_138",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12073,
+      "region": "matmul_141",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12203,
+      "region": "matmul_142",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12244,
+      "region": "matmul_143",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12328,
+      "region": "matmul_144",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12469,
+      "region": "matmul_145",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12503,
+      "region": "matmul_146",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12537,
+      "region": "matmul_147",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12765,
+      "region": "matmul_150",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12895,
+      "region": "matmul_151",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 12936,
+      "region": "matmul_152",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13020,
+      "region": "matmul_153",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13161,
+      "region": "matmul_154",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13195,
+      "region": "matmul_155",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13229,
+      "region": "matmul_156",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13457,
+      "region": "matmul_159",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13587,
+      "region": "matmul_160",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13628,
+      "region": "matmul_161",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13712,
+      "region": "matmul_162",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13853,
+      "region": "matmul_163",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13887,
+      "region": "matmul_164",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 13921,
+      "region": "matmul_165",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14149,
+      "region": "matmul_168",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14279,
+      "region": "matmul_169",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14320,
+      "region": "matmul_170",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14404,
+      "region": "matmul_171",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14545,
+      "region": "matmul_172",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14579,
+      "region": "matmul_173",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14613,
+      "region": "matmul_174",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14841,
+      "region": "matmul_177",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 14971,
+      "region": "matmul_178",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15012,
+      "region": "matmul_179",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15096,
+      "region": "matmul_180",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15237,
+      "region": "matmul_181",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15271,
+      "region": "matmul_182",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15305,
+      "region": "matmul_183",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15533,
+      "region": "matmul_186",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15663,
+      "region": "matmul_187",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15704,
+      "region": "matmul_188",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15788,
+      "region": "matmul_189",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15929,
+      "region": "matmul_190",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15963,
+      "region": "matmul_191",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 15997,
+      "region": "matmul_192",
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x256xi8>",
+        "tensor<8x256xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 16225,
+      "region": "matmul_195",
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 16355,
+      "region": "matmul_196",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 16396,
+      "region": "matmul_197",
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x5632xi8>",
+        "tensor<8x5632xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 16480,
+      "region": "matmul_198",
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "tensor_types": [
+        "tensor<8x5632xi8>",
+        "tensor<5632x2048xi8>",
+        "tensor<8x2048xi32>"
+      ]
+    },
+    {
+      "source_operation_ordinal": 16599,
+      "region": "matmul_199",
+      "symbol": "gemmini_golden_e738f13ad92e3128",
+      "tensor_types": [
+        "tensor<8x2048xi8>",
+        "tensor<2048x32000xi8>",
+        "tensor<8x32000xi32>"
+      ]
+    }
+  ],
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "c5b0cb2f40a2786b1a206b0df41dcadaf06c581a0cbe64ca91554f35e9ae6f59",
+    "llvm_mlir_sha256": "5a55f0f78f3cbdef38c84fe4800f575d132256a4be744fe2e55579817a6919ac",
+    "llvm_ir_sha256": "4342d9c604f230b18ead5350df9beec3dd0ef08743837979c5e9e3deffd86282",
+    "object_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.o"
+      ]
+    ]
+  },
+  "source_snapshot": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/catalog_source.mlir",
+  "whole_model_memory_bound": false,
+  "whole_model_correctness_verified": false
+}

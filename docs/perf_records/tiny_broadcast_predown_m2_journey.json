@@ -1,0 +1,99 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "recorded_utc": "2026-10-06T11:02:27.575175+00:00",
+  "hypothesis": "Typed broadcast-axis lane interleaving can share immutable per-channel scale loads and lower register/code overhead while preserving each source result.",
+  "ownership": "Existing generic typed tensor schedule in Merlin; actual target source capsule/ABI/audit/cost evidence OOT. No ISA or model selector added.",
+  "emitted_change": "Use existing explicit packet_scalar_pointwise_broadcast_2 in normal source lowering instead of ordinaryFMA/division packet2. Proved indexingmaps share scale operands across two independent rows; scalar operation/cast/rounding order, tensor values and output ownership preserved.",
+  "before_after_metric": {
+    "scope": "First2originalrows,all5632channels; complete source preDown body including loads/dequantization/FMApolynomial/fdiv/three rounded products/i8RNEclamp/stores/fresh temporary/final copy. Warm ABBA GSIM; flags/guards/input validation outside timer. Not full8-row source, whole model or stock FireSim.",
+    "outputs": 11264,
+    "paired_cycles": [
+      [
+        0,
+        0,
+        1611857
+      ],
+      [
+        1,
+        1,
+        1454304
+      ],
+      [
+        2,
+        1,
+        1454376
+      ],
+      [
+        3,
+        0,
+        1611449
+      ]
+    ],
+    "control_mean": 1611653.0,
+    "candidate_mean": 1454340.0,
+    "saved_percent": 9.760972119929042
+  },
+  "gate": {
+    "native_original_words": 11264,
+    "strict_five_frm_compared_words": 56320,
+    "sticky_flags_match": true,
+    "dirty_guards": 128,
+    "immutable_input_bytes_protected": 405504,
+    "used_input_bytes": 135168,
+    "original_control_object_byteidentical": true,
+    "zero_FSM": true,
+    "engine_DONE": true
+  },
+  "attempt": {
+    "status": "COMPLETE",
+    "single_engine": true,
+    "sigstop_held_after_launch_for_parent_conditional_sequencing": true,
+    "resumed_after_parent_release": true,
+    "precise_pause_wall_duration": "unavailable",
+    "scope": "Engine walltime includes the hold; ROI is RTL mcycle. No timing counters rely on host walltime, no rebuild/duplicate engine and no completed originalM2 pair rerun."
+  },
+  "oldM8": {
+    "status": "INCOMPLETE_TIMEOUT_UNKNOWN",
+    "scope": "Oldfull8-row real-source pair timed out1800s after only control5828044cycles. Candidate/DONE missing; no positive/negative comparison asserted and no identicalM8 rerun.",
+    "receipt_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/gsim_receipt.json",
+    "receipt_sha256": "fab9e541d54f0372f158fbbc127be535f986b82191678defdaa70fab96a2bd7c"
+  },
+  "result": "Positive9.76097%local completeM2screen. Whole current1967-source/norm composition not yet qualified; no whole speed or promotion claim.",
+  "actual_whole_hardware_cycles": null,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/build_capsule.py": "8c822b3b8c99ab4078f8a4cc9d91abb5577831ac226370ad5b76194bd3cffdd8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/run_cost.py": "319d67e9256e57146458bd136bff184c7ed18878e15db2661883a9e64cc84854",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/archive.py": "fd4ebb9cf35857be6187b321319f19bd596acd58b21a290781034aa0e06e2861",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/capsule_qualification.json": "a93fd2fe5939437a5b3ee54dd2e803d205ae42958e4e1c092581650945cbce8f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/capsule_result.json": "22e3a04956aee6b0166523b0eee67dc70e9c8e18d7dd78e0b337e415e15e6829",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/gsim_receipt.json": "d4eb8598df4f8d53fa5e9b2c438afa61642069c1f5ffc8f0addf15ac3939f778",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/gsim.stdout": "a4c4de27b1de7b3dbde1f8e29a25c75d53a8127a2456f9715fe8095226bd4ebd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/strict_spike.log": "7cc7b09c6a28e6092168989558dd3aa9d18def0911a968b32e1f5f8d17acf94a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/timing_spike.log": "74bbd03bbbc448d99b8a620b82a6d2aa600be34db197107f4446f2758cfff4e3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/strict_audit.json": "e243b5d2ce3214b1c93740fba5687ea0cf9572ac65be104399f41bacb10e5ee8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/timing_audit.json": "477ad8308736f018f8505826a0fee77f1d4e105f1ee816d0f6475cc1a1f9224a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/strict_main.c": "3d59285dd8b3c10d449dfa55ae71022a22eab1a29ea1853820798a1264e8d05b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/timing_main.c": "6dee49c31f46a99f6ef823867b2cba9b8c3bcde595760c2055118498a1e95348",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/control.native.ll": "924c2cba8be59fde6b89e52df2aac04a96a586164c2ebcd4f325a67519687d26",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/control.target.ll": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/broadcast.native.ll": "920193c7121d04cca91a64506cba83a67e3aa028e0bbdaf1a5d74e257c931501",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/broadcast.target.ll": "7545076dd964d9a90973605a9ed37858c5079d21448dfef698c21d195b5a32db",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/control.o": "08d8633cc95736d8a98a48299236c011aa066758db278e1bbb43415ef7f76011",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/broadcast.o": "90896ff9b6a8b233ce9727026cdc982fe7bf87952a51d6a492fc0690875891b5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/timing_build/layer.elf": "52f5ac4813c7ae0230736e4ecd9e254b6f0f7660111395c0d7449fd6210d4c10",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/strict_build/layer.elf": "8b35e2430e7e0c2290d0ab91512c264baeec5b3ed0f3a0528254984fa0da95bf",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/a.npy": "a6046b8140b798c7dcdffed6f949d36b0c353d964a3b78ce0da509da108e5b55",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_a.npy": "7beb9d772a92e984f661bd13d20929d5430174ff7d05583fd671ef07dd8e598a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/b.npy": "3d37692e836389e2fc64798e6aba2f4ea4f0506f58ff7df05d36cfbdfee99865",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/scale_b.npy": "1cdb4423dc8addaad48c17757f227b92562c055f6b2f561063f85643f6ce6d64",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/expected.npy": "9fc384d7615da056f86e1ba672afc1ea501fba28bb12506d1877bf17c5a505f7",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capture/receipt.json": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/source_receipt.json": "97f2477f64a618978d06d1e69460a63748e31708ef5377e3e0705cefdd79c4e5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/source_capsule.mlir": "e55f45b4728856a581726e8c2ce3e8132d6b0f4ee225f844f8e1e4974b2481b7",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/data.o": "05afcd9c3449b276ff1aae926ea863d697d2cde57290afb6c7df491ad0264411",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/gsim_receipt.json": "fab9e541d54f0372f158fbbc127be535f986b82191678defdaa70fab96a2bd7c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/gsim.stdout": "461d134528263ec63a49d7b81ded09ac9c056abbd501623e06178b21f0fd5c9a",
+    "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/llvmlower/scalar_pointwise_packet.py": "a189f6d4d99f6636958dc39b5e98d67e09c343a49f938d91f78a800819d0a919"
+  }
+}

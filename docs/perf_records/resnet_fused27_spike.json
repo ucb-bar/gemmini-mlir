@@ -1,0 +1,47 @@
+{
+  "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+  "elf_sha256": "4369741869f4313957aeb6678cc4b971c9822dd03683d01949ce65b9dde3a63c",
+  "elements": 1000,
+  "exact_equal": true,
+  "metrics": [
+    "METRIC cycles 1018739739",
+    "METRIC build_hash 54e3d78fff00",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "host_compilation_policy": {
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang"
+  },
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "4369741869f4313957aeb6678cc4b971c9822dd03683d01949ce65b9dde3a63c",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 180,
+      "1": 1228,
+      "2": 1896,
+      "3": 1166,
+      "4": 2502,
+      "5": 8192,
+      "6": 10694,
+      "7": 41
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "covered_contractions": {
+    "fused": 27,
+    "remaining_direct": 4,
+    "remaining_dense": 23
+  },
+  "layout_propagation": false,
+  "static_memcpy_callsites": 20
+}

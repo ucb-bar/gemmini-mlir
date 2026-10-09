@@ -1,0 +1,64 @@
+{
+  "schema": "bounded_rne_packet_cpu_qualification_v1",
+  "scope": "Standalone explicit CPU emitter; no production source selection or model rewrite. Captured input used only as test fixture.",
+  "policy": {
+    "bits": 8,
+    "lanes": 4,
+    "host_isa": "rv64gc",
+    "default_enabled": false
+  },
+  "native_tests": 15,
+  "native_tests_scope": "lanes1..4, bits8/16, all half-integer transitions and neighboring f32, infinities/subnormals, guard words; independent NumPy oracle.",
+  "target_proof": "Strict rv64gc Spike bits8/16 lanes4, every half-transition\u00b1adjacentf32, seeded nonNaN words/infinities/subnormals, all5 ambient frm modes; independent precomputed original result and guards.",
+  "core_emission_byte_identical_to_screened_manual_elf": true,
+  "full_captured_loop": {
+    "shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "output_shape": [
+      1,
+      230,
+      230,
+      3
+    ],
+    "scalar_scale_bits": "0x41fee3eb",
+    "all_output_values": 150528,
+    "entire_padded_destination_checked": 158700,
+    "guard_bytes": 2048,
+    "strict_spike_pass": true,
+    "final_no_fsm": "pass",
+    "queued_stock_job": 1864
+  },
+  "small_actual_gsim": {
+    "shape": [
+      1,
+      3,
+      17,
+      19
+    ],
+    "scalar_tail": 3,
+    "baseline_first": 19354,
+    "candidate_first": 8681,
+    "baseline_warm": 16545,
+    "candidate_warm": 8237,
+    "scope": "Same explicit packet and strided packing algorithm, independent tail shape. Actual simulator cycles; not full ResNet."
+  },
+  "files": {
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_core_capsule/build/layer.elf": "4df29bfa78e7fe69b8168e5e5d3bad3a8308c5585e26f7a37d8b92a119f5ac31",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_core_capsule/main.c": "6fe08571311ea2a7c9e59a9d08519bee7d7275c034782fc08cc2c72586355fce",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_core_capsule/input.bin": "f6659bacb01fb754025a4a8683f51a6cbc654c8f0f6dd4b98eb97b92eb927d41",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_core_capsule/spike.log": "4272ad6ecb63f6fcdeb95a43003169ab8e9a51e79b35dfbad0a1ba410a385e36",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_core_capsule/audit.json": "22579f1b4268c727461035e44b324deb551e8047271044112366acffb29531b1",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_modes_capsule/spike.log": "1931eb1376767ee952ace00a570a193348eb9200d3d3327e5ecbc10695468eb8",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_modes_capsule/main.c": "eae4633ea570728cad1d88edb08c57c856db299e0ef79623b6404ef4207ee47f",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_modes_capsule/build/layer.elf": "d0166df4e85781c9a80fff2317686dcd976c7c91bd8d9fced66171bf7c8742dc",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_tail_capsule/gsim.stdout": "aaa461390d0f81923c961548cd7f4b63103da2f2edc8828e1d281f180c8b3540",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/batched_rne_four_tail_capsule/spike.log": "c2af31bd9f8659ad04e7fef32e2837b8e67b5eeee312001eb2b10e214ebbf5b7",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/validate_batched_rne_four_core.py": "647d3f426e0f6821af862fa57fe4f2237cef88213d0009b60fb4333bbbdae601",
+    "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/validate_batched_rne_four_modes.py": "86131d770f98fe69733daf6264108763b59ded173f3f25464a5edf78d0e6cf6a"
+  },
+  "remaining": "A source/alias proven compiler transform and complete original-model gate are required before model promotion. Stock full-loop paired measurement pending."
+}

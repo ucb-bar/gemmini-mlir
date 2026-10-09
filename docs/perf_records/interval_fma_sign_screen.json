@@ -1,0 +1,89 @@
+{
+  "schema": "interval_fma_sign_screen_v1",
+  "decision": "Rejected for performance; no core API/default/header changed. Exact source policy and target output/counts unchanged.",
+  "control": {
+    "rc": 0,
+    "elf_sha256": "4fcc30a855ed89cde7468dcecfed70be3537bbc456b9e6dbf6557f6a1181af03",
+    "log_sha256": "a38347c574773cd2ecb4a2dd96914e90b2bf62b7ca1ccd19d9d9c8db3443ffa6",
+    "elapsed_seconds": 10.78915524482727,
+    "pass": true,
+    "markers": [
+      "ENDPOINT_CPU_CYCLES 232955195",
+      "ENDPOINT_CYCLES 489913799",
+      "ENDPOINT_STAGE 819219 121337262 255747548 86691050 25317672",
+      "ENDPOINT_PLANES 40 7208960 0",
+      "ENDPOINT_REPLAY 393 3844 3522 601088 0 0 0 0 0",
+      "ENDPOINT_OUTPUT 16384 2",
+      "ENDPOINT PASS"
+    ]
+  },
+  "candidate": {
+    "rc": 0,
+    "elf_sha256": "cd39d597c3ede2c184a36353439b8509ea7c1de0b87db346b348091e77505244",
+    "log_sha256": "3b9247e71873b764283690930bfa475935e486c32d77593f1842465b8d5b726e",
+    "elapsed_seconds": 10.834099769592285,
+    "pass": true,
+    "markers": [
+      "ENDPOINT_CPU_CYCLES 232955195",
+      "ENDPOINT_CYCLES 513980688",
+      "ENDPOINT_STAGE 819219 121337262 276207193 86691050 28924916",
+      "ENDPOINT_PLANES 40 7208960 0",
+      "ENDPOINT_REPLAY 393 3844 3522 601088 0 0 0 0 0",
+      "ENDPOINT_OUTPUT 16384 2",
+      "ENDPOINT PASS"
+    ]
+  },
+  "source_proof": "For finite intervals and stable RNE, real product extrema selected by operand signs; source fmaf monotone in product/addend.2FMAs except both intervals crosszero(4). Any zero endpoint delegates original routine to retain exact zero representation. One million finite random intervaltriples compared validity/endpoints;646386finite results. Independent directed boundary tests required before production; rejected implementation not promoted.",
+  "actual_control_codegen": {
+    "flags": [
+      "-std=gnu11",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-mcmodel=medany",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-fno-common",
+      "-fno-builtin-printf"
+    ],
+    "fmadd_s_sites": 26,
+    "calls": {
+      "floorf": 1,
+      "floor": 2,
+      "memset": 3,
+      "source_poly.part.0": 4,
+      "exp": 3,
+      "row_finish": 4,
+      "printf": 8,
+      "exit": 1,
+      "fegetround": 2,
+      "calloc": 2,
+      "merlin_fma_next_up": 8,
+      "free": 2,
+      "__assert_func": 19,
+      "abort": 1,
+      "merlin_interval_bit_polynomial.constprop.0": 2,
+      "source_reference": 2,
+      "encode": 2,
+      "dot_bounds": 1,
+      "widen": 2,
+      "products.constprop.0": 2,
+      "soft_details": 1,
+      "memcpy": 3,
+      "adaptive": 1
+    },
+    "conclusion": "No fmaf libm calls. floor/floorf/exp remain actual calls; do not attribute fmaf software cost."
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/driver_timed.dis": "deb7d623cd0ad74d74a77d159847419c741ec77d10421142d5d80bfc842755fe",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/driver_timed.o": "d32b9f245b8f4aaacaae9e440c17522a88ab23d96bbeaea8f29b4ca90c1a9912",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1_sign_interval/driver_timed.o": "6d1c4af9c5722307b920f18b5fdfc5a0351c30cd2755f2cff376052a5d01e2df",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1_sign_interval/f32_interval_endpoint.h": "adaface960b618cbc660f514ae45e915cd985b0252936da522432600630ad4c4",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1_sign_interval/controlled_link.json": "4d450eed2ccd263506021eba794bf95d037ecab7f1c43d32db6efb890bdda0fe",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1_sign_interval/timed.elf": "cd39d597c3ede2c184a36353439b8509ea7c1de0b87db346b348091e77505244",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1_sign_interval/timed.spike.log": "3b9247e71873b764283690930bfa475935e486c32d77593f1842465b8d5b726e",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/interval_fma_screen/test.c": "04ca0c7e47c65ab7b1c731c2147b80032f05b5dc39b3e139c9d4d459bb9cc323",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/interval_fma_screen/sign_fma.h": "f88d1c438af3557e20fc77047dcc8e4d8bae813826a74fa970acd853d6290c32"
+  },
+  "token_usage_available": false
+}

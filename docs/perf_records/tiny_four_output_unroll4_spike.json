@@ -1,0 +1,225 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Full 22-layer pretrained TinyLlama, 8 tokens; exact four independent scalar contraction accumulators with upstream partial K-unroll count4. Original captured model/reference and existing fused activation approximation policy unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/model.elf",
+  "elf_sha256": "ef4d7d6e1023ec72701aef2010aba1b1e3b0cfb0704ad3ef153a2afaae444c5d",
+  "reference_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/spike.log",
+  "spike_console_sha256": "7450bcb7668f83ee2ceb3d19e2fc6ccf437a2a52ed8fbd2046f983a3510ff099",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "metrics": {
+    "cycles": "165330198",
+    "build_hash": "e5a91a05ccaf",
+    "memref_rank_mismatch": "0"
+  },
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "prior_spike_instructions": 166184456,
+  "instruction_reduction_fraction": 0.005140420593849004,
+  "initial_spike_instructions": 209494756,
+  "instruction_reduction_fraction_vs1806": 0.21081462296841458,
+  "hardware_status": "Awaiting stock FireSimGemminiRocketConfig measurement. Latest measured four-output control job1821: 615651105 forward cycles.",
+  "native_validation": {
+    "scope": "tiny_four_outputs_unroll4: native host with scalar integer device stand-ins",
+    "llvm_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/host_llvm/model.native.ll",
+    "llvm_sha256": "6be3e52f2e20186122935ae3a8f45bbfb992b72e17be339b2b8c650b83fa04ba",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "original_reference_gate": {
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+    "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "unchanged": true,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true
+  },
+  "prior_compiled_output_bitexact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "ef4d7d6e1023ec72701aef2010aba1b1e3b0cfb0704ad3ef153a2afaae444c5d",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "e5a91a05ccaf",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/lower/model.ll",
+      "source_sha256": "9569934eca1288ce2f1f54ef5fa562094ce155d5776f7d124cc31f419e55ee43",
+      "selected_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/host_llvm/model.ll",
+      "selected_sha256": "ba91e12cbd06e70454e079376a704281703cef342d4138ff9ee254c060e4991a"
+    },
+    "supplemental_objects_sha256": "283e7968050a1c1666ea075623355d66025516cdc945799a919a6d04097da415",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "compiler_contract": {
+    "feature": "scalar_contraction_accumulator_4_outputs",
+    "default_off": true,
+    "target_independent": true,
+    "coverage": {
+      "coverage": "OK scalar_contraction_accumulator_4_outputs 45",
+      "reduction_unroll_coverage": "OK unroll_scalar_contraction_reduction_by_4 45",
+      "full_llvm_replay_bitexact_after_normal_abi_repair": true,
+      "abi_repair": {
+        "schema": "wide_ciface_inline_v1",
+        "max_flattened_arguments": 256,
+        "inlined": [
+          {
+            "implementation": "forward",
+            "wrapper": "_mlir_ciface_forward",
+            "flattened_arguments": 3973
+          }
+        ],
+        "count": 1
+      },
+      "llvm_sha256": "9569934eca1288ce2f1f54ef5fa562094ce155d5776f7d124cc31f419e55ee43",
+      "source_runner_sha256": "0154a51d0c440258c507e683219aecda1f6d68a532cd4b4d8950839226070833"
+    },
+    "supported": "Original strict static f32 tensor contraction contract, with final parallel extent divisible by four; partial tiles remain unchanged.",
+    "f32_arithmetic": "Four independent scalar scf.for iter_args. For each output: original separate arith.mulf then arith.addf, original operand order and increasing last reduction dimension, no fastmath permission. LLVM partial-unroll count4 changes scheduling, retaining the exact dependence chain.",
+    "alias_contract": "Original input SSA tensors immutable; destination tensor loop carried, four inserts after final K step. Upstream one-shot bufferization chooses copies; no physical noalias assumption.",
+    "features": [
+      "scalar_contraction_accumulator_4_outputs",
+      "unroll_scalar_contraction_reduction_by_4"
+    ],
+    "reduction_unroll_contract": "Default-off feature requires exactly one explicit scalar accumulator schedule. Unroll counts2/4 are explicit alternatives. Sets LLVM-typed loop_annotation on newly created reduction loops. SCF-to-CF forwards LLVM-typed attributes and CF-to-LLVM keeps the key; final LLVM branch property spelling is required by the installed translator. Final IR carries llvm.loop.unroll.count=4."
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "host_clang_optimization": "O3",
+    "fuse_quantize_round_convert": true,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "fuse_activation_polynomial_fma": true,
+    "activation_policy_unchanged": true,
+    "normalization_expf_calls": 22,
+    "activation_fma_calls": 176,
+    "new_contraction_fma_permissions": false
+  },
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5,
+    "hoisted_weight_arrays": 155
+  },
+  "source_artifacts": {
+    "model_object_sha256": "0605ad19118a8afc909407f28a2d83ad5eafcbe0ee307c681258121fbaaed4b8",
+    "source_llvm_sha256": "9569934eca1288ce2f1f54ef5fa562094ce155d5776f7d124cc31f419e55ee43",
+    "target_llvm_sha256": "ba91e12cbd06e70454e079376a704281703cef342d4138ff9ee254c060e4991a",
+    "native_llvm_sha256": "6be3e52f2e20186122935ae3a8f45bbfb992b72e17be339b2b8c650b83fa04ba",
+    "builder_script_sha256": "a2a018bd9e116f21ab7d57758f7cc58abcaf641303fc91ae523d29338f5cdc52"
+  },
+  "assembly_observations": {
+    "scope": "Actual active _mlir_ciface_forward first-layer PV K8 host contraction, between V and output projections.",
+    "one_output_model_text_bytes": 1019316,
+    "four_output_no_hint_model_text_bytes": 1029734,
+    "control_unroll2_model_text_bytes": 1016830,
+    "candidate_model_text_bytes": 1029952,
+    "text_growth_bytes_vs_unroll2": 13122,
+    "text_growth_fraction_vs_unroll2": 0.012904812013807618,
+    "pv_accumulators": [
+      "fa4",
+      "fa5",
+      "fa2",
+      "fa3"
+    ],
+    "separate_fadd_and_fmul": true,
+    "pv_loop_start_address": "83eac",
+    "pv_first_fadd_address": "83f3c",
+    "pv_backedge_address": "83f84",
+    "pv_output_store_addresses": [
+      "83f86",
+      "83f8a",
+      "83f8e",
+      "83f92"
+    ],
+    "pv_product_spills": 0,
+    "live_product_group": 16,
+    "reduction_steps_per_loop_iteration": 4,
+    "limitation": "Partial unroll4 reduces K backedges versus count2 but increases static code by1.29%. The 0.514% whole-model instruction improvement does not establish a FireSim cycle improvement."
+  },
+  "verification": {
+    "focused_native_and_registry_tests": 94,
+    "skips": 0,
+    "structure": "pass",
+    "target_name_check": "pass",
+    "regex_check": "pass",
+    "docs": "pass"
+  },
+  "core_feature_commit": "2bd786750",
+  "identity_fix_commit": "5f362809a",
+  "one_output_spike_instructions": 177453518,
+  "instruction_reduction_fraction_vs_one_output": 0.068318284904332,
+  "hardware_control": {
+    "job": 1821,
+    "forward_cycles": 615651105
+  },
+  "infrastructure_findings": {
+    "loop_annotation_transport": "A synthetic pass-by-pass probe showed llvm.loop_annotation retained verbatim on the final LLVM branch but ignored by translate_module_to_llvmir. The actual branch property loop_annotation emits loop metadata. No model2MLIR frontend change is needed for this feature. The new native regression requires final count2 metadata for plain and fused-activation runners.",
+    "automatic_loop_requirements": "The current registry has implies prerequisites but cannot declare requires-one-of or mutually exclusive schedule families. These transforms validate explicit alternatives at pipeline construction. The automatic search should represent output count and partial-unroll count as alternative choice knobs, and eventually select them per operation based on measured liveness/cycles, rather than adding mutually exclusive features together."
+  },
+  "four_output_no_hint_spike_instructions": 168436873,
+  "instruction_reduction_fraction_vs_four_output_no_hint": 0.018444150290061523
+}

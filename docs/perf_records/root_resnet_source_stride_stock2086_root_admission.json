@@ -1,0 +1,108 @@
+{
+  "schema": "root_source_stride_original_ResNet_whole_admission_v1",
+  "status": "pass",
+  "source_packet": "/scratch/agustin/tmp/gemmini-source-stride-retained-20261007/docs/perf_records/paired_source_stride_retained_current2081_whole_qualification.json",
+  "source_packet_sha256": "b80143c744d508b98a2673579fea5dcaa0bb928fae6c07c0d0ba1d88714c146a",
+  "pins_revalidated": 1959,
+  "candidate_elf": "/scratch/agustin/tmp/gemmini-source-stride-retained-20261007/out/source_stride_retained_v1/controlled2081_v2/candidate/model.elf",
+  "candidate_elf_sha256": "f19998ecc60b6286990af9f7a13ff0150dfb7f9a50715314df6be5c663d1061c",
+  "original_output_digest": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "original_count": 1000,
+  "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_atol": 0,
+  "original_rtol": 0,
+  "independent_all1000_native_source_exact": true,
+  "fresh52_kernel_adapter_byte_identity": true,
+  "changed_fresh_kernel": "gemmini_exact_requant_24",
+  "fresh_source_canonical_identity": {
+    "captured_requant_bundle.py": "4d233d8dea702f2bc0639b377de740ad128a2c4d5d0c280a582c7cdb26e46ac7",
+    "golden_resident_conv.py": "959014a15048b1b296857de557ac683c646d7c473e5f05905e06121380e7ed3e",
+    "golden_resident_stripe_conv.py": "0605eb02a67b2ae0c0544371bcdfe1abb92605bcd20552e2b8e3808f95c5f7c3",
+    "golden_device_lower.py": "b321cef91bfa23c037d0f9fa4d380ea8f902073b1804edf85cc41e381902622b",
+    "golden_gemm.py": "1b21a7ec3e50cf4abd438b8bec575a67401a56762058dca9991e7b9b82f1aa80",
+    "execute_wave_estimator.py": "0a57c6cc170e057e2b02d754bbac580086d53553576ede1721d7e381f28bd0da",
+    "ir/gemmini_dialect.py": "8496d3dd2a3c09a17921851ca50f56c146783b717b0f6d05c10d7b287f8d2550"
+  },
+  "actual_selected_entry_closure": {
+    "status": "PASS",
+    "elf_sha256": "f19998ecc60b6286990af9f7a13ff0150dfb7f9a50715314df6be5c663d1061c",
+    "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+    "argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "-g",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x80000000",
+      "/scratch/agustin/tmp/gemmini-source-stride-retained-20261007/out/source_stride_retained_v1/controlled2081_v2/candidate/model.elf"
+    ],
+    "stdout_sha256": "f835aac3e0c4c5d0234e778ae233f2bd766391efb4b29753d2d9cd0cd99d75b6",
+    "histogram_sha256": "1e8d049441121ceee5670f4fb8fb0f4c5a6f3b6223aac6ac821f1def341c9a51",
+    "original1000_full_digest_match": true,
+    "selected_symbol": "gemmini_exact_requant_24_kernel",
+    "selected_symbol_entry_count": 1,
+    "selected_symbol_bounds": {
+      "symbol": "gemmini_exact_requant_24_kernel",
+      "start": 2148093680,
+      "end": 2148102056
+    },
+    "selected_primitive_link_relocation_equivalent": true,
+    "branch_relocation_witness": [
+      {
+        "offset": 6392,
+        "final_target": 2148099890,
+        "source_local_target": 6210
+      },
+      {
+        "offset": 6574,
+        "final_target": 2148100082,
+        "source_local_target": 6402
+      },
+      {
+        "offset": 6762,
+        "final_target": 2148100268,
+        "source_local_target": 6588
+      },
+      {
+        "offset": 6950,
+        "final_target": 2148100456,
+        "source_local_target": 6776
+      },
+      {
+        "offset": 7138,
+        "final_target": 2148100644,
+        "source_local_target": 6964
+      },
+      {
+        "offset": 7322,
+        "final_target": 2148100828,
+        "source_local_target": 7148
+      },
+      {
+        "offset": 7506,
+        "final_target": 2148101012,
+        "source_local_target": 7332
+      },
+      {
+        "offset": 7690,
+        "final_target": 2148101196,
+        "source_local_target": 7516
+      },
+      {
+        "offset": 7874,
+        "final_target": 2148101380,
+        "source_local_target": 7700
+      },
+      {
+        "offset": 8338,
+        "final_target": 2148099666,
+        "source_local_target": 5986
+      }
+    ],
+    "selected_object_sha256": "5cf655b3088415b55176b8a9561948bb34c160b93fd01f3686f327dc83632e78",
+    "whole_cycles": "UNKNOWN"
+  },
+  "whole_cycles": "UNKNOWN",
+  "prelabel_winner": "UNKNOWN",
+  "no_section_gain_sum": true
+}

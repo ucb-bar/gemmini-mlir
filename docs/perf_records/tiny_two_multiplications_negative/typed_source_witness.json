@@ -1,0 +1,134 @@
+{
+  "schema": "complete_typed_dequant_residual_extraction_witness_v1",
+  "status": "pass",
+  "source_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny1880-host-classes-20261005/prebuffer.mlir",
+  "source_sha256": "04a9a3eccb4578c446d51ad6ed23694911936bbbcc0bf00efd57b8c65f43a518",
+  "source_capsule_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+  "selected_original_source_ordinal": 0,
+  "matching_original_source_ops": 44,
+  "source_and_capsule_semantic_fingerprint": "9d7a3db200a0120ed66750812cba0ddbdb2be882a43ceab33b272758873ed1d6",
+  "exact_complete_ssa_maps_types_constant_and_attribute_match": true,
+  "typed_witness": {
+    "body": [
+      {
+        "name": "arith.sitofp",
+        "operands": [
+          [
+            "argument",
+            1,
+            "i32"
+          ]
+        ],
+        "result_types": [
+          "f32"
+        ],
+        "attributes": {}
+      },
+      {
+        "name": "arith.mulf",
+        "operands": [
+          [
+            "result",
+            0,
+            0,
+            "f32"
+          ],
+          [
+            "constant",
+            "f32",
+            {
+              "value": "6.85257779E-4 : f32"
+            }
+          ]
+        ],
+        "result_types": [
+          "f32"
+        ],
+        "attributes": {
+          "fastmath": "#arith.fastmath<none>"
+        }
+      },
+      {
+        "name": "arith.mulf",
+        "operands": [
+          [
+            "result",
+            1,
+            0,
+            "f32"
+          ],
+          [
+            "argument",
+            2,
+            "f32"
+          ]
+        ],
+        "result_types": [
+          "f32"
+        ],
+        "attributes": {
+          "fastmath": "#arith.fastmath<none>"
+        }
+      },
+      {
+        "name": "arith.addf",
+        "operands": [
+          [
+            "argument",
+            0,
+            "f32"
+          ],
+          [
+            "result",
+            2,
+            0,
+            "f32"
+          ]
+        ],
+        "result_types": [
+          "f32"
+        ],
+        "attributes": {
+          "fastmath": "#arith.fastmath<none>",
+          "prov.origin_node_ids": "[\"g:original:root:n292\", \"g:quantized:root:n758\"]",
+          "prov.source_node_ids": "[\"g:prepared:root:n809\"]",
+          "prov.trace_role": "\"lowering\""
+        }
+      },
+      {
+        "name": "linalg.yield",
+        "operands": [
+          [
+            "result",
+            3,
+            0,
+            "f32"
+          ]
+        ],
+        "result_types": [],
+        "attributes": {}
+      }
+    ],
+    "block_arguments": [
+      "f32",
+      "i32",
+      "f32",
+      "f32"
+    ],
+    "operand_types": [
+      "tensor<1x8x2048xf32>",
+      "tensor<1x8x2048xi32>",
+      "tensor<2048xf32>",
+      "tensor<1x8x2048xf32>"
+    ],
+    "result_types": [
+      "tensor<1x8x2048xf32>"
+    ],
+    "attributes": {
+      "indexing_maps": "[affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>]",
+      "iterator_types": "[#linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>]",
+      "operandSegmentSizes": "array<i32: 3, 1>"
+    }
+  },
+  "older_exact_original_body_field": "The extraction receipt field is a diagnostic Python Region repr. This file supplies the executable canonical SSA/constant witness; neither field selects production policy."
+}

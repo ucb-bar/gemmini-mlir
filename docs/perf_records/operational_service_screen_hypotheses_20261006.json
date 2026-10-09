@@ -1,0 +1,45 @@
+{
+  "schema": "operational_service_screen_hypotheses_v1",
+  "declared_utc": "2026-10-06T20:26:11+00:00",
+  "purpose": "Diagnostic memory and accelerator stream screening using existing Merlin fitter",
+  "declaration_scope": "Before root inspection of stock gather2030 and primitive timing labels; gather GSIM results already observed",
+  "repeat_policy": "Average the two complete repeats per case before fitting; retain both raw samples",
+  "partition": "Use each source manifest's predeclared middle-size heldout cases, including both repeats",
+  "engines": "GSIM and stock fit separately; Spike is correctness and instruction census only",
+  "include_fixed": false,
+  "maximum_condition": 1000,
+  "hypotheses": {
+    "gather": [
+      ["retired_instructions"],
+      ["requested_cpu_bytes"],
+      ["requested_64B_region_bytes"],
+      ["memory_working_set_bytes"],
+      ["log2_working_set_bytes"],
+      ["retired_instructions", "requested_64B_region_bytes"]
+    ],
+    "resident_gemm": [
+      ["retired_instructions"],
+      ["array_work_padded_rows"],
+      ["retired_instructions", "array_work_padded_rows"]
+    ],
+    "requested_load": [
+      ["retired_instructions"],
+      ["requested_dma_load_bytes"],
+      ["retired_instructions", "requested_dma_load_bytes"]
+    ],
+    "i32_readback": [
+      ["retired_instructions"],
+      ["requested_dma_store_bytes"],
+      ["retired_instructions", "requested_dma_store_bytes"]
+    ]
+  },
+  "anticipated_refusals": "Two training cases cannot identify two parameters under the shared fitter's four-distinct-points rule. Gather retired instructions and requested bytes are constant, so even those one-parameter screens lack two distinct feature points. Do not weaken these gates.",
+  "limitations": [
+    "One middle heldout case per family, two repeats; insufficient to license production ranking",
+    "Requested 64B regions are source address groupings, not physical cache lines, misses or DDR bytes",
+    "log2 extent is an exploratory proxy, not an assumed cache capacity or memory mechanism",
+    "Primitive windows include CPU issue and fenced completion; fitted coefficients are not pure device service rates",
+    "Choosing the best exploratory hypothesis requires fresh independent validation",
+    "No source-equivalent ordering, whole program prediction, Jack-reference fit or default production enablement"
+  ]
+}

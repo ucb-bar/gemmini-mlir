@@ -1,0 +1,180 @@
+{
+  "schema": "golden_compiler_export_qualification_v1",
+  "checkpoint_utc": "2026-10-05 21:04:51 UTC",
+  "owner": "/root/reference_parity",
+  "hypothesis": "Reuse existing package inventory/edit contracts and GlobalPlanEmission to expose real golden compiler owners and make an explicit selected contraction control executable code.",
+  "token_accounting": "Root records owned-thread raw counters; no exclusive per-change attribution inferred from child goal counter.",
+  "scope": "One exact source contraction and descriptive package edit inventory. No whole-model solver, full-model allocation or FireSim performance claim.",
+  "focused_checks_passed": 45,
+  "manifest_sha256": "c2fa30dad5a32c26b1bbebc5d9dfb37e96b51b293ffab587f6317e5ae6775d12",
+  "declared_surfaces": [
+    "golden_dense_shape",
+    "golden_dense_transfer_family",
+    "golden_remaining_b_slots",
+    "golden_dense_output_schedule",
+    "golden_conv_schedule",
+    "golden_conv_resident_stripe"
+  ],
+  "compiler_edit_contract_sha256": "510d64a664047c7596215d91471b9f3978ec6cbdac47e1a3a863a521e7b82967",
+  "source_sha256": "3238db44eb7bb10d74fc487e4e34ca969461f213633fb9f49fb8babff0ae3b05",
+  "dimensions": {
+    "batch": 1,
+    "m": 123,
+    "n": 73,
+    "k": 1041
+  },
+  "kernel_symbol": "gemmini_export_8c25b4a2ed5d5134",
+  "schedule": {
+    "m": 123,
+    "n": 73,
+    "k": 1041,
+    "output_dtype": "i32",
+    "bm": 8,
+    "bn": 5,
+    "bias": false,
+    "scale": 1.0,
+    "relu": false,
+    "wide_store": false,
+    "reuse_b": true,
+    "cache_b": false,
+    "cache_a": true,
+    "pipeline_m": false,
+    "prefetch_m": false,
+    "banked_m": false,
+    "wide_a": false,
+    "wide_b": true,
+    "separate_b_bank": false,
+    "prefetch_b": true
+  },
+  "prefetch_b_rows": [
+    8448,
+    8528
+  ],
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "6a2df48a2f62242ac74d8ac371723e5163b49ff8ac09dacab3d40268d143b372",
+    "llvm_mlir_sha256": "f4ae4b54f21cbbf222529743bb9ce2d866f536df921272e6646c567c404dd510",
+    "llvm_ir_sha256": "67c5d4c650f1bed1a71e7df088d991475373538e5a4da881b5b15cfac1695343",
+    "object_sha256": "1e296a8dcd4eda8c5f3b539d277319c24a71782aa977eadc8bf018461a4d94e6",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "out/golden_source_export/compiled/kernel.llvm.mlir",
+        "-o",
+        "out/golden_source_export/compiled/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-c",
+        "out/golden_source_export/compiled/kernel.ll",
+        "-o",
+        "out/golden_source_export/compiled/kernel.o"
+      ]
+    ]
+  },
+  "global_plan_emission": {
+    "schema": "global_plan_emission_v2",
+    "plan_digest": "b81d704c00bbdcf97221d844f1724854d758089374bcc8f3b5c090ac2bd18f7a",
+    "logical_dispatch_digest": "f1c61500211fd5b10afd0cf9fc2a828a61843699350009b94115b9cc4fea699c",
+    "emitted_dispatch_digest": "80aed45f29a4135d797221c11a5ce426cae678e4cc380f068fbc59329ef20168",
+    "regions": [
+      {
+        "plan_id": "contraction_8c25b4a2ed5d5134",
+        "node_indices": [
+          0
+        ],
+        "inputs": {
+          "lhs": "lhs",
+          "rhs": "rhs"
+        },
+        "outputs": {
+          "output": "output"
+        }
+      }
+    ],
+    "transitions": [],
+    "boundaries": [
+      {
+        "direction": "input",
+        "logical_buffer": "lhs",
+        "emitted_buffer": "lhs"
+      },
+      {
+        "direction": "input",
+        "logical_buffer": "rhs",
+        "emitted_buffer": "rhs"
+      },
+      {
+        "direction": "output",
+        "logical_buffer": "output",
+        "emitted_buffer": "output"
+      }
+    ],
+    "provenance": [
+      "source_sha256:3238db44eb7bb10d74fc487e4e34ca969461f213633fb9f49fb8babff0ae3b05",
+      "target_ir_sha256:6a2df48a2f62242ac74d8ac371723e5163b49ff8ac09dacab3d40268d143b372",
+      "object_sha256:1e296a8dcd4eda8c5f3b539d277319c24a71782aa977eadc8bf018461a4d94e6",
+      "scope:one exact source contraction; surrounding model work is unmodified and unaccounted here"
+    ]
+  },
+  "selected_plan_controls_emitted_code": true,
+  "shared_solver_selected": false,
+  "occupancy_status": "unknown",
+  "cycles_status": "unknown",
+  "numeric_execution": {
+    "engine": "Spike functional RV64GC+Gemmini; mcycle is not hardware timing",
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--isa=RV64GC",
+      "--extension=gemmini",
+      "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/golden_source_export/numeric_probe_configured/layer.elf"
+    ],
+    "status": "pass",
+    "outputs_checked": 8979,
+    "guard_bytes_checked": 2048,
+    "input_amplitude": 21,
+    "elf_sha256": "d7b36a6637b3f7028455d03bde7f183aff58a73ef04560a909f3e8708f1cd7aa",
+    "spike_log_sha256": "0df732e629e4f46a12e6b05485e2a16ac90f743d9d87d289ebb207eac27542e0",
+    "log_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/golden_source_export/numeric_probe_configured/spike.log",
+    "final_nofsm_audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "d7b36a6637b3f7028455d03bde7f183aff58a73ef04560a909f3e8708f1cd7aa",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 4,
+        "1": 12,
+        "2": 528,
+        "3": 40,
+        "4": 30,
+        "5": 210,
+        "6": 240,
+        "7": 1
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "attempts": [
+    "Build without explicit support package refused missing backend",
+    "Build with support package but no tool paths refused MERLIN_RISCV_GCC",
+    "Explicit provider/tool/harness/load-address build passed and strict execution passed"
+  ],
+  "artifacts": {
+    "export": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/golden_source_export/compiled/golden_export.json",
+    "inventory": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/golden_source_export/inventory.json"
+  },
+  "outcome": "admit narrow structural export; no cycle or whole-model performance claim",
+  "remaining": "Connect real whole-model DeviceRouting/catalog decisions to existing full-model plan/emission support, then calibrated shared selection."
+}

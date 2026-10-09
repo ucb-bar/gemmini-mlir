@@ -1,0 +1,196 @@
+{
+  "scope": "independent17x19x65 three-term exact integer product sum, sameaddresses,323outputs+2048guards; standalone not fullheadgain",
+  "results": [
+    {
+      "label": "independent_full21bit_range",
+      "shape": [
+        17,
+        19,
+        64
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 323,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3096768
+        },
+        {
+          "absolute": true,
+          "outputs": 323,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3096768
+        }
+      ]
+    },
+    {
+      "label": "independent_full21bit_range",
+      "shape": [
+        5,
+        7,
+        192
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 35,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 9290304
+        },
+        {
+          "absolute": true,
+          "outputs": 35,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 9290304
+        }
+      ]
+    },
+    {
+      "label": "independent_full21bit_range",
+      "shape": [
+        3,
+        9,
+        512
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 27,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 24774144
+        },
+        {
+          "absolute": true,
+          "outputs": 27,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 24774144
+        }
+      ]
+    },
+    {
+      "label": "independent_full21bit_range",
+      "shape": [
+        1,
+        17,
+        1
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 17,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 48387
+        },
+        {
+          "absolute": true,
+          "outputs": 17,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 48387
+        }
+      ]
+    },
+    {
+      "label": "independent_full21bit_range",
+      "shape": [
+        19,
+        3,
+        65
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 57,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3145155
+        },
+        {
+          "absolute": true,
+          "outputs": 57,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3145155
+        }
+      ]
+    },
+    {
+      "label": "original_first_rows_QK",
+      "shape": [
+        17,
+        19,
+        64
+      ],
+      "checks": [
+        {
+          "absolute": false,
+          "outputs": 323,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3096768
+        },
+        {
+          "absolute": true,
+          "outputs": 323,
+          "exact_old_grouped_direct": true,
+          "max_group_i32_bound": 3096768
+        }
+      ]
+    }
+  ],
+  "source_pins": {
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/source_q.bin": "c403b7de4be3888dfd38ed10f14023484c57c6e7c20b3a8c259a7f1420b5d427",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/source_k.bin": "cc4c618ec6a696aa7709cb2cb8cf907294b2e0e7104b2e6f8ea28e40336a826b"
+  },
+  "complete_head": {
+    "old_readback_bytes": 84934656,
+    "grouped_readback_bytes": 47185920,
+    "old_recombine_iterations": 21233664,
+    "grouped_recombine_iterations": 11796480,
+    "old_plane_calls": 54,
+    "grouped_calls": 30,
+    "mesh_macs_unchanged": true
+  },
+  "constraints": "3 signed radix128digits,K<=512;group i32bound3*K*127\u00b2;weighted integerprefix magnitudes<2^51 so every f64multiply/add exact",
+  "target_capsule": {
+    "result": "EngineRun(records=(), finish=EngineFinish(cycles=174463, wall_seconds=18.11, done=True, exit_code=0), wall_seconds=18.127811916870996, returncode=0, stdout_sha256='66ca1e9f6e3b7ab1810cfa0c2c8cec873389b473a5d56394b00d8530d6d6768b', engine={'target': 'gemmini', 'engine': 'gsim', 'path': '/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator', 'source': 'env:MERLIN_GEMMINI_GSIM_EMU', 'available': True, 'refused': False, 'reason': 'GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json', 'flavour': 'binary', 'binary_sha256': '1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea', 'receipt_status': 'bound', 'receipt': {'receipt_path': '/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json', 'receipt_sha256': '2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099', 'schema_version': 'merlin.gsim-model-build.v2', 'status': 'complete', 'binary_sha256': '1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea', 'firrtl_sha256': '089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8', 'firrtl_path': '/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir', 'model_manifest_sha256': 'f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d', 'inputs_sha256': '688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f', 'commands_sha256': 'b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c', 'provenance': None, 'tools': {'cxx_compiler': '40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125', 'cxx_wrapper': 'bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512', 'gsim_emitter': '246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446'}}}, command_sha256='d3a5d4770aab508444aa9977988f76563d4bff00ae8661bd5a4e6c1e111a0205', stdout_tail='GROUP_CYCLES 0 0 13767\\nGROUP_CYCLES 0 1 3559\\nGROUP_CYCLES 1 1 3390\\nGROUP_CYCLES 1 0 13134\\nGROUP_PASS\\n', stderr_tail='[gsim-emu] zero-init 302353 register words\\n[tsi-probe] SimTSI called for the first time\\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\\n[gsim-emu] reset done, running (max_cycles=10000000)\\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\\n[gsim-ar] #0 addr=0x80001000\\n[gsim-ar] #1 addr=0x80000000\\n[gsim-ar] #2 addr=0x80000040\\n[gsim-ar] #3 addr=0x80000080\\n[gsim-ar] #4 addr=0x800000c0\\n[gsim-ar] #5 addr=0x80000100\\n[gsim-ar] #6 addr=0x80002cc0\\n[gsim-ar] #7 addr=0x80029d00\\n[gsim-ar] #8 addr=0x80002d00\\n[gsim-ar] #9 addr=0x80002c40\\n[gsim-ar] #10 addr=0x80002c80\\n[gsim-ar] #11 addr=0x80009d40\\n[gsim-ar] #12 addr=0x80009d80\\n[gsim-ar] #13 addr=0x80002b80\\n[gsim-ar] #14 addr=0x80002e40\\n[gsim-ar] #15 addr=0x80029c80\\n[gsim-ar] #16 addr=0x80002e80\\n[gsim-ar] #17 addr=0x80029c40\\n[gsim-ar] #18 addr=0x80029c00\\n[gsim-ar] #19 addr=0x80002ec0\\n[gsim-ar] #20 addr=0x800052c0\\n[gsim-ar] #21 addr=0x800077c0\\n[gsim-ar] #22 addr=0x80007800\\n[gsim-ar] #23 addr=0x80005300\\n[gsim-ar] #24 addr=0x80007840\\n[gsim-ar] #25 addr=0x80005340\\n[gsim-ar] #26 addr=0x80007880\\n[gsim-ar] #27 addr=0x80005380\\n[gsim-ar] #28 addr=0x800078c0\\n[gsim-ar] #29 addr=0x800053c0\\n[gsim-ar] #30 addr=0x80007900\\n[gsim-ar] #31 addr=0x80005400\\n[gsim-ar] #32 addr=0x80007940\\n[gsim-ar] #33 addr=0x80005440\\n[gsim-ar] #34 addr=0x80007980\\n[gsim-ar] #35 addr=0x80005480\\n[gsim-ar] #36 addr=0x800079c0\\n[gsim-ar] #37 addr=0x800054c0\\n[gsim-ar] #38 addr=0x80007a00\\n[gsim-ar] #39 addr=0x80005500\\n\\n[gsim-emu] FINISHED: cycles=174463 wall=18.11s (9636 cyc/s) done=1 exit_code=0\\n[gsim-stats] dram_aw=0 dram_w=0 dram_ar=505 writes>=0x110000000=0 writes_resultpage=0\\n[gsim-stats] last_aw=0x0 last_ar=0x80002b00 max_ar=0x80029d00 r_fires=4040 b_fires=0 cvfpu_accepts=0 uart_chars=0\\n', load_path='backdoor')",
+    "elf_sha256": "b024538e02e039e5125a62c3001be7ade9a51d5b74ad9c10cecc63373c667185",
+    "shape": [
+      17,
+      19,
+      65
+    ],
+    "pairs": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "original_outputs": 323,
+    "guards": 2048,
+    "passed": true
+  },
+  "paired_cycles": {
+    "order_AB": {
+      "separate": 13767,
+      "grouped": 3559
+    },
+    "order_BA": {
+      "separate": 13134,
+      "grouped": 3390
+    }
+  },
+  "default_programs_byte_identical": 4,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_plane_grouping/validate.py": "a5a13e58434ff15dcd547d48398b648f52acbee3851c568e91c77d878cf3b9d3",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_plane_grouping/target_probe.py": "a4daf37608a810a347a6ec2bde1b6009d3a25ef0254e66b9fa3cbeb076279554",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_plane_grouping/target/gsim.log": "66ca1e9f6e3b7ab1810cfa0c2c8cec873389b473a5d56394b00d8530d6d6768b",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_plane_grouping/target/spike.log": "1701e04e12b8d63a552db2f13e190dc04cd88f25e246e9d1cf42962a24854287",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_plane_grouping/target/audit.json": "64a0698d3bab52c2d91e03e36d98eeb3d5f589f5bc44cc83f0af9d61fd564648"
+  }
+}

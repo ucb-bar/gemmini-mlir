@@ -1,0 +1,51 @@
+{
+  "schema": "root_fused2069_structural_role_review_v1",
+  "status": "VERIFIED_EXCLUSIVE_INSTRUCTION_ACCOUNTING",
+  "pins_reclosed": 285,
+  "same_compiled_group_roi": 1806165115,
+  "exclusive_roles": {
+    "provider_gather_copy_output_control_inline": 180313864,
+    "endpoint_frontier_inline": 206372985,
+    "softmax_polynomial_denominator_inline": 641837705,
+    "device_callback_issue_fence_instructions": 3760800,
+    "dot_metadata_estimates_checked_fallback_inline": 197475908,
+    "integer_reconstruction_scaling_finish_inline": 134355424,
+    "source_replay_inline": 49736696,
+    "radix_encoding_widening_inline": 355323029
+  },
+  "remaining_roi_shared_instructions": 36988704,
+  "outside_roi_validation_instructions_not_charged": 151975030,
+  "wholeprogram_shared_callees_not_charged_wholesale": 344044381,
+  "actual_device_work": {
+    "callbacks": 480,
+    "readback_bytes": 86507520,
+    "scalar_mac_products": 3623878656
+  },
+  "declared_mesh_floor": {
+    "declared_rows": 16,
+    "declared_columns": 16,
+    "conditional_MACs_per_cycle": 256,
+    "full_radix_ideal_cycles": 14155776,
+    "useful_MAC_ideal_cycles": 1572864,
+    "scope": "Conditional analytical compute floor assuming one useful MAC per PE per cycle; stock source declaration only, not throughput measurement or bitstream derivation. Excludes issue, fill/drain, data movement and all host work."
+  },
+  "cycles_by_role": "UNKNOWN",
+  "accelerator_host_cycle_percentages": "UNKNOWN",
+  "new_label_fitted": false,
+  "proposal": {
+    "mechanism": "Prepared monotone source-polynomial inverse observation cells",
+    "idea": "Construct source-plan-derived preimages of BF16 rounding cells over admitted finite F32 score domain. Runtime interval membership can certify probability bins by comparisons instead of evaluating both cubic endpoints. Retain source-word endpoint ranges and source-ordered denominator accumulation; coarse bin-only denominator bounds cannot silently replace current tighter ranges. Whole-row scale and final i8 observations remain mandatory.",
+    "required_proof": [
+      "Exact chosen source F32 operations and rounding at every polynomial step, cutoff and signedzero",
+      "Complete monotonicity on admitted range, independently checked threshold neighbors and closed boundary convention",
+      "Immutable plan/rounding/effects ownership; unknown/nonfinite/domain fallback",
+      "Both escaping BF16 scale and i8 closure; denominator interval widening/replay included in complete cost"
+    ],
+    "status": "Proposal only; feasibility and table construction cost unknown. Existing one-endpoint and deferred-probability negatives must be checked before implementation. No new numerical precision policy."
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-fused-role-audit-20261007/docs/perf_records/fused2069_source_role_structural_audit.json": "414401eca5df0bfb613a35b52d848a748ffa03ef9d318a1c511654ce5739b1f6",
+    "/scratch/agustin/tmp/gemmini-fused-role-audit-20261007/out/debug/closure.json": "2cccb4806abf5628d81e2acd771e54d06a635bbbd987f3f1e0085c63fce03f2d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_smol_fused_radix_stock_release_20261007.json": "2c83fcaa1e157032bf897efbd978b11c07b18173bef2c31bc93191df8735f838"
+  }
+}

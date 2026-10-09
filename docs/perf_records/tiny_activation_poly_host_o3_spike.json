@@ -1,0 +1,106 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Full22-layer pretrainedTiny same explicit activation polynomial arithmetic; only host Clang optimization O2 to O3; same originalTorch gate",
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_o3/build/model.elf",
+  "elf_sha256": "ede2f4815a0850052266d45091b9042c8df186b1f60017120390e138ccecb19e",
+  "model_object_sha256": "169b4202963fb5ecbdf8032c00b8f98d2e71e299eca0856e75f1f63bc8c17aac",
+  "model_object_control_sha256": "96e263fc1b3dd1008d0ca2f78cee24db03de27e31a808edebb5fa15e65d079fe",
+  "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "torch_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+  "torch_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+  "torch_atol": 0.03125,
+  "torch_rtol": 0.02,
+  "torch_allclose": true,
+  "prior_compiled_output_exact": true,
+  "torch_relative_l2": 2.1918432935308374e-07,
+  "torch_max_abs_error": 9.5367431640625e-06,
+  "spike_full_output_match": true,
+  "spike_observed": {
+    "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "output_elements": 256000,
+    "output_bytes": 1024000
+  },
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_o3/spike.log",
+  "spike_console_sha256": "d41142963f13cd75a1ec01024fbbece72861874010b488cfcefcbfce3ac3d801",
+  "spike_instructions": 217424612,
+  "control_spike_instructions": 218423000,
+  "instruction_reduction_fraction": 0.004570892259514792,
+  "cycles_scope": "Spike functional retired instructions; no FireSim result for O3 candidate",
+  "unchanged_artifact_hashes": {
+    "host_llvm/model.ll": "1fc54cb177d6b88bdb04b76af36c37dcc4a925cc3c76703e742161ac0134fca7",
+    "host_llvm/model.native.ll": "c341f2a959f904425cefa5cd1c0ee52e6d172b677c0b59a2271045541deab9e6",
+    "device_catalog/kernel.o": "2c0ccc4eff4eba24f2f6479b466fad50a44175dfd49451ef58e1ca54ddc46dc2",
+    "mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+    "malloc.o": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+    "libc_min.o": "a827a57082b834669a9c7dada97087fa1bacb0e7b7b47028ad125c4309918b76"
+  },
+  "native_gate_reuse": "Native oracle LLVM and all device/runtime objects byte-identical to already executed O2 control; actual O3 target executed independently and full outputSHA checked",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "ede2f4815a0850052266d45091b9042c8df186b1f60017120390e138ccecb19e",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 160,
+      "2": 738,
+      "3": 320,
+      "4": 640,
+      "6": 640,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_o3/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "cef9b1713a12",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_o3/build/lower/model.ll",
+      "source_sha256": "7e55d557716e240592f1a82402845881a5086aad6018d5efe42302492670f5c5",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/tiny_large_n_scalar_host_quant_rne_act_poly_scalar_o3/build/host_llvm/model.ll",
+      "selected_sha256": "1fc54cb177d6b88bdb04b76af36c37dcc4a925cc3c76703e742161ac0134fca7"
+    },
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "promotion": "Spike proxy screen only; small 0.46% instruction gain does not establish hardware improvement or justify separate queue arm"
+}

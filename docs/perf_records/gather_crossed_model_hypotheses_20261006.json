@@ -1,0 +1,28 @@
+{
+  "schema": "operational_service_screen_hypotheses_v1",
+  "purpose": "Identify read-count versus requested-region sensitivity on independent source-declared count/extent/seed variants before seeing timing labels.",
+  "partition": "Primary seed count1024/16384 and extent64KiB/8MiB four corners train. All middle count/extent axes and all second-seed cases held out including both repeats.",
+  "aggregation": "Mean of both original repeats per case; preserve raw repeat rows. No confidence interval or cache-state assertion.",
+  "include_fixed": false,
+  "maximum_condition": 1000,
+  "hypotheses": {
+    "gather": [
+      ["retired_instructions"],
+      ["requested_cpu_bytes"],
+      ["requested_64B_region_bytes"],
+      ["memory_working_set_bytes"],
+      ["log2_working_set_bytes"],
+      ["retired_instructions", "requested_64B_region_bytes"],
+      ["requested_cpu_bytes", "requested_64B_region_bytes"]
+    ]
+  },
+  "limitations": [
+    "This new declaration precedes new timing labels; previous4096-read stream results are already known.",
+    "New cases use the byte-identical released gather and common fenced kernel-call source. Memory initialization and addresses are bound to the new ELF.",
+    "Source requested64B regions are address granules, not proved physical cache lines/misses/DDR.",
+    "Both repeats are averaged as declared; substantial first/second differences must remain visible.",
+    "Each engine fits separately; Spike cycles are an instruction proxy and are never training labels.",
+    "This screen cannot price full Tiny table certification, Smol owner allocation/packing/consumers, or unknown memory/CPU overlap.",
+    "No Jack22.387M labels fitted, whole estimator or production/default ranking enabled."
+  ]
+}

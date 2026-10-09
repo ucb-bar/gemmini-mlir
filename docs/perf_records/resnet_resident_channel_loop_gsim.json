@@ -1,0 +1,397 @@
+{
+  "schema": "resident_channel_loop_screen_v1",
+  "scope": "Explicit source-shape resident channel loop, synthetic signed-i8 inputs, every numeric output and2048guard bytes verified in actualGSIM and strictRV64GC Spike. No whole-model/FireSim claim.",
+  "generator_sha256": "b928a5323c2ea6e0eb55b55bcada88594d5473063ff163fba059ee70a3021ac5",
+  "verifier_sha256": "c4ebc8b5fd1be07e2e49ebdf70d7ffc03bfcc32b6e2ab04dcd8213b55659bd08",
+  "results": {
+    "resident7_group2_loop": {
+      "resident_input": true,
+      "pingpong_b": false,
+      "shape": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 16,
+        "output_dtype": "i8",
+        "scale": 0.0015428082551807165,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "wide_a": false,
+      "separate_b_bank": false,
+      "band_rows": null,
+      "flat_spatial": false,
+      "static_inputs": true,
+      "input_value_rules": [
+        251,
+        125,
+        241,
+        120
+      ],
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "stderr": "0000)\n[load-probe] writes=2000 bytes=2046408 rejected=0\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x800050c0\n[gsim-ar] #7 addr=0x8028a9c0\n[gsim-ar] #8 addr=0x80005100\n[gsim-ar] #9 addr=0x80005040\n[gsim-ar] #10 addr=0x80005080\n[gsim-ar] #11 addr=0x8026aa00\n[gsim-ar] #12 addr=0x8026aa40\n[gsim-ar] #13 addr=0x80004f80\n[gsim-ar] #14 addr=0x80005240\n[gsim-ar] #15 addr=0x8028a900\n[gsim-ar] #16 addr=0x80005280\n[gsim-ar] #17 addr=0x8028a940\n[gsim-ar] #18 addr=0x8024b580\n[gsim-ar] #19 addr=0x8026a1c0\n[gsim-ar] #20 addr=0x8026a200\n[gsim-ar] #21 addr=0x8026a240\n[gsim-ar] #22 addr=0x8026a280\n[gsim-ar] #23 addr=0x8026a2c0\n[gsim-ar] #24 addr=0x8026a300\n[gsim-ar] #25 addr=0x8026a340\n[gsim-ar] #26 addr=0x8026a380\n[gsim-ar] #27 addr=0x8026a3c0\n[gsim-ar] #28 addr=0x8026a400\n[gsim-ar] #29 addr=0x8026a440\n[gsim-ar] #30 addr=0x8026a480\n[gsim-ar] #31 addr=0x8026a4c0\n[gsim-ar] #32 addr=0x8026a500\n[gsim-ar] #33 addr=0x8026a540\n[gsim-ar] #34 addr=0x8026a580\n[gsim-ar] #35 addr=0x8026a5c0\n[gsim-ar] #36 addr=0x8026a600\n[gsim-ar] #37 addr=0x8026a640\n[gsim-ar] #38 addr=0x8026a680\n[gsim-ar] #39 addr=0x8026a6c0\n[link-probe] ticks=200000 in_fires=14176 out_fires=5666 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=28486 out_fires=11390 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=42901 out_fires=17156 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=58386 out_fires=23355 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=943090 wall=82.68s (11407 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=148 dram_w=1184 dram_ar=39240 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8028a700 last_ar=0x80004f00 max_ar=0x8028a9c0 r_fires=313920 b_fires=148 cvfpu_accepts=0 uart_chars=0\n",
+      "kernel_cycles": 708664,
+      "elf_sha256": "37094ea9cb798d6c7cbea2001ab1a038cd9b2014afdda5761c1e71f9c1bf10e7",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "cf8bbb4ff60f1c70430143f6e4d4c485687e5d00a084ac87c669a2124830207c",
+        "llvm_mlir_sha256": "bf1898b3131c9c1a18af5c8f29965acf7d9ddec05afe00ccd545c5819bf803b7",
+        "llvm_ir_sha256": "4dbc1f0a7c70f90b40d2b346f6b7dfdda4c9a156fd5966b6e54c97c8c4abc12d",
+        "object_sha256": "fe89a40cbabe83dcc1d53f80236aeec2f95a302de07dc673fd7f486af5246441",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident7_group2_loop/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident7_group2_loop/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident7_group2_loop/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident7_group2_loop/kernel.o"
+          ]
+        ]
+      },
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "37094ea9cb798d6c7cbea2001ab1a038cd9b2014afdda5761c1e71f9c1bf10e7",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 40,
+          "2": 184,
+          "3": 28,
+          "4": 160,
+          "5": 480,
+          "6": 640,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "gsim_engine": {
+        "target": "gemmini",
+        "engine": "gsim",
+        "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+        "source": "derived",
+        "available": true,
+        "refused": false,
+        "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+        "flavour": "binary",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "receipt_status": "bound",
+        "receipt": {
+          "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+          "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+          "schema_version": "merlin.gsim-model-build.v2",
+          "status": "complete",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+          "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+          "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+          "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+          "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+          "provenance": null,
+          "tools": {
+            "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+            "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+          }
+        }
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 708664\nGOLDEN_CONV PASS\n",
+      "strict_spike_isa": "rv64gc",
+      "spike_sha256": "e451cd3c59c28af2d8d5eefa27856f5e698000528e799c1b6b745dbd9649a326",
+      "spike_pass": true,
+      "probe_c_sha256": "47c98cb5ed02bdce103a233044f2948e6d87b648bcf8695e02e6bb0b00d0a18e",
+      "target_ir_sha256": "cf8bbb4ff60f1c70430143f6e4d4c485687e5d00a084ac87c669a2124830207c"
+    },
+    "resident_small_group2_loop": {
+      "resident_input": true,
+      "pingpong_b": false,
+      "shape": {
+        "h": 5,
+        "w": 5,
+        "cin": 32,
+        "cout": 19,
+        "stride": 1,
+        "bn": 2,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "wide_a": false,
+      "separate_b_bank": false,
+      "band_rows": null,
+      "flat_spatial": false,
+      "static_inputs": true,
+      "input_value_rules": [
+        251,
+        125,
+        241,
+        120
+      ],
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "stderr": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=1000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80002cc0\n[gsim-ar] #7 addr=0x80026140\n[gsim-ar] #8 addr=0x80002c00\n[gsim-ar] #9 addr=0x80002c40\n[gsim-ar] #10 addr=0x80002d00\n[gsim-ar] #11 addr=0x80002c80\n[gsim-ar] #12 addr=0x80006180\n[gsim-ar] #13 addr=0x800061c0\n[gsim-ar] #14 addr=0x80002b40\n[gsim-ar] #15 addr=0x80002e40\n[gsim-ar] #16 addr=0x80026080\n[gsim-ar] #17 addr=0x800260c0\n[gsim-ar] #18 addr=0x80005900\n[gsim-ar] #19 addr=0x80005940\n[gsim-ar] #20 addr=0x80005980\n[gsim-ar] #21 addr=0x800059c0\n[gsim-ar] #22 addr=0x80005a00\n[gsim-ar] #23 addr=0x80005a40\n[gsim-ar] #24 addr=0x80005a80\n[gsim-ar] #25 addr=0x80005ac0\n[gsim-ar] #26 addr=0x80005b00\n[gsim-ar] #27 addr=0x80005b40\n[gsim-ar] #28 addr=0x80005b80\n[gsim-ar] #29 addr=0x80005bc0\n[gsim-ar] #30 addr=0x80005c00\n[gsim-ar] #31 addr=0x80005c40\n[gsim-ar] #32 addr=0x80005c80\n[gsim-ar] #33 addr=0x80005cc0\n[gsim-ar] #34 addr=0x80005d00\n[gsim-ar] #35 addr=0x80005d40\n[gsim-ar] #36 addr=0x80005d80\n[gsim-ar] #37 addr=0x80005dc0\n[gsim-ar] #38 addr=0x80005e00\n[gsim-ar] #39 addr=0x80005e40\n\n[gsim-emu] FINISHED: cycles=34591 wall=2.43s (14242 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=2 dram_w=16 dram_ar=262 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80005fc0 last_ar=0x80002ac0 max_ar=0x80026140 r_fires=2096 b_fires=2 cvfpu_accepts=0 uart_chars=0\n",
+      "kernel_cycles": 4254,
+      "elf_sha256": "7930db703ae8d21070839861ae38f65a41332b864fe246dcc3b03ab331d20dcd",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "c2d1d1840b8e6265c0113b762577e1bd3c75d171f5f3dc1a5c59e0c367250452",
+        "llvm_mlir_sha256": "a9f5103e243c83ebc02f0b09af1b54623e39c922f99822f1b0264d1ab18168b2",
+        "llvm_ir_sha256": "ef94d5a48458bbf6322712e9ddd68a257ee42dd661da41de18768149040cf99a",
+        "object_sha256": "c855b3d7f16b004a3cf93bc689837a82bf74baae33a6ac0ebe025f14d9ce34ea",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident_small_group2_loop/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident_small_group2_loop/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident_small_group2_loop/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident_small_group2_loop/kernel.o"
+          ]
+        ]
+      },
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "7930db703ae8d21070839861ae38f65a41332b864fe246dcc3b03ab331d20dcd",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 18,
+          "2": 17,
+          "3": 10,
+          "4": 36,
+          "5": 72,
+          "6": 108,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "gsim_engine": {
+        "target": "gemmini",
+        "engine": "gsim",
+        "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+        "source": "derived",
+        "available": true,
+        "refused": false,
+        "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+        "flavour": "binary",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "receipt_status": "bound",
+        "receipt": {
+          "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+          "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+          "schema_version": "merlin.gsim-model-build.v2",
+          "status": "complete",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+          "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+          "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+          "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+          "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+          "provenance": null,
+          "tools": {
+            "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+            "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+          }
+        }
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 4254\nGOLDEN_CONV PASS\n",
+      "strict_spike_isa": "rv64gc",
+      "spike_sha256": "239e7b1597d0ad20d9fe768ec5c77a28b4c88115ec25419acfd5740762a20dad",
+      "spike_pass": true,
+      "probe_c_sha256": "862108ec3247e531f95b3439e86df2c34b40857c209767d55e30bec2053fcba1",
+      "target_ir_sha256": "c2d1d1840b8e6265c0113b762577e1bd3c75d171f5f3dc1a5c59e0c367250452"
+    },
+    "resident14_loop": {
+      "resident_input": true,
+      "pingpong_b": false,
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "wide_a": false,
+      "separate_b_bank": false,
+      "band_rows": null,
+      "flat_spatial": false,
+      "static_inputs": true,
+      "input_value_rules": [
+        251,
+        125,
+        241,
+        120
+      ],
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "stderr": "r=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80004c80\n[gsim-ar] #7 addr=0x800ff180\n[gsim-ar] #8 addr=0x80004cc0\n[gsim-ar] #9 addr=0x80004c00\n[gsim-ar] #10 addr=0x80004c40\n[gsim-ar] #11 addr=0x800df1c0\n[gsim-ar] #12 addr=0x800df200\n[gsim-ar] #13 addr=0x80004b40\n[gsim-ar] #14 addr=0x80004e00\n[gsim-ar] #15 addr=0x800ff0c0\n[gsim-ar] #16 addr=0x800ff100\n[gsim-ar] #17 addr=0x80004e40\n[gsim-ar] #18 addr=0x800a1340\n[gsim-ar] #19 addr=0x800de980\n[gsim-ar] #20 addr=0x800de9c0\n[gsim-ar] #21 addr=0x800dea00\n[gsim-ar] #22 addr=0x800dea40\n[gsim-ar] #23 addr=0x800dea80\n[gsim-ar] #24 addr=0x800deac0\n[gsim-ar] #25 addr=0x800deb00\n[gsim-ar] #26 addr=0x800deb40\n[gsim-ar] #27 addr=0x800deb80\n[gsim-ar] #28 addr=0x800debc0\n[gsim-ar] #29 addr=0x800dec00\n[gsim-ar] #30 addr=0x800dec40\n[gsim-ar] #31 addr=0x800dec80\n[gsim-ar] #32 addr=0x800decc0\n[gsim-ar] #33 addr=0x800ded00\n[gsim-ar] #34 addr=0x800ded40\n[gsim-ar] #35 addr=0x800ded80\n[gsim-ar] #36 addr=0x800dedc0\n[gsim-ar] #37 addr=0x800dee00\n[gsim-ar] #38 addr=0x800dee40\n[gsim-ar] #39 addr=0x800dee80\n[link-probe] ticks=200000 in_fires=15701 out_fires=6276 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=31771 out_fires=12704 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=47996 out_fires=19199 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=64866 out_fires=25947 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=975253 wall=78.41s (12438 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=578 dram_w=4624 dram_ar=13885 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x800fefc0 last_ar=0x80004ac0 max_ar=0x800ff180 r_fires=111080 b_fires=578 cvfpu_accepts=0 uart_chars=0\n",
+      "kernel_cycles": 521496,
+      "elf_sha256": "e848c6e590dc789c658d0e3c92fc6cea926e134d517924e1f13e15f39bac6657",
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "a9aebad24865884a6071f9f9265c1e7dbe19f33c9d1f74ada0a48841a8478d96",
+        "llvm_mlir_sha256": "53dbc266c6b5fd6e58442580f336cdf2b7a13840ab4b56656f3d894ff459516b",
+        "llvm_ir_sha256": "08cb7e2263b13ca965abeb4c9393248e1242ee1f4a0d7820b88027eff7e87ea8",
+        "object_sha256": "de9aa6d8325987f64c1da37c88928d27bb3b649194165bcf04487f06eaf07f1e",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident14_loop/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident14_loop/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident14_loop/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resident14_loop/kernel.o"
+          ]
+        ]
+      },
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "e848c6e590dc789c658d0e3c92fc6cea926e134d517924e1f13e15f39bac6657",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 10,
+          "2": 176,
+          "3": 14,
+          "4": 40,
+          "5": 520,
+          "6": 560,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "gsim_engine": {
+        "target": "gemmini",
+        "engine": "gsim",
+        "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+        "source": "derived",
+        "available": true,
+        "refused": false,
+        "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+        "flavour": "binary",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "receipt_status": "bound",
+        "receipt": {
+          "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+          "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+          "schema_version": "merlin.gsim-model-build.v2",
+          "status": "complete",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+          "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+          "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+          "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+          "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+          "provenance": null,
+          "tools": {
+            "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+            "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+          }
+        }
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 521496\nGOLDEN_CONV PASS\n",
+      "strict_spike_isa": "rv64gc",
+      "spike_sha256": "21824c71245f4efd8538e60605a953b830d381c5110f02ead212ee4974280877",
+      "spike_pass": true,
+      "probe_c_sha256": "62b85a239a1b25efa96e0b098c10945d64cd16575f749d1d78e2abeec0c99c8c",
+      "target_ir_sha256": "a9aebad24865884a6071f9f9265c1e7dbe19f33c9d1f74ada0a48841a8478d96"
+    }
+  },
+  "comparison": {
+    "stage7_flat_cycles": 759715,
+    "stage7_static_resident_cycles": 743898,
+    "stage7_looped_cycles": 708664,
+    "stage7_text_bytes_before": 310354,
+    "stage7_text_bytes_after": 11102,
+    "stage14_static_resident_cycles": 533649,
+    "stage14_looped_cycles": 521496,
+    "stage14_text_bytes_after": 9998
+  },
+  "default_objects_byte_identical": {
+    "stage7": "4d1c5aebacc840c40e837b86f4d6a03416462de169e879e51b264f8cfaf64609",
+    "stage14": "678e734f6ff48461c85fece6b51876567c34af5f16cbac46e577f0f2b424d65b"
+  },
+  "address_contract": {
+    "range": "channelplane index0..Cin/16-1; base=(ki*plane)+(tile_y+kh)*padded_width+kw",
+    "reserved_rows": "Cin/16*plane",
+    "extent": "a_max+a_rows<=reserved_rows; encoded short rows mask SRAM reads beyonda_rows",
+    "rtl": "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala",
+    "rtl_sha256": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+    "rtl_lines": [
+      310,
+      424
+    ]
+  },
+  "selection": "loop_channelsFalse default. Source-bound exact schedule options explicit, allocator/resource proof unchanged, zerohardwareLOOP instructions."
+}

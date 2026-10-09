@@ -1,0 +1,42 @@
+{
+  "schema": "root_resnet_current2025_resident_stripes_release_v1",
+  "timestamp_utc": "2026-10-06T19:02:37.363856+00:00",
+  "owner": "root",
+  "qualification": {
+    "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/resnet_resident_stripes_current2025_qualified.json",
+    "sha256": "72b58ea6195d953f0634041f617c48862c069e053025c71a825da28f9140f8be"
+  },
+  "qualification_commit": "b5ec71135f42f4d9df4c41aba6740aa2be7be0c2",
+  "reviewed_probe": {
+    "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/current2025_resident_stripes_qualification_probe.py",
+    "sha256": "871ef3f5586efac32a0fb1a103eac23e88843b02fb5ae81ed5ba08ac3288ccf9"
+  },
+  "root_execution": "bash out/current_resident_stripes/reclose.sh in gemmini-current-resident-stripes-20261006; CURRENT2025_RESIDENT_STRIPES_CLOSURE_PASS37015pins",
+  "independently_rehashed_pins": 37015,
+  "control": {
+    "job": 2025,
+    "cycles": 31697615,
+    "elf": "/scratch/agustin/tmp/gemmini-current-resident-stripes-20261006/out/current_resident_stripes/controlled_resident/control/model.elf",
+    "elf_sha256": "4e9cb2a0bd1395e67f9c996f9f29115296496f07f84c41cf0820e28391d1ec21"
+  },
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-current-resident-stripes-20261006/out/current_resident_stripes/controlled_resident/candidate/model.elf",
+    "elf_sha256": "754ac4a310e581a6ddaa401d65e64e2ae28a87c909e2d93cbaf610d85fad1393"
+  },
+  "scope": "Original whole model, controlled frozen actual2025 host/runtime/weights; normal compiler and exact source/device binding independently retained",
+  "changed_kernels": [
+    "gemmini_exact_requant_1",
+    "gemmini_exact_requant_5",
+    "gemmini_exact_requant_8",
+    "gemmini_exact_requant_15",
+    "gemmini_exact_requant_18",
+    "gemmini_exact_requant_21"
+  ],
+  "preserved": "All52adapters, other46kernels, all source/numeric proofs, segmented3, mean, fullK, source-stride24, host/runtime/weights",
+  "gates": "Normal and controlled original1000 native/strict exact0/0, all final executable sections zeroFSM; six complete original source capsules and independent tails",
+  "capsule_scope": "Complete kernel GSIM only; no whole-model savings forecast",
+  "whole_candidate_cycles": "UNKNOWN until stock execution",
+  "root_release": true,
+  "queue_owner": "firesim_recovery",
+  "target": "FireSimGemminiRocketConfig stock"
+}

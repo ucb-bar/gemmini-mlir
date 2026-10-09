@@ -1,0 +1,156 @@
+{
+  "schema": "smol_normal_host_math_policy_emission_equivalence_v1",
+  "status": "pass",
+  "policy": "expf_via_double",
+  "default_policy": "native",
+  "core_commit": "c988337bb",
+  "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/full_smol_math_policy_fused/build/model.elf",
+  "elf_sha256": "d6992d95f10edddadee1b2c0953099a6f7cabccc52771835621ff0b597018282",
+  "build_hash": "3967509ae289",
+  "executed_reference_elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/full_smol_double_exp/model.elf",
+  "executed_reference_elf_sha256": "b67073fe42621d38f72221cf0d900a916cfd096388da51ea354d1e87ae9ef7b0",
+  "executed_reference_marker": "2507f377df79",
+  "qualification_basis": "Entire loaded ELF bytes identical except12-character diagnostic marker; no fresh arithmetic replay claimed",
+  "loaded_segments": [
+    {
+      "address": 2147483648,
+      "file_bytes": 3034774,
+      "memory_bytes": 3034774,
+      "flags": 5,
+      "physical_address": 2147483648,
+      "alignment": 4096
+    },
+    {
+      "address": 2150518784,
+      "file_bytes": 3358312,
+      "memory_bytes": 3489304,
+      "flags": 6,
+      "physical_address": 2150518784,
+      "alignment": 4096
+    },
+    {
+      "address": 2218786816,
+      "file_bytes": 499712288,
+      "memory_bytes": 499712288,
+      "flags": 6,
+      "physical_address": 2218786816,
+      "alignment": 4096
+    }
+  ],
+  "loaded_image_marker_mask_exact": true,
+  "native_original_bits_exact": true,
+  "actual_target_original_bits_exact": true,
+  "original_output_elements": 1600,
+  "target_gate": {
+    "rc": 0,
+    "done": true,
+    "rank0": true,
+    "elements": 1600,
+    "bitwise_mismatches": 0,
+    "allclose": true,
+    "outside_original_gate": 0,
+    "maxabs": 0.0,
+    "retired_instructions": 134915565000,
+    "elf_sha256": "b67073fe42621d38f72221cf0d900a916cfd096388da51ea354d1e87ae9ef7b0",
+    "spike_log_sha256": "47081011c97b0e832e30b436148ea492c1bbed49feabaded3f15f2914ae4a850",
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/bundle/golden.npy",
+    "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "elapsed_seconds": 2045.664069890976
+  },
+  "native_gate": {
+    "scope": "unchanged accepted outlined model.o, accepted native SO supplies runtime and integer device stand-ins, only expf wrapped via double exp",
+    "model_o_sha256": "effe22b68fd7b177cdc7b273e2d49a5cb70a862fbc1faaa7c556e3af1b17c20e",
+    "original_runtime_provider_so_sha256": "a3dda3fccafc08aff62e749223eda9a839bec3e2cd9a8fd91d926f4c65d9198e",
+    "native_so_sha256": "d6a309923f248b65312262452298b7d72cfe415fc683d99f6fee1dbe8d1abba5",
+    "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "elements": 1600,
+    "bitwise_mismatches": 0,
+    "allclose": true,
+    "maxabs": 0.0,
+    "original_atol": 0.03125,
+    "original_rtol": 0.02
+  },
+  "controlled_objects": {
+    "model.o": {
+      "control_sha256": "39ca699eafa333bf032af47631d1979560d379c74cfbe12f6ee65090f8ea9325",
+      "candidate_sha256": "39ca699eafa333bf032af47631d1979560d379c74cfbe12f6ee65090f8ea9325"
+    },
+    "mlir_rt.o": {
+      "control_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+      "candidate_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e"
+    },
+    "weights_blob.o": {
+      "control_sha256": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae",
+      "candidate_sha256": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae"
+    },
+    "model_call.o": {
+      "control_sha256": "bbe45bba15b221405da77478158fd8e2c3ecb692857932bb03a7b47726fd8415",
+      "candidate_sha256": "bbe45bba15b221405da77478158fd8e2c3ecb692857932bb03a7b47726fd8415"
+    },
+    "merlin_model.o": {
+      "control_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+      "candidate_sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c"
+    },
+    "crt.o": {
+      "control_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "candidate_sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d"
+    },
+    "console.o": {
+      "control_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+      "candidate_sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec"
+    },
+    "libc_min.o": {
+      "control_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+      "candidate_sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+    },
+    "malloc.o": {
+      "control_sha256": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697",
+      "candidate_sha256": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697"
+    },
+    "device/device_catalog_shim.o": {
+      "control_sha256": "32c7253e81a89e19e9325925ef2e3eae6b5418912f6cace0881824a92d341c00",
+      "candidate_sha256": "32c7253e81a89e19e9325925ef2e3eae6b5418912f6cace0881824a92d341c00"
+    }
+  },
+  "final_no_fsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "d6992d95f10edddadee1b2c0953099a6f7cabccc52771835621ff0b597018282",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 76,
+      "1": 756,
+      "2": 329,
+      "3": 1656,
+      "4": 758,
+      "5": 2554,
+      "6": 3312,
+      "7": 19
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "actual_host_flags": {
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "host_vectorize": false
+  },
+  "source_prepared_sha256": "dfe30cac52c4f077afffd8458688d89507bdfee6c4684f35696d42ce6c85fa25",
+  "source_upstream_sha256": "32965c4ca10c537c65c1549341ced9461cfafdadfb3e6b405e58f6e00da3b33a",
+  "llvm_identical_except_module_id_comment": true,
+  "runtime_recipe_evidence": {
+    "original_wrapper": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/full_smol_double_exp/wrapper.o",
+    "generated_wrapper": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/full_smol_math_policy/runtime_emission/host_math.o",
+    "disassembly_and_relocations_identical": true,
+    "original_object_sha256": "961025f44a6c81450670eeb0c303b37e951a9e9e11e715d403fbad929f388f5b",
+    "generated_object_sha256": "cce953da4ed4c5e176e181bdadb31490b12f8356da9b737e78ca2884514bc345",
+    "link_flags": [
+      "-Wl,--wrap=expf"
+    ],
+    "scope": "runtime helper instruction and relocation equivalence; full target numerical gate still pending"
+  },
+  "focused_tests_pass": 29,
+  "structure_target_name_regex_gates": "pass",
+  "no_new_hardware_submission": true,
+  "token_usage_available": false
+}

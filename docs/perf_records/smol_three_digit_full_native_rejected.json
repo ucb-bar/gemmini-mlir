@@ -1,0 +1,8144 @@
+{
+  "decision": "rejected; no target or FireSim admission",
+  "scope": "fixed three-digit precision ladder; functional-only nine-plane emulation, not calibrated to golden values",
+  "full_original_gate": {
+    "scope": "functional-only explicit three-digit BF16 attention approximation; all nonattention source retained; frozen native runtime/integer stand-ins; expf-via-double policy",
+    "model_o_sha256": "e87c15a7b91b586f8f0b03a34e83e8947258548ff66a02616cf64ace9192de3e",
+    "original_runtime_provider_so_sha256": "a3dda3fccafc08aff62e749223eda9a839bec3e2cd9a8fd91d926f4c65d9198e",
+    "native_so_sha256": "af4223148645327e767a9ae7cde9503057672d0ceea64fc50fbae954b1e1b547",
+    "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "elements": 1600,
+    "failed_count": 121,
+    "finite": true,
+    "relative_l2": 0.024476426763913827,
+    "bitwise_mismatches": 1600,
+    "allclose": false,
+    "maxabs": 0.16766369342803955,
+    "original_atol": 0.03125,
+    "original_rtol": 0.02
+  },
+  "first_head": {
+    "scope": "complete original first attention head; local gate is diagnostic, not whole-model admission",
+    "reference": {
+      "bit_mismatches": 0,
+      "failed_local_gate": 0,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "raw_sha256": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e"
+    },
+    "sources": {
+      "q": "c403b7de4be3888dfd38ed10f14023484c57c6e7c20b3a8c259a7f1420b5d427",
+      "k": "cc4c618ec6a696aa7709cb2cb8cf907294b2e0e7104b2e6f8ea28e40336a826b",
+      "v": "5cdcbfe27b8a5617d233c7bec3469c01c9c3ee339c2403b39e9202f8b0696e7a",
+      "gold": "4c59757e043163bc08d7a0c86b8ede3ba1558973ae35d8a04e3fd497fb65c46e"
+    },
+    "3": {
+      "bit_mismatches": 27,
+      "failed_local_gate": 0,
+      "max_abs": 0.000244140625,
+      "relative_l2": 3.081223817519918e-05,
+      "raw_sha256": "fd23dc6bca92e18887737554f5f22fab0901fbf00c08e3a3288707dd11ef9b5f"
+    }
+  },
+  "producer_validation": {
+    "original_q_rows": 17,
+    "original_k_rows": 19,
+    "k": 64,
+    "digit_reconstruction_exact": true,
+    "nine_plane_dot_exact": true,
+    "binary32_source_scale_quantization_matches_independent_float64": true,
+    "f64_exact_integer_dot_domain": "K<=192 and 21-bit signed magnitudes gives sum<2^53"
+  },
+  "source_contract": {
+    "policy": "explicit approximate three signed radix128 digits per operand; row power-of-two scaling; RNE/clamp; sum emulated exactly in f64 then narrowf32",
+    "scope": "functional-only complete source screen; no target or hardware promotion",
+    "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+    "candidate_sha256": "5164d55d1d4e3fd5513ad41ff6e02e7f7f2432dc9015ecc91abe83ed1f9889f2",
+    "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "routes": [
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs": [
+          1,
+          12,
+          512,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          512
+        ],
+        "rhs_transposed": true
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          192
+        ],
+        "rhs": [
+          1,
+          12,
+          192,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      },
+      {
+        "lhs": [
+          1,
+          12,
+          256,
+          128
+        ],
+        "rhs": [
+          1,
+          12,
+          128,
+          64
+        ],
+        "output": [
+          1,
+          12,
+          256,
+          64
+        ],
+        "rhs_transposed": false
+      }
+    ]
+  },
+  "comparison": {
+    "two_digit_failed": 106,
+    "two_digit_maxabs": 0.1435578465461731,
+    "interpretation": "Comparable/worse error after added precision supports ordering/rounding floor hypothesis; does not establish unique cause."
+  },
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/screen.py": "84b19788d21f7cd1b7d45e4ee0e72c1270ced28174f950322b527d3dcf42d418",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/derive_full.py": "c05cb20e874836e6a00f318c67d60b1307d4f3500dcea959256ea0418804d190",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/build_native.py": "80f883c8a3cf99b205d72497acd9af3b6a2d307b8eb28b319056a82b792e5be8",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/validate_native.py": "04a96a75e5c9615462655e36e570ca30da1417c276388690859a90effe2dbb03",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/run_full.sh": "cecddacc240494f8169da01ad49a182345c753b2bcaca41f7e2cd0e87367c368",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/full.log": "e391646add293aa9643af3c17dc939d9f3893b8513fd0c1a1e42cfffa581eb5e",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/native_output.npy": "a25f0ee4f87aa48bfefeac82e7ad535abcaa11766491efd313aacd9711b4c577",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/native_validation.json": "3e5be78f655310af2cc025a00e2e65fa9f1ef589e8bfa005454d7732b95cfc50",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/bundle/model.mlir": "5164d55d1d4e3fd5513ad41ff6e02e7f7f2432dc9015ecc91abe83ed1f9889f2",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/build/lower/model.ll": "f96ad8bc30a3dfafe81749adab5d45268b58beb698e20b36c6468529c59e4d69",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/attention_three_digit_screen/native.so": "af4223148645327e767a9ae7cde9503057672d0ceea64fc50fbae954b1e1b547"
+  }
+}

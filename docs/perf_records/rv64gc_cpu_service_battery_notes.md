@@ -1,0 +1,13 @@
+# CPU service calibration battery
+
+This is a general RV64GC operational service experiment. It changes no model implementation or accuracy policy. The21 predeclared cases measure dependent versus eight-lane independent DIV/FMA, contiguous versus stride17 payload memory operations, and forced32-bit instruction bodies. Middle sizes are held out together with both arms and all repetitions; no timing fitted here, including no Jack timing.
+
+The one immutable ELF017f0d044703cc13f10e5d37d45808218400bed82ca689f66b712f617711024d passes strictRV64GC Spike,45counter windows,24exact FP result observations, full memory/untouched-hole/tail/guard checks and independent finalchecksumfa042df21310a5d1. Exact rational neighbor-midpoint checks validate every oracle binary32 rounding. Every FP recurrence remains finite, normal and nonconstant; NX=1 and FRM=RNE are checked. The final executable contains no custom instructions and no FSM instructions. Compile and link both end with strictFP overrides; actual argv and every dependency are pinned.
+
+Counters bracket the common fenced function call. Startup, initialization, numerical checking, guards, checksumming and UART stay outside those windows. Three empty windows are retained separately; no implicit subtraction. Spike mcycle is a retired-instruction proxy. GSIM and stock FireSim have separate hardware/memory domains. Requested CPU payload bytes and touched instruction bytes do not establish physical DDR traffic or cache misses. Function PC histograms aggregate all sizes and repetitions; they are never divided to invent per-case aliases.
+
+The first GSIM attempt reached12Mcycles at898.2seconds, done=false, without the terminalchecksum. Its partial rows are excluded from qualified fitting and stock timing claims. It is retained at original paths. A bounded24M/2100second replay uses identical ELF/source/timer/partition bytes. Parent may independently release the fully qualified Spike packet to stock while the replay runs.
+
+`fast_service_battery_qualification_probe.py --stock-record` explicitly recloses Recovery's terminalUART and its mandatory intendedELF, actualstagedELF, actualstagedbitstream and runworkload receipts before producing the distinct stock feature domain. It preserves all actual counters and partitions. No stock labels existed when this importer and the pilot alternatives were declared.
+
+The separate gather fixture is not part of this releasedELF. It uses4096 common deterministic raw indices masked over64KiB/512KiB/8MiB, with512KiB held out, one rotate/XOR register dependency and requested64B regions explicitly unproven as actual cache lines. Its strictSpike gate passes; its8MiB initialization/verification cost is separate from timed gather windows.

@@ -1,0 +1,108 @@
+{
+  "schema": "resnet_readout_rejected_partial_gsim_screen_v1",
+  "decision": "reject; slower in every completed alternating pass; prototype removed from active source; no model build or FireSim submission",
+  "candidate": "fixed-point estimate correction with two unconditional threshold loads and padded saturation sentinels",
+  "reproduction": {
+    "base_commit": "232c38e",
+    "patch": "docs/perf_records/resnet_branchless_readout_rejected.patch",
+    "patch_sha256": "36ab5adcda72a2aa7dc172ec6cf1129ed461b46413f161b45f5dd28a55812a02",
+    "probe_source": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/probe.c",
+    "probe_source_sha256": "cb9190d42ada7181997ef4b3c20bab15334bee11ffd0c025dc9bf116d00df710",
+    "probe_driver": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/probe.py",
+    "probe_driver_sha256": "df590bd834fa2124bd2f925e03f93193f004e4bdf5beb427108c87fa5dc08b65"
+  },
+  "captured_input_provenance": {
+    "scope": "Full exact1795 native replay, raw i32 scratch captured at entry of two exact readout functions; no source/reference changes",
+    "full1000_output_exact": true,
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "baseline_model_object_sha256": "acd918cd2b2c8ee7f2f04f4a2238fccc77a7c99bb12fc040f1795aa138b8e4ae",
+    "instrumented_oracle_source_sha256": "b1255ce3c93c8e09b0d9a442ecdd10def9c0108a66160323c0e5cb76ced589bb",
+    "sources": {
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/host/model.o": "acd918cd2b2c8ee7f2f04f4a2238fccc77a7c99bb12fc040f1795aa138b8e4ae",
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/host/reference.c": "eab0f96df7e98e53e6a1be7b7fd9f9f02f42938ee853fb32a2cf84f5904aef46",
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/build_direct/device_prepared/direct_conv/native_oracle.c": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/instrumented_native_oracle.c": "b1255ce3c93c8e09b0d9a442ecdd10def9c0108a66160323c0e5cb76ced589bb",
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/stem_pool_bundle/native_oracle.c": "dc0a114845ad7b99321bc8b97f8310308ce34ced6286c5264415daffcea652bb",
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/residual_bundle/native_oracle.c": "99119913709d0cc21b299fa07be323a03d825518f60b58b7438800596c6dd1c5",
+      "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/build_direct/device/device_catalog_shim.c": "747e7bed26256612dba056f505aa435d81abdf2af4fe7844ac62979c2c0d3833",
+      "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3"
+    },
+    "readout_arrays": {
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/gemmini_exact_requant_24_readout.i32": {
+        "elements": 50176,
+        "sha256": "87a26ed7e86e15e3c618a700da23a1bfcfd1ea878689bdeb8406b21fdcd79105"
+      },
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/gemmini_exact_requant_47_readout.i32": {
+        "elements": 25088,
+        "sha256": "1f467295e84b7e2ef4e86fa820c86bfe25cf0ec32657cb62a2f2e06b3634442e"
+      }
+    }
+  },
+  "engine": {
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "build_receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099"
+  },
+  "elf": {
+    "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_readout_fixture/probe_build/layer.elf",
+    "sha256": "804d3843e176158e1bf928219666e0ae381c9857c479ae5dab16e9cdece09ad4",
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "804d3843e176158e1bf928219666e0ae381c9857c479ae5dab16e9cdece09ad4",
+      "executable_sections": 3,
+      "custom_funct_counts": {},
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "execution": {
+    "complete": false,
+    "exit_code": -1,
+    "timeout_seconds": 600,
+    "max_cycles": 100000000,
+    "full_pass_marker": false,
+    "completed_rows": [
+      {
+        "case": 0,
+        "iteration": 0,
+        "cycles": 1546507,
+        "variant": "conditional"
+      },
+      {
+        "case": 0,
+        "iteration": 1,
+        "cycles": 1912991,
+        "variant": "branchless"
+      },
+      {
+        "case": 0,
+        "iteration": 2,
+        "cycles": 1519331,
+        "variant": "conditional"
+      },
+      {
+        "case": 0,
+        "iteration": 3,
+        "cycles": 1902986,
+        "variant": "branchless"
+      }
+    ],
+    "scope": "50176 original captured i32 inputs and 2048 output guard bytes checked after each of four completed calls; smaller25088 array was not reached; current incomplete fifth call is excluded",
+    "stdout_sha256": "af286dac91d5e2cce4a18cfa8c36420e7d1d7c616c4d71e93bb5c5c72b33c1de",
+    "run_log_sha256": "6261dc32b11b4c31dc93a49255d9e5b13d36e30d8086f2eab0064ab0fee37d62"
+  },
+  "timing": {
+    "median_cycles": {
+      "conditional": 1532919.0,
+      "branchless": 1907988.5
+    },
+    "branchless_fraction_increase": 0.2446766593668681,
+    "scope": "GSIM larger captured array, same ELF, alternating variants; no hardware/full-model estimate"
+  },
+  "arithmetic_tests": {
+    "passed": 12,
+    "scope": "temporary fixedpoint/branchless implementations compared to original ordered float arithmetic on full transition/interior witness; not hardware qualification"
+  },
+  "promotion": false
+}

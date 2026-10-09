@@ -1,0 +1,39 @@
+{
+  "schema": "normal_attention_whole_target_v1",
+  "scope": "Actual ordinary compilation, source-consumer certified provider, pooled workspace and retained original source fallback; unchanged original1600 gate.",
+  "validation": {
+    "scope": "Actual ordinary whole Smol original1600 gate with source-consumer provider, pooledworkspace and retainedsource fallback. Target correctness only; no performance promotion.",
+    "elf_sha256": "043f0e592778a35609ce415b93d66cdc45e0c39c6339149111945fb155517fd1",
+    "reference_path": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/native/output.npy",
+    "reference_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "expected_output_sha256": "1e5b274d4c99cb6710994542f509769ba61ed37f435dc6ee1ed05ed1b8cc03de",
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x400000000",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/build/model.elf"
+    ],
+    "started_at": 1791278828.670012,
+    "token_usage_available": false,
+    "returncode": 0,
+    "status": "pass",
+    "log_sha256": "17e2300de1cbb5fd7d66b497356a88d5941a797513d7351dc8785b743e22e2c7",
+    "elapsed_seconds": 3521.7596957683563,
+    "final_elf_unchanged": true
+  },
+  "retired_instructions": 220253190030,
+  "raw_spike_metric_label": "cycles",
+  "raw_label_semantics": "Spike mcycle instruction diagnostic; not FireSim cycles",
+  "rowfloor_control_instructions": 306168018359,
+  "fraction_change_vs_rowfloor": -0.280613333781518,
+  "decision": "Correctness qualified; no hardware admission or whole performance promotion. Remains above original exact CPU target instruction count.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/target_validation.json": "ba3eafd1334e267acebf4d6c98d95959d1531f44253f45d2d4cb7ff19c874d8f",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/target_spike.log": "17e2300de1cbb5fd7d66b497356a88d5941a797513d7351dc8785b743e22e2c7",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/target_intent.json": "700c58ef32397238c60aef13ffba182ef2507f75a102f53b9f99d3fbd93850ae",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/target_watcher.json": "9794ad9c227688f48e86d25002c0b9737caebbcb1c114b8f39ab90420ed1f0c1",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/build/model.elf": "043f0e592778a35609ce415b93d66cdc45e0c39c6339149111945fb155517fd1"
+  },
+  "token_usage_available": false
+}

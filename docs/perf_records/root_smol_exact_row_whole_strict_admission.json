@@ -1,0 +1,32 @@
+{
+  "schema": "root_smol_exact_row_whole_target_admission_v1",
+  "status": "native_source_closed_target_pending",
+  "source_packet": "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/docs/perf_records/exact_row_normal_source_qualification.json",
+  "source_packet_sha256": "c34447ce6aaeb3b303275efd07b89d75f72cc7cb42bfccbacaea72bda9de7842",
+  "source_pins_revalidated": 156,
+  "elf": "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/exact_row_normal/build_v1/model.elf",
+  "elf_sha256": "a4b9b6796bfe2ebcfc3fe26e829152185a79f08a5d4f402b18a4047dafa4cdd4",
+  "engine": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+  "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=15s",
+    "7200s",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "-g",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/gemmini-smol-normal-composition-20261007/out/exact_row_normal/build_v1/model.elf"
+  ],
+  "original_gate": {
+    "elements": 1600,
+    "atol": 0.03125,
+    "rtol": 0.02
+  },
+  "hardware_admission": false,
+  "bound_basis": "Prior original whole strict source execution134915565000 retired instructions completed in2045.664 seconds, exceeding first1800s bound. Latest native-qualified row-proof successor replaces completed first native source; no target pass inferred from timeout.7200s is a run bound, not a performance forecast",
+  "prior_timeout": "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/smol_normal_whole_strict/terminal.json",
+  "scope": "Actual complete normal48 source target, original1600 final gate. Explicit16GiB Spike map is functional only; final stock memory binding and whole eligibility remain pending"
+}

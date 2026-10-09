@@ -1,0 +1,59 @@
+Script started on 2026-10-07 05:46:16-07:00 [COMMAND="stty intr ^] &&  ./FireSim-xilinx_alveo_u250 +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=merlin-golden-nofsm-probe0-dummy.rootfs +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=merlin-golden-nofsm-probe0-probe.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +domain=0x0000 +bus=0x42 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off +prog0=merlin-golden-nofsm-probe0-probe.elf   && stty intr ^c" TERM="screen" TTY="/dev/pts/26" COLUMNS="80" LINES="24"]
++domain found: 0x0000
++bus found: 0x42
++device found: 0x00
++function found: 0x0
++bar found: 0x0
+Using: 0000:42:00.0, BAR ID: 0, PCI Vendor ID: 0x10ee, PCI Device ID: 0x903f
+Opening /sys/bus/pci/devices/0000:42:00.0/vendor
+Opening /sys/bus/pci/devices/0000:42:00.0/device
+examining xdma/.
+examining xdma/..
+examining xdma/xdma0_h2c_0
+Using xdma write queue: /dev/xdma0_h2c_0
+Using xdma read queue: /dev/xdma0_c2h_0
+widget_registry_t::add_widget(StreamEngine)
+cpu2fpga: 0, fpga2cpu: 1
+UART0 is here (stdin/stdout).
+TraceRV 0: Tracing disabled, since +tracefile was not provided.
+command line for program 0. argc=26:
++permissive +macaddr0=00:12:6D:00:00:02 +blkdev0=merlin-golden-nofsm-probe0-dummy.rootfs +niclog0=niclog0 +blkdev-log0=blkdev-log0 +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=merlin-golden-nofsm-probe0-probe.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default +domain=0x0000 +bus=0x42 +device=0x00 +function=0x0 +bar=0x0 +pci-vendor=0x10ee +pci-device=0x903f +permissive-off merlin-golden-nofsm-probe0-probe.elf 
+entered simulation flow execution
+finished waiting
+FireSim fingerprint: 0x46697265
+TracerV: Trigger enabled from 0 to 18446744073709551615 cycles
+Commencing simulation.
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+tsibridge_t::tick skipping tick
+INTEGER_RESULT_SOURCE_GATE initialRNE words=45056 original guards PASS
+INTEGER_RESULT_POINTERS a=80a877c0 sa=80ab37c0 b=80ab8fc0 sb=80ae4fc0 out=80b05bd8
+INTEGER_RESULT_STORAGE id=0 sample=0 a=80a877c0 sa=80ab37c0 b=80ab8fc0 sb=80ae4fc0 expected=80aea7c0 guarded=80b05b98 out=80b05bd8 fine=800077c0 coarse=80af57c0 fine_hash=924581e408989b6a coarse_hash=dbf9a8817c8657ae
+INTEGER_RESULT_ROW id=0 sample=0 cycles=3555507 instructions=1726434 digest=b702909ca80dfe2a
+INTEGER_RESULT_STORAGE id=1 sample=1 a=80a877c0 sa=80ab37c0 b=80ab8fc0 sb=80ae4fc0 expected=80aea7c0 guarded=80b05b98 out=80b05bd8 fine=800077c0 coarse=80af57c0 fine_hash=924581e408989b6a coarse_hash=dbf9a8817c8657ae
+INTEGER_RESULT_ROW id=1 sample=1 cycles=3529426 instructions=1764719 digest=b702909ca80dfe2a
+INTEGER_RESULT_STORAGE id=1 sample=2 a=80a877c0 sa=80ab37c0 b=80ab8fc0 sb=80ae4fc0 expected=80aea7c0 guarded=80b05b98 out=80b05bd8 fine=800077c0 coarse=80af57c0 fine_hash=924581e408989b6a coarse_hash=dbf9a8817c8657ae
+INTEGER_RESULT_ROW id=1 sample=2 cycles=3500565 instructions=1764719 digest=b702909ca80dfe2a
+INTEGER_RESULT_STORAGE id=0 sample=3 a=80a877c0 sa=80ab37c0 b=80ab8fc0 sb=80ae4fc0 expected=80aea7c0 guarded=80b05b98 out=80b05bd8 fine=800077c0 coarse=80af57c0 fine_hash=924581e408989b6a coarse_hash=dbf9a8817c8657ae
+INTEGER_RESULT_ROW id=0 sample=3 cycles=3472484 instructions=1726434 digest=b702909ca80dfe2a
+INTEGER_RESULT_TABLE_HASH_PASS fine_hash=924581e408989b6a coarse_hash=dbf9a8817c8657ae after_windows=4
+INTEGER_RESULT_PASS original45056i8 allguards inputhashes rank0
+
+Simulation complete.
+*** PASSED *** after 1062525452 cycles
+
+Emulation Performance Summary
+------------------------------
+Wallclock Time Elapsed: 36.5 s
+Host Frequency: 30.000 MHz
+Target Cycles Emulated: 1062525452
+Effective Target Frequency: 29.094 MHz
+FMR: 1.03
+Note: The latter three figures are based on the fastest target clock.
+
+Script done on 2026-10-07 05:46:53-07:00 [COMMAND_EXIT_CODE="0"]

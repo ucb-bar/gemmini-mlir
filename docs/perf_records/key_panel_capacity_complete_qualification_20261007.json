@@ -1,0 +1,1007 @@
+{
+  "schema": "capacity_derived_key_batch_complete_qualification_v1",
+  "status": "PASS",
+  "cases": [
+    {
+      "label": "original",
+      "m": 12544,
+      "n": 64,
+      "elements": 802816,
+      "complete_cost": true,
+      "arms": [
+        {
+          "arm": 0,
+          "factor": 4,
+          "compilation": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "a98d31cd1b9a07aa36e5b6cbf8ff1bebda4dd60f9df563d3b53631a547b94705",
+            "llvm_mlir_sha256": "71828caf0285a69423d789d8f8e90cdddf1e8d986bab5669dc6771df6ed9c9d2",
+            "llvm_ir_sha256": "ed941681050a94628ea3f3ae4ccf334c15b8f584419cb4e67e6ba0aa44f2c180",
+            "object_sha256": "bfddd033baeb89ade0a594308abf2ca6c37dcc6db5f196582e532f4b87bad3dc",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.o"
+              ]
+            ]
+          },
+          "adapter": {
+            "compiler_argv": [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-ffreestanding",
+              "-fno-builtin",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.c",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.o"
+            ],
+            "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "source_sha256": "2efd181fc7eaae8bfa2793364d48467636d24f9589fd90141145b0c66fe0d917",
+            "object_sha256": "14ce567a028385c9c5a1ecf717b74ac5d83c300a0c16aa6a20b722c34c280e0c"
+          },
+          "complete_plan": {
+            "acc_reservation": [
+              0,
+              256
+            ],
+            "command_logical_dma_bytes_excluding_setup": 10436608,
+            "compute_passes_per_tile": 9,
+            "identity_ACC_seed": -33131,
+            "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+            "m": 12544,
+            "n": 64,
+            "negative_scratch_bytes": 4096,
+            "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+            "panel_batch": 4,
+            "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+            "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+            "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+            "source_row_payload_bytes_excluding_setup": 7426048,
+            "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+            "spad_reservations": {
+              "indicator0": [
+                4352,
+                256
+              ],
+              "indicator1": [
+                4608,
+                256
+              ],
+              "lhs_positive": [
+                0,
+                256
+              ],
+              "negative_rectified": [
+                4864,
+                256
+              ],
+              "ones": [
+                12288,
+                64
+              ],
+              "prediction": [
+                256,
+                256
+              ],
+              "rhs_negative": [
+                4096,
+                256
+              ],
+              "weights": [
+                8192,
+                80
+              ],
+              "zero": [
+                12352,
+                64
+              ]
+            },
+            "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+            "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+            "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+          },
+          "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/layer.elf",
+          "elf_sha256": "679a0bdd97d7a4146ef3e87d3f3d80550a1b7a854c735efac9316bd6cd172936",
+          "strict_stdout_sha256": "e04e659b3eeed1cc0646363a1f75132d2fa3226d7c567c945c40a3920a859167",
+          "nofsm_audit": {
+            "schema": "gemmini_nofsm_elf_audit_v1",
+            "elf_sha256": "679a0bdd97d7a4146ef3e87d3f3d80550a1b7a854c735efac9316bd6cd172936",
+            "executable_sections": 3,
+            "custom_funct_counts": {
+              "0": 100,
+              "1": 40,
+              "2": 60,
+              "3": 80,
+              "4": 180,
+              "5": 540,
+              "6": 720,
+              "7": 2,
+              "14": 94
+            },
+            "forbidden": [],
+            "unknown": [],
+            "status": "pass"
+          },
+          "returncode": 0
+        },
+        {
+          "arm": 1,
+          "factor": 16,
+          "compilation": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "2a7d2a2e0cbe98fcb4c6814a756adfa736be05250a051d6afc1bc04fd06282d7",
+            "llvm_mlir_sha256": "6e47b6431e67d3bec04ce700a6218656928347ad4a18bc1b52f825e750b8aea1",
+            "llvm_ir_sha256": "84ee4d921a267b6706c6607f02f064b931976872c38cf3439325bbdd1957aeb8",
+            "object_sha256": "30b33fc7ba2c349951ee6ca575f5756ab3cd58e08f65527e684a4219a4c8c157",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.o"
+              ]
+            ]
+          },
+          "adapter": {
+            "compiler_argv": [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-ffreestanding",
+              "-fno-builtin",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.c",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.o"
+            ],
+            "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "source_sha256": "39dba70e23f71f6a10968dda8479746ebe8dd82def968e115ac5058ec3cb85d6",
+            "object_sha256": "6777609d4a02cac0f67758f19e70e3fa83cef5fe765e3867594d277c964e6686"
+          },
+          "complete_plan": {
+            "acc_reservation": [
+              0,
+              1024
+            ],
+            "command_logical_dma_bytes_excluding_setup": 10436608,
+            "compute_passes_per_tile": 9,
+            "identity_ACC_seed": -33131,
+            "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+            "m": 12544,
+            "n": 64,
+            "negative_scratch_bytes": 16384,
+            "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+            "panel_batch": 16,
+            "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+            "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+            "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+            "source_row_payload_bytes_excluding_setup": 7426048,
+            "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+            "spad_reservations": {
+              "indicator0": [
+                5120,
+                1024
+              ],
+              "indicator1": [
+                6144,
+                1024
+              ],
+              "lhs_positive": [
+                0,
+                1024
+              ],
+              "negative_rectified": [
+                7168,
+                1024
+              ],
+              "ones": [
+                12288,
+                64
+              ],
+              "prediction": [
+                1024,
+                1024
+              ],
+              "rhs_negative": [
+                4096,
+                1024
+              ],
+              "weights": [
+                8192,
+                80
+              ],
+              "zero": [
+                12352,
+                64
+              ]
+            },
+            "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+            "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+            "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+          },
+          "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm1/layer.elf",
+          "elf_sha256": "838af7edbcd8ee30539421ca99f3c6e8aa893fca094b4c94d6f31f5971dd4de5",
+          "strict_stdout_sha256": "c86deae1d99e63a4793f5313a848339a54ed14308e6a335a706e0029faf0f914",
+          "nofsm_audit": {
+            "schema": "gemmini_nofsm_elf_audit_v1",
+            "elf_sha256": "838af7edbcd8ee30539421ca99f3c6e8aa893fca094b4c94d6f31f5971dd4de5",
+            "executable_sections": 3,
+            "custom_funct_counts": {
+              "0": 100,
+              "1": 40,
+              "2": 60,
+              "3": 80,
+              "4": 180,
+              "5": 540,
+              "6": 720,
+              "7": 2,
+              "14": 94
+            },
+            "forbidden": [],
+            "unknown": [],
+            "status": "pass"
+          },
+          "returncode": 0
+        }
+      ],
+      "same_elf_except_selector": true,
+      "selector_offset": 34000,
+      "all65536_pairs_covered": false,
+      "original_capture": true,
+      "original_gate": "all source i8 words exact,4096 guards, immutable inputs, ranked descriptors, fflags"
+    },
+    {
+      "label": "independent_all_pairs_tail",
+      "m": 1040,
+      "n": 128,
+      "elements": 133120,
+      "complete_cost": true,
+      "arms": [
+        {
+          "arm": 0,
+          "factor": 4,
+          "compilation": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "f401fdf2de535ae6de7fbecf7694af3794d52927283d2e43aeeadc94b9226360",
+            "llvm_mlir_sha256": "4c4d4d4b19fce8f423c668f0559b3871ace065b1dd9c4b82dcff8ca6742624ca",
+            "llvm_ir_sha256": "acf250d208fe410bd0dedeaf45ded51b97f2631f199a7a1048285898273a7e4a",
+            "object_sha256": "89776941a2238c87270524e64b5f39d2ad77bf793bd40f3940fa0a81c6a48ed0",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.o"
+              ]
+            ]
+          },
+          "adapter": {
+            "compiler_argv": [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-ffreestanding",
+              "-fno-builtin",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/adapter.c",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/adapter.o"
+            ],
+            "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "source_sha256": "7460c9324dfa4173dce0f46bbd0436862b76ba9a76ea0f5023d86737c2a9c272",
+            "object_sha256": "4ae3a2a18679a3ce433750e5321baec1d63d606d46bd764463f3b47faf55fabc"
+          },
+          "complete_plan": {
+            "acc_reservation": [
+              0,
+              256
+            ],
+            "command_logical_dma_bytes_excluding_setup": 1730560,
+            "compute_passes_per_tile": 9,
+            "identity_ACC_seed": -33131,
+            "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+            "m": 1040,
+            "n": 128,
+            "negative_scratch_bytes": 4096,
+            "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+            "panel_batch": 4,
+            "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+            "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+            "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+            "source_row_payload_bytes_excluding_setup": 1231360,
+            "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+            "spad_reservations": {
+              "indicator0": [
+                4352,
+                256
+              ],
+              "indicator1": [
+                4608,
+                256
+              ],
+              "lhs_positive": [
+                0,
+                256
+              ],
+              "negative_rectified": [
+                4864,
+                256
+              ],
+              "ones": [
+                12288,
+                64
+              ],
+              "prediction": [
+                256,
+                256
+              ],
+              "rhs_negative": [
+                4096,
+                256
+              ],
+              "weights": [
+                8192,
+                80
+              ],
+              "zero": [
+                12352,
+                64
+              ]
+            },
+            "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+            "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+            "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+          },
+          "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/layer.elf",
+          "elf_sha256": "ecc9490fc182585fc8b93307eebdb0672ff0eefc5de4b36be40efb3f1fff1a9e",
+          "strict_stdout_sha256": "52a9e9724200b4e95a8a5f52bcf96080ea1883191d2322947e18745d91374318",
+          "nofsm_audit": {
+            "schema": "gemmini_nofsm_elf_audit_v1",
+            "elf_sha256": "ecc9490fc182585fc8b93307eebdb0672ff0eefc5de4b36be40efb3f1fff1a9e",
+            "executable_sections": 3,
+            "custom_funct_counts": {
+              "0": 120,
+              "1": 44,
+              "2": 66,
+              "3": 88,
+              "4": 198,
+              "5": 594,
+              "6": 792,
+              "7": 2,
+              "14": 102
+            },
+            "forbidden": [],
+            "unknown": [],
+            "status": "pass"
+          },
+          "returncode": 0
+        },
+        {
+          "arm": 1,
+          "factor": 16,
+          "compilation": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "5f5acfc27b93664ab60459be72cd34fdf7eed22bdc023a44dd058c7b9ef1742a",
+            "llvm_mlir_sha256": "1faf3811877015984a101b375d6b5a77c5d1b98a1b47caa427fcb8ed86dd344c",
+            "llvm_ir_sha256": "3d1badb3490ec4b21ab72883a0fc05332d28916a95456a50fbe1efbd91908d9a",
+            "object_sha256": "bc11ca59968901e67a23e72ab57a945016049dbefd82107c19df844cbe5775a6",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.o"
+              ]
+            ]
+          },
+          "adapter": {
+            "compiler_argv": [
+              "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+              "--target=riscv64-unknown-elf",
+              "-march=rv64gc",
+              "-mabi=lp64d",
+              "-mcmodel=medany",
+              "-O2",
+              "-ffreestanding",
+              "-fno-builtin",
+              "-c",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/adapter.c",
+              "-o",
+              "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/adapter.o"
+            ],
+            "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "source_sha256": "bd3e2838128a22fd24fb1ae70cb7d05a258c3c55dcf0379217eaa346148b38ba",
+            "object_sha256": "7b2f46b9e9e83bb4c2b089afe270f0daade80cba039d981d46b29c705a215600"
+          },
+          "complete_plan": {
+            "acc_reservation": [
+              0,
+              1024
+            ],
+            "command_logical_dma_bytes_excluding_setup": 1730560,
+            "compute_passes_per_tile": 9,
+            "identity_ACC_seed": -33131,
+            "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+            "m": 1040,
+            "n": 128,
+            "negative_scratch_bytes": 16384,
+            "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+            "panel_batch": 16,
+            "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+            "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+            "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+            "source_row_payload_bytes_excluding_setup": 1231360,
+            "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+            "spad_reservations": {
+              "indicator0": [
+                5120,
+                1024
+              ],
+              "indicator1": [
+                6144,
+                1024
+              ],
+              "lhs_positive": [
+                0,
+                1024
+              ],
+              "negative_rectified": [
+                7168,
+                1024
+              ],
+              "ones": [
+                12288,
+                64
+              ],
+              "prediction": [
+                1024,
+                1024
+              ],
+              "rhs_negative": [
+                4096,
+                1024
+              ],
+              "weights": [
+                8192,
+                80
+              ],
+              "zero": [
+                12352,
+                64
+              ]
+            },
+            "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+            "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+            "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+          },
+          "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm1/layer.elf",
+          "elf_sha256": "7c01e943143ffdf0626091de03732e9971af96c2f293292ec38db39ad9705e7f",
+          "strict_stdout_sha256": "8adaa99f830c166a9d9abf2365ce315bf15cfe4be46c25f33e2dbe78c02b044f",
+          "nofsm_audit": {
+            "schema": "gemmini_nofsm_elf_audit_v1",
+            "elf_sha256": "7c01e943143ffdf0626091de03732e9971af96c2f293292ec38db39ad9705e7f",
+            "executable_sections": 3,
+            "custom_funct_counts": {
+              "0": 120,
+              "1": 44,
+              "2": 66,
+              "3": 88,
+              "4": 198,
+              "5": 594,
+              "6": 792,
+              "7": 2,
+              "14": 102
+            },
+            "forbidden": [],
+            "unknown": [],
+            "status": "pass"
+          },
+          "returncode": 0
+        }
+      ],
+      "same_elf_except_selector": true,
+      "selector_offset": 36232,
+      "all65536_pairs_covered": true,
+      "original_capture": false,
+      "original_gate": "all source i8 words exact,4096 guards, immutable inputs, ranked descriptors, fflags"
+    }
+  ],
+  "source_capture": {
+    "schema": "residual_source_operand_capture_v1",
+    "source_model_sha256": "73af94f7b3ce88bfbb5134e67a23430eda83f111b32f968a593aabd6db4e4785",
+    "catalog_sha256": "2a88c7d6f3c7aec89f2e8b890baa13cbe1e7471926ef2c0de48d1d2b7f88cdab",
+    "original_native_residual_source_sha256": "99119913709d0cc21b299fa07be323a03d825518f60b58b7438800596c6dd1c5",
+    "instrumented_native_source_sha256": "cfc98806a6b074b7c3a301776ddd6c9054cae4dea8e2dd1b950286f77f62528f",
+    "model_object_sha256": "05fb8d7b38c397db99fd791893b9bbd92ad56f5d17e8f1dcca93fcb55ce2eff9",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "all1000_original_f32_bits_exact": true,
+    "lhs_sha256": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+    "rhs_sha256": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+    "elements": 802816,
+    "ambiguous_runtime_pairs": 45,
+    "outside_safe_elements": 156039,
+    "outside_safe_word_count": 79945,
+    "total_words": 100352,
+    "lhs_min": -128,
+    "lhs_max": 127,
+    "rhs_min": -128,
+    "rhs_max": 127,
+    "scope": "Native diagnostic writes original first residual ABI inputs; original output gate exact. Runtime distribution for this immutable capture only, not generic proof."
+  },
+  "control_actual2101_kernel_and_adapter_byte_identical": true,
+  "default_factor_unchanged": 4,
+  "chosen_alternative_factor": 16,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-current2101-profile-20261007/out/current2101_profile/profile_manifest.json": "b925fb2aea746c7543dff73080192aba3d10326f2160580546c35119d629a0c8",
+    "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/out/key_rectifier_original_ranked_v1/stock_packet.json": "80a2dac306d9f96ff94011c263182355adb1954f012671a34c8f8fac7ee753d8",
+    "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/out/key_rectifier_original_ranked_v1/recipe.json": "f2f46bed15db60c009f90a6635c960614f93927ab25944bd76406bf263fb7b88",
+    "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/out/key_rectifier_normal_binding_v1/key_bundle/gemmini_residual_0__rectifier/kernel.o": "bfddd033baeb89ade0a594308abf2ca6c37dcc6db5f196582e532f4b87bad3dc",
+    "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/out/key_rectifier_normal_binding_v1/key_bundle/gemmini_residual_0__rectifier/adapter.o": "14ce567a028385c9c5a1ecf717b74ac5d83c300a0c16aa6a20b722c34c280e0c",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/build_complete_capsules.py": "77feae86ac0b5509849319258c89f01b30a8a2385375637fd33695c1c1d4dbde",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/check_a.bin": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/b.bin": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/check_b.bin": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/qualification.json": "fddce6c0c076f7d7e9157bc6c3411db73a8fac8a7e59b2f697c5c553ff1b1875",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/probe.c": "ecb36e73b11f716da9ce03e2ecaf95589194efdc1aecb21561f431eb793d881c",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/expected.bin": "9ca77e898ed5ea2f95881084f76fef859feb835e82abd6988565efc213e651f9",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/fixture.S": "384ce3f1873474950372ed201881049f004a0a3de7b0feaaac4f235fef422a7c",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/a.bin": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/check_a.bin": "9b20dc4b9d5cb5397b550aee967f2541d525bb2793e81235356b4d7b1aa60aab",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/b.bin": "ceed2784abeb7b30c0e423d33ce5e074a148831bcaa257a48316b81891e3217e",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/check_b.bin": "ceed2784abeb7b30c0e423d33ce5e074a148831bcaa257a48316b81891e3217e",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/qualification.json": "b709c1e5673d87063e6dc6d8e7883a505f950332104406a9289f487b8709aee7",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/probe.c": "c6c432443eaa16814a9fd55c83245066acae0b8295192503702edeeec34e7be0",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/expected.bin": "10248e03b1e4cbf8e5c2f57e26a0ef9a14c333f44a516b765dd64f4fc1e5fc02",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/fixture.S": "6bfca7e6369516629494284e7d51cfc6fc11f1d211bb26bb250cab5a1491fb1d",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/a.bin": "9b20dc4b9d5cb5397b550aee967f2541d525bb2793e81235356b4d7b1aa60aab",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm1/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm1/layer.elf": "838af7edbcd8ee30539421ca99f3c6e8aa893fca094b4c94d6f31f5971dd4de5",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm1/spike.stdout": "c86deae1d99e63a4793f5313a848339a54ed14308e6a335a706e0029faf0f914",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.c": "2efd181fc7eaae8bfa2793364d48467636d24f9589fd90141145b0c66fe0d917",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/rebound_kernel.o": "9bd0f6fe8b0f85d3f211d3218c0c4a7a926e5c8bc4770301197a0c3b2c250404",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.o": "14ce567a028385c9c5a1ecf717b74ac5d83c300a0c16aa6a20b722c34c280e0c",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/rebound_adapter.o": "bed271cef8dbe7fc9d7ac8bc73e86489ced75e42bd559a1826fec060bda629da",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/layer.elf": "679a0bdd97d7a4146ef3e87d3f3d80550a1b7a854c735efac9316bd6cd172936",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/probe.o": "cce305a4e1f4fb4243211fe59494a03f36e273c79f7ea2a6b2111394320b1eb5",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/fixture.o": "4c91e4a7628821ad28f72c714c43a55da8c159965f2f69b8f1678eb81a2149a2",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/spike.stdout": "e04e659b3eeed1cc0646363a1f75132d2fa3226d7c567c945c40a3920a859167",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.c": "39dba70e23f71f6a10968dda8479746ebe8dd82def968e115ac5058ec3cb85d6",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/rebound_kernel.o": "03a7195b2768b70ffd2d5e18b1f54838f3056a5891c2dbf787cd8df886ed45d7",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.o": "6777609d4a02cac0f67758f19e70e3fa83cef5fe765e3867594d277c964e6686",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/rebound_adapter.o": "a56175ab060f5d95f10aaf8c06ef81423136f2e1c9c2cc82fe7443af272ff6e9",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.ll": "ed941681050a94628ea3f3ae4ccf334c15b8f584419cb4e67e6ba0aa44f2c180",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/device_compile.json": "7602157bc8b7922212091e21798e35d91e008fb7bc26cc08f706217a61704a73",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.gemmini.mlir": "a98d31cd1b9a07aa36e5b6cbf8ff1bebda4dd60f9df563d3b53631a547b94705",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.llvm.mlir": "71828caf0285a69423d789d8f8e90cdddf1e8d986bab5669dc6771df6ed9c9d2",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.o": "bfddd033baeb89ade0a594308abf2ca6c37dcc6db5f196582e532f4b87bad3dc",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/object_nofsm_audit.json": "a555fdfb6594cbcebc265a7e59a50a8c34a20dfb4d0a52feb87444f19e69ffa5",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.ll": "84ee4d921a267b6706c6607f02f064b931976872c38cf3439325bbdd1957aeb8",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/device_compile.json": "bb3dfb0f25ae24c889b8b91e52c926aaf0537385ab37d8acde0c5a2c931afd98",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.gemmini.mlir": "2a7d2a2e0cbe98fcb4c6814a756adfa736be05250a051d6afc1bc04fd06282d7",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.llvm.mlir": "6e47b6431e67d3bec04ce700a6218656928347ad4a18bc1b52f825e750b8aea1",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.o": "30b33fc7ba2c349951ee6ca575f5756ab3cd58e08f65527e684a4219a4c8c157",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/object_nofsm_audit.json": "6935c9d49c5c630f64aa4bd98c3e5857a3dd532318b3b03ca7f233a86cc8135b",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm1/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm1/layer.elf": "7c01e943143ffdf0626091de03732e9971af96c2f293292ec38db39ad9705e7f",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm1/spike.stdout": "8adaa99f830c166a9d9abf2365ce315bf15cfe4be46c25f33e2dbe78c02b044f",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/adapter.c": "7460c9324dfa4173dce0f46bbd0436862b76ba9a76ea0f5023d86737c2a9c272",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/rebound_kernel.o": "265a6f315e2ab7869049c26c7c8ec3b26c3845bc9c5d4b9cb62d75ee90e828cc",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/adapter.o": "4ae3a2a18679a3ce433750e5321baec1d63d606d46bd764463f3b47faf55fabc",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/rebound_adapter.o": "9e40b2813da3c66766bdd3f409500b6e647a068cbc389f6e00f233308508f0ae",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/layer.elf": "ecc9490fc182585fc8b93307eebdb0672ff0eefc5de4b36be40efb3f1fff1a9e",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/probe.o": "acb0079b028d147bba3c26fa8b8c0e97564f49e302999619c789bb93e0ad81d2",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/fixture.o": "6b56d17b46ff00b32371993cfbea346bcc6c051b4be19f9633e6b30a19b16d18",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/spike.stdout": "52a9e9724200b4e95a8a5f52bcf96080ea1883191d2322947e18745d91374318",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/arm0/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/adapter.c": "bd3e2838128a22fd24fb1ae70cb7d05a258c3c55dcf0379217eaa346148b38ba",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/rebound_kernel.o": "209f788deb62403bfad8dc661761f7b282392cc29acdc26e283b71de735e6e78",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/adapter.o": "7b2f46b9e9e83bb4c2b089afe270f0daade80cba039d981d46b29c705a215600",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/rebound_adapter.o": "d5679a951f3412b57514e7075a2bdbcc43909eb975de067937ebce4a2f9bc128",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.ll": "acf250d208fe410bd0dedeaf45ded51b97f2631f199a7a1048285898273a7e4a",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/device_compile.json": "6eee064c3b4da25d74f1f74c4b4173bd55c4780bd53cf51ea3f384731e563f57",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.gemmini.mlir": "f401fdf2de535ae6de7fbecf7694af3794d52927283d2e43aeeadc94b9226360",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.llvm.mlir": "4c4d4d4b19fce8f423c668f0559b3871ace065b1dd9c4b82dcff8ca6742624ca",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/kernel.o": "89776941a2238c87270524e64b5f39d2ad77bf793bd40f3940fa0a81c6a48ed0",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl4/device/object_nofsm_audit.json": "4cc3a67f702df521c6475e3dc44f51675cc4c7b4e24327c557b8010d9a0b2a7e",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.ll": "3d1badb3490ec4b21ab72883a0fc05332d28916a95456a50fbe1efbd91908d9a",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/device_compile.json": "463ed5aa3ef1dfafa00ea4a725b7920044f76fcdd8200a2b4dc0be3f60609ac2",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.gemmini.mlir": "5f5acfc27b93664ab60459be72cd34fdf7eed22bdc023a44dd058c7b9ef1742a",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.llvm.mlir": "1faf3811877015984a101b375d6b5a77c5d1b98a1b47caa427fcb8ed86dd344c",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/kernel.o": "bc11ca59968901e67a23e72ab57a945016049dbefd82107c19df844cbe5775a6",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/independent_all_pairs_tail/impl16/device/object_nofsm_audit.json": "c3b4d62c349ff26718e553dc913e164b7a0692a58dd4f056424e915a2fc934f7",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/golden_key_rectified_resadd.py": "24f5391c0c8d0cb65616f85536100cb08113c75da9ece2178c23a0aec53d866a",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/rectifier_residual_catalog.py": "717046820a2a99b3fccdceb581971adeef8889e57cf195856e1004eeea11cb6b",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/tables/rtl_facts.py": "5af7a149976050f91a895167758032027843827eba6c7d7412fcbcc1462014dd",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/tables/isa.py": "bf1f1d12288d5109f9443906063e5cdec2b13593f19d192746c35f59de50f800",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/spad_fence_coalescing.py": "cc2d1b9528e0118da17e25ff37d966447134edda5dfb03f0a66b93e06329f53d",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/mlir_oot/rectifier_panel_batch.py": "76c62252c263635b4bd0111744fd8a0de06d57caed8db9771d44cb6573b8a0a4",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/tests/test_golden_key_rectified_resadd.py": "34e486a0f6af6397d8adaa907a39e4327c0d56e11bd530e6b685a31841e87215",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/support/gemmini_gsim/backend.py": "94331518029ede84a7843a2a0aea8c598f8891e0ffefd2ccd7c38b64fb53c005",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/support/gemmini_gsim/contracts/target_contract.yaml": "7f7abb6ebeadbf6e23aec63cb50e353b4241842ed95797afbf3aab6f53bc6de1",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/support/gemmini_gsim/provider.yaml": "5be563f98f415abd1811e2749ad8482807646d886325d59521f556415d29f2dc",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/tests.log": "b0486f20f9b33d333b631b52c960922bb912d9d5c3b9556fcbb63ff79b4b0c72",
+    "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/build_v2.log": "ffbbce2e44ec707a8fec15b3b95c8127320a873472955c9024174d0c2d7570a1"
+  },
+  "scope": "Target-only resource-derived batch legality; original arithmetic/chunk/store/RMW completion and owner lifetime unchanged. No new numeric policy, model selection or performance claim. Complete independent133120-output execution covers all65536pairs twice and a one-panel tail across two column groups. Both original implementations in same ELF with only one selector data byte changed; relative pending DMA/fence cost unknown, Spike retirement not stockcycles.",
+  "preliminary_refusals": [
+    "Resource test initially expected ACC refusal at17; actual overlapping SPAD extent correctly refuses first. Corrected assertion without weakening check.",
+    "Initial target harness correctly refused missing explicit OOT backend registration; no target execution. Successor selects owned OOT support provider/compiler/harness/load address."
+  ],
+  "clock_pair": [
+    {
+      "arm": 0,
+      "factor": 4,
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "a98d31cd1b9a07aa36e5b6cbf8ff1bebda4dd60f9df563d3b53631a547b94705",
+        "llvm_mlir_sha256": "71828caf0285a69423d789d8f8e90cdddf1e8d986bab5669dc6771df6ed9c9d2",
+        "llvm_ir_sha256": "ed941681050a94628ea3f3ae4ccf334c15b8f584419cb4e67e6ba0aa44f2c180",
+        "object_sha256": "bfddd033baeb89ade0a594308abf2ca6c37dcc6db5f196582e532f4b87bad3dc",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/device/kernel.o"
+          ]
+        ]
+      },
+      "adapter": {
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-c",
+          "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.c",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl4/adapter.o"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "source_sha256": "2efd181fc7eaae8bfa2793364d48467636d24f9589fd90141145b0c66fe0d917",
+        "object_sha256": "14ce567a028385c9c5a1ecf717b74ac5d83c300a0c16aa6a20b722c34c280e0c"
+      },
+      "complete_plan": {
+        "acc_reservation": [
+          0,
+          256
+        ],
+        "command_logical_dma_bytes_excluding_setup": 10436608,
+        "compute_passes_per_tile": 9,
+        "identity_ACC_seed": -33131,
+        "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+        "m": 12544,
+        "n": 64,
+        "negative_scratch_bytes": 4096,
+        "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+        "panel_batch": 4,
+        "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+        "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+        "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+        "source_row_payload_bytes_excluding_setup": 7426048,
+        "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+        "spad_reservations": {
+          "indicator0": [
+            4352,
+            256
+          ],
+          "indicator1": [
+            4608,
+            256
+          ],
+          "lhs_positive": [
+            0,
+            256
+          ],
+          "negative_rectified": [
+            4864,
+            256
+          ],
+          "ones": [
+            12288,
+            64
+          ],
+          "prediction": [
+            256,
+            256
+          ],
+          "rhs_negative": [
+            4096,
+            256
+          ],
+          "weights": [
+            8192,
+            80
+          ],
+          "zero": [
+            12352,
+            64
+          ]
+        },
+        "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+        "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+        "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+      },
+      "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm0/layer.elf",
+      "elf_sha256": "679a0bdd97d7a4146ef3e87d3f3d80550a1b7a854c735efac9316bd6cd172936",
+      "strict_stdout_sha256": "e04e659b3eeed1cc0646363a1f75132d2fa3226d7c567c945c40a3920a859167",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "679a0bdd97d7a4146ef3e87d3f3d80550a1b7a854c735efac9316bd6cd172936",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 100,
+          "1": 40,
+          "2": 60,
+          "3": 80,
+          "4": 180,
+          "5": 540,
+          "6": 720,
+          "7": 2,
+          "14": 94
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "returncode": 0
+    },
+    {
+      "arm": 1,
+      "factor": 16,
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "2a7d2a2e0cbe98fcb4c6814a756adfa736be05250a051d6afc1bc04fd06282d7",
+        "llvm_mlir_sha256": "6e47b6431e67d3bec04ce700a6218656928347ad4a18bc1b52f825e750b8aea1",
+        "llvm_ir_sha256": "84ee4d921a267b6706c6607f02f064b931976872c38cf3439325bbdd1957aeb8",
+        "object_sha256": "30b33fc7ba2c349951ee6ca575f5756ab3cd58e08f65527e684a4219a4c8c157",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/device/kernel.o"
+          ]
+        ]
+      },
+      "adapter": {
+        "compiler_argv": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-c",
+          "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.c",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/impl16/adapter.o"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "source_sha256": "39dba70e23f71f6a10968dda8479746ebe8dd82def968e115ac5058ec3cb85d6",
+        "object_sha256": "6777609d4a02cac0f67758f19e70e3fa83cef5fe765e3867594d277c964e6686"
+      },
+      "complete_plan": {
+        "acc_reservation": [
+          0,
+          1024
+        ],
+        "command_logical_dma_bytes_excluding_setup": 10436608,
+        "compute_passes_per_tile": 9,
+        "identity_ACC_seed": -33131,
+        "identity_ACC_seed_conversion": "literal unit-scale seed is exactly representable in binary32; no universal full-i32 DMA scaling claim",
+        "m": 12544,
+        "n": 64,
+        "negative_scratch_bytes": 16384,
+        "ownership": "A/B/tables readonly; C/private scratch disjoint; prediction retained in SPAD before C overwritten; final fence before publication",
+        "panel_batch": 16,
+        "performance": "UNKNOWN: additional DMA/config/fences included in complete measured scope",
+        "physical_dram_bytes": "UNKNOWN: requested payload is not physical traffic",
+        "predictor_table_sha256": "031020a29db3024f0a847ede4d8b04a754b3fd37c20644e9fe811704911412be",
+        "source_row_payload_bytes_excluding_setup": 7426048,
+        "source_table_sha256": "48c30afe5546d64f22398a81ead1d38c61d84548a10572c85439f1124606cb88",
+        "spad_reservations": {
+          "indicator0": [
+            5120,
+            1024
+          ],
+          "indicator1": [
+            6144,
+            1024
+          ],
+          "lhs_positive": [
+            0,
+            1024
+          ],
+          "negative_rectified": [
+            7168,
+            1024
+          ],
+          "ones": [
+            12288,
+            64
+          ],
+          "prediction": [
+            1024,
+            1024
+          ],
+          "rhs_negative": [
+            4096,
+            1024
+          ],
+          "weights": [
+            8192,
+            80
+          ],
+          "zero": [
+            12352,
+            64
+          ]
+        },
+        "store_ordering": "Positive key store ReLU precedes scale1; negative key store has NO_ACT/scale-1 then exact SPAD unit ReLU; both readbacks complete before reload and no ACC overwrite between passes",
+        "stride0_payload_scope": "Seed command contains16repeatedrows; distinct source row64B pertile. Actual physical DMA/transfers require engine observation",
+        "traffic_description": "A/B plus prediction/positive/negative loads; identityi32 seed rows; prediction/positive/negative/final stores"
+      },
+      "elf": "/scratch/agustin/tmp/gemmini-key-panel-capacity-20261007/out/key_panel_capacity/qualified_v2/original/arm1/layer.elf",
+      "elf_sha256": "838af7edbcd8ee30539421ca99f3c6e8aa893fca094b4c94d6f31f5971dd4de5",
+      "strict_stdout_sha256": "c86deae1d99e63a4793f5313a848339a54ed14308e6a335a706e0029faf0f914",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "838af7edbcd8ee30539421ca99f3c6e8aa893fca094b4c94d6f31f5971dd4de5",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 100,
+          "1": 40,
+          "2": 60,
+          "3": 80,
+          "4": 180,
+          "5": 540,
+          "6": 720,
+          "7": 2,
+          "14": 94
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "returncode": 0
+    }
+  ],
+  "source_pins_revalidated": 98
+}

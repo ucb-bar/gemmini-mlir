@@ -1,0 +1,106 @@
+# Source-bound BF16 attention: native whole policy controls
+
+The normal source route now binds all 48 complete attention groups, covering
+384 ordered BF16 contractions and 19,327,352,832 source f32 FMAs. Every group
+matches the complete normalized source scalar DAG, including masks, maximum,
+polynomial exponential, intermediate BF16 probability, denominator reduction,
+source alpha, separately rounded PV partial additions and final BF16 conversion.
+Existing integer projections keep their original bindings. The same shared
+borrowed writer ABI uses a fresh fully written output; chronological group IDs
+exist only in experimental diagnostics.
+
+## Paired original-model gate
+
+| Registered native policy | Original output gate | Replayed source FMAs | Decision |
+| --- | --- | --- | --- |
+| Fixed maximum one adjacent BF16 endpoint bin | 113 / 1,600 failures; max absolute error 0.1629244 | 429,497,664 (2.2222%) | Reject whole-model enablement |
+| Exact endpoint control, identical host image and ABI | All 1,600 original words bit exact | 5,507,717,696 (28.4970%) | Accept source closure and native ABI control |
+| Center-only original scalar DAG, identical host image and ABI | 121 / 1,600 failures; max absolute error 0.1676637 | None | Reject whole-model enablement |
+
+The whole criterion remains atol=0.03125 and rtol=0.02. All 48 exact-control
+endpoints were independently compared with the actual compiled original source
+group on their current live operands; every one of 196,608 BF16 words per group
+matched. Both arms made 48 callbacks and zero whole-group exception fallbacks.
+The first bounded group changed 53 endpoint words; its 11 input hashes matched
+the accepted original source tap. Small local endpoint errors still accumulated
+through later model operations beyond the original whole acceptance gate.
+
+Merlin owns source closure, host ABI, fresh ownership, numeric certificate and
+source replay. OOT owns target integer-product instructions and resources. This
+screen uses native exact-integer NumPy products as a functional device stand-in.
+It proves no actual target dispatch or hardware performance. Native runtime and
+replay counts cannot be substituted for stock FireSim cycles. The actual target
+provider is independently under qualification; neither losing policy nor this
+control enables ordinary production dispatch.
+
+The single authorized center screen kept the same three signed-digit
+products and complete source finalization DAG, rounds reconstructed QK/PV dots
+once to f32, and omits interval/replay. It had no local endpoint error guarantee and failed the unchanged whole output
+gate. Both approximation paths first alter group endpoints while groups0–3
+still have the exact original live operands; changed Q/K/V first reach group4,
+after the source row quantization and intervening model operations. No precision
+sweep or target admission follows from these losing screens.
+
+Receipts and complete per-group descriptor/input/output hashes are archived in
+perf_records/smol_source_group_{bounded,exact}_*.json; the journey records source,
+numeric and emitted object pins. Token allocation per optimization is unavailable;
+the parent campaign ledger owns shared usage snapshots.
+
+## Exact integer observation frontier
+
+The typed original source has 12 consumer frontiers covering all 48 attention
+producers. Each joins four query partitions with exact static coordinates, then
+runs the complete 54-operation source quantization DAG. The only live observed
+results are 1,024x768 signed-i8 words and 1,024 BF16 scales. No other raw BF16
+attention value or residual escapes this frontier. Complete source properties,
+scalar block arguments, operand order, typed maps and every observation are
+bound; all 12 instances have the same complete semantic fingerprint. Analysis
+alone supplies no numerical replacement permission.
+
+An independently compiled original source quantization function shows that the
+628 changed first-four center BF16 words change only nine of 786,432 i8 words,
+each by one. All 1,024 original minima, maxima and BF16 scales remain exact.
+These are fixture diagnostics, not an interval proof or performance measurement.
+A separate source interval certificate will refine ambiguous extrema/scale/bin
+values and retain the existing source quantization consumer. The unchanged
+whole model gate still precedes any target admission.
+
+## Full exact consumer-observation result
+
+The full 48-group native source model passes all 1,600 original output words
+bit exact, with zero whole-group source exception fallbacks. Every current live
+input hash matches the accepted exact control at all 48 calls. Independently
+compiled original quantization confirms all 9,437,184 int8 observation words and
+12,288 escaping BF16 scales exactly, despite 6,008 changed BF16 producer words.
+
+The source replay count falls from 5,507,717,696 FMAs for exact BF16 endpoints to
+646,130,688 FMAs for exact integer/scale observations: 28.4970% to 3.3431% of the
+19.327B original source FMAs, an 88.27% replay reduction. These full-fixture counts
+replace any first-group replay extrapolation. They are functional source counts,
+not actual target instructions, hardware cycles or a 5B whole-model forecast.
+
+The new runtime has frozen complete C/header/compiler/flag identities, with a
+fresh shared object independently reclosed to the earlier qualified candidate.
+The normal compiler binder must validate all retained live consumer-context and
+complete scalar-DAG fingerprints before installing an observationally different
+BF16 writer; complete writes, input preservation, borrowed lifetime, original
+source fallback and numeric/effect proof remain required. Actual Gemmini QK/PV
+implementation and timed target qualification are the next separate gate.
+
+## Exact monotone source polynomial screen
+
+The isolated monotone polynomial bound preserves every original 1600 whole output
+word and all independently compiled 9,437,184 signed-i8 words plus 12,288 escaping
+BF16 scales. Every one of the 48 groups' 11 live input hashes matches the exact control. Source
+replay falls from 646,130,688 to 506,370,304 FMAs (21.6304% fewer, 2.6200% of the
+original 19.327B source FMAs). 6,007 BF16 carrier words change while those complete
+consumer observations remain exact.
+
+This screen reuses the immutable original host/bridge/runtime image with a separately
+pinned native integer-product stand-in. It establishes numerical source observation
+qualification, not target execution or cycles. Actual device provider timing remains
+separate. The accepted earlier proof and its receipts are unchanged.
+
+Receipts: `perf_records/smol_quant_frontier_monotone_native_{validation,calls,
+numeric_witness,observations,journey}.json`. Exclusive token allocation is unavailable;
+the parent attaches shared campaign checkpoints.

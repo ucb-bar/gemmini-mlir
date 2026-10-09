@@ -1,0 +1,149 @@
+{
+  "schema": "tiny_pointwise_packet_gsim_v1",
+  "scope": "Independent static 2049-element i32 dequantization, ordered source FMA polynomial, sigmoid division, gate and source RNE. Tensor lane scheduling only; source input values are independent, not model-captured. Includes actual function call, defensive result copy and arena allocation costs. Full-model timing not measured.",
+  "status": "pass",
+  "model_reference_source_llvm": "/scratch/agustin/tmp/gemmini-tiny-ownership-prefetch-20261005/out/tiny_expanded_writer_prefetch/build/host_llvm/expanded.ll",
+  "model_reference_source_llvm_sha256": "db907d3c6b67c0463a8ac25d45254f40fd76299eb98c2b711214e02cfe9885be",
+  "capsule_source_sha256": "2abf3a9e932df5a8e0e01173daab41cf195991c64a9a242f8aacfeffbeada7d1",
+  "source_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/source.mlir",
+  "source_body_notes": "Hand-transcribed source scalar polynomial/gating/RNE operations with all binary32 constants retained, same source operand and operation order; generic pass derives legality from IR, never this workload identity.",
+  "outputs": 2049,
+  "guard_bytes": 128,
+  "all_cases_native_and_strict_spike_exact": true,
+  "strict_spike_log_sha256": "79bad921f0f99b8d720bca7360cefc772578e1597ab4cd67aa3e3f9b9246ad62",
+  "fixture_pins": {
+    "expected.bin": "424a6b408a35777a0b4376c9c505dcfe3c4fbeca9de6879fadea7e0f780db9e3",
+    "input0.bin": "ebf0c176a0dbf81983c2977ecefbab4a0089b9b260d9315d2d7eb3441089cf3c",
+    "input1.bin": "e64a1ba559659002553e562e730fa5be892a391354e87a2aadff2faf6126b63d",
+    "input2.bin": "f57e075b2491409eea730ea69a3b3966fa0acbf6d0020b74d01f19578a8a51f7",
+    "input3.bin": "d7573977c7acdbb8c3c82bf5ef40d1184bc566174f637f191baeb208190c1e4e"
+  },
+  "core_commit": "dc0efa251",
+  "core_native_tests": 17,
+  "generic_gates": [
+    "check_no_regex",
+    "check_no_target_name",
+    "check_structure"
+  ],
+  "target_cflags": [
+    "--target=riscv64-unknown-elf",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-mcmodel=medany",
+    "-O3",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-ffp-contract=off"
+  ],
+  "clang_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+  "cycles": {
+    "BASELINE_CYCLES_0": 334650,
+    "PACKET2_CYCLES_0": 258440,
+    "PACKET4_CYCLES_0": 269976,
+    "BASELINE_CYCLES_1": 328373,
+    "PACKET2_CYCLES_1": 255845,
+    "PACKET4_CYCLES_1": 268247
+  },
+  "warm_two_lane_reduction_fraction": 0.22087077804813426,
+  "warm_four_lane_reduction_fraction": 0.18310275205330528,
+  "functional_spike_counter_note": "Spike baseline102514, packet2108797, packet4109321 are instructions, not hardware cycles. The increase coexists with a GSIM latency gain.",
+  "qualification": {
+    "scope": "Exact reproduced source polynomial/gating/RNE arithmetic, independent static inputs, all2049outputs +128guard bytes; cycles below require actual GSIM, Spike is functional only",
+    "elf_sha256": "3b9cbfb6c92d2c7f8bd9d4f0dea031af5f129b98c1617a6d16571c9812d7c2d8",
+    "cases": [
+      {
+        "name": "baseline",
+        "native_bits_exact": true,
+        "target_rne_sites": 1,
+        "target_sha256": "3e09d0ef06bc3240a863a52ea024afab5756dc3541f7ee9b7fe493c3666ceab3"
+      },
+      {
+        "name": "packet2",
+        "native_bits_exact": true,
+        "target_rne_sites": 3,
+        "target_sha256": "c8a8edb2bd841252dbb9a6f1c8e838036f357b3244d1b0df15f6246e268a40bc"
+      },
+      {
+        "name": "packet4",
+        "native_bits_exact": true,
+        "target_rne_sites": 5,
+        "target_sha256": "02b2a0b62232340a1260ab06a07aaa3e416a1cedfabe5175560f8a3f90a9590d"
+      }
+    ],
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "3b9cbfb6c92d2c7f8bd9d4f0dea031af5f129b98c1617a6d16571c9812d7c2d8",
+      "executable_sections": 3,
+      "custom_funct_counts": {},
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    }
+  },
+  "gsim": {
+    "records": [],
+    "finish": {
+      "cycles": 1867615,
+      "wall_seconds": 205.28,
+      "done": true,
+      "exit_code": 0
+    },
+    "wall_seconds": 205.3070786660537,
+    "returncode": 0,
+    "stdout_sha256": "ea66155a5316c5ac2bb3c1c7150b54e36fa7580248ae823836ea28fabeebd652",
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "command_sha256": "9812f431f11a304912dd9892b2b90abbf89c77de825eb4564d95893e1c47c97b",
+    "stdout_tail": "BASELINE_CYCLES 0 334650\nPACKET2_CYCLES 0 258440\nPACKET4_CYCLES 0 269976\nBASELINE_CYCLES 1 328373\nPACKET2_CYCLES 1 255845\nPACKET4_CYCLES 1 268247\nPOINTWISE_PACKET PASS\n",
+    "stderr_tail": "-ar] #20 addr=0x80003b80\n[gsim-ar] #21 addr=0x80003bc0\n[gsim-ar] #22 addr=0x8002f300\n[gsim-ar] #23 addr=0x8002f2c0\n[gsim-ar] #24 addr=0x80003080\n[gsim-ar] #25 addr=0x80003c00\n[gsim-ar] #26 addr=0x8002f280\n[gsim-ar] #27 addr=0x8000f380\n[gsim-ar] #28 addr=0x800030c0\n[gsim-ar] #29 addr=0x8000f3c0\n[gsim-ar] #30 addr=0x8000f400\n[gsim-ar] #31 addr=0x8000c780\n[gsim-ar] #32 addr=0x80002180\n[gsim-ar] #33 addr=0x800021c0\n[gsim-ar] #34 addr=0x80002200\n[gsim-ar] #35 addr=0x80002240\n[gsim-ar] #36 addr=0x800022c0\n[gsim-ar] #37 addr=0x80003e80\n[gsim-ar] #38 addr=0x80007f00\n[gsim-ar] #39 addr=0x80002280\n[link-probe] ticks=200000 in_fires=16856 out_fires=6738 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=33731 out_fires=13493 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=50676 out_fires=20271 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=67557 out_fires=27029 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1000000 in_reset=14 done=0\n[gsim-emu] 1000000 cycles, 113.2s, 8833 cyc/s\n[link-probe] ticks=1000000 in_fires=84443 out_fires=33789 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1200000 in_fires=101393 out_fires=40569 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1400000 in_fires=118278 out_fires=47328 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1500000 in_reset=14 done=0\n[link-probe] ticks=1600000 in_fires=135159 out_fires=54087 in_valid=0 in_ready=0 out_valid=1 out_ready=1\n[link-probe] ticks=1800000 in_fires=152109 out_fires=60866 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=1867615 wall=205.28s (9098 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=3 dram_w=24 dram_ar=736 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8002f1c0 last_ar=0x800037c0 max_ar=0x8002f400 r_fires=5888 b_fires=3 cvfpu_accepts=0 uart_chars=0\n",
+    "load_path": "backdoor"
+  },
+  "optimization_journey": {
+    "hypothesis": "Independent pointwise FMA and divide lanes reduce serialized Rocket latency while retaining original scalar arithmetic. LLVM unroll2 metadata is a distinct previously negative experiment.",
+    "owner": "Merlin generic tensor scheduling; OOT execution and ISA audit.",
+    "emitted_change": "SCF output packets of 2 or 4 lanes. Scalar operations cloned breadth first, with independent bounded tails. Original FMA/clamp/RNE retained; upstream emits a defensive result copy.",
+    "measured_before_after": "Warm full helper 328,373 GSIM cycles to 255,845 for 2 lanes and 268,247 for 4 lanes. All 2,049 outputs plus 128 guard bytes; excludes model-wide effects.",
+    "gate": "17 generic focused tests pass. Original 256,000 Tiny words/native Torch gate, capsule native/actual Spike/no-FSM/actual GSIM complete. Qualified runtime whole target gate pending.",
+    "decision": "Promote default-off reusable choice. Select 2 lanes for whole target and stock FireSim qualification. Four lanes are slower than two, with no whole-model promotion.",
+    "token_checkpoint": {
+      "timestamp_utc": "2026-10-05T20:17:57.444266+00:00",
+      "token_usage_available": false,
+      "child_get_goal": {
+        "goal": null,
+        "remainingTokens": null,
+        "completionBudgetReport": null
+      },
+      "root_reported_shared_goal_tokens": 19047829,
+      "root_snapshot_source": "Parent task update; shared campaign counter. Snapshot time unavailable to child.",
+      "exclusive_per_optimization_attribution": "Unknown. API does not expose per-agent/input/cache/output allocation."
+    }
+  }
+}

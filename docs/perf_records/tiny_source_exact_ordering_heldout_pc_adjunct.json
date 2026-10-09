@@ -1,0 +1,94 @@
+{
+  "schema": "tiny_source_exact_ordering_heldout_pc_adjunct_v1",
+  "original_receipt_unchanged": {
+    "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_source_exact_division_up_packet_gsim.json",
+    "sha256": "eb28f713cd4f215231401b3cac2fb89f118047d346d935a59362cb839ef3e974",
+    "original_commit": "c95f78c"
+  },
+  "hypothesis": "Operation counts alone may miss actual dependency ordering and overlap even for source-exact arithmetic. This records a complete-source heldout pair; no ranking is approved.",
+  "ownership": {
+    "generic_source_independence_numeric_proof": "Merlin generated probe",
+    "actual_CPU_instruction_packet_earlyclobber_and_disassembly": "OOT"
+  },
+  "actual_change": "Same original scalar operations, source chains and all numerical words/flags, mixed DIV and independent up cast/multiply order only. No workload/provenance strategy selector.",
+  "scope": "Complete original current2004 first pre-down M2/full5632 columns, original11264 i8, shared addresses/inputhashes/guards; not whole model or stock FireSim.",
+  "raw_gsim_ABBA": [
+    {
+      "index": 0,
+      "arm": 0,
+      "cycles": 1601605
+    },
+    {
+      "index": 1,
+      "arm": 1,
+      "cycles": 1595754
+    },
+    {
+      "index": 2,
+      "arm": 1,
+      "cycles": 1595524
+    },
+    {
+      "index": 3,
+      "arm": 0,
+      "cycles": 1601846
+    }
+  ],
+  "sample_means": {
+    "control_cycles": 1601725.5,
+    "candidate_cycles": 1595639.0,
+    "absolute_delta_cycles": 6086.5,
+    "nominal_candidate_fraction_change": -0.0037999644758106577
+  },
+  "observed_ABBA_range": {
+    "control_cycles": 241,
+    "candidate_cycles": 230,
+    "control_range_over_mean": 0.00015046273534385262,
+    "candidate_range_over_mean": 0.0001441428794357621,
+    "interpretation": "Only two samples per arm; observed ranges are not statistical confidence intervals. Nominal small difference may be within broader timing noise/context variation. No approved ranking or promotion."
+  },
+  "equal_feature_point_floor": {
+    "absolute_delta_over_sum": 0.0019035990422737227,
+    "interpretation": "If these two point labels are treated as exact and model emits one identical prediction from equal counted features, minimum worst relative point error is abs(delta)/(sum). This is not a measured uncertainty bound or unavoidable true hardware model error."
+  },
+  "actual_PC_execution": {
+    "both_body_instructions_per_call": 568958,
+    "calls_per_arm": 3,
+    "all_dynamic_opcode_and_class_counts_equal": true,
+    "classes_per_call": {
+      "other": 135262.0,
+      "integer_store": 11272.0,
+      "FP_store": 7.0,
+      "integer_load": 22536.0,
+      "FP_load": 22535.0,
+      "branch_jump": 28162.0,
+      "FP_add_mul": 135168.0,
+      "FP_FMA": 90112.0,
+      "FP_compare_clamp": 67584.0,
+      "FP_DIV": 11264.0,
+      "FP_conversion": 45056.0
+    },
+    "CSR_scope": "Both source helper bodies CSR-free; raw Spike-g dispatch counts, no cycles/latencies inferred. Serialized CSR retry artifacts excluded."
+  },
+  "gates": "Original native/strict11264,guards/inputhashes,zeroFSM; source100200 paired total tests across5FRM/all32sticky flags already sealed; no new numeric or timing rerun. Same-ELF-g histogram only.",
+  "result": "HELD, no production transform or whole/stock admission. Use as weak heldout scheduling/context case and require emitted dependency/liveness/caller composition before predicting changes.",
+  "tokens": {
+    "token_usage_available": false,
+    "scope": "Root owns shared campaign checkpoints; exclusive per-agent/per-experiment allocation unavailable"
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_source_exact_division_up_packet_gsim.json": "eb28f713cd4f215231401b3cac2fb89f118047d346d935a59362cb839ef3e974",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/pc_census.json": "0d53489dee056888efd4ae2e3b9d1b2b66ad3a27471244b5153b305616f813f6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/disassembly.txt": "446683fb2536e81854fa6280c3b41468db0f5a30e3be6f52c2a88ed5cdc44445",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/symbols.txt": "c29a4a4c1b653b73b1decb63dda51e68aa11eedc8156ea86963b79eec4adf5dd",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/histogram.stdout": "04867eb2f5e386845fc751cb0aa392937d797e4096483142fe0387bea2e8554a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/histogram.stderr": "08d57ed504c72579eb5bfc471699fa84fb93bcdb26c9eea5e72975e61c7ad064",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/build/layer.elf": "aa0da19107c168d59630ce33d6f2dc05a1208cd690def832f2a41205a9b883e7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/qualification.json": "2794048113df88584a1fe3256fd436cffddc7379022eccbc6e9f0f4a36c8b343",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/gsim_receipt.json": "54ac3339183d304f0d0b38bbcabf5d6850e2b85dacbcaa43a63667be80770e0a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/div_up_packet_m2/gsim.stdout": "54486363950fc813738208f5369a45688501bd0acfa500d4b9fffa8ae3aedc05",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/pointwise-dependency-schedule-20261006/packet_numeric/receipt.json": "4a7c6e7e6105a4e95bc2b59d04b0cf99c0e640f4f87cbb224c4cb373c93057ce",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-expression-interval-table-20261006/archive_heldout.py": "d848ce519bcd3dbf7996b88e477fd4f3931dc19ae04bb759e62ff6b3640efaff",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-expression-interval-table-20261006/holdout_div_up_pc_census.py": "1be19255af1d97aa2b50c080cf7a34998e028ee56271945e3d34694be9766039"
+  }
+}

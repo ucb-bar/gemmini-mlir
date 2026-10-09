@@ -1,0 +1,179 @@
+{
+  "schema": "root_source_stride_stock2088_2089_complete_terminal_v1",
+  "status": "verified_complete_original_pair",
+  "rows": [
+    {
+      "name": "control",
+      "job_id": 2088,
+      "cycles": 818566,
+      "observation": {
+        "status": "PASS",
+        "kernel_cycles": 818566,
+        "marker": "CAPTURED_CONV_PASS N=25088 SCHEDULE=control"
+      },
+      "strict_source_observation": {
+        "status": "PASS",
+        "kernel_cycles": 172730,
+        "marker": "CAPTURED_CONV_PASS N=25088 SCHEDULE=control"
+      },
+      "terminal": {
+        "id": 2088,
+        "state": "DONE",
+        "phase": "DONE",
+        "exit_code": 0,
+        "submitted_at": 1791372300.8904288,
+        "started_at": 1791372305.1090617,
+        "ended_at": 1791372525.1580756
+      },
+      "elapsed_queue_seconds": 220.04901385307312,
+      "actual_staged_identity": {
+        "job_id": 2088,
+        "phase": "RUNNING",
+        "observed_before_teardown": true,
+        "objects": {
+          "elf": {
+            "path": "/scratch/firesim_queue/jobs/2088/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+            "sha256": "10745e34f9a5534c8547ed6250961b129d61fbf9000cb3e014699b3155bca698",
+            "bytes": 5996584
+          },
+          "bitstream": {
+            "path": "/scratch/firesim_queue/jobs/2088/simulation/sim_slot_0/xilinx_alveo_u250/firesim.bit",
+            "sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+            "bytes": 59101699
+          }
+        }
+      },
+      "final_nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "10745e34f9a5534c8547ed6250961b129d61fbf9000cb3e014699b3155bca698",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 288,
+          "2": 220,
+          "3": 16,
+          "4": 1152,
+          "5": 3456,
+          "6": 4608,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    {
+      "name": "stride_residue_compact",
+      "job_id": 2089,
+      "cycles": 707799,
+      "observation": {
+        "status": "PASS",
+        "kernel_cycles": 707799,
+        "marker": "CAPTURED_CONV_PASS N=25088 SCHEDULE=stride_residue_compact"
+      },
+      "strict_source_observation": {
+        "status": "PASS",
+        "kernel_cycles": 212614,
+        "marker": "CAPTURED_CONV_PASS N=25088 SCHEDULE=stride_residue_compact"
+      },
+      "terminal": {
+        "id": 2089,
+        "state": "DONE",
+        "phase": "DONE",
+        "exit_code": 0,
+        "submitted_at": 1791372300.9927206,
+        "started_at": 1791372525.2767036,
+        "ended_at": 1791372745.336766
+      },
+      "elapsed_queue_seconds": 220.06006240844727,
+      "actual_staged_identity": {
+        "job_id": 2089,
+        "phase": "RUNNING",
+        "observed_before_teardown": true,
+        "objects": {
+          "elf": {
+            "path": "/scratch/firesim_queue/jobs/2089/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+            "sha256": "cb6b1244c43ff01df112baa00b8cc31bb9d666216bd9b9b06e765a1316447681",
+            "bytes": 5996584
+          },
+          "bitstream": {
+            "path": "/scratch/firesim_queue/jobs/2089/simulation/sim_slot_0/xilinx_alveo_u250/firesim.bit",
+            "sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+            "bytes": 59101699
+          }
+        }
+      },
+      "final_nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "cb6b1244c43ff01df112baa00b8cc31bb9d666216bd9b9b06e765a1316447681",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 40,
+          "2": 352,
+          "3": 28,
+          "4": 160,
+          "5": 320,
+          "6": 480,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    }
+  ],
+  "control_cycles": 818566,
+  "candidate_cycles": 707799,
+  "saving_cycles": 110767,
+  "saving_fraction": 0.1353183494061566,
+  "source_packet": "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/docs/perf_records/current_source_residue_complete_capsules.json",
+  "source_packet_sha256": "753e57e4c76df35524b1bce56ef1b5a7ec1a12cab357e5f0716f7619d2449b6b",
+  "source_pins_revalidated": 281,
+  "original_gate": {
+    "outputs": 25088,
+    "guard_bytes": 4096,
+    "immutable_input_bytes": 2459648,
+    "timer": {
+      "counter": "mcycle",
+      "windows": 1,
+      "start": "immediately before primitive call, memory-clobbered volatile CSR",
+      "end": "immediately after primitive returns, memory-clobbered volatile CSR",
+      "scope": "complete convolution primitive: two declared kernel fences, flush/config, all A/B/zero loads, mesh commands and complete i8 output stores",
+      "validation": "every output byte, both output guards and every immutable input byte outside ROI",
+      "not_included": "whole-model ranked adapter or unrelated host packing"
+    }
+  },
+  "common_operand_addresses": {
+    "captured_a": 2148532224,
+    "captured_b": 2148632576,
+    "captured_box": 2153775104,
+    "captured_expected": 2150991872
+  },
+  "hardware_alias": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "actual_staged_bit_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "prelabel_winner": "UNKNOWN",
+  "whole_cycles": "UNKNOWN",
+  "default_enabled": false,
+  "scope": "One complete original convolution observation per arm on stock RTL. Source HWIO K order, compute/PRELOAD counts, exact numeric proof and original immutable inputs stay fixed. Layout/resource-derived row-residue reduces A requests with additional output commands; ordinary CPU retention preserves that candidate command/pointer stream while reducing touched code. All setup, two kernel fences, A/B/zero DMA, compute and all i8 output stores are timed. Every original output/guard/input is checked outside ROI. No pure issue/service attribution, physical DDR interpretation or summed whole forecast; independent nonsquare/tail gate and fresh whole qualification remain separate.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/root_admission.json": "bb7a5c2223155485caa9f9d7854c57d9e26f038ec62a61d63bfe9fcc1920c68a",
+    "/scratch/agustin/tmp/gemmini-current-source-residue-20261007/docs/perf_records/current_source_residue_complete_capsules.json": "753e57e4c76df35524b1bce56ef1b5a7ec1a12cab357e5f0716f7619d2449b6b",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/jobs.json": "5c9ca880fa775edcad225ddd1991f263869b3ab6f42b6b8baf3ab3b42767fb4f",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/collect_source_residue_stock.py": "786147b905b7e22cc8455535942f8e92e5e6e378c83f729d4784c542f1b450c5",
+    "/scratch/firesim_queue/jobs/2088/runworkload-full.json": "19be9d9b92e859006ba0242f1771dd7c2c5c67852028909edd670a73d28c28d4",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/control/preflight/firesim_preflight.json": "d07371e090a553d8f1fee17b32bab481ee8dc244c9da8bcb1d06179ea043d2dc",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/control/actual_staged_identity.json": "f593c24e61e72070f922a59d19d32e353d949aa53e2a3800c8163b31ccbef6ee",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/control/queue_submission.json": "ac01275fc9ec7390e0615ec33100530c03bc6f4202be990c919fdf35684a4f64",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/control/stock2088_uart.txt": "a0b6517fe596a115534367af205b38bb0b50561a72f4ec74238264e7a66d8afb",
+    "/scratch/firesim_queue/jobs/2089/runworkload-full.json": "6a377452b1d29daba60c39c5a97881d6ade42951cd05cb621e9800690504c1ee",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/stride_residue_compact/preflight/firesim_preflight.json": "5707390e8a17cc6ee1736cd5f0755feffeae7a0ca78dc95c726ef6501cc7b1ae",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/stride_residue_compact/actual_staged_identity.json": "355214801511b2126ef5e32455326f9702a0fa0110bb87cfbd5c2b71b29100b3",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/stride_residue_compact/queue_submission.json": "36ba0c71981a92eeea6243ffae9917a562633ee305283f0e849ad780ea88237d",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/source_residue_stock/stride_residue_compact/stock2089_uart.txt": "20d3cc2b4d4a11d0c6ec7c3ddb0d8028f72864805706612f20c9fcc9d9efe971"
+  },
+  "token_usage_available": false,
+  "token_usage": null
+}

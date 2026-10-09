@@ -1,0 +1,111 @@
+from pathlib import Path
+from dataclasses import fields
+import hashlib, importlib.util, json, math, random, re, shutil, struct, subprocess, sys, time
+
+core=Path('/scratch/agustin/tmp/merlin-golden-integration-20261004')
+oot=Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+owned=Path('/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out')
+work=oot/'out/artifacts/probes/smol-builtin-floor-20261006'
+work.mkdir(parents=True,exist_ok=False)
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+snapshot=work/'source_numeric_capability.py'
+snapshot.write_bytes(subprocess.check_output(['git','show','7ba9df600:src/merlin/llvmlower/source_numeric_capability.py'],cwd=core))
+spec=importlib.util.spec_from_file_location('frozen_floor_capability',snapshot)
+cap=importlib.util.module_from_spec(spec);sys.modules[spec.name]=cap;spec.loader.exec_module(cap)
+contract=cap.SourceNumericContract(**{f.name:True for f in fields(cap.SourceNumericContract)})
+choices=dict(inline_fma=True,inline_bitcasts=True,inline_classification=True,inline_absolute_values=True,inline_min_max=True)
+control_source=owned/'radius_l1_retained_target/candidate'
+old_header=(control_source/'numeric_capability.h').read_text()
+old_prefix=old_header.split('\n#include "f32_floor_bits.h"')[0].rstrip()+'\n'
+assert cap.emit_source_numeric_capability(contract,**choices)==old_prefix
+prefix=cap.emit_source_numeric_capability(contract,**choices,inline_floor=True)
+prefix+='\n#define MERLIN_MONOTONE_F32_FLOOR(x) MERLIN_SOURCE_F32_FLOOR(x)\n'
+(work/'contract.json').write_text(json.dumps(dict(core_commit='7ba9df600',contract=vars(contract),choices={**choices,'inline_floor':True},existing_capability_prefix_byte_identical=True,scope='Explicit source finite floor-value capability, original library call for nonfinite inputs; no changed source arithmetic/accuracy/rounding policy'),indent=2)+'\n')
+commands=[]
+def run(argv,cwd=None):
+ commands.append(list(map(str,argv)));subprocess.run(argv,cwd=cwd,check=True)
+
+# Reproduce the already-qualified group, then change the floor choice alone.
+old_build=json.loads((control_source/'build.json').read_text())
+for p,digest in old_build['pins'].items():assert sha(p)==digest,p
+from mlir_oot.no_fsm_audit import audit_elf
+for arm in ('control','candidate'):
+ d=work/arm;d.mkdir()
+ for p in control_source.glob('*.h'):shutil.copyfile(p,d/p.name)
+ shutil.copyfile(control_source/'provider.c',d/'provider.c')
+ if arm=='candidate':(d/'numeric_capability.h').write_text(prefix)
+ compiled=[]
+ for cmd in old_build['compile']:
+  cmd=[v.replace(str(control_source),str(d))for v in cmd];run(cmd);compiled.append(cmd)
+ if arm=='control':assert sha(d/'provider.o')==sha(control_source/'provider.o')
+ link=[v.replace(str(control_source/'provider.o'),str(d/'provider.o'))for v in old_build['link']]
+ link[link.index('-o')+1]=str(d/'model.elf');run(link)
+ if arm=='control':assert sha(d/'model.elf')==sha(control_source/'model.elf')
+ audit=audit_elf((d/'model.elf').read_bytes());assert audit['status']=='pass'
+ (d/'nofsm.json').write_text(json.dumps(audit,indent=2)+'\n')
+ pins={str(p):sha(p)for p in [*d.glob('*.h'),d/'provider.c',d/'provider.o',d/'provider.ll',d/'model.elf',snapshot,work/'contract.json']}
+ for value in link:
+  if Path(value).is_file():pins[value]=sha(value)
+ (d/'build.json').write_text(json.dumps(dict(compile=compiled,link=link,pins=pins,elf_sha256=sha(d/'model.elf')),indent=2)+'\n')
+
+# Independent exact integer floor oracle for every finite binary32 sample.
+d=work/'independent';d.mkdir();(d/'numeric_capability.h').write_text(prefix)
+words=[n<<16 for n in range(65536)]
+words += [s|(e<<23)|m for s in (0,0x80000000) for e in range(256) for m in (0,1,2,0x3fffff,0x400000,0x7ffffe,0x7fffff)]
+rng=random.Random(8521);words += [rng.getrandbits(32)for _ in range(25000)]
+expected=[]
+for word in words:
+ x=struct.unpack('<f',struct.pack('<I',word))[0]
+ expected.append(word if not math.isfinite(x)or x==0 else struct.unpack('<I',struct.pack('<f',math.floor(x)))[0])
+for name,values in [('inputs',words),('expected',expected),('inputs_copy',words)]:
+ (d/(name+'.bin')).write_bytes(struct.pack('<'+'I'*len(values),*values))
+s=['.section .rodata\n.balign 8']
+for name in ('inputs','expected','inputs_copy'):s += [f'.global floor_{name}',f'floor_{name}:',f'.incbin "{name}.bin"','.balign 8']
+(d/'data.S').write_text('\n'.join(s)+'\n')
+(d/'probe.c').write_text(r'''
+#include "source_f32_math.h"
+#include <stdint.h>
+#include <stdio.h>
+extern const uint32_t floor_inputs[],floor_expected[],floor_inputs_copy[];
+static struct {uint32_t before[64],out[N],after[64];} box;
+static uint32_t bits(float x){uint32_t b;__builtin_memcpy(&b,&x,4);return b;}
+static float value(uint32_t b){float x;__builtin_memcpy(&x,&b,4);return x;}
+static float (*volatile original)(float)=floorf;
+int main(void){
+ unsigned saved;asm volatile("csrr %0,frm":"=r"(saved));
+ for(unsigned mode=0;mode<5;mode++){
+  asm volatile("csrw frm,%0"::"r"(mode));asm volatile("csrwi fflags,17");
+  for(unsigned i=0;i<64;i++)box.before[i]=box.after[i]=0xa5a5a5a5;
+  for(unsigned i=0;i<N;i++)box.out[i]=0xa5a5a5a5;
+  for(unsigned i=0;i<N;i++){
+   float x=value(floor_inputs[i]);box.out[i]=bits(MERLIN_SOURCE_F32_FLOOR(x));
+   if(box.out[i]!=bits(original(x)))return 1;
+   if((floor_inputs[i]&0x7f800000u)!=0x7f800000u&&box.out[i]!=floor_expected[i])return 2;
+   if(floor_inputs[i]!=floor_inputs_copy[i])return 3;
+  }
+  for(unsigned i=0;i<64;i++)if(box.before[i]!=0xa5a5a5a5||box.after[i]!=0xa5a5a5a5)return 4;
+  unsigned actual;asm volatile("csrr %0,frm":"=r"(actual));if(actual!=mode)return 5;
+ }
+ asm volatile("csrw frm,%0"::"r"(saved));
+ printf("FLOOR_VALUE_PASS %u comparisons 5FRM guards inputs preserved\n",5*N);return 0;
+}
+''')
+clang='/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang'
+run([clang,'--target=riscv64-unknown-elf','--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf','-isystem','/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include','-march=rv64gc','-mabi=lp64d','-mcmodel=medany','-O2','-ffreestanding','-fno-builtin','-fno-fast-math','-ffp-contract=off','-I',str(core/'merlin/runtime/c'),'-include',str(d/'numeric_capability.h'),f'-DN={len(words)}','-c',str(d/'probe.c'),'-o',str(d/'probe.o')])
+from merlin.perf.layer_bench import build_program
+built=build_program([d/'probe.o',d/'data.S'],d,target='gemmini',extra_cflags=['-march=rv64gc'],extra_ldflags=['-lm'],max_loaded_bytes=None)
+audit=audit_elf(built.elf.read_bytes());assert audit['status']=='pass';(d/'nofsm.json').write_text(json.dumps(audit,indent=2)+'\n')
+spike='/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike'
+argv=[spike,'--extension=gemmini','--isa=rv64gc',str(built.elf)]
+result=subprocess.run(argv,capture_output=True,timeout=180);(d/'stdout.log').write_bytes(result.stdout);(d/'stderr.log').write_bytes(result.stderr)
+assert result.returncode==0 and f'FLOOR_VALUE_PASS {5*len(words)} comparisons'.encode()in result.stdout,(result.returncode,result.stdout[-1000:])
+(d/'result.json').write_text(json.dumps(dict(status='pass',comparisons=5*len(words),modes=5,original_library_nonfinite_path=True,errno_flags_unobserved=True,rounding_mode_preserved=True,guards_inputs_preserved=True,elf_sha256=built.elf_sha256,command=argv),indent=2)+'\n')
+print('INDEPENDENT_FLOOR_TARGET_PASS',5*len(words),flush=True)
+
+# Compile and execute the complete original group only after the independent gate.
+d=work/'candidate';start=time.time();argv=[spike,'--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(d/'model.elf')]
+with (d/'spike.log').open('w')as log:result=subprocess.run(argv,stdout=log,stderr=subprocess.STDOUT,timeout=600)
+text=(d/'spike.log').read_text();assert result.returncode==0 and 'WORKSPACE_GROUP ORIGINAL_COMPILED_CONSUMER AND GUARDS PASS'in text
+(d/'execution.json').write_text(json.dumps(dict(status='pass',elf_sha256=sha(d/'model.elf'),command=argv,elapsed_seconds=time.time()-start,returncode=result.returncode,metrics=[line for line in text.splitlines()if 'WORKSPACE_'in line],scope='Complete original group+compiled source consumer; Spike mcycle values are retired instructions, not hardware cycles'),indent=2)+'\n')
+(work/'commands.json').write_text(json.dumps(commands,indent=2)+'\n')
+print('COMPLETE_ORIGINAL_GROUP_PASS',flush=True)

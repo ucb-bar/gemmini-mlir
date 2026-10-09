@@ -1,0 +1,966 @@
+{
+  "schema": "gemmini_resident_weight_packet_capsules_v1",
+  "owner": "reference_parity",
+  "timestamp_utc": "2026-10-06T10:51:56.824086+00:00",
+  "hypothesis": "Reduce B DMA granularity/critical packet lifetime while preserving full output panels, and retain ordinary K/spatial issue loops",
+  "outcome": "Matched original retainedpacket positive12.56% vscurrent and6.10% vswholepanelprefetch; independent smallshape negative23.6%, no automatic policy",
+  "pairs": [
+    {
+      "fixture_receipt": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/receipt.json",
+      "results": [
+        "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/result.json",
+        "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/result.json"
+      ],
+      "control_cycles": 536180,
+      "candidate_cycles": 468824,
+      "change_fraction": -0.12562199261442053,
+      "scope": "One complete original or independent ABI kernel, common addresses/dirtyguards/immutableinputs, pinnedGSIM notstock"
+    },
+    {
+      "fixture_receipt": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/receipt.json",
+      "results": [
+        "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/result.json",
+        "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/result.json"
+      ],
+      "control_cycles": 6359,
+      "candidate_cycles": 7858,
+      "change_fraction": 0.23572888818996707,
+      "scope": "One complete original or independent ABI kernel, common addresses/dirtyguards/immutableinputs, pinnedGSIM notstock"
+    }
+  ],
+  "other_arms": {
+    "original_packets": {
+      "schema": "gemmini_captured_convolution_capsule_v1",
+      "status": "pass",
+      "schedule": "resident_weight_packets",
+      "prefetch_b": false,
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "source_shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "fixture_receipt_sha256": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+      "fixture_pins": {
+        "a": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+        "b": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+        "expected": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313"
+      },
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "994269a7fb9ba0342c435cfbb1aa34ee6f4060e1df2d51689a775843279e30f3",
+        "llvm_mlir_sha256": "73a5002839834afe40e548bfb6ce5909ada1cf1616116bd86239c4e6bf7a1a37",
+        "llvm_ir_sha256": "2b5e74180994638256f10df01298b3747c399da364c9da4bab9dae7a28cb9445",
+        "object_sha256": "492e4a695c3a4543dee610a43c0ec522897292bd8ce737bfe802af545e2a5e59",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.o"
+          ]
+        ]
+      },
+      "resource": {
+        "input_rows": 4096,
+        "weight_rows": 64,
+        "weight_base_row": 8192,
+        "accumulator_rows": 896,
+        "weight_issue_tiles": 2
+      },
+      "common_operand_addresses": {
+        "captured_a": 2148532224,
+        "captured_b": 2148582400,
+        "captured_box": 2150629376,
+        "captured_expected": 2149172224
+      },
+      "elf_sha256": "cf9d4f270c52044967f63fdbca4c3ae380966dfb6744afadd870b1e4e30ee047",
+      "source_c_sha256": "2c72805281995a99a84069e8316747335d4a10a328d59f622a71fae9a8b7bcb7",
+      "benchmark_header": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/benchmark_buffer.h",
+        "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+        "comparison": "Every byte outside ROI; shared exact word comparator with byte tails",
+        "output_poison": "Every output byte0xdb before measured call"
+      },
+      "probe_driver": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/gsim_captured_conv_probe.py",
+        "sha256": "2f2d5f16e278878a09d8679362719fcfce5c140866fc07fc209ffe150216d07c"
+      },
+      "kernel_cycles": 492736,
+      "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+      "run_completed": true,
+      "run_returncode": 0,
+      "outputs_checked": 50176,
+      "guards_checked": 4096,
+      "immutable_input_bytes_checked": 640000,
+      "strict_target": {
+        "status": "pass",
+        "spike_argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "-g",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/layer.elf"
+        ],
+        "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+        "stdout_sha256": "6d8b6d93253e17b8355971eef29847cfc23ee0ba6ca6f9fb7972fd7a7311b3b7",
+        "stderr_sha256": "efc2412c436d4113a506dbc029b4c03cdac9ece042386ab0646370fe5c7754b5"
+      },
+      "nofsm_status": "pass",
+      "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "CAPTURED_CONV_CYCLES 492736\nCAPTURED_CONV_PASS N=50176 SCHEDULE=resident_weight_packets\n",
+      "stderr": "=0x80300880\n[gsim-ar] #21 addr=0x803008c0\n[gsim-ar] #22 addr=0x80300900\n[gsim-ar] #23 addr=0x80300940\n[gsim-ar] #24 addr=0x80300980\n[gsim-ar] #25 addr=0x803009c0\n[gsim-ar] #26 addr=0x80300a00\n[gsim-ar] #27 addr=0x80300a40\n[gsim-ar] #28 addr=0x80300a80\n[gsim-ar] #29 addr=0x80300ac0\n[gsim-ar] #30 addr=0x80300b00\n[gsim-ar] #31 addr=0x80300b40\n[gsim-ar] #32 addr=0x80300b80\n[gsim-ar] #33 addr=0x80300bc0\n[gsim-ar] #34 addr=0x80300c00\n[gsim-ar] #35 addr=0x80300c40\n[gsim-ar] #36 addr=0x80300c80\n[gsim-ar] #37 addr=0x80300cc0\n[gsim-ar] #38 addr=0x80300d00\n[gsim-ar] #39 addr=0x80300d40\n[link-probe] ticks=200000 in_fires=15996 out_fires=6394 in_valid=1 in_ready=1 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=32211 out_fires=12880 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=48577 out_fires=19433 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=65397 out_fires=26161 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1000000 in_reset=14 done=0\n[gsim-emu] 1000000 cycles, 76.2s, 13130 cyc/s\n[link-probe] ticks=1000000 in_fires=82227 out_fires=32893 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1200000 in_fires=99062 out_fires=39627 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1400000 in_fires=115907 out_fires=46365 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1500000 in_reset=14 done=0\n[link-probe] ticks=1600000 in_fires=132757 out_fires=53105 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1800000 in_fires=149602 out_fires=59843 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=1935867 wall=137.57s (14072 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=1692 dram_w=13536 dram_ar=35361 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8030c1c0 last_ar=0x80027740 max_ar=0x8032d400 r_fires=282888 b_fires=1692 cvfpu_accepts=0 uart_chars=0\n"
+    },
+    "original_whole_panel_prefetch": {
+      "schema": "gemmini_captured_convolution_capsule_v1",
+      "status": "pass",
+      "schedule": "compact",
+      "prefetch_b": true,
+      "shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "source_shape": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "fixture_receipt_sha256": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+      "fixture_pins": {
+        "a": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+        "b": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+        "expected": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313"
+      },
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "aff4acac1a4c0f8ae32707e8415e5fc1992b16a40ee922ee1ba863cd11c1affb",
+        "llvm_mlir_sha256": "5d0527a9b5d44fb24db6549a35c664086fc8d50d4e965363b7c86f035e903292",
+        "llvm_ir_sha256": "97b5885a462b733216cf7c0e216ab6a697a2f3709e5728027bb1c5eb66801273",
+        "object_sha256": "881a355a0cc51b273697ad3ab4ac80ab05d59473fc75355b0f761b429532d6c7",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.o"
+          ]
+        ]
+      },
+      "resource": {
+        "input_rows": 4096,
+        "weight_rows": 64,
+        "weight_base_row": 8192,
+        "accumulator_rows": 896,
+        "weight_issue_tiles": null
+      },
+      "common_operand_addresses": {
+        "captured_a": 2148532224,
+        "captured_b": 2148582400,
+        "captured_box": 2150629376,
+        "captured_expected": 2149172224
+      },
+      "elf_sha256": "6af8bac94332aaaf2304732b4f3c57171f76b61e1842222f1059e55a9e73d93d",
+      "source_c_sha256": "9eeedcfcd2e6afe3c51952c60c11183b4b8a3e20026b9060657ea0a359706584",
+      "benchmark_header": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/benchmark_buffer.h",
+        "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+        "comparison": "Every byte outside ROI; shared exact word comparator with byte tails",
+        "output_poison": "Every output byte0xdb before measured call"
+      },
+      "probe_driver": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/gsim_captured_conv_probe.py",
+        "sha256": "2f2d5f16e278878a09d8679362719fcfce5c140866fc07fc209ffe150216d07c"
+      },
+      "kernel_cycles": 499263,
+      "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+      "run_completed": true,
+      "run_returncode": 0,
+      "outputs_checked": 50176,
+      "guards_checked": 4096,
+      "immutable_input_bytes_checked": 640000,
+      "strict_target": {
+        "status": "pass",
+        "spike_argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "-g",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/layer.elf"
+        ],
+        "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+        "stdout_sha256": "963d6335b85774f7640dea51075624a58e859121410cc544ea86ac93945e0ea0",
+        "stderr_sha256": "7af7197ffa2ef5ecdcfd53266f917450692071d3c4449342410ca6b0730a2b43"
+      },
+      "nofsm_status": "pass",
+      "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "CAPTURED_CONV_CYCLES 499263\nCAPTURED_CONV_PASS N=50176 SCHEDULE=compact\n",
+      "stderr": "=0x80300880\n[gsim-ar] #21 addr=0x803008c0\n[gsim-ar] #22 addr=0x80300900\n[gsim-ar] #23 addr=0x80300940\n[gsim-ar] #24 addr=0x80300980\n[gsim-ar] #25 addr=0x803009c0\n[gsim-ar] #26 addr=0x80300a00\n[gsim-ar] #27 addr=0x80300a40\n[gsim-ar] #28 addr=0x80300a80\n[gsim-ar] #29 addr=0x80300ac0\n[gsim-ar] #30 addr=0x80300b00\n[gsim-ar] #31 addr=0x80300b40\n[gsim-ar] #32 addr=0x80300b80\n[gsim-ar] #33 addr=0x80300bc0\n[gsim-ar] #34 addr=0x80300c00\n[gsim-ar] #35 addr=0x80300c40\n[gsim-ar] #36 addr=0x80300c80\n[gsim-ar] #37 addr=0x80300cc0\n[gsim-ar] #38 addr=0x80300d00\n[gsim-ar] #39 addr=0x80300d40\n[link-probe] ticks=200000 in_fires=15801 out_fires=6316 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=400000 in_fires=31711 out_fires=12680 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=500000 in_reset=14 done=0\n[link-probe] ticks=600000 in_fires=47807 out_fires=19125 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=800000 in_fires=64622 out_fires=25851 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1000000 in_reset=14 done=0\n[gsim-emu] 1000000 cycles, 76.2s, 13117 cyc/s\n[link-probe] ticks=1000000 in_fires=81437 out_fires=32577 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1200000 in_fires=98272 out_fires=39311 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1400000 in_fires=115117 out_fires=46049 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=1500000 in_reset=14 done=0\n[link-probe] ticks=1600000 in_fires=131962 out_fires=52787 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=1800000 in_fires=148807 out_fires=59525 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=1941883 wall=137.61s (14111 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=1702 dram_w=13616 dram_ar=35410 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8030b680 last_ar=0x80027940 max_ar=0x8032d400 r_fires=283280 b_fires=1702 cvfpu_accepts=0 uart_chars=0\n"
+    },
+    "independent_packets": {
+      "schema": "gemmini_captured_convolution_capsule_v1",
+      "status": "pass",
+      "schedule": "resident_weight_packets",
+      "prefetch_b": false,
+      "shape": {
+        "h": 5,
+        "w": 5,
+        "cin": 32,
+        "cout": 67,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "source_shape": {
+        "h": 5,
+        "w": 5,
+        "cin": 32,
+        "cout": 67,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": false
+      },
+      "fixture_receipt_sha256": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+      "fixture_pins": {
+        "a": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+        "b": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+        "expected": "2060c5af6377ba81e275984c782824becd75060100fc453d8b0926848fe6bc19"
+      },
+      "compilation": {
+        "schema": "gemmini_golden_device_compile_v1",
+        "target_ir_sha256": "df78b26a41a2689ec270cb8a2b0a59d1774df70cf994f3aad43088c64e3e4ec2",
+        "llvm_mlir_sha256": "84f9c7688476aaa85a2262e9e449b4266774f84d616e82bd89a9ad31ea53727a",
+        "llvm_ir_sha256": "4437cdb4800671ca7cfc5cec631ac63f5f5554727d158ed9c6a29b9987db51ad",
+        "object_sha256": "d4a132df5d9b65cd1991b17263eeb6159c09bb9a13859dc8e9a71e77b0ebb170",
+        "object_nofsm_status": "pass",
+        "compiler_sha256": {
+          "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+          "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        },
+        "compiler_argv": [
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+            "--mlir-to-llvmir",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.llvm.mlir",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.ll"
+          ],
+          [
+            "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+            "--target=riscv64-unknown-elf",
+            "-march=rv64gc",
+            "-mabi=lp64d",
+            "-mcmodel=medany",
+            "-O2",
+            "-c",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.ll",
+            "-o",
+            "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.o"
+          ]
+        ]
+      },
+      "resource": {
+        "input_rows": 98,
+        "weight_rows": 64,
+        "weight_base_row": 8192,
+        "accumulator_rows": 192,
+        "weight_issue_tiles": 2
+      },
+      "common_operand_addresses": {
+        "captured_a": 2148532224,
+        "captured_b": 2148533056,
+        "captured_box": 2149580800,
+        "captured_expected": 2148552384
+      },
+      "elf_sha256": "642f14257881712f7bb25ec88407159f207783b464e6fcac00ce5a29e8316982",
+      "source_c_sha256": "550f37eaaaadbce213da966d9986aae23f01daca1e54f57efc246c482c486b27",
+      "benchmark_header": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/benchmark_buffer.h",
+        "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+        "comparison": "Every byte outside ROI; shared exact word comparator with byte tails",
+        "output_poison": "Every output byte0xdb before measured call"
+      },
+      "probe_driver": {
+        "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/gsim_captured_conv_probe.py",
+        "sha256": "2f2d5f16e278878a09d8679362719fcfce5c140866fc07fc209ffe150216d07c"
+      },
+      "kernel_cycles": 7858,
+      "metric_scope": "Complete device kernel on immutable ABI fixture; no host work or whole-model timing transfer",
+      "run_completed": true,
+      "run_returncode": 0,
+      "outputs_checked": 1675,
+      "guards_checked": 4096,
+      "immutable_input_bytes_checked": 20096,
+      "strict_target": {
+        "status": "pass",
+        "spike_argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+          "-g",
+          "--extension=gemmini",
+          "--isa=rv64gc",
+          "-m0x80000000:0x80000000",
+          "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/layer.elf"
+        ],
+        "engine_sha256": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+        "stdout_sha256": "e6c024a61ed63323a9261f99be84450c7ee022d226b75be48d42235930540303",
+        "stderr_sha256": "68b30a81378f9a9a05b2df995113239375fc932fc61503fabff6f831c623f954"
+      },
+      "nofsm_status": "pass",
+      "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "stdout": "CAPTURED_CONV_CYCLES 7858\nCAPTURED_CONV_PASS N=1675 SCHEDULE=resident_weight_packets\n",
+      "stderr": "[gsim-emu] zero-init 302353 register words\n[tsi-probe] SimTSI called for the first time\n[tsi] load path: backdoor load_mem_write (SimDRAM store)\n[gsim-emu] reset done, running (max_cycles=3000000)\n[load-probe] first load_mem_write addr=0x800001c4 n=4 (MEM_BASE=0x80000000 size=0x100000000)\n[gsim-ar] #0 addr=0x80001000\n[gsim-ar] #1 addr=0x80000000\n[gsim-ar] #2 addr=0x80000040\n[gsim-ar] #3 addr=0x80000080\n[gsim-ar] #4 addr=0x800000c0\n[gsim-ar] #5 addr=0x80000100\n[gsim-ar] #6 addr=0x80003780\n[gsim-ar] #7 addr=0x80222a40\n[gsim-ar] #8 addr=0x800037c0\n[gsim-ar] #9 addr=0x80003700\n[gsim-ar] #10 addr=0x80003740\n[gsim-ar] #11 addr=0x80202a80\n[gsim-ar] #12 addr=0x80202ac0\n[gsim-ar] #13 addr=0x80003640\n[gsim-ar] #14 addr=0x80003900\n[gsim-ar] #15 addr=0x80003940\n[gsim-ar] #16 addr=0x802229c0\n[gsim-ar] #17 addr=0x80002000\n[gsim-ar] #18 addr=0x80200800\n[gsim-ar] #19 addr=0x80002040\n[gsim-ar] #20 addr=0x80200840\n[gsim-ar] #21 addr=0x80200880\n[gsim-ar] #22 addr=0x802008c0\n[gsim-ar] #23 addr=0x80200900\n[gsim-ar] #24 addr=0x80200940\n[gsim-ar] #25 addr=0x80200980\n[gsim-ar] #26 addr=0x802009c0\n[gsim-ar] #27 addr=0x80200a00\n[gsim-ar] #28 addr=0x80200a40\n[gsim-ar] #29 addr=0x80200a80\n[gsim-ar] #30 addr=0x80200ac0\n[gsim-ar] #31 addr=0x80200b00\n[gsim-ar] #32 addr=0x80200b40\n[gsim-ar] #33 addr=0x80200b80\n[gsim-ar] #34 addr=0x80200bc0\n[gsim-ar] #35 addr=0x80200c00\n[gsim-ar] #36 addr=0x80200c40\n[gsim-ar] #37 addr=0x80200c80\n[gsim-ar] #38 addr=0x80200cc0\n[gsim-ar] #39 addr=0x80200d00\n\n[gsim-emu] FINISHED: cycles=107060 wall=7.00s (15297 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=46 dram_w=368 dram_ar=1115 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x80201400 last_ar=0x800035c0 max_ar=0x80222a40 r_fires=8920 b_fires=46 cvfpu_accepts=0 uart_chars=0\n"
+    }
+  },
+  "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+  "source_cell_K_lifetime_proof": [
+    {
+      "fixture": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/receipt.json",
+      "fixture_sha256": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+      "arms": {
+        "control": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 752,
+            "gemmini.preload": 32256,
+            "gemmini.compute": 32256,
+            "gemmini.mvout": 56
+          },
+          "requested_payload": {
+            "load_bytes": 640000,
+            "store_bytes": 50176
+          },
+          "all_output_cells_written_once": 50176,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        },
+        "packet_static": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 1328,
+            "gemmini.preload": 32256,
+            "gemmini.compute": 32256,
+            "gemmini.mvout": 56
+          },
+          "requested_payload": {
+            "load_bytes": 640000,
+            "store_bytes": 50176
+          },
+          "all_output_cells_written_once": 50176,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        },
+        "packet_loops": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 1328,
+            "gemmini.preload": 32256,
+            "gemmini.compute": 32256,
+            "gemmini.mvout": 56
+          },
+          "requested_payload": {
+            "load_bytes": 640000,
+            "store_bytes": 50176
+          },
+          "all_output_cells_written_once": 50176,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "fixture": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/receipt.json",
+      "fixture_sha256": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+      "arms": {
+        "control": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 53,
+            "gemmini.preload": 270,
+            "gemmini.compute": 270,
+            "gemmini.mvout": 25
+          },
+          "requested_payload": {
+            "load_bytes": 20096,
+            "store_bytes": 6700
+          },
+          "all_output_cells_written_once": 1675,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        },
+        "packet_static": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 71,
+            "gemmini.preload": 270,
+            "gemmini.compute": 270,
+            "gemmini.mvout": 25
+          },
+          "requested_payload": {
+            "load_bytes": 20096,
+            "store_bytes": 6700
+          },
+          "all_output_cells_written_once": 1675,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        },
+        "packet_loops": {
+          "commands": {
+            "gemmini.fence": 2,
+            "gemmini.flush": 1,
+            "gemmini.config_ex": 1,
+            "gemmini.config_ld": 3,
+            "gemmini.config_st": 1,
+            "gemmini.mvin": 71,
+            "gemmini.preload": 270,
+            "gemmini.compute": 270,
+            "gemmini.mvout": 25
+          },
+          "requested_payload": {
+            "load_bytes": 20096,
+            "store_bytes": 6700
+          },
+          "all_output_cells_written_once": 1675,
+          "source_operand_and_increasing_K_proved": true,
+          "scratch_and_ACC_lifetimes_proved": true,
+          "physical_DRAM_bytes": "UNKNOWN"
+        }
+      }
+    }
+  ],
+  "default_object_identity": {
+    "previous_source": "/scratch/agustin/tmp/gemmini-resident-command-loops-20261006/out/resident_command_loops/golden_resident_conv_previous.py",
+    "previous_source_sha256": "ed05be4c0f0b2ccf241387e1804ce212036e0e8e604fb34591d53e5b0a0fe38a",
+    "four_default_cases": [
+      {
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0012096002465113997,
+          "relu": true,
+          "wide_b": false,
+          "explicit_halo": false
+        },
+        "options": {},
+        "objects": [
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/kernel.o",
+            "sha256": "148cb626dfef37a63b34a8ec0088be2883c30a16c695b02ad7922c29f18cd50d"
+          },
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/kernel.o",
+            "sha256": "148cb626dfef37a63b34a8ec0088be2883c30a16c695b02ad7922c29f18cd50d"
+          }
+        ],
+        "full_object_identity": true
+      },
+      {
+        "shape": {
+          "h": 7,
+          "w": 7,
+          "cin": 512,
+          "cout": 512,
+          "stride": 1,
+          "bn": 16,
+          "output_dtype": "i32",
+          "scale": 1.0,
+          "relu": false,
+          "wide_b": false,
+          "explicit_halo": false
+        },
+        "options": {
+          "rows_per_tile": 2
+        },
+        "objects": [
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/kernel.o",
+            "sha256": "9a692f67b0f776783d0cd42dbfad0199e17205ff6889f38d9b4dcfe5d310c38e"
+          },
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/kernel.o",
+            "sha256": "9a692f67b0f776783d0cd42dbfad0199e17205ff6889f38d9b4dcfe5d310c38e"
+          }
+        ],
+        "full_object_identity": true
+      },
+      {
+        "shape": {
+          "h": 5,
+          "w": 5,
+          "cin": 32,
+          "cout": 67,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i32",
+          "scale": 1.0,
+          "relu": false,
+          "wide_b": false,
+          "explicit_halo": false
+        },
+        "options": {
+          "rows_per_tile": 2,
+          "prefetch_b": true
+        },
+        "objects": [
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/kernel.o",
+            "sha256": "a5bb47fd5f73f218927db57b78b22de64c75ed1dd9fde7bfeb6eb8cf46db8398"
+          },
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/kernel.o",
+            "sha256": "a5bb47fd5f73f218927db57b78b22de64c75ed1dd9fde7bfeb6eb8cf46db8398"
+          }
+        ],
+        "full_object_identity": true
+      },
+      {
+        "shape": {
+          "h": 3,
+          "w": 5,
+          "cin": 16,
+          "cout": 19,
+          "stride": 1,
+          "bn": 2,
+          "output_dtype": "i8",
+          "scale": 0.017,
+          "relu": false,
+          "wide_b": false,
+          "explicit_halo": false
+        },
+        "options": {},
+        "objects": [
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/kernel.o",
+            "sha256": "e0ad3443f573c522d1e55969c541c525de921ae4f2f9313f53766d2242a6156f"
+          },
+          {
+            "path": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/kernel.o",
+            "sha256": "e0ad3443f573c522d1e55969c541c525de921ae4f2f9313f53766d2242a6156f"
+          }
+        ],
+        "full_object_identity": true
+      }
+    ],
+    "actual_source_object": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+    "actual_source_identity": true
+  },
+  "early_driver_digest_disclosure": {
+    "schema": "capsule_probe_execution_driver_v1",
+    "early_runs": [
+      "original_control",
+      "original_packets"
+    ],
+    "early_source": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_at_first_runs.py",
+    "early_sha256": "9ad7e9f81a91e99a56f6ff67371d99b1054732e42fadf0707e430106ac1ef28d",
+    "later_runs": [
+      "independent_packets",
+      "independent_control",
+      "original_whole_panel_prefetch"
+    ],
+    "later_source": "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_for_later_runs.py",
+    "later_sha256": "2f2d5f16e278878a09d8679362719fcfce5c140866fc07fc209ffe150216d07c",
+    "disclosure": "Harness records driver file digest at completion. File was refactored for duplicate-prefetch keyword support while two earlier runs were live; late file digest is not their loaded Python identity. Their actual generated C/MLIR/object/ELF identities, explicit loaded source copy and argv are retained. Refactor is limited to equivalent constructor keyword assembly on their empty option dictionaries. No prior capsule or whole qualification source was modified."
+  },
+  "retained_driver_source_sha256": "178f2f6065a3580edfb349f9eee58592db733bc8586417a2f83c74c9c03f5fd7",
+  "reference_scope": "PermittedZIP reference32column B geometry motivates packet choice; different reference numeric/input contracts and instrumentation. Historical1903 timing is not1930section attribution.",
+  "actual_emitted_delta": "Bweightload commands576->1152 with same589824requestedBbytes, compute32256/FLIP2304/STAY29952/stores56 unchanged. Current/next packet slots alternate banks, each output keeps increasingHWIOK. Functionalprimitivecensus and complete sourcecells prove actualwork, not overlap/cycles.",
+  "retired_scope": "Exactpublickernel+PChistogram from functionalSpike; not targetcycles",
+  "CPU_accelerator_overlap": "UNKNOWN",
+  "physical_DRAM_bytes": "UNKNOWN",
+  "whole_timing": "UNKNOWN",
+  "automatic_policy": false,
+  "default_enabled": false,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/result.json": "765b1d614a0963696d1aae08f0a6ae5795a4a29358d36b0beb399194d4a33cfd",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/gsim.stdout": "c0a825c16d6ce5bf4ac35e0208f5a8e7276b81c34822d61cdafd39d357da1c06",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/check_a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/spike.stderr": "93441ca130852bf86d2c71d21ff09e198e06819f2ed5be97225ac282a2335169",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/inputs.o": "0874b0a513c2062186b10c9ddac418b88d7941694ef050ce8655ee4c788d8dce",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/executed_census.json": "dc79baf974bc8ea23ec2eb3e78666fa8e0d4a51111932ebb6b6754cfef54556c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/check_b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/layer.elf": "47ac72ff3e8a0ee400a2eb5d23174d2a666d9b3bf104d662f12bdaa88ac5054b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/probe.c": "c8c62c2cbe41ba3b2f8936ddb169c3c6dff1bbe5a4895bd9b92023db0b6bf0c2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/inputs.S": "f92701402bd717bf9f04f49a1b760b36f1a3bd200cae79e7ab43e195f5d65f44",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/capture_receipt.json": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/probe.o": "34edb9c6e1c82429a5d18ef23ae9939ff8affa0fd55a6cf974a265f99f4ff92f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/expected.bin": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/nofsm_audit.json": "a68a5d2f5ea0c836008aa989fa9a5f2bf4b4138015fb7b90d5969ebf2ab84666",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/spike.stdout": "9c4d98172cde53185dc8ad93961b6e2897f5a4d3067ae299b3fcc707496a6603",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/kernel.o": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_control/a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/result.json": "8e3afc50e872d39a4332fdc102aafa81f24a3f245f5de2a888fe714ff54adc7a",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/gsim.stdout": "c102ca8d14a915b472990dd241b742d09ff0bd105b10cb1d15d654939ac2091e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/check_a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/spike.stderr": "924cd99fab3503c56a6f43727a5757b6506e0c22cec62cacf6cd1fd052c2f90b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/inputs.o": "0874b0a513c2062186b10c9ddac418b88d7941694ef050ce8655ee4c788d8dce",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/kernel.ll": "5bc44a304eb16df34047c9365f83840257d49955703d37a1b7f3e758476aa78e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/executed_census.json": "ac14d35ba030f3b8495c07249dffb9dcbf6f95e82fce8533133a84e2cc872941",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/check_b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/layer.elf": "ce2bbfadcaba7b99e40e3b50c8e5bd93db77555735b4e2e5a164dafa1769a813",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/probe.c": "2c72805281995a99a84069e8316747335d4a10a328d59f622a71fae9a8b7bcb7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/inputs.S": "ca57fea7fcd435603a8666479f060f568b60208d5f23cfbf0bcf0d458c577092",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/capture_receipt.json": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/device_compile.json": "5dc7e337e1b3932a1f16d7c2e786e43074538956ff04b416dec21e7e0c5208ef",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/probe.o": "5aad032bcad63b4726f2f1bac8b2186ea0e7907a053353cc41739893bc6f87d5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/expected.bin": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/nofsm_audit.json": "eb5b6421911cb72aaff7365346b5741fe7709e98d9e62a159d0a15375355c2fa",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/kernel.gemmini.mlir": "215f5030f682b79eefe8467886a593b058321e5e0352833ae86be74e88925b42",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/kernel.llvm.mlir": "7ee76165c298556ef65e096da177cd4eb3d9f5f6f3566e471598d41408621767",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/spike.stdout": "58a9f613f269424401ac4174e7c06b69aed521062ed6160ac06bc2a6ec55dc4e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/kernel.o": "387f04bff922650f12ba6255baa4f310860db817016f6b0e9a07622f6abc03df",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/object_nofsm_audit.json": "b4daeca29bbefa408f1b2f2988e610ecb962b5d4268d928b570085284e656ed0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packet_loops/a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/receipt.json": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/expected.bin": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_fixture/a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/result.json": "569bb8df677e41b30981af4d61c92b30f07af0304f0da78fa6b2fd6168e557c1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/gsim.stdout": "078dfef216bf3adfc4f09e92d407c5834d533949fee166cb2d560249120d7639",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/check_a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/spike.stderr": "e7c8a94ad85975dc0ecd734cfc035de0b5b443c698e2c1b3f767436817cc610c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/inputs.o": "373e381a35252b825fbbfa1e8f49ce912f63a97e76b79079db2399689cec8869",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/executed_census.json": "5d6500d9b5d972a8e519d7fed2f505441b6d9a3d38f8484f8c066b4f453d6a2f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/check_b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/layer.elf": "3b9cd6eae11ae8605ecb162afd02f2a29e70f27687f7164ac70f1d5460aa4b10",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/probe.c": "806dff8ab77a6a58f6a16e82c23743433e94a5821039ea54aaed924d9a7d9abc",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/inputs.S": "f37ec15deecd6c0e8c77f2599d7dac6db3c4147c72471f9b69ccae164d433aae",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/capture_receipt.json": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/probe.o": "fb2ca1074bf21961f7458029d07dd248bf231cb712f38630bdb23cdec5316c63",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/expected.bin": "2060c5af6377ba81e275984c782824becd75060100fc453d8b0926848fe6bc19",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/nofsm_audit.json": "1cae27bace7b24b0e9cdd2b0cfcc588fdc6fb5b7f2a1fc351d2c9b9b7bfd4800",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/spike.stdout": "15bea72bffa86a1ed3bd4e8b259b12a593ff32d2361f4067a4b128df5e62252d",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/kernel.o": "fc61a9ed8a5f26967d48dfa7b5c62068de40fab8709bed8aff9d8e1c033709f0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_control/a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/result.json": "d53a3f1b13e783092a52b8ba9c0be5ba5ddb53f004799704270af933834008f8",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/gsim.stdout": "0dfd0e42ca11549edc376db7ec2186fe6cc4f005974657b3bdeb463720b95201",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/check_a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/spike.stderr": "68b30a81378f9a9a05b2df995113239375fc932fc61503fabff6f831c623f954",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/inputs.o": "373e381a35252b825fbbfa1e8f49ce912f63a97e76b79079db2399689cec8869",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/kernel.ll": "cb81994753ea30f5acd811024cc4d2f42e641b15ab2fdfdf78b89ac42b3d9462",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/executed_census.json": "2634696fa86c405f3041baf38a7f0a7708c3170759b8092afe650af8a7d9ce94",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/check_b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/layer.elf": "642f14257881712f7bb25ec88407159f207783b464e6fcac00ce5a29e8316982",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/probe.c": "550f37eaaaadbce213da966d9986aae23f01daca1e54f57efc246c482c486b27",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/inputs.S": "217bdd0f98365959593c9233289adf2d1384b8861033f5ea6bb7ef6825d96097",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/capture_receipt.json": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/device_compile.json": "48c6e7e77507160d2d2e88094efc6f3efea4dd3c2070837465910d2ce6fdd1b9",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/probe.o": "bc681c681530a7bc60b9787beabccbb49eb582e6d680176fa79d457dc33520c0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/expected.bin": "2060c5af6377ba81e275984c782824becd75060100fc453d8b0926848fe6bc19",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/nofsm_audit.json": "f5ce4ed64a5c981470a48d9842a2c6475626a6f66e0508169784ac558deda9b5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/kernel.gemmini.mlir": "ade122bd45358c07a367a0f37c316eb225566a470eeb89f466184270a80c82f7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/kernel.llvm.mlir": "1b1fd2988f4d39ce372c5c315d0964e5cc800c7dd38df480b81130b8b630894e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/spike.stdout": "e6c024a61ed63323a9261f99be84450c7ee022d226b75be48d42235930540303",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/kernel.o": "d4a132df5d9b65cd1991b17263eeb6159c09bb9a13859dc8e9a71e77b0ebb170",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/object_nofsm_audit.json": "47e3a1e9af5fb6cf103c245f3a8732f11ac6791c249fd2a59612475a729d8297",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packet_loops/a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/kernel.ll": "85d104dd2ad81d11a561705dceb048ac7340362ecc2fb53e943b34fbea16f2c8",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/receipt.json": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/device_compile.json": "c95d5bdee76fb77b7cc6f74f0a404b482186c6afc5853e7a66e3b3040b4a59a0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/expected.bin": "2060c5af6377ba81e275984c782824becd75060100fc453d8b0926848fe6bc19",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/kernel.gemmini.mlir": "c47e94cb6aedd8e5dd8b5b1bd0547c7859adb0ffa8cf890138163bcfe714b546",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/kernel.llvm.mlir": "e22da9e3efcb007a224b4d00ca2c9f1aa02cf6f2a66c97d4ab89c31a94676bf7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/kernel.o": "fc61a9ed8a5f26967d48dfa7b5c62068de40fab8709bed8aff9d8e1c033709f0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/object_nofsm_audit.json": "de4112d064985210a797d9551cbb547dc99fb9bae1c6c72e25ce36485804417f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_fixture/a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/gsim.stdout": "c45f841bde8205299efb416fd7725eac193f2ff3d2e56a0dbd8f9e7ccdd0969b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/check_a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/spike.stderr": "efc2412c436d4113a506dbc029b4c03cdac9ece042386ab0646370fe5c7754b5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/inputs.o": "0874b0a513c2062186b10c9ddac418b88d7941694ef050ce8655ee4c788d8dce",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.ll": "2b5e74180994638256f10df01298b3747c399da364c9da4bab9dae7a28cb9445",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/executed_census.json": "1e8795952648ae2af6c1342ac48e6916212bcf317aaa877f17ec5ead9aac8927",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/check_b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/layer.elf": "cf9d4f270c52044967f63fdbca4c3ae380966dfb6744afadd870b1e4e30ee047",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/probe.c": "2c72805281995a99a84069e8316747335d4a10a328d59f622a71fae9a8b7bcb7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/inputs.S": "7ee50247af7a1bb48237063a1ad6a80005d7ef9ac0b1ff04d418c705acb608ff",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/capture_receipt.json": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/device_compile.json": "d6738eadfaf62a936f84b10ad9a26a5af9e26323d6ba6782234804efd6bd43fe",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/probe.o": "5aad032bcad63b4726f2f1bac8b2186ea0e7907a053353cc41739893bc6f87d5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/expected.bin": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/nofsm_audit.json": "bee0ae39b16b7c89eaee572c3c634501b1349be1c53d0ab579951fe1c939a7ee",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.gemmini.mlir": "994269a7fb9ba0342c435cfbb1aa34ee6f4060e1df2d51689a775843279e30f3",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.llvm.mlir": "73a5002839834afe40e548bfb6ce5909ada1cf1616116bd86239c4e6bf7a1a37",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/spike.stdout": "6d8b6d93253e17b8355971eef29847cfc23ee0ba6ca6f9fb7972fd7a7311b3b7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/result.json": "5898a390d8afec47662385c0afe5783dc860705dd8f4474c65fc8153671da185",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/kernel.o": "492e4a695c3a4543dee610a43c0ec522897292bd8ce737bfe802af545e2a5e59",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/object_nofsm_audit.json": "f62ce1d163b6f4f1f55fcd594fd61b44150def3ce3a913095984b58c7378b7e1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_packets/a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/gsim.stdout": "76b6267c0772de4a1f765ab36c0a40491ac1d2198847ea950c4a872d1c5adcd1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/check_a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/spike.stderr": "7af7197ffa2ef5ecdcfd53266f917450692071d3c4449342410ca6b0730a2b43",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/inputs.o": "0874b0a513c2062186b10c9ddac418b88d7941694ef050ce8655ee4c788d8dce",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.ll": "97b5885a462b733216cf7c0e216ab6a697a2f3709e5728027bb1c5eb66801273",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/executed_census.json": "76184ab08ce79da04e923df30be7e815085d05dc3daad15446a7f2e3eb02291c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/check_b.bin": "b7ef776b2ffa49448e5235987c510be97c70ec962687e30d2a3790401270988b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/layer.elf": "6af8bac94332aaaf2304732b4f3c57171f76b61e1842222f1059e55a9e73d93d",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/probe.c": "9eeedcfcd2e6afe3c51952c60c11183b4b8a3e20026b9060657ea0a359706584",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/inputs.S": "7159ae31243bbbce8ee70279578340bc5d791c87b852df252211c68a79f3b2e1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/capture_receipt.json": "4d4597aa241bcdfe59b5c388c878a83a0eda8e313a8a7f7d2bc919ca43a14511",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/device_compile.json": "bee6cb827e57dfdeb1a30b9f11541045895948fb0ecdfb1603ab508655b397b6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/probe.o": "13d5a71609ea9dad0238e0d9221966d3453f0f90605cf7666a9830a8d960ebf9",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/expected.bin": "ec419aa4e8449c88482230dff6ed62ad218302ad06c1eaac55ecd8f85aff7313",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/nofsm_audit.json": "7554c24d7aaddb11f4fff4354d93eef3ee54369102acdc70b9c180af9bad8558",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.gemmini.mlir": "aff4acac1a4c0f8ae32707e8415e5fc1992b16a40ee922ee1ba863cd11c1affb",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.llvm.mlir": "5d0527a9b5d44fb24db6549a35c664086fc8d50d4e965363b7c86f035e903292",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/spike.stdout": "963d6335b85774f7640dea51075624a58e859121410cc544ea86ac93945e0ea0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/result.json": "e6ab15c1be2dd9c3947ffefb06fd3d8b6efe2b7af3c8ac96a4f06aa0412ba4d6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/kernel.o": "881a355a0cc51b273697ad3ab4ac80ab05d59473fc75355b0f761b429532d6c7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/object_nofsm_audit.json": "886afd1792561f722092f52dc1f3c100aa4bcc2cfe70758f0b551894091cecc8",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/original_whole_panel_prefetch/a.bin": "60f914947cce62c2d18b9eb4b9717b3a373572fb3a2d50214c821950bbc6139c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/gsim.stdout": "0dfd0e42ca11549edc376db7ec2186fe6cc4f005974657b3bdeb463720b95201",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/check_a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/benchmark_buffer.h": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/spike.stderr": "68b30a81378f9a9a05b2df995113239375fc932fc61503fabff6f831c623f954",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/inputs.o": "373e381a35252b825fbbfa1e8f49ce912f63a97e76b79079db2399689cec8869",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.ll": "4437cdb4800671ca7cfc5cec631ac63f5f5554727d158ed9c6a29b9987db51ad",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/executed_census.json": "e66b847be2d309e66f306edfd3a499125bdf156d2b2ededd98d5ad0aed331957",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/check_b.bin": "53166085cb89d10c861f4e953e04ebf388b54b2e9deca665d437d48fb3ce3703",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/layer.elf": "642f14257881712f7bb25ec88407159f207783b464e6fcac00ce5a29e8316982",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/probe.c": "550f37eaaaadbce213da966d9986aae23f01daca1e54f57efc246c482c486b27",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/inputs.S": "02c58b2f240228ef72686acdc0a82b15f36328fa57a637b2f8fd8e1714fadbc1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/capture_receipt.json": "8256e01d560ae7c623c2ff2b7ad622f3808486e6bf6ff26f3bb2f213da37c56c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/device_compile.json": "fea89894d21e50dc9ef390cec8700bbd2093464d183d40c9f6186d6bda12d5b2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/probe.o": "bc681c681530a7bc60b9787beabccbb49eb582e6d680176fa79d457dc33520c0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/expected.bin": "2060c5af6377ba81e275984c782824becd75060100fc453d8b0926848fe6bc19",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/nofsm_audit.json": "f5ce4ed64a5c981470a48d9842a2c6475626a6f66e0508169784ac558deda9b5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.gemmini.mlir": "df78b26a41a2689ec270cb8a2b0a59d1774df70cf994f3aad43088c64e3e4ec2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.llvm.mlir": "84f9c7688476aaa85a2262e9e449b4266774f84d616e82bd89a9ad31ea53727a",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/spike.stdout": "e6c024a61ed63323a9261f99be84450c7ee022d226b75be48d42235930540303",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/result.json": "2acf8e2134e763eea8784750c39f513eb4abf2dcb7146087ef6fd92a62a7fe85",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/kernel.o": "d4a132df5d9b65cd1991b17263eeb6159c09bb9a13859dc8e9a71e77b0ebb170",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/object_nofsm_audit.json": "47e3a1e9af5fb6cf103c245f3a8732f11ac6791c249fd2a59612475a729d8297",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/independent_packets/a.bin": "c8c943c1777c7cce33da3fbfcdaa54cb374097f7b035f121ca655ce08249f1c4",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/actual_plan_resource.json": "3b3d6abe54cf0d9c0aa1a29d10cbca571b110b898829e8fe91ac1048e77054f9",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/actual_plan_resource.log": "2c010fe8d99e81686a804a795d855156507e815fc962ea696e424130a3252947",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/prove_plan.py": "da2ad80e60389c28d7db6cb3f6b789e79af8ed72294b67f70cb6475658cc19a8",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/executed_census.py": "ef52d667a3d152cbc690ec1e324c1f9fedc01c1e6f9a42abbb856637c6ebf78c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/executed_census.log": "2bf4a463b96b9751f1c6d9fc221d353ade5e315b8436657a3b580b1fcc1041c5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity.json": "579dcd9c0ac2856ddd8de80c11044d1eebfa7669a0dd36d213e1efa18262b66c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity.log": "05dc622db70f3219b91c349c6fa398dfe5e2ba2cd1330b612acfd9a4cce0203b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity.py": "8bdf53446e04f375df6207df68aad5b0618ecbcb5411f1ef1606e819c47683f3",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/focused.log": "ae62fff64f8d2f6627313398dfe45a00e850c6595b82d2b012b5b63764e2ecc1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/normal_focused.log": "2ed2540346e110bedbca8caed9d6a22b4d78a96fd297818d20a163d85b52de00",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/packet_tests.log": "ddb07a408e9da173f3df7738e22dc8019e4ed032129d8fce3acdd88a91e38d77",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/final_packet_tests.log": "543f383c73ce52b7e49083d48cc4aab188da0b9dc6ed65bbcb329d9a615aa4bf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_at_first_runs.py": "9ad7e9f81a91e99a56f6ff67371d99b1054732e42fadf0707e430106ac1ef28d",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_for_later_runs.py": "2f2d5f16e278878a09d8679362719fcfce5c140866fc07fc209ffe150216d07c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_for_retained_runs.py": "178f2f6065a3580edfb349f9eee58592db733bc8586417a2f83c74c9c03f5fd7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/probe_driver_execution_ledger.json": "3271e50e8872d97a461b3bb4c974bc925539bf48a888346676467b5e7371ffa3",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/make_independent.py": "9d9438722374a6b2efa154bbe9abe5540465900eaa12fccef473c57b2e5448c7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/make_independent.log": "14d748ed31be05762f3e651268bd934c3aa1577d3e78197db703cd21f61650f8",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/run_original.sh": "e773d9c59a136dba71e4e7ec33cbe6a46d66159a98de039036f4695191638ab2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/run_independent.sh": "e9e4188f371175c0aeea55f21f2129ac5b018eda80ce2790e15382ea7ea184e6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/kernel.ll": "e2eb082b26f2e22f48949bd9072bf5fafbbcad2ed96f31e7a6e31ecc18859068",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/device_compile.json": "576d0158cae8beb1093c7e8d569e7cebb1386cc111657ffbf28932afe6c72be1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/kernel.gemmini.mlir": "75766e1af91b3e727f993ab5da0bace238b553357e2d7f62343dcc5f1691b3d5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/kernel.llvm.mlir": "b4f3ffc125a8b224f0abd085bf378dd669139229a670f52ee39208eca657fd09",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/kernel.o": "9a692f67b0f776783d0cd42dbfad0199e17205ff6889f38d9b4dcfe5d310c38e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_old/object_nofsm_audit.json": "5099a79ea9dbc5b79629227775779f7f0aca365774c02a87f46c63d591e891fd",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/kernel.ll": "a3ec12936cd6331843d8553a74acf2624e957127d113150343e42ef83eebbb12",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/device_compile.json": "f2cef811f309c3f5c03e49ae1f6f627408241f9389285d906434a183c0611f39",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/kernel.gemmini.mlir": "b6cde04cd4dc2d26dc36b0d8c52e3b39aa5a83c3eb9ae70ddea5a656c34b838a",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/kernel.llvm.mlir": "ffcd199855fc677deb8602be4f3c6c1f2d10e96628485b9d5d07394e37f3802b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/kernel.o": "e0ad3443f573c522d1e55969c541c525de921ae4f2f9313f53766d2242a6156f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_current/object_nofsm_audit.json": "d6e21ff9f9021a1c791a9a457e5dd44a91d1e3cbec42efcc77a7caddda740007",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/kernel.ll": "1bd77f823f0dd2122afffb066e21c1347f39716ffc42a0583c93303cae310602",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/device_compile.json": "fdc0576b6f054dd612820d27d8b4f399863b70ede46960aba188652c9acaea92",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/kernel.gemmini.mlir": "3b1a67a155ee8880f0c58cf561d9c40171f31e4225fb4de2dda8400ffd63e0cf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/kernel.llvm.mlir": "3a8f3bbff194359c935a67e5c5328b97d1d5c72a2b477a2de9ca3565ded4236f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/kernel.o": "a5bb47fd5f73f218927db57b78b22de64c75ed1dd9fde7bfeb6eb8cf46db8398",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_old/object_nofsm_audit.json": "802716cd127d0e2a20ce5e06df91c49f768818ef18bb80f42be239957f8b3cd6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/kernel.ll": "2b7aac6679e3f401a5391bb494d9adb87512ded25f04a0cb812171285c1a2588",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/device_compile.json": "bfe1ab2909495b972a86eab993761a5d6636624617ed09a5c6e706ea1e7ed566",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/kernel.gemmini.mlir": "a1d4dd0f28855ec3418eac7ade6eb61113e96ef3bae08d460ca071ecca66a011",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/kernel.llvm.mlir": "2ca37b9cd2b9382fe3b1dc03ee4d7b112c006566ce022c64b117bd9c482cb4df",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/kernel.o": "a607af41605a724a4c73d447d6331e1244eb069f1fa3a896bd72814431ddc1c2",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/actual_source/object_nofsm_audit.json": "1b9b1f6589d66ae5a064e87507b190603dbae4ce3f5f73b72c66702d1a1036b0",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/kernel.ll": "e2eb082b26f2e22f48949bd9072bf5fafbbcad2ed96f31e7a6e31ecc18859068",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/device_compile.json": "74bb48d28afe16c7ae935091687ed353624a1a3585608c4871fa12a7c873de6c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/kernel.gemmini.mlir": "75766e1af91b3e727f993ab5da0bace238b553357e2d7f62343dcc5f1691b3d5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/kernel.llvm.mlir": "b4f3ffc125a8b224f0abd085bf378dd669139229a670f52ee39208eca657fd09",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/kernel.o": "9a692f67b0f776783d0cd42dbfad0199e17205ff6889f38d9b4dcfe5d310c38e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/1_current/object_nofsm_audit.json": "5099a79ea9dbc5b79629227775779f7f0aca365774c02a87f46c63d591e891fd",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/kernel.ll": "a3ec12936cd6331843d8553a74acf2624e957127d113150343e42ef83eebbb12",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/device_compile.json": "95fb717d74805293979066aa348fbcd3aba876d35b0fab7bc0f04335fbb99fe1",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/kernel.gemmini.mlir": "b6cde04cd4dc2d26dc36b0d8c52e3b39aa5a83c3eb9ae70ddea5a656c34b838a",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/kernel.llvm.mlir": "ffcd199855fc677deb8602be4f3c6c1f2d10e96628485b9d5d07394e37f3802b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/kernel.o": "e0ad3443f573c522d1e55969c541c525de921ae4f2f9313f53766d2242a6156f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/3_old/object_nofsm_audit.json": "d6e21ff9f9021a1c791a9a457e5dd44a91d1e3cbec42efcc77a7caddda740007",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/kernel.ll": "20a024e025a7a8ca39fcaa8accefa001c59ca115268746945a79e37850a5b09b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/device_compile.json": "f28d69660e557180f154a39771d3e632dd95f3b3425f85bdd891b1af399d8595",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/kernel.gemmini.mlir": "9c8dd0a36691c92219610d75817e5efe87fd134a596ec6941f74d2beb0954e59",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/kernel.llvm.mlir": "7e8d1a2f947369a70c9de06d79c7e7fe14459a04ea048445e92be1b4a74b92bb",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/kernel.o": "148cb626dfef37a63b34a8ec0088be2883c30a16c695b02ad7922c29f18cd50d",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_old/object_nofsm_audit.json": "661a943c4afb8fd8e3160e3a53562fb66dc4a5a46ad6448e43107a8dc8e3e9de",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/kernel.ll": "1bd77f823f0dd2122afffb066e21c1347f39716ffc42a0583c93303cae310602",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/device_compile.json": "3c9f75798bfde40fa9d6462480cd65f552fac51f3403133c70d47a33d252ab1e",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/kernel.gemmini.mlir": "3b1a67a155ee8880f0c58cf561d9c40171f31e4225fb4de2dda8400ffd63e0cf",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/kernel.llvm.mlir": "3a8f3bbff194359c935a67e5c5328b97d1d5c72a2b477a2de9ca3565ded4236f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/kernel.o": "a5bb47fd5f73f218927db57b78b22de64c75ed1dd9fde7bfeb6eb8cf46db8398",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/2_current/object_nofsm_audit.json": "802716cd127d0e2a20ce5e06df91c49f768818ef18bb80f42be239957f8b3cd6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/kernel.ll": "20a024e025a7a8ca39fcaa8accefa001c59ca115268746945a79e37850a5b09b",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/device_compile.json": "4e3ed30f943b7dd0d15259c5f7c8788cd95eb734fb0782fc4df7316eff56d25c",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/kernel.gemmini.mlir": "9c8dd0a36691c92219610d75817e5efe87fd134a596ec6941f74d2beb0954e59",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/kernel.llvm.mlir": "7e8d1a2f947369a70c9de06d79c7e7fe14459a04ea048445e92be1b4a74b92bb",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/kernel.o": "148cb626dfef37a63b34a8ec0088be2883c30a16c695b02ad7922c29f18cd50d",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/out/resident_weight_issue/default_identity/0_current/object_nofsm_audit.json": "661a943c4afb8fd8e3160e3a53562fb66dc4a5a46ad6448e43107a8dc8e3e9de",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/mlir_oot/golden_resident_conv.py": "9065df8b2797219268dd6f41e3481f51fe974918eef24afed8b513df5f20f321",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/mlir_oot/captured_requant_bundle.py": "2919b0e8ac1ea8df660c61b10e027c9b819da785d39fd6772e81944b3163d1e6",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/mlir_oot/gemmini_opt.py": "8947e208fedf2ac198bfddfaa7d3024322025d74af9e71c4cad043210203a8b5",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/gsim_captured_conv_probe.py": "178f2f6065a3580edfb349f9eee58592db733bc8586417a2f83c74c9c03f5fd7",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/resident_weight_packet_trace_probe.py": "3840d92040a5a253afc4e596e0ba68e11f80a5f5b5004cc55c534d9c8bd27171",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/test_resident_weight_packets.py": "2ffcc77a0fc586c4187bcd14fb9f32933dd3704db0234943c9adbe1f45405d37",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/test_golden_compiler_export.py": "0dae6310cb59cd60cb5eaeb16326f992197880bc132eca8b4fdffc8457c8c744",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/tests/captured_schedule_closure_probe.py": "a37e2884e46d62861f8110061cdfd5548012374b662027b21540185ae4561591",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/docs/resident_weight_packet_issue.md": "cbb3693472b777487465dad666accd2f4079e2e644c47627f53a9574fcf69b8a",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/manifest.yaml": "2e03e908559edb6873eb5613b37d908171c5eafd4a73f1afc1cc270978f7e04f",
+    "/scratch/agustin/tmp/gemmini-resident-weight-issue-20261006/docs/perf_records/compact_weight_prefetch_capsule.json": "3e41c6d4d9cf829de94d58322ecea333a317800f716848bb05b6dc52e3c04068",
+    "/scratch/agustin/tmp/gemmini-reference-parity-20261005/docs/perf_records/q1013_reference_heldout_operand_features.json": "40419a14848a93bd46dbcc1b61c5ecac561b1ef5701c9ea2c136da8c65d824f2"
+  }
+}

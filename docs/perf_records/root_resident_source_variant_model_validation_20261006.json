@@ -1,0 +1,111 @@
+{
+  "schema": "root_resident_source_variant_model_validation_v1",
+  "created_utc": "2026-10-06T21:13:45.892040+00:00",
+  "source_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-resident-dynamic-b-20261006/docs/perf_records/resident_stripe_retained_reduction_gsim.json",
+    "sha256": "53001b1cbdc0a760a3c316032525b108d3e2c8244896c061bd3da6bc14d568ea"
+  },
+  "independently_closed_pins": 239,
+  "primitive_only_feature_pointers": [
+    "/features/array_work_padded_rows",
+    "/features/requested_dma_load_bytes",
+    "/features/requested_dma_store_bytes",
+    "/features/preload_real_stationary_b",
+    "/features/preload_garbage_reuse",
+    "/features/zero_fill_payload_bytes"
+  ],
+  "shared_feature_collision_builder": {
+    "path": "/scratch/agustin/tmp/merlin-calibration-battery-frozen-main-20261006/src/merlin/perf/fast_estimate_validation.py",
+    "sha256": "9e93e7b448045c208398297caec5c287f65e71e846c9d6782db78075e4ba6116"
+  },
+  "primitive_only_collisions": [
+    {
+      "programs": [
+        "8f85c00c43b65f5e007823d7ea54822d840fd62be0161415ec39e54aa7e5af9a",
+        "4b86d2b00dd54c3fc1e4faab34f6a17daa5fc34c6305a1d7602cea56680219d4",
+        "3bdc3a4d8f310720205c6155dcfaa35175d1580d8d276da5869f7df62b67b579"
+      ],
+      "cycles": [
+        503106,
+        512059
+      ],
+      "minimum_point_relative_error": 0.008819255983017539,
+      "features": {
+        "/features/array_work_padded_rows": 516096,
+        "/features/requested_dma_load_bytes": 247808,
+        "/features/requested_dma_store_bytes": 100352,
+        "/features/preload_real_stationary_b": 2304,
+        "/features/preload_garbage_reuse": 29952,
+        "/features/zero_fill_payload_bytes": 14848
+      },
+      "arms": [
+        "h28_control",
+        "h28_retained_k",
+        "h28_retained_row"
+      ]
+    },
+    {
+      "programs": [
+        "84a8690c43c00147a9e3165eace369c31b3a34485509e112a39035f94e02a696",
+        "53ddc68041c48197789cd9a71b9e3ae2b5ca0028e39aa8d667594508df39927b"
+      ],
+      "cycles": [
+        29761,
+        34368
+      ],
+      "minimum_point_relative_error": 0.07183957335994635,
+      "features": {
+        "/features/array_work_padded_rows": 28512,
+        "/features/requested_dma_load_bytes": 26400,
+        "/features/requested_dma_store_bytes": 33396,
+        "/features/preload_real_stationary_b": 162,
+        "/features/preload_garbage_reuse": 1620,
+        "/features/zero_fill_payload_bytes": 3456
+      },
+      "arms": [
+        "tail_control",
+        "tail_retained_k"
+      ]
+    }
+  ],
+  "instruction_count_diagnostics": [
+    {
+      "arms": [
+        "h28_control",
+        "h28_retained_row"
+      ],
+      "instruction_ratio": 0.9527992111175496,
+      "measured_cycle_ratio": 0.9989883978213449,
+      "count_direction_agrees": true,
+      "scope": "Diagnostic ratios only, no fitted prediction or rank admission"
+    },
+    {
+      "arms": [
+        "h28_control",
+        "h28_retained_k"
+      ],
+      "instruction_ratio": 0.8770980105116554,
+      "measured_cycle_ratio": 0.982515686668919,
+      "count_direction_agrees": true,
+      "scope": "Diagnostic ratios only, no fitted prediction or rank admission"
+    },
+    {
+      "arms": [
+        "tail_control",
+        "tail_retained_k"
+      ],
+      "instruction_ratio": 1.1177570093457945,
+      "measured_cycle_ratio": 0.8659508845437617,
+      "count_direction_agrees": false,
+      "scope": "Diagnostic ratios only, no fitted prediction or rank admission"
+    }
+  ],
+  "inference": "Unchanged primitive/array/requestedDMA/Breuse features cannot distinguish these source-equivalent schedules. CPUinstruction/text-only signals misstate magnitude and misrank the independenttail. CPUissue/address/spill/dependency and overlap features need further validated pricing.",
+  "limits": [
+    "One fullGSIM sample per pair, no confidenceinterval.",
+    "No purearray/DMA/DDR rate inferred from these labels.",
+    "No training/coefficient fitting on these source-equivalent validation variants.",
+    "No whole/static/current2026 profile projection or automatic rank default."
+  ],
+  "production_enabled": false
+}

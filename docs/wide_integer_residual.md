@@ -1,0 +1,17 @@
+# Exact wide-integer residual lowering
+
+The default-off `wide_integer` residual backend derives p, q and one representable f32 readout scale from captured source qparams. It searches the explicitly recorded coefficient range up to 32767 within a ratio neighborhood of two, then independently checks every one of the 65,536 signed-i8 input pairs against the original ordered f32 DQ/add/ReLU/Q arithmetic. This is a first exact candidate search, not an optimality or universal feasibility claim. Failure leaves the source unmatched. Source/capture/weights/proof identities and integer coefficient attrs bind the declaration.
+
+`golden_wide_resadd.py` lowers p*A+q*B as repeated diagonal signed-i8 matmuls. It loads a 16x64 input panel once per operand into separate scratchpad banks; diagonal127 and the two remainders remain resident in a third bank. Stationary diagonal weights are reused across four output tiles and repeated chunks. Every partial sum stays in i32 accumulators. A single 64-wide i8 scaled readout follows. The adapter owns a 768-byte immutable diagonal table; there is no CPU input duplication or mutable adapter scratch. M must be a positive multiple of16 and N is64; unsupported tails fail closed. All current captured residuals meet that exact flattening contract. Optional proved shared-permutation lowering avoids NCHW copies without changing elementwise semantics.
+
+The hardest first tuple, p2609/q2180/scale0.00037060913746245205, passes all 65,536 original-source input pairs and output guards on GSIM at **170,847 kernel cycles**, versus159,744 compute issue floor. Actual Gemmini Spike also passes the complete pair oracle. The final ELF zero-FSM audit passes. Stock FireSim job1773 is pending at this record; these GSIM cycles are not a FireSim result. The full-domain fixture includes negative/positive extrema, saturation and rounding boundaries.
+
+The opt-in backend is generalized over proven source scalar parameters; no region name chooses a coefficient or schedule. Device compilation, adapter source/object, coefficient table and search engine hashes are recorded. Whole-model equality to the unchanged original golden remains a separate required gate.
+
+## Stock FireSim confirmation
+
+Job1773 completed at **170,994 kernel cycles**, 7.04% above the159,744 compute floor. All65,536 original-source pairs and output guards passed, with actual staged ELF and exact stock bitstream identities verified. This confirms the primitive schedule on the requested hardware configuration. The fully source-exact whole candidate (ELF02d029dc…) is queued separately as1774; no full-model hardware timing is inferred from this kernel result.
+
+## Follow-up infrastructure opportunity
+
+Primitive FireSim runs spend much more wall time in queue setup than in simulation (the full-pair1773 simulation itself reported3.8seconds). An explicit multi-case capsule ELF could amortize setup across coefficient/schedule variants. Each named case would need its own full-output/guard check and cycle marker, with the capsule manifest bound to the single final ELF and stock bitstream identities. The current collector deliberately accepts one metric; adding a separate capsule schema is future work, not an implicit relaxation of result attribution.

@@ -1,0 +1,93 @@
+{
+  "schema": "resnet_exact_shared_residual_layout_v1",
+  "baseline_instructions": 316587699,
+  "candidate_instructions": 254701066,
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "385889640ffb9e8524249c72b9a12c212b8cd95397a8035570e256962b41dbbf",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 254701066",
+      "METRIC build_hash 409da904787a",
+      "METRIC memref_rank_mismatch 0"
+    ]
+  },
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "385889640ffb9e8524249c72b9a12c212b8cd95397a8035570e256962b41dbbf",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 249,
+      "1": 3436,
+      "2": 8115,
+      "3": 1194,
+      "4": 9854,
+      "5": 74184,
+      "6": 84038,
+      "7": 54
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "layout": {
+    "schema": "exact_physical_layout_v1",
+    "before": {
+      "copies": 102,
+      "output_bytes": 19136748,
+      "producer_boundaries": {
+        "tensor.expand_shape": 49,
+        "tensor.extract_slice": 36,
+        "tensor.insert_slice": 17
+      }
+    },
+    "after": {
+      "copies": 2,
+      "output_bytes": 702464,
+      "producer_boundaries": {
+        "argument": 1,
+        "tensor.expand_shape": 1
+      }
+    },
+    "rewrite": {
+      "requested": 295,
+      "canceled": 48,
+      "unit_views": 2,
+      "scalar_regions": 7,
+      "static_slices": 475,
+      "boundary_transposes": 50
+    },
+    "call_abi_changed": false,
+    "scalar_arithmetic_changed": false,
+    "source_sha256": "8b5c378111506dc14d7c0bfd6a21878c828ad945d77803581cd0e82a4bdc9f9d",
+    "rewritten_sha256": "3feb28499f7721604b5ef2044f4e95ad40b254fc62a9a90b569d82f463802764"
+  },
+  "admitted_residuals": 16,
+  "layout_refusals": 0,
+  "firesim_measured": false
+}

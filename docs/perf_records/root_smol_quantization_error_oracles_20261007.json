@@ -1,0 +1,119 @@
+{
+  "schema": "root_smol_distinct_quantization_oracle_diagnostics_v1",
+  "status": "DIAGNOSTIC_ONLY_EXISTING_REJECTIONS_PRESERVED",
+  "rows": [
+    {
+      "arm": "original_ordered_control",
+      "oracles": {
+        "unquantized_mixed_BF16_F32_checkpoint": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.17730942368507385,
+          "rms_error": 0.03479411849389996,
+          "relative_l2": 0.02919884124753643,
+          "failures_at_existing_elementwise_gate": 181,
+          "finite": true
+        },
+        "original_quantized_golden": {
+          "elements": 1600,
+          "changed_f32_words": 0,
+          "max_abs_error": 0.0,
+          "rms_error": 0.0,
+          "relative_l2": 0.0,
+          "failures_at_existing_elementwise_gate": 0,
+          "finite": true
+        }
+      }
+    },
+    {
+      "arm": "rejected_single7",
+      "oracles": {
+        "unquantized_mixed_BF16_F32_checkpoint": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.21605944633483887,
+          "rms_error": 0.03872164471949161,
+          "relative_l2": 0.03249477802422734,
+          "failures_at_existing_elementwise_gate": 244,
+          "finite": true
+        },
+        "original_quantized_golden": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.1346874237060547,
+          "rms_error": 0.027068843252164167,
+          "relative_l2": 0.02280312671330367,
+          "failures_at_existing_elementwise_gate": 131,
+          "finite": true
+        }
+      }
+    },
+    {
+      "arm": "rejected_two_digit",
+      "oracles": {
+        "unquantized_mixed_BF16_F32_checkpoint": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.15095797181129456,
+          "rms_error": 0.031950741386144545,
+          "relative_l2": 0.026812710476878013,
+          "failures_at_existing_elementwise_gate": 161,
+          "finite": true
+        },
+        "original_quantized_golden": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.1435578465461731,
+          "rms_error": 0.024665636625709753,
+          "relative_l2": 0.02077863587301222,
+          "failures_at_existing_elementwise_gate": 106,
+          "finite": true
+        }
+      }
+    },
+    {
+      "arm": "rejected_wide64_unchanged_operands",
+      "oracles": {
+        "unquantized_mixed_BF16_F32_checkpoint": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.16101109981536865,
+          "rms_error": 0.029921912243148996,
+          "relative_l2": 0.02511013939219633,
+          "failures_at_existing_elementwise_gate": 161,
+          "finite": true
+        },
+        "original_quantized_golden": {
+          "elements": 1600,
+          "changed_f32_words": 1600,
+          "max_abs_error": 0.1427159309387207,
+          "rms_error": 0.028477629592559506,
+          "relative_l2": 0.023989905665501344,
+          "failures_at_existing_elementwise_gate": 144,
+          "finite": true
+        }
+      }
+    }
+  ],
+  "comparison_scope": "Same retained1600 outputs, original quantized compiler control and already-rejected frozen native arms; no new parameter/representation search or hardware run.",
+  "interpretation": "The prequant checkpoint oracle and compiler fidelity oracle answer different questions. A rejected arm's smaller fixture error to the prequant checkpoint does not prove robot quality, semantic equivalence or acceptance. Quantization and compiler/approximation errors are not additive scalar budgets.",
+  "existing_acceptance": {
+    "oracle": "original quantized golden",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "unchanged": true
+  },
+  "task_quality": "UNKNOWN",
+  "policy_selected": false,
+  "golden_replaced": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_smol_torchao_recipe_quality_review_20261007.json": "275aaaaf3ea6040629af03a10e0c204746e92e0cb9df7bdeccd5436d4a88dc70",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/smol_quantization_error_oracles_probe.py": "e873db109953e20d97c9673a8d7301d8ad300fd6ed8bfacd14784c2e3cadbf3f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward/unquantized_checkpoint_output.npy": "7d2d18c31662ea22381f25cc29a9ebfc383052fee9bb55625f7a79e5a5851004",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward/torchao_quantized_output.npy": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "/scratch/agustin/tmp/gemmini-rms-selective-replay-20261007/out/selected_graph_ordered_source_control/native/output.npy": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "/scratch/agustin/tmp/gemmini-rms-selective-replay-20261007/out/rms4_single_digit_selected_graph/native/output.npy": "ac1804384da19cdb08f5133be24b84d6141e15540e1dc2a75b787a65c713a965",
+    "/scratch/agustin/tmp/gemmini-rms-selective-replay-20261007/out/rms4_two_digit_selected_graph/native/output.npy": "6b5dcf470c71661e8aa798f38be341a34688d3d4f79f31ca88db876dbde86eb6",
+    "/scratch/agustin/tmp/gemmini-rms-selective-replay-20261007/out/selected_graph_f64_reduction_control/native/output.npy": "d9d2095c8469549a2b31eeccc5a6c1e6e3390295a39bb4171d655f98db0fdb8f"
+  }
+}

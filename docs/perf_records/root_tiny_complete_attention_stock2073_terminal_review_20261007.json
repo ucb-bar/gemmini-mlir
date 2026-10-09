@@ -1,0 +1,95 @@
+{
+  "schema": "root_complete_attention_stock2073_terminal_review_v1",
+  "status": "VERIFIED_COMPLETE_CURRENT_ATTENTION_STOCK_PAIR",
+  "job_id": 2073,
+  "terminal_pins_reclosed": 10,
+  "release_pins_reclosed": 6,
+  "report": {
+    "rows": [
+      {
+        "id": 0,
+        "sample": 0,
+        "cycles": 1787441,
+        "instructions": 1217139,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 1,
+        "sample": 1,
+        "cycles": 1699244,
+        "instructions": 1130201,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 1,
+        "sample": 2,
+        "cycles": 1697848,
+        "instructions": 1130201,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 0,
+        "sample": 3,
+        "cycles": 1787467,
+        "instructions": 1217139,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      }
+    ],
+    "complete_original_words": 16384,
+    "pass_marker": "ATTENTION_BLOCK_PASS original16384i8 all5modes sticky2 inputs sameheap sourceendpointgate",
+    "scope": "Four complete ABBA windows; cycles and retired instructions remain separate. No whole extrapolation."
+  },
+  "mean_control_cycles": 1787454.0,
+  "mean_current_cycles": 1698546.0,
+  "fraction_lower": 0.04974002128166655,
+  "actual_staged_ELF_bitstream_reclosed": true,
+  "raw_UART_ABBA_source16384i8_modes_guards_reparsed": true,
+  "final_noFSM": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "5b337b0ef0d18a41ba704409d8e98297aee87ff001cfc2182450d74aa4175aaf",
+    "executable_sections": 13,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hardware_identity": {
+    "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229"
+  },
+  "scope": "Six original-byte-count malloc allocations/manual64alignment +sourcezero/-inf initialization, QK/scale/mask/max/expf/ordereddenom/F32DIV/PV/sourcequant outputstores/frees. Tailguard preparation384bytes added identically in both.",
+  "candidate_policy": "Existing current2070 masked-QK, original remaining source pipeline; no new numerical policy.",
+  "host_vs_accelerator": "This capsule executes the current scalar attention path; its final executable contains no Gemmini custom instructions. It prices host attention on the requested stock Gemmini system.",
+  "whole_Tiny_champion": {
+    "job_id": 2070,
+    "cycles": 394765577,
+    "unchanged": true
+  },
+  "all22_projection_or_whole_forecast": "UNKNOWN; one original context and its runtime/operands",
+  "new_label_fitted": false,
+  "new_numeric_policy_selected": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2073_complete_attention_terminal.json": "bc03548d176896e290a0ed327be0952a0a386ae0ac07f5e1ade792f1ead5df7b",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_tiny_attention_complete_stock_release_20261007.json": "b9d560b1ca3246cc5c5b9dfc6763b530d29bca9f449ebf145140b7c679371cc5",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2073_complete_attention_uart.txt": "67eafc96b920025fe314796dc57bc908d2585b0acea7069d719c7d2def23a919",
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/attention_block_parser.py": "47e3ca72f8bc7f994b1590d91862a58b537c11aa77e08e9c7b47cdf813fd5ce2",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/review_attention_block_stock_terminal_probe.py": "2f3794753eb8cfe5f8c36bab14c27f86496df1c288db808eff20a9abfc8ba4be"
+  }
+}

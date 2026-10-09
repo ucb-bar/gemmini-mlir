@@ -1,0 +1,1343 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "hypothesis": "Algebraically transpose an exact i8/i8/i32 contraction to make the small activation operand stationary, with reversible offline readonly parameter permutation and complete runtime input/output copies.",
+  "ownership": "Generic tensor/parameter permutations, exact integer contraction semantics and copy/ownership infrastructure Merlin; primitive layout/resource/schedule/ISA implementation OOT.",
+  "emitted_change": "Original M8,N5632,K2048 becomes primitive M5632,N8,K2048 with cached small B and ordinary CPU primitive loops. Runtime generic upstream copies form A-transpose and restore C. Both arms contain the same executable functions at the same addresses; offline parameter bytes and the selected arm differ.",
+  "before": {
+    "events": [
+      [
+        0,
+        0,
+        2019455
+      ],
+      [
+        0,
+        1,
+        2010848
+      ],
+      [
+        0,
+        2,
+        2015566
+      ]
+    ],
+    "warm_mean": 2013207.0,
+    "elf_sha256": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961",
+    "stdout_sha256": "8f820eeb16f1baf16afc096117a21f2d82b22440a0a5db4685c83eaf4f6a2a23"
+  },
+  "after": {
+    "events": [
+      [
+        1,
+        0,
+        2930054
+      ],
+      [
+        1,
+        1,
+        2926577
+      ],
+      [
+        1,
+        2,
+        2924111
+      ]
+    ],
+    "warm_mean": 2925344.0,
+    "elf_sha256": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136",
+    "stdout_sha256": "208f042e75b79b4c2efe9ab266042f828507f9636f6ef1886899a3e6b8058aa9"
+  },
+  "warm_change_percent": 45.307660861501084,
+  "cost_scope": "Complete original contraction including runtime A transpose, primitive config/DMA/CPUissue/compute/readout/fence, restoring dense C and ABI calls. Readonly parameter permutation offline. All checker/poison/printing outsideROI, scratch guard and original45056i32 check afterward.",
+  "gate": {
+    "schema": "current_exact_transposed_stationary_complete_capsule_v1",
+    "status": "pass",
+    "dimensions_original": [
+      8,
+      5632,
+      2048
+    ],
+    "dimensions_primitive": [
+      5632,
+      8,
+      2048
+    ],
+    "original_full_signed_i8_range_int32_prefix_bound": 33554432,
+    "all45056_original_i32_outputs_exact": true,
+    "poisoned_scratch_output_tails": 128,
+    "immutable_inputs_preserved": true,
+    "same_executable_bytes_and_all_symbol_addresses": true,
+    "source_permutation_ownership": "Generic exact memref copy permutations lowered upstream; output/activation private scratch explicit. Offline readonly parameter transpose exact reversible permutation, no public output layout change. No production transform/route yet.",
+    "source_arithmetic": "Every output sums same original signed-i8 products in increasingK, no bias/requantization. Int32 prefix range proved for full i8domain; no overflow/reassociation needed.",
+    "resources": {
+      "cached_B_rows": 2048,
+      "A_rows_per_slot": 4096,
+      "SPAD_banks_A": [
+        0,
+        1
+      ],
+      "SPAD_bank_B": 2,
+      "accumulator_rows_two_slots": 64
+    },
+    "source_schedule": {
+      "m": 5632,
+      "n": 8,
+      "k": 2048,
+      "output_dtype": "i32",
+      "bm": 2,
+      "bn": 1,
+      "bias": false,
+      "scale": 1.0,
+      "relu": false,
+      "wide_store": false,
+      "reuse_b": true,
+      "cache_b": true,
+      "cache_a": false,
+      "pipeline_m": true,
+      "prefetch_m": true,
+      "banked_m": true,
+      "wide_a": true,
+      "wide_b": false,
+      "separate_b_bank": false,
+      "prefetch_b": false
+    },
+    "target_compilation": {
+      "schema": "gemmini_golden_device_compile_v1",
+      "target_ir_sha256": "11043fba42ba932ab9359c9fbd9a86901d6e80470c4fbbf7b528813a08e2d196",
+      "llvm_mlir_sha256": "fc5997bd7cf735ad8e9446d590ae19e0de32f9714dc092aba0bf157c8c5fb07d",
+      "llvm_ir_sha256": "caae308f54e8fb9e625cf82f16f3a59079fa53fb034ea11124c51e870c391e63",
+      "object_sha256": "73b110cb34d72ea042bc259a0e4620206a207ea11d888020ed6717c44e62981c",
+      "object_nofsm_status": "pass",
+      "compiler_sha256": {
+        "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+        "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "compiler_argv": [
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+          "--mlir-to-llvmir",
+          "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.llvm.mlir",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.ll"
+        ],
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-c",
+          "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.ll",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.o"
+        ]
+      ]
+    },
+    "runtime_copy_mlir_sha256": "1c6e528547cf317e5d77f28745c0a4a495c9df549ebc0ef3a82726d8bce41689",
+    "actual_build_commands": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.o"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.o"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.S",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.o"
+      ],
+      [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+        "--only-section=.text",
+        "-O",
+        "binary",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/layer.elf",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/text.bin"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.S",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.o"
+      ],
+      [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy",
+        "--only-section=.text",
+        "-O",
+        "binary",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/layer.elf",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/text.bin"
+      ]
+    ],
+    "baseline_object_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+    "captured_original_inputs": {
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/b.bin": "14aa4e6ce43720513c3a8d7b346b138d88056b44bc786d56709d33dff552246d",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/expected.bin": "448fd0cb116f3993c3a3e5574a2fc998ccc7af1afea9ed838779bfdef8ec839f",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/a.bin": "c3e46bdd186176986276e7fb9b7a56268b15b10b6063be7ad7d291ecd347cf63"
+    },
+    "audits": {
+      "dense": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 24,
+          "1": 440,
+          "2": 994,
+          "3": 328,
+          "4": 1760,
+          "5": 512,
+          "6": 2272,
+          "7": 6
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "transposed": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 24,
+          "1": 440,
+          "2": 994,
+          "3": 328,
+          "4": 1760,
+          "5": 512,
+          "6": 2272,
+          "7": 6
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      }
+    },
+    "elfs": {
+      "dense": {
+        "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/layer.elf",
+        "sha256": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961"
+      },
+      "transposed": {
+        "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/layer.elf",
+        "sha256": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136"
+      }
+    },
+    "ROI": "Complete original contraction including runtime A transpose, primitive config/DMA/CPUissue/compute/readout/fence, restoring dense C and ABI calls. Readonly parameter permutation offline. All checker/poison/printing outsideROI, scratch guard and original45056i32 check afterward.",
+    "performance": null,
+    "token_usage_available": false
+  },
+  "independent_cases": {
+    "schema": "transposed_stationary_signed_i8_independent_actual_isa_v1",
+    "status": "pass",
+    "cases": [
+      {
+        "dimensions": [
+          3,
+          35,
+          32
+        ],
+        "prefix_bound": 524288,
+        "schedules": {
+          "dense": {
+            "m": 3,
+            "n": 35,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 1,
+            "bn": 3,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": false,
+            "cache_b": false,
+            "cache_a": true,
+            "pipeline_m": false,
+            "prefetch_m": false,
+            "banked_m": false,
+            "wide_a": false,
+            "wide_b": true,
+            "separate_b_bank": false,
+            "prefetch_b": true
+          },
+          "transposed": {
+            "m": 35,
+            "n": 3,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 2,
+            "bn": 1,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": true,
+            "cache_b": true,
+            "cache_a": false,
+            "pipeline_m": true,
+            "prefetch_m": true,
+            "banked_m": true,
+            "wide_a": true,
+            "wide_b": false,
+            "separate_b_bank": false,
+            "prefetch_b": false
+          }
+        },
+        "device_receipts": {
+          "dense": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "e05477d1e6a6ddf713862df48c8323ca3e656e17175ec7721ab557541403e88d",
+            "llvm_mlir_sha256": "ec09ac20df62ebb177f07328dcd1c054f1f221b7592cbe8456d528b88e7811a8",
+            "llvm_ir_sha256": "9e1248b058ba3005a54cbb18e4369734b6c61bb0d82da24f96cf32ea6594b8ac",
+            "object_sha256": "710ac6c3e59da2357e76a73ad5151508a706478ab98e5464cdd3d86ebe4e1845",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.o"
+              ]
+            ]
+          },
+          "transposed": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "8f8f9726a6f736ee6a64f7fd9f5a398676d5257383a80a4ae14e078a3188b851",
+            "llvm_mlir_sha256": "56d78aec99217854155a497cf891167e72b0d71d7987444da794d3f4fbd63534",
+            "llvm_ir_sha256": "8cb0722ca36f60219471d35b4ea395f9e49f8f2577d6a75bcdef940a2e6b4ca4",
+            "object_sha256": "0c68f2da368b997d7a68ef2fffc9978b69cd8235899c6ab628844ecc94a26cab",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.o"
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "dimensions": [
+          7,
+          73,
+          64
+        ],
+        "prefix_bound": 1048576,
+        "schedules": {
+          "dense": {
+            "m": 7,
+            "n": 73,
+            "k": 64,
+            "output_dtype": "i32",
+            "bm": 1,
+            "bn": 5,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": false,
+            "cache_b": false,
+            "cache_a": true,
+            "pipeline_m": false,
+            "prefetch_m": false,
+            "banked_m": false,
+            "wide_a": false,
+            "wide_b": true,
+            "separate_b_bank": false,
+            "prefetch_b": true
+          },
+          "transposed": {
+            "m": 73,
+            "n": 7,
+            "k": 64,
+            "output_dtype": "i32",
+            "bm": 2,
+            "bn": 1,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": true,
+            "cache_b": true,
+            "cache_a": false,
+            "pipeline_m": true,
+            "prefetch_m": true,
+            "banked_m": true,
+            "wide_a": true,
+            "wide_b": false,
+            "separate_b_bank": false,
+            "prefetch_b": false
+          }
+        },
+        "device_receipts": {
+          "dense": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "de52b1a06762fdfa98bdc6d06d59d59b1145a74f709dad349079abaf935978c0",
+            "llvm_mlir_sha256": "2618adea2839fad3fff1bdb167fe115720494a80de45cb0bf1d616c5b3b26a4d",
+            "llvm_ir_sha256": "b0064df244b0f5f6c190e961410e194e457bf6d946b7023657224c35917af82a",
+            "object_sha256": "5b151cabeb61e1b423b6eccbe4bf2dbe2b7307e466b164e22f69ea6885bf1607",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.o"
+              ]
+            ]
+          },
+          "transposed": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "873b2fcbc25a2edbcddf318696bff01b328c96c456220784cf226c14fd85a67d",
+            "llvm_mlir_sha256": "abd78c4fcecd6aebff48f383d1ef396f919bc3512b6ad61b0a7c1fcc787552d4",
+            "llvm_ir_sha256": "8dfcc0fa03377933f2174a63a3ad3cab52702953d25dfd0f4bd30fb68b4759ed",
+            "object_sha256": "d0731da70095eb1057fa9f12cb370edffdcc924493c776d900a5df281b8dbeaa",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.o"
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "dimensions": [
+          17,
+          65,
+          32
+        ],
+        "prefix_bound": 524288,
+        "schedules": {
+          "dense": {
+            "m": 17,
+            "n": 65,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 2,
+            "bn": 5,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": false,
+            "cache_b": false,
+            "cache_a": true,
+            "pipeline_m": false,
+            "prefetch_m": false,
+            "banked_m": false,
+            "wide_a": false,
+            "wide_b": true,
+            "separate_b_bank": false,
+            "prefetch_b": true
+          },
+          "transposed": {
+            "m": 65,
+            "n": 17,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 2,
+            "bn": 2,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": true,
+            "cache_b": true,
+            "cache_a": false,
+            "pipeline_m": true,
+            "prefetch_m": true,
+            "banked_m": true,
+            "wide_a": true,
+            "wide_b": false,
+            "separate_b_bank": false,
+            "prefetch_b": false
+          }
+        },
+        "device_receipts": {
+          "dense": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "385b1cb3c70913b6cf6623dd48755f4c5ace5b25f2290a432e03a287630c4440",
+            "llvm_mlir_sha256": "3c135a04d7665dad84dbe8a9a8fd2428f61b3ede241b42c8afc4f0672e7d08ef",
+            "llvm_ir_sha256": "7247c72912ff5bc66367cd45819626c89fa4aed26b86578cbadecb952f8b116b",
+            "object_sha256": "437f06e9553a7ec2af4a9a5e041cf32765e7bd0485728871982f383aa4c9f633",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.o"
+              ]
+            ]
+          },
+          "transposed": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "75ce0b23bbccefe6fcd7f9ba12e724cb4513a044f9be500792567958d3eb223c",
+            "llvm_mlir_sha256": "3e24c21e681142a571ea426fc01c48672b5a56b276645dc7376f41f54257fe24",
+            "llvm_ir_sha256": "373cf00937bb5fcb3f2124b100932600984215478aef7e4568ac7808e1ee13b1",
+            "object_sha256": "1a1cb8ab50ca2dadc46a5aedd19bcc41256b6f74f5d1492dbae5f718fbfbc550",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.o"
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "dimensions": [
+          16,
+          64,
+          32
+        ],
+        "prefix_bound": 524288,
+        "schedules": {
+          "dense": {
+            "m": 16,
+            "n": 64,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 1,
+            "bn": 4,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": false,
+            "cache_b": false,
+            "cache_a": true,
+            "pipeline_m": false,
+            "prefetch_m": false,
+            "banked_m": false,
+            "wide_a": false,
+            "wide_b": true,
+            "separate_b_bank": false,
+            "prefetch_b": true
+          },
+          "transposed": {
+            "m": 64,
+            "n": 16,
+            "k": 32,
+            "output_dtype": "i32",
+            "bm": 2,
+            "bn": 1,
+            "bias": false,
+            "scale": 1.0,
+            "relu": false,
+            "wide_store": false,
+            "reuse_b": true,
+            "cache_b": true,
+            "cache_a": false,
+            "pipeline_m": true,
+            "prefetch_m": true,
+            "banked_m": true,
+            "wide_a": true,
+            "wide_b": false,
+            "separate_b_bank": false,
+            "prefetch_b": false
+          }
+        },
+        "device_receipts": {
+          "dense": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "04839beec9621900b6468084b8f45fefba68425a62377802b037623f3490652b",
+            "llvm_mlir_sha256": "3d1190cb8bc329ce4f8860c5ca3983acad66e3c1dde4dbcc7986cb9ce07c7e40",
+            "llvm_ir_sha256": "2e3b4d4c3eef73d2eda4c1f8249fec3dcda8f543a0b9274ce79bdfd0ab069021",
+            "object_sha256": "00af5eddffb8aed332ea06e4db8a65289e6a0a5b24aa7469a53fb506442d6c8d",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.o"
+              ]
+            ]
+          },
+          "transposed": {
+            "schema": "gemmini_golden_device_compile_v1",
+            "target_ir_sha256": "527cc6138e40729186c96ca89868da8b89d363bfe77e787ea23c0c48de98ea2d",
+            "llvm_mlir_sha256": "6504579b9c7c5dcf1767fe0bdcd2a530267212f1eb48c70a2d71bca1c33a7e5a",
+            "llvm_ir_sha256": "8294d5402db143b0fae89a6b4f4a3658592acb50429ec89a8dd28b070bee15c9",
+            "object_sha256": "d91db040dcd83e248b11789a50f72e8653acfc3002c8ce98b3c648c02393aae0",
+            "object_nofsm_status": "pass",
+            "compiler_sha256": {
+              "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+              "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+            },
+            "compiler_argv": [
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+                "--mlir-to-llvmir",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.llvm.mlir",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.ll"
+              ],
+              [
+                "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+                "--target=riscv64-unknown-elf",
+                "-march=rv64gc",
+                "-mabi=lp64d",
+                "-mcmodel=medany",
+                "-O2",
+                "-c",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.ll",
+                "-o",
+                "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.o"
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "oracle": "Independent NumPy mathematical signed-i32 integer dot, full-range signed-i8 operands/mixed cancellation. Each prefix bound below2^31. M/N tails and multiple output tiles, both original and transposed xDSL primitives, poisoned scratch/output and immutable inputs. Experimental C exact copies for independent cases; actual current timed copies separately upstream MLIR.",
+    "commands": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/data.S",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/data.o"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/main.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/main.o"
+      ]
+    ],
+    "spike_argv": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/build/layer.elf"
+    ],
+    "elf_sha256": "90646ea031188519d59cb66b7e5fdd7c5869e4e17709aadaa8b11024cb09d76f",
+    "spike_log_sha256": "0987ba74ff4ae88a6e5a4bc3b231ea6d9063301e01f903db166b3c94dcfa3501",
+    "audit": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "90646ea031188519d59cb66b7e5fdd7c5869e4e17709aadaa8b11024cb09d76f",
+      "executable_sections": 3,
+      "custom_funct_counts": {
+        "0": 32,
+        "1": 28,
+        "2": 29,
+        "3": 44,
+        "4": 86,
+        "5": 22,
+        "6": 108,
+        "7": 8
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "token_usage_available": false
+  },
+  "source_command_census": {
+    "schema": "exact_current_transposed_stationary_command_census_v1",
+    "arms": [
+      {
+        "arm": "dense",
+        "command_counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 2,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 11392,
+          "gemmini.preload": 45056,
+          "gemmini.compute": 45056,
+          "gemmini.mvout": 352
+        },
+        "command_total": 101863,
+        "requested_input_readout_bytes": {
+          "0": 16384,
+          "1": 11534336,
+          "2": 180224
+        },
+        "DMA_row_requests": {
+          "0": 1024,
+          "1": 180224,
+          "2": 2816
+        },
+        "complete_exact_once_input_byte_partitions": {
+          "0": 16384,
+          "1": 11534336
+        },
+        "stationary_operand_source": {
+          "reload_operand_commands": 45056,
+          "logical_stationary_operand_bytes": 11534336
+        },
+        "exact_command_trace_sha256": "842f58fc264c40e0a80076321e4b6b1e8a99dd162241a87e2cd5fe4084cf662e"
+      },
+      {
+        "arm": "transposed",
+        "command_counts": {
+          "gemmini.fence": 2,
+          "gemmini.flush": 1,
+          "gemmini.config_ex": 1,
+          "gemmini.config_ld": 2,
+          "gemmini.config_st": 1,
+          "gemmini.mvin": 11392,
+          "gemmini.preload": 45056,
+          "gemmini.compute": 45056,
+          "gemmini.mvout": 352
+        },
+        "command_total": 101863,
+        "requested_input_readout_bytes": {
+          "1": 16384,
+          "0": 11534336,
+          "2": 180224
+        },
+        "DMA_row_requests": {
+          "1": 2048,
+          "0": 180224,
+          "2": 5632
+        },
+        "complete_exact_once_input_byte_partitions": {
+          "0": 11534336,
+          "1": 16384
+        },
+        "stationary_operand_source": {
+          "reload_operand_commands": 22528,
+          "logical_stationary_operand_bytes": 2883584,
+          "keep_operand_commands": 22528
+        },
+        "exact_command_trace_sha256": "1808dfdb113a80ddb370c0b366e8cec6172ed2a3cfe049089a414518a3ba9850"
+      }
+    ],
+    "logical_weight_parameter_bytes": 11534336,
+    "runtime_permutation_bytes": {
+      "activation_read_and_write": 32768,
+      "output_read_and_write": 360448
+    },
+    "resource_proof": {
+      "DIM": 16,
+      "SPAD_ROWS": 16384,
+      "SPAD_BANK_ROWS": 4096,
+      "ACC_ROWS": 1024,
+      "ACC_BANK_ROWS": 512,
+      "A_slot0_range_rows": [
+        0,
+        4096
+      ],
+      "A_slot1_range_rows": [
+        4096,
+        8192
+      ],
+      "cachedB_range_rows": [
+        8192,
+        10240
+      ],
+      "ACC_slot0_row_extent": [
+        0,
+        32
+      ],
+      "ACC_slot1_row_extent": [
+        512,
+        544
+      ],
+      "disjoint_scratch_slots_and_B": true,
+      "sequential_existing_schedule_dependency_authority": true
+    },
+    "scope": "Exact source command counts and requested byte/row ranges only. Garbage BD retains same cached operand for next independent A row tile; logical reload bytes do not imply physical mesh latency or DRAM savings. SameMAC count/gridoccupancy; runtime copies/readout row requests/issue costs can offset reuse. Actual hardware cost unknown; whole model prediction absent.",
+    "token_usage_available": false
+  },
+  "execute_geometry_census": {
+    "schema": "source_stationary_transpose_wave_scenarios_v1",
+    "facts": {
+      "dimension": 16,
+      "inactive_a_rows": 1,
+      "inactive_b_rows": 1,
+      "minimum_resident_rows": 4,
+      "rtl_sha256": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+      "rule": "WS/no transposer/effective D garbage"
+    },
+    "records": {
+      "dense": {
+        "raw_command_counts": {
+          "fence": 2,
+          "flush": 1,
+          "config_ex": 1,
+          "config_ld": 2,
+          "config_st": 1,
+          "mvin": 11392,
+          "preload": 45056,
+          "compute": 45056,
+          "mvout": 352
+        },
+        "compute_records": [],
+        "complete_static_trace": true,
+        "geometry_histogram": [
+          {
+            "rows_min_possible": 8,
+            "rows_conservative": 8,
+            "weight_residency_proved": true,
+            "wave_classifications": [
+              "variable_ws_rows"
+            ],
+            "count": 1
+          },
+          {
+            "rows_min_possible": 8,
+            "rows_conservative": 16,
+            "weight_residency_proved": true,
+            "wave_classifications": [
+              "variable_ws_rows",
+              "fixed_dimension"
+            ],
+            "count": 45055
+          }
+        ],
+        "padded_compute_geometry": 720896,
+        "possible_compute_rows": 360448,
+        "conservative_compute_rows": 720888,
+        "dispatch_mode_resolved": false,
+        "scope": "Per-compute feed geometry under source execute order. Unresolved following-preload availability retained; totals exclude standalone preload waves and all CPU/DMA/stall/startup/drain costs."
+      },
+      "transposed": {
+        "raw_command_counts": {
+          "fence": 2,
+          "flush": 1,
+          "config_ex": 1,
+          "config_ld": 2,
+          "config_st": 1,
+          "mvin": 11392,
+          "preload": 45056,
+          "compute": 45056,
+          "mvout": 352
+        },
+        "compute_records": [],
+        "complete_static_trace": true,
+        "geometry_histogram": [
+          {
+            "rows_min_possible": 16,
+            "rows_conservative": 16,
+            "weight_residency_proved": true,
+            "wave_classifications": [
+              "variable_ws_rows"
+            ],
+            "count": 1
+          },
+          {
+            "rows_min_possible": 16,
+            "rows_conservative": 16,
+            "weight_residency_proved": true,
+            "wave_classifications": [
+              "variable_ws_rows",
+              "fixed_dimension"
+            ],
+            "count": 22527
+          },
+          {
+            "rows_min_possible": 16,
+            "rows_conservative": 16,
+            "weight_residency_proved": true,
+            "wave_classifications": [
+              "variable_ws_rows",
+              "variable_ws_rows"
+            ],
+            "count": 22528
+          }
+        ],
+        "padded_compute_geometry": 720896,
+        "possible_compute_rows": 720896,
+        "conservative_compute_rows": 720896,
+        "dispatch_mode_resolved": false,
+        "scope": "Per-compute feed geometry under source execute order. Unresolved following-preload availability retained; totals exclude standalone preload waves and all CPU/DMA/stall/startup/drain costs."
+      }
+    },
+    "scope": "RTL-source geometry scenarios only, not mesh/CPU/DMA/whole timing. Source command order does not reveal actual cmd.valid/hazard dispatch or preload-only latency. Same mathematical MAC/active area does not establish equal executed feed-wave geometry. Existing target complete costs remain authoritative.",
+    "pins": {
+      "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.gemmini.mlir": "c5b0cb2f40a2786b1a206b0df41dcadaf06c581a0cbe64ca91554f35e9ae6f59",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.gemmini.mlir": "11043fba42ba932ab9359c9fbd9a86901d6e80470c4fbbf7b528813a08e2d196",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/wave_census.py": "7f271964987eb4beef1eac44f7a7c43d6e19579e75fc6fec4edcb188cabf4851"
+    },
+    "token_usage_available": false
+  },
+  "result": "REJECTED: +45.3076608615% complete matched GSIM warm cycles; no production routing, whole model build or stock admission.",
+  "dynamic_BD_abstraction": "Planned separately, unimplemented here. This negative remains immutable and does not establish profitability of a counted dynamic-BD alternative.",
+  "actual_hardware_cycles": null,
+  "whole_cycle_projection": null,
+  "recorded_utc": "2026-10-06T16:39:18.918158+00:00",
+  "token_usage_available": false,
+  "pins": {
+    "/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12": "9ed008e5a8685235361f0c53771b520ab082dd99a877ad2fd796a93fa4c0b488",
+    "/scratch/agustin/projects/model2MLIR/.venv/bin/python": "9ed008e5a8685235361f0c53771b520ab082dd99a877ad2fd796a93fa4c0b488",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/codegen/builder.py": "c362c889c01d2c365e0298449b5d8ba556827106e2faa3dd6b4f271f6e690372",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/execute_wave_estimator.py": "d7b1941ac9b6d1b2c4424596110c4a703a166d81860a943cb1a7fb5c77715be0",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/golden_compiler_export.py": "d7acbec431683b97d762347f266ad746a1b264968c8b6a6c2730f95a3f9fa13d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/golden_device_lower.py": "6f6c9f4444ec746ca92142b4fb56f320e0ba0745a85883a46c0afe39dd7510c0",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/golden_gemm.py": "01958100e38019797d57ec7ed95dd908c4ca83ca6aee60ca7f2b40635243625f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/ir/gemmini_dialect.py": "e666ea04bef26946725d97d26ff82d2ea9dc57f5c91cb40f596a0f679c89320f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/mlir_oot/tables/isa.py": "bf1f1d12288d5109f9443906063e5cdec2b13593f19d192746c35f59de50f800",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_packed_rhs_current_checkpoint.json": "6858d5bc43fbe13287c3634f3bb2eefeba2c3e60599c54f45927c3223f7c66e6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_packed_rhs_current_completed_negative.json": "2344f0b69a27076a84693174609c26f2c9fe79b1788caa649c797fef49c13088",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_packed_rhs_immutable_readiness.json": "db17652ea27f36ea9e1c3d8bc883ce9ee21ddcd54c8d8e777587cd71af196e5c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/golden_packed_rhs.py": "3bd14226b44edfe9a9a62b5f8c045e4ff38b9ddb9d88eea15a78f02f71d8ba9b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/archive_current_profile_and_stationary.py": "fa28c5c6d06d705d21b5c95c7f9c991bdbcdb86de159cc148122fb9c7cb42f99",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/initial_scope_refusal.json": "ee36397cad2d42ddf9d5d39e20a35b953bf35bc3c969732148d4f0e22e1c5ba2",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/archive_completed.py": "39eccee56e246bd5072dbc3599862699dd97a65b6a8ecbd850095eddb1175e9e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/build.log": "ef9e7ed75591cfd206c6b6ff73a5cb8229535389acb4acc70b3821a72de25e7f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/build_pair.py": "44a46cfdbac484098d97a2b34ab93ae68a7c7f84d35a661aea2ce20e11187e77",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/capture_actual_recipe.json": "fd8000f9cb1d676d522035f6e6f949ae1c3e22fc90f4171a6fb1e62e0ce85754",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/census.log": "818445d3a7a98847b83423725db461a14af4dd5d0f12d1113c75215c62df42a6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/census.py": "975e507067fca4a68fb27e0f0ce0cfce8867a7cdd3b99779c64863796fea44ab",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/command_traffic_census.json": "31f1a48242a3f4c3be4d8cd0f909581f20f25374528390d727b505d94250a8b3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/layer.elf": "d2eae50551a9205e5220f71cfc1675af62bcff830b0a53c663b1347fe3127853",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/data.S": "3dcbe6342646316028794dff482a1408bb20af1d9322507b2d415dd883123472",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/data.o": "ba24cea04de295b40d5869117c9d48dba8eaafbaaacf8b04e08ab0db64c7ae58",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/gsim.stdout": "47f9f3845e7c679a0d36ac9fa71adf64fe6487e6ac72cc45b5028f2c82024ca7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/gsim_receipt.json": "24b9927e7ceb735e03cb3a816a1c6d3ce0fffec710a89c6421a784bff97f743e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/spike.log": "7a156fe02f7522c271b4f2cfdefa76e057c8e3a50e1d88bcc9febbfa47472576",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/symbols.txt": "bc91086683b98eeefeb5bba52327007d2f8413146a8a41c0de5891c7929cfeda",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/dense/text.bin": "05185c2a1ea42ee50a2ccd84866851df493618f2f7cc76838b4e64a9d0fc0fd0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/generator_snapshot.py": "3bd14226b44edfe9a9a62b5f8c045e4ff38b9ddb9d88eea15a78f02f71d8ba9b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/generic_pack_snapshot.py": "48224d8db3a04eeec29172bf1841a037d0c44d21348278440f7895bad6c02745",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/immutable_root_census.json": "c3d13a4fcf93a5876e393bb60e287e186c94a96836b4cdf5f682dc8685f45b42",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/immutable_root_census.log": "679c3bf52093fe90f5d138eb165d717395b17b0db99bc4799ffaa59fbcaa3344",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/immutable_root_census.py": "30b2369e90bbfd2a3ee0d8229d45f05857565b690b55793922eee6534b29a422",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/immutable_root_census_initial_refusal.log": "1f7cce4a7d9848896486ba743ce4af1f851f3f072dd4afbebf8d833a16a7d2b3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/build/layer.elf": "ffbff97dd1ae20e6077a86dc5acd98481fcebc5247487d39d2f17ea3764028d8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/device_compile.json": "bbd542df045b507e070955ae5e98e0593a666edf28620497add6bba31dd89962",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/kernel.gemmini.mlir": "b513013d876e73489a6ab6fbaf2b36c83f9687f96f3aca4211887d1e87eb4f6e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/kernel.ll": "c3dbc586541abea474203fec23aab8e5e4bfa5d9f177ce6af5638783d2607a9e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/kernel.llvm.mlir": "3c3e9de5ad9db3bb70989738dc988d64e08239dc4f73cb28deb2689062c31af6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/kernel.o": "7f8e9b675254af67e91c096b9497f67c7ca9e8b8e3b988c67d5c9d1e0852383b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_0/object_nofsm_audit.json": "5bb92107c40c4be1fdbb411be73a1f06e1c6a94fcee055b63ede7694929de466",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/device_compile.json": "943d66bdcf1861af5ecee09fcae1f02f7f8651256a00f844425309a04dacdb02",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/kernel.gemmini.mlir": "cd69fb56d5ca20ccc173b4603ade53d2c4dacf74de8a99b1a6d1d6caa1650471",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/kernel.ll": "6ab2171f5ecc769d63b7b432611ab15e24e292bafb686ca41739e22c852253a5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/kernel.llvm.mlir": "9a41283aea4dc0ec0a9c5ef91faa395599f1be4ddec84e98628fa30491c02802",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/kernel.o": "b221f0fa39888932c441a0e9f7b1374a631fd3c45a86d425f9c9da9d0f486784",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_1/object_nofsm_audit.json": "75cf2c8cc9d2664aebda4eab742d23fd4faa411bb3659c89c4fcdf5c4cb7dbd8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/device_compile.json": "1acbd5509bdd040c2e5297e694d8a784a758b919c5f57d856f84c64df6065dfc",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/kernel.gemmini.mlir": "d71de7697c9cda07615f987df0238a8d136f74310a369e44da6ae8d870dc43f5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/kernel.ll": "f43b3a825faf88f71afbfc9f573074431dc04030637bf6715a5476ecac287835",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/kernel.llvm.mlir": "6ff73380d61d0f977c6eac6b8837abfdb1c761dcdd58a8d2607530e31f119497",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/kernel.o": "015c42e8276b4a91bde309c7b4e21c497ff9b650687ae0777950b23ed639933e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_2/object_nofsm_audit.json": "f2a3899409d4e35e8b2b6b592589308a1f90e008dacb0aada7dd3dc002221a86",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/device_compile.json": "510106f0508bfbf9d1eb036faf4bb7ddb5e0b96e85910ad777709839f4d332ad",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/kernel.gemmini.mlir": "2cdcf96a569fa43309f7c527ccd4ba15d33bf8c164870ade4c00eb612c94d72a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/kernel.ll": "3ddc294a9758f239034d0d090b8c2e134f996d486788e86198240025ed1a32bd",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/kernel.llvm.mlir": "0cd948b62eccb78555cbd3865cf0e663f46978b5ab47fcf64ae60a72bce85eea",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/kernel.o": "e9a8c5c07d875144212001c4f002eb54c2e272381e5293f587e442bc12a4c16d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_3/object_nofsm_audit.json": "fde3421993aa367e8c879ef153751ec46b5279ca92ab5eeb7e790e8e74b1dde8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/device_compile.json": "87c605b410edcd6ead30472caad523f2691f5060bb125374d3ed05345e73ef29",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/kernel.gemmini.mlir": "78232b37d799d4d793d49d595540973e928c495ec04fd67088f1c322434149c1",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/kernel.ll": "0e53ce5abb997f6fd1f94df6d74fe84cabe9df5c5ebba2f7101b4957b481c283",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/kernel.llvm.mlir": "75738046b41bfce512293cf3da85bba37a4fe47109f740f8cc4b590e60e78830",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/kernel.o": "50a6d5cb1f314dcf6eda10018e2aa6c13ae9bbe6b188770a42a482523f81f023",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/dense_4/object_nofsm_audit.json": "4d351657a78168779ffe0943cf1b614a13d1889c18a853fce3cdaa7b144c0b36",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/main.c": "78868b09879e30af0c4a53ec6050be6f46f1f8de5f90bb33fd5c8a8089f9f0bc",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/main.o": "16aea26ab99ad02624379b5c4c70d39b311628fdf568dc4dd3ee9e9271f27446",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/device_compile.json": "d4811b1bfcdc0143d4cb10b7d782419da7337e502f96024f86796ad884a1df49",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/kernel.gemmini.mlir": "cf63e0c756ba34da787dca8f38d959f77d132efe6b3197a1ca1d9784a787d8df",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/kernel.ll": "637b6cd32ee599c02b6c6100ad448b47625b114b2eb1db2277d17bc802ff53b0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/kernel.llvm.mlir": "472b070bd92950f8945ce40c897debb11724fa2c2c456ac79636ffff54c2dc89",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/kernel.o": "84c5f9e09a62121a92e4c0ca4f6e9cd0b69188cf8a6051c61837c6df5bd5788a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_0/object_nofsm_audit.json": "fabc235f4c9a5d909e43ec6d400d2c5a796a133526f67e59041183173f59bf63",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/device_compile.json": "537efab158745f5392ed22037efe5812ea7c5a6d24b0c510bd69802ca2228e69",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/kernel.gemmini.mlir": "80dfc1ba8812325ad14db2345b25063407f5aed32ccea4d1be76bd7f00e34a70",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/kernel.ll": "f0306f30b5be8c4db02857fcbe7ff0a7edcfd69316d72688b6451fed479c21a1",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/kernel.llvm.mlir": "742f3aed49dcc8f215fbff8e47cdfb3b2abcaa7d997175611df27a03730531ba",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/kernel.o": "4363c2e1ac8e45178dd663e5a324d76b174979ae6eda4a91f8ace428f7605265",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_1/object_nofsm_audit.json": "5fd0762016036c31adc0eb4a38db6f66636de50fa2bff326b9e31058742e97ad",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/device_compile.json": "aedfcb429ba1a34fe1c7cdcfaa8c3fa724858e625098e1b00395c760dfa4c95d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.gemmini.mlir": "d345c2d8f377ba69b72a05c789caef92412894aeaf902024e6481fc5165bbf6a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.ll": "482e7e65e07921ebd26e7733001bb6ec06b7d07a716bf0a3b2ed06b656b8bb0f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.llvm.mlir": "ede6aad5acba5533a23c231c8adbaae7a1d1f487f83357e3b42e7123a03fb741",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.o": "dc4edcaedb7d5b4c5ef871fafc3e11107e852793f98f504d7e978bd941bfb853",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/object_nofsm_audit.json": "98a2b5bcd1a9c247e6f9d3825634c19dfe423e809f113d2f9a0b448609109dd8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/device_compile.json": "9bd073690fb38bf0fa70437ffe07a221e0dc509d8353a6238326c1c1b52e0f35",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/kernel.gemmini.mlir": "57ec7a81c11181678aa492bbcf396016a65ec68ff06feb382ece79bb55b1a9c3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/kernel.ll": "9e72113b619281df0d05dab8891f50d9919d3008775d6894ba45608e323d6690",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/kernel.llvm.mlir": "9cbd918abe18988edbdd41f42171b5af4163eced246d5865ce981f29a67cdda3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/kernel.o": "a262fdfbf24a1689cf830e80b3be735babe46ad3310232957cab1bb5043b6994",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_3/object_nofsm_audit.json": "9aae885e23a66b400c535f0f208158a9d05beda1a51d17c555e7f83f12fdf4a4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/device_compile.json": "1f0cef467f92338fac277e4a79f88a83f356427c6d7979a84fb9c8cbb5875a00",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/kernel.gemmini.mlir": "847d513984df1cfc4f04c34cb4738ae5dcab845cad4d2bfc2db9ea2c4c06f80c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/kernel.ll": "5f124434c870ee28d8b42d7039edfe1de370f3c59839a280ce8b6fe14f1a215f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/kernel.llvm.mlir": "0b8bb69d075f67b8dd0f52c8213e7cda34ea5b4365faf8f8f5473ba5c4c3f2e6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/kernel.o": "5e9035c61c9b75457ec321c8b799bf4f64cf14fe705d6042308afb074e4a30fb",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_4/object_nofsm_audit.json": "1c67b88b844d791a9ba83c26520ff51365a9c94cc9bedd993390753db242a835",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/qualification.json": "ed3f70e0abd7fe1bd88229505a291104b8581cce5a59920779eee7bf91004381",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/spike.log": "cdb26b4d2db3292149b92e2cc44df92e00c217e800c2d5deca3298fbd89c6a90",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent.log": "a8be4a3d1f27f045115286a4a18bba05fa9218b22f37b5ecee23d0b19bf2f078",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/main.c": "c4248ad51da51626b3f1a04ca9502ec3b1679cf9480bfedf7c0b69a86a5e1e20",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/main.o": "aa712b4a4a465ea47a02b2da9d3e0d4b99b248849c573315fe406900b751100d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/layer.elf": "dbc2425586cfd154d1d9e78c4dd85f95ed32579579c1828678de0f5a19dc6a3b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/data.S": "b1232dac8f409f32133109ca59730c6fd485fe8b3bd625b7e6696ad80358c5b5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/data.o": "e52c23066187218bc89be556426be2e9197345894d1a0bc4411f791928c72f51",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/gsim.stdout": "a306be989f1981e37098782df0bbe7cad7303e8ca4241a01a6a21a19588ee7ea",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/gsim_receipt.json": "6244e45c96e2d912dcb26d007f82f8cf735a3db0f0e497e93eb39cf49808d7f0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/spike.log": "173f5df310516afa6b24c1d151ecee0a336f2f7afe7bef23f3b8a070e95bf434",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/symbols.txt": "bc91086683b98eeefeb5bba52327007d2f8413146a8a41c0de5891c7929cfeda",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed/text.bin": "05185c2a1ea42ee50a2ccd84866851df493618f2f7cc76838b4e64a9d0fc0fd0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_b.bin": "ecbf9f4bf6f21da34e910a88d3ddd52b9fa4cab8829ed46c298daf084c6ecf52",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/device_compile.json": "b08ffc4f1d90c74f2837c8cd1feb02752028554fbf9ff1bb660bdc9f07a3a1cf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.gemmini.mlir": "8690e46051d660a57f4435c88646f7b1b206bafc321ff98c37d199f0ea3c98b1",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.ll": "38f15f73f7c2c4057dbfb8405879b0e37da829a2d16cb2acbd4874a5d7910fe6",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.llvm.mlir": "eaeb468ee3aeb1c458f4a854c68b56b942c39e1564ff87d26d02f1dcb11e5348",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/kernel.o": "2905e69625848f78340592cf4b6ab857c4a5680ddd28b772c7f73a6c0982d654",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/packed_device/object_nofsm_audit.json": "7549d56ef69b8778ad8231f511b33cee6a8c81894bb35597fb41b2ee1ed7e5df",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/pair_result.json": "6efb280f91a27877a3211635d0bbba4b5b7037d5f507012ff58ab533bdf7d248",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/qualification.json": "ceecb24d504f433cfb1964fe1466256fb64407e2a958997f5f8563f1b6ad04e7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/qualify_tails.py": "13ee11e76c4b2a260d10c03a82a8e1f5c0a6ed77b983245016993529c0aea132",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/run.log": "f34298d54d6082d05fc8b821132b8ccbc518997002c72a122a8e6ce0f6d79518",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/run_pair.py": "476402b2625c8be75ef8f1713c3f050762b589e2d0fae0886ad198f6549989dd",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/build.log": "cfa392a794eb1f06f7ad19aba091fd14bc20986b1a9db4adc1fc806cab8c764c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/build_pair.py": "2023cc88a05f850b5405ff6252f571b039141c568b49c1569bce30fd44a3ac90",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/census.log": "7576d5368e79284f023dc4e17d9f320ff2ce9e756748f89eccaa2af214d2c8f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/census.py": "b32bcb829957a16311dfc57437fe568838dde01de69c812c54ad9876c55d3182",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/command_census.json": "13aa730b827e22a861d5137cb75ab99ad448df69cce0cdd1b76f2da6690ea44f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/layer.elf": "e430a40e443f3f673d149815c48e807ead09327495f6c10c44e0283929c99961",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.S": "3dcbe6342646316028794dff482a1408bb20af1d9322507b2d415dd883123472",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/data.o": "ba24cea04de295b40d5869117c9d48dba8eaafbaaacf8b04e08ab0db64c7ae58",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/gsim.stdout": "8f820eeb16f1baf16afc096117a21f2d82b22440a0a5db4685c83eaf4f6a2a23",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/gsim_receipt.json": "1db69a5f4d56a462a232c0bc28a290d9de709152e04469038c97acc84910948c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/spike.log": "b0ab79a50028e66d95ee0eab2e2a98cc1f1472268d23536183ca7b6a1a51cf54",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/symbols.txt": "d8b261a50ab51fe4a2788daa0926a2ffbe5ac216f6af586108c1dfeb209a4125",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dense/text.bin": "c6cbf5ea2cb80b270a91f4dadc74032040a8291822800ecb1f6931a2cf038ded",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dynamic_bd_proposed_contract.json": "172f2b83879a74c3f6ef0f209e1eebe32b1c9ed9cb6f16a26bc74cebe040c016",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/dynamic_bd_proposed_contract.py": "bdede3a3b853e9a3bdeccccebd7243a6e73e8bdea2f26cfb4117a352850f3a8e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/build/layer.elf": "90646ea031188519d59cb66b7e5fdd7c5869e4e17709aadaa8b11024cb09d76f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_a.bin": "acb29a3fcdb9df3a4ecfd84a9aed3491ddc6cb53a5a989aa5265d3337275d6a8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_b.bin": "fbdf1cdcf62d7e95b5c551d15cbd222089c86093397f7b98e875dbca81cea413",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_bt.bin": "03b67714ec94c88137038db507c8face2fe8aef313578caf778c2d6cd47a5121",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/device_compile.json": "88d4c5f05ffe2c324af5f32dd9d97fc4c9ec0bf53548fdfed5d6e5ce3a30467e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.gemmini.mlir": "e05477d1e6a6ddf713862df48c8323ca3e656e17175ec7721ab557541403e88d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.ll": "9e1248b058ba3005a54cbb18e4369734b6c61bb0d82da24f96cf32ea6594b8ac",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.llvm.mlir": "ec09ac20df62ebb177f07328dcd1c054f1f221b7592cbe8456d528b88e7811a8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/kernel.o": "710ac6c3e59da2357e76a73ad5151508a706478ab98e5464cdd3d86ebe4e1845",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_dense/object_nofsm_audit.json": "ddbe592188fea0727e047d08448703908e777513098bf3e06c636e201c704edf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_gold.bin": "1b58cbccf47b66ff8dfef179f67c27d3f49a4af18354cbd6d1322bbf007c9049",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/device_compile.json": "7d9356f79325ea8f19c77acf8682b96ac9ea2217c74bfcde4bd5bb6e07d61df3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.gemmini.mlir": "8f8f9726a6f736ee6a64f7fd9f5a398676d5257383a80a4ae14e078a3188b851",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.ll": "8cb0722ca36f60219471d35b4ea395f9e49f8f2577d6a75bcdef940a2e6b4ca4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.llvm.mlir": "56d78aec99217854155a497cf891167e72b0d71d7987444da794d3f4fbd63534",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/kernel.o": "0c68f2da368b997d7a68ef2fffc9978b69cd8235899c6ab628844ecc94a26cab",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case0_transposed/object_nofsm_audit.json": "2cdf0dbdcadb125dfd8ca75668cb55d30659ccd0ba79bf60837d59947745b961",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_a.bin": "cf2b8cecaa03580eb132774f06d1ee191d144d804100d9771587d3d624b63416",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_b.bin": "1aec7b0728d22ee54b379a02230616ced821998c46c66c3f680f962d7e895b39",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_bt.bin": "5aed726d5696e63aec565c7ba51a147c35d3b6c3f6cb8d87fd1ded328eac6d11",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/device_compile.json": "41883ba3d92685b656f69aba9849cd3d3490f25b4561e29190a0b21720da93cf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.gemmini.mlir": "de52b1a06762fdfa98bdc6d06d59d59b1145a74f709dad349079abaf935978c0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.ll": "b0064df244b0f5f6c190e961410e194e457bf6d946b7023657224c35917af82a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.llvm.mlir": "2618adea2839fad3fff1bdb167fe115720494a80de45cb0bf1d616c5b3b26a4d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/kernel.o": "5b151cabeb61e1b423b6eccbe4bf2dbe2b7307e466b164e22f69ea6885bf1607",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_dense/object_nofsm_audit.json": "30a20846b9c66bc487c8b4a96eb70b94dcf21fe599b5321aff13e0f2085b5131",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_gold.bin": "42e640e91f1dd55d150292fc33ea9cf493ab37d4836e120033af8a50590d4fa9",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/device_compile.json": "f97adac3c3d04942676e9866fe95aeac4941debef5d241224600c1db79f44d99",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.gemmini.mlir": "873b2fcbc25a2edbcddf318696bff01b328c96c456220784cf226c14fd85a67d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.ll": "8dfcc0fa03377933f2174a63a3ad3cab52702953d25dfd0f4bd30fb68b4759ed",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.llvm.mlir": "abd78c4fcecd6aebff48f383d1ef396f919bc3512b6ad61b0a7c1fcc787552d4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/kernel.o": "d0731da70095eb1057fa9f12cb370edffdcc924493c776d900a5df281b8dbeaa",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case1_transposed/object_nofsm_audit.json": "9f259cd19fea84a2062218a45271f7067a4c086b10677713b937d98160924332",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_a.bin": "a2449ee5e8c768b539105044999c7f2aee3df629861e15f6307418f58c919b23",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_b.bin": "ae32ca74388c9c2e796400108c8a8b0981bbc12b2f4d5cc57a9a4351bd8217ee",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_bt.bin": "6460377287eea1684404e251e7944169ea5b900c52dd1b017d777e659adfe33b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/device_compile.json": "453a970c39855180222d8a7beb066fa36a1f69647ee877d075639e6590ff5b9d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.gemmini.mlir": "385b1cb3c70913b6cf6623dd48755f4c5ace5b25f2290a432e03a287630c4440",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.ll": "7247c72912ff5bc66367cd45819626c89fa4aed26b86578cbadecb952f8b116b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.llvm.mlir": "3c135a04d7665dad84dbe8a9a8fd2428f61b3ede241b42c8afc4f0672e7d08ef",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/kernel.o": "437f06e9553a7ec2af4a9a5e041cf32765e7bd0485728871982f383aa4c9f633",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_dense/object_nofsm_audit.json": "97564a8fc2bc5e08bda3c435162bfd87d56170ebca6da4a6bed1dbd6183a2bf8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_gold.bin": "e2773ddb37f9a48b9c46acab5ade51459b4ab81d92d2b24456af4bb345d9d825",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/device_compile.json": "d81ad78de7fac6c19a2570f1d29120e3ff68deda3f1702a5b8880f204c967f86",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.gemmini.mlir": "75ce0b23bbccefe6fcd7f9ba12e724cb4513a044f9be500792567958d3eb223c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.ll": "373cf00937bb5fcb3f2124b100932600984215478aef7e4568ac7808e1ee13b1",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.llvm.mlir": "3e24c21e681142a571ea426fc01c48672b5a56b276645dc7376f41f54257fe24",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/kernel.o": "1a1cb8ab50ca2dadc46a5aedd19bcc41256b6f74f5d1492dbae5f718fbfbc550",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case2_transposed/object_nofsm_audit.json": "3907dc58e1253a4fbb12bae4b7b9672f4e6cd79c5fa363212db91ceb5bd4fd29",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_a.bin": "50672e6705613dacdc133171ad49b32e0a49dff9e878f8619be92ed0a45fc637",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_b.bin": "8e6413b52a9be4976244a3a5527d0f57afdb0c4429c43413034b9ce7d9e72197",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_bt.bin": "199e021e1ea4c2dd2ab91c0dfbbd5e087ad7571b09d3035b646e39d9ffd85c2a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/device_compile.json": "bf4341e359ceac89b7380fbf20bffffbb062d01d996c9108faf9ef688ac07b50",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.gemmini.mlir": "04839beec9621900b6468084b8f45fefba68425a62377802b037623f3490652b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.ll": "2e3b4d4c3eef73d2eda4c1f8249fec3dcda8f543a0b9274ce79bdfd0ab069021",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.llvm.mlir": "3d1190cb8bc329ce4f8860c5ca3983acad66e3c1dde4dbcc7986cb9ce07c7e40",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/kernel.o": "00af5eddffb8aed332ea06e4db8a65289e6a0a5b24aa7469a53fb506442d6c8d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_dense/object_nofsm_audit.json": "7ef06cb3d3064d575523d71cddff64150895daf04a59b4bfc96e5a3cdd346062",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_gold.bin": "dba38322b9695fbdf2b90f0ac1d3028e8275116b24e47149bd72004652c6da6c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/device_compile.json": "96de4f7c02b89d9f42da8a3873d39fd0d42a2123b848b335575dd882f9c6b0a8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.gemmini.mlir": "527cc6138e40729186c96ca89868da8b89d363bfe77e787ea23c0c48de98ea2d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.ll": "8294d5402db143b0fae89a6b4f4a3658592acb50429ec89a8dd28b070bee15c9",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.llvm.mlir": "6504579b9c7c5dcf1767fe0bdcd2a530267212f1eb48c70a2d71bca1c33a7e5a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/kernel.o": "d91db040dcd83e248b11789a50f72e8653acfc3002c8ce98b3c648c02393aae0",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/case3_transposed/object_nofsm_audit.json": "82e7e2dc95fc6f8c9ef83f0f2eaf826a9e27cce396bd247477f834a3bc663d8a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/data.S": "9d80eacee459099d2ee4697eb1fe96a8254bba02468e03b9c78513f85b3a675e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/data.o": "cf1ceace88bb4e9672ff4fc0223bf576253d1ab5641ed342504b811356d588c8",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/main.c": "f99ac495d8e789cb5ac2a60fe01f67a5e15f6fc6acf2ce36726c8f9d8e848c5a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/main.o": "e0f892fdb2259bbda9df5e098e4de040cebdcebf1fca5d47dc75bbdc1a0a6f1e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/qualification.json": "181b99e5285ae5c3e820a626c08acc58ade9c63ad44cf41e96dc9db0ccbae771",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/qualify.log": "244066d03174534056aceeca72f2a01f4898cf0beb845fbb13a48311139bb55f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/qualify.py": "2a5a50fbf458829bfaa9373731fac72649c71b7b94a7ddb457b6c72ef560b8c5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/qualify_corrected.log": "c3bc58ff5a70c857cc99fb8851807c5061cffef29c4569482af3a0c33548acc4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/independent/spike.log": "0987ba74ff4ae88a6e5a4bc3b231ea6d9063301e01f903db166b3c94dcfa3501",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.c": "1a448e4dd59beb41bbd9727499d2dfe69e6a090532ed97e8e8384c0cbcfe697b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/main.o": "48844c873f27ff4d6c18c6cde84e38e2baa2bdab7ba267f5600f7a605f7d4c99",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/pair_result.json": "18cd5857006d72604f657127ade040c2dc1775cf0222e9c040528826d108ec70",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/parameter_transposed.bin": "a8d04111335fdd1e15337dddc895670a05069a73ab54b5ff01827e008b847625",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/lowering_recipe.json": "d8056be7592d97fe5841432bf9ffff6a2df1ba2e0d3c204fa125974d5eed95d3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.ll": "7b4f5c275a23882755655b9f70119c0dc40f456ae9df20092629eacddd2a1d9c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.mlir": "1c6e528547cf317e5d77f28745c0a4a495c9df549ebc0ef3a82726d8bce41689",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/model.o": "1f6af27b0b87423720fc46400ddb7c2b32e197170335b70bd5aaf0904ac510d4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations/run_lowering.py": "d97afb875fd470554e992e8dcbef3be2acba2bc3d3af7a349c16b905f9281480",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/permutations.mlir": "1c6e528547cf317e5d77f28745c0a4a495c9df549ebc0ef3a82726d8bce41689",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/qualification.json": "c6f0aaa6ddcb9a2796c5a2cccdba585c7eb18b89530134f1ce4ba636060d9bb3",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/run.log": "911b60ce490d9ef4a1c779356e2491f55964e2de5e96b3712e7a2367ae6dbb7f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/run_pair.py": "41e5c1e622aa2c7cfad1d982a74df6db23641033f5895433605e5f07d27c6d73",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/layer.elf": "d22b252a1dd0cd08acd16a01054632f7f211d76e11c6ffffaae1bc81ca541136",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.S": "5c5cd8a6644e2edb49b7ffa70e375b8ea93217cfdc36dd29e1853407a49b4c0e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/data.o": "dda389365b7e11d781afb94f0c77f84c1b8c280f0ae97f650a618a23662311d4",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/gsim.stdout": "208f042e75b79b4c2efe9ab266042f828507f9636f6ef1886899a3e6b8058aa9",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/gsim_receipt.json": "4ec33817ebb5c3f3f248012e7e76eb74d4e4a9e53c8abb4e4768d886281c3994",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/spike.log": "43c61983ef8cba3b50bf96205467050a99907660a8f45133ed15d802ba89445f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/symbols.txt": "d8b261a50ab51fe4a2788daa0926a2ffbe5ac216f6af586108c1dfeb209a4125",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed/text.bin": "c6cbf5ea2cb80b270a91f4dadc74032040a8291822800ecb1f6931a2cf038ded",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/device_compile.json": "15dd0d4761230ea682b8209abc172e39a38ced0a122c9709f4b2ad13143e2fd2",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.gemmini.mlir": "11043fba42ba932ab9359c9fbd9a86901d6e80470c4fbbf7b528813a08e2d196",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.ll": "caae308f54e8fb9e625cf82f16f3a59079fa53fb034ea11124c51e870c391e63",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.llvm.mlir": "fc5997bd7cf735ad8e9446d590ae19e0de32f9714dc092aba0bf157c8c5fb07d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/kernel.o": "73b110cb34d72ea042bc259a0e4620206a207ea11d888020ed6717c44e62981c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/transposed_device/object_nofsm_audit.json": "7fe556777e5f614e5e6862ee7e404a2846634baeeee42a3f3f208136b93a8967",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/wave_census.json": "afa283f97abba0c26cab42914cd4673e7a4d7dd66b40743fb9ba8ae2a0cd5c2f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/wave_census.log": "15b29f59f1cc79b26f5e4e870f1e92d4de9e92936cba44b66393fd2663b6fe05",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-transposed-stationary-current-20261006/wave_census.py": "7f271964987eb4beef1eac44f7a7c43d6e19579e75fc6fec4edcb188cabf4851",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/tests/test_golden_packed_rhs.py": "aab47c2fb6c2c1be65af8a917a101cf8b89cd8b48a2f1b6402a8c9aab361a0c3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/a.bin": "c3e46bdd186176986276e7fb9b7a56268b15b10b6063be7ad7d291ecd347cf63",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/b.bin": "14aa4e6ce43720513c3a8d7b346b138d88056b44bc786d56709d33dff552246d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/expected.bin": "448fd0cb116f3993c3a3e5574a2fc998ccc7af1afea9ed838779bfdef8ec839f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-packed-rhs-current-20261006/capture/validation.json": "4122f0c1e8fb3643472251ec2d3f89d536a5b5e8fd0f6443f9e8a80a97c11eec",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/docs/perf_records/firesim1901_tiny1880_profile_verified.json": "e0b95512311911f7928f48b050e3f59095999dbd0c2b462688a28b7e702d98c6",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/device_catalog.json": "8e533fb743cbb13aecd6c239fbc2ec7efc0d2be08f1982c75883f501413aaa24",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.gemmini.mlir": "c5b0cb2f40a2786b1a206b0df41dcadaf06c581a0cbe64ca91554f35e9ae6f59",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_catalog/kernel.o": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/src/merlin/llvmlower/llvm_loop_metadata.py": "b1b63c61cb9649db963859d730e383ea7392bd7984415eba1d1cf931d26c24f8",
+    "/scratch/agustin/tmp/merlin-golden-integration-20261004/src/merlin/llvmlower/static_llvm_cfg.py": "bb67e47b15e5c7e862ba07d2244abbe0815378aede1ed204f1db56ae6ff9cb01",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/pipeline.py": "cf7585f28d9b4c949323a0e7ef89e280e46e158439d7961a7369b20126810331",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objcopy": "1b031e0a099e243e3577094990795dcf40136c937a22d39ea64cc27c7f799bd3",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike": "a525ba160b7ec8ec21f6c415985c5c4ee6095a102ae69fb84d61849883f0a349",
+    "/scratch2/agustin/chipyard/generators/chipyard/src/main/scala/config/MerlinGemminiGsimConfigs.scala": "1855d0243fbd076d2a70021b7d9b2daa7e11e4443b45f1b5315db858c7f11aaa",
+    "/scratch2/agustin/chipyard/generators/firechip/chip/src/main/scala/TargetConfigs.scala": "9e1c8a611463f261d17039a37f1d5ae5cb4a068d5eaaa206d42c64bcbdf9405c",
+    "/scratch2/agustin/chipyard/generators/gemmini/chipyard/GemminiConfigs.scala": "0c9472831c2b53595b075c90a7175b40fd56b7472cfbb3ec14038b23305ba5e6",
+    "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/benchmarks/common/crt.S": "2794cf1a7ae21537060453864c94a811869e72335e98b9eb1e8aeee4de7f0508",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/Configs.scala": "178c21ac741c89c08158efa71fb34da35d27b75bd50bde5116a5e19178f8391b",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/FrontendTLB.scala": "a377f50746a0d607b3b3738faf2a8ba12ce0b234f9b41d70961fd463b093206a",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/GemminiConfigs.scala": "7294a082a1df4ae7aa7d81adc5bde75b7d5118683c083f6a4b998c9ce64d102e",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/LoadController.scala": "780ee0a292d8653fa8a822aee28e2fb2cffbc25301431b4332182008d34fcf6a",
+    "/scratch2/agustin/chipyard/generators/gemmini/src/main/scala/gemmini/Scratchpad.scala": "e4d3a12c700fe9edaf5c2ce2f283ec5233a98bd103fb04054160e8097cb89a4f"
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "schema": "segmented_input_original_projection_matched_gsim_v1",
+  "recorded_utc": "2026-10-06T02:42:04.465409+00:00",
+  "owner": "reference_parity",
+  "hypothesis": "Read the proven segmented dense producer allocation directly; eliminate a temporary matrix and its CPU copy while splitting A DMA rows at source segment boundaries",
+  "before_cycles": 866791,
+  "after_cycles": 538815,
+  "delta_cycles": -327976,
+  "improvement_percent": 37.837956323958146,
+  "engine": {
+    "target": "gemmini",
+    "engine": "gsim",
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+    "available": true,
+    "refused": false,
+    "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+    "flavour": "binary",
+    "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "receipt_status": "bound",
+    "receipt": {
+      "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+      "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+      "schema_version": "merlin.gsim-model-build.v2",
+      "status": "complete",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+      "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+      "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+      "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+      "provenance": null,
+      "tools": {
+        "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+        "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+      }
+    }
+  },
+  "numeric_gate": {
+    "original_outputs": 401408,
+    "guards": 4096,
+    "strict_spike_isa": "rv64gc",
+    "both_arms_pass": true,
+    "no_fsm_both": true
+  },
+  "shape": {
+    "m": 784,
+    "n": 512,
+    "k": 256,
+    "output_dtype": "i8",
+    "bm": 49,
+    "bn": 1,
+    "bias": false,
+    "scale": 0.0028477373998612165,
+    "relu": false,
+    "wide_store": true,
+    "reuse_b": true,
+    "cache_b": false,
+    "cache_a": true,
+    "pipeline_m": false,
+    "prefetch_m": false,
+    "banked_m": false,
+    "wide_a": false,
+    "wide_b": true,
+    "separate_b_bank": false,
+    "prefetch_b": false
+  },
+  "view": {
+    "rows": 784,
+    "cols": 256,
+    "segment_rows": 28,
+    "row_stride": 512,
+    "segment_stride": 28672,
+    "source_elements": 802816,
+    "element_bytes": 1,
+    "dtype": "i8",
+    "origin": 0
+  },
+  "same_address_evidence": {
+    "same_elf_layout": true,
+    "elf_byte_change_ledger": [
+      {
+        "offset": 49928,
+        "before": 0,
+        "after": 1
+      }
+    ]
+  },
+  "fixture_scope": "Every consumed matrix value is the original captured value; unread owner cells are zeros, not the complete original physical producer allocation",
+  "timing_scope": "Portable generated CPU memcpy materialization plus the unchanged dense device versus borrowed segmented device; not exact current whole host code or stock cycles",
+  "actual_emitted_change": "Dense A materialization followed by unchanged dense kernel versus segmented A mvin addresses/panel widths and CONFIG_LD0 source row stride; reduction/weights/compute/store arithmetic unchanged",
+  "admission": "Positive capsule screen; default remains unchanged and normal/whole/stock binding is not yet qualified",
+  "cost_limitations": [
+    "GSIM memory system is distinct from stock FireSim",
+    "Generated portable memcpy does not prove identity with the current host LLVM copy",
+    "Unread sparse owner elements are synthetic zeros",
+    "No whole-model or physical DRAM savings inferred"
+  ],
+  "token_usage_available": false,
+  "pins": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/recipe.json",
+      "sha256": "1e71127d4d5132780dd82b2f704d047a6ed4c7c7abb02f17163a3107e26308b1"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/result.json",
+      "sha256": "e0adb0794534b6a59ef6891fd1720364f743edfc22d40c15d107453fc029597d"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/owner.bin",
+      "sha256": "85e34187f0c8777e8de0f91c90ffa85f07b7ebe2a39572d016c5da0a67b11ac0"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/probe.c",
+      "sha256": "4e37abf88cb7baad4c3269b2895c986ff87cb13377928f99ccfbba19dc13d8d1"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/fixture.S",
+      "sha256": "e7f181ae0451747063e4ef3b97920be6d472000c66190c8b62d3cdad2aaa4413"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/tests/captured_segmented_input_probe.py",
+      "sha256": "ba3e03604480e3762fce8a0dd0bfba0c895887886f893b9c034f384e8368276c"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm0/layer.elf",
+      "sha256": "d0337461ea0ae77308e4ae524496b1299408fcf05d6962e142f35c4143f74fb9"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm0/spike.stdout",
+      "sha256": "4b73eefc71a73a02ad8f065193322e4014484ad931b1e493980f9c58bbefc147"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm0/spike.stderr",
+      "sha256": "29983c4d8dae563342b53613194c712349c520f48969fb0c851931ed83b7f9ad"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm0/gsim.stdout",
+      "sha256": "853e19c47f52f15caeb5c95c4e94cf4c5919d8ddb3b9d0729ef05842614819b2"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm0/result.json",
+      "sha256": "7f83aaa581e53273ded95db8d6006aa3ad5079b73b28380da0d22b40dcaeec39"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm1/layer.elf",
+      "sha256": "676c485990472104044c895f8f94ea751fb03aae6d2aa17462e7b4f4d3fb88d7"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm1/spike.stdout",
+      "sha256": "ead250f7196ce5207e0447a02bee12b1db65d18f77e8884886eb9fabd5b77c04"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm1/spike.stderr",
+      "sha256": "9e606bfb04ffc25267df80f703064a0e2307b996200cd33051335f12cfc132dc"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm1/gsim.stdout",
+      "sha256": "95a3fda72ee61bb4e01ce7c63e30dd9d54e41883a329df5f48c693f4d939070a"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/arm1/result.json",
+      "sha256": "3af62196754ca2f1aacb045947b0d2d64e360d88f61eb2969d0b851ee159400c"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/control/kernel.gemmini.mlir",
+      "sha256": "6a6e6d9e240b48baea576f30a4947c6d3e74544c6911518fa65482c47e4577ba"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/control/kernel.o",
+      "sha256": "c3f5da2a7eef221f423ca798c3c8202e9be6be433fe56358a6644810a4a6bb2f"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/control/device_compile.json",
+      "sha256": "2d6f574e299487d81d55bca5b656b43f3fa3a080c6580425408b3e6dcc08a329"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/control/object_nofsm_audit.json",
+      "sha256": "58b7fd880b3979458df8d414e2fe1409d10f3ec6dedbc5dade0d3a7a85261488"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/borrowed/kernel.gemmini.mlir",
+      "sha256": "59bb9f3caa3f49e4427239c94f364f41d5a06c4e3715640ac268a7b0335f8a21"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/borrowed/kernel.o",
+      "sha256": "8cac4d3da90bd5b8a7ae2af13da4ae98558687c6cbc7725d54a184b50cc8ea42"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/borrowed/device_compile.json",
+      "sha256": "83b93760665ebd16df63f0474c1936aa7e04f1d5c421db82a3a9aaac40e5dd3f"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/segmented_input_view/original_projection_copy_pair/borrowed/object_nofsm_audit.json",
+      "sha256": "0ddf4d5febbae44f1fa73dd9443cbd478bbe0fe0a8a2b80aab8e986322deca5a"
+    }
+  ]
+}

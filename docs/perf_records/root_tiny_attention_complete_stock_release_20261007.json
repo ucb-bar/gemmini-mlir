@@ -1,0 +1,133 @@
+{
+  "schema": "root_complete_current_attention_block_stock_release_v1",
+  "status": "RELEASED_ONE_COMPLETE_ATTENTION_BLOCK_STOCK_OBSERVATION",
+  "candidate": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-attention-complete-target-audit-v4-20261007/compat_link/block.elf",
+  "candidate_elf_sha256": "5b337b0ef0d18a41ba704409d8e98297aee87ff001cfc2182450d74aa4175aaf",
+  "qualification_pins_reclosed": 59,
+  "raw_target_pins_reclosed": 36,
+  "final_noFSM": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "5b337b0ef0d18a41ba704409d8e98297aee87ff001cfc2182450d74aa4175aaf",
+    "executable_sections": 13,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "allowed_runs": 1,
+  "hardware_alias": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hardware_identity_required": {
+    "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229"
+  },
+  "uart_required": {
+    "pass_marker": "ATTENTION_BLOCK_PASS original16384i8 all5modes sticky2 inputs sameheap sourceendpointgate",
+    "words": 16384,
+    "digest": "9e1846e713bbd21d",
+    "ABBA": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "strict_retired_instructions": [
+      1217139,
+      1130201,
+      1130201,
+      1217139
+    ],
+    "all5FRM_x2sticky": true,
+    "source_endpoint_gate": true
+  },
+  "complete_cost_scope": {
+    "ROI": "Six original-byte-count malloc allocations/manual64alignment +sourcezero/-inf initialization, QK/scale/mask/max/expf/ordereddenom/F32DIV/PV/sourcequant outputstores/frees. Tailguard preparation384bytes added identically in both.",
+    "included_requested_allocation_bytes": 100736,
+    "original_projection_RoPE_GQA_preparation": "outside this already-viewed-operand block",
+    "allocator_reset_and_source/hashchecks": "outsideROI",
+    "current_original_runtime": "Actual2070 malloc.o andlibc_min.o byteunchanged. Only diagnostic harness memcpy/memset/abort symbols madeweak so originalruntime strongsymbols win; memcmp checker outsideROI.",
+    "first_context_sameheapaddresses": true,
+    "original_mean_instructions": 1217139.0,
+    "current_masked_mean_instructions": 1130201.0,
+    "fraction_instruction_change": -0.07142816062914759,
+    "rows": [
+      {
+        "id": 0,
+        "sample": 0,
+        "cycles": 1217141,
+        "instructions": 1217139,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 1,
+        "sample": 1,
+        "cycles": 1130203,
+        "instructions": 1130201,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 1,
+        "sample": 2,
+        "cycles": 1130203,
+        "instructions": 1130201,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      },
+      {
+        "id": 0,
+        "sample": 3,
+        "cycles": 1217141,
+        "instructions": 1217139,
+        "digest": 11391933215716135453,
+        "score": 4552916992,
+        "p": 4552925248,
+        "endpoint": 4552935680,
+        "quant": 4553001280
+      }
+    ],
+    "hardware_cycles": "UNKNOWN; Spike mcycle tracks functionalinstructionwork and cannot price actualtargetlatencies",
+    "all22_whole_instruction_inference": "REFUSED; firstcontext withits sourcevalues/runtimecache/layout"
+  },
+  "native_vs_actualtarget_source_math": {
+    "changed_probability_words": 94,
+    "max_absolute_probability_difference": 5.960464477539063e-08,
+    "changed_endpoint_words": 1448,
+    "max_absolute_endpoint_difference": 7.450580596923828e-09,
+    "endpoint_tolerance_failures": 0,
+    "original_i8_changes": 0,
+    "scope": "FirstcontextRNE; same actualtargetnewlibexpf differs from originalnativeglibc intermediary bits. No universal sourceintermediate bit claim."
+  },
+  "numeric_gate": {
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "original_consumer_i8_exact": true
+  },
+  "candidate_policy": "Existing current2070 masked-QK, original remaining source pipeline; no new numerical policy.",
+  "performance_model": "UNKNOWN; measure complete allocation/math/requant/free on stock. Do not multiply first-context cost by22 or infer whole gain.",
+  "whole_default_promotion": false,
+  "requirements": [
+    "Recovery submits once after root commit; exact staged ELF/stock hardware identity.",
+    "All original source comparisons, guards, mode checks and common-address ABBA pass.",
+    "Retain hardware mcycle and retired-instruction metrics separately; Spike cycles are functional work only.",
+    "This prices already implemented attention; rejected approximate i8 attention remains unqualified."
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_attention_complete_target_audit.json": "eb02798052452baf00dd374a05c3c0bd946ba19b37d7ddcbc05f76d42f3e9c22",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json": "922d3d955d33bcb98bbaba37a071ed555dac351136f85fed35c583ffc48878bb",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-attention-complete-target-audit-v4-20261007/compat_link/qualification.json": "7da114399e56fdc73e2e6aef87eca9e3cf015dbc1646d95de27381bc6acf4859",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-attention-complete-target-audit-v4-20261007/compat_link/block.elf": "5b337b0ef0d18a41ba704409d8e98297aee87ff001cfc2182450d74aa4175aaf",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-attention-complete-target-audit-v4-20261007/compat_link/spike.stdout": "cdd23e539b07d1de207e3e995459cb34d3a19288eb578239f9024c5a4d8eb43a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/review_attention_block_stock_packet_probe.py": "4b1ae76e655850a4f918f8f05487eb92218224dded3fd100c20ad40ed5f6ad38"
+  }
+}

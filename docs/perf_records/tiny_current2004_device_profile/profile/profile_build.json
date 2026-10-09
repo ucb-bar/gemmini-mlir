@@ -1,0 +1,96 @@
+{
+  "schema": "golden_device_boundary_profile_build_v1",
+  "base_elf": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model.elf",
+  "base_elf_sha256": "39c55f91736b5dffbb1d0460b5372891c492a669202988c722b468e6fe297d9a",
+  "elf_sha256": "28f5b8460462a71abc05ecb1d29551d5eb1a51b88437d0c61f5109b26442b2e0",
+  "model_object_sha256": "1a735c97b5a839bfc3dee81e040789cd96c464814545bbca671af6b652c28d5f",
+  "source_sha256": "c7bec6831609f252d9103fda18dc886fbabb9bfe50ae1e9c08c59c5eba6a2c2e",
+  "objects": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model_call.o": "8e1c7216d0934c0bfa03133e233592259d98db87e7b1fe6e2384826db27ae235",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model_main.o": "4753f3cda97c78c3ae79f9659e37fe7e44629f8a2b53162cefedc51d1bef5e56",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/libc_min.o": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/malloc.o": "9b9533310815f4f3e02df750cc2bcdb5bd1db1c7f4234d115fdd0ff80bcb30b7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model.o": "1a735c97b5a839bfc3dee81e040789cd96c464814545bbca671af6b652c28d5f",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/weights_blob.o": "680b3767aa34673a260d9ace870be109f8754edd0dd7d27ec16ba98787beb3fd",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/device_catalog/kernel.o": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/device/device_catalog_shim.o": "1ae900e987d1d0c29b0abc583f3d07289e501fb8ebfc15c9617ee3b214e06a81"
+  },
+  "linker_argv": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+    "-march=rv64gc",
+    "-mabi=lp64d",
+    "-mcmodel=medany",
+    "-O2",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-nostdlib",
+    "-nostartfiles",
+    "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x84100000",
+    "-Wl,--defsym,MERLIN_STACK_BYTES=0x1000000",
+    "-T",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model_call.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/merlin_model.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model_main.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/mlir_rt.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/crt.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/console.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/libc_min.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/malloc.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/model.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/weights_blob.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/device_catalog/kernel.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/overlay/device/device_catalog_shim.o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/profile/device_profile.o",
+    "-Wl,--wrap=gemmini_golden_29c4e0a80e5abd97",
+    "-Wl,--wrap=gemmini_golden_7b4380121ce5c4f3",
+    "-Wl,--wrap=gemmini_golden_a5705ab56e324ba1",
+    "-Wl,--wrap=gemmini_golden_e738f13ad92e3128",
+    "-Wl,--wrap=gemmini_golden_ef297329ec9dee28",
+    "-Wl,--wrap=merlin_run_multi",
+    "-Wl,--wrap=htif_exit",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-current2004-profile-20261006/profile/model.elf"
+  ],
+  "boundaries": [
+    {
+      "id": 0,
+      "symbol": "gemmini_golden_29c4e0a80e5abd97",
+      "pointer_arity": 3
+    },
+    {
+      "id": 1,
+      "symbol": "gemmini_golden_7b4380121ce5c4f3",
+      "pointer_arity": 3
+    },
+    {
+      "id": 2,
+      "symbol": "gemmini_golden_a5705ab56e324ba1",
+      "pointer_arity": 3
+    },
+    {
+      "id": 3,
+      "symbol": "gemmini_golden_e738f13ad92e3128",
+      "pointer_arity": 3
+    },
+    {
+      "id": 4,
+      "symbol": "gemmini_golden_ef297329ec9dee28",
+      "pointer_arity": 3
+    }
+  ],
+  "expected_device_calls": 155,
+  "semantics": "PROFILE_SUM forward/device/host-gap cycles; each PROFILE_CALL ordinal/symbol-id/preceding-host-gap/device-cycles; instrumentation overhead belongs mostly to host gaps",
+  "expected_symbol_calls": {
+    "0": 22,
+    "1": 44,
+    "2": 44,
+    "3": 1,
+    "4": 44
+  }
+}

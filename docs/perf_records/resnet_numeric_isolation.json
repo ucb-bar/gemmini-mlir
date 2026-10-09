@@ -1,0 +1,51 @@
+{
+  "schema": "native_numerical_isolation_v1",
+  "scope": "Diagnostic only; no target implementation, queue submission or performance claim",
+  "unchanged_original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "experiments": [
+    {
+      "elements": 1000,
+      "exact_equal": false,
+      "max_abs_error": 1.1802215576171875,
+      "relative_l2": 0.012408055644302878,
+      "atol": 0.03125,
+      "rtol": 0.02,
+      "allclose": false,
+      "quality_pass": false,
+      "numeric_policy": "explicit_bounded_experiment",
+      "scope": "Native diagnostic only: exact source residual standins replacing bounded residuals; same bounded unary model object; not a target artifact or performance measurement",
+      "source_sha256": "39239ec08b5f196d22b13b6ae580ea5bb725b4644c3b74caf99e17d6d50f0276",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "artifact_directory": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_error_isolation",
+      "evidence": {
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_error_isolation/run.py": "3727a55eb5cf5886afe43b36e8e23e86be4e117538dec37cda379ccbc5bb73cc",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_error_isolation/output.npy": "f89de6fd21684d19d2eda14828fd582582f9f2bab01f7a449f1dd3806553b94e",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_error_isolation/exact_residual_standins.c": "39239ec08b5f196d22b13b6ae580ea5bb725b4644c3b74caf99e17d6d50f0276",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/closed_combined_bound1_v4/host/model.o": "038c9e6e0fbe2cffbfd7aa53b266aebdd1b50db8a995c6559c136274b7bf1583"
+      }
+    },
+    {
+      "elements": 1000,
+      "exact_equal": true,
+      "max_abs_error": 0.0,
+      "relative_l2": 0.0,
+      "atol": 0.03125,
+      "rtol": 0.02,
+      "allclose": true,
+      "quality_pass": true,
+      "numeric_policy": "explicit_bounded_experiment",
+      "scope": "Native diagnostic only: exact source residual standins plus exact source float chains for six formerly bounded unary calls; same compiled model object; not a target artifact or performance measurement",
+      "source_sha256": "39239ec08b5f196d22b13b6ae580ea5bb725b4644c3b74caf99e17d6d50f0276",
+      "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "artifact_directory": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_unary_error_isolation",
+      "evidence": {
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_unary_error_isolation/run.py": "916b61c7d7cf297cd0b85398f0d7efd1da07187a4f053c5130cc7989605f011f",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_unary_error_isolation/output.npy": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_unary_error_isolation/exact_residual_standins.c": "39239ec08b5f196d22b13b6ae580ea5bb725b4644c3b74caf99e17d6d50f0276",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/closed_combined_bound1_v4/host/model.o": "038c9e6e0fbe2cffbfd7aa53b266aebdd1b50db8a995c6559c136274b7bf1583",
+        "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/residual_unary_error_isolation/exact_unary_standins.c": "6929465daefbf51b2bc52fbc9b1a1867d51db1be4428ae4951e03748e6b260dc"
+      }
+    }
+  ],
+  "conclusion": "Replacing bounded residual arithmetic alone does not restore original quality. Replacing both bounded residuals and six bounded unary float chains makes all 1000 outputs bit-exact to the original golden with the same compiled host model object."
+}

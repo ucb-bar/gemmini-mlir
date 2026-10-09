@@ -46,6 +46,9 @@ accuracy gates, experiment scope and promotion decisions. Detailed records inclu
 
 ## Published parent provenance
 
+Earlier published backend branches are indexed in
+[the retained branch directory](docs/published_package_branches.md).
+
 Standalone, buildable out-of-tree Merlin codegen backend for **gemmini** (family `tensor_resident`).
 
 > ## ⚠ NOT CERTIFIED — published with `--no-gate`

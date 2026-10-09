@@ -1,0 +1,40 @@
+{
+  "schema": "exact_i64_radix_optimization_journey_v1",
+  "hypothesis": "Canonical i32 group/range and <=2^53 weighted term/prefix proof allows defined signed-i64 weighted accumulation and one final exact binary64 conversion.",
+  "ownership": {
+    "Merlin": "Generic proof/emitter, source numeric/lifetime/ownership contract, explicit host API; no automatic route.",
+    "OOT": "Unchanged dense target primitives, actual target compiler/ISA evidence, stock support and entire-executable audit."
+  },
+  "core_commits": [
+    "eb6cc42d7",
+    "7e984e8be",
+    "7bfbc7ded"
+  ],
+  "previous_rejected_optimization": "Encoded zero omission plus support-aware f64 reconstruction: complete small capsule1.7625% slower; retained separate immutable receipts.",
+  "variants": [
+    {
+      "name": "switch_selected_variable_weight",
+      "actual_emitted_change": "Runtime64bitmul and signed-i64 add per group; one fcvt.d.l finish.",
+      "small_capsule_saved_percent": 7.37151250224457,
+      "decision": "Positive but held; constant-case arm measured separately."
+    },
+    {
+      "name": "group_case_constant_weight",
+      "actual_emitted_change": "Power-of-two machine shifts and signed-i64 add per group; one fcvt.d.l finish. Defined C multiplication, no negative signed-shift UB.",
+      "small_capsule_saved_percent": 14.447897301657331,
+      "decision": "Selected exactly one full-head stock candidate after all original gates."
+    }
+  ],
+  "scope_notes": [
+    "Each small pair includes original first32Q/first64K encoding, all10 unchanged dense group calls and readbacks, scratch initialization/update traffic/final conversion. All4096 values/192i32+2i64 guard words checked after each4calls.",
+    "Full native and strict target all65536 outputs/digest/original elementwise gate exact; native and target QK counts remain distinct and each unchanged.",
+    "Full head adds separate8MiB live scratch and may have different cache/traffic costs; local14.4479% is not a full-head or full-model prediction.",
+    "Compiler-generated library closure may shrink after host call removal; all explicit non-driver objects/link recipe and toolchain unchanged, baseline relinks byte-exact.",
+    "Compiled test libraries need distinct filenames per plan because pytest can reuse removed temp paths while ctypes retains old mappings; corrected12test gate passes and fresh UBSan/full capsules were unaffected."
+  ],
+  "complete_head_hardware_cycles": null,
+  "whole_model_cycles": null,
+  "automatic_routing": "NONE",
+  "token_usage_available": false,
+  "campaign_token_checkpoint": "Root owns shared campaign snapshots; exact per-optimization/subagent allocation unavailable."
+}

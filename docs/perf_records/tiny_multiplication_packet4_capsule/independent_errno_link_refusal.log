@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent.py", line 38, in <module>
+    b=build_program(objects,W/'build',target='gemmini',max_loaded_bytes=None);audit=audit_elf(b.elf.read_bytes());assert audit['status']=='pass'
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/perf/layer_bench/build.py", line 115, in build_program
+    raise BuildError(f"link failed:\n{link.stderr[-2000:]}")
+merlin.perf.layer_bench.build.BuildError: link failed:
+/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/../../../../riscv64-unknown-elf/bin/ld: warning: /scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/independent/build/layer.elf has a LOAD segment with RWX permissions
+/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/../../../../riscv64-unknown-elf/bin/ld: /scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/../../../../riscv64-unknown-elf/lib/libm.a(libm_a-w_sqrt.o): in function `sqrt':
+w_sqrt.c:(.text.sqrt+0x2a): undefined reference to `__errno'
+/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/../../../../riscv64-unknown-elf/bin/ld: /scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/../lib/gcc/riscv64-unknown-elf/13.2.0/../../../../riscv64-unknown-elf/lib/libm.a(libm_a-wf_sqrt.o): in function `sqrtf':
+wf_sqrt.c:(.text.sqrtf+0x2a): undefined reference to `__errno'
+collect2: error: ld returned 1 exit status
+

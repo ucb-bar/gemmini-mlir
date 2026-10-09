@@ -1,0 +1,426 @@
+{
+  "schema": "exact_ordered_replay_selected_widening_v1",
+  "scope": "Source-proven zero-seeded increasing-K f32 FMA on original BF16 operands; complete selected-operand allocation and widening cost included in forward metric. Retired instructions are not Rocket cycles. Contiguous selected outputs exclude sparse selection, interval guards and online attention integration.",
+  "core_implementation_commit": "1006485cd",
+  "implementation_sha256": "4fbfe489913b2348937325f40e27491d21cd1a44c647880df7e122696bbecbd1",
+  "builder_contract": "Explicit output tiling and none/lhs/rhs/both exact BF16 widening; static equally batched tensors and separate N tails; finite/RNE source contracts; no default pipeline selection",
+  "correctness": "All original source capsule output words match independent scalar fmaf reference on native and actual strictRV64GC Spike; final linked zeroFSM audit passes",
+  "gate_tests": "62 ordered-FMA and CFG tests pass including18 independently batched/transposed/tail native packing cases; no skips",
+  "negative_evidence": "Both operands widened atM1 is slower: whole RHS conversion is not amortized. Do not enable widening without measured reuse benefit.",
+  "whole_smol_gate": {
+    "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "target_status": "ABI-corrected full source target running separately; these capsules are not a full-model qualification"
+  },
+  "rows": [
+    {
+      "actual_spike_bitexact": true,
+      "elements": 1024,
+      "source_macs": 65536,
+      "spike_instruction_metric": 672081,
+      "instructions_per_mac": 10.255142211914062,
+      "elf_sha256": "dce23ba49fbe7b50e9641da9f6cd5201d51c043736d7c6e960599276022b041d",
+      "hardware_cycles_measured": false,
+      "name": "qk64",
+      "pre_widen_operands": "both",
+      "output_tile": 4,
+      "control_tile4_instruction_metric": 385298,
+      "instruction_change_fraction": 0.7443147901105118,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 1024,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "6606c11b8ba8038b3ec9953570fc600e0f17b466a06b668cf5e542cea50d86c0",
+        "golden_sha256": "2fc9b38b193114d1adad64d47d3e6ea79ca86dcff4e60beaedcf2fd8cd4c9865",
+        "spike_sha256": "d7f6cc28e69a8ab1bc89f0234bd3fc664c5e06e6d7b02841f6c2c63095059bdf"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "dce23ba49fbe7b50e9641da9f6cd5201d51c043736d7c6e960599276022b041d",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-20261005/qk64_n4"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 64,
+      "source_macs": 12288,
+      "spike_instruction_metric": 126771,
+      "instructions_per_mac": 10.316650390625,
+      "elf_sha256": "2094e12e123c82ba23c9366ca1f471f0d64b06b252bce59c689995d56e58a13d",
+      "hardware_cycles_measured": false,
+      "name": "pv192",
+      "pre_widen_operands": "both",
+      "output_tile": 4,
+      "control_tile4_instruction_metric": 69393,
+      "instruction_change_fraction": 0.8268557347282868,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 64,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "158d58a0194b44664d42e7417ce76964658ff2ee3df54b66e7366440e7dca9ab",
+        "golden_sha256": "0ec2bf46071ddde6ce86d7e3606fe512bad0e7f7083ee15b5305562e1a856c5a",
+        "spike_sha256": "612073d49d1da939da058ab6ed5068dbb6a6981901fe48506bc3a622f0422e57"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "2094e12e123c82ba23c9366ca1f471f0d64b06b252bce59c689995d56e58a13d",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-20261005/pv192_n4"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 1024,
+      "source_macs": 65536,
+      "spike_instruction_metric": 335131,
+      "instructions_per_mac": 5.1136932373046875,
+      "elf_sha256": "4e483b7a93e2a53065b6b52532ec7021ef0a4d35d362e72d8eb45459ca8114ad",
+      "hardware_cycles_measured": false,
+      "name": "qk64",
+      "pre_widen_operands": "lhs",
+      "output_tile": 4,
+      "control_tile4_instruction_metric": 385298,
+      "instruction_change_fraction": -0.13020311551059183,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 1024,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "2c9bbbc8b5a060ba26fc528ced49d48d7fc51a378f2b4faa5471c1ee656f33bb",
+        "golden_sha256": "2fc9b38b193114d1adad64d47d3e6ea79ca86dcff4e60beaedcf2fd8cd4c9865",
+        "spike_sha256": "eab38373b98cddddf3d58219f498c11f0dee29bd115088cd7429d85a2bf50393"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "4e483b7a93e2a53065b6b52532ec7021ef0a4d35d362e72d8eb45459ca8114ad",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-20261005/qk64_n4"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 64,
+      "source_macs": 12288,
+      "spike_instruction_metric": 63549,
+      "instructions_per_mac": 5.171630859375,
+      "elf_sha256": "fb3560e8816366450825c8b95389e3652d5a41762dc96ff6b0ec5c270463d32c",
+      "hardware_cycles_measured": false,
+      "name": "pv192",
+      "pre_widen_operands": "lhs",
+      "output_tile": 4,
+      "control_tile4_instruction_metric": 69393,
+      "instruction_change_fraction": -0.08421598720332024,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 64,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "e52ec281fbfe75bb47b4ce4a1fbafd84f668b408a52806fe1ace53ea83e5ff0e",
+        "golden_sha256": "0ec2bf46071ddde6ce86d7e3606fe512bad0e7f7083ee15b5305562e1a856c5a",
+        "spike_sha256": "41aece112b0404e8dd4e833edd8166780a7357245f585c7426bd7bbca4f27638"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "fb3560e8816366450825c8b95389e3652d5a41762dc96ff6b0ec5c270463d32c",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-20261005/pv192_n4"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 1024,
+      "source_macs": 65536,
+      "spike_instruction_metric": 301339,
+      "instructions_per_mac": 4.5980682373046875,
+      "elf_sha256": "4cdc9082ef1fa21cc1e639928a35eac48a342643270fd39319f31d11993cb898",
+      "hardware_cycles_measured": false,
+      "name": "qk64",
+      "pre_widen_operands": "lhs",
+      "output_tile": 8,
+      "control_tile4_instruction_metric": 385298,
+      "instruction_change_fraction": -0.21790665926114328,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 1024,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "30b64a76bf63a9655a792a5d43ef1479178918a41c843facad43a328672f93da",
+        "golden_sha256": "2fc9b38b193114d1adad64d47d3e6ea79ca86dcff4e60beaedcf2fd8cd4c9865",
+        "spike_sha256": "2fd79302eb9c32bf8992e7d07621c9feb905af34ea4b5befff0a3583421ea69b"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "4cdc9082ef1fa21cc1e639928a35eac48a342643270fd39319f31d11993cb898",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-wide-20261005/qk64_n8"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 64,
+      "source_macs": 12288,
+      "spike_instruction_metric": 57341,
+      "instructions_per_mac": 4.666422526041667,
+      "elf_sha256": "1893ef4dce7ef6be20faad313d5f164b135b50399ae208b47d1821c9bd8abf08",
+      "hardware_cycles_measured": false,
+      "name": "pv192",
+      "pre_widen_operands": "lhs",
+      "output_tile": 8,
+      "control_tile4_instruction_metric": 69393,
+      "instruction_change_fraction": -0.17367746026256248,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 64,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "865723048f88a8d6dfb69f64ee95ad63812dc97c9b77e7eb367dae667ccf15dd",
+        "golden_sha256": "0ec2bf46071ddde6ce86d7e3606fe512bad0e7f7083ee15b5305562e1a856c5a",
+        "spike_sha256": "36a6a2072de7d08b37bd3432933c0cd2f108dbe70176bc12943a321c380e4e29"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "1893ef4dce7ef6be20faad313d5f164b135b50399ae208b47d1821c9bd8abf08",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-wide-20261005/pv192_n8"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 1024,
+      "source_macs": 65536,
+      "spike_instruction_metric": 284507,
+      "instructions_per_mac": 4.3412322998046875,
+      "elf_sha256": "b37586bd74335ecfd9256778f08c149dcf55a752062501c4e507bda5f2d8a31b",
+      "hardware_cycles_measured": false,
+      "name": "qk64",
+      "pre_widen_operands": "lhs",
+      "output_tile": 16,
+      "control_tile4_instruction_metric": 385298,
+      "instruction_change_fraction": -0.2615923259399219,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 1024,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "0c26e3afd16af9da6b8c1ad152a709b5641d6b0052d27c89dc2ccc33afd76db0",
+        "golden_sha256": "2fc9b38b193114d1adad64d47d3e6ea79ca86dcff4e60beaedcf2fd8cd4c9865",
+        "spike_sha256": "b9e1ab027d03aed34fb303457409cdba62e545146b472a7bbecbd68df6e138ce"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "b37586bd74335ecfd9256778f08c149dcf55a752062501c4e507bda5f2d8a31b",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-wide-20261005/qk64_n16"
+    },
+    {
+      "actual_spike_bitexact": true,
+      "elements": 64,
+      "source_macs": 12288,
+      "spike_instruction_metric": 54237,
+      "instructions_per_mac": 4.413818359375,
+      "elf_sha256": "ba4b4ad14725d2c173b6dc2dc0b6814064d96d96dabbeb362d1ad7f4284ba76c",
+      "hardware_cycles_measured": false,
+      "name": "pv192",
+      "pre_widen_operands": "lhs",
+      "output_tile": 16,
+      "control_tile4_instruction_metric": 69393,
+      "instruction_change_fraction": -0.2184081967921836,
+      "validation": {
+        "native_bitexact": true,
+        "elements": 64,
+        "reference_kind": "independent scalar libm fmaf increasing K, source BF16 operands; QK original recorded input and PV source_qrow probabilities",
+        "llvm_sha256": "9e6d262788fd42564c0a2655642c4a0ba9de3b830c1ec7fcf987b93be0787e31",
+        "golden_sha256": "0ec2bf46071ddde6ce86d7e3606fe512bad0e7f7083ee15b5305562e1a856c5a",
+        "spike_sha256": "f88bd182bdcbca01579677362d61785ee7b26cc7296b218bb2667d8a0512e206"
+      },
+      "runtime_compiler": {
+        "command_prefix": [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+          "-isystem",
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+          "-O2",
+          "-ffreestanding",
+          "-fno-builtin",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany"
+        ],
+        "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "reason": "MLIR scalar helpers must use the lowered model compiler ABI",
+        "runtime_object_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+        "version": "clang version 23.0.0git (https://github.com/llvm/llvm-project.git a47bddccec30255619bb8c37fa59700e661d4e66)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin\nBuild config: +assertions\n"
+      },
+      "final_elf_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "ba4b4ad14725d2c173b6dc2dc0b6814064d96d96dabbeb362d1ad7f4284ba76c",
+        "executable_sections": 1,
+        "custom_funct_counts": {},
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/ordered-attention-replay-prewiden-lhs-wide-20261005/pv192_n16"
+    }
+  ]
+}

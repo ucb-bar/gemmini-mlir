@@ -1,0 +1,40 @@
+{
+  "schema": "exact_residual_lookup_candidate_v1",
+  "scope": "Opt-in CPU residual lookup fallback; target object audit only, no target execution or hardware performance claimed",
+  "bundle_path": "/scratch/agustin/tmp/gemmini-residual-bundle-20261005/out/closed_exact_cpu_lookup",
+  "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "object_sha256": "97a7ed5ed75d08036760e0da0389b9c2e69ffdee1324cf7a7e9dcd54176636c7",
+  "native_oracle_sha256": "a70d419ac389fc6157cf63598a48f3929995a6f1b82f65e2b1121ef5c2020203",
+  "numeric_policy": {
+    "kind": "exact_source",
+    "max_output_lsb": 0,
+    "domain": "all 65536 signed-i8 operand pairs",
+    "scope": "per residual output; not a whole-model quality guarantee"
+  },
+  "route_count": 16,
+  "lookup_bytes_per_route": 65536,
+  "total_lookup_bytes": 1048576,
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "97a7ed5ed75d08036760e0da0389b9c2e69ffdee1324cf7a7e9dcd54176636c7",
+    "executable_sections": 1,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "native_whole_model_diagnostic": {
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "explicit_bounded_experiment",
+    "scope": "Native diagnostic only: exact source residual lookup tables plus exact source float chains for six formerly bounded unary calls; same compiled model object; not a target artifact or performance measurement",
+    "source_sha256": "a70d419ac389fc6157cf63598a48f3929995a6f1b82f65e2b1121ef5c2020203",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946"
+  }
+}

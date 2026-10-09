@@ -1,0 +1,68 @@
+{
+  "scope": "source-derived isolated fifth vision block, original input state4 and output state5; not full model qualification",
+  "causal_result": "Only replacing expf results restores the previously failing isolated block; zero oracle misses establish every actual expf operand was covered. Generic float(double exp) also restores this block.",
+  "baseline_raw_f32le_sha256": "815f54f82c36bc0c4a0a9463e4de0262453219ce9dbd459d09ba476c34d4376e",
+  "expected_raw_f32le_sha256": "e0d9c18542e432a06330e14e4abf4cb5c5c4b892632a83ebb07b3c7594e4e99d",
+  "frozen_common_linked_objects": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model_call.o": "1dce080cb5a3e6df231fd50afdf0b45db2c9bf9839497a3bb91d6fc367b0d278",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model_main.o": "8e3a42d036a6162b5f2a91e4174fcdc7fecc83a5b5ff638c2875af2b5b7405d3",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/mlir_rt.o": "2f612a63310c1bf30a38824f4debd64fce0f2780551e028f198114d555590e5e",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/libc_min.o": "93b07bae1410c999309ecafd9afa2b3a5f4d67ffac106dd57f6c59e807dfb533",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/malloc.o": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model.o": "303a4207a86ab55dc8e48960f02ef1c0ca15de1d7ed9b21a9b3723cdea9f250c",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/weights_blob.o": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/device_catalog/kernel.o": "776ac4672f59a26c245ab5ff8571d3d175a816a5b5eb6fcdeb6760d086fde3eb",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/device/device_catalog_shim.o": "d2b1016e62a382767f9562ce6ec59bf128d366dff5b66d1cdfd80e5bde3b2907"
+  },
+  "arms": {
+    "expf_oracle": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_oracle/model.elf",
+      "elf_sha256": "379e3e4955c2ecf243a0fa20d33bcac4daa9cad646b9440fd495680142f74d0c",
+      "spike_log": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_oracle/spike.log",
+      "spike_log_sha256": "9150fb74a162a13b8f0d22cfa5aa205a5c14e2ddebe3d6adc55e6c9d02ae7229",
+      "original_output_words": 786432,
+      "raw_f32le_sha256": "e0d9c18542e432a06330e14e4abf4cb5c5c4b892632a83ebb07b3c7594e4e99d",
+      "all_original_words_exact": true,
+      "spike_retired_instructions": 23226557021,
+      "no_fsm": true,
+      "linked_extra_objects": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_oracle/wrapper.c.o": "cfe172e0de7bdd68aa0550cec6a08837bed66aa5df67229f8652d0af7838b9d5",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_oracle/data.S.o": "acdb216217c124c344562cbf3a535caf4a3cc2d95a88e26d28c0427c6c14b8b9"
+      },
+      "source_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf_oracle/wrapper.c",
+      "source_sha256": "be07c9ec58859f738966e4ef4405297bf8c41fbee380d9d942a0678f67d3f8e9",
+      "historical_marker_not_unique_for_relink": true,
+      "calls": 1572864,
+      "misses": 0,
+      "diagnostic_only": true,
+      "production_eligible": false
+    },
+    "double_exp_target": {
+      "elf": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/double_exp_target/model.elf",
+      "elf_sha256": "6ada9009de870679b2da59de970b9854f94b88b1bf90d6b766756f00c808ca39",
+      "spike_log": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/double_exp_target/spike.log",
+      "spike_log_sha256": "0d3c2803ea66413eaf620459d74aeb8d2d51283681e7fc6896f20631f1316816",
+      "original_output_words": 786432,
+      "raw_f32le_sha256": "e0d9c18542e432a06330e14e4abf4cb5c5c4b892632a83ebb07b3c7594e4e99d",
+      "all_original_words_exact": true,
+      "spike_retired_instructions": 22945205981,
+      "no_fsm": true,
+      "linked_extra_objects": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/double_exp_target/wrapper.o": "961025f44a6c81450670eeb0c303b37e951a9e9e11e715d403fbad929f388f5b"
+      },
+      "source_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/double_exp_target/wrapper.c",
+      "source_sha256": "b1e694e20a17dfcf273f39beca7fcabcdb52b2a9885b48b2b1e2d4e520e52b74",
+      "historical_marker_not_unique_for_relink": true
+    }
+  },
+  "native_expf_table": {
+    "path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/expf/unique.bin",
+    "sha256": "d21005f0fd9779a7f74bc915c5191aa77f68b3f10abcda95e4133cb1e0eef905",
+    "unique_inputs": 7035
+  },
+  "double_exp_limit": "Four of7035 observed inputs differ from native glibc expf. No universal function-bitidentity or full-model qualification claimed. No runtime default changed.",
+  "token_usage_available": false
+}

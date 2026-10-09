@@ -1,0 +1,236 @@
+{
+  "schema": "source_exact_hoisted_multiplication_packet4_v1",
+  "source_shape": [
+    1,
+    8,
+    2048
+  ],
+  "native_words": 16384,
+  "native_bitexact": true,
+  "strict_words": 16384,
+  "strict_all5_rounding_modes_and_sticky_flags_match": true,
+  "dirty_output_guard_bytes": 128,
+  "immutable_original_input_bytes": 73728,
+  "scope": "Complete actual source hoisted normalization; original1880runtime/data/control object. Only tensor pure f32 multiplication consumer scheduling changes. No new rsqrt or arithmetic permission.",
+  "strict_elf_sha256": "01b0534b42b5b7b54401187c13b2f698eb024c2c30d961facf6ab47597c9d74b",
+  "audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "01b0534b42b5b7b54401187c13b2f698eb024c2c30d961facf6ab47597c9d74b",
+    "executable_sections": 9,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "source_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/source.mlir": "61237fb6f737fa1b5aed69524fba3755224b3fcb502c72678bc65f19db7b2ddf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/weight.bin": "5a1b3fea19a3c45363b83168115ecdfdfef2f8cad5bcf5b48b255c6a12bcf561",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/activation.bin": "5404bdaeeff2a833a52a27ba8d6ffc941006c09ebddab40c001c0493e2d318c8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/expected.bin": "fcb40c3219083b91a9c898c57f92fa0a9984d02fce9e948653ad5dd49175ba98",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/target.ll": "c3a5a07a4174147f3bfb715ba42ba3d3bbefbc8fed8a34911357b4b7934cf145",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/native.ll": "6741d812a5d762c32bba5204dac22072866e6956181c909234ee7df333e28878",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/strict_main.c": "b0f83bfba08101164a8fe838d6effb14c697e7915b2abab93d0a3654753d4e1d"
+  },
+  "object_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/hoisted/model.o": "b0e55c16bb7790d66477e663ecc473ac1559a5f4f08ac80d9224b06d43082d09",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiply-packet4-20261006/model.o": "274eb216020e9d5101c53b5f1f552f246cfaeed8cbeff7087dca2433e76d9cfc",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-math-20261005/data.o": "b382a32b2fe68a838e190a838071164fa69d949c8b7230e0876ffeb77481f4a2",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/mlir_rt.o": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51"
+  },
+  "native_rne": {
+    "schema": "merlin_late_bounded_rne_v1",
+    "source_sha256": "06e2ade2d9fb47f026c923be77244dea6cfae5bc1bfbb7c86cd46e5ed5932bc7",
+    "routes": [
+      {
+        "result": "%235",
+        "clamped_input": "%175",
+        "raw_input": "%167",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%236",
+        "clamped_input": "%176",
+        "raw_input": "%168",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%237",
+        "clamped_input": "%177",
+        "raw_input": "%169",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%238",
+        "clamped_input": "%178",
+        "raw_input": "%170",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      }
+    ],
+    "host_isa": "portable",
+    "rewritten_sha256": "6741d812a5d762c32bba5204dac22072866e6956181c909234ee7df333e28878"
+  },
+  "target_rne": {
+    "schema": "merlin_late_bounded_rne_v1",
+    "source_sha256": "06e2ade2d9fb47f026c923be77244dea6cfae5bc1bfbb7c86cd46e5ed5932bc7",
+    "routes": [
+      {
+        "result": "%235",
+        "clamped_input": "%175",
+        "raw_input": "%167",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%236",
+        "clamped_input": "%176",
+        "raw_input": "%168",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%237",
+        "clamped_input": "%177",
+        "raw_input": "%169",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      },
+      {
+        "result": "%238",
+        "clamped_input": "%178",
+        "raw_input": "%170",
+        "dtype": "f32",
+        "integer_dtype": "i8",
+        "bounds": [
+          -128,
+          127
+        ],
+        "rounding": "nearest_ties_even",
+        "source_nan": "poison_from_fptosi"
+      }
+    ],
+    "host_isa": "rv64gc",
+    "rewritten_sha256": "c3a5a07a4174147f3bfb715ba42ba3d3bbefbc8fed8a34911357b4b7934cf145"
+  },
+  "token_usage_available": false,
+  "timing_elf_sha256": "2fc607069b09f02437d6122d1b1d7124bc838d1e03b3849e3e1c1293d0bdfbe4",
+  "paired_complete_gsim_cycles": [
+    [
+      0,
+      0,
+      811517
+    ],
+    [
+      0,
+      1,
+      599015
+    ],
+    [
+      1,
+      1,
+      596331
+    ],
+    [
+      1,
+      0,
+      811065
+    ]
+  ],
+  "before_mean_cycles": 811291.0,
+  "after_mean_cycles": 597673.0,
+  "saved_percent": 26.33062612552093,
+  "gsim_receipt": {
+    "records": [],
+    "finish": {
+      "cycles": 5379201,
+      "wall_seconds": 363.16,
+      "done": true,
+      "exit_code": 0
+    },
+    "wall_seconds": 363.18405489996076,
+    "returncode": 0,
+    "stdout_sha256": "c2d071b79152a0c842972c6417b9a8e96378f452142e1cf354465b66c547b628",
+    "engine": {
+      "target": "gemmini",
+      "engine": "gsim",
+      "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+      "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+      "available": true,
+      "refused": false,
+      "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+      "flavour": "binary",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "receipt_status": "bound",
+      "receipt": {
+        "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+        "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+        "schema_version": "merlin.gsim-model-build.v2",
+        "status": "complete",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+        "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+        "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+        "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+        "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+        "provenance": null,
+        "tools": {
+          "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+          "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+          "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+        }
+      }
+    },
+    "command_sha256": "3823d868155bb922dd5afe3d74241c6163a0ac0b349abfce46ed6073962b0e0a",
+    "stdout_tail": "NORM_COMPLETE_CYCLES 0 0 811517\nNORM_COMPLETE_CYCLES 0 1 599015\nNORM_COMPLETE_CYCLES 1 1 596331\nNORM_COMPLETE_CYCLES 1 0 811065\nSOURCE_NORM_COMPLETE PASS\n",
+    "stderr_tail": "] ticks=3200000 in_fires=270698 out_fires=108290 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3400000 in_fires=287628 out_fires=115062 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=3500000 in_reset=14 done=0\n[link-probe] ticks=3600000 in_fires=304504 out_fires=121820 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=3800000 in_fires=321449 out_fires=128598 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=4000000 in_reset=14 done=0\n[gsim-emu] 4000000 cycles, 271.6s, 14728 cyc/s\n[link-probe] ticks=4000000 in_fires=338389 out_fires=135374 in_valid=0 in_ready=0 out_valid=0 out_ready=1\nPacked deps: Vec(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)\nUtilization ld q: 0\nUtilization st q: 0\nUtilization ex q: 0\nUtilization ex q (incomplete): 0\nUtilization st q (incomplete): 0\nUtilization ld q (incomplete): 0\nUtilization: 0\n[link-probe] ticks=4200000 in_fires=355329 out_fires=142150 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=4400000 in_fires=372269 out_fires=148926 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=4500000 in_reset=14 done=0\n[link-probe] ticks=4600000 in_fires=389140 out_fires=155682 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=4800000 in_fires=406050 out_fires=162446 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[tsi-probe] calls=5000000 in_reset=14 done=0\n[gsim-emu] 5000000 cycles, 337.8s, 14803 cyc/s\n[link-probe] ticks=5000000 in_fires=422950 out_fires=169206 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n[link-probe] ticks=5200000 in_fires=439840 out_fires=175962 in_valid=0 in_ready=0 out_valid=0 out_ready=1\n\n[gsim-emu] FINISHED: cycles=5379201 wall=363.16s (14812 cyc/s) done=1 exit_code=0\n[gsim-stats] dram_aw=49 dram_w=392 dram_ar=2220 writes>=0x110000000=0 writes_resultpage=0\n[gsim-stats] last_aw=0x8005c9c0 last_ar=0x800034c0 max_ar=0x8007e000 r_fires=17760 b_fires=49 cvfpu_accepts=0 uart_chars=0\n",
+    "load_path": "backdoor"
+  },
+  "gsim_console_sha256": "c2d071b79152a0c842972c6417b9a8e96378f452142e1cf354465b66c547b628",
+  "decision": "Positive local screen; whole-model gates still required.",
+  "whole_cycle_prediction": null
+}

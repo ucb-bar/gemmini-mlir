@@ -1,0 +1,50 @@
+from pathlib import Path
+import bisect, collections, hashlib, json, re, subprocess
+
+base = Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-resnet1930-pc-20261006')
+elf = Path('/scratch/agustin/tmp/gemmini-readout-domain-provider-20261005/out/normal_paired_readout_typed/controlled1903/build_direct/model.elf')
+nm = '/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-nm'
+objdump = '/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-objdump'
+syms = subprocess.check_output([nm, '-n', '-S', '--defined-only', str(elf)], text=True)
+(base/'symbols.txt').write_text(syms)
+functions = []
+for line in syms.splitlines():
+    m = re.fullmatch(r'([0-9a-f]+) ([0-9a-f]+) [Tt] (\S+)', line)
+    if m and int(m[2],16):
+        functions.append((int(m[1],16), int(m[2],16), m[3]))
+assert len({f[0] for f in functions}) == len(functions), 'ambiguous function aliases'
+starts = [f[0] for f in functions]
+counts = {}
+for line in (base/'stderr.log').read_text().splitlines():
+    m = re.fullmatch(r'([0-9a-f]+) ([0-9]+)',line)
+    if m:
+        pc = int(m[1],16)
+        assert pc not in counts
+        counts[pc] = int(m[2])
+byfunc = collections.Counter()
+hot = collections.defaultdict(list)
+for pc,count in counts.items():
+    i = bisect.bisect_right(starts,pc)-1
+    name = functions[i][2] if i>=0 and pc<functions[i][0]+functions[i][1] else 'UNKNOWN'
+    byfunc[name] += count
+    if name in ('forward','_mlir_ciface_forward','memcpy','memrefCopy'):
+        hot[name].append((count,hex(pc)))
+assert sum(byfunc.values()) == sum(counts.values())
+body = '_mlir_ciface_forward'
+disasm = subprocess.check_output([objdump,'-d','--disassemble='+body,str(elf)],text=True)
+(base/'active_host.disassembly.txt').write_text(disasm)
+opcounts = collections.Counter()
+instruction_rows = []
+for line in disasm.splitlines():
+    m = re.match(r'^\s*([0-9a-f]+):\s+[0-9a-f]+\s+(\S+)\s*(.*)$',line)
+    if m:
+        pc = int(m[1],16)
+        count = counts.get(pc,0)
+        opcounts[m[2]] += count
+        instruction_rows.append(dict(pc=hex(pc), count=count, operation=m[2], operands=m[3]))
+assert sum(opcounts.values()) == byfunc[body]
+receipt = dict(scope='Unchanged1930 whole-program retired instruction census; no cycle prices, no forward-only program total, function boundaries from actual sized ELF symbols', pc_count=len(counts), whole_program_instructions=sum(counts.values()), forward_metric_retired_instructions=8755275, function_counts=dict(byfunc.most_common()), active_host_symbol=body, active_host_opcode_counts=dict(opcounts.most_common()), hot_host_pcs={name:sorted(rows,reverse=True)[:64] for name,rows in hot.items()}, active_host_instructions=instruction_rows, unknown_instructions=byfunc['UNKNOWN'], conservation=True)
+(base/'function_census.json').write_text(json.dumps(receipt,indent=2)+'\n')
+print(json.dumps({k:receipt[k] for k in ('scope','pc_count','whole_program_instructions','unknown_instructions','conservation')},indent=2))
+print('Top functions:',byfunc.most_common(18))
+print('Forward opcodes:',opcounts.most_common(20))

@@ -1,0 +1,277 @@
+{
+  "schema": "source_group_callback_profile_qualification_v1",
+  "control_job": 2003,
+  "control_elf_sha256": "09ca3d0849ef423a49eef5af5c359b93df225f3f9b6483233c00b1c5830f6565",
+  "profile_elf_sha256": "10e5fa46dccef27628603a0411c435292bb964fffffc49538b957028d4c9bd7c",
+  "scope": "Exact2003 original group diagnostic; only driver/provider instrumentation changes, all15 product objects unchanged. No FPGA cycle split yet.",
+  "strict_spike_pass": true,
+  "original_consumer_pass": true,
+  "original_stats_unchanged": true,
+  "callback_domains": [
+    "QK",
+    "PV192",
+    "PV128"
+  ],
+  "profiles_instructions": [
+    [
+      0,
+      120,
+      1954128
+    ],
+    [
+      1,
+      240,
+      1348032
+    ],
+    [
+      2,
+      120,
+      463440
+    ]
+  ],
+  "conservation_instructions": {
+    "roi": 2288210402,
+    "callbacks": 3765600,
+    "outside": 2284444802,
+    "count": 480
+  },
+  "instrumentation_delta_instructions": -10752,
+  "perturbation": "Diagnostic code layout/register scheduling changes produce net -10752 instructions despite added timers. No performance comparison claim. On stock counters become cycles; outside includes allocation, initialization, host arithmetic, callback bookkeeping and timer overhead. Callback includes dispatch, command issue, DMA/readback, completion fence and return; pure accelerator occupancy UNKNOWN.",
+  "device_fence_evidence": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_0/kernel.o": {
+      "sha256": "3504e52e4e1c33fef780105e877b7eb20103d0a4dba52d49d0ede973964e6da2",
+      "fence_instructions": [
+        "1e:\t0ff0000f          \tfence",
+        "cae:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_1/kernel.o": {
+      "sha256": "766538d6f38802e4f766f3c5426d3f982effb506d434c02cd059f0f9037048cb",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "13c6:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_2/kernel.o": {
+      "sha256": "2bea0867874d5104846ea9f88f3c2ecdc29084ec4b085c9598f43276cdf037be",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "1afa:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_3/kernel.o": {
+      "sha256": "8e451fee87764902603e834c36d13075d5745d6bf9300728b5d807898367faea",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "13da:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_4/kernel.o": {
+      "sha256": "3a8e310269a1b03787459b6bf32f330625ebbff6f81299a734fa1e2727df2619",
+      "fence_instructions": [
+        "1e:\t0ff0000f          \tfence",
+        "cc8:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_0/kernel.o": {
+      "sha256": "c21cf16462ddd2c94f05ac0df2883827b7c3b5eed21cfa940ec7cf14568ace6e",
+      "fence_instructions": [
+        "22:\t0ff0000f          \tfence",
+        "3d6:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_1/kernel.o": {
+      "sha256": "874e7b8d1be0ec8d9eab0febf80a82b1e9cc141eda4f7a4d20c6ea2ae07efd5b",
+      "fence_instructions": [
+        "22:\t0ff0000f          \tfence",
+        "606:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_2/kernel.o": {
+      "sha256": "7e3e5f7af3b1d5291606fcc2e804137f6e4110f5c8a179d4463374368a6a2491",
+      "fence_instructions": [
+        "24:\t0ff0000f          \tfence",
+        "7cc:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_3/kernel.o": {
+      "sha256": "4aab0eeb6f9db90be86f9f0bad44f437aca4185e986c1d8682ff42cd5642235f",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "5fe:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_4/kernel.o": {
+      "sha256": "d4fe9fe161ae07763193f9d350904c91b0a6299652f99c51983233a9c32ecf45",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "3d4:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_0/kernel.o": {
+      "sha256": "268654040967d8c1c2c4352aaec94e04c5b78134bc5da6d725e4bb5119545923",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "3a8:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_1/kernel.o": {
+      "sha256": "637efc079e513ab6a7d8b231fc21729b3d74c00139f9a0e7858ed43580ad4575",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "5ca:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_2/kernel.o": {
+      "sha256": "ab74905b0787b5e0d143a90dfce26a8c612787b7ab93ccc169487aae57673002",
+      "fence_instructions": [
+        "24:\t0ff0000f          \tfence",
+        "772:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_3/kernel.o": {
+      "sha256": "54d0177701fce39dd2e61ce048ca5022bf35a9429b5b4304eb066b31b96ae2df",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "5f2:\t0ff0000f          \tfence"
+      ]
+    },
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_4/kernel.o": {
+      "sha256": "87c1ca2037af3160faf9e7715635501e31e0aa2450097468dcccc766ef7e8c63",
+      "fence_instructions": [
+        "20:\t0ff0000f          \tfence",
+        "3aa:\t0ff0000f          \tfence"
+      ]
+    }
+  },
+  "hardware_requested": false,
+  "pins": {
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__float_float.h": "bde8d423099e3bba501018bdde141cf2edea549ba528733d43dc534694181935",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__float_header_macro.h": "7ee2302b023d41fd787a326059980800594c6e2cbac134b3167947d0025a72d7",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__float_infinity_nan.h": "544272ca97c2ba51fd362d5f35c8d7287e57001e9a8f29d51896b82be253ef72",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_header_macro.h": "4cf46e8fbb809df048eecbbd63686fa741da27afa8db4245bd1f61c1fb1611dc",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_max_align_t.h": "3c1e4de47f4f06b35e2c5890d670052e84f716760505ff51b022fc8b21a9400f",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_null.h": "b1d71b08563ab3d2c22a1e4f8ddf4d9a1111c89e9404b859a45c307e8ebc6c69",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_offsetof.h": "e5f0f4ff8ff5fc6a1cc8b535f5065f1728eadd2bf1e1401f021f803ec7b4222f",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_ptrdiff_t.h": "b4178a57f3711b7013cba747a72a2f178c29fa9364e77d75b2159754072ced43",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_size_t.h": "d86ddc0238da09b385846ebef814ffc50a44e40cf85d4e3793f485952b7e73ad",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_wchar_t.h": "1900d4998aef3698b06399ed686db0c21e26509b08638a25734fb97ae89b1001",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/__stddef_wint_t.h": "f2ededa38c5454397242aceaefa65b42b292a1b3cc258e7ca6e216f146e51f0d",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/float.h": "0242ed0a0c17fb6c24ef6953c51d02d28eadb067dfa41d7ef59fe230caee3a10",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/limits.h": "6b59cc1b6f86c901bf41ce942b8434530e852eb16e79e6e9287f89441f71efca",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/lib/clang/23/include/stddef.h": "b3e62a046ddf28d09eedebe6eb9461cb7060e47cad2c69964b222c4eea10347e",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_0/kernel.o": "268654040967d8c1c2c4352aaec94e04c5b78134bc5da6d725e4bb5119545923",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_1/kernel.o": "637efc079e513ab6a7d8b231fc21729b3d74c00139f9a0e7858ed43580ad4575",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_2/kernel.o": "ab74905b0787b5e0d143a90dfce26a8c612787b7ab93ccc169487aae57673002",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_3/kernel.o": "54d0177701fce39dd2e61ce048ca5022bf35a9429b5b4304eb066b31b96ae2df",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv128_products_4/kernel.o": "87c1ca2037af3160faf9e7715635501e31e0aa2450097468dcccc766ef7e8c63",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_0/kernel.o": "c21cf16462ddd2c94f05ac0df2883827b7c3b5eed21cfa940ec7cf14568ace6e",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_1/kernel.o": "874e7b8d1be0ec8d9eab0febf80a82b1e9cc141eda4f7a4d20c6ea2ae07efd5b",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_2/kernel.o": "7e3e5f7af3b1d5291606fcc2e804137f6e4110f5c8a179d4463374368a6a2491",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_3/kernel.o": "4aab0eeb6f9db90be86f9f0bad44f437aca4185e986c1d8682ff42cd5642235f",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/pv192_products_4/kernel.o": "d4fe9fe161ae07763193f9d350904c91b0a6299652f99c51983233a9c32ecf45",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_0/kernel.o": "3504e52e4e1c33fef780105e877b7eb20103d0a4dba52d49d0ede973964e6da2",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_1/kernel.o": "766538d6f38802e4f766f3c5426d3f982effb506d434c02cd059f0f9037048cb",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_2/kernel.o": "2bea0867874d5104846ea9f88f3c2ecdc29084ec4b085c9598f43276cdf037be",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_3/kernel.o": "8e451fee87764902603e834c36d13075d5745d6bf9300728b5d807898367faea",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h1/qk_products_4/kernel.o": "3a8e310269a1b03787459b6bf32f330625ebbff6f81299a734fa1e2727df2619",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m256_h12_frontier_directed_zero_error/data.o": "5e50e0879a3efaef3102f04b3fb32e81c21978c8627096b462283b9fe060b65d",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/numeric_capability_prepared_rows_floor_target/bridge.o": "f5a79135a9c9ab96447d29b059c7e85878d4cd96c612257d5525247f43c231a3",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_minmax/build/mlir_rt.o": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+    "/scratch/agustin/tmp/gemmini-frontier-composed-20261006/out/frontier_composed/candidate/build.json": "9c2634b71a9b24d0101038d00da4fdf51108db24808ff4144c7a8727721a8007",
+    "/scratch/agustin/tmp/gemmini-frontier-composed-20261006/out/frontier_composed/candidate/model.elf": "09ca3d0849ef423a49eef5af5c359b93df225f3f9b6483233c00b1c5830f6565",
+    "/scratch/agustin/tmp/gemmini-frontier-composed-20261006/out/frontier_composed/candidate/spike.log": "456ce6c81bb4a047d3b497dbba4e4a5d4d85ce72a8b72d3d93ee5d8410383c04",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/build.json": "7c74fc50abedb973919b49257d84f41c37ab93306ce4aa43562c3a569977991e",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/build.py": "62db1b42fcf6a62cd4b37c416e28dde3a1e6c94447eafa1506192088d9c31060",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/driver.c": "b6419851ccaefda09adca67ad1f9a76a87457dd52b47a9f54d5d53031fe0dd91",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/driver.o": "07935480261ec391f25de34315071014c74a3d4eb809c7cdfd6a95eb907b738f",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/model.elf": "10e5fa46dccef27628603a0411c435292bb964fffffc49538b957028d4c9bd7c",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/model.nofsm_audit.json": "313c19542f358dcc82978e17219a496b98bd6ce9ca14424e442daec5b6c7625a",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/bf16_quant_frontier.h": "da2a02b5cfc9e3ff5a4d055a9fa190f6630ddd6b1052052960c06be53229eb92",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/bf16_radix_pack.h": "816c9b08abed14527b8933fe4f43fd83a0b9333c7555f83866305d2eea034243",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/dot_norm_requirements.h": "66346e904f83d663613ec79b73d97ce90257f0916e513098f21215214a2f4cc9",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/encoded_row_equality.h": "b123afd629a20009b334f84f9a90438a78447a77b06982be353d86f583c1c303",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/f32_floor_bits.h": "70dd6859bf15826e26ee361c7a83e1e61e45ccf4749d68df1ea6058b58587aa1",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/f32_interval_endpoint.h": "c57a5f987debe6bf69cdcd7e58ab7883eb50e38c2b32cff24eb14a0029813b2d",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/fixed_outward_f64.h": "5897d76ee681ee681e8a18c204a1b54448e75f41491006bf380d1eb92781bc33",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/fma_product_norms.h": "3540a49e788ca3ef2e4a601b76c31b4dfa742b25ddc768b49290c5625a7cb092",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/libomp_pthread.h": "5f3ad9123ce2f49569b750e20736e9ec636c4cd3446b69dab7b2e5923016ab0f",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/libomp_zephyr.h": "af1b2f777ccd067c0c04990815a1ac4cefd3de4ceee5e582a6ae909dcf467dce",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/merlin_hal.h": "cf7887285b389bcad17861ae9ba20c683824eed2b9bcb5e639c4f2331a06fa7d",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/merlin_model.h": "10e8d78fd4c9fbd22185d786e5ecd3a3b107dc115bc451219837a295f76d0df9",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/monotone_bit_polynomial.h": "aaa2f464616dd74e231f35598956ade67412bbffb844bc477b3ee9fe0c2f4159",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/numeric_capability.h": "a141a473ab451e9a0a42b3e4369dbf6e2be4e6e103f3bd009c78f7a96bdd1833",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/omp_static_schedule.h": "cff2070f05893794119c19d217c7b77723c43aca6b70ebf7e6430c7f0ba5ca7d",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/ordered_fma_bounds.h": "c8e85a6db7cab9b9202a7fd2c335e69a5458276a41fd4f895ede50ad88e483d5",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/positive_scalar_interval.h": "b4d4e3ed540c09a8082d2a6e40b88abf8417de9855fdd1111015398605838891",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_bf16_interval.h": "a140004824253ed7221f4b963243d25a97dcdde945159a32320271343b58b4ef",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_bit_polynomial.h": "c1c30366a19b8f755acfaccbe1304c4e175936725ea3369cf4a43cb1d9cdc556",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_dot_norms.h": "211ebe9a12123faf4a3937225d53c8272f3f9cf6f58a8d4083b4acd50db35db5",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_fma_product_bounds.h": "8ef6b05b393cd1925cde8eaec6a3f9cad19cfafbc69b1f66288a4161c4467ddc",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_polynomial_batch.h": "cfe04f41a10329c0c4ac5f8d4596f760eac9eb1c113ed114d0c0b4213adf8da7",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_softmax_interval.h": "5aa4750578019127c8e3a85c4e05cf30f100a5c14066bc117de20229d033d648",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/prepared_softmax_spans.h": "a54f02acf11965e364cdd9ab2df91b49d68e480ae420cb47d80fe50bd2a9ad82",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/provider.c": "e64f0947356cbbe84e88a86597e88dfdfe428b5cdece89a040c159b41cb54cd0",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/provider.d": "bbe878580d7866b80a479435a9fc54dadc59ec046187a1431880fcddbec3de9b",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/provider.ll": "ab04b7b88a5bb7bcc4258632013f56c5aa71de8e59afa8e892c4187ad82c945e",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/provider.o": "8e1d186c5caddf7968d690fafa916b921f7c3c21c0b32932bec6e01b2e19a935",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/representation_error_norms.h": "5a36053a350f8c0cd8819ba567e6b9d405bdc84f9463e3fb23bf2a182666bee9",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/separable_fma_radius.h": "35425adc040e675d664bc0378fb2f7d108f1407604c83271b3bd76775e091cf8",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/source_attention_frontier_api.h": "611cc867c996bd39b66fdc95801a2381cda3e41726f73deed220681a79059843",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/numeric/source_f32_math.h": "58a28cd025cc1fee0f4d74efb9ce5c775cd831ce33a2d08ed6a314f2e397c7f6",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/process.json": "55fefc32f60bf795674f38a4a7fe86b1d2083d103f40123d3ba99e183971b130",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/provider_compile.json": "834c8cb9aeee130683c6b07a73e0588ac1910a3d9b21c12b6a3d567529fb4c56",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv128_products_0.asm": "e2bce08efb17114dc54b054894b9038a9d6c8b2fc03ec309bf2370a2c3de3383",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv128_products_1.asm": "f3af9d2c8d0b17a38c3cc85308baac758487c50ea75beb53fe8a0e72b06d2898",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv128_products_2.asm": "2fd09ce4a8461d66ddfe8590d0e1e9814494616d9748fed753ef4ba31f3bab2f",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv128_products_3.asm": "80dfd5f6f7f87c4909e01ffef1142936c04a881e2fb34a594a47fecd6d6580ec",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv128_products_4.asm": "63eda4221ab1bc6fba5c6a568445c863451cd1b10f34462446656cf00d58b340",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv192_products_0.asm": "174e41afd4a85c138e811f5360313ca9df6b686b19c946f8feb0123c69eaf616",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv192_products_1.asm": "9e9c561491c2155f4979208a3503fc39b7244a2065b631b963bb5343210ce152",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv192_products_2.asm": "033776abf46e7827e794d2b097edf4812c771b0b6b93929ed671ee5f27ad6563",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv192_products_3.asm": "9fda31c27c670827f84e4cca51e1c7d2d958ff493c4d67a874747e5d38939cfc",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/pv192_products_4.asm": "d0e5c7a9aab742f493b3c3494b627a08de40831c612bfcc1bb160141117d0cb7",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/qk_products_0.asm": "fba3bd5a324565efdf1c99c42be64d04c4b98b3e0e293171eee2490e6ac42f2d",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/qk_products_1.asm": "3b0de731d50d64ebf22b66967c9852c0ffc3617dc1aacc83509e96e9ba755ff2",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/qk_products_2.asm": "1e0e032c9d6a8b8fe4bc7f4a7b8a28b040417758ef0f71c8fabdd4e63333a0a0",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/qk_products_3.asm": "8e63da9f11a493ffc56dbf906fb2bfc109cecc4a2aaf80813a14ce9d059731a9",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/qk_products_4.asm": "b63694b43ae5ae4514d8204ef3db8ac50590c0728b32415c7c28c30d358cbf91",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/spike.log": "38bab31ff0d4d78e5d76ff0fe8709bf73f93e8d6c7a61fe56d12b88143e124c0",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/spike_receipt.json": "eb42f76f43a41db9b7d2685d20e1d009f33619203a6009cf96f0d74949b4fdf9",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/watch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-fused-encoded-witness-20261006/out/callback_profile2003/watch.py": "6212ad370e76928685ec5d9eed286363377f027bf6b38ba8c380f816478c8453",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-word-enclosure-20261006/consumer_capsules_ordered/consumer_data.o": "f63aa34449587051c8a3edc21021228b501a41a638f1fe51922dc9d129ea17ef",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-word-enclosure-20261006/source_consumer_target/consumer.o": "3bbbd8af812b3a0ddedb77dfb98358fe98afa8fd08962bd339a16dea2efea2be",
+    "/scratch/agustin/tmp/gemmini-polynomial-pair-provider-20261006/out/frontier_i64_allocated_pair_v2/malloc.o": "b4c4ac73c80355ed00ef8d93f258c4d60c38bde5ea519237d54c6c73d07a82e9",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/_ansi.h": "5c6403b471ee897c9a6c12e00a58617247804eb3ee72d7baeb7c08616090dd1d",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/_newlib_version.h": "5fb389b1446730901a5b7f001dcad1f5f0389b11a743f976dc51b106098885b5",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/assert.h": "76d2c321e49e268077d5e6f14e3da71b8f1e28ced650fe3cd403261b3d09923f",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/fenv.h": "950a1a60988c93532171fc60b08e690afbdf9bc75509001344e43d4a910abd2e",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/limits.h": "16b91bb4b4f7053ddfbbe6ec0925d901093499468151289d5c224d718ec25e44",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/machine/_default_types.h": "5d8f9f7ead7927e4b8b7ed00172e84f2ae82ea7f5f6ba3240ff813a9236771b3",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/machine/_types.h": "44544ecbbc10c8aa58ca2da6d0617ffeee5af847af24515ab108c8218d6d92c8",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/machine/ieeefp.h": "cb187e80b174b04a0c4e2a82c367679c09f7968a84eb0bc86c1e31630302c867",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/math.h": "da246793590adfe7755cea61b1c63d5c9b10cd78206c9143d7a936355f12c862",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/newlib.h": "15b283dfe4cda7bcbe369ceecc4d0a676a14017a3162d3b558d5869a58aebd53",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/stdint.h": "99fe201684856075ccd92704f63b702f6fa882b9dab61bd7a9bcce2588275861",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/string.h": "79722fe25a7d01447fee06a0b8efe7535c1b891568730ba154a139c59c068ffc",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/strings.h": "743121afb2f530045eb63bcfa3fdbc4ecf555131bd1cf7ce36a268f758bb4be5",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/_intsup.h": "1af8abe244b43a3a5b5a85f6c834aa206930b6938e8109fbec430bc140b68df5",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/_locale.h": "adc8e11513e5f83a0c73ac641c256815b0aa6cc8a09a43d2c97b1ee79db9f154",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/_stdint.h": "49f8328943afa2a83ed4a35fcb808ed08b8c9fcb55373c786fb1b1d3a21952d7",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/_types.h": "1abe39aca5104bafbde2e0219e7cdc3e96129b22ce1ef5cd58b66d8d147d3fb7",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/cdefs.h": "f5d358a3c06a816726254e9ced1a852754349f6fae03c295386fe83675bba758",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/config.h": "583e381e7184a477bcea569149f6154ccf4f0faa0829a9d8363954adb7aecf14",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/features.h": "1400c9a284442a2d3a28130ee8f8a2cc30dbc1f250349dc30239f25e66467c2b",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/fenv.h": "ce9c7039428b3308eae5c128a033b7bfc64055f62838d5897640eb22a08f93a5",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/lock.h": "f5cad9196ce745967fd2673e085b5c03df7887d4d11d7544aff05ff6679be6b8",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/reent.h": "c7ba657f911f7e27b7449bda36aa4efa80a025c726768dabb8d4a792f535ec9a",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/string.h": "d63f8a6c30f864eb6864e61262ebe6268b6f871d97dcc220be8b4a3f51e433a7",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include/sys/syslimits.h": "780971936dd4b8f3b192669e693430c204a72c7fb05e7a1db67d48f02cd9aec4"
+  },
+  "token_usage_available": false
+}

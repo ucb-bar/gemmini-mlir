@@ -1,0 +1,83 @@
+{
+  "schema": "root_bounded_floor_stock2064_terminal_review_v1",
+  "status": "VERIFIED_COMPLETE_SOURCE_GROUP_STOCK_WIN",
+  "job_id": 2064,
+  "stock_cycles": 4256146700,
+  "control_job": 2060,
+  "control_cycles": 4467058350,
+  "fraction_lower": 0.04721488583197042,
+  "original2024_cycles": 4857792055,
+  "fraction_lower_than2024": 0.12385160751801672,
+  "terminal_pins_reclosed": 10,
+  "actual_ROI_UART_and_full_consumer_contract_reparsed": true,
+  "original_whole_native_words": 1600,
+  "output_checksum": "NOT_EMITTED; compiled786432i8/1024BF16 consumer byte comparisons pass",
+  "nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "bdec85604431ec87e81dc00a4701a47aad9e8f85d9b0cc6458748b9c02729ca1",
+    "executable_sections": 82,
+    "custom_funct_counts": {
+      "0": 60,
+      "1": 108,
+      "2": 216,
+      "3": 480,
+      "4": 432,
+      "5": 1296,
+      "6": 1728,
+      "7": 15
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hardware_identity": {
+    "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+    "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+    "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229"
+  },
+  "frozen_forecast_scores": [
+    {
+      "name": "prequeue_control_retirement_ratio",
+      "predicted_cycles": 4278988055.291242,
+      "actual_cycles": 4256146700,
+      "relative_error": 0.0053666748120411644,
+      "coefficients_fitted": false,
+      "new_label_fitted": false
+    },
+    {
+      "name": "retired_only",
+      "fit_sha256_unchanged": "550f314ed4943c0800742c5b5fe12cb0141924cefb2090b3c6972aaf30326ca2",
+      "predicted_cycles": 4283782180.9632835,
+      "actual_cycles": 4256146700,
+      "relative_error": 0.00649307528880138,
+      "domain_prediction_unchanged": {
+        "lo": null,
+        "hi": null,
+        "resolved": false,
+        "provenance": [],
+        "missing": [
+          "feature /features/strict_roi_retired_instructions is outside the training domain"
+        ]
+      },
+      "new_label_fitted": false,
+      "scope": "Six historical same-workload fits, blind to2064label; not held-workload qualification or an approved extrapolation."
+    },
+    {
+      "name": "fixed_plus_retired",
+      "refused": "fit does not identify nonnegative screening terms",
+      "new_label_fitted": false
+    }
+  ],
+  "new_label_fitted": false,
+  "whole_hardware_cycles": "UNKNOWN",
+  "automatic_export": false,
+  "staging_scope": "Actual simulation staging/bitstream receipts reclosed from collector; source ELF rehashed. Staged artifact may have been removed by teardown.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2064_bounded_floor_terminal.json": "8c265b1c23f98f7af655a5222db7ab65d17a78648b9981a3ccf23fab926422b3",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/docs/perf_records/stock2064_bounded_floor_uart.txt": "fc339ad052f95608deaecae2b846c6b9c48b4f794d45f9a77a7ac0e6aefce10c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_prepared_bounded_floor_stock_release_20261007.json": "d8a72f756fb0f12b18988be7c537013f21c3e47b5d74a4026aed5f846b9fb584",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/root_smol_complete_group_blinded_retirement_screen_20261007.json": "7b4fae81c5179b666b56490e63417cfa9ec7d75989feb655d3272bec8d8ca492",
+    "/scratch/agustin/tmp/gemmini-rms-selective-replay-20261007/out/rms4_fast_bounded_floor/candidate/model.elf": "bdec85604431ec87e81dc00a4701a47aad9e8f85d9b0cc6458748b9c02729ca1",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/review_bounded_floor_stock_terminal_probe.py": "038358d7e1945b65094891a3a77000fa52fb409a92706a9bbe3a66cab63a6788"
+  }
+}

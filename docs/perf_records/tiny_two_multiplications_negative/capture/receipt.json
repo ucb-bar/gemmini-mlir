@@ -1,0 +1,95 @@
+{
+  "schema": "original_tiny1967_readonly_dequant_residual_tap_v1",
+  "started_utc": "2026-10-06T11:24:54.648575+00:00",
+  "source_llvm_sha256": "a3108a73353e8736d191215cc1de775e46152c7897ffc2c37d951c9d16384f64",
+  "selected_llvm_sha256": "190bf934576f1735fae5b799a123541e5e9f907f236f2f2a9e94e089c0b07195",
+  "source_gate_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host/validation.json",
+  "source_gate_sha256": "224dfb88e05b87b13031719d3294334728808f8226c0be9635a8a47d4bc4aa85",
+  "compile_argv": [
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "-O2",
+    "-fPIC",
+    "-c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.native.ll",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o"
+  ],
+  "link_argv": [
+    "cc",
+    "-O3",
+    "-march=native",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.so"
+  ],
+  "boundary_pins": {
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c": "9605f8830d286326aba042e39915885e9d28dcfc48c1f74d61d5f60b9ddb01ce"
+  },
+  "source_capsule_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+  "modification": "Two read-only experimental taps around the unchanged original first dequant/residual loop. No source arithmetic, input, weight, scale, runtime or integer-device stand-in change.",
+  "atol": 0.03125,
+  "rtol": 0.02,
+  "token_usage_available": false,
+  "status": "pass",
+  "finished_utc": "2026-10-06T11:27:05.559181+00:00",
+  "outputs": 256000,
+  "original_compiled_bits_exact": true,
+  "torch_original_gate_pass": true,
+  "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "tap_calls": [
+    1,
+    1
+  ],
+  "captured_tensors": {
+    "residual": {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/residual.npy",
+      "sha256": "2b237ec7edbfe063877c5f0863809b892f3a04ba9493e73e85aa0580d4f58cbf",
+      "shape": [
+        1,
+        8,
+        2048
+      ],
+      "dtype": "float32"
+    },
+    "accumulation": {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/accumulation.npy",
+      "sha256": "f9db18e9317f43dbb7718bd9c34feb9b2c634843492b38481bf78ef181199f17",
+      "shape": [
+        1,
+        8,
+        2048
+      ],
+      "dtype": "int32"
+    },
+    "scale": {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/scale.npy",
+      "sha256": "18900830fe34f1fe33dcc08d4c9d485d839630c1ec62af93962fa4aa725d8068",
+      "shape": [
+        2048
+      ],
+      "dtype": "float32"
+    },
+    "expected": {
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/expected.npy",
+      "sha256": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+      "shape": [
+        1,
+        8,
+        2048
+      ],
+      "dtype": "float32"
+    }
+  },
+  "model_object_sha256": "24149878b529a184430eb12ec3dffa88e056789d5c6150486bd7d3b8f28bba79",
+  "shared_object_sha256": "a0096b8f2ce61c8c896f34382da0a65eedeb83598c29ad5568201b21a1014782"
+}

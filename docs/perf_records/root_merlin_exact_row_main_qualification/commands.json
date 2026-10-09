@@ -1,0 +1,79 @@
+[
+  {
+    "label": "source_tests",
+    "argv": [
+      "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "--basetemp=/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/source_tmp",
+      "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/merlin/tests/runtime/test_exact_row_radix_pack.py",
+      "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/merlin/tests/runtime/test_fused_encoded_witness.py"
+    ],
+    "cwd": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007",
+    "exit_code": 0,
+    "log": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/source_tests.log",
+    "log_sha256": "2a2b3061e292e09f0b8270952f2ced03a9de1f1954962b02444688db4c74c45a"
+  },
+  {
+    "label": "build_wheel",
+    "argv": [
+      "/home/agustin/.local/bin/uv",
+      "build",
+      "--wheel",
+      "--out-dir",
+      "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/dist"
+    ],
+    "cwd": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007",
+    "exit_code": 0,
+    "log": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/build_wheel.log",
+    "log_sha256": "e81b798f9ccd1282932b4cb474b75fa82d09a6b0e54d3e7acca1789036ab0983"
+  },
+  {
+    "label": "create_venv",
+    "argv": [
+      "/home/agustin/.local/bin/uv",
+      "venv",
+      "--python",
+      "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/venv"
+    ],
+    "cwd": "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work",
+    "exit_code": 0,
+    "log": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/create_venv.log",
+    "log_sha256": "42fb643c514855381bccff623735867dea343b9773b80ddfe8aa2f6a3493b91f"
+  },
+  {
+    "label": "install_wheel",
+    "argv": [
+      "/home/agustin/.local/bin/uv",
+      "pip",
+      "install",
+      "--no-deps",
+      "--python",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/venv/bin/python",
+      "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/dist/merlin-0.0.1-py3-none-any.whl"
+    ],
+    "cwd": "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work",
+    "exit_code": 0,
+    "log": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/install_wheel.log",
+    "log_sha256": "d0edca943edb9d78169fd0f136be96ad01d604604808ab3106de4dda12a4a278"
+  },
+  {
+    "label": "installed_tests",
+    "argv": [
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/venv/bin/python",
+      "-P",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work/run_installed.py",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/venv/lib/python3.12/site-packages",
+      "-q",
+      "--basetemp=/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work/test_tmp",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work/test_exact_row_radix_pack.py",
+      "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work/test_fused_encoded_witness.py"
+    ],
+    "cwd": "/scratch/agustin/tmp/merlin-exact-row-installed-v2-20261007/work",
+    "exit_code": 0,
+    "log": "/scratch/agustin/tmp/merlin-exact-row-radix-main-20261007/out/exact_row_qualification_v2/installed_tests.log",
+    "log_sha256": "20e8ced6296e55aa7ae7cd5d3c022d136c08daa6bec75c118c4d7ef534290244"
+  }
+]

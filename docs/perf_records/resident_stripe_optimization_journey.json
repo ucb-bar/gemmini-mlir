@@ -1,0 +1,120 @@
+{
+  "schema": "gemmini_optimization_journey_events_v1",
+  "owner": "/root/reference_parity",
+  "checkpoint_utc": "2026-10-05 20:18:38 UTC",
+  "token_usage_available": false,
+  "token_usage_reason": "The active goal counter is owned by the root agent. Subagent get_goal returns goal:null; root supplies cumulative shared snapshots without exclusive attribution.",
+  "implementation_location": "OOT Gemmini backend",
+  "implementation_commits": [
+    "b163730",
+    "0d1ba1c"
+  ],
+  "qualification_commit": "f26b003",
+  "hypothesis": "Complete padded activation residency and full-reduction weight residency per output-channel block remove repeated gathers and transfers. Resource-proven accumulator stripes bound output storage while preserving source K order and every numeric contract.",
+  "selection": "Source convolution shape and padding proof, target SPAD/ACC limits, retained legal BN, padded issue geometry and requested transfer bytes. No new source-ID or model-name selectors.",
+  "events": [
+    {
+      "candidate": "H56/W56/C64/C64 resident stripes BN4",
+      "metric_scope": "Fenced GSIM kernel cycles, static identical full-range signed input/weight fixture",
+      "before_cycles": 619364,
+      "after_cycles": 520943,
+      "saved_cycles": 98421,
+      "emitted_delta": {
+        "activation_load_commands": [
+          2348,
+          344
+        ],
+        "weight_load_commands": [
+          504,
+          36
+        ],
+        "compute_commands": [
+          28224,
+          32256
+        ],
+        "store_commands": [
+          196,
+          224
+        ],
+        "resident_activation_rows": 13456,
+        "resident_weight_rows": 2304,
+        "scratchpad_rows": 16384
+      },
+      "correctness": "All 200704 outputs and 2048 guards pass; strict RV64GC Spike and final linked zero-FSM audit pass.",
+      "outcome": "Accepted for full-model qualification",
+      "why": "Measured transfer benefit exceeds the additional row-tail compute and store commands. No inference from command counts alone."
+    },
+    {
+      "candidate": "H56/W56/C64/C64 resident stripes BN1",
+      "metric_scope": "Fenced GSIM kernel cycles on the same static fixture",
+      "before_cycles": 520943,
+      "after_cycles": 539920,
+      "correctness": "Every output, guard, strict RV64GC Spike and final linked zero-FSM audit pass.",
+      "outcome": "Rejected in favor of BN4",
+      "why": "Fewer real weight preloads did not compensate for output-transfer geometry and command scheduling."
+    },
+    {
+      "candidate": "H28/W28/C128/C128 resident stripes BN4",
+      "metric_scope": "Fenced GSIM kernel cycles, static identical full-range signed input/weight fixture",
+      "before_cycles": 630670,
+      "after_cycles": 509443,
+      "saved_cycles": 121227,
+      "emitted_delta": "Complete padded activation planes and full-K panels persist across bounded eight-row output stripes; existing legal BN4 is retained.",
+      "correctness": "All 100352 outputs and 2048 guards pass; strict RV64GC Spike and final linked zero-FSM audit pass.",
+      "outcome": "Accepted for full-model qualification",
+      "why": "Measured 19.22 percent lower kernel cycles with immutable arithmetic and complete source semantics."
+    },
+    {
+      "candidate": "H28/W28/C128/C128 resident stripes BN2",
+      "metric_scope": "Fenced GSIM kernel cycles on the same static fixture",
+      "before_cycles": 509443,
+      "after_cycles": 576438,
+      "correctness": "Every output, guard, strict RV64GC Spike and final linked zero-FSM audit pass.",
+      "outcome": "Rejected in favor of BN4",
+      "why": "BN4 is faster despite stronger capacity margin and fewer real weight preloads in BN2."
+    },
+    {
+      "candidate": "Full immutable ResNet capture, current runtime",
+      "metric_scope": "Native output bits and strict RV64GC Spike output bits; no hardware cycle claim",
+      "before_cycles": null,
+      "after_cycles": null,
+      "emitted_delta": "Six device kernels plus the already-integrated generic BF16 ABI runtime compiler correction change from 1853.",
+      "correctness": "All 1000 original f32 output bits, 70 fresh writer contracts and final linked zero-FSM audit pass.",
+      "outcome": "Held as a separately labeled diagnostic arm",
+      "why": "Runtime object differs from 1853, preventing a device-only performance comparison."
+    },
+    {
+      "candidate": "Full immutable ResNet capture, pinned 1853 runtime",
+      "metric_scope": "Original whole-model FireSim cycles; candidate hardware measurement pending",
+      "control_firesim_job": 1853,
+      "before_cycles": 40479548,
+      "after_cycles": null,
+      "emitted_delta": "Only six device kernels change. All selected/native host IR, host object, runtime, shim, weights, IO, startup, console and call wrapper bytes are identical to 1853.",
+      "correctness": "All 1000 original f32 output bits are exact in native and actual strict RV64GC Gemmini Spike; 70 fresh writer contracts and final linked zero-FSM audit pass.",
+      "elf_sha256": "1bcf4e3c50f7407a5454481fbaed7e150a54147723061dfcdae98317e1cdeb21",
+      "model_marker": "140ac4cafa7c",
+      "outcome": "Submitted to stock FireSim; hardware result pending",
+      "why": "Source and final target correctness gates close with isolated device-schedule changes. Capsule gains are not assumed additive or extrapolated into whole-model cycles.",
+      "firesim_job": 1878
+    },
+    {
+      "candidate": "Full immutable ResNet, transfer+residual+resident stripes composition",
+      "checkpoint_utc": "2026-10-05 20:22:52 UTC",
+      "metric_scope": "Original whole-model hardware cycles; measurement held pending isolated stock results",
+      "before_cycles": null,
+      "after_cycles": null,
+      "control": "Source-qualified transfer+residual composition, existing stock job1861",
+      "emitted_delta": "Immutable full model and runtime are preserved. Only the six generically admitted convolution kernels differ from the existing source-bound transfer+residual composition.",
+      "correctness": "All1000 original f32 output bits exact in native and actual strict RV64GC Gemmini Spike; 70 writer contracts and final linked zero-FSM audit pass.",
+      "elf_sha256": "97c858d714d298c2d2205db9db978cf8dad957e9ca4bf8726818e54285160802",
+      "model_marker": "8780640a6c31",
+      "outcome": "Qualified composition; stock submission held at parent direction",
+      "why": "Await isolated stock measurements before root decides composition admission. All required original-model correctness gates have passed."
+    }
+  ],
+  "evidence": [
+    "resident_stripe_conv_gsim.json",
+    "resnet_resident_stripe_policy_spike.json",
+    "resnet_resident_stripe_transfer_residual_composition.json"
+  ]
+}

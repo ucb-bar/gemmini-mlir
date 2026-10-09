@@ -1,0 +1,141 @@
+{
+  "schema": "root_stock_release_v1",
+  "recorded_utc": "2026-10-06T17:39:41.592598+00:00",
+  "qualification": "resnet_full_k_capacity_current1992_qualified.json",
+  "qualification_sha256": "9b072092095f075524e94e2486c6ba437dea715c0763d8a3e0a747a54fe0bbf9",
+  "pin_source": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/docs/perf_records/resnet_full_k_capacity_current1992_qualified.json",
+  "checked_pin_count": 7563,
+  "elf": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/controlled1992/candidate/model.elf",
+  "final_elf_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "92cb0c157d42155814629fe1c828ebee61f41e2dc4904674788d0606d3eda5a7",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 333,
+      "1": 2704,
+      "2": 20127,
+      "3": 1213,
+      "4": 16800,
+      "5": 74232,
+      "6": 91032,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "authorized_stock_config": "FireSimGemminiRocketConfig",
+  "validations": {
+    "normal": {
+      "native_validation": {
+        "scope": "native whole model with scalar device standins",
+        "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+        "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "elements": 1000,
+        "exact_equal": true,
+        "max_abs_error": 0.0,
+        "relative_l2": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "allclose": true,
+        "quality_pass": true,
+        "numeric_policy": "exact_source"
+      },
+      "strict_validation": {
+        "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+        "elf_sha256": "1c6e58e4a5811e619ae364c28f55f7bb646943fd18b8e8498cea9645167fa01d",
+        "target_native_exact": true,
+        "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "elements": 1000,
+        "exact_equal": true,
+        "max_abs_error": 0.0,
+        "relative_l2": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "allclose": true,
+        "quality_pass": true,
+        "numeric_policy": "exact_source",
+        "metrics": [
+          "METRIC cycles 9072136",
+          "METRIC build_hash 4fa83bd1c79a",
+          "METRIC memref_rank_mismatch 0"
+        ],
+        "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+        "output_elements": 1000,
+        "output_bytes": 4000,
+        "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "reference_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/whole_normal/host/output.npy",
+        "spike_full_output_match": true,
+        "spike_console_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/whole_normal/spike.log",
+        "spike_console_sha256": "1da8875832060ab59dc4cc876317083efb72f12733245ce86a9463fa2aff1618",
+        "torch_golden_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/whole_normal/capture/golden.npy",
+        "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "torch_atol": 0.0,
+        "torch_rtol": 0.0,
+        "torch_allclose": true
+      }
+    },
+    "controlled1992": {
+      "native_validation": {
+        "scope": "native whole model with scalar device standins",
+        "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+        "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "elements": 1000,
+        "exact_equal": true,
+        "max_abs_error": 0.0,
+        "relative_l2": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "allclose": true,
+        "quality_pass": true,
+        "numeric_policy": "exact_source"
+      },
+      "strict_validation": {
+        "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+        "elf_sha256": "92cb0c157d42155814629fe1c828ebee61f41e2dc4904674788d0606d3eda5a7",
+        "target_native_exact": true,
+        "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "elements": 1000,
+        "exact_equal": true,
+        "max_abs_error": 0.0,
+        "relative_l2": 0.0,
+        "atol": 0.0,
+        "rtol": 0.0,
+        "allclose": true,
+        "quality_pass": true,
+        "numeric_policy": "exact_source",
+        "metrics": [
+          "METRIC cycles 9069007",
+          "METRIC build_hash 273e514ef18f",
+          "METRIC memref_rank_mismatch 0"
+        ],
+        "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+        "output_elements": 1000,
+        "output_bytes": 4000,
+        "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "reference_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/controlled1992/host/output.npy",
+        "spike_full_output_match": true,
+        "spike_console_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/controlled1992/spike.log",
+        "spike_console_sha256": "26e6661e7cb9a688cf4d9d1a952b8a7d563cc691bb3124e515485a65d5424aab",
+        "torch_golden_path": "/scratch/agustin/tmp/gemmini-current-full-k-capacity-20261006/out/current_full_k/controlled1992/capture/golden.npy",
+        "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+        "torch_atol": 0.0,
+        "torch_rtol": 0.0,
+        "torch_allclose": true
+      }
+    }
+  },
+  "actual_delta": "Four fullK cachedB primitive kernels only; all52 adapters/48 other kernels/currentpairedflat/current5weightpackets/old39residual/stem/mean/host/runtime/weights unchanged in controlled arm",
+  "normal_and_controlled_distinction": {
+    "normal_model_o_byte_identical": true,
+    "normal_catalog_aggregate_byte_identical": true,
+    "normal_runtime_sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e",
+    "controlled_runtime_sha256": "6e07f969446bca0af7712d86e20a77d8e3f12ecbf9cb4939814de300c4625c51",
+    "runtime_difference": "Fresh normal runtime retained as separate qualified artifact; controlled stock arm pins exact1992 runtime"
+  },
+  "hardware_cycles": null,
+  "measurement_scope": "Independent current1992 fullK cachedB capacity arm; original1000f32 words exact at0/0, zeroFSM. No composition with segmented2013 or mean2018; no additive historicalforecast."
+}

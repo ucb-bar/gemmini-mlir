@@ -1,0 +1,562 @@
+{
+  "schema": "source_closed_group_actual_device_slice_qualification_v1",
+  "scope": "First four original query rows/head0, fixed before outputs were evaluated; complete1024keys/two dynamic masks/online denominator/source polynomial/all six orderedPVpartials. Explicit max1BF16adjacent-bin policy; this slice happens to retain all256source bits. No full48/model or hardware claim.",
+  "source_build": {
+    "schema": "actual_closed_source_group_query_slice_target_build_v1",
+    "scope": "Source-bound first4queryrows/head0 with complete1024keys, both masks, originalonline denominator,6PVpartials; target gate pending",
+    "source_taps": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/accepted_taps.json",
+    "source_taps_sha256": "422f5fdb9e99eac35503bd3dcd2592207931c84610a1e6776b4c7b757d60e3ef",
+    "source_contract": {
+      "qk_depth": 64,
+      "key_chunks": [
+        512,
+        512
+      ],
+      "pv_segments": [
+        192,
+        192,
+        128
+      ],
+      "denominator_lanes": 8,
+      "score_scale": 0.125,
+      "poly_cutoff": -87.3365478515625,
+      "poly_scale": 1.4426950216293335,
+      "poly_coefficients": [
+        -0.07920423895120621,
+        -0.2243383675813675,
+        0.3035426139831543,
+        0.00010703434963943437
+      ],
+      "poly_bit_multiplier": 8388608.0,
+      "poly_bit_bias": 1065353216.0,
+      "alpha": "f32(exp_f64(f32(oldmax-newmax)))",
+      "all_masked_max": 0,
+      "zero_denominator": 1,
+      "initial_max": "-inf",
+      "initial_denominator": 0,
+      "initial_accumulator": 0,
+      "source_fma": "ordered_f32_rne",
+      "pv_partial_accumulate": "separate_f32_add"
+    },
+    "native_policy_counts": [
+      {
+        "maximum_qk_replays": 8,
+        "probability_qk_replays": 56,
+        "fallback_counts": [
+          36,
+          6144,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "target_objects": {
+      "qk_products": {
+        "shape": {
+          "m": 4,
+          "n": 512,
+          "k": 64,
+          "output_dtype": "i32",
+          "bm": 1,
+          "bn": 16,
+          "bias": false,
+          "scale": 1.0,
+          "relu": false,
+          "wide_store": false,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "groups": [
+          {
+            "pairs": [
+              [
+                0,
+                0
+              ]
+            ],
+            "bound": 1032256,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_0/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "bound": 2064512,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_1/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                0
+              ]
+            ],
+            "bound": 3096768,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_2/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "bound": 2064512,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_3/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                2,
+                2
+              ]
+            ],
+            "bound": 1032256,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_4/kernel.o"
+          }
+        ]
+      },
+      "pv192_products": {
+        "shape": {
+          "m": 4,
+          "n": 64,
+          "k": 192,
+          "output_dtype": "i32",
+          "bm": 1,
+          "bn": 4,
+          "bias": false,
+          "scale": 1.0,
+          "relu": false,
+          "wide_store": false,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "groups": [
+          {
+            "pairs": [
+              [
+                0,
+                0
+              ]
+            ],
+            "bound": 3096768,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_0/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "bound": 6193536,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_1/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                0
+              ]
+            ],
+            "bound": 9290304,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_2/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "bound": 6193536,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_3/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                2,
+                2
+              ]
+            ],
+            "bound": 3096768,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_4/kernel.o"
+          }
+        ]
+      },
+      "pv128_products": {
+        "shape": {
+          "m": 4,
+          "n": 64,
+          "k": 128,
+          "output_dtype": "i32",
+          "bm": 1,
+          "bn": 4,
+          "bias": false,
+          "scale": 1.0,
+          "relu": false,
+          "wide_store": false,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "groups": [
+          {
+            "pairs": [
+              [
+                0,
+                0
+              ]
+            ],
+            "bound": 2064512,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_0/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "bound": 4129024,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_1/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                0
+              ]
+            ],
+            "bound": 6193536,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_2/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            "bound": 4129024,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_3/kernel.o"
+          },
+          {
+            "pairs": [
+              [
+                2,
+                2
+              ]
+            ],
+            "bound": 2064512,
+            "object": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_4/kernel.o"
+          }
+        ]
+      }
+    },
+    "variants": {
+      "plane_audit": {
+        "elf": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/plane_audit.elf",
+        "elf_sha256": "d8dafd05c3c0fceecbe3dfd15d02d617badc12c7e66f788ed5664314f0bc58a7",
+        "link_argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+          "-DPREALLOCATE=1",
+          "-DMULTITHREAD=1",
+          "-mcmodel=medany",
+          "-std=gnu99",
+          "-O2",
+          "-fno-fast-math",
+          "-fno-common",
+          "-fno-builtin-printf",
+          "-fno-tree-loop-distribute-patterns",
+          "-march=rv64gc",
+          "-Wa,-march=rv64gc",
+          "-DID_STRING=",
+          "-DPRINT_TILE=0",
+          "-nostdlib",
+          "-nostartfiles",
+          "-static",
+          "-DBAREMETAL=1",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/env",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/benchmarks/common",
+          "-T",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/link.derived.ld",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/plane_audit.elf",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/syscalls.o",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/crt.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/dispatch.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/data.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/driver_plane_audit.o",
+          "-lm",
+          "-lgcc",
+          "-lc",
+          "-lnosys",
+          "-lgcc",
+          "-Wl,--defsym,end=_end"
+        ]
+      },
+      "timed": {
+        "elf": "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/timed.elf",
+        "elf_sha256": "2b5373ee7f796b12a60120c25bdc5ffaf3700743af9b6418f115bb341b9c5e0e",
+        "link_argv": [
+          "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+          "-DPREALLOCATE=1",
+          "-DMULTITHREAD=1",
+          "-mcmodel=medany",
+          "-std=gnu99",
+          "-O2",
+          "-fno-fast-math",
+          "-fno-common",
+          "-fno-builtin-printf",
+          "-fno-tree-loop-distribute-patterns",
+          "-march=rv64gc",
+          "-Wa,-march=rv64gc",
+          "-DID_STRING=",
+          "-DPRINT_TILE=0",
+          "-nostdlib",
+          "-nostartfiles",
+          "-static",
+          "-DBAREMETAL=1",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/env",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests",
+          "-I",
+          "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests/riscv-tests/benchmarks/common",
+          "-T",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/link.derived.ld",
+          "-o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/timed.elf",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/syscalls.o",
+          "/scratch/agustin/tmp/gemmini-attention-prefix-guard-20261005/out/artifacts/probes/attention-prefix-guard-20261005/v0_h1_factored/build/crt.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_0/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_1/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_2/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_3/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_4/kernel.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/dispatch.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/data.o",
+          "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/driver_timed.o",
+          "-lm",
+          "-lgcc",
+          "-lc",
+          "-lnosys",
+          "-lgcc",
+          "-Wl,--defsym,end=_end"
+        ]
+      }
+    },
+    "compiler_flags": [
+      "-std=gnu11",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-mcmodel=medany",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-fno-common",
+      "-fno-builtin-printf"
+    ],
+    "pins": {
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/source_gold.bin": "7e84b43b30dac880cddb3f452b07bc20b34780a79af5816869e76f5427e23329",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/policy_gold.bin": "7e84b43b30dac880cddb3f452b07bc20b34780a79af5816869e76f5427e23329",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_q.bin": "35af5507aa1c626b3a13a466549ecca52f89711974b1c1391bfce97a9c9995a6",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_mask.bin": "3431383721510cf1c211de027cf958c183e16db5fabb6b230eb284c85e196aa9",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_v.bin": "816dee0b978d1dd06d90cbb7b3005ab1f1b30d28376514fe269b6fc21b7ff65b",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_k.bin": "5cd1bdd509189f4e365011875755ef6561f9e08b2b9b15409b9fbf6e95d60eb8",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/numeric.c": "8f665535179f0eb244bf271ed4622a15fd4d4fdd779dcee3bd959604e2769065",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/dispatch.c": "6d9a55af4f1f3f4c4508f2b9cac22b2e6ddd9cc4d4e1f97afbc0e7579c2c32ba",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/driver.c": "fb6b81d3ba5f9193c67218b7119c0b2efcf944b3d11542b449a4ef474c98a388",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/bf16_radix_pack.h": "2051496ddccd7fe3ab580df897d5fc703e2279c768812183178fd6f5a38f1944",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/f32_interval_endpoint.h": "6982b0365b9a5341445607d828e973f7734e70eed7320c2b11b030e805d0b075",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/build.py": "d892737ab0a5f859ec3aaff00414371cef8301d9006d7794555394c8b960ce74",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/data.S": "c2249989a825aa817cae7ab1f84c0262e120e5143bc2cb9768ccc3cd7f3646d8"
+    },
+    "token_usage_available": false
+  },
+  "actual_target": {
+    "plane_audit": {
+      "rc": 0,
+      "elf_sha256": "d8dafd05c3c0fceecbe3dfd15d02d617badc12c7e66f788ed5664314f0bc58a7",
+      "log_sha256": "00cb53ae39e07f3ca0a6e1c51130cdd6c1b742c699fb5b01c38ab431dd90bdae",
+      "elapsed_seconds": 0.4147827625274658,
+      "pass": true,
+      "markers": [
+        "ENDPOINT_CPU_CYCLES 4349702",
+        "ENDPOINT_CYCLES 56000844",
+        "ENDPOINT_STAGE 722452 25912602 3994874 24994553 375362",
+        "ENDPOINT_PLANES 40 112640 28160",
+        "ENDPOINT_REPLAY 8 56 36 6144 0 0 0 0 0",
+        "ENDPOINT_OUTPUT 256 0",
+        "ENDPOINT PASS"
+      ]
+    },
+    "timed": {
+      "rc": 0,
+      "elf_sha256": "2b5373ee7f796b12a60120c25bdc5ffaf3700743af9b6418f115bb341b9c5e0e",
+      "log_sha256": "5c37d20e60c7152ba05a93f847ccfa571ce8f17d25fbf3974276575813d41837",
+      "elapsed_seconds": 0.4148542881011963,
+      "pass": true,
+      "markers": [
+        "ENDPOINT_CPU_CYCLES 4349702",
+        "ENDPOINT_CYCLES 21569484",
+        "ENDPOINT_STAGE 722452 8380602 3994874 8095193 375362",
+        "ENDPOINT_PLANES 40 112640 0",
+        "ENDPOINT_REPLAY 8 56 36 6144 0 0 0 0 0",
+        "ENDPOINT_OUTPUT 256 0",
+        "ENDPOINT PASS"
+      ]
+    }
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/build_receipt.json": "7ad02437b996a656c9f4119e574255d53af7bcb2e01372d8191b4670b22fbd78",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/run_spike.py": "b2ddc1868a609a3ad8554620c6aba8e40ca8105a80303b06005d6628e7e90d8d",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/driver.c": "fb6b81d3ba5f9193c67218b7119c0b2efcf944b3d11542b449a4ef474c98a388",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/build.py": "d892737ab0a5f859ec3aaff00414371cef8301d9006d7794555394c8b960ce74",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/numeric.c": "8f665535179f0eb244bf271ed4622a15fd4d4fdd779dcee3bd959604e2769065",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/f32_interval_endpoint.h": "6982b0365b9a5341445607d828e973f7734e70eed7320c2b11b030e805d0b075",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/bf16_radix_pack.h": "2051496ddccd7fe3ab580df897d5fc703e2279c768812183178fd6f5a38f1944",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/source_gold.bin": "7e84b43b30dac880cddb3f452b07bc20b34780a79af5816869e76f5427e23329",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/policy_gold.bin": "7e84b43b30dac880cddb3f452b07bc20b34780a79af5816869e76f5427e23329",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_q.bin": "35af5507aa1c626b3a13a466549ecca52f89711974b1c1391bfce97a9c9995a6",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_mask.bin": "3431383721510cf1c211de027cf958c183e16db5fabb6b230eb284c85e196aa9",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_v.bin": "816dee0b978d1dd06d90cbb7b3005ab1f1b30d28376514fe269b6fc21b7ff65b",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/raw_k.bin": "5cd1bdd509189f4e365011875755ef6561f9e08b2b9b15409b9fbf6e95d60eb8",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/timed.spike.log": "5c37d20e60c7152ba05a93f847ccfa571ce8f17d25fbf3974276575813d41837",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/plane_audit.spike.log": "00cb53ae39e07f3ca0a6e1c51130cdd6c1b742c699fb5b01c38ab431dd90bdae",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/plane_audit.nofsm_audit.json": "2a5ca3ce4c39886d33e3da53bacd9031e2e7b8f6a585de52b56fe49d93dee159",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/timed.nofsm_audit.json": "3e603ef5274dd2b845bb5e5aa6f6372afc09f6d8f18e44ceeebd5cac6ad9723d",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_1/kernel.o": "013aab5cd75c107f51f5a851d394aa9db454031999aa91dab1d56d6df770f458",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_3/kernel.o": "774d7c2d69a88e7974d17022b16f36520f625e48e9316edaebdd0dd39378b9eb",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_1/kernel.o": "19ebee8c01b42313f9b8227984ddd1eb986eb59e4bf8c371638f316be708e3ab",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_2/kernel.o": "51975af267268c899511f7d32c574448bde04dba085f8e3b2cce1c5ef8dff186",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_4/kernel.o": "6e86bfccee4a81ee96b486c4b4e1e6d74a43a18261f80270638645e0f35aa9e4",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_4/kernel.o": "92f134542f9ddecfc3e1261f449374144437093109c9026e48aee7960df9e0f9",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_4/kernel.o": "9d60221f9c64d7cc47263ec3100f74a4e8894046e69ee87d77fa058146da5c92",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_2/kernel.o": "cc2a754912a27a7dcacb1a0effda2ae8d74d1d7571b0c9ed8f36d790f0198e53",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_3/kernel.o": "d3fb61adcc491cd81b1f4c46256592543d9b489b96b4a9a42967688e0b7eb521",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_0/kernel.o": "1d6c6fd848121b61ed81c569e16d8d9d97294c97346d407c4613059d9789987c",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_2/kernel.o": "5ad46d3b0a49ecd55a4385660294e8843a3683afb02120fab8fe2e2a8156cac3",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv192_products_0/kernel.o": "a40b4179ce900b8ac4d91c61f9d008ab5fbadf2de78d2a128a68ebd27d566f5b",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_0/kernel.o": "135315ea9a6d6724590468bf89541ec7f45feb67cefa4cd8383ac0c48591f310",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/qk_products_1/kernel.o": "acda31b1045cb37b0bf97e166b1bea79bcb2ebe86f818179e44a1dd305bb90c5",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/artifacts/probes/closed-group-target-20261005/m4_h1/pv128_products_3/kernel.o": "8a8a8df554988c2f75a17d8c06135b005c38a556d8f3adc973ed7640a8e96ea6"
+  },
+  "cost_scope": "Spike counters are retired instructions. Timed sourceCPU reference executes first; no ABBA timing equivalence claimed. Actual GSIM same ELF is pending, source-control ordering/cache caveat retained.",
+  "device_evidence": "15 compiled xDSL grouped signed7 product kernels. Forty real primitive calls; all28160i32 readout words independently checked in audited image. Timed image uses byte-identical device objects without scalar plane reference.112640 readback bytes, all output and readout guards pass.",
+  "limits": "Concrete host numeric adapter remains prototype; complete-source grammar and original whole gate are separate. Device and source data compilation closed, but provider routing not promoted. Exact CPU libm exp policy same source exp-via-double.",
+  "token_usage_available": false
+}

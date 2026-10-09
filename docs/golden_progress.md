@@ -1,0 +1,2696 @@
+# Primitive-only Gemmini golden: current evidence
+
+## 2026-10-07 23:21 UTC: current shared composition and direct FX audit
+
+Local Merlin main4ca2269 composes the qualified execution-memory gate759 with
+owned BF16 producer facts. All264 source and264 independent installed checks
+pass without skips;1,026 Python modules and157 public resources (62 runtime)
+agree across source/wheel/sdist/install. Fresh installed current-source
+producer forwarding emits both native/target C roles byte exactly as the
+qualified all48-group/1,600-word witness. The original numerical policy and
+fallback remain separate. Initial qualification caught13 inherited long Python
+C literals; adjacent literal formatting retains an identical complete Python AST.
+
+New local OOT handwritten-implementation e5a33fd ports complete-A residency with
+separate output blocks and its coalescing composition repair: five production
+files, three tests, no resident-row-loop topic. Root51 selected tests pass under
+current4ca; the frozen port65 tests and six actualsource12/independent objects
+reproduce the measured complete callback ELF exactly. Source12 GSIM callback
+263,048→254,747 cycles (−3.15570%); independent i32−6.59319%,i8−13.36718%.
+Full-weight source11 primitive i8 separately improves678,602→632,008.5 cycles
+(−6.86610%). Neither section result transfers to whole stock performance.
+
+Tiny's controlled quadratic16 successor passes every256,000 native/Spike word
+and the original Torch gate, with a768KiB table and source-section retired
+instructions−6.6230%; the independent cost+47.3210% is retained. Exact-margin
+runtime certification is rejected (+52.2418% source,+159.9844% independent).
+Quadratic and affine18 complete GSIM costs are running on their existing owners.
+No new whole stock result is assigned.
+
+Direct matching FX/PyTorch inspection confirms302 integer Linear products plus
+88 prepared floating BMMs. Smol's vision path alone has1,024 tokens,12 layers,
+12 heads,150,994,944 scores and19.327B attention MACs. Expert PyTorch attention
+explicitly widens Q/K to f32. TorchAO's Linear recipe leaves attention floating;
+full current dynamic host/device coverage remains unclosed. Encoded K16 partial
+dot reconstruction fails115/1,600 original outputs and is rejected before target
+emission. A raw-source control also completes all48 groups but fails113/1,600
+outputs,maxabs0.15374207497. Removing representation loss does not rescue this
+order; K16 target work is abandoned, with both negatives retained.
+[Detailed graph and compiler audit](smol_fx_lowering_audit.md).
+
+Root strictly recloses26,811 distinct original paths across shared delivery,
+complete target sections, controlled Tiny policies and the FX audit. Ten exact
+receipt mirrors retain their original declared keys. Whole champions remain
+ResNet28,649,233, Tiny378,946,263, Smol258,621,872,969 cycles. Queue is idle and
+alive, but canonical queue paths are not writable in this session; current process
+lacks firesim membership. Remote fetches still fail DNS, so neither local topic
+is claimed pushed. Aggregate thread meter113,696,704 tokens; exact OOT/topic
+billing UNKNOWN. All targets remain unmet.
+
+[Current closure](perf_records/root_current_shared_compiler_and_section_delivery_20261007.json).
+[Exact mirror ledger](perf_records/current_shared_delivery_and_fx_mirror_identity_20261007.json).
+
+## 2026-10-07 22:24 UTC: full-weight residency reaches normal current compiler delivery
+
+The frozen OOT successor exposes complete reduction-weight residency through
+the normal schedule API, bundle builder and CLI. Outside-installed current
+`bfe708666` and prior879 each regenerate all 52 default/candidate kernels;
+default source, IR, LLVM, objects and adapters agree, candidate semantics and
+ABI remain unchanged, and the selected actual stride-two object matches the
+measured owner. Selection uses typed geometry, available scratchpad and fewer
+weight requests; it is explicit/default-false and has no automatic profit claim.
+Root independently closes all 2,050 original declared paths and mirrors both
+receipts exactly. This private successor is not yet promoted to canonical OOT.
+[Normal delivery](perf_records/resnet_full_weight_flat_normal_current_20261007_qualification.json),
+[root reclosure](perf_records/root_resnet_full_weight_flat_normal_current_20261007_reclosure.json),
+[mirror identity](perf_records/resnet_full_weight_flat_current_record_mirror_identity_20261007.json).
+
+The actual i8 service reduces functional retirements 3.8245%; an independent
+small shape regresses 9.75%. GSIM timing remains pending, and no new whole model
+or stock run is attributed. Whole champions remain ResNet **28,649,233**,
+Tiny **378,946,263**, Smol **258,621,872,969** cycles.
+
+## 2026-10-07 22:16 UTC: fresh normal Tiny passes; current row proofs and decoder forwarding qualify
+
+Fresh installed `458858350` Tiny now discovers all 22 observers from current
+ordinary source, reifies and lowers their helpers without retained typed/LLVM
+ingredients, and regenerates all 155 bindings and five target kernels. All
+256,000 native and actual Spike words match the champion exactly; the original
+Torch gate passes with max absolute error 9.536743e-6. Final ELF `eeb907ab` has
+zero FSM instructions. Original disabled fusion guard, numerical/effect choices
+and manual profitability selection remain explicit. Whole hardware timing is
+unknown; this is a compiler/correctness gate.
+[Complete fresh delivery](perf_records/tiny_normal_current_source_all_leaves_20261007_whole.json),
+[target gate](perf_records/tiny_normal_current_source_target_20261007_qualification.json).
+
+Newest qualified common Merlin local main is `bfe708666`, on 458. Generic closed
+row domains, complete private scatter and explicit consumer quotas pass 194
+source and 194 independent installed checks with no skips. All 1,024 Python and
+156 public resources, including 61 runtime files, agree across source, wheel,
+source archive and installation. Four unselected normal LLVM cases are unchanged.
+An observed casted empty initializer no longer supplies uniform-value evidence;
+genuinely unused destination seeds remain valid. Actual original Smol source
+rederives 256 rows/112 operations through the installed API. These proofs grant
+no physical ownership, rewrite or performance policy.
+[Installed compiler](perf_records/merlin_closed_row_current_main_20261007_qualification.json),
+[actual source proof](perf_records/merlin_actual_smol_closed_row_current_installed_20261007.json).
+
+Canonical OOT `a718ef4` now forwards checked alignment to Merlin's decoder under
+the original source-proven exact paired-readout contract. All 55 target checks
+pass; both actual selected adapters and freshly compiled objects match the
+already-qualified source/object bytes. Default C and the unselected emitter API
+remain compatible. This installs the option; no new whole FPGA timing is added.
+An explicit 646-file binding to Tiny's physical source snapshot preserves prior
+consumed target bytes before canonical source edits.
+[Canonical forwarding](perf_records/canonical_checked_pair_alignment_20261007_qualification.json),
+[previous source binding](perf_records/canonical_previous_source_binding_20261007.json).
+
+Actual ResNet stride-two operands are captured read-only from the qualified fresh
+whole native model, with all original 1,000 words exact. Independent MAC/requant
+checks match its i8 leaf. A raw i32 accumulator fixture is separately labelled;
+it is not the actual i8 provider's complete service. The partial-stripe experiment
+regresses retirement; a full-weight flat alternative preserves compute geometry
+and is being measured in GSIM. No timing has been admitted for it or padding.
+[Actual layer inputs](perf_records/resnet_actual_source11_operand_capture_20261007.json).
+
+Root strictly reclosed four packets and 14,066 distinct original paths before
+canonical promotion. Three independently generated immutable Tiny payloads are
+byte-identical to prior qualified payloads; documented sharing recovers
+5,706,547,200 observed filesystem bytes without changing old receipts or unique
+source/ELF/proof assets. Ten source records are mirrored byte exactly.
+[Reclosure](perf_records/root_current_row_tiny_source_20261007_reclosure.json),
+[sharing](perf_records/tiny_current_source_payload_sharing_20261007.json),
+[mirror identity](perf_records/compiler_row_current_source_record_mirror_identity_20261007_fourth.json).
+
+Whole stock champions remain ResNet **28,649,233**, Tiny **378,946,263** and Smol
+**258,621,872,969**. Fetches for Merlin main and Gemmini handwritten-implementation
+still fail GitHub DNS; no push or PR was made. The recorded campaign meter is
+**112,096,904 aggregate tokens**, with no exact OOT/per-topic billing allocation.
+[Publication attempt](perf_records/publication_current_row_alignment_20261007.json).
+
+## 2026-10-07 21:23 UTC: shared current-source discovery and measured host readout
+
+Qualified local Merlin main `458858350` now includes generic checked aligned
+packet loads, current fused source discovery and exact typed scalar helper
+reification. All 130 source and 130 outside-installed checks pass; 1,022 Python
+and 61 runtime files match all four delivery forms, and four unselected ordinary
+model LLVM cases remain byte-identical. Normal discovery finds Tiny's 22 actual
+closed observers with no supplied observer recipe; its pre-outline arithmetic
+is unchanged. Fresh whole helper substitution remains pending.
+[Installed shared compiler](perf_records/merlin_current_source_observation_installed_20261007_qualification.json),
+[normal actual-source discovery](perf_records/tiny_normal_current_source_observation_20261007_qualification.json).
+
+Fresh normal451 Tiny passes every original output and final zero-FSM through the
+supported mask API. Canonical OOT reproduces all 155 bindings, five descriptors,
+writer ABI and actual kernel bytes: a Tiny-only backend is unnecessary. Its
+three retained source ingredients remain explicit until the current-stage
+successor passes the original whole gates.
+[Whole gate](perf_records/tiny_fresh_all_target_leaves_installed451_whole_20261007_qualification.json),
+[canonical backend identity](perf_records/tiny_canonical_oot_catalog_identity_20261007.json).
+
+The portable checked decoder reduces the complete ResNet section from 849,365 to
+593,115 GSIM cycles (−30.1696%) and an independent case from 18,570 to 11,843
+(−36.2251%), with complete paired windows. Its fresh installed879 whole build
+passes every original output and final zero-FSM. These section results are not a
+new whole stock measurement. Whole champions remain ResNet **28,649,233**,
+Tiny **378,946,263**, Smol **258,621,872,969**; performance targets remain open.
+[Readout cost and fresh whole gate](perf_records/resnet_checked_pair_scan_complete_current_whole_20261007_qualification.json).
+
+Root reclosed five packets and 12,538 declared pins and mirrored nine new source
+records exactly. All three share compiler/backend mechanisms; differing pinned
+experimental recipes and remaining automatic selection work stay explicit in
+the [common compiler record](compiler_recipe_status.md). GitHub DNS still prevents
+publication. No new stock submission is claimed.
+[Reclosure](perf_records/root_shared_compiler_current_delivery_20261007_reclosure.json),
+[mirror identity](perf_records/compiler_current_record_mirror_identity_20261007_third.json).
+
+## 2026-10-07 20:35 UTC: fresh object closure and normal contract delivery
+
+Fresh ResNet using installed Merlin `3f6a8db27` regenerates every final linked
+object leaf and passes all 1,000 original outputs exactly in native and actual
+Spike, with final zero-FSM. Fresh installed CDF Tiny also regenerates all leaves
+and 155 bindings, with all 256,000 original compiled outputs exact, the unchanged
+Torch gate passing, and final zero-FSM. Whole FPGA timing is unknown for both.
+Manual source ingredients and pass/schedule choices remain explicit; a single
+current automatically selected compiler recipe across all three is unqualified.
+[Fresh ResNet](perf_records/resnet_fresh_all_target_leaves_installed3f_whole_20261007_qualification.json),
+[fresh Tiny](perf_records/tiny_fresh_all_target_leaves_installedCDF_whole_20261007_qualification.json).
+
+Newest qualified local Merlin main `451849ba7` passes existing typed mask effects
+through normal model lowering and both backend builders. All 69 source checks
+and 58 affected outside-installed checks pass; source-only curated-target cases
+and six unavailable support skips remain explicit. All 1,020 Python and 61 runtime
+files match all release forms, four default model LLVM cases remain byte-identical,
+and all 2,881 parent pins reclose. A fresh Tiny successor now uses this normal API
+to remove the CDF experiment's extra lowering step. Full gates are pending and
+GitHub publication still refuses DNS.
+[API delivery](perf_records/merlin_model_mask_effects_current_main_20261007_qualification.json).
+
+Complete Tiny batching improves GSIM only 0.22207594% despite 14.0806% fewer native
+instructions; arm spread limits promotion. Smol actual source attribution and
+endpoint coverage close guessed hotspots: softmax interval/BF16/lanes cost18.860B,
+canonical packing9.616B and polynomial endpoints8.040B functional instructions;
+ordered QK/PV replay totals3.264B and all150,994,944 score cells are active.
+Complete softmax outlining improves one full group by0.5719854% functional
+instructions. None supplies new whole stock cycles.
+[Tiny complete cost](perf_records/tiny_retained_n_complete_cost_20261007.json),
+[Smol source costs](perf_records/smol_actual_source_phase_census_20261007.json),
+[coverage](perf_records/smol_actual_softmax_endpoint_coverage_20261007_qualification.json),
+[outlining](perf_records/smol_source_softmax_outline_complete_20261007_seal.json).
+
+The [shared compiler record](compiler_recipe_status.md) and
+[journey](golden_optimization_journey.md) retain compiler versions, legality,
+original gates, gains, rejected candidates, ownership and phase0/1/2 suggestions.
+Root recloses12 source packets and6,274 declared pins and mirrors15 new records
+byte exactly. Best whole stock cycles remain ResNet28,649,233,
+Tiny378,946,263 and Smol258,621,872,969; all whole performance targets remain open.
+
+## 2026-10-07 19:40 UTC: whole Smol trial completes; shared source topics qualify
+
+| Model | Best whole stock cycles | Latest boundary |
+| --- | ---: | --- |
+| ResNet50 | 28,649,233 (2109) | Two fresh installed-cdf117e3 full original 0/0 successors pass; one freshly builds all 52 target kernels. New whole stock timing is unavailable |
+| TinyLlama | 378,946,263 (2085) | Observer section gains and CPU batching have independent gates; complete GSIM and fresh installed full-model qualification remain in progress |
+| SmolVLA | 258,621,872,969 (1906) | Whole stock2113 completes at 324,229,555,204, a 25.3682% regression, with all 1,600 original words exact. Exact-math b154 has full functional accuracy but no stock timing |
+
+Stock2113's model timer, raw output digest, zero-FSM executable and actual
+staged stock hardware artifacts close independently. Original UART and the
+historical champion stay immutable. The queue is idle after completion; new
+submission refuses this UID's missing FireSim group, and GitHub DNS prevents
+publication. No successor is claimed queued or published.
+[Whole stock receipt](perf_records/root_smol_endpoint_stock2113_whole_20261007_qualification.json).
+
+Local Merlin main `3f6a8db27` integrates the three generic exact source-observation
+topics, with 1,227 source and 1,227 independent installed checks, 1,020 Python
+plus 61 runtime files identical across release forms, and 12 default emission
+cases byte-identical to the prior core. All options remain explicit/default-off;
+no numerical gate is relaxed. This is supported shared infrastructure, with
+automatic profitable whole-model selection still unqualified.
+[Installed source qualification](perf_records/merlin_source_observation_topics_current_main_20261007_qualification.json),
+[shared compiler promotion status](compiler_recipe_status.md).
+
+New complete ResNet sections show 11.9959% from separating input residency and
+output blocking, and 4.9572% from legal remaining-row weight placement. The
+latter's independent shape regresses 2.6595%, so it is not a blanket policy.
+Fresh all-52-kernel whole ResNet original output passes with no inherited FPGA
+timing. Tiny output-stationary weights regress 28.6787%; smaller stack and fewer
+callbacks alone are insufficient cost models. Smol observer composition saves
+3.04997% complete group retirements, with overlapping gains and no whole cycle
+claim. The [journey](golden_optimization_journey.md) retains all scopes and
+negative evidence alongside these candidates.
+
+## 2026-10-07: existing exact-math selection passes whole Smol target gate
+
+Normal ELF b15444e0 completes in 4,065.92 seconds with all 1,600 original f32
+words bitwise exact, zero rank mismatches and final zero-FSM. Root recloses
+2,472 unique inherited pins including the actual compiler package. The
+functional counter is 117,635,197,150, not FPGA timing. Stock2113 still
+measures the separate f90 executable. Whole measured champions are unchanged.
+[Whole target gate](perf_records/root_smol_exact_math_normal_whole_target_20261007_qualification.json).
+
+Tiny's ready-i32 observer-only ABBA GSIM measures 3.669892% fewer cycles
+including preparation, copies, 88 consumers, fallback and final drain.
+All original output/input/guard checks pass. Producer GEMM/service/readback
+are excluded and the full compound candidate remains pending; no whole-model
+gain is attributed. [Section receipt](perf_records/tiny_borrowed_observer_gsim_20261007.json).
+
+The [shared compiler record](compiler_recipe_status.md) explicitly retains the
+remaining manual experimental recipes and current-head automatic qualification
+gap, plus phase 0/1/2 promotion requirements.
+
+## 2026-10-07: explicit shared compiler interfaces preserve fresh ResNet bytes
+
+The shared compiler audit and phase 0/1/2 promotion requirements are recorded
+in [compiler recipe status](compiler_recipe_status.md). Local Merlin main
+`edf0e0ca4` exposes invocation-local fully prepared MLIR transformation after
+all ordinary preparation. Seventeen source and seventeen independently
+installed checks pass; 1,016 Python and 61 runtime payloads match source,
+wheel, source archive and installation. Empty selection preserves the normal
+route. The interface checks typed public entries and selected identity;
+numerical, effect and provider proofs remain caller obligations.
+
+The OOT catalog now threads an explicit reduction-channel block into Merlin's
+existing generic layout algorithm. Nonzero selection requires layout
+propagation; defaults retain the previous report and source bytes. Five layout
+checks and eight refusal subtests pass. The fresh normal ResNet legacy control
+and explicit route produce identical LLVM, host model object and final ELF.
+All 1,000 original words are exact at 0/0, rank mismatches are zero and the
+final ELF has zero FSM instructions. The functional counter is 8,394,275,
+not a FireSim measurement or reproduction of the earlier stock2109 ELF.
+[Fresh normal whole qualification](perf_records/root_resnet_shared_preparation_20261007_qualification.json).
+
+The source/package qualification closes 2,189 pins and the fresh whole
+interface packet 252. Both initial missing-capability-input refusals remain;
+supplying the original pinned i8/i32 hardware facts closes ordinary lowering.
+GitHub fetch fails DNS resolution and new queue submission refuses UID2621's
+missing FireSim group membership. No new topic is claimed published or queued.
+Whole best results remain ResNet 28,649,233, TinyLlama 378,946,263 and SmolVLA
+258,621,872,969; existing whole Smol2113 continues independently.
+
+
+## 2026-10-07: whole Smol source fidelity and shared compiler selection
+
+The actual Smol f90b executable completes a full functional target run in
+4,294.20 seconds with all 1,600 original f32 output words bitwise exact and
+zero FSM instructions. Its functional counter is 137,215,662,148; this is not
+a FireSim cycle result. Full stock job 2113 remains running. Whole champions
+remain ResNet 28,649,233, TinyLlama 378,946,263 and SmolVLA 258,621,872,969.
+[Whole functional qualification](perf_records/root_smol_endpoint_whole_spike_20261007_qualification.json).
+
+An independent complete executable PC census conserves 137,216,964,028
+retired instructions, with 98,310 outside nonzero function extents. Exclusive
+function-address costs include 37.54B in the prepared group executor, 21.86B
+in the BF16 conversion helper, 17.94B in product evaluation and 9.89B in
+frontier certification. Shared callees are charged to their own addresses;
+these are neither host/accelerator cycle percentages nor FPGA latency estimates.
+[Actual function costs](perf_records/root_smol_endpoint_whole_retirement_20261007_summary.json).
+
+The normal Smol recipe did not select the existing generic
+`lower_exact_math_inline` feature. A fresh normal build selects it through
+Merlin main 3430c2ca9 and the shared OOT backend. Returned LLVM removes all
+803 scalar f32-to-BF16 truncations, 1,631 BF16 arithmetic operations and BF16
+intrinsics from the model object. The numeric C provider already contains no
+BF16 operations. The fresh normal target model object has no undefined
+`__truncsfbf2` reference. All 1,600 native output words remain bitwise exact;
+48 groups, 12 preparations and 23,040 product callbacks close with no fallback
+or lifetime errors. The final ELF passes zero-FSM. The full target strict run
+and hardware cost remain pending; static removal earns no performance credit.
+[Normal native qualification](perf_records/root_smol_exact_math_normal_native_20261007_qualification.json).
+
+All three workloads use Merlin's normal preparation/lowering/object/link
+infrastructure and the Gemmini OOT backend. Experimental drivers select
+source-bound candidates and explicit pass/schedule options; their differing
+source revisions and numerical contracts remain visible. One automatically
+selected configuration at current heads has not yet been qualified across all
+three models. A successful experimental option must become a semantics/shape/
+resource rule before automatic promotion, with independent shapes and refusal
+cases. No model name, provenance ID or golden value may choose production code.
+
+The source callback inventory closes 69 pins and distinguishes the actual
+5,760 QK, 11,520 PV192 and 5,760 PV128 integer-group callbacks from 24 remaining
+floating contractions and unclassified SCF regions. A five-output family can
+share encoded operands across all nine required integer products, but complete
+encoding, five readouts, reconstruction and source certification must be priced.
+Reducing callback count alone earns no whole-model cycle credit.
+[Source inventory](perf_records/root_smol_endpoint_source_callback_inventory_20261007.json).
+
+Phase 0 should record actual source arithmetic, complete observation/effect
+boundaries, prepared operands, issue/wait intervals, compiler features selected
+and features available but unused. Phase 1 should expose general BF16 rounding,
+immutable operand preparation and bounded multi-output product contracts to
+shared rewrites; target memory, resource and command legality remain OOT.
+Phase 2 should search these explicit options using conserved instruction/traffic
+estimates, then complete matched sections and original whole hardware gates.
+The agent must be able to edit shared passes/runtime in Merlin and target
+scheduling/lowering in OOT, with a reproducible normal recipe and installed
+package qualification. Keep rejected alternatives beside wins.
+
+## 2026-10-07: shared host compilation and allocator topics reach Merlin main
+
+Merlinmain3430c2ca9 includes two clean generic topics. Calloc rejects unsigned
+count×size overflow before allocation/zeroing; ordinary and zero-size behavior
+remain. The original bug reproduces three overflow failures; then5source/
+5installed allocator/libc checks pass.
+[Allocator evidence](perf_records/merlin_calloc_overflow_main_20261007_qualification.json).
+
+Explicit immutable LLVM helper modules use the normal host-transform callback.
+Shared function types, calling convention, extension attributes and module
+context are checked; original definitions are preserved. Actual upstream
+verify/link/always-inline must remove every required reference. Empty selection
+retains original bytes. Numeric equivalence and final linked-entry qualification
+remain caller obligations. No default policy is selected.
+
+The merged3430 package passes40source/33installed checks, including real normal
+upstream5-f32 lowering, RV64 compilation, recipe/link byte replay and exact
+Spike output. All1,015 Python and61runtime payloads match source, wheel, sdist
+and outside installation. Root recloses2,216 pins; RV64 allocator zeroFSM and
+structure/format/ownership gates pass. Initial missing-default skips remain
+as historical logs; both cases subsequently pass with explicit existing tools.
+No new PR. [Merged qualification](perf_records/merlin_host_llvm_helper_main_20261007_qualification.json).
+
+Smol whole2113 is running under its independently qualifiedf90b ELF/runtime.
+All191 original source and203 admission pins close. Actual stock ELF/bitstream/
+executed driver/bundle were captured during RUNNING. Original1,600-word
+accuracy and whole cycles remain pending. Section2108 is3,550,334,843 cycles.
+Current whole champions: ResNet2109 28,649,233; Tiny2085 378,946,263;
+Smol1906 258,621,872,969.
+[Full admission](perf_records/root_smol_endpoint_stock2113_root_admission.json).
+
+Campaign meter at2026-10-07 16:10:15UTC:101,113,629 aggregate tokens.
+Topic/OOT-only allocation and billing are unavailable; do not attribute this
+aggregate to Gemmini-only optimization work.
+
+## 2026-10-07: complete Tiny producer/consumer overlap loses on stock
+
+Stock2112 closes six complete same-ELF windows with all90,112 originali32
+products,45,056 originali8 consumer bytes, inputs, dirty guards and target
+rounding/sticky presets exact. Mean original8,073,029.5 cycles versus
+serial8,133,952.5 (**+0.754649%**) and overlap8,220,149.5 (**+1.822364%**).
+Root recloses184 source pins and195 complete linked-span pins; actual
+staged ELF/bitstream and zeroFSM pass. Thirty integrated provider/resource
+and protocol tests pass. Both alternatives remain disabled; Tiny whole2085
+stays378,946,263 cycles. No whole-model borrowed route is installed.
+
+The issue function currently completes its CPU K-command loop before returning;
+only its pending accelerator tail can overlap the host consumer. The next
+explicit experiment interleaves bounded command groups with chunks of a
+previous wait-complete private slot. It must retain source order, immutable
+input views, disjoint slots, complete fallback and final drain; additional
+callback/frame overhead requires complete cost. Generic coordinator/ownership
+belongs in Merlin, target resources/command groups in OOT.
+[Complete hardware negative](perf_records/root_tiny_borrowed_stock2112_qualification.json),
+[source and linked spans](perf_records/tiny_borrowed_source_20261007/complete_link_closure.json).
+
+Phase0 should expose issue/drain/readiness intervals and actual outstanding
+work rather than label any two-slot program overlapped. Phase1 should search
+bounded producer/consumer chunk sizes with source/effect/resource proofs.
+Phase2 should retain both full-source correctness and complete compound cost
+before composing a whole-model route. This observation is not a pure
+accelerator/CPU fraction or an isolated copy-elimination experiment.
+
+## 2026-10-07: residual batch16 lowers whole ResNet to 28,649,233 cycles
+
+Stock2109 measures **28,649,233 whole-model cycles**, saving79,469
+(**0.276619%**) against byte-reproduced2101. All1,000 original output words
+remain exact at0/0, with actual staged ELF/stock bitstream, rank checks,
+complete execution and final zeroFSM audit. Root recloses810 source pins and
+the actual selected linked body. Only one source-derived key residual kernel
+and adapter change;68 other routes, stem, classifier, host, runtime and weights
+are retained. Explicit batch16 passes capacity/order legality; primitive
+default1 and catalog default4 remain unchanged.
+
+The remaining22M target gap is **6,649,233 cycles**. Tiny2085 remains
+**378,946,263** and whole Smol1906 **258,621,872,969** pending fresh evaluation.
+The2104 boundary profile describes2101, not this new whole executable.
+Separate section2105/2106 saves74,000 cycles; that saving is not added to the
+whole result. [Whole hardware result](perf_records/root_resnet_key_batch16_stock2109_qualification.json).
+
+The exact fixed-prefix host quantizer is rejected: complete stock2110/2111
+means3,344,753.5→5,412,866.5 cycles (**+61.831552%**), despite96.4765%
+source-hit coverage. Allocation, layout, copies and original fallback remain
+in its isolated window. No alternative partition, whole build or policy
+promotion is credited. [Complete negative](perf_records/root_quant_prefix_stock2110_2111_qualification.json).
+
+## 2026-10-07: current whole-model boundary profile closes on stock
+
+Stock2104 profiles the exact2101 implementation:12 original linker objects
+remain unchanged and one timer object is added. All1,000 original words,
+71 ordered call boundaries, staged ELF/bitstream and final zeroFSM pass.
+Forward28,767,905 =26,588,302 callbacks +2,179,603 outside callbacks. The
+39,203-cycle difference from uninstrumented2101 is0.1365%; it includes timer,
+link-layout and run perturbations, and is not a separately calibrated overhead.
+The whole champion remains28,728,702. Root recloses358 source pins.
+
+| Current interval | Stock cycles |
+| --- | ---: |
+| Before stem callback |2,027,253|
+| Stem/pool callback |1,446,770|
+|52 convolution/requant callbacks |20,034,823|
+|16 residual callbacks |4,561,370|
+| Global mean callback |66,595|
+| Classifier callback |478,744|
+
+Callbacks include CPU adapters, readout and command issue as well as DMA,
+device service and waits. They do not measure pure accelerator utilization.
+The permitted ZIP residual section costs2,192,393, with differing numerical
+computation/timer boundaries; its2,368,977 difference localizes investigation,
+not guaranteed savings. Geometry-only comparisons also show pointwise+517,061,
+spatial+887,261, stem+363,713 and classifier+48,963. The first residual alone
+costs1,260,144. General exact quantization preparation and target residual
+issue/readout scheduling are the next concrete seams.
+[Current diagnostic](perf_records/root_current2101_stock2104_boundary_diagnostic.json).
+
+## 2026-10-07: exact reconstruction and scaling fusion loses complete cost
+
+Current2098 already consumes fused integer radix reconstruction; there is no
+remaining per-term float reconstruction to eliminate. Fusing its terminal
+scaling also preserves all1,600 native words, complete group outputs, guards,
+480 callbacks and zeroFSM, but raises retired instructions1,560,212,849→
+1,565,985,371 (**0.369983%**). The new checked loop costs139.629M against
+95.160M reconstruction plus39.003M separate scaling. No fallback reconstruction
+PCs execute. Root recloses216 pins; this prototype stays local and gets no
+hardware/default/main promotion. The remaining196.989M evaluate instructions
+are bounds/norm/control, not an unused reconstruction facility.
+[Complete negative and attribution](perf_records/scaled_fused_radix_complete_group_negative.json).
+
+## 2026-10-07: two-byte attention approximation refused before hardware
+
+A fixed two-signed-byte residual RMS policy reduces product callbacks, but47
+of48 groups fall back to the original source because ordered PV replay escapes
+the heuristic estimate. All1,600 final words remain exact through those
+fallbacks; that does not qualify an efficient selected implementation.
+
+A successor explicitly rebuilds private endpoints using authoritative ordered
+replay. It selects37 groups with11 fallbacks but fails the unchanged final
+atol0.03125/rtol0.02 gate on84 of1,600 elements (maxabs0.1150923). Neither
+variant is promoted, retuned or sent to hardware. Root recloses103 and58 pins.
+Generic prototypes remain isolated; Merlinmain and the selected2098 numeric
+policy are unchanged. Phase1/2 need both actual selected coverage and the
+original full-model quality gate before pricing a reduced representation.
+[Reviewed negative policies](perf_records/root_residual_rms_negative_review_20261007.json).
+
+## 2026-10-07: borrowed-input dense alternative also wins on stock
+
+Complete original M196/K512/N1024 stock2102/2103 improves474,791→453,191
+cycles, saving21,600 (**4.54937%**). All200,704 outputs,4,096 guard bytes
+and925,696 immutable bytes pass. The actual401,408-byte segmented input
+owner is borrowed directly; no packed copy is introduced. Root recloses516
+source pins, the current whole-object binding, both actual staged ELFs/stock
+bitstreams and final zeroFSM. Configuration, flush, transfers, commands,
+stores and final fence are timed; checking is outside the interval. This is one
+section observation per arm; the whole best stays28,728,702 and section gains
+are not added into a forecast.
+[Complete section](perf_records/root_dense_segmented_stationary_tail_stock2102_2103_terminal.json).
+
+GSIM complete-cost estimates for the two measured original dense shapes differ
+from stock by at most1.717%; both order the alternatives correctly. Four arm
+observations are recorded with source/hardware identity. This is a comparison,
+not a fitted or independently validated general performance model; host,
+attention, overlap and whole prediction remain uncalibrated.
+[Estimate comparison](perf_records/root_dense_gsim_stock_complete_comparison_20261007.json).
+
+## 2026-10-07: normal hierarchy legality closes without a measured win
+
+The source-table hierarchy is legally prepared across all22 contexts and616
+native environment cases. Both whole native compositions preserve all256,000
+original words and the original Torch gate; all155 device bindings and44 source
+producer scans are retained, with the2085 model object byte identical. Root
+recloses83 receipt pins. Whole target ELF and whole hardware timing are absent.
+
+The complete inherited M8 fixture (context21; see the separate typed correction)
+measures2097 ABBA means3,513,995.5 control and3,514,995.5 candidate cycles,
++1,000 cycles/+0.02846%. This is a marginal tie with no measured benefit. Normal
+legality does not grant profitable selection: the hierarchy remains an explicit
+local prototype with no Merlinmain, default or whole-hardware promotion.
+[Normal qualification and hardware disposition](perf_records/source_interval_hierarchy_normal_unpromoted_20261007/receipt.json).
+
+## 2026-10-07: complete target option records survive compiler factories
+
+Four immutable target emission records cover every constructor keyword and
+default for dense, flat, resident and stripe families. Checked replacement
+preserves typed views/readout plans, rejects unknown or unrecorded fields,
+and reuses existing resource validation. Ordinary, paired readout and segmented
+input factories now preserve requested choices. Legacy public attributes remain
+compatible through fresh snapshots. No new profitability or default policy is added.
+
+The2095 and2101 recipes each reproduce all52 kernel/adapter objects, aggregates
+and native oracles exactly; all three actual segmented-view objects/adapters/
+aggregates/oracles also match. Root recloses2,536 pins and passes14 fresh record,
+clone, family/default/refusal checks against current Merlinmain. The agent's
+132 focused checks and subsequent14 record checks are separate receipts, not
+an invented count of146 distinct cases. Initial fixture and tuple/list metadata
+refusals remain archived. This infrastructure change preserves measured binaries
+and adds no new performance measurement.
+[Source/object closure](perf_records/emission_option_survival_qualification.json),
+[root integration](perf_records/root_emission_options_integration_qualification.json).
+
+## 2026-10-07: directed observer variants rejected and fixture context corrected
+
+Two source-proved one-edge integer-observer variants preserve all45,056 i8
+outputs, guards, input hashes and original continuations under5 rounding modes
+and7 sticky-flag states. Complete ABBA retirement increases7.2914% for the
+branch variant and11.4590% for the branchless variant. Root recloses168 pins.
+They stay local numerical prototypes: no whole, hardware, main or default
+promotion. Undefined NaN-to-integer source cases remain explicit refusals.
+[Negative variants and source join](perf_records/directed_observer_negatives_20261007/receipt.json).
+
+The inherited isolated M8 fixture used in stock2082/2097 is **captured context21**,
+`forward.extracted.531`, preparation bits1016741769 and quantization bits1133693052,
+with216 source continuations per helper. Its historical label does not mean the
+first layer. Context0 locality counts cannot be attributed to these stock
+observations. Original fixture bytes, source bindings, outputs and measured
+results remain valid; historical receipts are unchanged. Phase0 must join the
+complete source DAG, preparation and compiled context before attaching a
+per-context cost or locality feature.
+
+## 2026-10-07: compact source polynomial table rejected on complete cost
+
+A fixed256-word source-function partition uses3,339,740 bytes and preserves
+exact outward polynomial bounds, the source-ordered F32 denominator and the
+existing explicit RMS4 policy. Native2,904,809 cases and strict1,031 target
+words/intervals across all five rounding modes pass. The complete12-head group
+retains all786,432 i8 outputs,1,024 escaping BF16 scales, guards and480 callbacks;
+10 internal carrier changes are unobserved by its original consumer.
+
+Despite reducing polynomial-header instructions163,625,999→149,331,753,
+full group cost increases1,560,212,849→1,642,458,829 retired instructions
+(**5.27146%**). Wider exact cells trigger source replay3,782,976→12,219,776 FMAs.
+Root recloses479 pins. This prototype is retained as negative evidence; no whole
+build, stock run, default policy or Merlinmain promotion follows from it.
+[Complete negative](perf_records/source_polynomial_prefix_table_negative.json).
+Phase1/2 must price both local code and consumer refinement/cold-path work.
+A smaller evaluator alone is insufficient evidence of a cheaper implementation.
+
+## 2026-10-07: remaining four obsolete review trees removed
+
+PR39/48/49/42 review trees are fully archived and removed after source review,
+remote-main verification and explicit no-dependency confirmation from all three
+agents. Their topic additions are already on Merlinmain eb15a85ce. Exact module
+and regression-test equality covers independent topics; recorded patches close
+shared frontier/runtime files superseded by later RHS, numerical-policy and
+emulator-slot improvements. No useful production delta was found in these four.
+All regular files and symlinks, including ignored and untracked outputs, match
+the retained archive inventories. Recovery branches and shared Git objects remain;
+old receipt paths map to exact archived members. Original working tree and active
+source/build/runtime/measurement/archive owners stay intact.
+
+These four remove356,906,982 logical bytes net of compressed archives. Across
+both earlier cleanups, **24 worktrees** now save **2,348,010,542 logical bytes**
+(about2.19GiB). This is not a filesystem free-space delta.
+[Cleanup](perf_records/root_superseded_review_worktree_cleanup_20261007.json),
+[main review](perf_records/root_superseded_review_worktree_main_closure_20261007.json),
+[archive successors](perf_records/root_superseded_review_worktree_archive_successors_20261007.json).
+
+## 2026-10-07: complete Smol target accuracy gate passes
+
+The older exact-row normal ELF a4b9…cdd4 completes strict Gemmini Spike in
+4,592.896 seconds (about77 minutes). Its complete1,600-word raw output digest
+matches the original capture, exceeding the retained atol0.03125/rtol0.02 gate.
+Root revalidates156 source pins and the ELF/stdout/histogram hashes. This is
+complete target execution, not a FireSim performance result. The reported
+149,157,846,939 Spike cycles are functional accounting. Native instrumentation
+closes48groups/12preparations/23,040products; this target main does not print those
+counters or arena usage, so none are inferred from absent target lines.
+The explicit16GiB Spike map does not establish stock memory capacity.
+[Completed target gate](perf_records/root_smol_exact_row_whole_strict_qualification.json).
+
+The newer prepared-constants ELF a90f…bf95 has its own171-pin source/native
+qualification and is now running a separate bounded whole target gate.
+The older ELF pass is not transferred to the newer binary. Whole FireSim best
+remains Smol1906 258,621,872,969 cycles; section2098 3,611,264,318 is not whole.
+
+## 2026-10-07: dense short-row scheduling lowers whole ResNet cost
+
+Stock2101 measures **28,728,702 whole model cycles**, down514,355
+(**1.7589%**) from the byte-reproduced2095 control29,243,057.
+All1,000 original output words match exactly at0/0; the actual staged stock
+ELF and bitstream, original output digest and final zeroFSM close. Root
+revalidates2,671 source pins and all19 complete linked function bodies,
+including each local branch relocation. Fresh normal generation reproduces
+all52 original kernels/adapters and14 partial-link stages. The selected
+alternative changes17 ordinary dense entries and2 borrowed segmented entries;
+flat47/50 and unused original segmented26/45 remain unchanged. Each output's
+increasing K order, ACC ownership, commands, loads, stores and fences are retained.
+The explicit compiler option defaults off and uses shape/resource legality.
+Root integration passes75 tests against current Merlinmain modules.
+
+Separate complete original section2099/2100 improves291,426→243,341 cycles
+(**16.500%**). This section observation is not added to a whole forecast.
+The whole target gap is **6,728,702 cycles** to22M; all three workload targets
+remain unmet. [Whole result](perf_records/root_resnet_dense_tail_whole_stock2101_terminal.json),
+[section](perf_records/root_dense_stationary_tail_stock2099_2100_terminal.json),
+[integration review](perf_records/root_dense_stationary_tail_integrated_source_review.json).
+
+## 2026-10-07: eight more integrated review worktrees archived and removed
+
+Eight obsolete PR review worktrees have exact topic implementation/test bytes
+on pushed Merlinmain **eb15a85ce**. Allthree current agents confirmed no live
+source/build dependencies; root checked owned process references again before
+removal. Every file/link, including ignored/untracked outputs, is archived and
+hashchecked against the full pre-removal inventory. Original receipt paths have
+explicit archive-member successors; shared Git store and original branches remain.
+Active source/runtime/measurement/qualification owners are retained. Four older
+review trees with follow-on differences remain pending their separate closure.
+[Cleanup](perf_records/root_integrated_refresh_worktree_cleanup_20261007.json),
+[successors](perf_records/root_integrated_refresh_worktree_archive_successors_20261007.json).
+
+This removal saves713,784,341 logical bytes net of archives. Together with the
+prior12 removals,20 worktrees save **1,991,103,560 logical bytes**; this is not a
+filesystem free-space delta. No Jack directory was read or traversed.
+
+## 2026-10-07: exact polynomial implementation reduces Smol group cost
+
+Stock2098 measures **3,611,264,318** cycles for the complete first12-head group,
+246,017,076 fewer (**6.37799%**) than prior2092 **3,857,281,394**. The2092 control
+ELF is reproduced byteidentical, with the same62namedmemorysymbols, clockdriver,
+original consumer and actual stock bit identity. This is explicit historical
+control reuse: one measurement per arm, with no repeat-stability claim. Root
+recloses469source pins,4protocol pins and361prior control pins. All786,432
+i8 outputs,1,024BF16scales, guards,480product callbacks, expected candidate
+statistics and finalzeroFSM pass. Two internal BF16carrier differences are
+unobserved by the unchanged original consumer.
+[Stock result](perf_records/root_smol_polynomial_constants_stock2098_terminal.json).
+
+Fresh normal source compilation separately recloses171pins,297ordinaryroutes,
+19signatures, original model.o and emitted provider source/object identity,
+plus all1,600 native whole words exact across48groups/12preps/23,040products.
+Its target ELF is instruction-audited; whole target execution and memory binding
+remain separate gates. The earlier row-proof whole strict run is still active.
+No group×48 forecast or whole performance is claimed. The existing explicit
+RMS4 approximation is unchanged; prepared constants/theorem consumption retain
+both distinct score endpoints and the original ordered F32 denominator.
+Whole Smol1906 remains **258,621,872,969**; its5B target remains unmet.
+
+## 2026-10-07: immutable polynomial context reaches Merlin main
+
+Merlinmain **eb15a85ce** adds an explicit prepared source-polynomial consumer.
+At private immutable context entry it validates all8 current source plan words,
+RNE and zero implementation budget against the complete rounded-monotonicity
+theorem. Both distinct input endpoints and the original ordered F32 denominator
+remain; unsupported contexts use the original checked helper. No numerical
+approximation or default target/workload policy is added. Root passes30 source
+and30 installed-wheel tests,4module/30header identity, Ruff and no-regex gates.
+[Main qualification](perf_records/root_merlin_polynomial_constants_main_qualification/review.json).
+
+The complete first12-head group passes original786,432i8/1,024scales/guards,
+480product callbacks and finalzeroFSM. Strict retired instructions decrease
+1,713,849,505→1,560,212,849 (**8.96442%**); all1,600 freshnormalnative outputs
+are bit exact. Root independently recloses469pins and all62named data/arena
+symbols in the actual clockpair ELFs. Candidate FireSim2098 reuses the prior2092
+byteidentical stock control explicitly; hardware cost is pending. These are
+complete group observations, with no all48 multiplier or whole prediction.
+The instruction decrease composes theorem consumption and constant context;
+it is not attributed wholly to constant loading. Original final gates remain.
+
+## 2026-10-07: table hierarchy has no measured complete Tiny win
+
+Stock2097's complete firstM8 ABBA pair measures mean **3,513,995.5** current
+versus **3,514,995.5** hierarchy cycles (+1,000/**0.02846%**). All45,056 original
+i8 outputs, dirty guards, immutable operands,9 common named addresses,2 table
+hashes, actual staged stock identity and final zeroFSM pass. Root recloses322
+V2 pins plus300 original pins and the actual-C validation-scope adjunct. The
+initial actualcandidate gate warms firstM8 requests; fulltable validation occurs
+only after allfour windows. The first validation-scope submission2096 was
+cancelled before a target measurement; both admission and cancellation remain.
+
+The coarse64KiB table certifies90.04% of all22 source points, but increases
+certificate/quantizer work. Logical table regions are not physical cache traffic.
+This marginal onepair result grants no stable regression or whole profitability
+claim. The generic prototype remains isolated, with no default or whole hardware
+promotion. Tiny2085 stays **378,946,263** whole cycles. General follow-up: price
+lookup, observer finishing and exact source continuation together, and expose
+immutable table owners plus runtime context in the automatic loop's cost scope.
+[Stock result](perf_records/root_tiny_source_hierarchy_stock2097_terminal.json).
+
+## 2026-10-07: stationary-B tail whole ResNet result
+
+Stock2095 verifies **29,243,057 whole-model cycles**,159,149 fewer than2090
+(**0.541283%**). All1,000 original source f32 words remain exact at0/0,
+with actual staged stock ELF/bitstream and final zeroFSM closed. Root recloses
+2,619 source pins and independently verifies both actual selected function
+bodies:13,570/13,262 bytes,22 total local relocations, exact branch targets and
+registers, and all remaining bytes. Fresh normal52-source and controlled whole
+numeric gates pass; the2090 control reproduces across all14 link stages.
+Only two typed eligible flat schedules change; original host/runtime/weights,
+all52 adapters and50 other primitives remain fixed. Integrated source passes61
+schedule/default/clone/refusal checks. The prior readout-clone omission stays
+preserved with its regression test. No source ID selects production eligibility.
+
+The22M gap is **7,243,057** cycles. Separate capsule wins are not added to a
+whole forecast. Tiny2085 remains **378,946,263**; Smol1906 remains
+**258,621,872,969**. Every whole-model target remains unmet.
+[Whole terminal](perf_records/root_resnet_stationary_tail_whole_stock2095_terminal.json).
+
+## 2026-10-07: stationary-B tail scheduling measured on stock Rocket
+
+Matched complete convolution+decoder stock2093/2094 measures
+**890,568→809,631 cycles**, saving80,937 (**9.08824%**). All50,176 two-store
+source outputs,8,192 guard bytes,2,384,384 immutable input bytes, five common
+addresses, original decoder and final zeroFSM pass. Root recloses350 source
+pins and actual staged ELF/stock bitstream identities. Whole cycles remain
+unknown for this candidate; current ResNet2090 best remains **29,402,206**.
+[Stock pair](perf_records/root_resnet_stationary_B_tail_stock2093_2094_terminal.json).
+
+The general target option uses typed retained flat spatial planes, a shorttile
+and two or more fulltiles. After the first fulltile establishes stationary B,
+the shorttile executes before a later full reuse tile. Each output retains
+source K order; complete commands and DMA/config/fence/store sequence are
+unchanged. Conditional ExecuteController geometry motivated this experiment,
+but measured gain is not assigned wholly to that mechanism. Independent
+nonsquare/channel-tail complete GSIM and source-cell proofs pass. Integration
+passes51 decoded-command/default/refusal tests. The experimental probe retains
+both earlier weight-packet and new tail arms; the packet variant's+3.39% GSIM
+cost rejection stays preserved. No workload ID, source hash or measured
+operand grants production schedule eligibility.
+
+Fresh normal52 source regeneration is being qualified. Its first attempt
+caught readout-plan cloning dropping the new tail option; metadata alone
+would have overstated application. The rejected attempt is retained, actual
+choose-to-emitted-object regression added, and successor compilation runs
+before any whole hardware admission. Target schedule records should preserve
+all typed fields across readout selection and prove actual command/object
+application. This is an OOT compiler requirement, independent of workload.
+
+## 2026-10-07: exact source-row packing measured on stock Rocket
+
+Matched stock2091/2092 measures **3,936,970,420→3,857,281,394** cycles,
+79,689,026 fewer (**2.02412%**) for the complete first12-head attention group.
+Root recloses361 source pins, common data/arena addresses, literal mcycle,
+actual staged stock ELF/bit identities, all eight unchanged provider counters,
+original compiled quantizer/scales, immutable inputs, guards and final zeroFSM.
+Three unchanged internal BF16 differences are unobserved by the original
+consumer. The existing explicit RMS4 approximation is unchanged; the new
+packing/widening row proof is source exact.
+[Stock pair](perf_records/root_smol_exact_row_stock2091_2092_terminal.json).
+
+Merlin main **e9194ac08** integrates the generic explicit finite BF16 row-grid
+proof. Source44/installed44 tests and source/wheel/installed module plus30header
+identities pass. The installed gate also fixes an inherited test's use of a
+checkout-relative header path. Fresh normal source generation preserves all297
+ordinary records/19signatures and15 product objects; native all1,600 words are
+exact across48groups/12preps/23,040products. All48 target execution remains
+under strict validation; these group results do not predict whole cycles.
+
+The first normal target attempt timed out after1,800 seconds, with no output
+gate or instruction histogram. An older original whole target needed2,045.664
+seconds, so the latest row-proof source successor now runs with a7,200-second
+bound. Stock memory binding remains separate. Whole bests stay ResNet2090
+**29,402,206**, Tiny2085 **378,946,263**, Smol1906 **258,621,872,969**.
+
+New preserved negatives include fixed BF16 denominator114/1,600 gate failures,
+per-word exact widening+1.052% instructions, row-amortized bounds3.193B replay
+FMAs, and source-aware P14 PV: direct approximation fails189,885 compiled
+outputs; exact i8-observer successor passes all256,000 whole words but costs
+3.799× complete first-target instructions. These private numeric prototypes
+are unpromoted. The source loop and original final gates remain authoritative.
+
+## 2026-10-07: resource-derived row-residue whole ResNet result
+
+Stock2090 qualifies **29,402,206 whole-model cycles**,112,034 fewer than2086
+(0.379593%). All1,000 original source words remain bit exact at0/0. Root
+recloses1,081 pins, every52 adapter/51 unselected primitives and current24,
+actual selected entry, final zeroFSM and actual staged stock identities.
+Its independent ELF-section/symbol/RELA parser verifies all13,914 selected
+body bytes, nine BRANCH/one compressed BRANCH/one JAL targets and unchanged
+opcodes/registers, with declared RELAX metadata. Fresh normal and controlled
+whole gates pass; original2086 ELF is reproduced exactly across14 link stages.
+[Whole terminal](perf_records/root_resnet_source_residue_whole_stock2090_terminal.json).
+
+Separate complete convolution stock2088/2089 measures **818,566→707,799**
+cycles (110,767/13.5318%). All25,088 outputs,4,096 guards,2,459,648 immutable
+input bytes and common addresses pass. Resource-derived row-residue layout
+reduces requested A payload409,600→100,352 while real B/preload/compute counts
+stay fixed; compact ordinary loops preserve its command/pointer stream.
+Requested bytes are not physical DDR traffic, and neither gain identifies
+CPU versus device service or grants a summed whole forecast.
+[Complete pair](perf_records/root_resnet_source_residue_pair_stock2088_2089_terminal.json).
+
+Current whole bests: ResNet2090 **29,402,206**, Tiny2085 **378,946,263**,
+Smol1906 **258,621,872,969**. ResNet's22M gap is7,402,206, or7,014,757 above
+the ZIP22,387,449 diagnostic. All targets remain unmet. No production code
+changed for this candidate: published general row-residue/command-retention
+options select by layout/resource facts. Identifiers authenticate bindings.
+Smol's complete normal48 target is now under bounded strict validation; native
+all1,600 words pass, but target execution and stock whole cycles remain unknown.
+
+## 2026-10-07: early zero-product complete cost is negative
+
+Stock2087's complete original M8 ABBA pair regresses312,405.5 cycles/8.92251%
+versus the current zero-bin observer. All45,056 original bytes, guards,
+immutable operands, common addresses and five-FRM/seven-sticky target checks
+pass; root recloses152 source pins and actual staged ELF/stock bitstream.
+The explicit typed source-scale threshold omits63,502 finishing FMULs but
+adds abs/max/branch work. Fewer multiplies do not establish a complete win.
+No all22 or whole candidate is promoted, and its core prototype stays isolated.
+The historical word-only source pin drift is explicit and unpromoted. Tiny's
+whole best stays2085 **378,946,263**; original gates and defaults are unchanged.
+[Complete negative](perf_records/root_tiny_rne_zero_product_stock2087_stock2087_terminal.json).
+
+## 2026-10-07: Smol complete cost negatives and timed source roles
+
+Three source-corrected sparse dyadic group screens preserve the original
+compiled consumer, all eight statistics, three unobserved carrier differences
+and guards, but retire2.820B/2.117B/2.023B instructions versus matched1.747B
+control (+61.40%/+21.12%/+15.79%). All final zero-FSM audits pass. Root closes
+221/142/143 source pins; no full48, new whole or hardware result is claimed.
+Cached/recode core helpers remain isolated prototypes, not Merlin main APIs.
+[Review](perf_records/root_smol_sparse_negative_ROI_review_20261007.json).
+
+The accepted2072 ROI audit conserves1,734,429,991 instructions, including an
+explicit37,607,480 unresolved/shared bucket. All236,079,104 BF16-conversion
+instructions in the whole histogram belong to post-ROI consumer validation.
+Mixed rintf body attribution remains unknown. Dominant provider source roles
+are encoding, softmax observations, interval propagation and dot bounds;
+these are instruction counts, not cycle or accelerator utilization percentages.
+[Executed source roles](perf_records/accepted2072_executed_source_roles.md).
+
+## 2026-10-07: retained source-stride whole ResNet result
+
+Stock2086 qualifies **29,514,240 whole-model cycles**,103,958 fewer than2081
+(0.350994%). All1,000 original output words remain bit exact at0/0. Root
+recloses1,959 source pins, actual entry/relocation proof, final zero-FSM ELF
+and actual staged ELF/stock bitstream. Fresh normal generation reproduces all52
+default kernels/adapters; only one candidate primitive changes. The separate
+section saves103,094 cycles; it was not added to a whole prediction.
+Gap to22M is7,514,240; gap to ZIP22,387,449 is7,126,791 cycles.
+[Whole terminal](perf_records/root_resnet_source_stride_stock2086_stock2086_terminal.json).
+
+Current whole champions: ResNet2086 **29,514,240**, Tiny2085 **378,946,263**,
+Smol1906 **258,621,872,969**. All requested whole targets remain unmet. Tiny's
+complete early zero-product M8 test is submitted as2087 with152 independently
+closed pins; cycles and any whole transfer remain UNKNOWN. Its control is the
+zero-bin mechanism in2085. Historical word-only source drift stays unpromoted.
+Cleanup remains12 verified archived removals and1.19GiB logical net recovery;
+active owners, primary Git stores and reproduction dependencies are retained.
+
+## 2026-10-07: whole Tiny zero-bin observer result
+
+Stock2085 qualifies **378,946,263 whole-model cycles**,1,450,080 fewer than2076
+(0.3812024%). All256,000 original compiled output words remain bit exact and
+the original Torch0.03125/0.02 gate passes. The260 source pins, actual staged
+ELF/stock bitstream identities and final zero-FSM audit close. Only model.o
+changes; the control ELF reproduces2076 exactly and all155 device bindings
+and11 other objects remain intact. The6.15651% first-section gain does not
+describe the separately measured whole gain. The300M gap is78,946,263 cycles.
+[Whole terminal](perf_records/root_tiny_rne_zero_stock2085_terminal.json).
+
+ResNet's source-stride whole successor is submitted as2086. Root independently
+checks all1,959 source pins, all52 fresh default kernels/adapters against the
+accepted source build, and the candidate's sole changed kernel. Both normal
+and controlled source/native/strict gates preserve all1,000 original words;
+the selected entry executes and its full linked body matches with ten exact
+branch relocations. Fresh source modules match the published compiler.
+Whole cycles remain UNKNOWN; the existing ResNet best is29,618,198.
+
+## 2026-10-07: source delivery closure and two complete section gains
+
+Tiny's exact sufficient zero-bin observer measures **3,712,239.5 → 3,483,695**
+cycles in stock2082's complete M8 ABBA window, a6.15651% improvement despite
+1.2994% more retired instructions. The original45,056 i8 outputs, guards,
+immutable inputs and separate five-mode/seven-sticky gate pass; all164 source
+pins and actual staged ELF/bitstream identities close. Both source finishing
+products and the216 cold continuation calls remain unchanged. Normal all22
+contexts/991,232 words and616 mode/sticky cases pass, as do all256,000 original
+whole output words and the original Torch0.03125/0.02 gate. Control2076 is
+reproduced byte for byte. Whole stock2085 is submitted; whole cycles are UNKNOWN.
+[Complete section](perf_records/root_tiny_rne_zero_stock2082_stock2082_terminal.json),
+[whole admission](perf_records/root_tiny_rne_zero_stock2085_root_admission.json).
+
+ResNet's paired source-stride command retention measures **1,001,893 → 898,799**
+cycles in stock2083/2084, saving103,094/10.2899%. Every original50,176 output,
+second store, input and guard passes. Primitive commands/pointers are identical;
+ordinary CPU loops reduce touched code154,856→8,376bytes while increasing body
+instructions. GSIM's1.7874% gain does not predict the RTL gain's magnitude;
+independent small tails slightly regress. This is a complete section result,
+with all292 source pins and staged identities closed. Whole timing is separate.
+[Complete pair](perf_records/root_resnet_source_stride_stock2083_2084_stock2083_2084_terminal.json).
+
+The audit found a source delivery omission: six existing measured ResNet
+resident K/row-loop winners were absent from the published compiler API. Their
+seven implementation modules are restored byte-identically to qualified173ab44
+as one topic, with bounded dynamic-B lowering. Both explicit loop options are
+integrated, passing109 source/resource/key checks and47 narrow integration
+checks. Fresh all52 normal recipe reproduction is being independently sealed.
+Merlin main is now`c0f40f8f8`, one generic exact typed observer topic, passing107
+source and107 outside-checkout installed checks, with two modules and30 runtime
+headers identical. Production defaults and original numeric gates stay intact.
+[Source delivery](perf_records/root_restored_resident_source_delivery_20261007.json),
+[Merlin publication](perf_records/root_merlin_rne_observer_direct_main_publication_20261007.json).
+
+Current whole champions remain ResNet2081 **29,618,198**, Tiny2076
+**380,396,343**, Smol1906 **258,621,872,969**. All targets remain unmet. Smol's
+exact sparse dyadic source admission is verified natively, but its first complete
+cost screens are negative; no new hardware or whole result is claimed. The
+two-key residual correction is exact but46.67% slower and stays unselected.
+The older grouped eight-lane pre-stem ordering is already present in2081;
+reapplying it would change no code. Cleanup remains12 archived worktrees and
+1.19GiB logical net savings, preserving active owners and shared Git stores.
+
+## 2026-10-07: predictor-key whole ResNet win and generic proof publication
+
+Stock2081 measures **29,618,198** original whole-model cycles, 80,149 fewer
+than2071 (0.269877%). All1,000 original output words remain bit exact at0/0;
+all679 source pins, actual new-entry execution, final zero-FSM ELF and
+pre-teardown ELF/bitstream identities close. Only the selected residual route
+changes. The ZIP reference remains22,387,449, with a7,230,749-cycle gap;
+its source arithmetic and timing differ. The final simulator PASSED counter
+includes validation and is not the model performance metric.
+[Whole terminal](perf_records/root_resnet_predictor_key_stock2081_whole_terminal_20261007.json).
+
+Merlin main is now`0a9c14552`, one additional clean topic consuming explicit
+complete rounded-polynomial monotonicity theorems. It passes104 source and104
+outside-checkout installed tests, with all30 bundled runtime headers identical.
+The caller must supply a complete theorem for the exact rounded source DAG,
+environment and plan; identity hashes authenticate evidence and do not prove it.
+The original source polynomial's whole finite domain was checked independently
+under two compilers, supplemented by18,098 rational source-word checks and
+target environment/refusal tests. Its experimental Smol group preserves all
+original consumer outputs and reduces retired instructions2.58472%; hardware
+cycles and a new whole Smol result remain unknown. Fixed RMS4 remains an
+explicit approximate policy. No default or accuracy gate changes.
+[Generic publication](perf_records/root_merlin_rounded_polynomial_direct_main_publication_20261007.json),
+[source proof qualification](perf_records/rounded_source_polynomial_monotonicity_qualification.json).
+
+The four-product Smol successor with a separately rigorous residual bound is
+also negative: complete group cost rises61.27% despite exact observed outputs.
+It is retained with the earlier40.824% negative. Fewer accelerator products
+do not establish lower complete cost when source replay grows. Rejected
+prototype APIs remain isolated; experiment publication is not core promotion.
+[Residual-bound negative](perf_records/two_signed_byte_rms_residual_negative.json).
+
+## 2026-10-07: complete residual pair and current Tiny profile
+
+Stock2078/2079 measures the complete original 802,816-element residual section:
+**1,339,430 → 1,261,604 cycles**, saving 77,826 cycles (5.81038%). All original
+outputs, inputs, descriptors, flags and 4,096 guard bytes pass. Actual staged
+ELFs and stock bitstream identities were captured before teardown. The two
+executables differ in one selector byte and perform identical warmups at common
+addresses. The candidate derives nine products from the complete signed-byte
+source/predictor domain; setup, scratch, DMA, reload and completion remain timed.
+Merlin main `b1b6d1379` contains the generic predictor-key proof as one topic,
+qualified by 45 source and 45 installed-wheel tests. Target realization stays
+in OOT. Whole-model qualification of this candidate is still pending.
+[Section terminal](perf_records/root_resnet_predictor_key_stock2078_2079_terminal_20261007.json),
+[generic publication](perf_records/root_merlin_predictor_key_direct_main_publication_20261007.json).
+
+Stock2080 profiles the unchanged accepted Tiny2076 semantic objects and checks
+all 256,000 original outputs. Its forward window is **380,559,357 cycles**:
+179,740,352 inside the 155 primitive callbacks and 200,819,005 outside them.
+The largest preceding gaps are 87,965,554 before down projections and 62,399,491
+before attention output projections. These are source execution locations,
+not causal attribution: callbacks include CPU issue, DMA, fences and array
+service, while gaps include observers, attention, allocation and dispatch.
+The instrumented outer measurement is 163,498 cycles above the uninstrumented
+champion. Tiny's best remains **380,396,343**; no utilization percentage or
+whole-model gain is inferred from this diagnostic.
+[Current profile](perf_records/root_tiny_current2076_profile_stock2080_terminal_20261007.json).
+
+All three whole targets remain unmet: ResNet2071 **29,698,347**, Tiny2076
+**380,396,343**, Smol1906 **258,621,872,969** cycles. Smol experiments published
+with this update include normal owner composition and two explicit negatives;
+their native or section observations do not update the whole champion. Fixed
+conditional observation failed 49 of 1,600 original-gate outputs. The later
+four-product residual-aware attention screen passes its original section gate
+but increases complete retired instructions 40.824%; it requires better bound
+coverage before a hardware performance candidate can be admitted.
+
+## 2026-10-07: five more integrated worktrees safely removed
+
+Five obsolete Merlin delivery/review worktrees were removed after remote main
+verification,review of superseding source changes and agent/process dependency
+checks. Every working-tree file and link,including ignored and untracked output,
+was archived and rehashed before removal. Shared Git objects and branches remain.
+Old absolute receipt paths have explicit archive/member successor mappings.
+The operation saves525.94MiB of logical file bytes after retained archives.
+Together with the previous seven removals,this is12 worktrees and1.19GiB of
+logical net savings; these values are not filesystem free-space measurements.
+Active model/kernel/runtime/source strategy trees and primary Git stores remain.
+[Cleanup](perf_records/root_integrated_worktree_cleanup_post_finite_20261007.json),
+[archive successors](perf_records/root_integrated_worktree_archive_successors_post_finite_20261007.json).
+
+## 2026-10-07: finite broadcast guards improve whole TinyLlama
+
+Stock2076 measures **380,396,343 whole-model cycles**,14,369,234 fewer than2070
+(3.63994%). All256,000 original compiled output words remain bit exact; the
+original Torch0.03125/0.02 gate passes. All155 device bindings and11 other
+linked objects remain unchanged. Actual staged ELF/bitstream identities and
+all178 admission pins close against the queue terminal and final zero-FSM ELF.
+The remaining300M gap is80,396,343 cycles; this is one stock observation.
+
+The generic compiler topic is published as one clean commit`b1108c60d` on
+Merlin main, after95 source and95 installed-wheel checks. Typed signed-integer
+producer domains and bounded LLVM scale loads permit one immutable broadcast
+scan instead of redundant per-element finite checks. Both scans and all source
+products, table checks, continuations and stores are included in measured cost.
+Complete M8 stock2075 improves14.7008%; the whole gain is separately measured.
+Target mode checks remain in OOT. Ordinary emission and numerical policies
+remain unchanged; the optimization is explicitly selected through proofs.
+[Whole terminal](perf_records/root_tiny_finite_guard_stock2076_whole_terminal_20261007.json),
+[upstream qualification](perf_records/root_merlin_finite_guard_upstream_qualification_20261007.json).
+
+Stock2077 passes unit-scale signed-i32 accumulator DMA overwrite/accumulate
+and full readback:256 values and128 adjacent guard bytes,repeated twice,
+718/415 complete cycles. Its actual retained staged ELF and immutable HWDB are
+verified; the staged bitstream was removed before collection and was not
+preserved. This is a bounded capability observation with that stated limitation,
+not a fully sealed residual performance champion. The next complete residual
+capsule must preserve actual hardware identity.
+[Capability receipt](perf_records/root_acc_identity_rmw_stock2077_terminal_20261007.json).
+
+## 2026-10-07: current ResNet profile after upstream audit
+
+Published Merlin main is now `3a1e24c77`; model2MLIR main is `7915e234`.
+The complete generic audit and seven safely archived worktree removals are
+recorded in [the audit release](perf_records/generic_compiler_audit_release_20261007.md).
+
+Stock 2074 profiles the unchanged accepted ResNet 2071 objects. All 1,000 output
+words remain bit exact and the final ELF contains zero FSM instructions.
+The 71 source/ABI-bound callback intervals conserve the 29,738,792-cycle forward
+window. Work before the stem costs 2,026,898 cycles; residual callbacks cost
+4,638,842; convolution/requantization callbacks cost 20,934,226. The callbacks
+include CPU glue and device service. They do not measure pure utilization.
+This diagnostic does not change the 29,698,347-cycle champion.
+[Current profile, ZIP comparison and next changes](perf_records/current2071_boundary_profile_20261007.md).
+
+## 2026-10-07: clean upstream and handwritten branch delivery
+
+Merlin main is `95e8142d9`; model2MLIR main is `7915e234`. Reviewed changes
+reach main with one clean commit per topic. The final Merlin package passes
+1,085 installed checks, preserves 995 Python modules, 28 runtime headers and
+five C templates exactly, and reproduces the accepted Tiny2070 source routes.
+Root independently reclosed all 2,096 package qualification pins.
+
+The named `handwritten-implementation` Gemmini branch now includes the missing
+qualified ResNet rectifier/domain/fence/panel compiler modules and explicit
+Smol/Tiny experiment reproduction drivers. ResNet integration passes 64 checks;
+compiler/export/audit gates pass 61 checks and six subtests. Both Tiny model
+objects and final ELFs reproduce exactly; source-wide table and observation
+proofs remain generic Merlin mechanisms. All original numeric gates remain.
+
+Scoped cleanup archives 34 PR records and verifies public HTTP 404 for every
+one. Eight already merged records cannot be archived; zero authored PRs remain
+open in Merlin/model2MLIR. Published history is retained, and future PR creation
+requires explicit approval in every repository. The 31 stale Merlin topic refs
+and four merged model2MLIR refs are removed after exact local preservation.
+
+The broader test failures identified checkout child-import ambiguity and stale
+audit fixtures. Phase 0 should distinguish execution environment and oracle
+identity; phase 1 should verify installed compiler/resource ownership; phase 2
+should bind selected source, prepared LLVM, actual objects and complete cost.
+One-source module ownership and explicit compiler/toolchain provenance prevent
+editable-checkout mixtures from qualifying a different implementation.
+
+No new FireSim result is claimed by this publication. Whole ResNet/Tiny/Smol
+remain 29,698,347 / 394,765,577 / 258,621,872,969 cycles. The 22M/300M/5B goals
+remain unmet. Family counts and token ledgers retain their stated deduplication
+and attribution limits; publication commits are not additional performance wins.
+[Delivery details](handwritten_implementation.md).
+
+The requested targets are ResNet-50 around 22M FireSim model cycles, full `SY_model_smolvla` near 5 billion, and TinyLlama around **300M** (user clarification on 2026-10-06), all on `FireSimGemminiRocketConfig` with **zero** Gemmini `LOOP_*` instructions in the final linked ELF. Ordinary RISC-V branch loops repeat the xDSL Gemmini primitive tile schedule.
+
+## Latest verified whole-model results (2026-10-07 UTC)
+
+ResNet2081 improves the whole observation to **29,618,198 cycles** through
+generic eight-lane host quantization and exact finite-source residual lowering
+with restricted internal-fence coalescing, four private panels, consumed
+source-proven nonnegative operand ranges and complete predictor-key correction.
+Tiny2076 improves to
+**380,396,343 cycles** through source-exact continuation,generic typed
+masked-output contraction scheduling,direct certified integer publication and
+source-bound immutable broadcast finite guards.
+All original outputs and numeric gates pass. Smol whole1906 remains
+**258,621,872,969 cycles**; group2072's **3,918,275,805** is a section result,
+2.703% below group2069 through exact encoder/witness composition with unchanged
+source coefficients and the existing experimental RMS4 policy. No new whole
+Smol result or default numerical policy is claimed.
+[Group terminal](perf_records/root_smol_fused_encoder_stock2072_terminal_review_20261007.json).
+The source-bound quantizer model predicts the held current4/8 pair within3.73%
+and ranks it correctly. The new entirely held5/7-lane cross-executable test2059
+predicts within6.13% and ranks all three new pairs correctly without refitting.
+Fixed eight-lane spacing2063 shows30–31% actual grouped-stage gains at equal
+compiled work. Its separately predeclared training-only model scores held224
+arms within3.892%; work alone misses26.259%. Old model errors remain recorded.
+Whole-program cycle prediction stays unknown. [Model evidence](golden_fast_model_status.md).
+
+Exact residual correction improves the complete original section8.73% in GSIM;
+a separate restricted internal-fence pair reports a further11.91%. Four private
+panels improve another complete section17.496%, but whole2068 improves only
+0.91858% versus2066. These different scopes are not additive forecasts.
+Tiny's compound16.38% becomes only0.612% whole stock
+gain. Smol fastRMS4 improves the complete12-head group8.043% on stock2060.
+Its proved bounded F32-floor successor passes all1600 original native words/
+61440 target checks and stock2064 at4256146700 (4.721% below2060). The unchanged
+prequeue forecast errs0.537%; a separate blinded historical fit errs0.649%.
+Single7bit Smol and dynamic-i8 Tiny attention experiments are negative:
+the first Smol arm falls back all48 groups and replays9.66B QK FMAs; its separate
+fully selected graph executes48groups/4608products/zero replay/fallback but
+fails131/1600 original-gate words. Tiny's first single-i8 QK/PV policy fails
+220325/256000 words under both original compiled/Torch gates. Neither is queued.
+[Calibration release](perf_records/root_source_host_quant_spacing_prelabel_20261007.json),
+[Smol section release](perf_records/root_rms4_fast_stock_packet_review_20261007.json).
+
+Root now closes3334 source/link/compiler/proof/whole pins for the controlled
+exact14-product/fence-coalesced ResNet candidate16e8f69a…3c91ef9. Current2055
+control reproduces byte-exactly, all original1000 native/strict words pass0/0,
+actual newadapter/kernel execute once and retained oldproducer never executes.
+Only one active target residual route changes; host8/runtime/weights/other
+target objects stay current2055. One stock observation is released; whole
+prediction and additive composition of separate section gains remain UNKNOWN.
+[ResNet release](perf_records/root_exact_rectifier_whole_stock_release_20261007.json),
+[latest Smol section](perf_records/root_bounded_floor_stock2064_terminal_review_20261007.json).
+
+Stock2066 is root-verified30169093,381329cycles/1.2482% below2055, all original
+1000words exact andzeroFSM.2065 failed setup beforeworkload due submitter
+HOME/USER/LOGNAME overriding the serviceidentity; replacement2066 uses the exact
+successful2064 whitelist, with no shareddaemon/config/foreignjob change.
+One actual timing sample, not two. Jack1876 gap remains7781644cycles/34.76%.
+[New ResNet whole terminal](perf_records/root_resnet_stock2066_rectifier_terminal_review_20261007.json).
+
+Accelerator coverage must be distinguished from time: ResNet principal integer
+convolutions/GEMMs, residual arithmetic and integer mean are target operations;
+host quantization/readout/layout/issue remains. Tiny2062 executes155 target
+boundaries with8.275B logicalMACs, but all22QK/22PV floating attention helpers,
+softmax and significant activation-observer work remain host. Smol's latest
+prepared-source strictwhole proves48groups/23040products/zero fallback on target;
+QK/PV matrix products are offloaded there, while softmax/numeric bounds/radix
+encoding/reconstruction/source replay/consumer checks remain host. This new
+coverage is not a new whole FireSim Smol performance result. No reliable
+accelerator/host cyclepercentage is measured; callbacks include issue/transfers/
+waits, and full PC histograms include afterROIvalidation.
+
+Generic typed closed-mask topic is published as Merlin PR48 on actual
+main7fee5cfdac, with114 source/114 installed tests and qualified package bytes.
+Root reads actual remote head/body/base. Defaults remain unchanged. The
+conservative shared inventory now61families:29Merlin bugs,24Merlin improvements,
+8model2MLIR bugs;55on main/6pending new topic families. PR47 extends family33.
+[Publication](perf_records/root_merlin_masked_PR48_publication_review_20261007.json).
+
+The generic completed-plane reconstruction topic is published as
+[Merlin PR49](https://github.com/ucb-bar/merlin/pull/49), one six-file topic on
+actual main7fee. Root rechecks958 source/wheel/installed Python payloads,
+151 packaged-data resources and50 bundled source resources.946 source checks
+and56 outside-checkout installed checks pass; inherited structure/target-name
+gate failures remain explicit. Defaults are unchanged. The experimental Smol
+integration preserves all1600 original words across48 native groups and full
+group consumer observations, with a queried1MiB workspace increase. It reduces
+complete-group strict instructions4.781%; root verifies stock2069 at4027126711cycles,
+5.381% below2064. All original consumer/statistics/guards, raw UART, actual staged
+ELF/bitstream receipts and the all-executable noFSM audit pass. This is a group,
+not a whole-model Smol result or a production approximate binder seal.
+[Delivery](perf_records/root_merlin_fused_radix_PR49_delivery_review_20261007.json),
+[stock release](perf_records/root_smol_fused_radix_stock_release_20261007.json),
+[stock terminal](perf_records/root_smol_fused_radix_stock2069_terminal_review_20261007.json).
+
+Tiny's certified integer-result publication preserves the existing table/source/
+cold continuation and removes duplicate floating finishing. Root356-pin capsule
+review and14-pin stock2067 terminal review close45056 original words, guards,
+common addresses and four ABBA windows:5036698.5→4328018.5mean cycles,14.0703%
+lower. Independent GSIM completes at14.0706% lower. The416-pin controlled whole
+successor reproduces2062 control byteexactly, preserves all256000 compiled/Torch
+words, all155 target bindings and11 other objects. Root verifies stock2070 at
+394765577cycles,15381478cycles/3.750235% below2062. All original output bytes,
+the original Torch gate, actual staging receipts and final noFSM pass. The
+remaining300M gap is94765577cycles; whole prediction remainsUNKNOWN.
+[Helper terminal](perf_records/root_tiny_M8_stock2067_terminal_review_20261007.json),
+[whole release](perf_records/root_tiny_closed_i8_whole_stock_release_20261007.json),
+[whole terminal](perf_records/root_tiny_closed_i8_stock2070_whole_terminal_review_20261007.json).
+
+Host instruction tuning does not establish a route from258.622B to5B whole
+Smol cycles. The prepared route executes23040 products and requests4152360960
+integer readback bytes across all48 actual source geometries. One rigorous
+partial-readout experiment cuts callbacks480→192/group, but source replay grows
+and complete instructions increase141.37%; it is not queued. Actual owner
+analysis finds96 distinct QK operand pairs: K/V preparation is reusable, complete
+QK/PV products have no invariant witness. Tighter encoded-digit remainder norms
+preserve correctness but lose complete cost:5.348877773B instructions,147.04%
+above the exact2024 control and2.3512% above the earlier partial negative.
+The15.335M-word scan and79880B metadata are included; no full48 or hardware run.
+[Norm negative](perf_records/root_digit_norm_partial_complete_negative_review_20261007.json).
+[Journey](golden_optimization_journey.md).
+
+The independent same-executable Smol profile assigns642M instructions/group to
+softmax/polynomial/denominator work,355M to encoding/widening and404M to endpoint
+observations plus dot bounds. These are exclusive instruction roles, not measured
+cycle percentages. The remaining strategy must reduce repeated arithmetic and
+representation work while preserving ordered reductions and escaping scale/i8
+observations. ResNet's next source-domain composition removes products9→3/17→16/
+8→7 with unchanged transfers/storage and original1000words exact. Root releases
+one stock2071 observation, now independently closed at29698347cycles,193618cycles/
+0.647726% below2068. All1000 original outputs remain exact; the owned22.387M
+reference gap is7310898cycles.
+[Smol profile](perf_records/root_fused2069_structural_role_review_20261007.json),
+[ResNet release](perf_records/root_resnet_source_domain_stock_release_20261007.json).
+[ResNet terminal](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json).
+
+The generic domain topic is published as [Merlin PR50](https://github.com/ucb-bar/merlin/pull/50).
+Root rechecks1246delivery pins and all960source/wheel/installed Python modules,
+36source/36installed tests, and actual remote main/head/body. One four-file topic
+is based on main7fee; inherited gate failures remain explicit. No main merge or
+default enablement is claimed.
+[Publication review](perf_records/root_merlin_domain_PR50_publication_review_20261007.json).
+
+The latest user direction prioritizes isolated complete attention diagnosis for
+Smol and Tiny: QK, mask/scaling, softmax and PV, comparing each quantization and
+source boundary rather than only final model outputs. Existing acceptance gates
+remain0/0for ResNet and0.03125/0.02for Smol/Tiny pending a task-budget decision.
+These tensor tolerances and stricter local bit-exact transformation checks are
+not measured classification accuracy, perplexity or robot task success. Audit
+observer axes/scales, saturation, rounding and source reductions before changing
+quality policy. Record approximation and lowering errors separately.
+
+The actual TorchAO recipe now reproduces all1600 retained Smol golden words
+exactly. All303 registered Linear modules store i8 weights;302 captured calls
+are integerized, while attention remains floating. The newly measured mixed
+BF16/F32 checkpoint→TorchAO loss is2.9199%relativeL2/maxabs0.1773094, with181/1600
+values beyond the existing tensor tolerance. That comparison is separate from
+compiler fidelity against the quantized golden and does not establish robot
+task quality. No gate is changed. [Quantization audit](smol_quantization_audit.md).
+
+Root attention diagnosis closes760Tiny stage pins and234+80Smol boundary pins.
+Tiny PV-only endpoints all pass the floating tolerance but change75595actual
+consumeri8s;7936changes occur in source-onehot first queries. Smol unchanged
+operands with wide64 reductions independently change81escapingi8s across35/48
+original states, firstsection4at56→57, withzeroescaping scalechanges. Reduction
+order and escaping quantization bins must be included in numerical contracts.
+Stock2073 prices the complete current scalar Tiny attention block:1787454→1698546
+mean cycles across fourABBA windows,4.974002% lower, original16384i8/modes/guards
+passing. This measures one context; Tiny whole2070 remains394765577cycles.
+[Tiny stages](perf_records/root_tiny_attention_consumer_stage_review_20261007.json),
+[Smol boundaries](perf_records/root_smol_attention_boundary_review_20261007.json),
+[complete attention stock](perf_records/root_tiny_complete_attention_stock2073_terminal_review_20261007.json).
+
+Model2MLIR SDPA mask PR5 is independently reviewed at7cc1b4b onactualmainbd50:
+69source/69installed tests and59source/wheel/installed modules match; actual
+remote head/main/body close. The topic fixes all-negative-infinity SDPA rows,
+mask dtype/broadcast admission and opmath casts, retaining genuineNaN/+inf and
+ordinarysoftmax semantics. No causal attribution to currentmodel errors is made.
+[Publication](perf_records/root_model2mlir_sdpa_PR5_dtype_publication_review_20261007.json).
+
+Dedicated model work now closes CPU21 stock2029 against the identical strict
+Spike/GSIM ELF. Predeclared withheld stream errors fall to0.031% for DIV and
+0.260% for FMA with dependency features; stock memory remains38.29% inaccurate.
+This is diagnostic stream evidence, with whole programs and candidate ranking
+still unqualified. [Model status](golden_fast_model_status.md).
+
+Stock2030 gather and2031 primitive calibration also pass on the same three-engine
+ELFs. New withheld mean errors: gather requested regions2.83%, resident compute
+1.88%, loads8.98%, raw readback6.59%. These are limited operational streams,
+with one held case per new family and substantial memory repeat differences;
+whole-model predictions remain unknown. [Operational pilot](perf_records/root_operational_service_model_pilot_20261006.json).
+
+Tiny's source-wide8MiB interval-table prototype measures6.531% fewer complete
+section GSIM cycles, despite more instructions. The explicit generic normal
+route now passes all256000native/strict original words and the unchanged Torch
+gate; root reclosed298pins and exact physical table/object/ELF identity.
+Stock2033 finishes424,921,379cycles,2,902,646/0.6878%above2004 in one
+observation each. Original all256000outputs pass; root reclosed nine terminal
+pins. Keep2004champion and hold performance/default promotion. Cache cause
+remains unknown; smaller source-wide partitions are being calibrated.
+[Terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
+
+More modeling work now crosses gather read counts/address extents and a second
+stream seed, with four training corners/eight withheld cases. All12cases/27
+strict counter windows pass; stock calibration2036 is complete. Its broader
+instruction/region hypothesis misses by up to40.87%. The matched resident-B
+reuse calibration2038 now completes on all three engines: array rows plus
+real-B preload demand gives5.15% maximum error on the two held M64 arms and
+predicts their ordering. Source-table size/prefix calibration2040 is complete:
+tables help M2 but all measured partitions slow M4/M8, so another table whole
+candidate is held. Five withheld cases miss7.78% with element count; adding
+logical regions worsens this to10.96%. Source-bound FP64 dependency calibration
+has passed independent root review and is released for one stock run.
+No new whole-model prediction or automatic ranking is enabled.
+[Model work](golden_fast_model_status.md).
+
+| Model/capture | Stock FireSim forward cycles | Correctness evidence | Receipt |
+|---|---:|---|---|
+| ResNet exact52/wide16, banked residual, host8, paired readout, resident/full-K weights, segmented inputs, integer mean, spatial stripes, exact14-product/four-panel residual and source-domain coefficient selection | 29,698,347 (2071) | All1000 original output words exact;193618cycles/0.647726% below2068. Three source-proven target routes change; first14batch4 and allhost/runtime/weights/other targetobjects preserved. Gap to ownedJack1876 remains7310898cycles | [2071 root review](perf_records/root_resnet_stock2071_source_domain_terminal_review_20261007.json) |
+| Full22-layer pretrained TinyLlama,8 tokens,source-exact continuation,typed closed mask,direct certified integer publication and immutable broadcast finite guards | 380,396,343 (2076) | All256000 original compiled words unchanged;original Torch gate passes.14369234cycles/3.63994% below2070 in one observation per arm.Only model.o changes;155 target bindings,11 other linked objects,actual staging/output/final noFSM pinned | [2076 root review](perf_records/root_tiny_finite_guard_stock2076_whole_terminal_20261007.json) |
+| Full SmolVLA, explicit portable expf-via-double policy, original numeric gate retained | 258,621,872,969 (1906) | All 1,600 original output words bitexact on stock hardware; original atol=0.03125/rtol=0.02 retained. ELF and bitstream identity recorded before cleanup | [1906 stock result](perf_records/smol1906_stock_hardware.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json) |
+
+Every listed hardware result pins its final zero-FSM ELF, actual staged ELF,
+stock bitstream and job-owned output. ResNet is a random-weight semantic capture;
+Tiny uses the full pretrained checkpoint. These results do not establish the
+remaining performance targets or pretrained ResNet accuracy.
+
+[Optimization journey and token ledger](golden_optimization_journey.md) records matched gains,
+regressions, ownership and actual owned-thread counters. The current DeviceRouting catalog route
+uses shared calibrated selection for explicitly supplied, source-bound contraction alternatives; it does not invoke shared whole-program search. Five compiler export/selection/build commands now expose eight AST edit surfaces. A measured singleton contraction invokes the existing shared solver and emits its actual selected object: 3,234→2,357 full-fixture GSIM cycles, every output/guard exact. This does not transfer fixture prices to a whole model. [Measured selection](perf_records/golden_calibrated_source_selection_qualification.json). The normal model route verifies a 3,434-node outlined identity plan and actual catalog/final ELF closure while compiling unchanged prepared source bytes. This remains a full-source identity admission gate. The normal build now additionally accepts `--contraction-calibrations` to run the existing shared measured selector per exact source contraction and compile its winner into the real device catalog. Independent full-model native/strict target execution closes all1,241 original i32 outputs and actual final ELF/symbol bindings. Whole-graph search and whole-model costs remain unknown. [Normal build selection](perf_records/golden_calibrated_normal_model_qualification.json). [Binding](perf_records/golden_model_plan_binding_qualification.json).
+
+The first real Tiny source calibration now closes through that normal route: resident-A/B-prefetch
+measures111,885→76,456cycles(31.67%) on a common-address synthetic signed-int8 GSIM pair
+with amplitude21 at the source contraction shape. The complete
+normal model retains all155 calls, selecting one source contraction and preserving154 other bindings.
+All256,000 original compiled words, the Torch gate, strict RV64GC Spike and final zero-FSM audit pass.
+A generic Merlin fix preserves different source-bound implementations when their tensor shapes agree.
+This is one selected contraction, not a31.67% whole-model improvement. Expansion across equivalent
+resource-legal contractions is being qualified before hardware submission.
+[Measured schedule](perf_records/tiny_resident_a_prefetch_gsim.json),
+[normal full model](perf_records/tiny_resident_a_prefetch_whole_spike.json).
+
+The expanded normal native and strict-target builds preserve all256,000 original words and the Torch gate,
+with44 selected source bindings,111 unchanged bindings and five shared implementation bodies.
+Stock1911 completes at529,006,294cycles. Its normal build also uses the current
+runtime compiler, so its comparison with1880 includes that runtime change.
+The device-only1912comparison retains every original1880 host/runtime object
+and completes at529,440,142cycles, a0.307%single-run improvement versus1880.
+Both preserve all256,000original words and remain slower than1902. No champion
+change or causal attribution to the small runtime difference follows.
+[Controlled stock receipt](perf_records/tiny_resident_a_controlled_1912_hardware.json).
+Reusing the one synthetic fixture price across those
+source-equivalent implementations is a calibration assumption; actual model operands, addresses,
+cache state and full-program timing have not been independently timed by that fixture.
+
+Bounded compact-convolution next-K weight prefetch is also now an explicit general OOT option.
+Its original-input matched capsule measures535,839→499,034GSIMcycles(6.87%), all50,176outputs
+and4,096guards exact. An independent5×5/Cin32/Cout19 i32/tail capsule also passes, and47focused
+resource/order/source-policy tests pass. Only five source-qualified device kernels change in
+the new whole arm. Whole-model hardware qualification is separate.
+[Schedule and proof](compact_weight_prefetch_schedule.md),
+[capsule](perf_records/compact_weight_prefetch_capsule.json).
+
+[Infrastructure and optimization ownership](infra_vs_dialect.md) separates correctness/integration
+fixes, portable host performance and target scheduling, with matched measurements for each gain.
+
+### Latest integration checkpoint (2026-10-06 UTC)
+
+Stock2036 completes the crossed gather calibration. The predeclared
+instruction/region model resolves all eight held cases but misses by up to
+40.87%; the earlier fixed-count2.83% result does not transfer broadly.
+Generic address-region recurrence features and matched complete table/reuse
+batteries are the next modeling work. Tiny table2033 is also a whole-model
+regression at424,921,379cycles; keep2004 at422,018,733. No model-based whole
+prediction or automatic ranking is enabled.
+[Model review](perf_records/root_gather_crossed_model_pilot_20261006.json),
+[Tiny terminal review](perf_records/root_tiny_source_interval_terminal_review_20261006.json).
+
+Stock2056 and2055 are the current Tiny and ResNet whole-model bests.
+ResNet2055 is8,162,973cycles above the permitted ZIP1876 reference;
+Tiny2056 is112,672,134 above300M. The actual current2013 comparison and its
+matching profile follow; historical profiles retain their source identities.
+
+Retained ordinary K/row loops preserve the complete primitive/pointer sequence
+of all six already-admitted resident stripe kernels. Root reclosed44,353pins,
+both normal/controlled whole gates and all command traces before release.
+Stock2039 finishes0.846% below the byte-reproduced2026 control. Six terminal
+and three named staging pins reclose; all1,000 original words and zero-FSM
+final ELF pass. One observation per arm, with current section attribution
+unknown. [Release](perf_records/root_resnet_current2026_reduction_loops_release_20261006.json).
+
+Smol's best complete12-head group is2054 at4,731,616,313cycles,2.5974%
+below2024's4,857,792,055. This is not a whole-model5B result;
+whole1906 remains258,621,872,969. Exact finite probability point sharing
+preserves every original consumer byte/scale, inputs, guards and eight stats.
+The generic Merlin implementation is published for review in
+[PR39](https://github.com/ucb-bar/merlin/pull/39), local main3fbe047833;
+remote main remains7fee5cfdac pending normal review.938focused tests,
+fresh installed sdist/wheel qualification and37outside-checkout tests pass.
+[Group stock result](perf_records/stock2024_probability_point_group_terminal.json),
+[radius stock result](perf_records/root_actual_radius_stage_stock2054_terminal_review_20261006.json),
+[root release](perf_records/root_smol_probability_point_spans_release_20261006.json).
+
+Six source-qualified spatial resident stripe kernels are composed over actual2025.
+Root independently recloses37,015pins, both whole-model native/strict exact
+gates, final noFSM, all52adapters and46unchanged kernels. Original complete
+kernel GSIM pairs improve15.8%/19.1%; no whole savings are inferred. Candidate
+stock2026 finishes30,977,892cycles with all1,000words exact; seven terminal
+pins independently rehashed by root. Latest section attribution remains unknown.
+[Release](perf_records/root_resnet_current2025_resident_stripes_release_20261006.json).
+
+Performance modeling is now a dedicated root workstream. A new same-ELF1903
+GSIM/stock geometry holdout study predicts68/70callback intervals with3.88%
+median and11.85%maximum error; host intervals still reach41.90%error.
+Spike instruction/array/footprint proxies remain inaccurate. None is licensed
+for whole predictions or matched-variant ranking. A short21-case CPU dependency,
+memory and instruction-footprint calibration battery is being qualified, with
+middle sizes withheld before measurement. Jack timing remains held out.
+[Calibration diagnostics](perf_records/paired_engine_geometry_screen_diagnostic_20261006.json).
+
+The current2024Smol same-image instruction census independently recloses54pins
+and all102allocated ELF sections of its diagnostic relink. Actual ordered
+source-dot replay contributes90.72M/2,165.15MROIinstructions (4.19%). Encoding
+costs355.32M; soft/max/denominator/alpha388.36M; polynomial340.40M. These are
+instruction counts, not cycle fractions. The polynomial has93.55Mexecuted
+stack-based flw sites; an explicit source-owned outline screen is positive
+in instructions but its complete cycle cost remains unmeasured. Optimizing
+replay alone cannot remove the current whole gap.
+[Census](perf_records/current_point2024_provider_pc_census.json).
+ResNet2013 measures32,553,639cycles,10,166,190 above the permitted ZIP1876
+reference22,387,449. Its actual conserved diagnostic2021 measures32,600,719
+forward cycles:29,338,102primitive callbacks+3,262,617host gaps. All70active
+calls occur once;47,080instrumentation cycles above2013 do not change its
+performance claim. The reference alignment rederives54current geometries and
+locates direct1,830,357, pointwise1,483,570, residual3,279,114, stem360,356,
+classifier48,973 and outside-interval3,210,900cycles of measured difference.
+Timer/numeric/input boundaries differ; reference51,717outside timers is not
+all referenceCPU time. [Current alignment](perf_records/q1013_current2013_stock2021_profile_alignment.json).
+
+Independent exact mean2018 and full-K2020 measure33,230,295 and33,026,561
+against1992; neither replaces2013. Their separate composition with actual2013
+has fresh native/strict all1,000word gates, byte-identical reproduced baseline,
+zeroFSM and8,990parent-rehashed pins; stock2023 measures31,808,394,2.2893%below2013; source-stride is not included. Paired
+source-stride2022 is a separate one-kernel arm with7,306parent-rehashed pins,
+complete original-input GSIM13.96%gain and independent small-tail11.77%loss;
+stock2022 measures32,444,367,0.3357%below2013; the option remains off by default.
+[Composed release](perf_records/root_resnet_current2013_mean_full_k_release_20261006.json),
+[source-stride release](perf_records/root_resnet_paired_source_stride_current2013_release_20261006.json).
+
+The audited shared change inventory now counts55implemented families:
+28Merlin bugs,19reusable Merlin improvements and8model2MLIR fixes.
+Merlin owned changes are published as13squashed topics on main7fee5cfdac;
+the historical family commit hashes are provenance, not squashed ancestry.
+Fresh whole-model hardware qualification of this new compiler head remains
+unknown. [Inventory](perf_records/non_oot_change_inventory_20261006.md),
+[published verification](perf_records/merlin_main_upstream_release_20261006.md).
+
+Tiny1997 exact squared-sum composition measures425,223,137cycles. Its separately
+qualified outline composition2002 improves to423,831,503, before the new2004composition. The300M target remains unmet. All256,000 original words/Torch gate,155bindings and final
+executable noFSM pass. A new generic2×4CPU contraction tile improves original
+QK/PV complete sections9.5156%/7.1848% in GSIM;88core tests and8independent
+RV64cases cover actual raw words/5FRM/sticky flags, alias/empty/tail cases.
+Normal whole composition closes all256000native/strict outputs and155bindings;
+stock2004 measures422,018,733cycles,0.4277%below2002. The remaining300M
+target requires28.91%reduction; capsule gains are not added.
+Packed readonly RHS regresses1.2586% and stays disabled. A separate transposed
+stationary-activation experiment includes all runtime permutations and is
+unmeasured on stock. [Current Tiny](perf_records/stock2002_tiny_sqs_outline_terminal.json),
+[rectangular proof/cost](perf_records/tiny_rectangular_contraction_capsule_journey.json),
+[packed negative](perf_records/tiny_packed_rhs_current_completed_negative.json).
+
+Smol's whole stock1906 remains258,621,872,969cycles. Complete original group
+1993→1994 improves5,942,739,530→5,641,060,605 with word/private-soft/i64 changes.
+The matched encoded-row/spans pair2000→2001 improves5,504,565,702→5,365,194,709
+(2.5319%). These are group results, not whole-model5B evidence. A new measured
+composition retains encoder/spans and adds exact floor/ceil narrowing,
+probability-bin reuse and four-cell polynomial scheduling:2,422,597,253→
+2,288,221,154retired instructions (5.5468%) with all original consumer outputs,
+eight stats and full1600native words unchanged. Its fresh normal implementation
+seals one123,012,928-byte pool/48calls,actual compiler/dependency/library/query
+identities, retained source fallback and all-executable noFSM. Stock2003 closes5,288,926,830cycles,1.4215%below2001;
+no whole target execution is claimed.
+[Matched spans stock](perf_records/stock2001_encoded_producer_spans_terminal.json),
+[composed group](perf_records/frontier_encoded_spans_cast_bins_four_qualification.json),
+[fresh normal seal](perf_records/smol_normal_frontier_composed_qualification.json).
+
+The root exact absolute-product prototype computes a second exact matrix to
+replace norm bounds while preserving source-FMA uncertainty.42focused tests
+and the original complete-consumer group pass; source replay falls, but group
+instructions rise7.7934%. Extra primitive products, plane conversion,
+reconstruction and one1MiBworkspace are included. It stays experimental;
+two cost partitions are also instruction-negative (+5.851%/+1.960%). A
+one-plane coarse upper retains all1600native outputs but costs1.735%more
+complete-group instructions; a binary32radius costs2.632%more. None is
+promoted or timed on stock. One-endpoint and
+sparse/raw-key complete-cost regressions also remain recorded and unpromoted.
+
+Merlin integration now includes generic exact narrowing capabilities, four-cell
+source scheduling and rectangular contraction alternatives. Static CPU rounding
+instructions remain in OOT. A packaging fix declares12previously missingruntime
+headers/templates; two installed-resource-only source compile checks pass.
+Producer coverage uses identifier/punctuation tokens rather than forbiddenregex.
+
+The new distinct word-domain proof makes prepared softmax and encoded-word
+enclosures safely composable. The original 1,024-interval section improves
+36.6648% in matched GSIM runs. Complete-group retired instructions, including
+allocation and additional replay, drop 2,726,638,089 to 2,537,394,919 (6.9405%).
+The full 48-call native composition preserves all 1,600 original outputs.
+Stock1994 now measures5,641,060,605cycles for this complete-group composition. A fresh normal build is
+now consistently resealed after an audit found inherited workspace and compile-manifest
+identity conflicts in prior experiment metadata. Actual execution observations
+remain recorded separately; those old seals are not internally consistent.
+Merlin now has a reusable consistency validator with 22 focused tests covering
+stale workspace, library, recipe, dependency and duplicate identity conflicts.
+Root independently recloses the new 244-pin normal receipt, all 1,600 outputs,
+48 calls in one pool, retained source fallback and fresh final executable audit.
+Whole target execution remains pending.
+[Matched stock pair](perf_records/stock1985_soft_floor_candidate_terminal.json),
+[word proof](perf_records/word_soft_domain_matched_interval_qualification.json),
+[complete composition](perf_records/word_soft_i64_complete_group_qualification.json).
+[Current normal closure](perf_records/root_smol_normal_word_integer_sealed_reclosure.json).
+The fresh encoded-row norm proof independently closes all 207 capsule and 241
+normal-build pins, all 1,600 native outputs, forced retained-source fallback,
+the enlarged 123,012,928-byte pool and final executable zero-FSM audit. Its
+complete group uses 2.1687% fewer instructions; default emission stays unchanged.
+A separate private successful-producer span proof removes repeated softmax
+admission scans: 2.3555% fewer complete-group instructions on the word control,
+and an independently measured 2.4077% on the encoded-row control. Both full
+48-call native gates pass. No new normal seal or whole hardware performance
+claim is made for the span composition.
+[Encoder normal reclosure](perf_records/root_encoded_row_normal_and_terminals_reclosure.json),
+[producer spans](perf_records/private_softmax_producer_spans_qualification.json).
+
+The original source-rounding sensitivity diagnostic preserves QK alone, PV
+alone, or both stages. The first two retain 92 and 168 failures under the
+unchanged .03125/.02 whole gate; both-exact matches all 1,600 words. Neither
+entire stage's certification can be discarded based on this experiment.
+[Stage isolation](perf_records/smol_source_stage_isolation_journey.json).
+The isolated constant-clamp
+arm1920 measured527,211,739; it was effectively tied with1902 and is now slower
+than1926. No gains are added across arms.
+
+The complete reentrant Smol attention executor now passes all1,600 original
+native words, every9,437,184 original quantized byte and12,288 escaping scales
+across48 groups. One caller-owned121,963,584-byte workspace replaces mutable
+global numeric state and executor allocation. The normal model builder now
+accepts separately pinned host/provider objects and retained source fallbacks,
+with typed ABI/import/final-link checks; the device catalog still requires
+closed kernels. Default-disabled hook builds are byte-identical. Full new
+pooled whole-target integration remains pending.
+[Native workspace](perf_records/smol_quant_frontier_workspace_native_journey.json).
+
+The actual normal-compiler provider now has separately closed FMA/copy, endpoint
+row preparation and exact-floor capabilities. The complete original12-head
+production capsule drops9,624,336,737→5,709,055,956→5,034,507,191 functional
+Spike retired instructions. Full48 native execution preserves all1,600 original
+words,9,437,184 compiled quantized bytes and12,288 escaping BF16scales.
+[Production row/floor](perf_records/attention_prepared_rows_floor_target.json),
+[full48 original consumer gate](perf_records/smol_numeric_rows_floor_full48_journey.json).
+
+The next explicit standard finite-classification capability reduces that same
+production capsule5,034,507,191→3,527,309,706instructions(29.9373%), with all
+196,608 accepted carriers and guards exact, the same refinement/replay counters,
+480 product calls and86,507,520logical readbackbytes. All device/driver/bridge/data
+objects are unchanged. An independent565,925-check target representation gate
+covers signed zeros, subnormals, infinities and both NaNclasses in five rounding
+modes. Disabling the new choice reproduces the prior provider object byteexact.
+The native compiled helper remains byteidentical to the accepted full48row/floor
+SO; independent identity/consumer reuse is closed. These are section instruction
+savings, not stock cycles or a5B whole-model claim. Normal pooled whole-target
+integration is running; performance admission remains separate.
+[Classification proof and matched measurement](perf_records/smol_standard_classification_complete_group.json).
+
+An independently admitted absolute-value capability further reduces this same
+complete-group instruction count3,527,309,706→3,370,349,620(4.4499%). Its default
+object remains byteidentical.565,925 actual target representation checks pass
+across five rounding modes; all196,608 accepted carriers/guards and refinement
+counters remain unchanged. The new frozen native helper independently passes
+all48 original input bindings, all1,600 original whole outputs and all9,437,184
+compiled quantized bytes/12,288 escaping scales.209 live source/compiler/artifact
+pins and both final executable-section audits close. No hardware timing is
+claimed for this capability.
+[Absolute-value proof](perf_records/smol_standard_absolute_complete_group.json),
+[full48 compiled consumers](perf_records/smol_numeric_absolute_full48_journey.json).
+
+The ordinary prepared whole Smol model now compiles and links all17 provider
+objects through their actual companion LLVM ABI, with one pooled workspace and
+retained source fallback. Its new physical native route passes all1,600 original
+outputs with48 calls/zero fallback; forcing null workspace independently checks
+the actual compiled source fallback's196,608 endpoint words and input/descriptor
+ownership. Whole strict-target execution is running. Stock1944/1945 compare the
+two qualified row/floor and classification complete-group capsules; they are
+not whole models. Stock1947 measures only the qualified ResNet residual-output
+arm against1903, without composing other wins.
+[Ordinary Smol build](perf_records/smol_normal_workspace_provider_build.json),
+[physical native/fallback gate](perf_records/smol_normal_workspace_provider_native.json),
+[residual release](perf_records/residual_output_guard_release_closure.json).
+
+
+For the same complete original12-head device group, portable exact floor and
+source multiply/row invariants lower the functional Spike instruction proxy
+3,528,972,523→3,494,086,004→3,303,437,300. All196,608 quantized observations,
+256 scales,4,461,440 replay FMAs and480 product calls remain unchanged.
+These are capsule counters, **not** stock hardware cycles or a5B whole forecast.
+[Reclosed arithmetic receipts](perf_records/smol_exact_row_arithmetic_complete_group.json).
+The next directed-conversion arm further reduces that counter to3,121,235,451
+(5.5155% below the row arm), with all original quantized values/scales exact and
+576 fewer replay FMAs. One additional internal carrier differs; original source
+gold and quantization observations remain fixed. Full new whole-model/production
+qualification is separate.
+[Directed narrowing](perf_records/smol_directed_cast_complete_group.json).
+
+Stock packing job1909 now verifies776,043,123→665,638,655cycles across
+matched complete packing sequences (14.2266% reduction), all12output digests,
+representation metadata and guards exact. This is a packing-section result,
+not a whole attention or model speedup.
+[Hardware receipt](perf_records/smol_integer_packing_1909_hardware.json).
+Compact weight-prefetch job1910 completes at38,332,743cycles, only0.3540%
+below its1897control and above the36,102,704current ResNet best. It does not
+change the selected implementation. Jobs1911and1912are now complete; both
+remain above the selected Tiny result.
+[1910](perf_records/resnet_compact_weight_prefetch_1910_hardware.json).
+
+Tiny broadcast-axis pointwise sharing now passes all256,000original native,
+Torch and strict target words. The normal compiler control/relink is byteexact
+and onlymodel.o changes. Stock1932is queued versus1880. Its actual-source
+ABBA GSIM capsule is incomplete after the first control interval; candidate
+timing remains unknown. [Qualification](perf_records/tiny_broadcast_packet_whole_qualification.json).
+
+Full Smol stock1906 completed at
+02:57:36Z after submission at22:52:37Z. Engine elapsed was8,918.2seconds
+(about2h29m); submission to completion was about4h5m, including queue/setup.
+Its258.622B forward cycles are51.724times the5B target. Correctness now has
+stock whole-model evidence; the performance target remains unmet. Current-best
+ResNet profile1919 completed on stock hardware:36,138,975 forward cycles conserve
+30,678,196 device-wrapper cycles plus5,460,779 host-gap cycles, all70 events and
+1,000 original outputs exact. This profiles the prior1903 arm, not new1927.
+[Stock profile](perf_records/resnet1903_stock1919_profile.json).
+The same qualified ELF
+completed in the separately pinned GSIM memory regime:33,939,464forward cycles
+conserve29,422,251device-wrapper cycles plus4,517,213host-gap cycles, including
+the73,136tail. All1,000 original words and all70boundary events pass. This is
+not stock1919 and does not repartition the stock13.72M reference gap.
+[Completed profile](perf_records/resnet1903_gsim_conserved_profile.json).
+
+- **Tiny typed source math:** Merlin's explicit
+  `hoist_broadcast_source_rsqrt` feature proves a smaller affine iteration domain
+  before bufferization, retaining source casts, arithmetic order and live uses.
+  Actual control code repeats737,280 logical rsqrt calls for360row inputs.
+  The complete original first-normalization capsule measures paired means
+  2,369,163→838,269GSIMcycles(-64.6175%), all16,384outputs/128guards exact.
+  Five rounding modes and identical sticky flags are independently qualified.
+  Capsule allocation/traffic are timed with a small common bump allocator;
+  whole frozen allocator/address context needs stock qualification. The full
+  model native/Torch/strict/noFSM gates now pass all256,000original words with
+  onlymodel.o changed. Stock1926 verifies461,389,700cycles versus1880;
+  this is the current best Tiny result and remains above300M.
+  [Source/capsule](tiny-broadcast-math-20261005.md).
+- **ResNet borrowed projection input:** typed Merlin ownership/view acceptance
+  and an OOT segmented resident-input schedule remove copied logical matrices.
+  The matched original consumed401,408bytes+4,096guards measure
+  866,791→538,815GSIMcycles(-37.838%). Unread physical owner cells in that
+  isolated fixture are synthetic zeros, not original producer state. The normal
+  source/catalog build now binds three accepted views and has passed all1,000
+  original native/strict outputs; frozen1903 comparison stock1927 verifies
+  35,152,730cycles, the current best ResNet result.
+  [Measured projection](perf_records/segmented_input_original_projection_gsim.json),
+  [normal compiler route](segmented_input_view.md).
+- **Compact ordinary CPU spatial command loops:** the explicit OOT
+  `spatial_command_loops` compiler/export option preserves the exact primitive
+  sequence, first weight flip, stationary reuse, accumulator initialization and
+  bounded tails. Shared Merlin loop metadata prevents LLVM from undoing the
+  choice. The complete independent15,257-i32-output AB/BA capsule reduces
+  paired mean4.0067%; current schedule geometries compile from120,366→39,744,
+  211,352→63,498and82,490→28,850text bytes. Bytes are not cache misses or
+  measured cycle savings. The complete50,176-output current stride2geometry
+  capsule now measures727,093/726,232→716,175/711,970GSIMcycles(-1.7326%),
+  using independent deterministic inputs. Normal upstream and frozen1903
+  builds both pass all1,000original words/native/strict/noFSM. All52adapters,
+  41unselected requant kernels and original host/runtime/weights are retained
+  in the controlled arm;11source-derived kernels change. Fresh normal host
+  bytes differ from1903 and are disclosed separately. Stock1928 is queued
+  versus1903; no whole cycle gain is established.
+  [Capsules](perf_records/flat_spatial_command_loop_qualification.json),
+  [normal/frozen full gates](perf_records/resnet_spatial_cpu_loops_normal_whole_qualification.json).
+- **Exact readout:** source-proven domain selection is now an ordinary OOT
+  provider option backed by Merlin numeric proofs and explicit storage guards.
+  Both actual readout families pass complete AB/BA RTL capsules and the normal
+  full-source build passes all1,000original native/strict words. The normal
+  runtime differs from historical1903 and is disclosed; no isolated whole
+  hardware result is inferred. A further complete-domain pair proof permits
+  two scaled i8stores plus a full decoder, avoidingi32readback and dot replay.
+  Original75,264outputs and independent boundary/tie/conversion cases pass on
+  the target. Complete readout capsules including both stores and full decoding
+  reduce the two families by about71.0%/70.6%; independent convolution tails
+  also pass. The normal preparation now proves the fresh, sole-use scratch
+  producer before changing its actual allocation from i32 to i8. The two
+  selected host allocations are 50,240 and 25,152 bytes including alignment.
+  Normal and frozen1903 builds pass all1,000 original native/strict words and
+  the complete zero-FSM audit. The earlier oversized-scratch build remains a
+  diagnostic. Explicit compiler byte-copy selection also passes its own
+  complete RTL pairs: 71.41% and 70.40% reductions for the two readout ROIs.
+  The qualified typed allocation candidate is queued as stock1930; a whole
+  cycle improvement remains unknown.
+  [Normal domain](perf_records/resnet_normal_producer_domain_qualification.json),
+  [pair proof](perf_records/resnet_exact_pair_readout_feasibility.json),
+  [target store contract](paired_readout_store.md),
+  [complete measured decoder](perf_records/exact_pair_readout_matched_gsim.json),
+  [compiler-copy RTL](perf_records/exact_pair_readout_builtin_matched_gsim.json),
+  [actual typed whole route](perf_records/resnet_paired_readout_typed_whole_qualification.json).
+
+- **Stem ordinary CPU command loops:** the normal upstream option retains the
+  original primitive schedule, pooling, input traversal, initialization and
+  bounded tails. The complete original 200,704-byte output capsule improves
+  1,335,580 to 1,294,977 GSIM cycles (3.0401%), with all output bytes and
+  4,096 guards exact. An independent shape improves 11.53%. Compiled text
+  shrinks 87.8%; that is not a measured cycle reduction. The normal build and
+  stem-only frozen1903 build pass all1,000 original native/strict words and
+  the zero-FSM audit. Stock1929 is queued.
+  [Capsules](perf_records/stem_spatial_command_loop_capsules.json),
+  [whole qualification](perf_records/stem_spatial_command_loop_whole_qualification.json).
+
+- **Smol source coverage:** the current whole route leaves384BF16 contractions
+  as ordered CPU f32 FMA loops, totaling19,327,352,832 source FMAs. This is an
+  exact source-work census, not an attributed cycle total. Optimized complete
+  attention-head capsules are separate experiments and are not enabled in1906.
+  The source QK result remains live through f32max, source polynomial exp and
+  denominator reductions; PV retains ordered f32 partial additions and scaling
+  before BF16 conversion. A narrower early BF16 rounding substitution is
+  therefore refused. Generic Merlin source analysis now closes 48 groups,
+  each retaining eight contractions and 50 original operations, through a
+  BF16 endpoint with no live f32 escape. Parent revalidation on the immutable
+  original source passes all 48 groups. Group closure does not establish a
+  numerical certificate, profitable implementation or whole-model speedup.
+  Ordinary source-exact partitioning/binding is now integrated in Merlin;
+  the full-source control preserves384roots and48typed calls. An actual group0
+  read-only tap preserves every original1,600full-model output word, and its
+  extracted50-op source helper matches all196,608BF16words independently.
+  A fixed one-adjacent-BF16-bin interval policy reduces local source fallback
+  from94,066,240to8,423,360FMAs (23.36%to2.09%of402,653,184sourceFMAs),
+  with53local word changes inside the proved bound. Exact-policy control is
+  retained. Independent random/mixed/all-masked full-shape source checks pass.
+  The original whole-model atol=.03125/rtol=.02 gate now rejects this policy:
+  113of1,600outputs fail. The identical compiled image and writer ABI with
+  exact endpoint reconstruction passes all1,600original words bitexact;
+  all48endpoints also match independently compiled original groups. This
+  isolates numerical propagation, rather than a grouping or ABI error.
+  Exact reconstruction replays5,507,717,696source FMAs(28.497%); the rejected
+  bounded policy replays429,497,664(2.222%). A single separate center-only
+  reconstruction retaining the full source DAG also fails121of1,600outputs.
+  Neither approximation is enabled and the gate remains unchanged.
+  [Paired control and rejection](perf_records/smol_source_group_bounded_exact_journey.json).
+  Main QK/PV products have independent actual target integer-plane checks;
+  this does not establish whole-model target dispatch or profitability.
+  The M256/head0 target screen verifies1,802,240i32readout words, but its
+  prepared-polynomial path retires456,096,296instructions versus232,955,195
+  for source CPU code. These are instruction counts, not FireSim cycles.
+  actual plane packing, readouts, certificate scans, source replay and host
+  softmax must be timed together before promotion.
+  [Local feasibility](perf_records/closed_bf16_endpoint_feasibility.json),
+  [independent reclosure](perf_records/closed_bf16_endpoint_independent_reclosure.json).
+  [Parent revalidation](perf_records/smol1906_source_group_parent_reclosure.json).
+
+The user reported an earlier approximately4B Smol implementation. Recovering its
+provenance and fast route is now a priority. The 258.622B result describes the
+current qualified build and does not claim the best historical Smol result.
+The owned historical610plan has cached prefix KV/masks, flow state and timestep
+inputs, with no image input; it represents a cached-prefix denoising trajectory.
+Its arithmetic3.3B-per-step average does not establish image-forward equivalence.
+Separate Exo3.22–3.72B reports remain unresolved in permitted owned artifacts.
+[Historical scope](perf_records/historical_smol_cached_prefix_scope.json).
+Separate earlier cycle reports require workload, timing boundary, accuracy and
+ISA comparison before their performance can be transferred to this build. The
+original atol=.03125/rtol=.02 gate remains fixed; bitexact whole output is beyond
+that required criterion.
+The retained owned job610 reports33.085B cycles and declares a ten-step
+trajectory with an older atol=.06/rtol=.05 gate. Its actual ELF contains FSM
+instructions. Dividing by ten gives an arithmetic average, not a separately
+measured step; the sibling harness's ELF differs, so exact linked timing scope
+is not established by that harness. This artifact is not a drop-in replacement
+for1906. The separate near4B Exo reference source and gate remain unclosed in
+permitted owned copies. [Historical audit](perf_records/historical_smol_job610_audit.json).
+
+- **Merlin host copies:** optional private uniform-fill copying removes four
+  copies and two temporaries under a complete ownership/order proof. Frozen1903
+  runtime whole validation preserves all1,000 original words and reduces
+  retired instructions9,246,562→9,203,553. A separate longest-common-contiguous-
+  suffix rewrite preserves fresh distinct allocation roots and lowers three
+  strided copies to ordinary contiguous memcpy calls:
+  9,246,562→9,199,529instructions. These are0.465%/0.509% instruction changes;
+  neither is a measured stock-cycle improvement. The actual post-bufferization
+  transfers are i8 with256/512/1024byte suffixes. Earlier f32 semantic view
+  offsets are element offsets and do not authorize direct i8 device loads.
+  [Uniform proof](perf_records/resnet_uniform_fill_copy_whole_qualification.json),
+  [suffix proof](perf_records/resnet_contiguous_suffix_copy_whole_qualification.json).
+  The border+uniform+suffix composition also preserves every original word
+  and frozen runtime:9,246,562→9,156,449instructions(-0.975%).
+  [Composition](perf_records/resnet_host_copy_composition_qualification.json).
+- **OOT resident-A DMA coalescing:** general resource/layout proofs combine
+  legal adjacent input tiles without changing allocated cells or reduction
+  order. Complete original capsules measure288,847→277,410 and
+  563,901→552,245GSIMcycles, with all outputs and guards exact. Stock1922 is
+  queued against the frozen1897 control; whole-model gain and composition with
+  current1903 remain unknown.
+- **Exact Smol reconstruction:** a new explicit Merlin helper accumulates
+  canonical weighted i32 groups in separately owned i64 scratch, then converts
+  once to binary64. Its existing absolute-prefix proof prevents overflow and
+  rounding. Constant weights inside each case produce constant shifts in
+  ordinary CPU codegen without shifting negative signed C values. Original
+  full-head native and strict target words and replay/readback counts remain
+  exact. Complete unchanged-device RTL pairs reduce cycles7.3715% for the
+  variable-weight arm and14.4479% for its separate constant-case arm. The
+  latter retains30calls/47,185,920readback bytes and all65,536 original words;
+  one complete-head stock comparison is queued as1924 versus1917. Neither result is a
+  full-head or whole-model cycle forecast.
+  The earlier composed encoded-zero/support arm was rejected:
+  original bounded paired GSIM mean+1.7625%, despite exact outputs and guards.
+  [Selected exact head](smol-exact-i64-reconstruction-20261005.md),
+  [negative journey](smol-encoded-zero-groups-20261005.md).
+- **Fast cycle estimation:** shared Merlin validation now requires grouped
+  held-out absolute errors and within-workload ranking, with unresolved or
+  out-of-domain features remaining unknown. The counter-only independent fit
+  predicts45.95M for Jack's measured22.39M and fails by105.25%; it is disabled.
+  Isolated copied-engine operand telemetry preserves stdout and the complete
+  PC histogram byte for byte and binds70 actual current entries and54+16
+  reference entries. It supplies command geometry and requested payload,
+  while physical DRAM traffic and overlap remain unknown. The first additive
+  operand fit also refuses nonnegative terms. The CPU-role census now closes
+  all70 actual current bodies and24 reference physical groups covering54
+  measured calls, with zero unknown encodings. Stem touched instruction bytes
+  are174,566 current versus24,042 reference. This is observed code footprint,
+  not cache misses or cycles. Command dependencies remain unknown.
+  [Counter check](perf_records/counter_only_fast_estimate_reference_check.json),
+  [operand fit refusal](perf_records/additive_operand_fast_estimate_fit_rejected.json),
+  [telemetry](../support/gemmini_spike_telemetry/README.md).
+
+Stock reference job1876 now reproduces Jack's permitted ZIP reference at **22,387,449 cycles**,
+with all1,000 reference logits passing its self-check and54 buffered layer timings.
+The reference has different numerical coefficients and physical boundaries; this result does not
+qualify our original-source model. [Same-stock reference](perf_records/q1013_diagnostic_reference_firesim.json).
+
+[Remaining ResNet gap](resnet_current_gap_status.md) records the measured historical
+section comparison and the unresolved attribution of the current13.72M-cycle gap.
+The qualified current-best1903 profile is queued as1919; historical1874 timings are not
+reported as current section costs.
+
+## Current compiler work and ownership
+
+The OOT dialect is a general compiler backend. Production decisions use input semantics,
+shapes, layouts, numeric contracts and hardware capabilities; model names, captured IDs and
+benchmark constants are confined to experiment selection/receipts. See [AGENTS.md](../AGENTS.md).
+
+Merlin now owns complete requantization transition proofs, CPU integer readout and guarded
+contiguous/packed mean code generation. OOT delegates to those owners and retains device
+schedules, instruction lowering, resource facts and target ABI wrappers. The extraction
+preserves all proof and generated C bytes for five independent cases and both actual source
+readouts; generic numeric tests moved to core. [Extraction receipt](perf_records/generic_numeric_owner_extraction.json).
+
+Structural bounded host RNE legalization and common tensor permutation proofs now also live
+in Merlin; the OOT provider delegates with unchanged qualified object/C bytes. The general
+resident compiler policy chooses the same seven kernels from shape/padding/resource facts,
+without a resident source-ID selection list, and reproduces the qualified device object and
+rewritten IR byte for byte. [Policy equivalence](perf_records/resnet_resident_compiler_policy_equivalence.json).
+
+Generic source-bound post-offload callbacks and explicit full-write/result-identity contracts
+now let the normal model builder expose fresh output ownership. All155 Tiny calls are covered,
+with native and actual Spike outputs unchanged. Isolated hardware arm1842 measures607,616,796 cycles versus610,246,484 in1835 (0.431% lower); device bytes are unchanged and prefetch is off. The separately gated ownership+prefetch composition1846 verifies569,151,067 cycles,1,946,440 (0.341%) below1841, with identical device bytes. This is a single-run small improvement, without a variance-adjusted claim.
+Eight-output/K2 plus device prefetch arm1841 now verifies571,097,507 hardware cycles,0.300% below1839; this small difference is one run, not a variance-adjusted claim.
+The current1837 four-output/K4 hardware profile conserves155 calls and attributes611,478,982
+interior cycles to219,073,155 device and392,405,827 host; intervals include all intervening
+operations after fusion, not one source operation. [Profile](perf_records/tiny_current_k4_profile_firesim1837.json).
+
+The next ResNet resident channel-loop/grouped-row composition passes all1,000 outputs in native
+and actual final-ELF Spike, with an identical1836 host object and only seven device kernel
+objects changed. Stock FireSim1844 verifies43,514,726 cycles,1.582% slower than1836; that arm was rejected. That target composition remains qualified; newer host-packet arm1886 is now best in the table above. The rejected1844 arm retires9,467,083 instructions versus9,946,365, demonstrating that fewer Spike instructions did not imply a FireSim improvement. [Qualification](perf_records/resnet_resident_channel_loop_spike.json).
+
+The1849 profile control has22,989,952 calculated padded mesh geometry cycles:
+8,893,440 pointwise,7,990,272 direct,5,193,216 residual,784,000 pooled stem
+and129,024 classifier. All70 kernels are bound to the actual1850 source profile,
+which measures33,814,043 device cycles plus8,489,121 host cycles. This occupancy
+describes the selected arithmetic and tiling, not every possible exact algorithm.
+Pinned RTL can execute shorter WS waves when operand extents, garbage D and
+transposer state allow it. This padded count is not a mandatory cycle floor.
+Exact variable-wave issue accounting and alternative epilogues are being
+investigated alongside host and transfer improvements.
+[Current geometry](perf_records/resnet1849_current_issue_geometry.json).
+
+General complete-M input residency and a shape/resource/command-cost comparison
+of resident and banked transfer families are now implemented as explicit,
+default-off OOT compiler options. Five actual capsules pass outputs, guards,
+final noFSM and strict RV64GC Spike; the paired wide contraction saves22.69%
+fenced GSIM kernel cycles, while total harness cycles increase. The whole
+transfer-policy arm preserves1849 host/shim/weights bytes and all1,000 original
+output bits in native and actual Spike, changing24 dense kernel objects.
+Stock FireSim1853 verifies40,479,548 cycles,1,790,260 (4.235%) below1849.
+This qualified the transfer arm. The independent residual arm1854 verifies
+40,981,079 cycles,3.049% below1849. Both strategies compose in a candidate
+with all1,000 original native and actual Spike words exact. The1861 UART counter39,201,279
+lacks complete actual staging proof and remains historically **unverified**. Its strict immutable
+rerun1874 now verifies39,201,279 with all1,000 original words exact and staged ELF/bitstream
+closed:1,278,269cycles(3.158%) below1853. This was the best before1886 host packets.
+[Verified composition](perf_records/resnet_transfer_residual_composed_firesim.json).
+No additive whole-model gain is inferred.
+[Schedule](multirow_resident_a.md),
+[whole gate](perf_records/resnet_transfer_command_policy_spike.json).
+
+The additional reference-parity worker identified a missing complete-input,
+full-reduction weight-resident convolution schedule for wider feature maps.
+The general stripe policy passes40 focused tests and independent/tail capsules.
+H56/C64 saves15.89% fencedGSIM; H28/C128 saves19.22%, full outputs/guards exact.
+All52 source numeric proofs are retained; only six device objects change versus1853.
+Original1,000 whole native+strictSpike words remain exact. Stock1878 verifies39,754,283cycles,
+725,265(1.792%) below1853 with actual staging closed. Target composition control1874 is39,201,279; the newer1886 host-packet arm is38,603,949.
+The independently qualified stripe+transfer+residual composition now verifies38,468,933cycles
+in stock1897,1.868% below1874 and0.350% below1886(single-run evidence);
+its host/runtime/startup/weight objects remain identical1874. No additive gain is inferred.
+[Verified stripe composition](perf_records/firesim1897_resnet_stripe_composition_verified.json).
+[Isolated hardware](perf_records/resnet_resident_stripe_policy_firesim.json).
+[Residency strategy](resident_stripe_conv.md).
+
+Stock QK64 exact source replay measures1,137,275→910,407 cycles for one versus
+four independent outputs (1856/1857),19.95% lower, all1,024 original words exact.
+Generic Merlin selected BF16 widening includes allocation and conversion in
+each replay capsule. QK4 LHS-only stock1872 measures828,986cycles,8.94% below1857.
+PV4 stock1873 verifies168,142cycles; strict control1875 verifies180,776,
+a 6.989% matched reduction, with all64 original words exact and staged hardware pinned.
+[Strict PV control](perf_records/ordered_attention_pv_control_firesim.json). Both-operand M1 widening is rejected. QK16 passes original native/strictSpike/zeroFSM and stock1883 now verifies814,343cycles,1.766% below LHS-widened QK4 and10.552% below1857. [QK16](perf_records/ordered_attention_qk_lhs16_firesim.json). These are replay capsules, not a5B full
+SmolVLA result. [Hardware pair](perf_records/attention_qk64_replay_firesim.json),
+[complete widening costs](perf_records/ordered_replay_selected_widening_spike.json).
+
+Smol's full native and actual target gates are now exact with the explicit generic math policy.
+The first optimized RV64GC host compile timed out at900seconds on a large monolithic function.
+Generic loop extraction retains the full native original gate bitexact all1,600 outputs. An initial77.4-second prototype also altered original function attributes; it is not final policy timing. The corrected generic helper-only inlining policy preserves original attributes, compiles through the normal pipeline in111.254seconds and passes all1,600 original native outputs exactly. Before the math policy both full actual targets failed89/1,600 with identical output bytes; these failed receipts remain historical evidence. The newer source-order schedule retired134,730,816,466instructions versus327,506,537,392; neither is a hardware-cycle result. All first-layer Q/K/V/output/fc1/fc2 integer A/B/C boundaries match the same accepted native path, which did not certify separately carried floating scales. [Six-stage trace](perf_records/smol_target_six_stages.json). A separately labeledO0 correctness ELF also builds,
+passes the final no-FSM audit and runs in Spike. Reusable host fusion/compilation
+scalability and cheaper explicitly gated device attention remain work. A source-derived post-vision
+suffix now passes all1,600 original final bits on actual target execution with the old failing runtime
+objects frozen; this localizes the remaining discrepancy to the vision prefix. The later fifth-block expf diagnosis is documented below. [Frozen-runtime suffix](perf_records/smol_postvision_suffix_frozen_runtime.json).
+The diagnostic supplies a captured intermediate and is separate from whole-model qualification; the exact scalar vision
+attention has19.33B MACs and cannot by itself establish the5B target.
+
+General remaining-row B-slot prefetch selects seven pointwise kernels from shape/resource facts.
+Its matched full-range capsule saves5.36%GSIM; all1,000 whole native/Spike words are exact with
+unchanged1853 host/runtime/weights/shim. Stock1888 verifies40,148,896cycles,330,652(0.817%) below its1853 control, but slower than current1886 best; composition is unmeasured. Generic Merlin bounded RNE packets
+save42.49% warm cycles on a complete quantization/packing capsule; the whole arm preserves original
+1,000 words and all13 checked nonhost objects; stock1886 verifies38,603,949cycles. The first redundant dead-branch arm was
+rejected before hardware. Tiny two-lane scalar pointwise packets save22.09% warmGSIM on the full
+capsule; stock1880 now verifies531,072,370wholecycles,38,078,697(6.6904%) below1846, all256,000 original words/Torch gate exact and actual staging closed. [Hardware](perf_records/tiny_pointwise_packet_firesim.json). Other queued arms remain pending experiments.
+
+
+The Smol diagnosis closed the first four isolated vision blocks, post-layernorm and
+the language/action suffix against original captured states with the original failing runtime
+frozen. The fifth vision block (index4) passes natively and diverges on the target; the next
+isolated block passes. This localizes a reproducible failure without certifying the whole model.
+Replacing only expf with diagnostic native results restores all786,432 original fifth-block bits, with zero lookup misses. The generic optional `(float)exp((double)x)` policy restores this entire block and full native/actual-target all1,600 final bits. Lookup stays diagnostic-only. The normal build reproduces all executable/runtime/weights/input bytes and loaded segment addresses, sizes and permissions, differing only in the diagnostic marker; its gate is explicitly inherited by that complete equivalence, without claiming a new replay. Stock1906 is the single qualified hardware baseline, cycles pending. [Full target](perf_records/smol_full_double_exp_target_exact.json), [normal build](perf_records/smol_normal_host_math_policy_equivalence.json), [causality](perf_records/smol_block4_expf_causality.json).
+[Localization](perf_records/smol_later_vision_block_localization.json),
+[corrected block2 and rejected diagnostic input](perf_records/smol_vision_block2_corrected_target.json).
+
+The complete original attention-head hardware pair rejects the gamma certificate candidate:
+stock1894 control2,618,580,085cycles versus1895 candidate3,077,601,494cycles,17.53% slower.
+Both preserve all65,536 original output bits and staged identities. Reduced device/readback work
+does not pay for CPU certificate work; this candidate remains disabled.
+[Matched hardware](perf_records/firesim1895_original_attention_head_gamma_verified.json).
+
+A two-digit approximate attention path passes the first head's local tolerance but fails106/1,600
+unchanged original whole-model comparisons in native execution. It is rejected without target or
+hardware admission. Local accuracy does not establish full-model accuracy.
+[Full original gate rejection](perf_records/smol_two_digit_full_native_rejected.json).
+
+The generic early-saturation/eight-lane exact integer readout candidate preserves every
+original ResNet output in native and strict target execution. Only two CPU adapters change;
+the unmodified control link reproduces verified1874 byte for byte. Whole retired instructions
+fall10,222,806→9,389,018. Stock1900 now verifies37,946,541cycles versus the matched1874
+control39,201,279:1,254,738cycles(3.20%) saved, all1,000 original words exact with staged
+ELF/stock pins closed. This was the whole-model best before1903; it does not include1897 stripes.
+[Verified readout hardware](perf_records/firesim1900_resnet_sat8_readout_verified.json).
+
+The following narrative retains the earlier experiment sequence; the table above is current.
+
+The exact uniform-zero/scale-aware quantize-round pass now applies to the two
+remaining ResNet quantizers. All1,000 outputs remain exact in native and actual
+Spike, whose retired instructions fall19,286,601 to14,254,689 (26.09% fewer).
+FireSim1781 verifies 55,239,221 cycles; instruction counts are not hardware cycles. The separately
+proved explicit-RNE/clamp legalization reduces the same whole model further to
+11,355,701 Spike instructions, retaining all1,000 golden words. All107,415
+boundary checks across the five rounding modes pass. FireSim1786 measures this
+candidate at 49,673,153 cycles. Blocked64 mean reduces this to 48,780,534 in1789;
+both remain explicit host lowering options. The source-
+bound dense group/bank schedule variants also pass complete golden gates, with
+representative GSIM367,749 versus447,124cycles (17.75% fewer); whole-model bank
+timing with the strongest host path remains pending.
+
+Tiny's combined scalar host, quantization fusion and bounded clamp/RNE candidate
+passes the full native and actual Spike output gate, with all 256,000 outputs
+unchanged. It retires 271,019,239 instructions, 60.08% fewer than the earlier
+678,959,918 build. FireSim1792 verifies 866,822,103 cycles, 15.86% fewer than1788 and51.85% fewer than1747.
+Its actual legalized model object participates in the normal build identity.
+See [target gate](perf_records/tiny_scalar_host_quant_rne_spike.json).
+The explicit scalar activation polynomial replaces22 activation expf chains while
+retaining every normalization expf call. All256,000 output bits remain unchanged
+in native and actual Spike on this capture; the approximation makes no universal
+bit-exact promise. It retires218,423,000 instructions (19.41% fewer than1792).
+FireSim1800 verifies791,638,514 cycles,8.67% fewer than1792 and56.03% fewer than1747.
+[Gate](perf_records/tiny_scalar_quant_rne_act_poly_spike.json).
+Explicit fused polynomial evaluation with ClangO3 retains all captured output bits
+and the original Torch gate, retiring209,494,756 Spike instructions (4.09% fewer
+than1800's build). FireSim1806 verifies764,493,870 forward cycles,3.43% fewer
+than1800 and57.53% fewer than1747. This remains an explicitly selected activation
+approximation with capture-specific accuracy evidence.
+[Gate](perf_records/tiny_fused_activation_poly_o3_spike.json),
+[hardware](perf_records/tiny_fused_activation_poly_o3_firesim1806.json).
+The fresh profile for this compiled model preserves all existing objects and
+passes full output/count/conservation checks in Spike and FireSim1809. Hardware
+interior765,151,605 cycles divides into219,056,004 device and546,095,601 host;
+all155 calls are conserved. Its765,152,026 whole-forward timing adds658,156
+observed cycles (0.0861%) to the unprofiled1806 control. This profile predates the1816 scalar accumulator improvement. Host intervals before
+attention output projections and down projections include all intervening CPU
+operations. See [fresh profile](perf_records/tiny_fused_current_profile_firesim1809.json).
+
+Fresh ResNet profile1801 attributes47,057,935 interior cycles to35,450,518 device
+and11,607,417 host cycles, with all70 primitive calls conserved. Instrumentation
+and placement add38,118 observed whole-forward cycles (0.081%);47,020,321 remains
+the unprofiled profile control. The captured classifier tail's wide-B/cached-A GSIM screen
+is23.26% faster with exact outputs; it is now composed with destination reuse in1812.
+See [current profile](perf_records/resnet_current_leaf_profile_firesim1801.json)
+and [selected geometry](perf_records/resnet_current_issue_geometry.json).
+Exact pointwise destination reuse for the padded pre-stem passes complete native
+and Spike gates, reducing retired instructions4.32%. Composed with the classifier schedule,1812 verifies46,316,907 cycles,1.50% fewer than1795. A proposed external result-alias wrapper failed a live-alias regression
+and was removed. A branchless readout correction also remains rejected: four
+completed GSIM passes on50,176 captured values are24.47% slower by median; the
+600-second probe timed out before its full pass marker and smaller readout.
+See [pre-stem gate](perf_records/resnet_prestem_destination_spike.json),
+[alias diagnosis](perf_records/prestem_destination_alias_diagnosis.md) and
+[rejected screen](perf_records/resnet_branchless_readout_rejected_gsim.json).
+
+Confirmed frontend fixes are upstream on model2MLIR main: precision fixes at
+050009e, SDPA scale/causal/options semantics at69c0370, and half-precision
+matmul f32 accumulation plus initialized rank-2 outputs at46851eaf. The latest
+commit passes160 focused and related tests, including45 native execution cases.
+Fresh SmolVLA capture retains the original weights, inputs, golden and manifest
+identities. The fresh complete gate still fails47/1600 outputs, with relativeL2 .016156828 and maxabs .096718788. Explicit backend arithmetic
+compatibility experiments remain separate from default frontend semantics.
+
+The selected ResNet schedule's mesh issue geometry totals22,805,632 cycles,
+already above22M before DMA and CPU work. A source-proven nonnegative skip-domain
+experiment reduces this to22,466,944; it has not been promoted into a graph.
+This floor describes the selected schedule, not all possible exact algorithms.
+See [mesh geometry](perf_records/resnet_exact52_mesh_geometry.json) and
+[domain evidence](perf_records/residual_source_domains.json).
+
+## Reference and schedule
+
+The original 22,387,449-cycle evidence was Jack's `resnet50_nofsm_q1013.zip` manifest. Its ZIP contains an ELF, disassembly, FireSim bundle and manifest, but no source. We inspected the ZIP and extracted the ELF/disassembly into `out/reference_q1013/`; no Jack folder was opened. `python -B -m mlir_oot.reference_profile ELF DIS -o static_schedule.json` gives static instruction counts for the function symbols. It finds 72 model-related symbols, 42 four-byte aliases and 30 larger bodies. Among those bodies there are 13,764 static `PRELOAD_CMD`, 8,359 `COMPUTE_AND_STAY_CMD`, 5,405 `COMPUTE_AND_FLIP_CMD`, 2,178 `LOAD_CMD`, 1,537 `LOAD2_CMD`, and 909 `LOAD3_CMD` instructions. Static counts are not dynamic issue counts or cycle attribution. The archive's ELF includes six `LOOP_WS*` commands in a linked library routine; the ZIP therefore cannot meet the stricter final-ELF zero-FSM criterion even though the measured path may not execute that routine.
+
+Our `no_fsm_audit.py` scans all executable RISC-V ELF sections after linking, decodes variable-length instructions, and refuses every `LOOP_*` funct, unknown Gemmini funct, and invalid Gemmini funct3. It must pass on every candidate submitted for a zero-FSM claim. The GSIM probe ELFs pass it; the archived reference fails it.
+
+The prior Claude session's own [q1013 analysis](/scratch/agustin/projects/oscar-merlin/out/artifacts/perf-studies/exo-comparison/q1013_analysis.md) resolves the reference control flow. On the FireSim `argc=0` path, **all 53 convolutions run as Exo Gemmini kernels**, with zero host im2col calls and zero executed hardware-loop commands. The alternate host im2col/vendor path is reached only with `argc>=3`; its linked `sp_tiled_matmul_ws` contains the six static loop commands. The q1013 stock bitstream matches our pinned stock `FireSimGemminiRocketConfig` tar byte for byte. Its full-forward timing window covers FC, argmax and dequantization and is comparable to the prior lean-board whole-model window within the report's approximate 2% hardware uncertainty. q1013 issues 1,155,264 computes against an ideal 1,083,136, or 1.067×, at about 19.4 cycles per compute.
+
+The report attributes the prior 38.33M-to-22.39M gap to FC on Gemmini (~3.5M estimated), packed stem K with pooled readout (~3.3M), residual add as identity matmul with a real D input (~2.7–3.3M), overlapped double-buffered load/compute and 16×64 stores (~3.5–3.8M), and whole-output-row 3×3 tiling (~2.3–2.6M). These are **estimates on the old program**, not measured gains in this branch. The lean configuration forces D to garbage, so the residual form requires stock.
+
+## Implemented path
+
+`mlir_oot/golden_gemm.py` emits verified xDSL `gemmini.*` target IR for a dense int8 GEMM schedule. It supports i8 or i32 output, edge tiles, i32 bias, store scaling and ReLU. `mlir_oot/golden_tuning.py` searches scratchpad- and accumulator-legal tile blocks using a primitive-command and DMA-request model. This is a geometric model, not a fitted FireSim cycle predictor. `tests/gsim_gemm_probe.py` links the final ELF, audits it, and compares against a CPU reference; `--embed-expected` computes large references on the host to avoid spending GSIM time on scalar oracle loops.
+
+Passing GSIM checks include 16×16×16, 16×16×32, 17×19×20, 80×80×17, 144×16×16, 16×144×16, and 17×19×20 with i8, bias, ReLU, and 0.25 scale variants. For 16×144×16 i32, analytical tuning selected `bm=1,bn=9` and measured **1,248 kernel cycles** versus **1,388** for the initial `bm=4,bn=4` probe, on the same pinned GSIM engine. This is a kernel probe, not a ResNet cycle result.
+
+The optional 16×64 accumulator store is bit exact on the simulator. For 144×64×64 with a tuned 9×4 output block it measured **8,142 kernel cycles** versus **8,414** with 16×16 stores. For 16×64×16 it was slower (658 versus 613), so it remains a shape-selectable choice. All four final ELFs pass the no-FSM scan.
+
+Holding B stationary across output-row tiles (`reuse_b`) passes numerical and final-ELF checks. At 144×64×64 it reduces GSIM kernel time from 8,142 to **6,273 cycles**; at 512×64×64 it reduces **25,360 to 17,727**. Preloading a whole small B matrix into scratchpad once per call (`cache_b`) reduces the latter again to **16,575**. The 17×19×20 edge/bias/scale/ReLU probe passes with both options, but `cache_b` raises its time from 776 to 802 cycles, so caching remains optional. The analytical model now counts one B load per cached panel, rather than per output block. These are simulator kernel measurements; there is still no full ResNet FireSim result for this implementation.
+
+The q1013 trace's 16×64 MVIN/MVIN2 panel form is now supported for compatible channel extents. The dialect verifier admits up to four DIM-wide blocks for scratchpad MVIN, with the accumulator MVIN bound kept at DIM. `wide_a` and `wide_b` preserve the same panel payload but reduce RoCC load commands; the tuner counts commands separately from panel bytes. With a 16×4 output block, wide stores, stationary/cache B and both wide loads, 512×64×64 passes the numeric and linked-ELF checks at **15,607 GSIM kernel cycles**, compared with 16,575 using narrow loads. The edge 17×64×64 biased/scaled/ReLU case also passes, including a 2048-byte output guard. Alternating two accumulator/A slots (`pipeline_m`) passes but measured 16,732 versus 16,674 at 8×4 on this shape, so the upstream selector leaves it off. Jack's interleaving occurs inside compute bursts; this simple alternation does not reproduce that schedule.
+
+`golden_resadd.py` implements the stock-only identity-matmul form with a real D input and wide stores. Its 16×16, 17×19 and 17×64 cases pass GSIM, the final linked-ELF audit, and a 2048-byte output guard check (431, 3,192 and 1,837 kernel cycles respectively). A tile-grouping bug had treated a final partial row as full when `bm=1`; it is fixed and covered by `test_golden_groups.py`. The kernel stages edge and non-64-byte-pitch stores in 1024-byte aligned scratch before copying valid elements into dense output. The odd-width edge path is correct but much slower than the full-tile path, which is acceptable for the ResNet channel dimensions that are multiples of 64.
+
+### Device compilation
+
+`golden_device_lower.py` is the only translation of golden `gemmini.*` operations to RoCC inline asm. It verifies the target module, encodes only exact primitive operations, and refuses an unsupported Gemmini op. CPU repetition remains ordinary LLVM CFG. `golden_device_compile.py` writes the target xDSL module, lowered LLVM dialect module, LLVM IR and RV64GC object, records their hashes and compiler arguments, and audits the object. The probe harnesses then link the object with their runtime and audit **every executable section of the final ELF** again, since a library could introduce forbidden LOOP commands after object compilation. The 32×16×16 target-to-LLVM run produced the same linked ELF hash and 409 GSIM kernel cycles as the former direct emitter; 17×64 residual likewise retained its original linked ELF hash and 1,837 cycles. This is a real compile path from the xDSL target module, rather than separately authored target and LLVM schedules.
+
+For a supported single-layer capsule, run `python -m mlir_oot.golden_upstream capsule.interface.mlir --llvm-bin LLVM_BIN --workdir OUT`. The output includes `kernel.gemmini.mlir`, `kernel.llvm.mlir`, `kernel.ll`, `kernel.o`, `device_compile.json`, and `upstream_binding.json`. The receipt records the SHA-256 of both compiler binaries and all generated code artifacts. After linking the model runtime, run `python -m mlir_oot.no_fsm_audit final.elf`; the object audit alone cannot certify a linked program.
+
+FireSim queue job **1670** failed before simulation because its Chipyard config lacked the requested hardware key. Job **1673** used our own stock Chipyard worktree and the existing `alveo_u250_firesim_gemmini_rocket_stock` entry, but timed out in `INFRASETUP` after its leading kill exceeded 90 seconds; it never booted the ELF or produced a cycle measurement. The queue records it as `TIMEOUT` at 1080 seconds. A nearby unrelated queue job also failed, so more submissions on the same slot are deferred until the infrastructure can complete setup.
+
+## Upstream whole-model lowering
+
+Running this OOT `gemmini-opt --convert-iface-to-gemmini --emit-command-buffer` on each shipped capsule yields zero commands and an explicit decline:
+
+| Capsule | First blocking result |
+| --- | --- |
+| `SY_model_resnet50` | Estimated 65,404,026,705 CPU-lane straight-line evaluations exceed the 400,000 budget. Its conv matmuls remain f32 after dequantization despite `prov.quantization = "int8_static_act_int8_weight"`. |
+| `SY_model_smolvla` | Estimated 9,395,352,591 CPU-lane straight-line evaluations exceed the same budget. An xDSL multi-result `linalg.generic` printer/parser mismatch was normalized first so the full 11 MB file parses. |
+| `SY_model_tiny_llama` | Estimated 3,031,111,489,682 CPU-lane straight-line evaluations exceed the same budget. |
+
+These estimates count element evaluations in a hypothetical unrolled scalar program; they are **not** predicted hardware cycles. The looped GEMM removes one code-size bottleneck for device contractions, but whole-model lowering still needs quantized conv recognition and direct input gathering, tensor layout propagation, scalable host-operation loops, residual add/reduction kernels, ABI and weight binding, and a correctness oracle before any full-model FireSim run can be called golden. The current ResNet capsule's f32 path is a different program identity from Jack's int8 static recapture, so equality of cycle numbers alone would be misleading.
+
+One upstream geometry optimization is now implemented in `lowering/plan.py`: a stride-one, unpadded NHWC 1×1 `merlin_iface.conv2d` uses its original input as the GEMM lhs, because the physical C row pitch is identical to the matrix K row pitch. The real GQ1 capsule still emits a valid command buffer and xDSL target artifact, now with no `im2col_recipes`; GQ2's padded 3×3 path retains its recipe. This eliminates an unnecessary derived tensor for this upstream case. It does not convert the shipped f32 ResNet graph to the int8 q1013 program or route an entire model through the golden kernel yet.
+
+`golden_upstream.py` is a strict single-layer bridge from typed `merlin_iface.conv2d` to this compiled golden kernel. It derives dimensions, dtype, bias, scale and ReLU through `Builder`, refuses a gather or unsupported epilogue, records its source tensor to device pointer binding, tunes legal tiles, and compiles through `golden_device_compile.py`. The real GQ1 capsule generated `M=36,N=16,K=16`, `bm=3,bn=1`, and the object that this bridge compiled passed a numerical GSIM probe at **535 kernel cycles**, including a final linked-ELF no-FSM audit. The bridge is not yet the whole-model runtime or a general 3×3 convolution lowering.
+
+A synthetic 1×1 NHWC capsule with `M=512,N=64,K=64`, bias, 0.125 store scale and ReLU selected 16×4, stationary/cached B, wide A/B loads and 16×64 stores through the upstream bridge. The **exact object compiled from that capsule** passed the linked-ELF audit, numerical GSIM and the output guard at **17,822 kernel cycles**. The 15,607-cycle figure above omits this bias/scale/ReLU work and is a different kernel; neither number is a full ResNet layer timing in FireSim.
+
+A larger `M=3136,N=64,K=64` probe with bias, 0.125 store scale and ReLU passes at **104,931 GSIM kernel cycles**, with 3,136 mesh compute commands and a 50,176-cycle peak array floor. The analytical model also reports unique tensor bytes and a distinct upper request volume; dividing repeated request bytes by DRAM bandwidth is not a lower bound because cache and stride-zero bias broadcast can satisfy repeated requests. The model remains uncalibrated to FireSim.
+
+`upstream_quant.py` now invokes Merlin's existing QDQ-aware integer contraction rewrite, writes the transformed IR and a source/content-bound receipt, and validates that this OOT backend parses the result. On the shipped `SY_model_resnet50` capsule it rewrites **54** contractions (53 convs and FC), makes all **54** named i8×i8→i32 matmuls mesh eligible, and hoists activation quantization ahead of **50** pure gathers; three strided-hole gathers are refused and one calibrated static activation is reused. The pre-gather option changes numeric granularity, so its receipt marks model accuracy verification as required. `frontend/mixed_matmul.py` fixes xDSL's synthesized body for i8×i8→i32 named matmul by widening both inputs before the multiply; `linalg_reader.py` places rewritten contractions by their current operand dtype even when `prov.orig_dtype` remains f32. The full transformed ResNet now parses/verifies and gives an explicit mixed-lane decline: its remaining host ops cost about **470,139,986** scalar element evaluations in the current unrolled emitter, above the 400,000 budget. That count includes zero-runtime tensor views and allocations, so it is a code-size estimate, not a cycle forecast. The top counted families are `tensor.empty` 107.8M, generic 80.2M, reshape views 135M combined, and dequantization 63.5M. Whole-model looped/fused host lowering and weight binding remain unimplemented.
+
+## Generalized integer contractions and model arithmetic
+
+`contraction_patterns.py` now checks typed indexing maps, iterator order, i8-to-i32 signed extension, multiply and add wiring, shapes, and a zero accumulator before accepting a contraction. The same matcher handles ordinary 2D GEMM and dense batched 3D attention GEMM. On the prepared model IR it finds **54/54 ResNet**, **367/367 SmolVLA** (303 2D, 64 batched), and **200/200 TinyLlama** (155 2D, 45 batched) integer contractions. This is contraction recognition, not whole-model code coverage. The 302 SmolVLA 2D `linalg.generic` contractions, previously routed to the host because only named `linalg.matmul` was recognized, are now eligible for 2D mesh scheduling. Rank-3 contractions have a separate primitive-only batched kernel with ordinary CPU batch repetition.
+
+The inventory now separately counts every top-level operation in each prepared function, making the model coverage gap explicit:
+
+| Prepared model | Top-level graph ops | Device contraction ops | Other graph ops still needing graph lowering |
+| --- | ---: | ---: | ---: |
+| ResNet-50 | 3,619 | 54 | 3,565 |
+| SmolVLA | 32,386 | 367 | 32,019 |
+| TinyLlama | 12,988 | 200 | 12,788 |
+
+Many remaining ops are constants, `tensor.empty`, or reshape views and should collapse under allocation and alias planning; the rest include quantization, gathers, reductions, softmax, transposes and elementwise computation. This is an operation coverage ledger, not an estimate of required runtime commands. The whole-model coverage flag remains false for every model.
+
+`golden_model_inventory.py` writes an auditable arithmetic census from those exact shapes. The numbers below count integer contractions only and assume a 16×16 array with one fully pipelined output row per cycle; they exclude loads, stores, host work, and all model overhead:
+
+| Prepared model | Exact contractions | Integer MACs | MAC/256 floor | Padded compute-command issue floor |
+| --- | ---: | ---: | ---: | ---: |
+| ResNet-50 | 54 | 4.089B | 15.973M | 17.330M |
+| SmolVLA | 367 | 130.873B | 511.221M | 526.368M |
+| TinyLlama | 200 | 8.281B | 32.348M | 64.741M |
+
+Jack's 22.387M ResNet run is 1.29× the padded issue floor. The requested 5B SmolVLA target is about 9.5× its integer padded issue floor, but the old full-policy runs spent very large time in scalar softmax and other host operations. Arithmetic alone cannot establish feasibility. TinyLlama's short rows waste half or more of a 16-row array in many layers, making its padded issue floor about twice its pure MAC floor.
+
+There is a structural ResNet layout mismatch to solve before model performance can approach Jack's schedule: the prepared `conv_0` is `64×147 · 147×12544`, and `conv_2` is `64×576 · 576×3136`. The left operand comes from OIHW weights and the right from a materialized NCHW im2col gather. Jack's high-performance kernel instead consumes spatial output rows and output-channel columns, and gathers each convolution from resident input without a host im2col. Merely compiling the current prepared matmul would preserve the expensive gather and wrong physical output layout. A convolution-specific tensor layout and direct-gather lowering is required.
+
+### Model-wide device object compilation
+
+`golden_contraction_upstream.py` selects one exact rewritten operation, chooses a legal schedule from its shape, and compiles it through the xDSL Gemmini to LLVM to RV64GC path. The small 2×17×19×20 batched probe passed complete numerical GSIM, output guard, and linked-ELF audit at **1,492 kernel cycles**. The **exact upstream SmolVLA `matmul_384` object** (batch 15, M50, N64, K113) passed the complete numeric oracle and linked-ELF scan at **83,398 GSIM kernel cycles**. Its first harness run timed out at 180 seconds before readback; the same ELF passed with a 600-second timeout. The exact upstream TinyLlama `matmul_194` (batch 32, M8, N64, K8) passed at **11,736 GSIM kernel cycles**. These kernel timings are on pinned GSIM, not FireSim model cycles.
+
+`golden_device_catalog.py` now builds one model-scoped object from all recognized contractions, deduplicating identical schedules and assigning content-derived unique symbols. Both ordinary and batched specializations receive stable distinct symbols, preventing duplicate definitions when hundreds of operations are linked. The source SHA, every operation-to-symbol binding, per-kernel schedule, compiler hashes, and object audit are recorded. Complete catalogs compiled with **54/54 ResNet contractions → 21 kernels (133 KB)**, **367/367 SmolVLA → 26 kernels (117 KB)**, and **200/200 TinyLlama → 8 kernels (29 KB)**; all three object audits passed. The TinyLlama catalog object itself was linked into a final ELF and its `matmul_194` symbol passed the full numerical GSIM oracle, output guard and final-ELF no-FSM audit at **11,683 kernel cycles** before the configuration-once refactor. This validates the deduplicated multi-kernel object's symbol linkage as well as its arithmetic. The catalog currently covers the integer contractions only. Tensor allocation, layouts, quantization epilogues, host nonlinearities, complete model execution, correctness verification, and FireSim per-group timing remain open.
+
+The batched implementation now configures and flushes Gemmini once per batched call, then repeats primitive tile work through an ordinary CPU loop and fences at the end. On the real TinyLlama `matmul_194` shape, complete numerical GSIM and the linked-ELF audit pass at **9,282 cycles** versus 11,736 before, a 1.264× speedup. The full TinyLlama catalog was rebuilt, linked, audited and numerically checked after the change at **9,338 cycles**. The real SmolVLA `matmul_384` improved **83,398 → 81,607** GSIM kernel cycles with complete numerical and ELF audit checks. The two-batch edge case was 1,506 versus 1,492 and remains a candidate for size-based selection. The [optimization log](golden_optimization_log.md) records comparable observations and the abstractions needed to automate them.
+
+An optional short-row A-resident schedule now preloads one M≤16 A tile before sweeping several N blocks. On the same 8×512×256 i32 synthetic projection and pinned GSIM, full numerical and final-ELF checks passed at **26,941 cycles versus 31,947** (1.186×). The analytical count reduces A MVIN commands from 128 to 16 without changing compute count. The model rule selects it only with at least four N blocks; among the prepared model catalogs this currently applies to TinyLlama's 8×5632×2048 and 8×32000×2048 projections. Those exact layers have not been timed in FireSim or GSIM, so the 1.186× figure is a shape-specific probe result.
+The updated TinyLlama catalog still covers 200/200 contractions with eight distinct kernels and binds all eight through Merlin. A typed dynamic A scratchpad address keeps cached-A K repetition in an ordinary CPU loop. The catalog object is now **31,856 bytes**, versus **953,672 bytes** with K unrolled and **28,432 bytes** before cached A. On the same pinned synthetic GSIM probe, the looped kernel passes full numeric, guard and final-ELF audits at **26,948 cycles**, seven cycles above the unrolled form and **1.186× faster** than the 31,947-cycle baseline. The typed verifier checks a declared address range; a future automatic lowering pass must establish that range from loop bounds before using the dynamic form. These are contraction-level results, not a TinyLlama model cycle result.
+
+The isolated Merlin integration worktree now has an external catalog route in its existing whole-model offload compiler. The route checks exact prepared source bytes and provenance region/type bindings, adapts dense rank-2 and whole-batch rank-3 pointers, and compiles an RV64 shim. On the exact prepared sources, rewrite plus shim compilation bound **54/54 ResNet contractions (21 symbols), 367/367 SmolVLA (26 symbols), and 200/200 TinyLlama (8 symbols)**. Set `DeviceRouting.catalog_builder` to `mlir_oot.golden_device_catalog.merlin_builder(LLVM_BIN)` to compile from Merlin's final prepared file before offload; its TinyLlama smoke run built and bound all 200 calls. Set `DeviceRouting.final_elf_audit` to `mlir_oot.golden_device_catalog.final_elf_audit` to require the no-FSM policy on the final image. This is device-code binding, not whole-model lowering or execution. FireSim jobs 1709–1711 are probe jobs, not model performance results.
+
+The upstream ResNet preparation now enables Merlin's exact 1×1 im2col identity-view pass after QDQ contraction rewriting. Its matcher was extended to named `linalg.matmul`, the form QDQ actually emits. On the exact capsule it replaced **33 copies** spanning **7,200,256 int8 elements**, refused **17 nonidentity windows**, and retained **54/54** mesh contractions. A newly compiled 21-kernel catalog passed its no-FSM object audit and its exact-source Merlin rewrite/shim binding routed all 54 calls. The copy elimination has no FireSim cycle measurement yet; 3×3 and strided windows still materialize or require a direct-gather schedule.
+
+For an actual Merlin model build, set `DeviceRouting.prepared_transform` to `mlir_oot.golden_device_catalog.merlin_identity_view_transform` alongside the catalog-builder and final-ELF-audit callbacks. The preparation hook runs before catalog compilation and source hashing. Its ResNet callback smoke proved 33 views and compiled all 54 contractions to 21 audited kernels; a runtime regression test checks that catalog selection and offload bind the transformed bytes.
+
+The complete ResNet capture now compiles to an RV64GC ELF with all54 contractions linked and a passing final no-FSM audit (SHA18823d02831d0b98…). The same LLVM host graph plus identical device ABI shim, using scalar int8 reference kernels, reproduces all1000 captured integer-reference outputs exactly: relative L2=0, max error=0, argmax713 matches. This proves host lowering/layout/ABI for the captured random-initialized model, not hardware execution, pretrained quality, or22M performance. Actual Gemmini Spike execution is now running before a complete-model FireSim measurement.
+
+## Current exact candidates and compilation contract
+
+Tiny1816's default-off scalar accumulator schedule preserves each f32 contraction's increasing-K multiply/add order, including nonzero initial values. FireSim verifies648,210,569 cycles,15.21% fewer than1806 and64.0% fewer than1747. Four independent output accumulators improve this to615,651,105 in1821,5.02% fewer than1816; every output bit is unchanged. Partial K-unroll2 improves this further to612,282,210 in1828,0.547% fewer than1821. Two-output1825 measures622,639,906 and is rejected in favor of four outputs. All155 device contractions and the previously selected activation approximation remain unchanged. Partial K-unroll4 is queued as1832. An additional Clang loop-unroll flag emits a byte-identical model object and was rejected without duplicate simulation.
+
+The guarded quantized mean replaces a proved canonical Q/DQ serial mean with an integer sum and an exhaustive sum certificate. For the original49-value ResNet reduction, eight of12,496 totals require exact floating-point replay; the certificate covers every signed-i8 input sequence. Full native and actualSpike retain all1,000 original output bits at10,816,839 retired instructions,1.54% fewer than1812. FinalELF zeroFSM passes. FireSim1819 measured46,680,853cycles,0.79% above1812; this arm is not the best recipe and its driver omitted explicit host scheduling. See [proof and binding](guarded_quantized_mean.md) and [whole-model gate](perf_records/resnet_guarded_quantized_mean_spike.json).
+
+Normal build markers now include the actual linked device/matrix object bytes in link order, with length and domain separation. Object paths do not affect identity. Final and staged ELF SHA256 remain authoritative for both new and historical runs. The prepared source, ABI, target object, native standin, source numeric policy and final ISA audit must close over the same compilation. Default-off compiler transforms remain independently selectable.
+
+SmolVLA retains the existing elementwise gate by explicit user direction. Original Torch MKL VML high-accuracy sine/cosine dispatch differs from scalar libm at three BF16 query entries, which propagate into attention. SLEEF was investigated but is not the selected Torch backend. A bounded integer-position RoPE lookup policy is under qualification; unrelated timestep trig remains separate, and the original weights, inputs and golden remain immutable.
+
+The packed NHWC mean variant proves the existing transpose and consumes the
+physical layout directly. Exact unsigned16-lane sums process eight channels per
+word with no interlane carry, keeping source f32 fallback for ambiguous sums.
+Full native and actualSpike preserve all1,000 original words at10,214,792
+instructions,7.02% below1812.23 focused tests pass. Stock1824 verifies44,507,889
+cycles,3.91% below1812. The bankedmatmul11 arm1823 independently retains
+a host object byte-identical1812 and all52 source/numeric proofs, measuring
+46,127,051cycles. The combined packed-mean plus bankedmatmul5/8/11 candidate
+passes all original native and actualSpike outputs and zeroFSM; its host object
+is byte-identical1824. Stock1829 verifies43,969,384cycles,1.21% below1824. See
+[combined gate](perf_records/resnet_three_banked_packed_spike.json).
+
+SmolVLA source-compatible softmax initially returned NaNs in full preparation:
+the pinned xDSL parser numerically interprets unquoted dense float hex literals,
+turning the maximum initializer's negative infinity into4286578688.0. Merlin's
+portable printer now emits quoted raw bytes for dense floating attributes and
+recognizes splats by byte equality. Repeated xDSL/upstream parsing and native
+tests retain infinities, signed zeros, NaN payloads and subnormals;44 related
+tests pass. The trusted191,535-value softmax fixture is exact through full
+preparation. The fresh whole-model gate remains pending; this does not admit
+SmolVLA to hardware or relax its original elementwise criterion.
+
+The explicit fresh-output descriptor interface passes all1,000 original native
+and actualSpike outputs, zeroFSM and7 focused ownership/refusal tests. Caller
+contracts reproduce the qualified host MLIR and compiled bridge byte-identically;
+stock1831 is pending. See [ownership contract](descriptor_writer_contract.md).
+
+Resident-input direct convolution reduces the matched H14/W14/C256 capsule from
+675,375 to533,649 GSIM cycles with all50,176 outputs and guards exact. A DMA
+block-stride field had been silently dropped by lowering; its corrected encoding
+now has a regression gate. Five source-bound whole-model routes are qualifying
+with separate preserved scale proofs. This is a capsule gain, not yet a whole
+FireSim result. See [resident study](resident_convolution_study.md).
+
+
+The general dense banked command-cost candidate passes all1,000 original native
+and final-ELF Spike values. Its host object/LLVM match1836 byte for byte; only
+four pointwise device objects change. Independent176x256x64 GSIM numeric/guard
+checks measure29.00% fewer kernel cycles, and95x48x80 tails pass. Whole-model
+stock1849 is queued; its slightly higher Spike instruction count is not a cycle
+claim. [Candidate gate](perf_records/resnet_banked_command_policy_spike.json).
+
+An explicit OOT support provider now exposes the curated harness/GSIM command to
+current Merlin orchestration, removing the legacy Python registration dependency.
+A real numeric/guard capsule retains byte-identical final ELF and1,919 GSIM kernel
+cycles. [Infrastructure evidence](perf_records/current_core_gsim_provider.json).
+
+
+Fresh1849 profile1850 verifies42,303,592 forward cycles (33,784 above unprofiled
+1849). Conserved interior42,303,164 comprises33,814,043 device and8,489,121 host
+cycles; all70 calls and original1,000 output words pass. The pre-stem host gap
+is4,017,289; gaps before matmul26/49 are1,955,979/962,942 and include the two
+integer-readout epilogues plus any other intervening CPU work. These are host
+intervals, not isolated operation costs.
+
+The qualified composition now combines1886 generic host quantization packets,1874 banked
+residual schedules and1900 exact eight-lane readouts. The1886 control and1900 readout ELFs
+are reproduced byte for byte; all semantic catalog proofs/bindings and unchanged host/runtime/weights
+objects are pinned. Native and actual strict target execution preserve all1,000 original words.
+Stock1903 verifies36,102,704cycles versus1886 38,603,949 (6.479% lower), all1,000 original words exact with staged stock identity closed. This is the current verified ResNet best, 4.859% below prior1900; gains are measured as a composition.
+[Composition hardware](perf_records/firesim1903_resnet_composed_verified.json).
+[Composition qualification](perf_records/resnet_qualified_packet_composition_spike.json).
+
+Tiny adjacent independently proved RNE results now use separate CPU floating temporaries under an
+explicit CPU policy. The general Merlin pass preserves strict source chains/aliases and refuses
+unsafe motion. Actual full capsuleGSIM256,637→247,568cycles(3.53%) with identical instruction count;
+whole native/target256,000 words and original Torch gate pass. Stock1902 verifies527,255,504cycles versus1880 531,072,370 (0.719% lower), a single-run marginal gain.
+[Adjacent RNE hardware](perf_records/firesim1902_tiny_adjacent_rne_verified.json).
+The fresh155-boundary profile1901 targets1880; older1837 attribution above remains historical.
+[Qualified next Tiny arm](tiny_adjacent_rne_packets.md).
+
+The source-stride resident convolution uses a general layout/stride/resource rule and fixes execute-stride propagation in target lowering. Its original-input paired capsule measures727,070→577,376GSIMcycles (20.59% lower), every50,176 output and4,096guard exact; an independent non-square/tail case also passes. Both normal and controlled whole builds preserve all1,000 original words on native/strict target. Only one of52 device kernels changes, with every original1897 host/runtime object retained in the controlled arm. Stock1914 is queued versus1897; whole-model gain is unknown. [Qualification](perf_records/source_stride_resident_conv_whole_qualification.json).
+
+Three-digit approximate attention also fails the unchanged full Smol gate (121/1,600), despite only27 changed first-head words. A separate zero-encoding-error diagnostic fails144/1,600 when accumulation is widened; exact source-ordered f32 replay at the identical384-route seam reproduces all1,600 bits. This closes integration sanity and proves accumulation rounding alone is sufficient to fail this original gate. No approximate route is promoted. [Precision negative](perf_records/smol_three_digit_full_native_rejected.json), [paired source-seam diagnosis](perf_records/smol_source_replay_vs_wide_accumulation.json).
+
+
+## Checkpoint 2026-10-06 09:15 UTC
+
+Verified stock whole-model bests: ResNet1930 **34,905,135 cycles**,
+Tiny1926 **461,389,700 cycles**, Smol1906 **258,621,872,969 cycles**.
+Targets remain unmet: ResNet about22M, Smol about5B and Tiny300M.
+The newer clarification from Jack concerns Smol single-digit billions and
+Tiny300M; matching token/batch/timer scope has not been supplied.
+
+Smol's general source min/max capability closes282 pins and preserves the full
+original48-call native consumer gate. Its complete12-head group uses
+**3,243,485,384 Spike instructions**,3.764% below the separately qualified ABS
+control. A zero/NaN library guard variant is6.485% slower and rejected.
+These are instruction counts, not stock cycles. Stock1944 separately verifies
+**10,524,980,809 cycles** for the earlier row/floor complete group; it is a
+section result and does not establish new whole-model timing.
+[Min/max proof](perf_records/smol_standard_minmax_complete_group.json).
+
+The retained resident command candidate is released for one stock comparison
+with controlled1903 after independent483-pin reclosure and original1,000-word
+native/strict gates. Five selected resident objects change;52 adapters and47
+other kernels remain byte identical. It is not composed with1930 or1947.
+[Whole qualification](perf_records/resident_commands_normal_whole_qualification.json).
+
+The Tiny norm+packet4+constant-lifetime candidate is released for one stock
+comparison with1926. All256,000 original words and the original Torch gate pass;
+all executable sections are zero-FSM. Its complete two-row scalar section saves
+10.302% GSIM cycles; whole Spike instructions increase1.379%. Whole stock
+performance remains unknown.
+[Whole qualification](perf_records/tiny_fma_constant_whole_qualification.json).
+
+## 2026-10-06 scratch recovery and resumed optimization
+
+User requested scratch space and continuation of the performance goal. Retained all
+historical artifact paths and contents with hash-verified same-filesystem hardlinks
+for frozen identical completed copies. Root deduplicated 24 Tiny weight/object/capture
+copies (42.524 GiB); Tiny deduplicated one completed baseline ELF
+(another was already linked, no double attribution); reference deduplicated five
+owned historical simulator copies. Total physically reclaimed by these actions:
+48896086016 bytes (45.538 GiB). Scratch available at root closure: approximately
+58 GiB. No model data, goldens, ZIP, proof content or useful live process was deleted.
+New builds resumed. Historical hardlinked artifacts are immutable; use fresh output
+directories for later builds, or copy before changing a shared file.
+
+Generic infrastructure follow-up: compilation artifacts should support immutable
+content-addressed weight/capture storage and independent writable build outputs,
+with physical-storage accounting and safe retention manifests. This belongs in
+Merlin orchestration, independently of target. These storage savings are unrelated
+to model runtime cycle performance. Receipts: root_frozen_tiny_storage_dedup.json,
+tiny_frozen_baseline_storage_dedup.json, owned_reference_spike_space_dedup.json.
+
+Performance work resumed: reference has a local M784/N256/K512 full-K weight-cache
+GSIM win (599,463 to 434,406 cycles, original output/guards/inputs exact), pending
+independent shape/tail/resource/default checks before normal binding; Tiny has a
+local actual hoisted normalization pure-f32 multiplication packet win (~26.33%),
+pending whole-model validation. Neither is a whole-model FireSim performance claim.
+Stock ResNet job 1957 remains queued and the ordinary minmax SmolVLA whole-model
+functional target remains live, with their existing owners and collectors.
+
+### 2026-10-06 10:02 UTC resumed qualification checkpoint
+
+Root integrated general typed f32 multiplication packets (core709345057) and
+private producer-bound FMA row-domain admission (corea22d31fd7), composing all16
+endpoint/word/zero-error/domain combinations. All native product/frontier/word
+cases pass;40 scalar packet tests pass with explicit real upstream paths, and
+repository structure/docs checks pass. Initial dummyupstream-path failures are
+environment failures, not silently treated as test passes. Default routing stays
+inert and default generated bytes remain the original SHA.
+
+Tiny isolated pure-multiply whole candidate preserves all256000 original words,
+originalTorch tolerance,155sourcebounddevicecalls and finalzeroFSM. Normal current
+control reproduces1926 exactly; onlyhostmodel.o changes. Functional retired
+instructions144498799→142343799 (−1.491%); hardwarepending. Original champion
+461389700cycles stays the verified best. Root reviewed/reclosed168filepaths
+across Tiny and the Smol word capsule before release; original gates unchanged.
+
+Smol word-space complete original group now passes the actual compiled54-op
+original rowconsumer on RV64GC:786432i8values+1024scales (fourrepetitions of
+original256rows toexercise the original1024rowABI), inputbytes/descriptors/guards
+exact, noFSM. Instructions3243485384→3014749382 (−7.052%); nothardwarecycles.
+Two oldunobservedcarrier differences are retained. Independentfull48native
+original1600words/Torch +9437184consumeri8values/12288scales exact alreadyclose;
+146oldcarrier differences and60.5% moreexactsourcePVreplay are retained separately.
+A table10enclosure prototype passes thesameconsumer but costs3263954378instructions
+(+0.631%versuscontrol); do notpromote it. Initial consumertrap was minimized and
+fixed in afreshharness by linking the unchanged Merlin allocator. A separate
+libcputs successmarker failed toprint despite rc0; anew matched printfharness
+prints observedPASS. Old failures preserved; no changes to originalconsumer,
+sourcepolynomial, goldens or production fallback/routing.
+
+Owned tokenledger refreshed onlyfrom8explicit owned rolloutfiles, cutoff
+2026-10-06T10:02:05Z:uncachedinput42509478, cacheread2018702720,
+output8371543 (reasoning3338787 alreadyincluded),
+rawinput+output2069583741, uncached+output50881021. Exact OOT-only and
+peroptimization attribution remain unavailable; no proration or unrelatedsessions.
+Goal tracker is separate:47241576tokens/96704seconds atthischeckpoint.
+
+
+### 2026-10-06 10:59 UTC measured continuation
+
+Scratch cleanup remains complete (45.538 GiB physically reclaimed by our
+hash-verified actions); approximately89 GiB now available on scratch. Original
+model data, goldens, ZIP, historical paths and live experiments remain retained.
+Fresh outputs are used for every new build.
+
+**Verified stock bests:** ResNet1930 remains34,905,135cycles (ZIP1876 is22,387,449);
+Smol1906 remains258,621,872,969cycles; Tiny1967 is now451,221,105cycles versus
+1926's461,389,700, a2.204% improvement with all256000 original words/Torch gate.
+The target goals remain unmet. Root rehashed the owned terminal evidence;
+current source/ELF and stock metadata stay bound to the original measurement.
+
+ResNet1957 finished35,728,234cycles,1.037% below1903 but slower than1930; retain
+this result without composing it into the champion. Full-K B capacity is integrated
+(OOT2b51f56),491pins independently reclosed and50tests passed; stock1971 admitted,
+whole cycles pending. The source-derived resident weight packet policy is also
+integrated (OOT841eac2): matched kernel536180→468824GSIMcycles,12.56% improvement;
+prior complete-panel prefetch499263 at the same seam. Only5normal device leaves
+change,47others/source proofs/adapters unchanged. Root492whole+279capsule pins and
+98tests pass; stock1974 admitted once vs1903. Independent small shape6359→7858
+is a23.6% regression, so this remains explicit and has no universal profitability
+policy. Whole-model improvements are not inferred from local timings.
+
+Ordinary whole Smol minmax execution completed all1600 original words exactly,
+rank0/DONE/rc0,220253190030 retiredinstructions versus rowfloor306168018359,
+28.06% fewer. This remains above the original instruction baseline and is not
+promoted for stock whole-model performance. Word capsule1968 is queued; all
+original compiled consumer/gate evidence retained.
+
+Core consumer-derived typed L1 norm requirements (dd5d0f57c) eliminate dead
+squares/root work only under immutable all-zero RHS error admissions and typed
+L1 consumers. Original complete group3086875912→3067137022instructions,0.639%
+fewer; original accepted196608carrierwords and8stats unchanged, full native1600
+exact. Certified-row endpoint retention (0b48951f5) independently reduces the same
+control to2904713292instructions,5.901%, preserving complete initialized certified
+rows and refinement/source replay counts. Full native1600exact. Root integrates
+all36valid endpoint/word/zero-error/domain/norm/retention policy combinations:
+504tests PASS. Root168immutable source/header/ELF/native evidence pins reclosed.
+A historical mutable-source pin failure is preserved explicitly; original git
+bytes match and are rebound to immutable evidence, not relabeled as unchanged.
+
+Generic build fix61e2628dc adds separate late linker flags after objects/runtime
+libraries. A real static-archive failure reproduces before the fix;9tests pass,
+and actual RV64GC helper ELF is byte-identical to correctly ordered manual linking.
+Generic LLVM outline+merge policyf93e22c04 preserves original exported symbols,
+source arithmetic, observable stores and function-address rules;16executed tests
+and core structure/docs checks pass. Tiny isolated M2 outline cycle gain is0.901%,
+while62.39%whole text shrink is only code-size evidence. Independent current M2
+broadcast scheduling measures9.761%fewer GSIMcycles; neither has a new whole stock
+claim. A fresh composition with the verified1967 pure-multiply champion is being
+qualified, with original256000/Torch/noFSM/155devicebindings required.
+
+Preserve negatives: representative counted-N panel+3.20% and grouped DMA
+interleave+3.57% despite smaller code/fewer spills or plausible queue benefits.
+The unpromoted polynomial table's exact integer division-to-shift change passes
+original compiled786432i8+1024scale consumer, inputs/guards/noFSM and16native
+source/quotient tests. Full group instructions regress1.212% versus control.
+A small synthetic helper pair improves GSIM1.388%; it does not establish an
+actual group or whole gain. Unpromoted source is archived outside the installed
+core runtime/test tree, with failures and recipes preserved. Uniform source-radius
+feasibility widens replay4.705x; column-specific alternative2.629x. Both preserve
+original compiled consumer but lack cost proof. A complete-cost screen for the
+column-specific proof is now authorized; no empirical threshold or stock claim.
+
+**Phase1/2 tooling:** use existing Merlin content_store immutable byte copies
+for compiler source closures and model artifacts; pin original git blobs plus
+physical frozen files, never only mutable checkout paths. Keep explicit compiler
+policy prerequisites and typed consumer requirements/certificate-state transitions
+in the agent edit surface. Score complete source-bound sections and then whole
+compositions; reconcile dynamic commands, replay counts, host text/instructions
+and measured cycles separately. Static shrink, queue hypotheses, instruction
+counts, unique bytes and requested traffic cannot substitute for physical timing.
+Derive applicability from semantics/layout/resources; keep target implementation
+in OOT and reusable host/numeric/build mechanisms in Merlin.
+
+Owned tokenledger cutoff2026-10-06T10:59:12Z (8explicitownedthreads only):
+uncachedinput43721954, cacheread2085313152, output8644828,
+reasoning3463950 alreadyincluded in output; rawinput+output2137679934,
+uncached+output52366782. Exact OOT-only and per-optimization
+allocation remain unavailable; no proration or unrelated session access. Separate
+goal tracker48731274tokens at this checkpoint. Evidence is in
+perf_records/golden_token_usage_20261006T105912Z.json.
+
+## 2026-10-06 11:20 UTC — qualified compositions and general build fix
+
+Whole stock bests are ResNet34,905,135 (1930), Tiny451,221,105 (1967),
+Smol258,621,872,969 (1906). No target is met. Scratch has83GiB free and
+scratch2 has5.4GiB free at this check; no further deletion was needed.
+
+**Tiny normal host compositions.** The source-exact LLVM loop-extract/mergefunc
+policy with current1967 pure-multiplypacket4 passes original256000 native,
+Torch, strictSpike, finalELF noFSM and all155 source-bound call references.
+Fresh normal control IR/object/relink reproduces1967 byteexact. Onlymodel.o
+changes. Full retiredinstructions142343799→142195690 (−0.10405%), which is
+not a hardware prediction. It is admitted once as stock1975 versus1967.
+The isolated1926 outline arm increases instructions0.02268%, and is retained
+without a separate hardware submission. The complete original two-row preDown
+GSIM capsule measures−0.900895%; whole host object text shrinks62.39%, a
+separate static metric. [Composition](perf_records/tiny_loop_multiply_composed_whole_qualification.json),
+[isolated attribution](perf_records/tiny_loop_outline_isolated_whole_qualification.json),
+[1975 admission](perf_records/stock1975_tiny_outline_multiply_admission.json).
+
+The independent broadcastrow2 policy with current1967 pure-multiplypacket4
+also closes every original whole-model gate and1967 normal control. Its complete
+M2/all5632-channel source preDown capsule measures−9.76097% warmABBA GSIM,
+including allocation/finalcopy and source operation/rounding order. Full model
+retiredinstructions142343799→142342304 (−0.001050%); actual whole cycles are
+UNKNOWN. It is admitted once as1976 versus1967, without outline or rejected1954
+FMApacket4. Root104 current pins and finalELF were independently rehashed.
+[Local cost](perf_records/tiny_broadcast_predown_m2_journey.json),
+[normal whole qualification](perf_records/tiny_broadcast_multiply_whole_qualification.json).
+
+**Smol portable source certificates.** Default-off separable_source_radius
+proves the source-zero-seeded ordered-FMA error with upward rowgamma×L1 and
+each source column maximum. Private exact reconstructed products, zero admitted
+representation errors/no uncertain positions, stableRNE and a uniform finite
+source-prefix envelope are required. Unknowns keep the checked bound. Source
+arithmetic and original elementwise gate remain unchanged. The wider enclosure
+increases replay4,461,440→11,730,560FMAs, yet complete original consumer provider
+ROI instructions3086875912→3032543604 (−1.7601%). Original54-op source consumer
+786432i8+1024BF16scales and all1600 whole outputs are exact. Three old intermediate
+carrier values differ but are unobserved by the actual source consumer. The old
+carrier-equality diagnostic failure is preserved; no numerical gate changed.
+[Source proof and actual costs](perf_records/separable_source_radius_qualification.json).
+
+Merlin integration3f0c86375 preserves all prior word/zero-error/domain/norm/row
+policies. All60 valid7-policy combinations compile and execute against independent
+source oracles, with770 tests PASS. The radius substitution precedes typed L1
+replacement so the whole initialized product-row statement retains its proof.
+Fresh L1+certified-row+radius composition source snapshots are frozen before builds.
+Original consumer/full1600 native gates pass; complete ROI2879340410 instructions
+versus3086875912 (−6.7232%), with480devicecalls/86,507,520readback bytes unchanged.
+Same-ELF whole-program PC totals3545895757→3338365845 reconcile exactly: inclusive
+local evaluate_products−125061674 and group_provider−92260334; encoder unchanged,
+extra replay/rounding library costs retained. These are instruction attribution,
+not isolated-stage causal cycles or whole hardware gains. Root148 composition,
+PC and admission pins reclosed; no radius hardware request.
+[Composition](perf_records/radius_l1_certified_rows_qualification.json),
+[PC conservation](perf_records/radius_l1_certified_rows_pc_comparison.json).
+
+The next RHS reuse investigation rejected repeated refinement scans: actual
+certify_frontier makes zero evaluate_products/dot_bounds calls; RHS preparation
+runs96 times only in initial2QK+6PV×12heads. Reuse across the four query quarters
+needs typed source owner/view/format/epoch and physical lifetime proof. Equal
+shapes, values or public pointers do not establish reusable preparation. Diagnostic
+RHS attribution must disclose noinline/timer overhead before any profitability
+claim; no production cache or workload selector has been enabled.
+
+**ResNet queue and spatial proof.**1971 full-K capacity and1974 residentweight
+packets remain queued versus1903, with durable owner collectors. Root imported
+1974admission and closed70 local-loop/broadcast/admission pins. The next explicitly
+selected halo-free resident-plane layout proves all original H7/C512 output cells
+and increasingHWIOK order. Current fragment reload count2016→328 and requested
+Abytes369664→68096; Bbytes2359296 unchanged, compute36864 andi32stores128 unchanged.
+Three shifted planes6048SPADrows/1024ACCrows fit. Independent nonsquare3×5/C32/N67
+terminal capsule8076→7995GSIM (−1.00%), all1005 outputs/guards/input bytes exact.
+Original section terminal and retained-loop ablation are PENDING; initial3M
+budgets stopped during postROI validation and are preserved as INCOMPLETE.
+No whole speed, physicalDRAM or reference-i8 equivalence is inferred from these
+logical request counts. No new flat-layout stock release yet.
+
+**Device/host build infrastructure.** Root reproduced a real generic compiler
+bug: caller/provider translation units with equal basename overwrite one .o,
+causing duplicate symbols and a missing function. Merlinfd3069220 introduces
+shared deterministic named_object_paths in the pure build recipe, used by both
+contract and layer builders. Existing unique names/recipe/link order are preserved;
+colliding sources receive link-position ordinal names and imported objects are
+reserved. Real native builds execute both source units in either support order,
+repeatELFhashes match, and imported kernel bytes remain unchanged.42 relevant
+build/handoff/oracle tests PASS,1 existing optional skip;2 historical target-backend
+integration tests are outside the selected harness-only provider capabilities.
+The initial missing-provider/load-address/legacy-error-class failures and the
+pre-fix real collision failures were observed, not silently reported as passing.
+All structure/docs checks PASS. This generic orchestration belongs in Merlin;
+compiler/ISA/ABI/linker resources stay target-declared inOOT. No model2MLIR source
+changed this interval and no unauthorized main push occurred.
+
+**Phase1/2 tooling.** Continue using exact source-compatible controls, explicit
+candidate compositions and default-off policies. Shared operand preparation needs
+an immutable handle and caller-owned lifetime in portable IR/ABI; target packing
+formats/resources/implementation stayOOT. The existing content_store should freeze
+source/tool dependencies before compilation and deduplicate bytes, rather than
+adding another store. Attribution should distinguish source operations, immutable
+preparation, exact replay, endpoint certificates, accelerator requests and actual
+physical traffic. Actual complete original consumer/correctness gates, cost scope,
+terminal completion and executable closure must travel with each candidate. Global
+search must retain negative interactions and verify fresh compositions; fewer
+instructions or smaller code alone do not select a hardware winner.
+
+**Owned tokens.** Explicit8-thread ledger at11:19:48UTC records44,519,893uncached
+input,2,112,114,944cache-read,8,755,549output,3,501,723reasoning (subsetoutput),
+2,165,390,386rawinput+output or53,275,442uncached+output. The20m36s completed-request
+window contains797,939uncachedinput+110,721output (908,660),26,801,792cache-read,
+37,773reasoning subset,27,710,452rawtotal. ExactOOT-only/per-optimization allocation
+remains UNAVAILABLE; no proration. Separate active goal tracker49,632,438 tokens.
+[Ledger](perf_records/golden_token_usage_20261006T111948Z.json).
+
+At11:23UTC public owner checkpoint,1968 original-consumer Smol complete-group
+capsule is RUNNING;1971/1974/1975/1976 remain QUEUED/PENDING with sole collectors
+alive. This is not the slow whole Smol FPGA arm. RHS diagnostic records the first
+noinline exact-consumer/statistics/devicework PASS; rdinstret is unavailable in
+this runtime (cause2), and its failure is preserved. A fresh mcycle diagnostic
+uses Spike instruction ticks and discloses CSR/noinline overhead.96 RHS encodes,
+96 RHS metadata preparations and96 LHS encodes are observed; RHS metadata alone
+costs67,675,296 instructions in the perturbed diagnostic. Shared radix leaf
+calls cannot be assigned to RHS without call-context observation. Estimated
+handle storage30.83MB/quartet remains a layout-derived allocation estimate,
+not a measured reuse speedup. No preparation cache is enabled.
+[1976 admission](perf_records/stock1976_tiny_broadcast_multiply_admission.json).
+
+At11:27UTC, the completed RHS diagnostic records92,951,781 encode plus
+68,195,232 metadata instructions (161,147,013;5.574% of perturbed ROI), with
+0.403% total instrumentation/codegen overhead disclosed. Root146 RHS/build/1976
+admission pins reclosed. The source mapping then identifies soft_details call
+~1,296,968,766instructions, dot_bounds~508,331,531 andcertify_frontier~278,765,395
+in the existing composed PC profile. Debug-only final relink preserves all102
+allocated sections/address/size/type/bytes; mapping closure remains under review.
+These nested inline costs overlap and must not be added to whole function totals.
+Prepared private source-domain/interval checks are the next evidence-led direction,
+with original fallback and numerical/source/consumer gates retained.
+[Measured RHS scope](perf_records/attention_rhs_preparation_cost_census.json),
+[generic build fix](perf_records/generic_object_naming_compile_fix.json).
+
+The new ResNet resident-plane matched source kernel is now terminal GSIM764114→
+718722 (−5.94%), preserving all25088i32 outputs/4096guards/2384384inputbytes.
+The independent existing flat loop-only control765872 (+0.23% versus original),
+so new layout is−6.16% versus that stronger control. IncreasingK/compute/store
+geometry stays fixed; source instructions rise140448→214084 while touched static
+instructionbytes shrink69602→13992. Neither count alone explains cycle gains.
+Normal52-binding/native/strict/sourcecontrol qualification is in progress, with
+111 focused source-cell/tail/resource/default-identity tests PASS. No hardware
+release, whole speed claim or original ZIPnumeric-contract substitution.
+
+## 2026-10-06 11:39 UTC — completed stock group and stronger section controls
+
+Stock1968 is DONE/rc0 at7,075,784,369 provider ROI cycles. All786432original
+compiled54-op consumer i8words+1024BF16scales, guards, descriptors, inputbytes
+and eight statistics pass; exactELF5527a93a...d0ca6/UART/stagedELF/stockbitstream
+are pinned. Job elapsed520.10s includes setup/execution; it is not the slow
+wholeSmol run. Raw WORKSPACE_GROUP_INSTRUCTIONS is a legacy label for mcycle;
+on stock hardware these are CYCLES.1944(10.525B) and1945(8.026B) have different
+recipes and are not isolated word-policy controls. WholeSmol best remains1906
+258.6Bcycles; no48×extrapolation, whole5B claim or route promotion.
+[Terminal](perf_records/stock1968_word_consumer_terminal.json).
+
+Root318 exact capsule/debug/stock1968 evidence pins reclosed. New ResNet flat
+planes imported528b5e2 preserving all previous compact/capacity/packet probe
+choices, and106 source-cell/packet/retained-loop/default/export tests PASS.
+Agent normal52bundle changes only47/50 kernels; all52adapters/sourcebindings,
+other50objects and rewrittenIR are unchanged. Full native/strict1000 gate and
+frozen1903 control are still pending. No flat-plane stock release yet.
+[Complete capsules and ablation](perf_records/resident_flat_planes_capsules.json).
+
+Merlin debug_companion importede8efe0a6f;18actual compiler/symbolizer and negative
+binary/source testsPASS. It admits identical allocated ELFbytes/addresses/flags
+and normalized relocation symbol identities, refuses unsupported formats and
+conserves everyPC including missing source metadata. RISC-V production4object
+allocated sections/1213relocations and102finalallocated sections match, enabling
+existing3338365845instructionPCprofile mapping with no new target execution.
+Generic utility remains target-independent, tools/source/ISA/numerical gates
+caller-owned. Tests moved to DSE per local performance AGENT.md; structure/docs
+checksPASS. Sourceconstructor f32_interval_endpoint.h:17 costs215208045innermost
+instructions, including soft subtraction/addition and separate PV endpoint
+contexts. Nested source/callsite counts overlap and cannot be summed as disjoint
+costs. These are instruction counts, not hardwarecycles.
+[Actual source mapping](perf_records/composed_provider_debug_source_attribution.json).
+
+PreparedSoftmaxIntervalDomain is the next default-off portable proof under
+implementation. It must derive finite scaled-score/difference envelopes from
+actual plan and source domain, establish a finite nonnegative polynomial upper
+bound, and execute the original lane/tree/two-chunk schedule on that upper bound
+withalpha=1 to prove every prefix. Runtime active endpoint order/finiteness and
+alpha[0,1] are admitted once; all-masked, cutoff, signed-zero, NaN, underflow,
+overflow and unsupported-source cases retain checked fallback. Only typed private
+softmax consumers may elide checks; signedPV has a separate domain and remains
+checked. No global unchecked interval constructor or golden-derived range.
+
+Tiny separate exactly-two-multiply packet family retains current>=3 champion
+eligibility/default. New56native/default/refusal testsPASS; actualsource16384F32
+outputs and81920five-FRM/flags comparisons, plus independent3×7+tail1260rawspecial
+cases close. Actual source GSIM complete-cost pair is still live; no fullmodel
+composition or hardware release for this prospective policy.
+
+### Source scheduling and current queue (2026-10-06T16:12Z)
+
+CurrentResNetserial-fivecomposition is released as stock2007. Root closes1034
+source/compile/result pins, all1000original outputs/zero tolerances and finalELF
+noFSM. Host text and allrelocations match1992 except the first sourcebound
+residual callee. The final deviceFENCE precedes CPUcorrection; streamed
+coherence assumptions do not apply. Whole cycles remainUNKNOWN.
+[Controlled qualification](perf_records/residual_serial_five_current1992_qualified.json).
+
+The streamed ranked original section separately measures1,996,525current39,
+1,656,725serial5 and1,608,213streamed5GSIMcycles. All802816outputs/guards/input
+checks pass; stockbitstream coherence lineage remainsUNKNOWN, so streaming
+isheld. These are section timings, not estimated whole-model savings.
+[Exact scope](perf_records/residual_streamed_ranked_original_complete.json).
+
+An explicit portable finite/private independent-FMA contract plus OOTRV64GC
+register scheduling now emits eight independent sourceFMAs in each stage.
+All120000lanechecks/40120endpointchecks and1600nativeoutputs pass. Complete
+group2,288,221,154→2,278,816,418instructions,0.4110%lower; stockgroup is
+released against2003. Workspace, exactconsumer, callbackcount and source
+arithmetic order are unchanged. This does not close a whole5B route.
+[Proof and complete cost](perf_records/source_fma_eight_complete_group_qualification.json).
+
+## 2026-10-07 prepared endpoint host evaluation delivery
+
+Merlin main7625d2d9177f60718202c82a054ce0eedc929aac is pushed and verified
+as one generic topic. The opt-in producer-owned endpoint evaluator checks complete
+immutable row epochs, invalidates before refinement, preserves source operation
+order and retains checked fallback. It adds no numerical permission; source
+interval truth remains the existing explicit experiment policy. Root fresh12
+source/12 installed tests pass; all1,014 Python modules and30 runtime headers
+match source/wheel/installation. Agent20 source tests are separate evidence.
+
+Smol group candidate exact original consumer and guards passes; complete retirement
+1,560,212,849→1,515,040,109 is a proxy, not hardware cycles. Extra16,448 bytes
+of private stack are inside the complete group. Fresh stock matched2107/2108
+and independent whole target gates are pending. Normal whole source191 pins
+closes48 bindings/297 ordinary contractions/19 signatures; all1,600 native words
+exact, measured provider sources identical. Stock physical capacity remains
+unknown: current header/driver and retained bit identities are distinct from
+executed historical driver/header-to-bit build proof.
+
+## 2026-10-07 prepared constants independent whole target pass
+
+Actual a90f4db229bc530034e5edeedda42a9847c62a5a51c6f1c52ab08165ee85bf95
+completed the bounded original SmolVLA target run in4,366.498 seconds (~72.8min).
+All1,600 original output words are bitwise exact (raw f32le digest
+1e5b274d4c99cb6710994542f509769ba61ed37f435dc6ee1ed05ed1b8cc03de);
+rank0/DONE/exit0/final noFSM and171 source pins close independently.
+The original atol.03125/rtol.02 gate remains unchanged.
+
+Reported Spike140,205,205,953 is a functional instruction proxy, **not FireSim
+performance**. Source instrumentation counters belong to native qualification;
+this target did not print them, so they are not inferred. Stock physical memory
+capacity and whole hardware timing remain unknown. Fresh endpoint successor f90b
+is independently running its own bounded target gate; no predecessor pass is
+transferred.
+
+## 2026-10-07 endpoint prepared evaluation measured on stock
+
+Fresh stock2107/2108 full12-head group: **3,611,264,318 → 3,550,334,843**
+cycles, saving60,929,475 (**1.687206%**). Full786,432 original i8 words,
+1,024 BF16 scales, guards, eight statistics and two unobserved diagnostic carrier
+differences pass unchanged. Root recloses289 source pins, actual staged ELFs
+and stock bit, DONE/0/PASSED/COMMAND0 and all-executable noFSM. Actual45 sized
+data symbols match. Control reproduces measured2098 bytes and cycle value; this
+is a fresh matched pair, not only a historical control comparison.
+
+Complete timers include preparation/extra16,448 private stack bytes and all
+products/observer/refinement/stores. Group retirement−2.895% differs from stock
+−1.687%; neither predicts whole-model timing by multiplication. Core7625 main
+and OOT source/normal integration are delivered. Fresh whole f90b original1600
+strict gate is still running; whole hardware remains unmeasured.

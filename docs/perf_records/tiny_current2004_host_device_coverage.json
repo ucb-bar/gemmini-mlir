@@ -1,0 +1,1364 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "recorded_utc": "2026-10-06T16:51:56.936191+00:00",
+  "hypothesis": "Identify actual typed host regions with an existing legal integer device representation and closed observers before adding acceleration. Prove available producer dtype/use conditions rather than selecting a model/shape or interpreting captured float words as integer operands.",
+  "ownership": "Typed source/use/numerical/ownership/frontier proofs and generic preparation Merlin; target primitive legality, layouts/resources and ISA lowering OOT.",
+  "emitted_change": "NONE. Read-only complete source graph, conservative effectful-call liveness and existing target matcher census. Source uses bind obligations only; no model/name/ordinal strategy selectors.",
+  "whole_control": {
+    "stock_job": 2004,
+    "stock_cycles": 422018733,
+    "source_and_object_closure_path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_rectangular_contraction_whole_qualification.json",
+    "profile_qualification_path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_current2004_device_profile_qualification.json",
+    "current_hw_split": null,
+    "current_section_cycles": null
+  },
+  "coverage": [
+    {
+      "family": "existing integer projections",
+      "calls": 155,
+      "source_MACs": 8275361792,
+      "types": "i8\u00d7i8\u2192i32",
+      "route": "Already device-offloaded. Current objects remain immutable; CPU code in device spans includes command/address/control/fence/wait.",
+      "missing": "Physical DMA/mesh/overlap attribution remains unknown; current155-boundary stock profile qualified but not yet timed."
+    },
+    {
+      "family": "attention QK/PV",
+      "calls": 44,
+      "source_rounded_multiply_add_pairs": 5767168,
+      "additional_outer_pairs": 256,
+      "types": "f32\u00d7f32\u2192f32",
+      "route": "Host exact ordered2\u00d74/K2 schedule. Existing stock Gemmini has no nativef32 datapath.",
+      "missing": "Requires an explicit encoded-value/error certificate and complete live consumer DAG, with original source rounding/softmax/residual observations; no dtype override or direct i8 match."
+    },
+    {
+      "family": "squared sum and norm",
+      "calls": 45,
+      "rows": 360,
+      "source_squared_elements": 737280,
+      "types": "f32 residual/embedding\u2192f32 norm\u2192fixed-scale i8",
+      "route": "Current exact scalar SQS and per-row rsqrt hoist. All45 normalized outputs close to one i8 quantizer; its scalar scale is independent of norm.",
+      "missing": "ZERO inputs have a direct exact existing i8 representation:1embedding gather,44rounded f32 residual adds.44norm inputs remain live residuals. Integer Gram of another quantized tensor does not compute this source norm; new exact/enclosed encoding and selective quant-bin proof required."
+    },
+    {
+      "family": "post gate/up nonlinearity and quantization",
+      "calls": 22,
+      "elements": 991232,
+      "types": "i32 projections\u2192f32 scales/nonlinear/products\u2192i8",
+      "route": "Host fused polynomial/FMA and exact original quant observer; generic pureMultiply4/twoMultiply4 policies.",
+      "missing": "Promising closed i8 frontier from integer producers, but existing uniform-constant store-scale matcher has no per-channel scale/nonlinear capability. Must bind current actual polynomial/source rounding and prove every observed i8 word or explicit original policy."
+    },
+    {
+      "family": "residual adds",
+      "calls": 44,
+      "elements": 720896,
+      "types": "rounded f32 residual plus scaled i32 projection\u2192f32",
+      "route": "Host exact rounded dequant/add chain; floating result lives across layers.",
+      "missing": "Existing i8 identity-matmul+D residual requires i8 operands; no equivalent source representation. Cannot discard live f32 residual or replace it with downstream i8."
+    },
+    {
+      "family": "i32 dequant epilogues",
+      "calls": 155,
+      "types": "i32\u2192f32\u2192two rounded scales (one per channel)",
+      "route": "Host source arithmetic, already scheduled where eligible. All155 existing exact direct requant matcher attempts refuse four-operand f32 result geometry.",
+      "missing": "Per-channel scales and live floating outputs differ from uniform scalar i32\u2192i8 store contract. The provider must retain each source cast/multiply and live residual/nonlinear use or certify a closed i8 frontier."
+    },
+    {
+      "family": "live layout copies/transposes",
+      "source_families": [
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x1x8x8xi1>",
+            "tensor<1x1x8x8xi1>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 1
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x32x1xf32>",
+            "tensor<1x32x1xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 2
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x1x8xf32>",
+            "tensor<1x1x8xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 1
+        },
+        {
+          "name": "linalg.transpose",
+          "operand_types": [
+            "tensor<1x32x8xf32>",
+            "tensor<1x8x32xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 1
+        },
+        {
+          "name": "linalg.transpose",
+          "operand_types": [
+            "tensor<1x8x32x64xf32>",
+            "tensor<1x32x8x64xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 22
+        },
+        {
+          "name": "linalg.transpose",
+          "operand_types": [
+            "tensor<1x8x4x64xf32>",
+            "tensor<1x4x8x64xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 44
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x4x1x8x64xf32>",
+            "tensor<1x4x8x8x64xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 44
+        },
+        {
+          "name": "linalg.transpose",
+          "operand_types": [
+            "tensor<1x32x8x64xf32>",
+            "tensor<1x32x64x8xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 22
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x32x8x64xf32>",
+            "tensor<1x32x8x64xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 44
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x32x64x8xf32>",
+            "tensor<1x32x64x8xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 22
+        },
+        {
+          "name": "linalg.generic",
+          "operand_types": [
+            "tensor<1x32x8x8xf32>",
+            "tensor<1x32x8x8xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 22
+        },
+        {
+          "name": "linalg.transpose",
+          "operand_types": [
+            "tensor<1x32x8x64xf32>",
+            "tensor<1x8x32x64xf32>"
+          ],
+          "body": [
+            "linalg.yield"
+          ],
+          "count": 22
+        }
+      ],
+      "route": "Generic source copies/views, then authoritative upstream bufferization; no claim every source transpose materializes.",
+      "missing": "Need actual buffer alias/lifetime/stride and emitted traffic witness. Reversible immutable parameter packing is legal but measured packed RHS and stationary transpose were negative; do not infer copy savings from source counts."
+    }
+  ],
+  "rms_quant_frontiers": [
+    {
+      "reduction": 1279,
+      "input": 1087,
+      "normalized_to_i8_closed_use_ids": [
+        1285,
+        1288,
+        1289,
+        1293,
+        1297,
+        1301,
+        1305,
+        1320
+      ],
+      "i8_observer": 1320,
+      "scale_producer": 1313,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 1696,
+      "input": 1687,
+      "normalized_to_i8_closed_use_ids": [
+        1702,
+        1705,
+        1706,
+        1710,
+        1714,
+        1718,
+        1722,
+        1737
+      ],
+      "i8_observer": 1737,
+      "scale_producer": 1730,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 1936,
+      "input": 1927,
+      "normalized_to_i8_closed_use_ids": [
+        1942,
+        1945,
+        1946,
+        1950,
+        1954,
+        1958,
+        1962,
+        1977
+      ],
+      "i8_observer": 1977,
+      "scale_producer": 1970,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 2353,
+      "input": 2344,
+      "normalized_to_i8_closed_use_ids": [
+        2359,
+        2362,
+        2363,
+        2367,
+        2371,
+        2375,
+        2379,
+        2394
+      ],
+      "i8_observer": 2394,
+      "scale_producer": 2387,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 2593,
+      "input": 2584,
+      "normalized_to_i8_closed_use_ids": [
+        2599,
+        2602,
+        2603,
+        2607,
+        2611,
+        2615,
+        2619,
+        2634
+      ],
+      "i8_observer": 2634,
+      "scale_producer": 2627,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 3010,
+      "input": 3001,
+      "normalized_to_i8_closed_use_ids": [
+        3016,
+        3019,
+        3020,
+        3024,
+        3028,
+        3032,
+        3036,
+        3051
+      ],
+      "i8_observer": 3051,
+      "scale_producer": 3044,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 3250,
+      "input": 3241,
+      "normalized_to_i8_closed_use_ids": [
+        3256,
+        3259,
+        3260,
+        3264,
+        3268,
+        3272,
+        3276,
+        3291
+      ],
+      "i8_observer": 3291,
+      "scale_producer": 3284,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 3667,
+      "input": 3658,
+      "normalized_to_i8_closed_use_ids": [
+        3673,
+        3676,
+        3677,
+        3681,
+        3685,
+        3689,
+        3693,
+        3708
+      ],
+      "i8_observer": 3708,
+      "scale_producer": 3701,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 3907,
+      "input": 3898,
+      "normalized_to_i8_closed_use_ids": [
+        3913,
+        3916,
+        3917,
+        3921,
+        3925,
+        3929,
+        3933,
+        3948
+      ],
+      "i8_observer": 3948,
+      "scale_producer": 3941,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 4324,
+      "input": 4315,
+      "normalized_to_i8_closed_use_ids": [
+        4330,
+        4333,
+        4334,
+        4338,
+        4342,
+        4346,
+        4350,
+        4365
+      ],
+      "i8_observer": 4365,
+      "scale_producer": 4358,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 4564,
+      "input": 4555,
+      "normalized_to_i8_closed_use_ids": [
+        4570,
+        4573,
+        4574,
+        4578,
+        4582,
+        4586,
+        4590,
+        4605
+      ],
+      "i8_observer": 4605,
+      "scale_producer": 4598,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 4981,
+      "input": 4972,
+      "normalized_to_i8_closed_use_ids": [
+        4987,
+        4990,
+        4991,
+        4995,
+        4999,
+        5003,
+        5007,
+        5022
+      ],
+      "i8_observer": 5022,
+      "scale_producer": 5015,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 5221,
+      "input": 5212,
+      "normalized_to_i8_closed_use_ids": [
+        5227,
+        5230,
+        5231,
+        5235,
+        5239,
+        5243,
+        5247,
+        5262
+      ],
+      "i8_observer": 5262,
+      "scale_producer": 5255,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 5638,
+      "input": 5629,
+      "normalized_to_i8_closed_use_ids": [
+        5644,
+        5647,
+        5648,
+        5652,
+        5656,
+        5660,
+        5664,
+        5679
+      ],
+      "i8_observer": 5679,
+      "scale_producer": 5672,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 5878,
+      "input": 5869,
+      "normalized_to_i8_closed_use_ids": [
+        5884,
+        5887,
+        5888,
+        5892,
+        5896,
+        5900,
+        5904,
+        5919
+      ],
+      "i8_observer": 5919,
+      "scale_producer": 5912,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 6295,
+      "input": 6286,
+      "normalized_to_i8_closed_use_ids": [
+        6301,
+        6304,
+        6305,
+        6309,
+        6313,
+        6317,
+        6321,
+        6336
+      ],
+      "i8_observer": 6336,
+      "scale_producer": 6329,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 6535,
+      "input": 6526,
+      "normalized_to_i8_closed_use_ids": [
+        6541,
+        6544,
+        6545,
+        6549,
+        6553,
+        6557,
+        6561,
+        6576
+      ],
+      "i8_observer": 6576,
+      "scale_producer": 6569,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 6952,
+      "input": 6943,
+      "normalized_to_i8_closed_use_ids": [
+        6958,
+        6961,
+        6962,
+        6966,
+        6970,
+        6974,
+        6978,
+        6993
+      ],
+      "i8_observer": 6993,
+      "scale_producer": 6986,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 7192,
+      "input": 7183,
+      "normalized_to_i8_closed_use_ids": [
+        7198,
+        7201,
+        7202,
+        7206,
+        7210,
+        7214,
+        7218,
+        7233
+      ],
+      "i8_observer": 7233,
+      "scale_producer": 7226,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 7609,
+      "input": 7600,
+      "normalized_to_i8_closed_use_ids": [
+        7615,
+        7618,
+        7619,
+        7623,
+        7627,
+        7631,
+        7635,
+        7650
+      ],
+      "i8_observer": 7650,
+      "scale_producer": 7643,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 7849,
+      "input": 7840,
+      "normalized_to_i8_closed_use_ids": [
+        7855,
+        7858,
+        7859,
+        7863,
+        7867,
+        7871,
+        7875,
+        7890
+      ],
+      "i8_observer": 7890,
+      "scale_producer": 7883,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 8266,
+      "input": 8257,
+      "normalized_to_i8_closed_use_ids": [
+        8272,
+        8275,
+        8276,
+        8280,
+        8284,
+        8288,
+        8292,
+        8307
+      ],
+      "i8_observer": 8307,
+      "scale_producer": 8300,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 8506,
+      "input": 8497,
+      "normalized_to_i8_closed_use_ids": [
+        8512,
+        8515,
+        8516,
+        8520,
+        8524,
+        8528,
+        8532,
+        8547
+      ],
+      "i8_observer": 8547,
+      "scale_producer": 8540,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 8923,
+      "input": 8914,
+      "normalized_to_i8_closed_use_ids": [
+        8929,
+        8932,
+        8933,
+        8937,
+        8941,
+        8945,
+        8949,
+        8964
+      ],
+      "i8_observer": 8964,
+      "scale_producer": 8957,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 9163,
+      "input": 9154,
+      "normalized_to_i8_closed_use_ids": [
+        9169,
+        9172,
+        9173,
+        9177,
+        9181,
+        9185,
+        9189,
+        9204
+      ],
+      "i8_observer": 9204,
+      "scale_producer": 9197,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 9580,
+      "input": 9571,
+      "normalized_to_i8_closed_use_ids": [
+        9586,
+        9589,
+        9590,
+        9594,
+        9598,
+        9602,
+        9606,
+        9621
+      ],
+      "i8_observer": 9621,
+      "scale_producer": 9614,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 9820,
+      "input": 9811,
+      "normalized_to_i8_closed_use_ids": [
+        9826,
+        9829,
+        9830,
+        9834,
+        9838,
+        9842,
+        9846,
+        9861
+      ],
+      "i8_observer": 9861,
+      "scale_producer": 9854,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 10237,
+      "input": 10228,
+      "normalized_to_i8_closed_use_ids": [
+        10243,
+        10246,
+        10247,
+        10251,
+        10255,
+        10259,
+        10263,
+        10278
+      ],
+      "i8_observer": 10278,
+      "scale_producer": 10271,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 10477,
+      "input": 10468,
+      "normalized_to_i8_closed_use_ids": [
+        10483,
+        10486,
+        10487,
+        10491,
+        10495,
+        10499,
+        10503,
+        10518
+      ],
+      "i8_observer": 10518,
+      "scale_producer": 10511,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 10894,
+      "input": 10885,
+      "normalized_to_i8_closed_use_ids": [
+        10900,
+        10903,
+        10904,
+        10908,
+        10912,
+        10916,
+        10920,
+        10935
+      ],
+      "i8_observer": 10935,
+      "scale_producer": 10928,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 11134,
+      "input": 11125,
+      "normalized_to_i8_closed_use_ids": [
+        11140,
+        11143,
+        11144,
+        11148,
+        11152,
+        11156,
+        11160,
+        11175
+      ],
+      "i8_observer": 11175,
+      "scale_producer": 11168,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 11551,
+      "input": 11542,
+      "normalized_to_i8_closed_use_ids": [
+        11557,
+        11560,
+        11561,
+        11565,
+        11569,
+        11573,
+        11577,
+        11592
+      ],
+      "i8_observer": 11592,
+      "scale_producer": 11585,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 11791,
+      "input": 11782,
+      "normalized_to_i8_closed_use_ids": [
+        11797,
+        11800,
+        11801,
+        11805,
+        11809,
+        11813,
+        11817,
+        11832
+      ],
+      "i8_observer": 11832,
+      "scale_producer": 11825,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 12208,
+      "input": 12199,
+      "normalized_to_i8_closed_use_ids": [
+        12214,
+        12217,
+        12218,
+        12222,
+        12226,
+        12230,
+        12234,
+        12249
+      ],
+      "i8_observer": 12249,
+      "scale_producer": 12242,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 12448,
+      "input": 12439,
+      "normalized_to_i8_closed_use_ids": [
+        12454,
+        12457,
+        12458,
+        12462,
+        12466,
+        12470,
+        12474,
+        12489
+      ],
+      "i8_observer": 12489,
+      "scale_producer": 12482,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 12865,
+      "input": 12856,
+      "normalized_to_i8_closed_use_ids": [
+        12871,
+        12874,
+        12875,
+        12879,
+        12883,
+        12887,
+        12891,
+        12906
+      ],
+      "i8_observer": 12906,
+      "scale_producer": 12899,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 13105,
+      "input": 13096,
+      "normalized_to_i8_closed_use_ids": [
+        13111,
+        13114,
+        13115,
+        13119,
+        13123,
+        13127,
+        13131,
+        13146
+      ],
+      "i8_observer": 13146,
+      "scale_producer": 13139,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 13522,
+      "input": 13513,
+      "normalized_to_i8_closed_use_ids": [
+        13528,
+        13531,
+        13532,
+        13536,
+        13540,
+        13544,
+        13548,
+        13563
+      ],
+      "i8_observer": 13563,
+      "scale_producer": 13556,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 13762,
+      "input": 13753,
+      "normalized_to_i8_closed_use_ids": [
+        13768,
+        13771,
+        13772,
+        13776,
+        13780,
+        13784,
+        13788,
+        13803
+      ],
+      "i8_observer": 13803,
+      "scale_producer": 13796,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 14179,
+      "input": 14170,
+      "normalized_to_i8_closed_use_ids": [
+        14185,
+        14188,
+        14189,
+        14193,
+        14197,
+        14201,
+        14205,
+        14220
+      ],
+      "i8_observer": 14220,
+      "scale_producer": 14213,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 14419,
+      "input": 14410,
+      "normalized_to_i8_closed_use_ids": [
+        14425,
+        14428,
+        14429,
+        14433,
+        14437,
+        14441,
+        14445,
+        14460
+      ],
+      "i8_observer": 14460,
+      "scale_producer": 14453,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 14836,
+      "input": 14827,
+      "normalized_to_i8_closed_use_ids": [
+        14842,
+        14845,
+        14846,
+        14850,
+        14854,
+        14858,
+        14862,
+        14877
+      ],
+      "i8_observer": 14877,
+      "scale_producer": 14870,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 15076,
+      "input": 15067,
+      "normalized_to_i8_closed_use_ids": [
+        15082,
+        15085,
+        15086,
+        15090,
+        15094,
+        15098,
+        15102,
+        15117
+      ],
+      "i8_observer": 15117,
+      "scale_producer": 15110,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 15493,
+      "input": 15484,
+      "normalized_to_i8_closed_use_ids": [
+        15499,
+        15502,
+        15503,
+        15507,
+        15511,
+        15515,
+        15519,
+        15534
+      ],
+      "i8_observer": 15534,
+      "scale_producer": 15527,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": true,
+      "direct_existing_i8_representation": false
+    },
+    {
+      "reduction": 15733,
+      "input": 15724,
+      "normalized_to_i8_closed_use_ids": [
+        15739,
+        15742,
+        15743,
+        15747,
+        15751,
+        15755,
+        15759,
+        15774
+      ],
+      "i8_observer": 15774,
+      "scale_producer": 15767,
+      "source_scale_is_independent_of_norm": true,
+      "input_still_live_as_residual": false,
+      "direct_existing_i8_representation": false
+    }
+  ],
+  "pre_down_quant_frontiers": [
+    {
+      "nonlinear": 1812,
+      "closed_use_ids": [
+        1812,
+        1820,
+        1848,
+        1863
+      ],
+      "i8_observer": 1863,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 2469,
+      "closed_use_ids": [
+        2469,
+        2477,
+        2505,
+        2520
+      ],
+      "i8_observer": 2520,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 3126,
+      "closed_use_ids": [
+        3126,
+        3134,
+        3162,
+        3177
+      ],
+      "i8_observer": 3177,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 3783,
+      "closed_use_ids": [
+        3783,
+        3791,
+        3819,
+        3834
+      ],
+      "i8_observer": 3834,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 4440,
+      "closed_use_ids": [
+        4440,
+        4448,
+        4476,
+        4491
+      ],
+      "i8_observer": 4491,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 5097,
+      "closed_use_ids": [
+        5097,
+        5105,
+        5133,
+        5148
+      ],
+      "i8_observer": 5148,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 5754,
+      "closed_use_ids": [
+        5754,
+        5762,
+        5790,
+        5805
+      ],
+      "i8_observer": 5805,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 6411,
+      "closed_use_ids": [
+        6411,
+        6419,
+        6447,
+        6462
+      ],
+      "i8_observer": 6462,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 7068,
+      "closed_use_ids": [
+        7068,
+        7076,
+        7104,
+        7119
+      ],
+      "i8_observer": 7119,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 7725,
+      "closed_use_ids": [
+        7725,
+        7733,
+        7761,
+        7776
+      ],
+      "i8_observer": 7776,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 8382,
+      "closed_use_ids": [
+        8382,
+        8390,
+        8418,
+        8433
+      ],
+      "i8_observer": 8433,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 9039,
+      "closed_use_ids": [
+        9039,
+        9047,
+        9075,
+        9090
+      ],
+      "i8_observer": 9090,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 9696,
+      "closed_use_ids": [
+        9696,
+        9704,
+        9732,
+        9747
+      ],
+      "i8_observer": 9747,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 10353,
+      "closed_use_ids": [
+        10353,
+        10361,
+        10389,
+        10404
+      ],
+      "i8_observer": 10404,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 11010,
+      "closed_use_ids": [
+        11010,
+        11018,
+        11046,
+        11061
+      ],
+      "i8_observer": 11061,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 11667,
+      "closed_use_ids": [
+        11667,
+        11675,
+        11703,
+        11718
+      ],
+      "i8_observer": 11718,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 12324,
+      "closed_use_ids": [
+        12324,
+        12332,
+        12360,
+        12375
+      ],
+      "i8_observer": 12375,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 12981,
+      "closed_use_ids": [
+        12981,
+        12989,
+        13017,
+        13032
+      ],
+      "i8_observer": 13032,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 13638,
+      "closed_use_ids": [
+        13638,
+        13646,
+        13674,
+        13689
+      ],
+      "i8_observer": 13689,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 14295,
+      "closed_use_ids": [
+        14295,
+        14303,
+        14331,
+        14346
+      ],
+      "i8_observer": 14346,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 14952,
+      "closed_use_ids": [
+        14952,
+        14960,
+        14988,
+        15003
+      ],
+      "i8_observer": 15003,
+      "elements": 45056
+    },
+    {
+      "nonlinear": 15609,
+      "closed_use_ids": [
+        15609,
+        15617,
+        15645,
+        15660
+      ],
+      "i8_observer": 15660,
+      "elements": 45056
+    }
+  ],
+  "integer_Gram_candidate_cost_scope": {
+    "original_source_shape": [
+      8,
+      2048
+    ],
+    "logical_Gram": [
+      8,
+      8
+    ],
+    "required_diagonal": 8,
+    "full_Gram_MACs": 131072,
+    "source_square_products": 16384,
+    "logical_extra_factor": 8,
+    "padded16x16_MAC_capacity": 524288,
+    "padded_vs_source_factor": 32,
+    "full_i8_diagonal_prefix_bound": 33554432,
+    "int32_bound_ok": true,
+    "actual_input_encoding_available": false,
+    "actual_cycles": null
+  },
+  "division_source_census": {
+    "sigmoid_like": 991232,
+    "softmax": 45056,
+    "mean": 360,
+    "scalar_quant_reciprocals": 89,
+    "total": 1036737,
+    "scope": "Logical source arithmetic count, not current PC instructions/cycles; fused current polynomial source lowering separately bound by immutable normal recipe."
+  },
+  "dead_source_operations_scope": "Conservative backward source liveness roots all ordinary calls/returns and captured structured-body inputs. Unused float parameter dequant/transposes are excluded. This is source dependency evidence, not measured allocation/copy/traffic.",
+  "result": "Coverage holes identified, no new arithmetic/offload enabled. Prioritize source-bound closed i8 frontier or explicit preparation proof; current whole section timing waits currentstockprofile.",
+  "actual_hardware_change": null,
+  "whole_cycle_projection": null,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_current2004_device_profile_qualification.json": "0748726d4c820fa456f987d3f9105cea9e3e82654a126ec637334d1460469090",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/tiny_rectangular_contraction_whole_qualification.json": "4ae390dca8c32b8a6ff4d0f643f4d1b651a6e245ae5d88b9c3f07c40904b5ffa",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/contraction_patterns.py": "5c95a699019514e5f730fa306c1fa9e96d9a3f124ed8372c6d090ec78f8d48e5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/golden_device_profile.py": "3e5c523061a50fb4160a4d34ca68b89ce11c2f1527b332ae9e05ed54a29f3b4b",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/golden_gemm.py": "aff675c670df71a33472bdc68f2ebbedbdf4db4c3fccd02e650ba808f5f79baa",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/golden_requant.py": "0a2be6e767001fa9191f6d6c404750086f439e870215418a1a1956da99f53c17",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/mlir_oot/golden_resadd.py": "1ab25fa8ee348d928821af33d2ed699069d188480bcaf5167511168b374b61dc",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/archive_census.py": "fb982a74e9a9e055b4cf522bf5f33b0188072b86ca4a50a0b7c914b334fdc9af",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/capability_match.log": "ccacf068dd93c8e0cdd6c4c91c586596c0d631b647a3db2d5f77663dad60a311",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/capability_match.py": "7b499734c3315e842d6c3d151477d53ccc8c40525752e670d0537e4c7bde690a",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/census_source.py": "a38e398a8efd261df069763e06e9fd5fb82bb6f267ff2e71f8d04c33bc8b2df9",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/existing_capabilities.json": "c3ba4e9328decc6ce92a7f4b3003636189373e5981ec02648af846e5d1943d76",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/inspect.json": "62ea8f15476f5413765c05ccc5ad7b1f591deb01624b9e3df1a7a02fedf05bf7",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/inspect_named.json": "5233cf0cf777424fd1b6c809aee54a9f5a02dc919b226f62ea0229514ab09cf5",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/inspect_source.py": "5a36eda2d2290b47a411681b691eb05d0dd7316ab68e6b03ef1a6b63b67495fd",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-host-device-coverage-current2004-20261006/source_census.json": "e1c567ef17a12fbbe04d84b90ce81d212c004711d86eefa139148fb0b32e05e6",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/device_host_abi/model.mlir": "9b40fddfd8494ffc8f24a7d377609cd1a4cd5074b6183c7d8324c1bd4b089cbb",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/model.prepared.mlir": "c2b9f7480d04e1292484d8ef7e123ed5dc121b6de101d6c52ed78cbfc9cfa1f6",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/broadcast_math_hoist.py": "fe536446496c0d72e03680dfea489444e5210ad61515d1f608bf051fab7c27e8",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/pipeline.py": "cf7585f28d9b4c949323a0e7ef89e280e46e158439d7961a7369b20126810331",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/scalar_contraction.py": "2485a2de9538273a01481d917908cd8fa27abf4e4087dadfa079f7e6714fffc5",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/scalar_pointwise_packet.py": "1f093cd5e6d6e3ad0184cfc2ce00fa4a5e1e27b995eb894922212ccb55a7e89a",
+    "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/scalar_squared_sum.py": "135162488da516887087d5a802dc1c9c891c49d1bbeec9fc7576508a4f5db53a"
+  }
+}

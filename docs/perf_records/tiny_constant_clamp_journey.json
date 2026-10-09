@@ -1,0 +1,897 @@
+{
+  "schema": "tiny_constant_clamp_optimization_journey_v1",
+  "original_baseline": {
+    "job": 1880,
+    "actual_stock_cycles": 531072370,
+    "elf_sha256": "d0a2aaa939fdbe1ffd7d2931901cb49b37c6cbf0f00250d9ea7cc38c8c54de70"
+  },
+  "current_profile_scope": {
+    "job": 1901,
+    "forward_actual_stock_cycles": 530599828,
+    "inside_device_call_regions_including_cpu_adapters": 179768482,
+    "outside_call_regions": 350831346,
+    "pre_down_projection22_host_intervals": 127539158,
+    "qualification": "155 ordered calls, full original256000 words, staged ELF/bitstream and duration conservation independently closed by firesim_recovery. Host intervals contain gate/polynomial/quantization and other work, not isolated clamp costs."
+  },
+  "merlin_commit": "06e5bd45b",
+  "structural_frontend_replay": {
+    "schema": "constant_clamp_structural_frontend_replay_v1",
+    "frontend_path": "/scratch/agustin/tmp/merlin-tiny-calibrated-build-20261005/src/merlin/llvmlower/constant_float_clamp.py",
+    "frontend_sha256": "7fa2cc3fea83b8b0d3d7a4ee4c9efab8e7b2d86628997521d12902c882bddce8",
+    "prototype_snapshot_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/constant_float_clamp_regex_prototype.py",
+    "prototype_snapshot_sha256": "b34ec3868511d206a754c8a52a0a23c51fb0aff159e74ac4fd30d904dc9d427b",
+    "numeric_llvm_byte_identical": true,
+    "numeric_proof_identical": true,
+    "numeric_llvm_sha256": "e1e527752ed321489f4da90dfdaab455d8e34f976b95d234a987165a2a2aabae",
+    "capsule_frontends": [
+      {
+        "scope": "control.native",
+        "path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.native.ll",
+        "sha256": "8b982d9fd126d55fdbb4adab8f900430716e37eee702d5e5c21d140e968b511a",
+        "byte_identical": true
+      },
+      {
+        "scope": "control.target",
+        "path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.target.ll",
+        "sha256": "40f2c4bfd8486e43f504c2dc18bfd20003b4d323bfc2b65188456ccd0f4dd369",
+        "byte_identical": true
+      },
+      {
+        "scope": "candidate.native",
+        "path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.native.ll",
+        "sha256": "6f1cb22aa37898afeed0a2665c4634f8572018448d90b38ad4c8d79510a725f3",
+        "byte_identical": true
+      },
+      {
+        "scope": "candidate.target",
+        "path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.target.ll",
+        "sha256": "40275aff5fcdfd1f643e7752b371f55fab6ab2d8574cb6e6999cbcbfb866724b",
+        "byte_identical": true
+      }
+    ],
+    "whole1880_original_llvm_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/qualified_whole_2/build/host_llvm/expanded.ll",
+    "whole1880_original_llvm_sha256": "f4cce5abe900f28d10b7d8a8a2abea33bc4ccda52a3abe3599a2e4a15a200d07",
+    "whole1880_selected_llvm_sha256": "ca0ba8fa82ed5f48fe0fc139479a43d2d2096103611159a0572fa4bc8643bd61",
+    "whole1880_selected_llvm_byte_identical": true,
+    "whole1880_routes": 155,
+    "whole1880_proof_identical": true,
+    "scope": "Structural tokenizer frontend emits byte-identical measured numeric and complete capsule LLVM plus the already assembled155-route actual source. Original binary, timing and numeric receipts remain immutable. No whole build/performance qualification.",
+    "token_usage_available": false
+  },
+  "experiments": [
+    {
+      "name": "tiny-constant-clamp-20261005",
+      "decision": "rejected_complete_capsule_regression",
+      "hypothesis": "Collapse two input-derived NaN guards in an IEEE maximum/minimum clamp into one original-input guard while retaining original NaN arithmetic. Independent max/min braiding is a legality condition, not a model selector.",
+      "owner": {
+        "mechanism": "Merlin generic host LLVM legalization",
+        "hardware_harness_and_audit": "OOT target support"
+      },
+      "emitted_change": "adjacent eligible calls only",
+      "actual_measured_result": {
+        "schema": "constant_clamp_complete_pointwise_gsim_screen_v1",
+        "rows_round_arm_actual_roi_cycles": [
+          [
+            0,
+            0,
+            263237
+          ],
+          [
+            0,
+            1,
+            260885
+          ],
+          [
+            1,
+            1,
+            259300
+          ],
+          [
+            1,
+            0,
+            253692
+          ],
+          [
+            2,
+            0,
+            253541
+          ],
+          [
+            2,
+            1,
+            258722
+          ],
+          [
+            3,
+            1,
+            258876
+          ],
+          [
+            3,
+            0,
+            253468
+          ]
+        ],
+        "arm_names": [
+          "control",
+          "candidate"
+        ],
+        "common_single_elf_both_objects": true,
+        "objects": {
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.o": "f314236769e09fd78f2b25e79ea79b9fb050cd13d5c5bce2b12b1f89e6984465",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.o": "b8057d82664ed5f0765df873dd83f0f8d294de777c0291fa20545949ca5720e9",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/main.o": "3524aecfb287e2c71cc2317acabc20ade8eb9b29187fad5a4fa237b0ba9aff54",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/data.o": "c2e51f9603894b80bd27863aaea9f611effe3a6be935a2f4faaf1d65919fd2c2"
+        },
+        "roi": "Complete existing2049-element source function, independent tensor lane loads/stores, defensive result copy, arena allocation and ABI/dispatch call. Four AB/BA alternating rounds; output/128guard checks and print outside ROI.",
+        "original_source_target_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/packet2.target.ll",
+        "original_source_target_sha256": "c8a8edb2bd841252dbb9a6f1c8e838036f357b3244d1b0df15f6246e268a40bc",
+        "source_input_pins": {
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input0.bin": "ebf0c176a0dbf81983c2977ecefbab4a0089b9b260d9315d2d7eb3441089cf3c",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input1.bin": "e64a1ba559659002553e562e730fa5be892a391354e87a2aadff2faf6126b63d",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input2.bin": "f57e075b2491409eea730ea69a3b3966fa0acbf6d0020b74d01f19578a8a51f7",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input3.bin": "d7573977c7acdbb8c3c82bf5ef40d1184bc566174f637f191baeb208190c1e4e"
+        },
+        "expected_sha256": "424a6b408a35777a0b4376c9c505dcfe3c4fbeca9de6879fadea7e0f780db9e3",
+        "elf_sha256": "71fd4ecd043ca77dc4d9a2e44be6849b9b5fb3d28c862c7a2d0f581ece7d0a58",
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "71fd4ecd043ca77dc4d9a2e44be6849b9b5fb3d28c862c7a2d0f581ece7d0a58",
+          "executable_sections": 3,
+          "custom_funct_counts": {},
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "numeric_gate": {
+          "schema": "constant_clamp_strict_target_gate_v1",
+          "full_cases": 124020,
+          "directed_actual_gsim_cases": 1140,
+          "rounding_modes": 5,
+          "exact_raw_f32_bits": true,
+          "exact_fflags": true,
+          "full_elf_sha256": "acd33267c91c8e3c30dfa4301220e1c1fd02b16c3700ac8c1d040f0e4c313a13",
+          "directed_elf_sha256": "e59fb0b64fc86ad0ee1dc6b8c94fea8c8d76accb51a3bbf8a25c3b9103a49f70",
+          "capsule_elf_sha256": "71fd4ecd043ca77dc4d9a2e44be6849b9b5fb3d28c862c7a2d0f581ece7d0a58",
+          "all2049_original_capsule_bytes": true,
+          "guard_bytes": 128,
+          "final_executable_nofsm": true,
+          "scope": "Numeric target flags are directly compared; production rewrite grants no new flag-observation or floating policy permission."
+        },
+        "full_model_cycles": null,
+        "token_usage_available": false,
+        "cost_scope": "One independent complete capsule, not model operands or a whole-model latency prediction."
+      },
+      "warm_rounds": [
+        1,
+        2,
+        3
+      ],
+      "cold_round_retained_not_averaged": 0,
+      "warm_control_mean_actual_gsim_cycles": 253567,
+      "warm_candidate_mean_actual_gsim_cycles": 258966,
+      "warm_candidate_percent_change": 2.1292202849739983,
+      "native_numeric_gate": {
+        "schema": "ieee_constant_clamp_numeric_native_v1",
+        "raw_f32_bit_cases": 24804,
+        "word_count": 4134,
+        "bounds": [
+          [
+            "-8.700000e+01",
+            "8.800000e+01"
+          ],
+          [
+            "-1.280000e+02",
+            "1.270000e+02"
+          ],
+          [
+            "1.000000e+00",
+            "2.000000e+00"
+          ],
+          [
+            "-2.000000e+00",
+            "-1.000000e+00"
+          ],
+          [
+            "0xB6A0000000000000",
+            "0x36A0000000000000"
+          ],
+          [
+            "5.000000e-01",
+            "5.000000e-01"
+          ]
+        ],
+        "all_source_compiled_bits_exact": true,
+        "source_module_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee.ll",
+        "source_module_sha256": "67a928eb7f36188b89b89cd03d021bd74f9de82973e530ec97e0944187a8f8f5",
+        "input_word_sha256": "e9e39430a108b60ce6857fb09c715ac47549b7094fa6535fa5936630e3aa5b63"
+      },
+      "strict_and_directed_gate": {
+        "schema": "constant_clamp_strict_target_gate_v1",
+        "full_cases": 124020,
+        "directed_actual_gsim_cases": 1140,
+        "rounding_modes": 5,
+        "exact_raw_f32_bits": true,
+        "exact_fflags": true,
+        "full_elf_sha256": "acd33267c91c8e3c30dfa4301220e1c1fd02b16c3700ac8c1d040f0e4c313a13",
+        "directed_elf_sha256": "e59fb0b64fc86ad0ee1dc6b8c94fea8c8d76accb51a3bbf8a25c3b9103a49f70",
+        "capsule_elf_sha256": "71fd4ecd043ca77dc4d9a2e44be6849b9b5fb3d28c862c7a2d0f581ece7d0a58",
+        "all2049_original_capsule_bytes": true,
+        "guard_bytes": 128,
+        "final_executable_nofsm": true,
+        "scope": "Numeric target flags are directly compared; production rewrite grants no new flag-observation or floating policy permission."
+      },
+      "whole1880_llvm_applicability": {
+        "assembled_only": true,
+        "pairs": 67,
+        "activation_pairs": 0,
+        "whole_numeric_gate": null,
+        "whole_cycles": null
+      },
+      "artifact_pins": {
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.bc": {
+          "sha256": "e43952a506a6426cb5aef40d8f2d437d2a1a1b3768c521736dc877b71a4f85b3",
+          "bytes": 4960
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.native.ll": {
+          "sha256": "4f196d6f4bcd77c92901660b136bf62c3078945db56d7200871a97e3f7208082",
+          "bytes": 20006
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.o": {
+          "sha256": "b8057d82664ed5f0765df873dd83f0f8d294de777c0291fa20545949ca5720e9",
+          "bytes": 4176
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.so": {
+          "sha256": "13f98f436299433415dce564f63607dea005c00e138983f84adc74df3b359121",
+          "bytes": 20656
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/candidate.target.ll": {
+          "sha256": "d15889a71a00ef2b35d6ab89b0fc26f3ed1f23b426bf5d8d5aa3bff3522970fc",
+          "bytes": 20282
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/audit.json": {
+          "sha256": "2c6ec479ee1b03d63ce58e6c61808dc83a3765f407062601605c93975c6b2b87",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/gsim.stdout": {
+          "sha256": "8d04c37adce89aa02e24f8802fde984e457b9d2b5baafccfc2b14bc85a849597",
+          "bytes": 275
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/gsim_receipt.json": {
+          "sha256": "d7a122c0262809db6967211a690abdfb1cead12765cab9480a6978478054d44f",
+          "bytes": 4648
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/layer.elf": {
+          "sha256": "71fd4ecd043ca77dc4d9a2e44be6849b9b5fb3d28c862c7a2d0f581ece7d0a58",
+          "bytes": 57776
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/spike.log": {
+          "sha256": "470b6d08e0d06d1a4cafb03cb5610eea15c17a09dce31a6a37c4c1108b7d28f5",
+          "bytes": 275
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/capsule_proofs.json": {
+          "sha256": "5e1fdfc540c280e5e109238ae7a11a448f9a7ae10efcf8f7b22957f055d819e6",
+          "bytes": 3253
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/constant_float_clamp_adjacent_v1.py": {
+          "sha256": "844f40146eafcd439c52c5ef2e7c9ff05062221707ae213675d50c25fd87c323",
+          "bytes": 8140
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.bc": {
+          "sha256": "f4740c402d05256261bf75bae79dd236b85de1c8c93c80dc8ee1d668bc74404d",
+          "bytes": 4408
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.native.ll": {
+          "sha256": "8b982d9fd126d55fdbb4adab8f900430716e37eee702d5e5c21d140e968b511a",
+          "bytes": 18880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.o": {
+          "sha256": "f314236769e09fd78f2b25e79ea79b9fb050cd13d5c5bce2b12b1f89e6984465",
+          "bytes": 4040
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.so": {
+          "sha256": "d40e1a33eed6a34d0c12c838076d7e47fd88e7477b162e5cfe8aed8bd23ad1c7",
+          "bytes": 20648
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/control.target.ll": {
+          "sha256": "40f2c4bfd8486e43f504c2dc18bfd20003b4d323bfc2b65188456ccd0f4dd369",
+          "bytes": 19156
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee.bc": {
+          "sha256": "ba31c3a868401e18bb384e47074dfbc99876d368242785e739a2e3fc253a7b2c",
+          "bytes": 4856
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee.ll": {
+          "sha256": "67a928eb7f36188b89b89cd03d021bd74f9de82973e530ec97e0944187a8f8f5",
+          "bytes": 6596
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee.o": {
+          "sha256": "6bb4477d25fdbbedd6173f562128cd636d1a6de536326626a02d0777406699aa",
+          "bytes": 4096
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee.so": {
+          "sha256": "0c323d50621f814bca0879c9cc9c394a14669e99fce67bc67d5b7ea7db08de1f",
+          "bytes": 15456
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/audit.json": {
+          "sha256": "3d6fafb9308f1ffc06f1c9533cf7cb412546e4c185d2e0af0f83f35edc71e271",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/gsim.stdout": {
+          "sha256": "ae5af5849768febd3881559d326ec58a3a18c056568e937c6be5011f27d6faa8",
+          "bytes": 21
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/gsim_receipt.json": {
+          "sha256": "dc4396fda9f489c0304b6c048cfa1021cbb51a10f152fdb5e3995e04f5aef297",
+          "bytes": 4159
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/layer.elf": {
+          "sha256": "e59fb0b64fc86ad0ee1dc6b8c94fea8c8d76accb51a3bbf8a25c3b9103a49f70",
+          "bytes": 36800
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/spike.log": {
+          "sha256": "ae5af5849768febd3881559d326ec58a3a18c056568e937c6be5011f27d6faa8",
+          "bytes": 21
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed.c": {
+          "sha256": "5185f8c3677502d28acea7e009940abd8b73ad3f19e4650481495941444c1b09",
+          "bytes": 2300
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_directed.o": {
+          "sha256": "9dd6350d941f77bf71442bf7bc3eda73ed2daea09685e7dc39949c3fc5aa9d91",
+          "bytes": 6120
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/audit.json": {
+          "sha256": "2b3773c33db351c3647bda101fca52f0eef5ee7b4d342030b97fb90195fdecc2",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/layer.elf": {
+          "sha256": "acd33267c91c8e3c30dfa4301220e1c1fd02b16c3700ac8c1d040f0e4c313a13",
+          "bytes": 36792
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/spike.log": {
+          "sha256": "ee5d11fd6f939316e221e14611676d11cd35f65e85156b3d5f427142793c738c",
+          "bytes": 23
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_full/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_main.c": {
+          "sha256": "89f175e31744038f773baf95b28afca16d09b30cdef3c1bb2baf5f75d7d359cb",
+          "bytes": 2312
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_main.o": {
+          "sha256": "81142137cd6d31d582e7a0b47b8af7fd348135a44b3e0815f86d00d3846d2d2a",
+          "bytes": 6040
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_proof.json": {
+          "sha256": "284819669dd60f76441cb0710c358b0cda8ba825e49873a3572edcddb4948401",
+          "bytes": 3357
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_words.S": {
+          "sha256": "33adcd4bd397b22d1460254de3fcabe874cbcfef04f0809ce8e8e958cefb9f19",
+          "bytes": 196
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_words.bin": {
+          "sha256": "e9e39430a108b60ce6857fb09c715ac47549b7094fa6535fa5936630e3aa5b63",
+          "bytes": 16536
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/ieee_words.o": {
+          "sha256": "5c5db2e2d2f5ebfc07c7dd15c6c72803395099a2fd469008559798334c9c0a0e",
+          "bytes": 17264
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/main.c": {
+          "sha256": "8bc889755d1ed71ccece8be5735ca550d56adb73c00c99cb51e9360c18f89a13",
+          "bytes": 1519
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/main.o": {
+          "sha256": "3524aecfb287e2c71cc2317acabc20ade8eb9b29187fad5a4fa237b0ba9aff54",
+          "bytes": 8320
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/native_ieee_validation.json": {
+          "sha256": "1b975f0288cfefa61214295093d6a6c5f442976c3450e130f4c0ca4b0b8f7b78",
+          "bytes": 854
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/numeric_target_validation.json": {
+          "sha256": "6d7e435d7a7ee8b81b665f4c7b95a4a846796f2f7b6272f8fb14f8fdde46668f",
+          "bytes": 705
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/prepare.log": {
+          "sha256": "18eb5a451b4a89e818da6995225c4cd7ed5e1613d55511098549c384d4397f91",
+          "bytes": 582
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/prepare.py": {
+          "sha256": "ab881d9aa3a96782fff62ed03c6f8225b3929f8e41b3424840d4ed9a99a57ff5",
+          "bytes": 6681
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/result.json": {
+          "sha256": "7972246cb849cd8ef5f5f5d72435634ba9464c57ca68d0f64f845b2474ef9e94",
+          "bytes": 4141
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/run_screen.log": {
+          "sha256": "008e0b4ac838c2ef05287d68d83fb2fbbd341058642d94356de4c36f1dee6221",
+          "bytes": 282
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/run_screen.py": {
+          "sha256": "282462e9d5540422027f35a0e0a5556b47bdf80a13c007917c9294084ab9b8b9",
+          "bytes": 6978
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/whole1880_clamp_screen.bc": {
+          "sha256": "da616e458e736517bef01ecdb4d88d53cd5577211ef4a7e06df13b03f495f88d",
+          "bytes": 253864
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/whole1880_clamp_screen.json": {
+          "sha256": "3765420dbec14197579751c7972e034c1d92fb04355bfe77816c3ae56a98354c",
+          "bytes": 34174
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-20261005/whole1880_clamp_screen.ll": {
+          "sha256": "aed386d58ea232abe7ff75b5a69e4f4744304408949a8c627bd7169305ff8d67",
+          "bytes": 2585857
+        }
+      },
+      "token_usage_available": false
+    },
+    {
+      "name": "tiny-constant-clamp-interleaved-20261005",
+      "decision": "positive_cheap_screen_whole_qualification_authorized",
+      "hypothesis": "Collapse two input-derived NaN guards in an IEEE maximum/minimum clamp into one original-input guard while retaining original NaN arithmetic. Independent max/min braiding is a legality condition, not a model selector.",
+      "owner": {
+        "mechanism": "Merlin generic host LLVM legalization",
+        "hardware_harness_and_audit": "OOT target support"
+      },
+      "emitted_change": "typed independent maximum/minimum group in one basic block; retained other SSA uses; shared input guard/maxnum/minnum non-NaN path and original NaN path",
+      "actual_measured_result": {
+        "schema": "constant_clamp_complete_pointwise_gsim_screen_v1",
+        "rows_round_arm_actual_roi_cycles": [
+          [
+            0,
+            0,
+            263245
+          ],
+          [
+            0,
+            1,
+            250651
+          ],
+          [
+            1,
+            1,
+            249503
+          ],
+          [
+            1,
+            0,
+            254079
+          ],
+          [
+            2,
+            0,
+            253976
+          ],
+          [
+            2,
+            1,
+            248824
+          ],
+          [
+            3,
+            1,
+            248715
+          ],
+          [
+            3,
+            0,
+            253241
+          ]
+        ],
+        "arm_names": [
+          "control",
+          "candidate"
+        ],
+        "common_single_elf_both_objects": true,
+        "objects": {
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.o": "f314236769e09fd78f2b25e79ea79b9fb050cd13d5c5bce2b12b1f89e6984465",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.o": "89403c73b02ae4e3e45c333d367394545bf79b719d43ac68a47f6bb4258c42e3",
+          "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/main.o": "3524aecfb287e2c71cc2317acabc20ade8eb9b29187fad5a4fa237b0ba9aff54",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/data.o": "c2e51f9603894b80bd27863aaea9f611effe3a6be935a2f4faaf1d65919fd2c2"
+        },
+        "roi": "Complete existing2049-element source function, independent tensor lane loads/stores, defensive result copy, arena allocation and ABI/dispatch call. Four AB/BA alternating rounds; output/128guard checks and print outside ROI.",
+        "original_source_target_path": "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/packet2.target.ll",
+        "original_source_target_sha256": "c8a8edb2bd841252dbb9a6f1c8e838036f357b3244d1b0df15f6246e268a40bc",
+        "source_input_pins": {
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input0.bin": "ebf0c176a0dbf81983c2977ecefbab4a0089b9b260d9315d2d7eb3441089cf3c",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input1.bin": "e64a1ba559659002553e562e730fa5be892a391354e87a2aadff2faf6126b63d",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input2.bin": "f57e075b2491409eea730ea69a3b3966fa0acbf6d0020b74d01f19578a8a51f7",
+          "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/capsule/input3.bin": "d7573977c7acdbb8c3c82bf5ef40d1184bc566174f637f191baeb208190c1e4e"
+        },
+        "expected_sha256": "424a6b408a35777a0b4376c9c505dcfe3c4fbeca9de6879fadea7e0f780db9e3",
+        "elf_sha256": "6274fd1fb1b5be82fdcfb4e4d7f69014236559da0f22fc4d1be362b90db8692d",
+        "nofsm": {
+          "schema": "gemmini_nofsm_elf_audit_v1",
+          "elf_sha256": "6274fd1fb1b5be82fdcfb4e4d7f69014236559da0f22fc4d1be362b90db8692d",
+          "executable_sections": 3,
+          "custom_funct_counts": {},
+          "forbidden": [],
+          "unknown": [],
+          "status": "pass"
+        },
+        "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "numeric_gate": {
+          "schema": "constant_clamp_strict_target_gate_v1",
+          "full_cases": 165360,
+          "directed_actual_gsim_cases": 1520,
+          "rounding_modes": 5,
+          "exact_raw_f32_bits": true,
+          "exact_fflags": true,
+          "full_elf_sha256": "da681665e87265d29e5f984826cd5344a56edd08c14b32788e6be66d5956ead5",
+          "directed_elf_sha256": "af30a364e5904577e183b46c5d056c6ba85e81b701193fe8a7c8d66578e2de04",
+          "capsule_elf_sha256": "6274fd1fb1b5be82fdcfb4e4d7f69014236559da0f22fc4d1be362b90db8692d",
+          "all2049_original_capsule_bytes": true,
+          "guard_bytes": 128,
+          "final_executable_nofsm": true,
+          "scope": "Numeric target flags are directly compared; production rewrite grants no new flag-observation or floating policy permission."
+        },
+        "full_model_cycles": null,
+        "token_usage_available": false,
+        "cost_scope": "One independent complete capsule, not model operands or a whole-model latency prediction."
+      },
+      "warm_rounds": [
+        1,
+        2,
+        3
+      ],
+      "cold_round_retained_not_averaged": 0,
+      "warm_control_mean_actual_gsim_cycles": 253765.33333333334,
+      "warm_candidate_mean_actual_gsim_cycles": 249014,
+      "warm_candidate_percent_change": -1.872333494462075,
+      "native_numeric_gate": {
+        "schema": "ieee_constant_clamp_numeric_native_v1",
+        "raw_f32_bit_outputs_checked": 57876,
+        "call_cases": 33072,
+        "target_case_count": 165360,
+        "target_directed_case_count": 1520,
+        "word_count": 4134,
+        "bounds": [
+          [
+            "-8.700000e+01",
+            "8.800000e+01"
+          ],
+          [
+            "-1.280000e+02",
+            "1.270000e+02"
+          ],
+          [
+            "1.000000e+00",
+            "2.000000e+00"
+          ],
+          [
+            "-2.000000e+00",
+            "-1.000000e+00"
+          ],
+          [
+            "0xB6A0000000000000",
+            "0x36A0000000000000"
+          ],
+          [
+            "5.000000e-01",
+            "5.000000e-01"
+          ]
+        ],
+        "all_source_compiled_bits_exact": true,
+        "source_module_path": "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee.ll",
+        "source_module_sha256": "e1e527752ed321489f4da90dfdaab455d8e34f976b95d234a987165a2a2aabae",
+        "input_word_sha256": "e9e39430a108b60ce6857fb09c715ac47549b7094fa6535fa5936630e3aa5b63"
+      },
+      "strict_and_directed_gate": {
+        "schema": "constant_clamp_strict_target_gate_v1",
+        "full_cases": 165360,
+        "directed_actual_gsim_cases": 1520,
+        "rounding_modes": 5,
+        "exact_raw_f32_bits": true,
+        "exact_fflags": true,
+        "full_elf_sha256": "da681665e87265d29e5f984826cd5344a56edd08c14b32788e6be66d5956ead5",
+        "directed_elf_sha256": "af30a364e5904577e183b46c5d056c6ba85e81b701193fe8a7c8d66578e2de04",
+        "capsule_elf_sha256": "6274fd1fb1b5be82fdcfb4e4d7f69014236559da0f22fc4d1be362b90db8692d",
+        "all2049_original_capsule_bytes": true,
+        "guard_bytes": 128,
+        "final_executable_nofsm": true,
+        "scope": "Numeric target flags are directly compared; production rewrite grants no new flag-observation or floating policy permission."
+      },
+      "whole1880_llvm_applicability": {
+        "assembled_only": true,
+        "pairs": 155,
+        "activation_pairs": 44,
+        "whole_numeric_gate": null,
+        "whole_cycles": null
+      },
+      "artifact_pins": {
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.bc": {
+          "sha256": "d33013b8d4aabb04ddeba44db68f95dc366eaaca6002e8a5cebfc2bc6ba05479",
+          "bytes": 4888
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.native.ll": {
+          "sha256": "6f1cb22aa37898afeed0a2665c4634f8572018448d90b38ad4c8d79510a725f3",
+          "bytes": 19750
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.o": {
+          "sha256": "89403c73b02ae4e3e45c333d367394545bf79b719d43ac68a47f6bb4258c42e3",
+          "bytes": 4192
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.so": {
+          "sha256": "cf51cb03aa969b6d32f5eea0c68b8eab7a2adafe4f4da480c5e5d781d926ac7d",
+          "bytes": 20656
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/candidate.target.ll": {
+          "sha256": "40275aff5fcdfd1f643e7752b371f55fab6ab2d8574cb6e6999cbcbfb866724b",
+          "bytes": 20026
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/audit.json": {
+          "sha256": "e1e746b410a06da2f3c61b6b3feb435297cce36d40a39565af9ea4a305e8cce5",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/gsim.stdout": {
+          "sha256": "ca6d4251e3b36fb3e9997c76252f8b0dc4e20df5bab9bc3d4d1c8121c2764143",
+          "bytes": 275
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/gsim_receipt.json": {
+          "sha256": "e12e1103dea181035dd713a9100cdcb94b2ff3d3b963ef235c57ed7eb911afc2",
+          "bytes": 4648
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/layer.elf": {
+          "sha256": "6274fd1fb1b5be82fdcfb4e4d7f69014236559da0f22fc4d1be362b90db8692d",
+          "bytes": 57776
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/spike.log": {
+          "sha256": "418dae84cd183ed5e9c3c761165d9cb00b17ecc037dc4c6d6a05de1b53a8536a",
+          "bytes": 275
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/capsule_proofs.json": {
+          "sha256": "dd6b4ca8a7dcc7ca13cbfd26b7843127baf3af978db62a58130a69f32524ee2c",
+          "bytes": 9949
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/constant_float_clamp_regex_prototype.py": {
+          "sha256": "b34ec3868511d206a754c8a52a0a23c51fb0aff159e74ac4fd30d904dc9d427b",
+          "bytes": 8741
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/constant_float_clamp_structural.py": {
+          "sha256": "7fa2cc3fea83b8b0d3d7a4ee4c9efab8e7b2d86628997521d12902c882bddce8",
+          "bytes": 11211
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.bc": {
+          "sha256": "f4740c402d05256261bf75bae79dd236b85de1c8c93c80dc8ee1d668bc74404d",
+          "bytes": 4408
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.native.ll": {
+          "sha256": "8b982d9fd126d55fdbb4adab8f900430716e37eee702d5e5c21d140e968b511a",
+          "bytes": 18880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.o": {
+          "sha256": "f314236769e09fd78f2b25e79ea79b9fb050cd13d5c5bce2b12b1f89e6984465",
+          "bytes": 4040
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.so": {
+          "sha256": "d40e1a33eed6a34d0c12c838076d7e47fd88e7477b162e5cfe8aed8bd23ad1c7",
+          "bytes": 20648
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/control.target.ll": {
+          "sha256": "40f2c4bfd8486e43f504c2dc18bfd20003b4d323bfc2b65188456ccd0f4dd369",
+          "bytes": 19156
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/frontend_replay.json": {
+          "sha256": "38796cf3546d5d0f09adebe480118248616be986f052e2ccc80c4a19ee204485",
+          "bytes": 488
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee.bc": {
+          "sha256": "fbb00582787d63c2e7d2ec9484b5dc71edcb656f45b35da9a98f396a6737f4b4",
+          "bytes": 5924
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee.ll": {
+          "sha256": "e1e527752ed321489f4da90dfdaab455d8e34f976b95d234a987165a2a2aabae",
+          "bytes": 10000
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee.o": {
+          "sha256": "7015489b2206b161fb155eb356b67e52e664b338e56a7fc09437774fbc97ba05",
+          "bytes": 6656
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee.so": {
+          "sha256": "f795bc3c23b3f5ebcce7c38335535afea6a9bf612b966abef745e4f32c68a6fe",
+          "bytes": 15608
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/audit.json": {
+          "sha256": "754fbae9cf6e4c2be979b13942ae79efd7f10063ea86aaa82f357d7ea20909dd",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/gsim.stdout": {
+          "sha256": "566ed6360f69a578b1ebd0a1ce119e49e8eb673b616e4e75561d14cc8cb73599",
+          "bytes": 21
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/gsim_receipt.json": {
+          "sha256": "20c571785c0174528453977565ee633e430d588cb9eb95cae776bb6ec8acd279",
+          "bytes": 4163
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/layer.elf": {
+          "sha256": "af30a364e5904577e183b46c5d056c6ba85e81b701193fe8a7c8d66578e2de04",
+          "bytes": 38168
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/spike.log": {
+          "sha256": "566ed6360f69a578b1ebd0a1ce119e49e8eb673b616e4e75561d14cc8cb73599",
+          "bytes": 21
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed.c": {
+          "sha256": "42713189ae3af1a9c7fe8d7255f34a5425c6e4cccc72f003a8b581a43dd73a57",
+          "bytes": 3198
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_directed.o": {
+          "sha256": "282fa097ba72591119d91f201f287f4b42ccccfb56e1e93c507e2ed402c7b800",
+          "bytes": 8648
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/audit.json": {
+          "sha256": "0b9a76c3dd3b337625187d70a1bf72c533524b11e0655d8b80e9b3d0d60a1ac6",
+          "bytes": 242
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/crt.o": {
+          "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+          "bytes": 2880
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/layer.elf": {
+          "sha256": "da681665e87265d29e5f984826cd5344a56edd08c14b32788e6be66d5956ead5",
+          "bytes": 38288
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/link.derived.ld": {
+          "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+          "bytes": 1722
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/spike.log": {
+          "sha256": "926ccd15bcdd2708c9f147dd5da291113949390cd330ebb709d2871c475338df",
+          "bytes": 23
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_full/syscalls.o": {
+          "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+          "bytes": 19024
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_main.c": {
+          "sha256": "7e94f44e1d2e2c68b52902d5ab3f287fbe3c477935f4a3b688a4787b14d0ae18",
+          "bytes": 3214
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_main.o": {
+          "sha256": "d9d9b134dcf14903d829c8b3fc195413c086aa6404da2d6803336459c8ae6f2c",
+          "bytes": 8624
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_proof.json": {
+          "sha256": "27be21277b271969bdf18901e23eabc28affee2263f607987c6f3fdc94e9ddb2",
+          "bytes": 7251
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_words.S": {
+          "sha256": "14c246b775c131625f46038b6d31b54e36413f9b2ec6a3cfe8bc01e357a8296b",
+          "bytes": 208
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_words.bin": {
+          "sha256": "e9e39430a108b60ce6857fb09c715ac47549b7094fa6535fa5936630e3aa5b63",
+          "bytes": 16536
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/ieee_words.o": {
+          "sha256": "5c5db2e2d2f5ebfc07c7dd15c6c72803395099a2fd469008559798334c9c0a0e",
+          "bytes": 17264
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/main.c": {
+          "sha256": "8bc889755d1ed71ccece8be5735ca550d56adb73c00c99cb51e9360c18f89a13",
+          "bytes": 1519
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/main.o": {
+          "sha256": "3524aecfb287e2c71cc2317acabc20ade8eb9b29187fad5a4fa237b0ba9aff54",
+          "bytes": 8320
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/native_ieee_validation.json": {
+          "sha256": "15f6b3c3334a286e344cb7a5e3aa1ac0e7428f89442ea1322e096135ca4572f7",
+          "bytes": 968
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/numeric_target_validation.json": {
+          "sha256": "65d64e3e7b0d52b091b5b8ca9f879df468919e3bec4b36da94e0f4ad5df73e87",
+          "bytes": 705
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/prepare.log": {
+          "sha256": "b63b59343d20f7fe9b40c6f393a6551adda153915bde9d0c01689c3bfc201fab",
+          "bytes": 582
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/prepare.py": {
+          "sha256": "deb9b27006f135d2445fda7719e6350924b06275dc097a2b1f8dadebe7983a2d",
+          "bytes": 8875
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/result.json": {
+          "sha256": "8e5031fd39ac5625a34e5a0f9a873489e7341a13fcdeacbf2467ab8f29e1148d",
+          "bytes": 4177
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/run_screen.log": {
+          "sha256": "274ca51b07c8b30ace369d9c7a969d252f8f792fb5ce614b32483f9318914570",
+          "bytes": 282
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/run_screen.py": {
+          "sha256": "749a47ab08990c312681488c286d87e7d81ee1f13c6f549e1903147c9589aeca",
+          "bytes": 7151
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/structural_frontend_replay.json": {
+          "sha256": "c4473513bbf08d82a563f6ecb9e9b0c9306c8b227f8b2a0ec0ab29d3d2337a1c",
+          "bytes": 2864
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/whole1880_clamp_screen.bc": {
+          "sha256": "73c76e109ab7e46a54e161579944c47ee9d68e10897b6c2bf69f4bd9034ded17",
+          "bytes": 252668
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/whole1880_clamp_screen.json": {
+          "sha256": "37af1a8480513b62c2807d8029c499e5cdcdde84bb2314a28ebcb0b3ec3cdbb9",
+          "bytes": 107998
+        },
+        "/scratch/agustin/tmp/gemmini-tiny-calibrated-schedules-20261005/out/artifacts/probes/tiny-constant-clamp-interleaved-20261005/whole1880_clamp_screen.ll": {
+          "sha256": "ca0ba8fa82ed5f48fe0fc139479a43d2d2096103611159a0572fa4bc8643bd61",
+          "bytes": 2580386
+        }
+      },
+      "token_usage_available": false
+    }
+  ],
+  "scope": "One immutable synthetic complete2049-element packet2 capsule and independent IEEE fixtures. No original model-context latency sampling and no whole prediction. All rounding/flag experiments are tests, not new FP policy permissions. Ordinary LLVM nontrapping scopes only; explicit environments/strict/constrained refuse.",
+  "promotion": "Generic opt-in API reviewable; negative arm rejected. Positive screen authorizes normal callback whole native/strict/noFSM qualification only. No hardware candidate submitted.",
+  "accounting": {
+    "token_usage_available": false,
+    "exact_per_agent_or_experiment_tokens": "unavailable",
+    "shared_campaign_checkpoints": "attached by root; no exclusive input/cached/output billing allocation exposed"
+  }
+}

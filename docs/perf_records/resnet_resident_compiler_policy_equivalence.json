@@ -1,0 +1,333 @@
+{
+  "schema": "resident_compiler_policy_equivalence_v1",
+  "policy": "compact_channel_planes",
+  "selection_inputs": "Convolution semantics, proved virtual padding, shape/span, scratchpad/accumulator resources; no source IDs supplied to resident policy",
+  "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "selected_regions": [
+    "matmul_29",
+    "matmul_32",
+    "matmul_35",
+    "matmul_38",
+    "matmul_41",
+    "matmul_48",
+    "matmul_51"
+  ],
+  "route_count": 52,
+  "numeric_proofs_unchanged": true,
+  "device_object_byte_identical_to_qualified1844": true,
+  "rewritten_ir_byte_identical_to_qualified1844": true,
+  "object_sha256": "59bb56376bffaead8cb68f0f164672e434c87f893813b4ca9db9070c46fcd7d7",
+  "rewritten_sha256": "68c3a454dd3701adc98135c351e3467d2f85690a4a27176516c92b8c0795192a",
+  "routes": [
+    {
+      "region": "matmul_2",
+      "schedule": {
+        "h": 56,
+        "w": 56,
+        "cin": 64,
+        "cout": 64,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.00206922204233706,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_6",
+      "schedule": {
+        "h": 56,
+        "w": 56,
+        "cin": 64,
+        "cout": 64,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0018834574148058891,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_9",
+      "schedule": {
+        "h": 56,
+        "w": 56,
+        "cin": 64,
+        "cout": 64,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0019949860870838165,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_12",
+      "schedule": {
+        "h": 56,
+        "w": 56,
+        "cin": 128,
+        "cout": 128,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0015212674625217915,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_16",
+      "schedule": {
+        "h": 28,
+        "w": 28,
+        "cin": 128,
+        "cout": 128,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0013393994886428118,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_19",
+      "schedule": {
+        "h": 28,
+        "w": 28,
+        "cin": 128,
+        "cout": 128,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.001817011390812695,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_22",
+      "schedule": {
+        "h": 28,
+        "w": 28,
+        "cin": 128,
+        "cout": 128,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0013200863031670451,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_25",
+      "schedule": {
+        "h": 28,
+        "w": 28,
+        "cin": 256,
+        "cout": 256,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident width plus halo exceeds DIM"
+    },
+    {
+      "region": "matmul_29",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012096002465113997,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 1,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_32",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0011732920538634062,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 1,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_35",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0009134782012552023,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 1,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_38",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0012214076705276966,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 1,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_41",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 256,
+        "cout": 256,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.001881117350421846,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 1,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_44",
+      "schedule": {
+        "h": 14,
+        "w": 14,
+        "cin": 512,
+        "cout": 512,
+        "stride": 2,
+        "bn": 16,
+        "output_dtype": "i8",
+        "scale": 0.0006653686286881566,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": null,
+      "refusal": "resident convolution needs unpadded stride1, width+halo<=DIM and aligned Cin"
+    },
+    {
+      "region": "matmul_48",
+      "schedule": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 2,
+        "loop_channels": true
+      },
+      "refusal": null
+    },
+    {
+      "region": "matmul_51",
+      "schedule": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.0015428082551807165,
+        "relu": true,
+        "wide_b": true,
+        "explicit_halo": false
+      },
+      "options": {
+        "rows_per_tile": 2,
+        "loop_channels": true
+      },
+      "refusal": null
+    }
+  ],
+  "scope": "Explicit general target compiler policy; defaults unchanged. Exact source and generated device object equality reuses prior native/Spike qualification; no new hardware result or universal performance claim."
+}

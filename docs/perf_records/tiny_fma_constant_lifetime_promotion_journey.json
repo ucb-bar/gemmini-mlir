@@ -1,0 +1,64 @@
+{
+  "schema": "constant_fma_packet_compiler_promotion_journey_v1",
+  "hypothesis": "Immediate exact-word materialization around independent FMA packets reduces floating register live ranges and spills without changing source operand order or rounding.",
+  "ownership": {
+    "Merlin": "Typed LLVM SSA grouping, source/context witnesses and explicit materialization callback; no ISA strings or automatic policy.",
+    "OOT": "Explicit RV64GC/lp64d capability, exact-word fmv.w.x and ordered fmadd.s, early-clobber/tied register constraints."
+  },
+  "actual_emitted_change": "Replace eligible adjacent FMA calls with a multi-result source-ordered RV64GC FMA packet. The positive capsule composes packet width four with constant materialization; original control has width two.",
+  "core_commit": "0b613d5b1",
+  "cheap_paired_screen": {
+    "receipt": "docs/perf_records/tiny_fma_constant_lifetime_capsule_cycles.json",
+    "control_mean_GSIM_cycles": 1611934,
+    "candidate_mean_GSIM_cycles": 1445874,
+    "saved_percent": 10.30191062413225,
+    "scope": "Original first two rows, all 5632 channels, complete host stage including allocation/copy; 11264 i8 outputs. Not whole-model or pure materialization attribution."
+  },
+  "full_stage_gate": {
+    "words": 45056,
+    "native_exact": true,
+    "strict_RV64GC_exact": true,
+    "dirty_destinations_and_guards": true,
+    "all_input_bytes_unchanged": 405504,
+    "no_FSM": true
+  },
+  "installed_module_reclosure": {
+    "M2_object_byte_identical": true,
+    "full45056_object_byte_identical": true,
+    "independent_raw_f32_words": 45870,
+    "rounding_modes": 5,
+    "sticky_flags_exact": true,
+    "shared_SSA_and_tails": true
+  },
+  "regression_tests": {
+    "core": 27,
+    "OOT": 11
+  },
+  "permission": "Explicit default-off, ordinary nontrapping, exception flags unobserved, IEEE gradual underflow. The normal compiler must verify whole source/selected LLVM; independent actual ISA checks also preserve flags in all five rounding modes.",
+  "promotion": "General source analyzer and OOT emitter committed for review. Whole-model source/256000-bit/Torch/strict/no-FSM qualification remains required before queue admission.",
+  "whole_model_hardware_cycles": null,
+  "no_whole_gain_projection": true,
+  "prior_negative": "Plain packet four spills six static f32 stack accesses; incomplete first GSIM harness retained separately. Efficient same-object terminal screen independently closed all input/output/dirty-destination guards.",
+  "artifact_pins": {
+    "full45056.py": "1e4ba5d914da29af1b71c4cae4f26c97c71442e3d9862af16ee880dda74578ce",
+    "generic_promoted_qualification.py": "d742e4a96fe9bf18d14d96bcf74642729ed4bd474e5fd2fd4d28a1adc0deea3a",
+    "promoted_object_reclosure.json": "7d8e1b29edfef59b2ec90e658d099564d2aaba3b97b88de0c43f0f51e0e6236d",
+    "full45056/qualification.json": "f2cf6a8f32809d92fcfd6a38ee9fbc7709761af675ade7c3cf653b993ceeae6c",
+    "full45056/source.mlir": "d9c310f3c061c2e348f7aeb06f210b63df06aafed312c43b362feb9bad3e22ae",
+    "full45056/target.ll": "e4f4a3a9311fa29407e846662cb726e46d0bc8a884dca63a1170c5854785999a",
+    "full45056/native.ll": "683bad5997c2430c0d493712eb17978472b262eae48ac7497332e366a2a7b9ce",
+    "full45056/rewrite.json": "510b095a1357c519768a7f75bf833066418fe11bb7c10c1f2eda29811f5cdc78",
+    "full45056/main.c": "939e0cf5b3fb600715a7fbe6d4afa08af2b14084ffcfa3e84399e655ad0a1ec5",
+    "full45056/spike.stdout": "1cb651561df1c89a867090f091859a8f9fa5f6e3a9e1a67531e9c35a294c167b",
+    "full45056/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full45056/nofsm_audit.json": "e988cf28ac2885337dea02026938cc73fe8bbfaa2210f957ed3d8d229070ba85",
+    "promoted_cases/qualification.json": "4d109f6169212d44802faf978a736072139258f8a72be6c731ea9dda5cada4c4",
+    "promoted_cases/source.ll": "c4abfa6e8a4c9fa1ea399bc5ab82eccbf31580da93e877c78bb1a758a8e27017",
+    "promoted_cases/selected.ll": "1d7a8acf7162c7ae3a6923bb41770fae8bca76b3d5d16db76e06c175bb460871",
+    "promoted_cases/main.c": "62e6acbba0875ab267769759dc3299dbd19ad7e88403262ef9f31084ad5492cc",
+    "promoted_cases/spike.stdout": "1eadc496283857abeaad126b58b6916ef0d9b2d72ad29ce5e6c58dca5bf48641",
+    "promoted_cases/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "token_usage_available": false,
+  "campaign_token_checkpoints": "Parent records shared campaign checkpoints; exclusive per-optimization attribution is unavailable."
+}

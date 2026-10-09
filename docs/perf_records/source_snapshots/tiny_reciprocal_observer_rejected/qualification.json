@@ -1,0 +1,83 @@
+{
+  "schema": "experimental_exact_reciprocal_observer_capsule_v1",
+  "actual_original_tap_words": 45056,
+  "dirty_guards": 128,
+  "immutable_inputs_bytes": 405504,
+  "source_sha256": "e55f45b4728856a581726e8c2ce3e8132d6b0f4ee225f844f8e1e4974b2481b7",
+  "capture_sha256": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+  "source_scope": "Original first preDown stage: only source reciprocal+3 separately roundedmul closed int8RNE observer; same full45056source body including polynomial,loads/stores,allocation/finalcopy.",
+  "source_closure_scope": "Experimental exact frozen scalar body proof only; no generalized compiler matcher or route installed.",
+  "policy": "RNE/gradualunderflow/nontrapping/flags+errno unobserved explicit experimental premise; othermodes refused before ROI.",
+  "cases": [
+    {
+      "name": "control",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/control.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/control.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/control.native.ll",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/control.so"
+      ],
+      "object_sha256": "f3a59d0044fbc565b1f7f9dc4c74042e1960df0337f3b46af66528819effdef5",
+      "target_ir_sha256": "00467aa0fa449cb335a41ebe35c30e650bdf6aae2fcd7bab64a6590b6505013b",
+      "native_ir_sha256": "6833b92c1ec22b4d0b82c2f38dcad9a6f05972189a5a9a453c86afaa04883213",
+      "original_45056_i8_exact": true
+    },
+    {
+      "name": "candidate",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/candidate.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/candidate.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/candidate.native.ll",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/out/artifacts/probes/reciprocal-rne-observer-20261006/candidate.so"
+      ],
+      "object_sha256": "73a001e1da3e31ffbb5d4c62b4957311bc22654f847034c81ee2c7cab580942d",
+      "target_ir_sha256": "a7d5835ec6a875a29abdb66730ff0cedb1d268c1a3078eea3fe88f3201d26ed5",
+      "native_ir_sha256": "733dd16865fb09c6b3bc75fc07cc82c4ce4cbaf398551b752e310b54ed644a71",
+      "original_45056_i8_exact": true
+    }
+  ],
+  "elf_sha256": "bcab58bf6ee9a0a089b832474b5536c415dd7698f70d95f9466325574251766a",
+  "zero_FSM": true,
+  "strict_original_pass": true,
+  "rational_native_screen_sha256": "8175fbd5a96f9f3ad6fef1126fbd0693040561b151a40af76d00d7186044b37b",
+  "performance_promotion": false,
+  "token_usage_available": false
+}

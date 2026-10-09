@@ -1,0 +1,139 @@
+{
+  "scope": "smol-ordered-fma-schedule-20261005: native host with scalar integer device stand-ins",
+  "host_cflags": [
+    "-O0",
+    "-march=native"
+  ],
+  "llvm_sha256": "63e0bba2b50df14c700b89b878551da27b1ee8187bde561b1d6cbe09750f203c",
+  "finite": true,
+  "allclose": true,
+  "relative_l2": 0.0,
+  "cosine": 1.0,
+  "max_abs_error": 0.0,
+  "all_original_bits_exact": true,
+  "elements": 1600,
+  "failed_count": 0,
+  "atol": 0.03125,
+  "rtol": 0.02,
+  "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+  "output_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+  "source_rewrite": {
+    "report": {
+      "rewritten": 384,
+      "bf16": 384,
+      "f32": 0,
+      "source_macs": 19327352832
+    },
+    "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+    "rewritten_sha256": "11e69a0ee2caae0b958fa0305f5a1a952671aa92ece4fca42932e1b2536d036f",
+    "output_tile": 8,
+    "pre_widen_operands": "both",
+    "scope": "Exact source-positive-zero increasing-K f32 FMA scheduling and BF16 widening; no numeric relaxation; full original1600 bitexact native in outlined and unoutlined LLVM"
+  },
+  "core_commit": "efc2ca151",
+  "actual_rv64gc_status": "fail",
+  "hardware_cycles_measured": false,
+  "schema": "upstream_ordered_fma_full_smol_native_v1",
+  "implementation_commit": "efc2ca151",
+  "source_implementation_sha256": "57f6b200fb5ba02101cfada9a6cb1667e550f11521632b2b5171ed6d872032d9",
+  "qualification": "General upstream typed-FMA rewrite: both native LLVM forms retain all1600 original bits. Complete outlined actual RV64GC replay fails89/1600 under the unchanged gate, with output bytes identical to the previous ABI-corrected target. No whole FireSim admission or5B hardware claim.",
+  "artifact_dir": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005",
+  "routed_integer_calls": 297,
+  "routed_integer_signatures": 19,
+  "focused_tests": "9 upstream source rewrite native/initialization/provenance/wiring/order tests PASS; no skips",
+  "actual_rv64gc_qualification": {
+    "schema": "smol_upstream_ordered_fma_actual_spike_v1",
+    "native_gate_sha256": "5a409ed3436b43595e612db3c074f914385207b5a50ff6dce2f9a2d77ef694ea",
+    "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+    "scope": "Upstream typed ordered-FMA output tile8, both BF16 operands widened, outlined ABI-correct O2 model, actual Gemmini Spike; cycle metric is retired instructions, not hardware cycles",
+    "status": "fail",
+    "started_utc": "2026-10-05T20:08:17.826289+00:00",
+    "watcher_pid": 2683655,
+    "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+    "golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x400000000",
+      "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/build_outlined/model.elf"
+    ],
+    "spike_pid": 2683916,
+    "returncode": 0,
+    "console_sha256": "70914540a4a1f4a9e8621455760af4d31a2742e96200e06b15853188a03903ed",
+    "done": true,
+    "metrics": [
+      "METRIC cycles 134730816466",
+      "METRIC build_hash 2507f377df79",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "elements": 1600,
+    "bitwise_mismatches": 1600,
+    "elementwise_failures": 89,
+    "max_abs_error": 0.1151660680770874,
+    "allclose": false,
+    "bitexact": false,
+    "actual_output_sha256": "06daaa0d1d9236135e135222dc12e83afee8b933f9027ce7318c3bc9cf027de2",
+    "quality_pass": false,
+    "finished_utc": "2026-10-05T20:55:50.443413+00:00",
+    "retained_console": "smol_upstream_ordered_fma_target_failed.uart"
+  },
+  "outlined_native": {
+    "validation": {
+      "scope": "smol-ordered-fma-schedule-20261005: native host with scalar integer device stand-ins",
+      "host_cflags": [
+        "-O0",
+        "-march=native"
+      ],
+      "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+      "finite": true,
+      "bitexact": true,
+      "bitwise_mismatches": 0,
+      "allclose": true,
+      "relative_l2": 0.0,
+      "cosine": 1.0,
+      "max_abs_error": 0.0
+    },
+    "validation_sha256": "5a409ed3436b43595e612db3c074f914385207b5a50ff6dce2f9a2d77ef694ea",
+    "llvm_sha256": "fc3b33b007ee0a48eb020b667aad85b6a76013407749ae3836475b745a98db4a",
+    "original_elements": 1600,
+    "all_original_bits_exact": true
+  },
+  "outlined_target": {
+    "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+    "build_hash": "2507f377df79",
+    "final_nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "56792b45aac2d739a72e8acb6ff19688583df5403b974923aa79cabc3290dad8",
+      "executable_sections": 1,
+      "custom_funct_counts": {
+        "0": 76,
+        "1": 756,
+        "2": 329,
+        "3": 1656,
+        "4": 758,
+        "5": 2554,
+        "6": 3312,
+        "7": 19
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "normal_build": true,
+    "runtime_abi": "matching LLVM Clang with declared GCC sysroot",
+    "actual_status": "fail"
+  },
+  "whole_firesim_admission": "refused",
+  "target_comparison": {
+    "control_elf_sha256": "e0122716488b5ac1287d44735745e358ee4dd438855ff8c453b3f10f0bc05045",
+    "control_retired_instructions": 327506537392,
+    "candidate_retired_instructions": 134730816466,
+    "cycle_metric": "retired instructions, not hardware cycles",
+    "original_target_output_bytes_identical": true,
+    "actual_output_sha256": "06daaa0d1d9236135e135222dc12e83afee8b933f9027ce7318c3bc9cf027de2",
+    "original_accuracy_gate_still_fails": true
+  }
+}

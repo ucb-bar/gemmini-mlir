@@ -1,0 +1,215 @@
+{
+  "schema": "gemmini_spatial_flat_gsim_v1",
+  "results": [
+    {
+      "shape": {
+        "h": 3,
+        "w": 19,
+        "cin": 20,
+        "cout": 19,
+        "stride": 1,
+        "bn": 4,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 6795,
+      "elf_sha256": "89acb11b7319300b5f7b4fe3101eb772b8b3b6c2780f90b1d3f6ee24d381e666",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "89acb11b7319300b5f7b4fe3101eb772b8b3b6c2780f90b1d3f6ee24d381e666",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 18,
+          "2": 108,
+          "3": 8,
+          "4": 36,
+          "5": 108,
+          "6": 144,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 6795\nGOLDEN_CONV PASS\n",
+      "result_path": "out/flat_conv_small/result.json"
+    },
+    {
+      "shape": {
+        "h": 7,
+        "w": 19,
+        "cin": 20,
+        "cout": 19,
+        "stride": 2,
+        "bn": 4,
+        "output_dtype": "i8",
+        "scale": 0.03125,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 5649,
+      "elf_sha256": "722a3c2da39e8eff28bd89a8fe15e56c8857a4bcd6784c4abf7e9c01e1e32f08",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "722a3c2da39e8eff28bd89a8fe15e56c8857a4bcd6784c4abf7e9c01e1e32f08",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 18,
+          "2": 108,
+          "3": 3,
+          "4": 36,
+          "5": 72,
+          "6": 108,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 5649\nGOLDEN_CONV PASS\n",
+      "result_path": "out/flat_conv_stride2/result.json"
+    },
+    {
+      "shape": {
+        "h": 7,
+        "w": 19,
+        "cin": 84,
+        "cout": 79,
+        "stride": 2,
+        "bn": 8,
+        "output_dtype": "i8",
+        "scale": 0.03125,
+        "relu": true,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": true,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 29483,
+      "elf_sha256": "22113664e8f9dcacd44ed56752e5d247a7efbdcac5bac12569bfc2243add55c2",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "22113664e8f9dcacd44ed56752e5d247a7efbdcac5bac12569bfc2243add55c2",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 108,
+          "2": 108,
+          "3": 6,
+          "4": 270,
+          "5": 540,
+          "6": 810,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 29483\nGOLDEN_CONV PASS\n",
+      "result_path": "out/flat_conv_widea_small_static/result.json"
+    },
+    {
+      "shape": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 16,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": false,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 1012868,
+      "elf_sha256": "8127222f596343cb4d302f860be1f84532c080d53babb9638e836e08b5b76e2f",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "8127222f596343cb4d302f860be1f84532c080d53babb9638e836e08b5b76e2f",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 72,
+          "2": 180,
+          "3": 64,
+          "4": 288,
+          "5": 864,
+          "6": 1152,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 1012868\nGOLDEN_CONV PASS\n",
+      "result_path": "out/flat_conv_late_bn16_static/result.json"
+    },
+    {
+      "shape": {
+        "h": 7,
+        "w": 7,
+        "cin": 512,
+        "cout": 512,
+        "stride": 1,
+        "bn": 16,
+        "output_dtype": "i32",
+        "scale": 1.0,
+        "relu": false,
+        "wide_b": false,
+        "explicit_halo": true
+      },
+      "wide_a": true,
+      "flat_spatial": true,
+      "static_inputs": true,
+      "status": "pass",
+      "completed": true,
+      "returncode": 0,
+      "kernel_cycles": 939677,
+      "elf_sha256": "0b999e20f2e20fead72edd139fdb83b28401ee496471a3fad2ac36bc384df794",
+      "nofsm_audit": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "0b999e20f2e20fead72edd139fdb83b28401ee496471a3fad2ac36bc384df794",
+        "executable_sections": 3,
+        "custom_funct_counts": {
+          "0": 5,
+          "1": 288,
+          "2": 180,
+          "3": 64,
+          "4": 1152,
+          "5": 3456,
+          "6": 4608,
+          "7": 1
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "stdout": "GOLDEN_CONV_CYCLES 939677\nGOLDEN_CONV PASS\n",
+      "result_path": "out/flat_conv_late_widea_static/result.json"
+    }
+  ],
+  "scope": "Standalone deterministic explicit-halo numeric probes; GSIM cycles are not FireSim measurements."
+}

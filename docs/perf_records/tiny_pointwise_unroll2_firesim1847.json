@@ -1,0 +1,38 @@
+{
+  "schema": "golden_firesim_verified_probe_v1",
+  "job_id": 1847,
+  "state": "DONE",
+  "phase": "DONE",
+  "exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/model.elf",
+  "elf_sha256": "de5b6b53e4c1e19496582dc34cbaf81bd3ef20a28b5e6ce462da1f2e70c96967",
+  "actual_simulated_elf": "/scratch/firesim_queue/jobs/1847/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+  "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "uart": "/scratch/firesim_queue/jobs/1847/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "ecd7b22d69f4f1511c3e53a96d4db8a2d49b20652a1eb03e36ee45c34fc6fefb",
+  "marker_kind": "WHOLE_MODEL",
+  "kernel_cycles": 570443019,
+  "numeric_pass": "full f32le SHA256 match: 256000 outputs versus /scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/host/output.npy",
+  "output_digest_evidence": {
+    "elements": 256000,
+    "bytes": 1024000,
+    "sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "reference": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/host/output.npy",
+    "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+    "validation": "/scratch/agustin/tmp/firesim-golden-recovery-20261005/tiny_pointwise_unroll2_strict_validation.json",
+    "validation_sha256": "237a4a6161be937014ff670167d0f154e0710f3f8b15380d847addec6090fc7e"
+  },
+  "build_hash": "74a05b8109e9",
+  "comparison": {
+    "job1841_cycles": 571097507,
+    "saved_cycles": 654488,
+    "fraction_reduction": 0.0011460179601169296,
+    "best1846_cycles": 569151067,
+    "slower_than_best_cycles": 1291952
+  },
+  "scope": "Isolated target-independent scalar pointwise FMA/division partial unroll2 on eight/K2+B-prefetch control1841. Single-run marginal0.115% improvement is not a variance claim. All256000 bits and original Torch gate unchanged; final noFSM/stock staged closure. Ownership composition1846 remains measured best; no additive gain assumed.",
+  "source_receipt": "docs/perf_records/tiny_pointwise_unroll2_spike.json"
+}

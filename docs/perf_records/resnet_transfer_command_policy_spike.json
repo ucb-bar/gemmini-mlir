@@ -1,0 +1,2377 @@
+{
+  "schema": "resnet_transfer_command_policy_full_gate_v1",
+  "scope": "General complete-M-resident/banked transfer-family policy based on shape, target resources and primitive command costs. No dense source ID selections. Retains1849 static resident experiment control and numeric policies; default off. Whole original native+actual Gemmini Spike output gates pass; FireSim pending.",
+  "capture_source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+  "route_count": 52,
+  "fresh_writer_calls": 70,
+  "all_numeric_proofs_unchanged": true,
+  "rewritten_ir_byte_identical": true,
+  "changed_device_regions": [
+    "matmul_13",
+    "matmul_14",
+    "matmul_17",
+    "matmul_20",
+    "matmul_23",
+    "matmul_26",
+    "matmul_27",
+    "matmul_28",
+    "matmul_30",
+    "matmul_31",
+    "matmul_33",
+    "matmul_34",
+    "matmul_36",
+    "matmul_37",
+    "matmul_39",
+    "matmul_40",
+    "matmul_42",
+    "matmul_43",
+    "matmul_45",
+    "matmul_46",
+    "matmul_47",
+    "matmul_49",
+    "matmul_50",
+    "matmul_52"
+  ],
+  "source_replay": {
+    "schema": "transfer_command_policy_source_screen_v1",
+    "policy": "transfer_command_cost",
+    "selection_inputs": "Source GEMM dtype/shape/epilogue, target resources and primitive command counts; no dense source IDs supplied",
+    "source_sha256": "759c27369ac65c0269dce32d8d45517e446eded9f52db16d2d8780235049fad5",
+    "control_manifest": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/exact52_banked_command_policy_bundle/requant.json",
+    "control_manifest_sha256": "2fb2485fa1ac0e1940f0c8e082c24cceacca8fc335f2ce04a15967bf24c87d47",
+    "routes": 52,
+    "numeric_proofs_unchanged": true,
+    "rewritten_ir_byte_identical": true,
+    "changed_device_regions": [
+      "matmul_13",
+      "matmul_14",
+      "matmul_17",
+      "matmul_20",
+      "matmul_23",
+      "matmul_26",
+      "matmul_27",
+      "matmul_28",
+      "matmul_30",
+      "matmul_31",
+      "matmul_33",
+      "matmul_34",
+      "matmul_36",
+      "matmul_37",
+      "matmul_39",
+      "matmul_40",
+      "matmul_42",
+      "matmul_43",
+      "matmul_45",
+      "matmul_46",
+      "matmul_47",
+      "matmul_49",
+      "matmul_50",
+      "matmul_52"
+    ],
+    "object_sha256": "848862d4201089d4ee79755547fc819d51df81f968d03cd069d87433f06c7c56",
+    "decisions": [
+      {
+        "region": "matmul_1",
+        "decision": {
+          "applied": false,
+          "refusal": "no legal transfer family reduces command count",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "primitive command count does not decrease",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 64,
+                "k": 64,
+                "bm": 1,
+                "bn": 4,
+                "macs": 12845056,
+                "array_floor_cycles": 50176,
+                "mesh_compute_commands": 3136,
+                "padded_array_floor_cycles": 50176,
+                "dma_request_bytes_upper": 405504,
+                "dma_request_transfer_cycles_at_16B_upper": 25344,
+                "unique_tensor_bytes": 405504,
+                "unique_dram_floor_cycles_at_16B": 25344,
+                "primitive_command_count": 6668,
+                "output_blocks": 196,
+                "mvout_commands": 196,
+                "a_panel_loads": 784,
+                "b_panel_loads": 16,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 4
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 64,
+                "k": 64,
+                "bm": 1,
+                "bn": 4,
+                "macs": 12845056,
+                "array_floor_cycles": 50176,
+                "mesh_compute_commands": 3136,
+                "padded_array_floor_cycles": 50176,
+                "dma_request_bytes_upper": 405504,
+                "dma_request_transfer_cycles_at_16B_upper": 25344,
+                "unique_tensor_bytes": 405504,
+                "unique_dram_floor_cycles_at_16B": 25344,
+                "primitive_command_count": 6668,
+                "output_blocks": 196,
+                "mvout_commands": 196,
+                "a_panel_loads": 784,
+                "b_panel_loads": 16,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 4
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_3",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1613824,
+                "dma_request_transfer_cycles_at_16B_upper": 100864,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26664,
+                "output_blocks": 50,
+                "mvout_commands": 784,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1600,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 400
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 1,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 784,
+                "a_panel_loads": 784,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_4",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1613824,
+                "dma_request_transfer_cycles_at_16B_upper": 100864,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26664,
+                "output_blocks": 50,
+                "mvout_commands": 784,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1600,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 400
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 1,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 784,
+                "a_panel_loads": 784,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_5",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 64,
+                "k": 256,
+                "bm": 16,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 28436,
+                "output_blocks": 13,
+                "mvout_commands": 196,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 3136,
+                "b_mvin_commands": 16
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 64,
+                "k": 256,
+                "bm": 1,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 196,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 784,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_7",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1613824,
+                "dma_request_transfer_cycles_at_16B_upper": 100864,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26664,
+                "output_blocks": 50,
+                "mvout_commands": 784,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1600,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 400
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 1,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 784,
+                "a_panel_loads": 784,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_8",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 64,
+                "k": 256,
+                "bm": 16,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 28436,
+                "output_blocks": 13,
+                "mvout_commands": 196,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 3136,
+                "b_mvin_commands": 16
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 64,
+                "k": 256,
+                "bm": 1,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 196,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 784,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_10",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1613824,
+                "dma_request_transfer_cycles_at_16B_upper": 100864,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26664,
+                "output_blocks": 50,
+                "mvout_commands": 784,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1600,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 400
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 256,
+                "k": 64,
+                "bm": 1,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1019904,
+                "dma_request_transfer_cycles_at_16B_upper": 63744,
+                "unique_tensor_bytes": 1019904,
+                "unique_dram_floor_cycles_at_16B": 63744,
+                "primitive_command_count": 26084,
+                "output_blocks": 196,
+                "mvout_commands": 784,
+                "a_panel_loads": 784,
+                "b_panel_loads": 64,
+                "a_mvin_commands": 196,
+                "b_mvin_commands": 16
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_11",
+        "decision": {
+          "applied": true,
+          "selected_family": "banked",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": true,
+              "refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 3136,
+                "n": 128,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 25088,
+                "padded_array_floor_cycles": 401408,
+                "dma_request_bytes_upper": 1236992,
+                "dma_request_transfer_cycles_at_16B_upper": 77312,
+                "unique_tensor_bytes": 1236992,
+                "unique_dram_floor_cycles_at_16B": 77312,
+                "primitive_command_count": 53736,
+                "output_blocks": 25,
+                "mvout_commands": 392,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 128,
+                "a_mvin_commands": 3136,
+                "b_mvin_commands": 32
+              },
+              "candidate": {
+                "m": 3136,
+                "n": 128,
+                "k": 256,
+                "bm": 1,
+                "bn": 8,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 25088,
+                "padded_array_floor_cycles": 401408,
+                "dma_request_bytes_upper": 1236992,
+                "dma_request_transfer_cycles_at_16B_upper": 77312,
+                "unique_tensor_bytes": 1236992,
+                "unique_dram_floor_cycles_at_16B": 77312,
+                "primitive_command_count": 51384,
+                "output_blocks": 196,
+                "mvout_commands": 392,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 128,
+                "a_mvin_commands": 784,
+                "b_mvin_commands": 32
+              }
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "complete M block exceeds accumulator capacity"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_13",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1261568,
+                "dma_request_transfer_cycles_at_16B_upper": 78848,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27496,
+                "output_blocks": 28,
+                "mvout_commands": 392,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1792,
+                "a_mvin_commands": 1568,
+                "b_mvin_commands": 448
+              },
+              "candidate": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 49,
+                "bn": 1,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 567296,
+                "dma_request_transfer_cycles_at_16B_upper": 35456,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27304,
+                "output_blocks": 32,
+                "mvout_commands": 1568,
+                "a_panel_loads": 392,
+                "b_panel_loads": 256,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_14",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 784,
+                "n": 512,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 25088,
+                "padded_array_floor_cycles": 401408,
+                "dma_request_bytes_upper": 2121728,
+                "dma_request_transfer_cycles_at_16B_upper": 132608,
+                "unique_tensor_bytes": 733184,
+                "unique_dram_floor_cycles_at_16B": 45824,
+                "primitive_command_count": 54600,
+                "output_blocks": 28,
+                "mvout_commands": 392,
+                "a_panel_loads": 3136,
+                "b_panel_loads": 3584,
+                "a_mvin_commands": 3136,
+                "b_mvin_commands": 896
+              },
+              "candidate": {
+                "m": 784,
+                "n": 512,
+                "k": 256,
+                "bm": 49,
+                "bn": 1,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 25088,
+                "padded_array_floor_cycles": 401408,
+                "dma_request_bytes_upper": 733184,
+                "dma_request_transfer_cycles_at_16B_upper": 45824,
+                "unique_tensor_bytes": 733184,
+                "unique_dram_floor_cycles_at_16B": 45824,
+                "primitive_command_count": 53040,
+                "output_blocks": 32,
+                "mvout_commands": 1568,
+                "a_panel_loads": 784,
+                "b_panel_loads": 512,
+                "a_mvin_commands": 784,
+                "b_mvin_commands": 512
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_15",
+        "decision": {
+          "applied": false,
+          "refusal": "no legal transfer family reduces command count",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "operand block exceeds the scratchpad"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_17",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1261568,
+                "dma_request_transfer_cycles_at_16B_upper": 78848,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27496,
+                "output_blocks": 28,
+                "mvout_commands": 392,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1792,
+                "a_mvin_commands": 1568,
+                "b_mvin_commands": 448
+              },
+              "candidate": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 49,
+                "bn": 1,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 567296,
+                "dma_request_transfer_cycles_at_16B_upper": 35456,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27304,
+                "output_blocks": 32,
+                "mvout_commands": 1568,
+                "a_panel_loads": 392,
+                "b_panel_loads": 256,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_18",
+        "decision": {
+          "applied": false,
+          "refusal": "no legal transfer family reduces command count",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "operand block exceeds the scratchpad"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_20",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1261568,
+                "dma_request_transfer_cycles_at_16B_upper": 78848,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27496,
+                "output_blocks": 28,
+                "mvout_commands": 392,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1792,
+                "a_mvin_commands": 1568,
+                "b_mvin_commands": 448
+              },
+              "candidate": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 49,
+                "bn": 1,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 567296,
+                "dma_request_transfer_cycles_at_16B_upper": 35456,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27304,
+                "output_blocks": 32,
+                "mvout_commands": 1568,
+                "a_panel_loads": 392,
+                "b_panel_loads": 256,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_21",
+        "decision": {
+          "applied": false,
+          "refusal": "no legal transfer family reduces command count",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "operand block exceeds the scratchpad"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_23",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 1261568,
+                "dma_request_transfer_cycles_at_16B_upper": 78848,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27496,
+                "output_blocks": 28,
+                "mvout_commands": 392,
+                "a_panel_loads": 1568,
+                "b_panel_loads": 1792,
+                "a_mvin_commands": 1568,
+                "b_mvin_commands": 448
+              },
+              "candidate": {
+                "m": 784,
+                "n": 512,
+                "k": 128,
+                "bm": 49,
+                "bn": 1,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 12544,
+                "padded_array_floor_cycles": 200704,
+                "dma_request_bytes_upper": 567296,
+                "dma_request_transfer_cycles_at_16B_upper": 35456,
+                "unique_tensor_bytes": 567296,
+                "unique_dram_floor_cycles_at_16B": 35456,
+                "primitive_command_count": 27304,
+                "output_blocks": 32,
+                "mvout_commands": 1568,
+                "a_panel_loads": 392,
+                "b_panel_loads": 256,
+                "a_mvin_commands": 392,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_24",
+        "decision": {
+          "applied": false,
+          "refusal": "no legal transfer family reduces command count",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": false,
+              "refusal": "operand block exceeds the scratchpad"
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_26",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_27",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 512,
+                "bm": 8,
+                "bn": 8,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 26624,
+                "padded_array_floor_cycles": 425984,
+                "dma_request_bytes_upper": 2101248,
+                "dma_request_transfer_cycles_at_16B_upper": 131328,
+                "unique_tensor_bytes": 825344,
+                "unique_dram_floor_cycles_at_16B": 51584,
+                "primitive_command_count": 57808,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 3328,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 3328,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 512,
+                "bm": 13,
+                "bn": 4,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 26624,
+                "padded_array_floor_cycles": 425984,
+                "dma_request_bytes_upper": 831488,
+                "dma_request_transfer_cycles_at_16B_upper": 51968,
+                "unique_tensor_bytes": 825344,
+                "unique_dram_floor_cycles_at_16B": 51584,
+                "primitive_command_count": 54384,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 416,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 416,
+                "b_mvin_commands": 512
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_28",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1000448,
+                "dma_request_transfer_cycles_at_16B_upper": 62528,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 28852,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 525312,
+                "dma_request_transfer_cycles_at_16B_upper": 32832,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27764,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 832,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_30",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_31",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1000448,
+                "dma_request_transfer_cycles_at_16B_upper": 62528,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 28852,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 525312,
+                "dma_request_transfer_cycles_at_16B_upper": 32832,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27764,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 832,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_33",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_34",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1000448,
+                "dma_request_transfer_cycles_at_16B_upper": 62528,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 28852,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 525312,
+                "dma_request_transfer_cycles_at_16B_upper": 32832,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27764,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 832,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_36",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_37",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1000448,
+                "dma_request_transfer_cycles_at_16B_upper": 62528,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 28852,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 525312,
+                "dma_request_transfer_cycles_at_16B_upper": 32832,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27764,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 832,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_39",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_40",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1000448,
+                "dma_request_transfer_cycles_at_16B_upper": 62528,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 28852,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 256,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 525312,
+                "dma_request_transfer_cycles_at_16B_upper": 32832,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27764,
+                "output_blocks": 4,
+                "mvout_commands": 52,
+                "a_panel_loads": 832,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_42",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 8,
+                "bn": 8,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 1150976,
+                "dma_request_transfer_cycles_at_16B_upper": 71936,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 29008,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 1664,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 1664,
+                "b_mvin_commands": 512
+              },
+              "candidate": {
+                "m": 196,
+                "n": 1024,
+                "k": 256,
+                "bm": 13,
+                "bn": 4,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 13312,
+                "padded_array_floor_cycles": 212992,
+                "dma_request_bytes_upper": 516096,
+                "dma_request_transfer_cycles_at_16B_upper": 32256,
+                "unique_tensor_bytes": 513024,
+                "unique_dram_floor_cycles_at_16B": 32064,
+                "primitive_command_count": 27296,
+                "output_blocks": 16,
+                "mvout_commands": 208,
+                "a_panel_loads": 208,
+                "b_panel_loads": 1024,
+                "a_mvin_commands": 208,
+                "b_mvin_commands": 256
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_43",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": false,
+              "prefetch_b_refusal": "prefetched B requires cached A to fit the lower two banks",
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 196,
+                "n": 512,
+                "k": 1024,
+                "bm": 8,
+                "bn": 8,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 26624,
+                "padded_array_floor_cycles": 425984,
+                "dma_request_bytes_upper": 2000896,
+                "dma_request_transfer_cycles_at_16B_upper": 125056,
+                "unique_tensor_bytes": 825344,
+                "unique_dram_floor_cycles_at_16B": 51584,
+                "primitive_command_count": 57704,
+                "output_blocks": 8,
+                "mvout_commands": 104,
+                "a_panel_loads": 3328,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 3328,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 196,
+                "n": 512,
+                "k": 1024,
+                "bm": 13,
+                "bn": 4,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 26624,
+                "padded_array_floor_cycles": 425984,
+                "dma_request_bytes_upper": 837632,
+                "dma_request_transfer_cycles_at_16B_upper": 52352,
+                "unique_tensor_bytes": 825344,
+                "unique_dram_floor_cycles_at_16B": 51584,
+                "primitive_command_count": 54696,
+                "output_blocks": 8,
+                "mvout_commands": 104,
+                "a_panel_loads": 832,
+                "b_panel_loads": 2048,
+                "a_mvin_commands": 832,
+                "b_mvin_commands": 512
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_45",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1411072,
+                "dma_request_transfer_cycles_at_16B_upper": 88192,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34944,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 1024,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 1024,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1181696,
+                "dma_request_transfer_cycles_at_16B_upper": 73856,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34048,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 128,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 128,
+                "b_mvin_commands": 1024
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_46",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 2048,
+                "k": 1024,
+                "bm": 4,
+                "bn": 16,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 32768,
+                "padded_array_floor_cycles": 524288,
+                "dma_request_bytes_upper": 2721792,
+                "dma_request_transfer_cycles_at_16B_upper": 170112,
+                "unique_tensor_bytes": 2247680,
+                "unique_dram_floor_cycles_at_16B": 140480,
+                "primitive_command_count": 69760,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 2048,
+                "b_panel_loads": 8192,
+                "a_mvin_commands": 2048,
+                "b_mvin_commands": 2048
+              },
+              "candidate": {
+                "m": 49,
+                "n": 2048,
+                "k": 1024,
+                "bm": 4,
+                "bn": 16,
+                "macs": 102760448,
+                "array_floor_cycles": 401408,
+                "mesh_compute_commands": 32768,
+                "padded_array_floor_cycles": 524288,
+                "dma_request_bytes_upper": 2263040,
+                "dma_request_transfer_cycles_at_16B_upper": 141440,
+                "unique_tensor_bytes": 2247680,
+                "unique_dram_floor_cycles_at_16B": 140480,
+                "primitive_command_count": 67968,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 256,
+                "b_panel_loads": 8192,
+                "a_mvin_commands": 256,
+                "b_mvin_commands": 2048
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_47",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 512,
+                "k": 2048,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1335808,
+                "dma_request_transfer_cycles_at_16B_upper": 83488,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34848,
+                "output_blocks": 2,
+                "mvout_commands": 32,
+                "a_panel_loads": 1024,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 1024,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 49,
+                "n": 512,
+                "k": 2048,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1204736,
+                "dma_request_transfer_cycles_at_16B_upper": 75296,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34336,
+                "output_blocks": 2,
+                "mvout_commands": 32,
+                "a_panel_loads": 512,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 512,
+                "b_mvin_commands": 1024
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_49",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1411072,
+                "dma_request_transfer_cycles_at_16B_upper": 88192,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34944,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 1024,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 1024,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1181696,
+                "dma_request_transfer_cycles_at_16B_upper": 73856,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34048,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 128,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 128,
+                "b_mvin_commands": 1024
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_50",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "cached B panels exceed the static or scratchpad budget"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 512,
+                "k": 2048,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1335808,
+                "dma_request_transfer_cycles_at_16B_upper": 83488,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34848,
+                "output_blocks": 2,
+                "mvout_commands": 32,
+                "a_panel_loads": 1024,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 1024,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 49,
+                "n": 512,
+                "k": 2048,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1204736,
+                "dma_request_transfer_cycles_at_16B_upper": 75296,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34336,
+                "output_blocks": 2,
+                "mvout_commands": 32,
+                "a_panel_loads": 512,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 512,
+                "b_mvin_commands": 1024
+              }
+            }
+          }
+        }
+      },
+      {
+        "region": "matmul_52",
+        "decision": {
+          "applied": true,
+          "selected_family": "resident_a",
+          "cost_unit": "primitive_commands_not_cycles",
+          "families": {
+            "banked": {
+              "applied": false,
+              "refusal": "output block exceeds the accumulator"
+            },
+            "resident_a": {
+              "applied": true,
+              "refusal": null,
+              "prefetch_b": true,
+              "prefetch_b_refusal": null,
+              "cost_unit": "primitive_commands_not_cycles",
+              "control": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1411072,
+                "dma_request_transfer_cycles_at_16B_upper": 88192,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34944,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 1024,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 1024,
+                "b_mvin_commands": 1024
+              },
+              "candidate": {
+                "m": 49,
+                "n": 2048,
+                "k": 512,
+                "bm": 4,
+                "bn": 16,
+                "macs": 51380224,
+                "array_floor_cycles": 200704,
+                "mesh_compute_commands": 16384,
+                "padded_array_floor_cycles": 262144,
+                "dma_request_bytes_upper": 1181696,
+                "dma_request_transfer_cycles_at_16B_upper": 73856,
+                "unique_tensor_bytes": 1174016,
+                "unique_dram_floor_cycles_at_16B": 73376,
+                "primitive_command_count": 34048,
+                "output_blocks": 8,
+                "mvout_commands": 128,
+                "a_panel_loads": 128,
+                "b_panel_loads": 4096,
+                "a_mvin_commands": 128,
+                "b_mvin_commands": 1024
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scope": "Explicit general transfer-family compiler search option; static command costs are not hardware cycle predictions. Resident source selections retain the1836 experimental control. Whole-model gates/hardware are separate."
+  },
+  "whole_workdir": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy",
+  "recipe_sources": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/prepare_transfer_command_policy.py",
+      "sha256": "7312f5dbf7aa8b37e91a7846d28d2eb42bae3fd0ef8c8fa61b0a2e7b898e0aba"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/build_fresh_transfer_command_policy.py",
+      "sha256": "400bcef3f82d7d201ef9d39b69ac33edde04891270d3f9f1a93983d462c45312"
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/validate_fresh_transfer_command_policy.py",
+      "sha256": "82b922744bcd4357d6c684cc5f395cc97ffe8616cfd0f59d0667c316df4ef16d"
+    }
+  ],
+  "control_job": 1849,
+  "control_cycles": 42269808,
+  "byte_identical_files": [
+    {
+      "relative_path": "model.o",
+      "sha256": "2c532ae4785f88ef2e3afe6431fa800a207f69dcbf820a0b1945ede9d7fb6f16",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "host_llvm/model.linked.ll",
+      "sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "host_llvm/model.native.ll",
+      "sha256": "1f3a829001b0fbbe25f94b8118e61dfbb7b87412804a789be6a779f2081140e9",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "device/device_catalog_shim.o",
+      "sha256": "96796b6b261397d8cf790e6d04726a69f2ac3500d1a63630f20ea175e6cddf62",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "cgen/weights.bin",
+      "sha256": "bb43848e0b3c022fc54098efdb01c2cb985b0d03b360e053e2e9c31220bb1430",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "cgen/model_io.h",
+      "sha256": "02aaae6ab323af0bd64992a741df10a4e46c74248ff0b8cf03948dfcbbce1641",
+      "byte_identical_to1849": true
+    },
+    {
+      "relative_path": "crt.o",
+      "sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+      "byte_identical_to1849": true
+    }
+  ],
+  "native": {
+    "scope": "native whole model with scalar device standins",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source"
+  },
+  "spike": {
+    "scope": "actual Gemmini Spike functional; cycles are retired instructions, not FireSim cycles",
+    "elf_sha256": "dd10036bd3536bcaf69acd0aea5cc5d43053efdea3b3f0aaae6981ee311da9bb",
+    "target_native_exact": true,
+    "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "elements": 1000,
+    "exact_equal": true,
+    "max_abs_error": 0.0,
+    "relative_l2": 0.0,
+    "atol": 0.0,
+    "rtol": 0.0,
+    "allclose": true,
+    "quality_pass": true,
+    "numeric_policy": "exact_source",
+    "metrics": [
+      "METRIC cycles 10195770",
+      "METRIC build_hash 68d31eef6259",
+      "METRIC memref_rank_mismatch 0"
+    ],
+    "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "output_elements": 1000,
+    "output_bytes": 4000,
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "reference_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/host/output.npy",
+    "spike_full_output_match": true,
+    "spike_console_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/spike.log",
+    "spike_console_sha256": "dfce54788c198a2c4eedc3f01e917efe9229aba5f865a19d6fc9b0c31e76c39a",
+    "torch_golden_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/capture/golden.npy",
+    "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "torch_atol": 0.0,
+    "torch_rtol": 0.0,
+    "torch_allclose": true
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "68d31eef6259",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/build_direct/lower/model.ll",
+      "source_sha256": "85b38bfc4b0c1887043cc9a02ba0105b6278c08f9fb78164e49c9fcb755794e0",
+      "selected_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/whole_fresh_transfer_command_policy/build_direct/host_llvm/model.linked.ll",
+      "selected_sha256": "b14e75c3ca0b2833921a52c08ac22076dd2ba52d2438bd8fbd9318c709785e2c"
+    },
+    "supplemental_objects_sha256": "703cbade5cbd1ca6c787eb469ad7de069d7c836ce2c7167718b8bfec16c20f1c",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "final_elf_nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "dd10036bd3536bcaf69acd0aea5cc5d43053efdea3b3f0aaae6981ee311da9bb",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 3224,
+      "2": 19839,
+      "3": 1245,
+      "4": 14480,
+      "5": 116352,
+      "6": 130832,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hardware_status": "not yet queued"
+}

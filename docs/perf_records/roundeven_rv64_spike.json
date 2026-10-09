@@ -1,0 +1,23 @@
+{
+  "schema": "gemmini_rv64_roundeven_functional_v1",
+  "status": "pass",
+  "interpretation": "numeric CPU helper test; not hardware performance",
+  "input_count": 24199,
+  "rounding_modes_tested": 5,
+  "reference": "numpy.rint float32; NaNs classified independent of payload",
+  "checks": [
+    "all non-NaN result bits including signed zero",
+    "preexisting exception flags preserved for non-NaN inputs"
+  ],
+  "source_sha256": "cf2b1fd2276ec9d9274bff8a5724271647a743863d3e4548fabe099c1df2a9dc",
+  "elf_sha256": "9bd9777e02e0260595df2d7f83d8c5533d15a95050de7f5eca35de4179d69693",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "9bd9777e02e0260595df2d7f83d8c5533d15a95050de7f5eca35de4179d69693",
+    "executable_sections": 3,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  }
+}

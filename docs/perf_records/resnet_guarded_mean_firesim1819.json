@@ -1,0 +1,37 @@
+{
+  "schema": "golden_firesim_verified_probe_v1",
+  "job_id": 1819,
+  "state": "DONE",
+  "phase": "DONE",
+  "exit_code": 0,
+  "elf": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_final/build_direct/model.elf",
+  "elf_sha256": "2e1f4738f511bc021828516b26646b221db29c434f11c2cb551ac139e087d233",
+  "actual_simulated_elf": "/scratch/firesim_queue/jobs/1819/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+  "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "bitstream_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "uart": "/scratch/firesim_queue/jobs/1819/simulation/sim_slot_0/uartlog",
+  "uart_sha256": "39b58f32e0a79b4fd23cb176bd02529f702da347c13d171eeaa995849c3a2a55",
+  "marker_kind": "WHOLE_MODEL",
+  "kernel_cycles": 46680853,
+  "numeric_pass": "full f32le SHA256 match: 1000 outputs versus /scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_final/host/output.npy",
+  "output_digest_evidence": {
+    "elements": 1000,
+    "bytes": 4000,
+    "sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "reference": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_final/host/output.npy",
+    "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "validation": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/resnet_mean_guard/whole_final/spike_validation.json",
+    "validation_sha256": "ec5be2bc4bc8197cb43954e112f916b578c67e6057260b3ab59c77fc6da546c0"
+  },
+  "build_hash": "d24345f0c583",
+  "numerical_scope": "Guarded exact QDQ mean with source-ordered fallback for eight ambiguous integer totals; all1000 original output bits unchanged.",
+  "comparison": {
+    "job1812_cycles": 46316907,
+    "added_cycles": 363946,
+    "fraction_increase": 0.007857735405345512
+  },
+  "disposition": "Functionally qualified, but hardware regression in this comparison. Retain1812 as fastest control; lower Spike instruction count was not a hardware speedup.",
+  "causal_scope": "Measured whole-artifact comparison only. host_vectorize metadata differs from1812, but metadata alone does not establish different code: the later packed-mean True/False builds produce byte-identical model.o and final ELF. The opaque1819 mean also retains a layout transpose. Do not assign the whole regression to either mechanism without an isolated object/profile comparison."
+}

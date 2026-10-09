@@ -1,0 +1,385 @@
+{
+  "schema": "prelabel_cross_executable_schedule_predictions_v1",
+  "target_elf_sha256": "90e3666fd03e53700697c28ad269467da7e323a51e1adce28e39780fedc3dfee",
+  "domains": {
+    "separable_lower": {
+      "domain": {
+        "hypothesis": "explicit cross-executable complete-call count transfer; schedule is permitted to vary and remains unpriced",
+        "engine": "firesim_stock",
+        "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+        "bitstream": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+        "signature": "separable_lower",
+        "rounding": "explicit per-op rup/rdn; ambientRNE,nontrapping,no intermediate flag observation",
+        "precision": "f64 multiply and two adds, directed f32 narrow, exact f64 feedback",
+        "scope": "same fenced indirect complete kernel call, input/output and loop included; validation outside",
+        "unpriced": [
+          "RAW spacing",
+          "extra integer/move/loop work",
+          "instruction layout",
+          "loop-carried edges",
+          "memory dependencies"
+        ]
+      },
+      "domain_sha256": "cdffa460f76e0fea012104869c5b7b246b0b2584b14155eac65b081642c86d00",
+      "fit": {
+        "domain_sha256": "cdffa460f76e0fea012104869c5b7b246b0b2584b14155eac65b081642c86d00",
+        "pointers": [
+          "/skeleton_count"
+        ],
+        "coefficients": [
+          30.69076407465953
+        ],
+        "fixed_cycles": 0.0,
+        "domains": [
+          [
+            1024.0,
+            16384.0
+          ]
+        ],
+        "provenance_sha256": "a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+      },
+      "train_only_job": 2044,
+      "training_ids": [
+        0,
+        2,
+        3,
+        5
+      ],
+      "target_labels_used": false,
+      "all_new_cases_held": [
+        {
+          "id": 0,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 1024
+          },
+          "prediction": {
+            "lo": 31427.34241245136,
+            "hi": 31427.34241245136,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 1,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 4096
+          },
+          "prediction": {
+            "lo": 125709.36964980543,
+            "hi": 125709.36964980543,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 16384
+          },
+          "prediction": {
+            "lo": 502837.47859922174,
+            "hi": 502837.47859922174,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 3,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 1024
+          },
+          "prediction": {
+            "lo": 31427.34241245136,
+            "hi": 31427.34241245136,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 4,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 4096
+          },
+          "prediction": {
+            "lo": 125709.36964980543,
+            "hi": 125709.36964980543,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 16384
+          },
+          "prediction": {
+            "lo": 502837.47859922174,
+            "hi": 502837.47859922174,
+            "provenance": [
+              "empirical screening fit sha256:a32cd4e61555df218e02bc295ca726afee581b0eacecdc4b91238c46d4e71ec6"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        }
+      ]
+    },
+    "separable_upper": {
+      "domain": {
+        "hypothesis": "explicit cross-executable complete-call count transfer; schedule is permitted to vary and remains unpriced",
+        "engine": "firesim_stock",
+        "hw_config": "alveo_u250_firesim_gemmini_rocket_stock",
+        "bitstream": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+        "signature": "separable_upper",
+        "rounding": "explicit per-op rup/rdn; ambientRNE,nontrapping,no intermediate flag observation",
+        "precision": "f64 multiply and two adds, directed f32 narrow, exact f64 feedback",
+        "scope": "same fenced indirect complete kernel call, input/output and loop included; validation outside",
+        "unpriced": [
+          "RAW spacing",
+          "extra integer/move/loop work",
+          "instruction layout",
+          "loop-carried edges",
+          "memory dependencies"
+        ]
+      },
+      "domain_sha256": "3a87d4b659354960bc21dd81e7e4e220a6fb14cfce495fd18b83ff30fb598869",
+      "fit": {
+        "domain_sha256": "3a87d4b659354960bc21dd81e7e4e220a6fb14cfce495fd18b83ff30fb598869",
+        "pointers": [
+          "/skeleton_count"
+        ],
+        "coefficients": [
+          26.753043683122563
+        ],
+        "fixed_cycles": 0.0,
+        "domains": [
+          [
+            1024.0,
+            16384.0
+          ]
+        ],
+        "provenance_sha256": "9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+      },
+      "train_only_job": 2044,
+      "training_ids": [
+        6,
+        8,
+        9,
+        11
+      ],
+      "target_labels_used": false,
+      "all_new_cases_held": [
+        {
+          "id": 6,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 1024
+          },
+          "prediction": {
+            "lo": 27395.116731517504,
+            "hi": 27395.116731517504,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 7,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 4096
+          },
+          "prediction": {
+            "lo": 109580.46692607002,
+            "hi": 109580.46692607002,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 8,
+          "schedule": "scalar_lane_major",
+          "features": {
+            "/skeleton_count": 16384
+          },
+          "prediction": {
+            "lo": 438321.86770428007,
+            "hi": 438321.86770428007,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 9,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 1024
+          },
+          "prediction": {
+            "lo": 27395.116731517504,
+            "hi": 27395.116731517504,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 10,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 4096
+          },
+          "prediction": {
+            "lo": 109580.46692607002,
+            "hi": 109580.46692607002,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        },
+        {
+          "id": 11,
+          "schedule": "stage_major",
+          "features": {
+            "/skeleton_count": 16384
+          },
+          "prediction": {
+            "lo": 438321.86770428007,
+            "hi": 438321.86770428007,
+            "provenance": [
+              "empirical screening fit sha256:9470820e79b2a978bba34ea987a94417ebf0e87d9af363d0397ca9dc1bce156b"
+            ],
+            "missing": []
+          },
+          "original_ELF_bound_model": {
+            "lo": null,
+            "hi": null,
+            "provenance": [],
+            "missing": [
+              "target, timing scope or execution regime differs from fit"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "status": "diagnostic hypothesis only; actual stock domain must reclose bitstream/scope before scoring",
+  "no_refit_after_target_labels": true,
+  "pins": {
+    "/scratch/agustin/tmp/firesim-golden-recovery-20261005/job2044_verified.json": "cf75be11142ecfa057df4dbcbb79b8caa50c521d54ed4215847c2295e4186938",
+    "/scratch/agustin/tmp/gemmini-fp64-bounds-service-20261006/out/fp64_bounds_service/generated/manifest.json": "175b92fc5a31cef822a82be7ef30cfe925ca53207ef9cdfa9218dd329b69c71f",
+    "/scratch/agustin/tmp/gemmini-fp64-bounds-service-20261006/out/fp64_bounds_service/stock2044_diagnostic.json": "820816a5693e859dd739376c36585a944ba9a662aabd5b3a7a429818aebc86b5",
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/generated/manifest.json": "2376d3397ab827959c3e9aa1a327a6dd64a9c83c697a57845a94fbfae84edf8a",
+    "/scratch/agustin/tmp/gemmini-fp64-stage-schedule-20261006/out/fp64_stage_schedule/build/layer.elf": "90e3666fd03e53700697c28ad269467da7e323a51e1adce28e39780fedc3dfee"
+  }
+}

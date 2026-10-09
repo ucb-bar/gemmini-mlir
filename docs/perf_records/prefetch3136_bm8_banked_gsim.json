@@ -1,0 +1,55 @@
+{
+  "schema": "gemmini_golden_gemm_gsim_probe_v1",
+  "shape": [
+    3136,
+    64,
+    64
+  ],
+  "kernel_symbol": "gemmini_golden_gemm",
+  "block": [
+    8,
+    4
+  ],
+  "output_dtype": "i8",
+  "bias": true,
+  "scale": 0.125,
+  "relu": true,
+  "embedded_expected": true,
+  "wide_store": true,
+  "reuse_b": true,
+  "cache_b": true,
+  "cache_a": false,
+  "pipeline_m": true,
+  "prefetch_m": true,
+  "banked_m": true,
+  "wide_a": true,
+  "wide_b": true,
+  "status": "pass",
+  "kernel_cycles": 91250,
+  "engine_cycles_including_harness": 5665625,
+  "elf_sha256": "1255c8cd766069e48578d5b8cea6d14aa846ee769c4f5cdde6a62497935c9df2",
+  "target_ir_sha256": "ee9810bcd35a2a08681702cf73d5168f75b839b05189c8db39a90a5fa0b67778",
+  "llvm_ir_sha256": "d4183d0938adf4d74a64c512d1d6bed22d68993e3bb146f3ce0e389bd2b0ad87",
+  "gsim_engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "1255c8cd766069e48578d5b8cea6d14aa846ee769c4f5cdde6a62497935c9df2",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 4,
+      "2": 36,
+      "3": 36,
+      "4": 80,
+      "5": 496,
+      "6": 576,
+      "7": 1,
+      "14": 144
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "stdout_tail": "GOLDEN_GEMM_CYCLES 91250\nGOLDEN_GEMM PASS M=3136 N=64 K=64\n",
+  "stderr_tail": ""
+}

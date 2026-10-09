@@ -1,0 +1,78 @@
+{
+  "schema": "root_source_host_quant_crossed_model_stock_release_v1",
+  "status": "RELEASED_ONE_STOCK_CALIBRATION",
+  "candidate": {
+    "elf": "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/out/host_quant_crossed_model_v3/layer.elf",
+    "elf_sha256": "f2cea0d175b8d87e5f8552fb9526b590a33939ea5784528f42f43c8936a961e6"
+  },
+  "qualified_packet": {
+    "path": "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/out/host_quant_crossed_model_v3/qualified_spike.json",
+    "sha256": "6859dbd76a65138f8e194e8d9263092f766f7719fcff421989873f43b3ca20b2"
+  },
+  "source_release_pins_reclosed": 1676,
+  "original_envelope_pins_reclosed": 138,
+  "fresh_native_source_oracle_checker": {
+    "cases": 6,
+    "source_bytes": 1053696,
+    "status": "PASS"
+  },
+  "fresh_read_only_source_feature_replay": {
+    "cases": 6,
+    "status": "PASS",
+    "all_saved_fields_exact": true
+  },
+  "independent_extent_tails_and_refusals": 14,
+  "hardware_config": "alveo_u250_firesim_gemmini_rocket_stock",
+  "counter_contract": {
+    "rows": 15,
+    "fp_rows": 0,
+    "checksum": "98e0beb22396e0f5"
+  },
+  "partitions": "Four half/double4/8-lane training vectors; both current extent arms and repeats held. Labels absent at release.",
+  "predeclared_hypotheses": [
+    {
+      "name": "fixed_plus_work",
+      "features": [
+        "source_elements"
+      ],
+      "include_fixed": true,
+      "parameters": 2
+    },
+    {
+      "name": "instructions_plus_source_groups",
+      "features": [
+        "retired_instructions",
+        "source_lane_groups"
+      ],
+      "include_fixed": false,
+      "parameters": 2
+    },
+    {
+      "name": "work_plus_fp_distance",
+      "features": [
+        "source_elements",
+        "source_fp_inverse_distance"
+      ],
+      "include_fixed": false,
+      "parameters": 2
+    }
+  ],
+  "fit_gate": "Existing two-points-per-parameter and feature distinctness gates unchanged. Fixed-plus-elements collapses widths to only two distinct training vectors and must refuse. No clipping or postlabel feature replacement.",
+  "requirements": [
+    "Root-released exact actual stagedELF/config/stockbitstream/runworkload binding.",
+    "Same shared service parser, all15windows and original outputchecksum/FRM/flags/counterextent.",
+    "Fresh stock envelope; existing Spike/source evidence and partitions never rewritten."
+  ],
+  "scope": "Complete ranked-map quantizer including descriptors/allocations/copy, setup and output verification excluded. Source FP/GPR/branch/SP topology observed, no pure opcode prices or whole-gap composition.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/docs/perf_records/source_host_quant_crossed_model_spike_qualified.json": "4915ba0a50fca3e1e10e4c0632a826a792c1651dc5e7f6660be5fc7d18e1a33d",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/out/host_quant_crossed_model_v3/qualified_spike.json": "6859dbd76a65138f8e194e8d9263092f766f7719fcff421989873f43b3ca20b2",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/out/host_quant_crossed_model_v3/layer.elf": "f2cea0d175b8d87e5f8552fb9526b590a33939ea5784528f42f43c8936a961e6",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/out/host_quant_crossed_model_v3/manifest.json": "de22a6a33c018841dd003bc769ae05000b9e238fa813801c05bea39fc832ca99",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/mlir_oot/service_battery.py": "83e2ee3eee95865b179c19d7469b2685cd98faa664e5cc4e334a27db65bb0726",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/model-terminals-20261006/root_quant_source_features.json": "eb2153e7c3a88d30b62ab533fc97fe956abfa4f166981868a36ee3c57c1ce7bc",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/tests/source_host_quant_model_qualification_probe.py": "5b869be9d2df0f63c8c0a4859e6130c0f7d1308a9d6dd9d507b369bba0ccb344",
+    "/scratch/agustin/tmp/gemmini-host-rne-eight-20261006/tests/source_host_quant_model_feature_replay_probe.py": "a43be53ed626c67d29391436c3e144ae49d2b6febd461cb607ae4fa44ccbffe5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/model-terminals-20261006/quant_release_publication.py": "a68e36de563feb53ad9a38a5f30f1edda53dba54a1311ed81864717c9f471d36"
+  }
+}

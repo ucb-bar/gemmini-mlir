@@ -1,0 +1,209 @@
+{
+  "schema": "smol1906_typed_source_operation_census_v1",
+  "source_path": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/bundle/model.mlir",
+  "source_sha256": "11e69a0ee2caae0b958fa0305f5a1a952671aa92ece4fca42932e1b2536d036f",
+  "scope": "Static source execution counts from typed projected linalg domains and positive constant SCF ranges; conditional or unsupported domains are holes. These are not machine instruction counts or hardware cycles.",
+  "counts": [
+    {
+      "operation": "math.fma",
+      "dtype": "f32",
+      "source_executions": 20135130120
+    },
+    {
+      "operation": "arith.mulf",
+      "dtype": "f32",
+      "source_executions": 1708500507
+    },
+    {
+      "operation": "arith.addf",
+      "dtype": "f32",
+      "source_executions": 1266904413
+    },
+    {
+      "operation": "arith.extf",
+      "dtype": "f32",
+      "source_executions": 876067414
+    },
+    {
+      "operation": "arith.mulf",
+      "dtype": "bf16",
+      "source_executions": 325528320
+    },
+    {
+      "operation": "arith.truncf",
+      "dtype": "bf16",
+      "source_executions": 239662983
+    },
+    {
+      "operation": "arith.addf",
+      "dtype": "bf16",
+      "source_executions": 213608224
+    },
+    {
+      "operation": "math.tanh",
+      "dtype": "f32",
+      "source_executions": 37748736
+    },
+    {
+      "operation": "arith.divf",
+      "dtype": "f32",
+      "source_executions": 6349537
+    },
+    {
+      "operation": "math.exp",
+      "dtype": "f32",
+      "source_executions": 6308512
+    },
+    {
+      "operation": "arith.divf",
+      "dtype": "bf16",
+      "source_executions": 90683
+    },
+    {
+      "operation": "math.rsqrt",
+      "dtype": "f32",
+      "source_executions": 5153
+    },
+    {
+      "operation": "arith.mulf",
+      "dtype": "f64",
+      "source_executions": 2520
+    },
+    {
+      "operation": "arith.truncf",
+      "dtype": "f32",
+      "source_executions": 720
+    },
+    {
+      "operation": "arith.addf",
+      "dtype": "f64",
+      "source_executions": 360
+    },
+    {
+      "operation": "arith.divf",
+      "dtype": "f64",
+      "source_executions": 360
+    },
+    {
+      "operation": "arith.extf",
+      "dtype": "f64",
+      "source_executions": 360
+    },
+    {
+      "operation": "math.sin",
+      "dtype": "f64",
+      "source_executions": 360
+    },
+    {
+      "operation": "math.cos",
+      "dtype": "f64",
+      "source_executions": 360
+    }
+  ],
+  "holes": [
+    {
+      "operation": "arith.addf",
+      "dtype": "f32",
+      "reason": "nonconstant loop bound",
+      "static_sites": 31
+    }
+  ],
+  "explicit_ordered_fma_shapes": [
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "rhs": [
+        1,
+        12,
+        512,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        512
+      ],
+      "source_fmas": 9663676416
+    },
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        192
+      ],
+      "rhs": [
+        1,
+        12,
+        192,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "source_fmas": 7247757312
+    },
+    {
+      "lhs": [
+        1,
+        12,
+        256,
+        128
+      ],
+      "rhs": [
+        1,
+        12,
+        128,
+        64
+      ],
+      "output": [
+        1,
+        12,
+        256,
+        64
+      ],
+      "source_fmas": 2415919104
+    },
+    {
+      "lhs": [
+        1,
+        15,
+        50,
+        64
+      ],
+      "rhs": [
+        1,
+        15,
+        64,
+        113
+      ],
+      "output": null,
+      "source_fmas": 43392000
+    },
+    {
+      "lhs": [
+        1,
+        15,
+        50,
+        113
+      ],
+      "rhs": [
+        1,
+        15,
+        113,
+        64
+      ],
+      "output": null,
+      "source_fmas": 43392000
+    }
+  ],
+  "token_usage_available": false
+}

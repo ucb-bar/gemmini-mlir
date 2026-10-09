@@ -1,0 +1,76 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/scratch/agustin/projects/model2MLIR/.venv/bin/python",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/run_lowering.py",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/model.mlir",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/model.ll",
+        "canonicalize,cse,__merlin_scalar_contraction_reduction_unroll_2__,__merlin_scalar_contraction_accumulator_8_outputs__,func.func(linalg-generalize-named-ops),func.func(linalg-fuse-elementwise-ops),__merlin_broadcast_source_rsqrt_hoist__,__merlin_pointwise_packet_2__,__merlin_pointwise_multiplication_packet_4__,one-shot-bufferize{bufferize-function-boundaries function-boundary-type-conversion=identity-layout-map},buffer-results-to-out-params{modify-public-functions hoist-static-allocs},ownership-based-buffer-deallocation,buffer-deallocation-simplification,bufferization-lower-deallocations,func.func(buffer-hoisting,buffer-loop-hoisting),func.func(convert-linalg-to-loops),__merlin_lower_fma_to_intrinsic__,convert-scf-to-cf,expand-strided-metadata,lower-affine,convert-math-to-libm,convert-math-to-llvm,convert-index-to-llvm,convert-arith-to-llvm,finalize-memref-to-llvm,convert-func-to-llvm,convert-cf-to-llvm,reconcile-unrealized-casts,canonicalize,cse,symbol-dce",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR"
+      },
+      "environment_digest": "9b291e935849ef7c",
+      "executable": {
+        "bytes": 27816648,
+        "path": "/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+        "sha256": "9ed008e5a8685235361f0c53771b520ab082dd99a877ad2fd796a93fa4c0b488"
+      }
+    }
+  ],
+  "features": [
+    "approximate_transcendental_activation",
+    "fuse_activation_polynomial_fma",
+    "fuse_quantize_round_convert",
+    "hoist_broadcast_source_rsqrt",
+    "hoist_weight_invariant_quantize",
+    "lower_fma_to_intrinsic",
+    "packet_scalar_pointwise_fma_division_2",
+    "packet_scalar_pointwise_multiplication_4",
+    "respect_captured_quantization_scope",
+    "scalar_contraction_accumulator_8_outputs",
+    "unroll_scalar_contraction_reduction_by_2"
+  ],
+  "returned_llvm_ir": {
+    "bytes": 2855068,
+    "sha256": "0e826c605dac78115c84d05a14a5ca185d5d4eb9874286bbbb38390288642e2d"
+  },
+  "schema": "merlin.lowering_recipe.v1",
+  "scope": "upstream lowering through returned LLVM IR; not final codegen or link",
+  "sources": {
+    "pipeline_driver": {
+      "bytes": 101796,
+      "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/llvmlower/pipeline.py",
+      "sha256": "aa6f8c2e4cb8b714215a203f869a5cbe29dc8c622b6703448d20cf11cefc88ff"
+    },
+    "prepared_mlir": {
+      "bytes": 3474561,
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/model.mlir",
+      "sha256": "a50a8bb75cfe40c8e70ee27fe27b9943b16cc5036c29d82186b8f5b6cb19e86f"
+    },
+    "runner": {
+      "bytes": 127103,
+      "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/lower/run_lowering.py",
+      "sha256": "3c9c5a08af39ae5a87e1732450ed1c4374bc7bcebeeca838364cf3245928aeaa"
+    }
+  },
+  "status": "returned"
+}

@@ -1,0 +1,67 @@
+{
+  "shape": {
+    "h": 5,
+    "w": 35,
+    "cout": 19,
+    "bn": 4,
+    "output_dtype": "i8",
+    "scale": 0.0020730062387883663,
+    "relu": true
+  },
+  "status": "pass",
+  "completed": true,
+  "returncode": 0,
+  "kernel_cycles": 9179,
+  "elf_sha256": "b5ebfc90e9f7f038f5e3a57bc4a84d9dc57369f452fd7ff92b0ecdd3e18f5e49",
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "951830f915455ab1ec9c2d917efe6d669796125177752ef54dd191bb3a6544fa",
+    "llvm_mlir_sha256": "604ee62b016cf62b25c47b3b6040b86c312675e8f7a6ea123253329b796427d6",
+    "llvm_ir_sha256": "154c9967431d71e882520b809c5a6af32cfd5a1e8d96a6120ffd951acc67c52f",
+    "object_sha256": "be68de839c026ac824b78c8969d9dcf4d8ec1231ebadf7ba388fba258c2e0d92",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_i8/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_i8/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_i8/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_i8/kernel.o"
+      ]
+    ]
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "b5ebfc90e9f7f038f5e3a57bc4a84d9dc57369f452fd7ff92b0ecdd3e18f5e49",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 5,
+      "1": 14,
+      "2": 14,
+      "3": 2,
+      "4": 28,
+      "5": 28,
+      "6": 56,
+      "7": 1
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "stdout": "GOLDEN_STEM_CYCLES 9179\nGOLDEN_STEM PASS\n"
+}

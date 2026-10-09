@@ -1,0 +1,272 @@
+{
+  "scope": "Isolated original source stages, frozen failing runtime; target-versus-native localization, no wholemodel claim",
+  "cases": [
+    {
+      "scope": "Isolated original vision block, original captured input/output; no fullmodel qualification",
+      "target_all_original_output_bits_exact": true,
+      "expected_raw_sha256": "e7a424c7299222fbe0989629ecb2bcdcea6a8c3f250b1a24c8bd195031f1a54f",
+      "observed_raw_sha256": "e7a424c7299222fbe0989629ecb2bcdcea6a8c3f250b1a24c8bd195031f1a54f",
+      "source": {
+        "scope": "Original vision block index3 alone, original captured layer0 output input; diagnostic only",
+        "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+        "original_vision_receipt": {
+          "full_golden_bitexact": true,
+          "full_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+          "input_sha256": "a75ac59c27ecc0abe5a5c6157a1202736f662834c92739a34af4a8354d448942",
+          "vision_shape": [
+            14,
+            1024,
+            768
+          ],
+          "chain_bitexact": true,
+          "torch": "2.10.0+cu128",
+          "capture_script_sha256": "7c34a28f6be46002853b8d384961afbdef39f2c5b8954d33c237eb701870e846",
+          "vision_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff"
+        },
+        "selected_origin_node_id": "g:quantized:root:n2361",
+        "removed_ops": 35051,
+        "golden_sha256": "355ca90910f1a94b5511489bb55e65a02949054166990f1fe7e58d56909e39c5",
+        "derived_sha256": "f42a5d78f94ba44ab83d92453eb2feaa0bfe5c03b5aa5d30d5193c4f93b011cd"
+      },
+      "elf_sha256": "6aa3e3d49245c3aeb3466f0cc25071347282ad9990810b3befebf18ae6a1fdce",
+      "spike_log_sha256": "cb0ea17d889fa5bf987ee8935c2dbe82762fcb4fc2b36b415acd197fb4b513b0",
+      "native": {
+        "scope": "vision_block3: native host with scalar integer device stand-ins",
+        "llvm_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/lower/model.ll",
+        "llvm_sha256": "8e857737b50d067702a188de9806521bfa2746b445dfbc73682d89dd3ba55710",
+        "finite": true,
+        "allclose": true,
+        "relative_l2": 0.0,
+        "cosine": 1.0000001192092896,
+        "max_abs_error": 0.0
+      },
+      "linked_objects": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/model_call.o": "1dce080cb5a3e6df231fd50afdf0b45db2c9bf9839497a3bb91d6fc367b0d278",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/model_main.o": "f04229df66427a0a82705b8a0158fcd727ad5a8b1287c268c658594312eab11b",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/mlir_rt.o": "2f612a63310c1bf30a38824f4debd64fce0f2780551e028f198114d555590e5e",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/libc_min.o": "93b07bae1410c999309ecafd9afa2b3a5f4d67ffac106dd57f6c59e807dfb533",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/malloc.o": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/model.o": "358507645279bde8d3a9c9fe0ea3c6ec645955e5527ce57eab9ba2bbce8fe62a",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/weights_blob.o": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/device_catalog/kernel.o": "776ac4672f59a26c245ab5ff8571d3d175a816a5b5eb6fcdeb6760d086fde3eb",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block3/build/device/device_catalog_shim.o": "d2b1016e62a382767f9562ce6ec59bf128d366dff5b66d1cdfd80e5bde3b2907"
+      },
+      "final_nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "6aa3e3d49245c3aeb3466f0cc25071347282ad9990810b3befebf18ae6a1fdce",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 12,
+          "1": 48,
+          "2": 48,
+          "3": 192,
+          "4": 48,
+          "5": 336,
+          "6": 384,
+          "7": 3
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "spike_retired_instructions": 22924723689,
+      "token_usage_available": false,
+      "actual_state_identity": {
+        "block_index": 3,
+        "actual_input_state_index": 3,
+        "actual_output_state_index": 4,
+        "input_state_original_bytes_exact": true,
+        "output_state_original_bytes_exact": true,
+        "input_raw_sha256": "4b6177962fff6e3fa7922ac3d0eb912d65d0532e34ead3a39700a9b2d739e030",
+        "golden_npy_sha256": "355ca90910f1a94b5511489bb55e65a02949054166990f1fe7e58d56909e39c5",
+        "retained_vision_states_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff",
+        "scope_caption_correction": "Derived bundle inherited phrase layer0 output input; actual proved input is previous block output indexed above. No compiled bytes changed."
+      },
+      "block_index": 3,
+      "decision": "diagnostic target exact"
+    },
+    {
+      "scope": "Isolated original vision block, original captured input/output; no fullmodel qualification",
+      "target_all_original_output_bits_exact": false,
+      "expected_raw_sha256": "e0d9c18542e432a06330e14e4abf4cb5c5c4b892632a83ebb07b3c7594e4e99d",
+      "observed_raw_sha256": "815f54f82c36bc0c4a0a9463e4de0262453219ce9dbd459d09ba476c34d4376e",
+      "source": {
+        "scope": "Original vision block index4 alone, original captured layer0 output input; diagnostic only",
+        "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+        "original_vision_receipt": {
+          "full_golden_bitexact": true,
+          "full_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+          "input_sha256": "a75ac59c27ecc0abe5a5c6157a1202736f662834c92739a34af4a8354d448942",
+          "vision_shape": [
+            14,
+            1024,
+            768
+          ],
+          "chain_bitexact": true,
+          "torch": "2.10.0+cu128",
+          "capture_script_sha256": "7c34a28f6be46002853b8d384961afbdef39f2c5b8954d33c237eb701870e846",
+          "vision_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff"
+        },
+        "selected_origin_node_id": "g:quantized:root:n2501",
+        "removed_ops": 35051,
+        "golden_sha256": "d7cb7a1908fd6c2a7d440771428b0be34b24d1fa4b5e7d28548196073c025c1f",
+        "derived_sha256": "da055b397fb28b316685539789f56637df726fcc9ae2e5675d0a7053463cd5bf"
+      },
+      "elf_sha256": "48238a600ab2eb056a26415de1a140b0398299422819de1323d6955a91787672",
+      "spike_log_sha256": "26e55a68135c8f7ed836f167773bc4c4294b0ebaa379090acf3c1bdfd0980794",
+      "native": {
+        "scope": "vision_block4: native host with scalar integer device stand-ins",
+        "llvm_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/lower/model.ll",
+        "llvm_sha256": "b632a7708a54720647566ddffbcc925e70787aab6957731f4cf1f1a6e8d6a933",
+        "finite": true,
+        "allclose": true,
+        "relative_l2": 0.0,
+        "cosine": 1.0,
+        "max_abs_error": 0.0
+      },
+      "linked_objects": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model_call.o": "1dce080cb5a3e6df231fd50afdf0b45db2c9bf9839497a3bb91d6fc367b0d278",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model_main.o": "8e3a42d036a6162b5f2a91e4174fcdc7fecc83a5b5ff638c2875af2b5b7405d3",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/mlir_rt.o": "2f612a63310c1bf30a38824f4debd64fce0f2780551e028f198114d555590e5e",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/libc_min.o": "93b07bae1410c999309ecafd9afa2b3a5f4d67ffac106dd57f6c59e807dfb533",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/malloc.o": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/model.o": "303a4207a86ab55dc8e48960f02ef1c0ca15de1d7ed9b21a9b3723cdea9f250c",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/weights_blob.o": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/device_catalog/kernel.o": "776ac4672f59a26c245ab5ff8571d3d175a816a5b5eb6fcdeb6760d086fde3eb",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block4/build/device/device_catalog_shim.o": "d2b1016e62a382767f9562ce6ec59bf128d366dff5b66d1cdfd80e5bde3b2907"
+      },
+      "final_nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "48238a600ab2eb056a26415de1a140b0398299422819de1323d6955a91787672",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 12,
+          "1": 48,
+          "2": 48,
+          "3": 192,
+          "4": 48,
+          "5": 336,
+          "6": 384,
+          "7": 3
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "spike_retired_instructions": 22931712416,
+      "token_usage_available": false,
+      "actual_state_identity": {
+        "block_index": 4,
+        "actual_input_state_index": 4,
+        "actual_output_state_index": 5,
+        "input_state_original_bytes_exact": true,
+        "output_state_original_bytes_exact": true,
+        "input_raw_sha256": "e7a424c7299222fbe0989629ecb2bcdcea6a8c3f250b1a24c8bd195031f1a54f",
+        "golden_npy_sha256": "d7cb7a1908fd6c2a7d440771428b0be34b24d1fa4b5e7d28548196073c025c1f",
+        "retained_vision_states_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff",
+        "scope_caption_correction": "Derived bundle inherited phrase layer0 output input; actual proved input is previous block output indexed above. No compiled bytes changed."
+      },
+      "block_index": 4,
+      "decision": "target numeric failure; no hardware admission"
+    },
+    {
+      "scope": "Isolated original vision block, original captured input/output; no fullmodel qualification",
+      "target_all_original_output_bits_exact": true,
+      "expected_raw_sha256": "0dcb366287d3975a3b8d4cc52e5ff8c7d49dc958ff4954c7c9c0c2b391a135aa",
+      "observed_raw_sha256": "0dcb366287d3975a3b8d4cc52e5ff8c7d49dc958ff4954c7c9c0c2b391a135aa",
+      "source": {
+        "scope": "Original vision block index5 alone, original captured layer0 output input; diagnostic only",
+        "source_sha256": "4814509b8e11a5c819b1f9ae63f01f89f72e9edf9c3d0ec9d5cd0ab6b35de2dc",
+        "original_vision_receipt": {
+          "full_golden_bitexact": true,
+          "full_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+          "input_sha256": "a75ac59c27ecc0abe5a5c6157a1202736f662834c92739a34af4a8354d448942",
+          "vision_shape": [
+            14,
+            1024,
+            768
+          ],
+          "chain_bitexact": true,
+          "torch": "2.10.0+cu128",
+          "capture_script_sha256": "7c34a28f6be46002853b8d384961afbdef39f2c5b8954d33c237eb701870e846",
+          "vision_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff"
+        },
+        "selected_origin_node_id": "g:quantized:root:n2641",
+        "removed_ops": 35051,
+        "golden_sha256": "853deb9125f3da0fa12814adf4b279e73c969670784efad495c19f0b6a46dbb4",
+        "derived_sha256": "8ece25511c7e5368b19835e132bddec8dfe854574e75a7b0c0b0fe03a9490561"
+      },
+      "elf_sha256": "9c3589eb04e0190768d2553f5dbc08b4002d17ae8d8a4fc0bd8a6fd416a21906",
+      "spike_log_sha256": "54f68ec320a260c30176bae37bfc8ce26f059b629c54366d8d17a08019ab14a5",
+      "native": {
+        "scope": "vision_block5: native host with scalar integer device stand-ins",
+        "llvm_path": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/lower/model.ll",
+        "llvm_sha256": "8a97a21a1cfddeea490ce3cb709685fac48d9ae63506b14f0a48445b19ce764b",
+        "finite": true,
+        "allclose": true,
+        "relative_l2": 0.0,
+        "cosine": 1.0,
+        "max_abs_error": 0.0
+      },
+      "linked_objects": {
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/model_call.o": "1dce080cb5a3e6df231fd50afdf0b45db2c9bf9839497a3bb91d6fc367b0d278",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/merlin_model.o": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/model_main.o": "906b4841f73000ec2dbf5808a823549fb03f7b9f51a56b7745c5c83cb8f7e2a1",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/mlir_rt.o": "2f612a63310c1bf30a38824f4debd64fce0f2780551e028f198114d555590e5e",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/crt.o": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/console.o": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/libc_min.o": "93b07bae1410c999309ecafd9afa2b3a5f4d67ffac106dd57f6c59e807dfb533",
+        "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/malloc.o": "e58b78f7d0d747fe7d3c7d8549943c71c7e6b520cd027dd30ca6a29f8befd697",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/model.o": "fa742d2b3ea112e9074c04db9edd600a2b4daf1074d681c48dc2bb619c7048ca",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/weights_blob.o": "af29c87b244c1c521c7b278346f478f835d05a338a51400d2623dba922696bae",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/device_catalog/kernel.o": "776ac4672f59a26c245ab5ff8571d3d175a816a5b5eb6fcdeb6760d086fde3eb",
+        "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block5/build/device/device_catalog_shim.o": "d2b1016e62a382767f9562ce6ec59bf128d366dff5b66d1cdfd80e5bde3b2907"
+      },
+      "final_nofsm": {
+        "schema": "gemmini_nofsm_elf_audit_v1",
+        "elf_sha256": "9c3589eb04e0190768d2553f5dbc08b4002d17ae8d8a4fc0bd8a6fd416a21906",
+        "executable_sections": 1,
+        "custom_funct_counts": {
+          "0": 12,
+          "1": 48,
+          "2": 48,
+          "3": 192,
+          "4": 48,
+          "5": 336,
+          "6": 384,
+          "7": 3
+        },
+        "forbidden": [],
+        "unknown": [],
+        "status": "pass"
+      },
+      "spike_retired_instructions": 22935003821,
+      "token_usage_available": false,
+      "actual_state_identity": {
+        "block_index": 5,
+        "actual_input_state_index": 5,
+        "actual_output_state_index": 6,
+        "input_state_original_bytes_exact": true,
+        "output_state_original_bytes_exact": true,
+        "input_raw_sha256": "e0d9c18542e432a06330e14e4abf4cb5c5c4b892632a83ebb07b3c7594e4e99d",
+        "golden_npy_sha256": "853deb9125f3da0fa12814adf4b279e73c969670784efad495c19f0b6a46dbb4",
+        "retained_vision_states_sha256": "c2db54cc5c71d16395b1fd9ee8f42c0d468b33dd3bbd9f460fcf6304a8317bff",
+        "scope_caption_correction": "Derived bundle inherited phrase layer0 output input; actual proved input is previous block output indexed above. No compiled bytes changed."
+      },
+      "block_index": 5,
+      "decision": "diagnostic target exact"
+    }
+  ],
+  "first_failing_admitted_index_observed": 4,
+  "corrected_index2_pending": false,
+  "rejected_input_generator_case2_preserved": "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/vision_block2/rejected_derivation.json",
+  "token_usage_available": false,
+  "corrected_index2_bits_exact": true,
+  "earlier_isolated_blocks_0_through_3_all_target_bits_exact": true
+}

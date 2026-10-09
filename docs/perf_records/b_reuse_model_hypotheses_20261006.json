@@ -1,0 +1,41 @@
+{
+  "schema": "matched_b_reuse_model_hypotheses_v1",
+  "stock_label_status_at_declaration": "UNKNOWN, root has not observed stock or accepted RTL timing",
+  "train_case_ids": [
+    0,
+    1,
+    4,
+    5
+  ],
+  "heldout_case_ids": [
+    2,
+    3
+  ],
+  "repeat_policy": "Mean both original repeats per case; preserve each raw window, empty overhead separate, no confidence interval.",
+  "family_scope": "Both arms belong to one complete fenced residentcompute operational domain with same source and resources; no ROI DMA.",
+  "include_fixed": false,
+  "maximum_condition": 1000,
+  "hypotheses": [
+    [
+      "array_work_padded_rows"
+    ],
+    [
+      "array_work_padded_rows",
+      "preload_real_stationary_b"
+    ]
+  ],
+  "diagnostic_only": [
+    [
+      "retired_instructions"
+    ]
+  ],
+  "distinct_training_vectors": {
+    "array_work_padded_rows": 2,
+    "array_work_padded_rows+preload_real_stationary_b": 4
+  },
+  "limits": [
+    "Arrayrows alone cannot distinguish same-M strategy arms; retained instructions diagnostic only.",
+    "Operational rates include CPU issue and accelerator completion; no pure device latency, overlap pricing or whole projection.",
+    "M64 both strategies and all repeats remain held out before measurement."
+  ]
+}

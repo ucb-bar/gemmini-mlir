@@ -1,0 +1,135 @@
+{
+  "schema": "root_predictor_key_resnet_stock2081_whole_terminal_v1",
+  "status": "verified_complete_original_whole",
+  "job_id": 2081,
+  "terminal": {
+    "id": 2081,
+    "state": "DONE",
+    "phase": "DONE",
+    "exit_code": 0,
+    "submitted_at": 1791367188.4482284,
+    "started_at": 1791367191.500069,
+    "ended_at": 1791367421.550882
+  },
+  "control_job": 2071,
+  "control_cycles": 29698347,
+  "candidate_cycles": 29618198,
+  "saving_cycles": 80149,
+  "saving_fraction": 0.002698769732874358,
+  "zip_reference_job": 1876,
+  "zip_reference_cycles": 22387449,
+  "remaining_zip_gap": 7230749,
+  "original_output_gate": {
+    "count": 1000,
+    "raw_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+    "original_golden": "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/perf-studies/golden-resnet/closed-recipe/capture/golden.npy",
+    "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+    "source_bitexact": true,
+    "atol": 0,
+    "rtol": 0
+  },
+  "source_packet": "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/docs/perf_records/predictor_key_current2071_whole_qualification.json",
+  "source_packet_sha256": "49e7ef0e3360a8409eb0322d4062611e9fb1b60277f15e2120cfbad66512a6fa",
+  "flat_source_pins_revalidated": 679,
+  "executed_entry_closure": {
+    "schema": "predictor_key_selected_executed_entry_closure_v1",
+    "status": "PASS",
+    "entry_counts": [
+      {
+        "symbol": "_mlir_ciface_gemmini_residual_0",
+        "pc": "0x801542a6",
+        "entry_count": 1,
+        "retired_instructions": 133,
+        "scope": "observed function-address range; not cycles"
+      },
+      {
+        "symbol": "gemmini_residual_0__rectifier_kernel",
+        "pc": "0x8015352a",
+        "entry_count": 1,
+        "retired_instructions": 166940,
+        "scope": "observed function-address range; not cycles"
+      },
+      {
+        "symbol": "key_retained_14_adapter",
+        "pc": "0x80151e6e",
+        "entry_count": 0,
+        "retired_instructions": 0,
+        "scope": "observed function-address range; not cycles"
+      },
+      {
+        "symbol": "key_retained_14_kernel",
+        "pc": "0x80150e30",
+        "entry_count": 0,
+        "retired_instructions": 0,
+        "scope": "observed function-address range; not cycles"
+      }
+    ],
+    "elf_sha256": "335bb2bc7688e835fa3e5cfeeac0eaf1ee91ecf6e02de58f0d8080f82471a4ee",
+    "histogram_sha256": "70c5eadb0743d7f3447357be29cf4355bdacf454658f2215883ef8a9061b407a",
+    "stdout_sha256": "9b365fe442b52e5ad2d54260572311470cf977041b9116fe64ea4cd672ece064",
+    "scope": "actual current2071 controlled source substitution; selected new9 publicadapter/kernel executedonce, retainedold14 neverexecuted; whole all1000original digest retained",
+    "command": [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--extension=gemmini",
+      "--isa=rv64gc",
+      "-m0x80000000:0x80000000",
+      "-g",
+      "out/key_rectifier_normal_binding_v1/controlled2071_v2/candidate/model.elf"
+    ],
+    "counter_semantics": "functional retired-instruction proxy, no target cycles"
+  },
+  "actual_staged_identity": {
+    "job_id": 2081,
+    "phase": "RUNNING",
+    "observed_before_teardown": true,
+    "objects": {
+      "elf": {
+        "path": "/scratch/firesim_queue/jobs/2081/simulation/sim_slot_0/merlin-golden-nofsm-probe0-probe.elf",
+        "sha256": "335bb2bc7688e835fa3e5cfeeac0eaf1ee91ecf6e02de58f0d8080f82471a4ee",
+        "bytes": 53824480
+      },
+      "bitstream": {
+        "path": "/scratch/firesim_queue/jobs/2081/simulation/sim_slot_0/xilinx_alveo_u250/firesim.bit",
+        "sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+        "bytes": 59101699
+      }
+    }
+  },
+  "final_nofsm": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "335bb2bc7688e835fa3e5cfeeac0eaf1ee91ecf6e02de58f0d8080f82471a4ee",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 425,
+      "1": 2239,
+      "2": 19489,
+      "3": 1284,
+      "4": 14336,
+      "5": 37586,
+      "6": 51922,
+      "7": 80,
+      "14": 100
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "hardware_alias": "alveo_u250_firesim_gemmini_rocket_stock",
+  "hwdb_sha256": "5946d30df49231256bd6f5d0f31bdbc03e574990cda611fa5cf64c831b57c126",
+  "bitstream_archive_sha256": "a9a190b9fc26d577b1e8af0e3b46a94c8efaf2976f7fca6650236e0fd6d4eca1",
+  "actual_staged_bit_sha256": "6bfb72e3d69d0bed14eaa8db9fd5faf53f82780ef9ecded6b2d49983dfcbc229",
+  "elapsed_queue_seconds": 230.0508131980896,
+  "scope": "Complete uninstrumented original ResNet whole METRIC window. Nine-product source-key residual is the sole selected change; original host8/runtime/weights/other target objects remain2071. The final simulator PASSED counter includes validation/setup and is not the model metric. One stock observation, no additive section projection or pure utilization claim. ZIP numeric workload/timers differ and remain a reference.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/predictor_key_current2071_whole_stock/root_admission.json": "3ca6f10e4f3d75bc9c09a2cd0e5d3f6cca4aed94d2db1a032c6ff9fccaa17a29",
+    "/scratch/agustin/tmp/gemmini-residual-domain-scale-20261007/docs/perf_records/predictor_key_current2071_whole_qualification.json": "49e7ef0e3360a8409eb0322d4062611e9fb1b60277f15e2120cfbad66512a6fa",
+    "/scratch/firesim_queue/jobs/2081/runworkload-full.json": "b285ffc8d6f918b623e3eff8ff9e2c96db75ea2c6d22fd66b59da9375098f15d",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/predictor_key_current2071_whole_stock/preflight/firesim_preflight.json": "a1856619b03e1c1c71c48193f70ac70e78713225c6db6d8aed5441ead74a73e9",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/predictor_key_current2071_whole_stock/actual_staged_identity.json": "37b0ee2b472e8dd11603f4f4d43d71afa1362ae394ac044870075600840b2486",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/predictor_key_current2071_whole_stock/queue_submission.json": "0fb50bd76daae89a5f47d7e536fff80746866a681c2803e1cf3eee5ab500cf1a",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/predictor_key_current2071_whole_stock/stock2081_uart.txt": "11e159c1c0d7354688994b451da463bfd5799f991cb7f6862da708acad5f0683",
+    "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/collect_predictor_key_whole_stock.py": "7e1a7e6eb9d425481fbd19ea52c452ecbe5ef03fd4f2b0e6b2b93194c3134189"
+  },
+  "token_usage_available": false,
+  "token_usage": null
+}

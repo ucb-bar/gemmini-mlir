@@ -1,0 +1,110 @@
+{
+  "schema": "root_tiny_immutable_base_short_stock_release_v1",
+  "status": "released_short_pair_only",
+  "successor_pins_reclosed": 265,
+  "first_pins_reclosed": 252,
+  "explicit_historical_substitutions": 2,
+  "source_LLVM_and_reports_regenerated_exact": true,
+  "fresh_target_object_and_native_library_byteexact": true,
+  "generic_tests": 24,
+  "fresh_native_mode_sticky_cases": 28,
+  "original_outputs": 45056,
+  "fresh_strict_ABBA_all_fields_equal": true,
+  "original_strict35_cases_inherited_by_executable_identity": true,
+  "elf": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-base-binding-v3-20261006/short/build/layer.elf",
+  "elf_sha256": "1aa72f4c6397e7cdbd27121e83058156385e48ab3b9343e67bbff265ae165a47",
+  "noFSM_all_executable_sections": true,
+  "custom_instructions": 0,
+  "counter_protocol": "BASE_ROW id/sample/cycles/instructions/digest, order ABBA; BASE_TIMED_PASS fulloriginal/guards/inputhashes/sourceafterROI",
+  "expected_rows": [
+    {
+      "id": 0,
+      "sample": 0,
+      "cycles": 2640165,
+      "instructions": 2640160,
+      "digest": 13187261661403020842
+    },
+    {
+      "id": 1,
+      "sample": 1,
+      "cycles": 2550055,
+      "instructions": 2550052,
+      "digest": 13187261661403020842
+    },
+    {
+      "id": 1,
+      "sample": 2,
+      "cycles": 2550055,
+      "instructions": 2550052,
+      "digest": 13187261661403020842
+    },
+    {
+      "id": 0,
+      "sample": 3,
+      "cycles": 2640162,
+      "instructions": 2640159,
+      "digest": 13187261661403020842
+    }
+  ],
+  "scope": "Complete original M8 helper pair only, original .5MiB table+guard/preparation/certificate/sourcefallback/frame inside call. No whole promotion, actual cycles UNKNOWN until stock. Unchanged source/table factor and inputs; no cache-cause inference.",
+  "commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O3",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/candidate.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/candidate.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O3",
+      "-ffp-contract=off",
+      "-fno-builtin",
+      "-fPIC",
+      "-shared",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/candidate.native.ll",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-base-binding-v3-20261006/native_gate.c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/native_tables.o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006/native.so",
+      "-Wl,-Bsymbolic",
+      "-Wl,-rpath,/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-calibration-v2-20261006",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/native.so"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "merlin/tests/ir/test_immutable_llvm_base.py"
+    ],
+    [
+      "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+      "--isa=rv64gc",
+      "--extension=gemmini",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-base-binding-v3-20261006/short/build/layer.elf"
+    ]
+  ],
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/source_interval_base_qualified.json": "adda257759ec0ec9bf7f9a6ed66b1b9b6e90c30d51ecf02ff7a70712979942c1",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/docs/perf_records/source_interval_base_context_reclosure.json": "7db558538537591924528eaa85db25881477bacdb5c8e71f28949c4da9aebd66",
+    "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/source-interval-base-binding-v3-20261006/short/build/layer.elf": "1aa72f4c6397e7cdbd27121e83058156385e48ab3b9343e67bbff265ae165a47",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/candidate.o": "8a52d0ec21d0cca9634658bb1930bef8ef48e0a9f0c1205430df15c436d8b5f6",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/native.so": "e0f37e1424a270a3fc39e509e9a353ac70f96931cb7caf1589fe333c7d5876b3",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/core_tests.log": "6a4c857372dc5b7218c7e31753efd4be65980046a1e7006637a4b203a7be5794",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/native_events.json": "5b2f9350ebc972e06473cf5df66c8efed4475d8a35f3003d14b5545b8f1b42a0",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/spike.stdout": "10cbe202b2ec456d2c90ec9cc43d4db19de3f9e8f213bbbe59140084472b8fef",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/spike.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/no_fsm_audit.json": "03c3660d752634f063b57567fa84cc5413fc0bd9a06da41b31c5d6b26cedd47b",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-base-root-review-20261006/review.py": "0b2435906b5044dbd1d193ed5f953151b189abb86ca9d633c913ee6c1cdd6925"
+  }
+}

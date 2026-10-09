@@ -1,0 +1,41 @@
+{
+  "schema": "smol_corrected_runtime_actual_spike_v1",
+  "scope": "Exact ABI-corrected O2 model, actual Gemmini Spike; cycle metric is retired instructions, not hardware cycles",
+  "status": "fail",
+  "started_utc": "2026-10-05T19:13:36.780361+00:00",
+  "watcher_pid": 2294863,
+  "elf_sha256": "e0122716488b5ac1287d44735745e358ee4dd438855ff8c453b3f10f0bc05045",
+  "golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+  "atol": 0.03125,
+  "rtol": 0.02,
+  "command": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/smol_outline_helpers_abi_fixed/build/model.elf"
+  ],
+  "spike_pid": 2294942,
+  "returncode": 0,
+  "console_sha256": "149c0006001105c3f9ca3a03eb7e5d11348421949cca7385ae1910ce5f4c8c27",
+  "done": true,
+  "metrics": [
+    "METRIC cycles 327506537392",
+    "METRIC build_hash 7bc3f096fb76",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "elements": 1600,
+  "bitwise_mismatches": 1600,
+  "elementwise_failures": 89,
+  "max_abs_error": 0.1151660680770874,
+  "allclose": false,
+  "bitexact": false,
+  "actual_output_sha256": "06daaa0d1d9236135e135222dc12e83afee8b933f9027ce7318c3bc9cf027de2",
+  "quality_pass": false,
+  "finished_utc": "2026-10-05T20:26:42.157638+00:00",
+  "qualification": "Rejected complete actual target replay: BF16 helper ABI correction is necessary but did not close the original full-model gate; source/runtime numerical diagnosis continues",
+  "hardware_cycles_measured": false,
+  "cycle_metric": "retired instructions in actual Spike, not hardware cycles",
+  "original_inputs_weights_golden_unchanged": true,
+  "whole_firesim_admission": "refused"
+}

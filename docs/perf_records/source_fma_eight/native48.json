@@ -1,0 +1,72 @@
+{
+  "scope": "Frozen accepted current i64 normal host plus encoded rows plus producer spans, exact casts, probability bins and four-cell schedule; native exact integer product stand-ins, not new target or normal binding qualification",
+  "commands": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O2",
+      "-fPIC",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-I/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native_numeric_frozen",
+      "-Dattention_frontier_writer=native_attention_frontier_bridge",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/normal_attention_provider_encoded_rows/bridge/bridge.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/bridge.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O2",
+      "-fPIC",
+      "-fno-builtin",
+      "-ffp-contract=off",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/host_math.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/math.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O2",
+      "-fPIC",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/products.c",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/products.o"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-shared",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/model.o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/bridge.o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/products.o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/math.o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native_numeric_frozen/provider.so",
+      "/scratch/agustin/tmp/merlin-golden-integration-20261004/out/artifacts/probes/smol-ordered-fma-schedule-20261005/host_outlined/model.so",
+      "-Wl,--wrap=expf",
+      "-Wl,--wrap=_mlir_ciface_source_attention_frontier_fallback",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-source-fma-eight-20261006/out/artifacts/probes/root-source-fma-eight-20261006/native/model.so"
+    ]
+  ],
+  "source_llvm_sha256": "13f72d9a9294bee8ba9270d0f8f95ef7752a8ed90123e916caf88e5567f7995f",
+  "model_object_sha256": "1aeb800aa6c73f792765de1fc15ccc990e3e8de0838d98238d5a7211e69fca68",
+  "library_sha256": "ced6067b99f7b894180ae4bbc669905ae39971f3137358ac9db6bb437759f83e",
+  "numeric_library_sha256": "da517e0291ca8a756e65b45ed95a94a8e1bfa375c6ec0a66c8dbc1cd67637b48",
+  "calls": [
+    48,
+    0,
+    0,
+    134314542813248
+  ],
+  "product_calls": 23040,
+  "callback_errors": [],
+  "original_golden_sha256": "765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5",
+  "elements": 1600,
+  "bitwise_mismatches": 0,
+  "allclose": true,
+  "maxabs": 0.0,
+  "native_seconds": 44.449951171875,
+  "token_usage_available": false
+}

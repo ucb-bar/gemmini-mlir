@@ -1,0 +1,89 @@
+{
+  "schema": "tiny_original_gate_broadcast_packet_pair_v1",
+  "original_source_receipt_sha256": "97f2477f64a618978d06d1e69460a63748e31708ef5377e3e0705cefdd79c4e5",
+  "capture_receipt_sha256": "bbb35468e32b1ac1968b228301a49ee341011fa511987a9ef9149a6c2e8df65c",
+  "prepared_source_sha256": "d9c310f3c061c2e348f7aeb06f210b63df06aafed312c43b362feb9bad3e22ae",
+  "original_outputs": 45056,
+  "dirty_guards": 128,
+  "immutable_input_bytes": 405504,
+  "cases": [
+    {
+      "name": "baseline",
+      "feature": "packet_scalar_pointwise_fma_division_2",
+      "original45056words_exact": true,
+      "target_rne_sites": 2,
+      "native_rne_sites": 2,
+      "target_sha256": "4da1433e7b69d06e16855e6bfe4602205b11cee8eb53ee85033a118c56086707",
+      "native_sha256": "aab11d2bdd95267f4aa4eb7ba6af60cde3ee54469f2ead0a527bdd26319c0568",
+      "object_sha256": "478b0649b90e6f14cd9387ba806522d76be225ff61bb1b2bbedecdd0c9af8bf7",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/baseline.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/baseline.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/baseline.native.ll",
+        "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/abi/mlir_runtime.c",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/baseline.so"
+      ]
+    },
+    {
+      "name": "broadcast",
+      "feature": "packet_scalar_pointwise_broadcast_2",
+      "original45056words_exact": true,
+      "target_rne_sites": 2,
+      "native_rne_sites": 2,
+      "target_sha256": "15bbfc6e96b14c7a95b57a5cfc0541fa1db3bdcb89e6329ebfc8e27837dc4960",
+      "native_sha256": "6d40b7388a94c465e580a25d5f2add347f0c74e947ac08740b7b80281e567f81",
+      "object_sha256": "2c4c036fe448f191ac9b5f7f9de3dbddaf679ac9a4b96a58d408ad477bbac1c6",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/broadcast.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/broadcast.o"
+      ],
+      "native_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "-O3",
+        "-fPIC",
+        "-shared",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/broadcast.native.ll",
+        "/scratch/agustin/tmp/merlin-golden-integration-20261004/merlin/runtime/abi/mlir_runtime.c",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/broadcast.so"
+      ]
+    }
+  ],
+  "elf_path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/tiny-broadcast-packet-20261006/capsule/build/layer.elf",
+  "elf_sha256": "9ea9563a30d31bb4b154d76cc414876531f5cd86966fc26f334e445d1bc11298",
+  "zero_FSM": true,
+  "strict_RV64GC_original_pass": true,
+  "complete_ROI": "Two warm calls, then matched ABBA. Entire compiled source helper includes common bounded allocation and final result copy. Input hash/expected/guard scans outside timing.",
+  "scope": "Original1880 first gate source body and its actual captured tensors; no whole-model cycles implied."
+}

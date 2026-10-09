@@ -1,0 +1,694 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/lower/model.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 196000032,
+        "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+        "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "inputs": [
+        {
+          "bytes": 5746,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/lower/model.ll",
+          "sha256": "99380f3eff56d797644c872a86cfc494dbbf45bd8b08a50fad78797e5bf5de6f"
+        }
+      ],
+      "output": {
+        "bytes": 3192,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.o",
+        "sha256": "8b93646782a6478a0ae1eaae8006f338918a65d79064e45ed6445059c625139d"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-ld",
+        "-r",
+        "-b",
+        "binary",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/weights_blob.o",
+        "weights.bin"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2022040,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-ld",
+        "sha256": "d70bbf2f4101d9fd02fa0d199e0ea597d1a2c516f6e4305bd344900352545d65"
+      },
+      "inputs": [
+        {
+          "bytes": 0,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen/weights.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "output": {
+        "bytes": 616,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/weights_blob.o",
+        "sha256": "8b328f2fd1c93d6908eb7f42297110f0a83134482fd0a805a30e7577546e7ce5"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/weights_blob.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-S",
+        "-emit-llvm",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.ll"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 196000032,
+        "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+        "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "inputs": [
+        {
+          "bytes": 217,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.c",
+          "sha256": "938c3f52da49a56e76f13e61fa0657d11af145e7e59f485e6d5a454ad5801870"
+        },
+        {
+          "bytes": 196000032,
+          "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+          "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        }
+      ],
+      "output": {
+        "bytes": 7016,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.ll",
+        "sha256": "6d3381f3cffb03321aece4c39a12863e470f3525b99a3602a4fd82a0fb24e2b4"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.ll",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 196000032,
+        "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+        "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "inputs": [
+        {
+          "bytes": 217,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.c",
+          "sha256": "938c3f52da49a56e76f13e61fa0657d11af145e7e59f485e6d5a454ad5801870"
+        },
+        {
+          "bytes": 196000032,
+          "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+          "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+        }
+      ],
+      "output": {
+        "bytes": 1352,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.o",
+        "sha256": "505325e2bbbc2947df456223a9ac767854cc3e433a8197e855c420b8d4add7ed"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "--sysroot=/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf",
+        "-isystem",
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/riscv64-unknown-elf/include",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/abi/mlir_runtime.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/mlir_rt.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 196000032,
+        "path": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang-23",
+        "sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "inputs": [
+        {
+          "bytes": 12943,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/abi/mlir_runtime.c",
+          "sha256": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3"
+        }
+      ],
+      "output": {
+        "bytes": 6680,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/mlir_rt.o",
+        "sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/mlir_rt.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-I",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/c",
+        "-I",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen/model_call.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_call.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 130,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen/model_call.c",
+          "sha256": "3f274cbda94e79595d41621db67fbafa93c2d125694f38c107eaf3d9f2b940ef"
+        }
+      ],
+      "output": {
+        "bytes": 1320,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_call.o",
+        "sha256": "429e8e103ce71dfe28f121e11569db2df8a6aacca8a295248f2e1c5e9c44a75e"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_call.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-I",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/c",
+        "-I",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/c/merlin_model.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/merlin_model.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 5656,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/c/merlin_model.c",
+          "sha256": "c98a0fd790c1e220b0171453948881c61cd60612e8825775f1da783eaacf23a4"
+        }
+      ],
+      "output": {
+        "bytes": 3776,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/merlin_model.o",
+        "sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/merlin_model.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-I",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/c",
+        "-I",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/cgen",
+        "-DMERLIN_ARENA_BASE_ADDR=0xc0000000ULL",
+        "-DMERLIN_ARENA_SIZE_BYTES=0x100000ULL",
+        "-DMERLIN_WEIGHTS_BASE_ADDR=0x200000000ULL",
+        "-DMERLIN_BUILD_HASH=\"ee1484b575c1\"",
+        "-DMERLIN_DUMP_CAP=4096",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/model_main.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_main.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 6236,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/model_main.c",
+          "sha256": "c7edcd95a8ca63dbf97d9ac3b5e684db3212a7ccd15800fa3187d119c00c22dd"
+        }
+      ],
+      "output": {
+        "bytes": 5464,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_main.o",
+        "sha256": "87538097c4a035b4075c774e0378b7fd58ab7f50e0c5347a9d3a87b13405da3d"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_main.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/crt.S",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/crt.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 3684,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/crt.S",
+          "sha256": "aae9a32dd32d7362787484d0c5c7697d892e0ac0847a08f2b0e2ffaa23649b8a"
+        }
+      ],
+      "output": {
+        "bytes": 4344,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/crt.o",
+        "sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/crt.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/htif.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/console.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 5404,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/htif.c",
+          "sha256": "2f08e9fdd08f346026cbefb897b7496d862ad02ec26d753b065e71f9ff5337a4"
+        }
+      ],
+      "output": {
+        "bytes": 10288,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/console.o",
+        "sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/console.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/libc_min.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/libc_min.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 2184,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/libc_min.c",
+          "sha256": "a28650c60b99c192e2974b36068e28f7ad472346686a6592c071220391ae1cdd"
+        }
+      ],
+      "output": {
+        "bytes": 3864,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/libc_min.o",
+        "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/libc_min.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-DMERLIN_ARENA_BASE_ADDR=0xc0000000ULL",
+        "-DMERLIN_ARENA_SIZE_BYTES=0x100000ULL",
+        "-DMERLIN_WEIGHTS_BASE_ADDR=0x200000000ULL",
+        "-c",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/merlin_malloc.c",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/malloc.o"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 4348,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/merlin_malloc.c",
+          "sha256": "24465091ee82fc8597eff95521ac6f472a8bed2e986c05ba8e2ff2d29b5fa4ed"
+        }
+      ],
+      "output": {
+        "bytes": 9208,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/malloc.o",
+        "sha256": "6e8fe72efb1491d72dff523744d06ae1a9d6a34a88b6b9b92ba4e64adbbb549a"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/malloc.o",
+      "status": "returned"
+    },
+    {
+      "argv": [
+        "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-nostdlib",
+        "-nostartfiles",
+        "-Wl,--defsym,MERLIN_WEIGHTS_BASE=0x200000000",
+        "-Wl,--defsym,MERLIN_STACK_BYTES=0x40000",
+        "-T",
+        "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_call.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/merlin_model.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_main.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/mlir_rt.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/crt.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/console.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/libc_min.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/malloc.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/weights_blob.o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.o",
+        "-lm",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.elf"
+      ],
+      "cwd": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005",
+      "environment": {
+        "MERLIN_CHIPYARD": "/scratch2/agustin/chipyard",
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_FUSE_POST": "1",
+        "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc"
+      },
+      "environment_digest": "bc4ea1c62fed726b",
+      "executable": {
+        "bytes": 2096408,
+        "path": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "sha256": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4"
+      },
+      "inputs": [
+        {
+          "bytes": 2127,
+          "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/merlin/runtime/baremetal/spike/model_link.ld",
+          "sha256": "b6d15373e02269e65c5c1d0692bd989623736d3b550574638de7569623b25ee7"
+        },
+        {
+          "bytes": 1320,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_call.o",
+          "sha256": "429e8e103ce71dfe28f121e11569db2df8a6aacca8a295248f2e1c5e9c44a75e"
+        },
+        {
+          "bytes": 3776,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/merlin_model.o",
+          "sha256": "dc5d204f1df8e17593d30234612eb044b7ba99955a2ff3ac33377dd635f3187c"
+        },
+        {
+          "bytes": 5464,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model_main.o",
+          "sha256": "87538097c4a035b4075c774e0378b7fd58ab7f50e0c5347a9d3a87b13405da3d"
+        },
+        {
+          "bytes": 6680,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/mlir_rt.o",
+          "sha256": "61509854021d2a1615d02cf28ce87c38252143dddc11ae66300830dd2dd0430e"
+        },
+        {
+          "bytes": 4344,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/crt.o",
+          "sha256": "af260bc8a77b41b691b3c5c12b1792745fc9525360fd9bb30ba739214cc61b0d"
+        },
+        {
+          "bytes": 10288,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/console.o",
+          "sha256": "7ee436719caf4ee148848338dd6c4dcb6f67a34682fa7f9e10277b6a3c4443ec"
+        },
+        {
+          "bytes": 3864,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/libc_min.o",
+          "sha256": "b64ae901f04334aa4c2c385dd33ab70d94d2e819cf3e49c9f7ca1283bfe86d5e"
+        },
+        {
+          "bytes": 9208,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/malloc.o",
+          "sha256": "6e8fe72efb1491d72dff523744d06ae1a9d6a34a88b6b9b92ba4e64adbbb549a"
+        },
+        {
+          "bytes": 3192,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.o",
+          "sha256": "8b93646782a6478a0ae1eaae8006f338918a65d79064e45ed6445059c625139d"
+        },
+        {
+          "bytes": 616,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/weights_blob.o",
+          "sha256": "8b328f2fd1c93d6908eb7f42297110f0a83134482fd0a805a30e7577546e7ce5"
+        },
+        {
+          "bytes": 1352,
+          "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/host_provider/provider.o",
+          "sha256": "505325e2bbbc2947df456223a9ac767854cc3e433a8197e855c420b8d4add7ed"
+        }
+      ],
+      "output": {
+        "bytes": 19152,
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.elf",
+        "sha256": "ef86fb0dc28364176454ab95e1ef3195f1b6cc1c7b0544779adf53f7d9805ad0"
+      },
+      "requested_output": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.elf",
+      "status": "returned"
+    }
+  ],
+  "executable": {
+    "bytes": 19152,
+    "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/host_provider_qualification/normal_provider/build/model.elf",
+    "sha256": "ef86fb0dc28364176454ab95e1ef3195f1b6cc1c7b0544779adf53f7d9805ad0"
+  },
+  "producer": {
+    "bytes": 46153,
+    "path": "/scratch/agustin/tmp/merlin-smol-encoded-zero-groups-20261005/src/merlin/runtime/backends/spike_model.py",
+    "sha256": "af0aff6e922afb567e9ac71bb3a4e5d6f77249f2439e456d84542d1892ae44f0"
+  },
+  "schema": "merlin.compilation_recipe.v1",
+  "scope": "caller-owned compilation and link; provider compilation and toolchain dependency closure unknown",
+  "status": "completed"
+}

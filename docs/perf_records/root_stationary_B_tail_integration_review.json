@@ -1,0 +1,50 @@
+{
+  "schema": "root_stationary_B_tail_source_integration_v1",
+  "status": "pass",
+  "original_topic": "72dd9ab",
+  "source_packet": "/scratch/agustin/tmp/gemmini-resident-tail-before-last-20261007/docs/perf_records/current_stationary_B_tail_complete_capsules.json",
+  "source_packet_sha256": "9fa6cea3048351b3d1c072b9df488e9f1081831b1feedf0d8fae24caf5987a6d",
+  "source_pins_revalidated": 350,
+  "canonical_source_matches_frozen_production_module": true,
+  "tests": {
+    "command": [
+      "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "--basetemp=/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/root_tail_merge_tests",
+      "tests/test_resident_tail_placement.py",
+      "tests/test_resident_conv_command_loops.py",
+      "tests/test_resident_weight_packets.py"
+    ],
+    "passed": 51,
+    "seconds": 26.16,
+    "result_capture": "Root tool session27402 returned exit0;51passed. Checks merged tail and packet variants alongside full decoded-command/source-cell proofs and refusal/default gates"
+  },
+  "integration_conflict_resolution": "Experimental paired probe now supports distinct flat_resident_packets and flat_resident_tail arms; both original constructions retained. No production conflict",
+  "negative_packet_review": [
+    {
+      "label": "resnet_flat_packet",
+      "original_commit": "227c11c",
+      "packets": [
+        {
+          "path": "/scratch/agustin/tmp/gemmini-current-flat-packets-20261007/docs/perf_records/current_flat_resident_packets_complete_cost_negative.json",
+          "sha256": "508ad20fb02a075d814bb695afd827eb4b984a2ff159ddb0204bda45b3fc606d",
+          "pins_revalidated": 295
+        }
+      ],
+      "status": "all_source_pins_closed"
+    }
+  ],
+  "root_stock_admission": "/scratch/agustin/tmp/gemmini-current-profile-20261007/out/resident_tail_stock/root_admission.json",
+  "root_stock_admission_sha256": "db01ec674be74cd7f02b9f3986af4bcbbe26a71f6d3d87b859ccaa030c42549f",
+  "stock_jobs": [
+    2093,
+    2094
+  ],
+  "stock_cycles": "PENDING",
+  "whole_cycles": "UNKNOWN",
+  "default_enabled": false,
+  "scope": "Only independent PRELOAD/COMPUTE spatial pairs move after first full load establishes stationary B. Source K order peroutput, full commandmultiset and DMA/config/fence/store sequence unchanged. Typed shape/layout/resources select applicability; no workload/golden/source identifiers. Requested geometry reduction is not measured service savings",
+  "token_usage_available": false
+}

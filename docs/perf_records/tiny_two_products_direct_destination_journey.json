@@ -1,0 +1,461 @@
+{
+  "schema": "compiler_optimization_journey_v1",
+  "recorded_utc": "2026-10-06T12:14:21.239961+00:00",
+  "hypothesis": "Upstream canonicalization exposes an unchanged loop-carried memref identity, enabling public output forwarding before result conversion and removing a complete temporary/copy.",
+  "ownership": "Generic pipeline/materialization and source schedule in Merlin; target ISA/executable audit/GSIM evidence in OOT. No target branches, pointer no-alias or new arithmetic permissions.",
+  "core_commit": "9aa9a16d34cdc9c600eeb94da94deabbe98559ca",
+  "core_tree": "347a39e8a390b1b0f9973e68eb19e60ef9c09169",
+  "emitted_change": "Explicit canonicalize_bufferized_result_identity inserts upstream canonicalize immediately before buffer-results-to-out-params. Actual source capsule composes this general choice with the separately selected exactly-two-multiply packet4; default and >=3 eligibility remain unchanged.",
+  "typed_source_witness": {
+    "schema": "complete_typed_dequant_residual_extraction_witness_v1",
+    "status": "pass",
+    "source_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny1880-host-classes-20261005/prebuffer.mlir",
+    "source_sha256": "04a9a3eccb4578c446d51ad6ed23694911936bbbcc0bf00efd57b8c65f43a518",
+    "source_capsule_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "selected_original_source_ordinal": 0,
+    "matching_original_source_ops": 44,
+    "source_and_capsule_semantic_fingerprint": "9d7a3db200a0120ed66750812cba0ddbdb2be882a43ceab33b272758873ed1d6",
+    "exact_complete_ssa_maps_types_constant_and_attribute_match": true,
+    "typed_witness": {
+      "body": [
+        {
+          "name": "arith.sitofp",
+          "operands": [
+            [
+              "argument",
+              1,
+              "i32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {}
+        },
+        {
+          "name": "arith.mulf",
+          "operands": [
+            [
+              "result",
+              0,
+              0,
+              "f32"
+            ],
+            [
+              "constant",
+              "f32",
+              {
+                "value": "6.85257779E-4 : f32"
+              }
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>"
+          }
+        },
+        {
+          "name": "arith.mulf",
+          "operands": [
+            [
+              "result",
+              1,
+              0,
+              "f32"
+            ],
+            [
+              "argument",
+              2,
+              "f32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>"
+          }
+        },
+        {
+          "name": "arith.addf",
+          "operands": [
+            [
+              "argument",
+              0,
+              "f32"
+            ],
+            [
+              "result",
+              2,
+              0,
+              "f32"
+            ]
+          ],
+          "result_types": [
+            "f32"
+          ],
+          "attributes": {
+            "fastmath": "#arith.fastmath<none>",
+            "prov.origin_node_ids": "[\"g:original:root:n292\", \"g:quantized:root:n758\"]",
+            "prov.source_node_ids": "[\"g:prepared:root:n809\"]",
+            "prov.trace_role": "\"lowering\""
+          }
+        },
+        {
+          "name": "linalg.yield",
+          "operands": [
+            [
+              "result",
+              3,
+              0,
+              "f32"
+            ]
+          ],
+          "result_types": [],
+          "attributes": {}
+        }
+      ],
+      "block_arguments": [
+        "f32",
+        "i32",
+        "f32",
+        "f32"
+      ],
+      "operand_types": [
+        "tensor<1x8x2048xf32>",
+        "tensor<1x8x2048xi32>",
+        "tensor<2048xf32>",
+        "tensor<1x8x2048xf32>"
+      ],
+      "result_types": [
+        "tensor<1x8x2048xf32>"
+      ],
+      "attributes": {
+        "indexing_maps": "[affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>]",
+        "iterator_types": "[#linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>, #linalg.iterator_type<parallel>]",
+        "operandSegmentSizes": "array<i32: 3, 1>"
+      }
+    },
+    "older_exact_original_body_field": "The extraction receipt field is a diagnostic Python Region repr. This file supplies the executable canonical SSA/constant witness; neither field selects production policy."
+  },
+  "original_capture": {
+    "schema": "original_tiny1967_readonly_dequant_residual_tap_v1",
+    "started_utc": "2026-10-06T11:24:54.648575+00:00",
+    "source_llvm_sha256": "a3108a73353e8736d191215cc1de775e46152c7897ffc2c37d951c9d16384f64",
+    "selected_llvm_sha256": "190bf934576f1735fae5b799a123541e5e9f907f236f2f2a9e94e089c0b07195",
+    "source_gate_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host/validation.json",
+    "source_gate_sha256": "224dfb88e05b87b13031719d3294334728808f8226c0be9635a8a47d4bc4aa85",
+    "compile_argv": [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "-O2",
+      "-fPIC",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.native.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o"
+    ],
+    "link_argv": [
+      "cc",
+      "-O3",
+      "-march=native",
+      "-fPIC",
+      "-shared",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o",
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c",
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c",
+      "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c",
+      "-lm",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.so"
+    ],
+    "boundary_pins": {
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+      "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+      "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c": "9605f8830d286326aba042e39915885e9d28dcfc48c1f74d61d5f60b9ddb01ce"
+    },
+    "source_capsule_sha256": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "modification": "Two read-only experimental taps around the unchanged original first dequant/residual loop. No source arithmetic, input, weight, scale, runtime or integer-device stand-in change.",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "token_usage_available": false,
+    "status": "pass",
+    "finished_utc": "2026-10-06T11:27:05.559181+00:00",
+    "outputs": 256000,
+    "original_compiled_bits_exact": true,
+    "torch_original_gate_pass": true,
+    "raw_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+    "tap_calls": [
+      1,
+      1
+    ],
+    "captured_tensors": {
+      "residual": {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/residual.npy",
+        "sha256": "2b237ec7edbfe063877c5f0863809b892f3a04ba9493e73e85aa0580d4f58cbf",
+        "shape": [
+          1,
+          8,
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "accumulation": {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/accumulation.npy",
+        "sha256": "f9db18e9317f43dbb7718bd9c34feb9b2c634843492b38481bf78ef181199f17",
+        "shape": [
+          1,
+          8,
+          2048
+        ],
+        "dtype": "int32"
+      },
+      "scale": {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/scale.npy",
+        "sha256": "18900830fe34f1fe33dcc08d4c9d485d839630c1ec62af93962fa4aa725d8068",
+        "shape": [
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "expected": {
+        "path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/expected.npy",
+        "sha256": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+        "shape": [
+          1,
+          8,
+          2048
+        ],
+        "dtype": "float32"
+      }
+    },
+    "model_object_sha256": "24149878b529a184430eb12ec3dffa88e056789d5c6150486bd7d3b8f28bba79",
+    "shared_object_sha256": "a0096b8f2ce61c8c896f34382da0a65eedeb83598c29ad5568201b21a1014782"
+  },
+  "original_input_checkpoint_gate": {
+    "full_scope": "22 layers/eight tokens/256000 output words",
+    "torch_atol": 0.03125,
+    "torch_rtol": 0.02,
+    "no_new_capture_or_golden": true
+  },
+  "before": {
+    "complete_cycles": [
+      490925,
+      487639
+    ],
+    "mean": 489282.0,
+    "static_malloc_calls": 0,
+    "output_copy_bytes": 0,
+    "control_object_reproduced_byteexact": true
+  },
+  "after": {
+    "complete_cycles": [
+      232732,
+      232177
+    ],
+    "mean": 232454.5,
+    "saved_percent": 52.490690440277795,
+    "static_malloc_calls": 0,
+    "output_copy_bytes": 0
+  },
+  "rejected_previous_materialization": {
+    "complete_mean_cycles": 590630.0,
+    "slower_percent": 20.48608136171324,
+    "malloc_calls": 6,
+    "malloc_requests_bytes": [
+      65600,
+      16,
+      2,
+      0,
+      2,
+      0
+    ],
+    "output_copy_bytes": 65536,
+    "record": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/docs/perf_records/tiny_two_multiplications_negative_journey.json"
+  },
+  "gate": {
+    "original_native_words": 16384,
+    "five_frm_original_comparisons": 81920,
+    "sticky_flags_match": true,
+    "independent_corner_tail_comparisons": 1260,
+    "immutable_input_bytes": 139264,
+    "dirty_output_guard_bytes": 128,
+    "dirty_private_arena": true,
+    "zero_FSM": true,
+    "engine_DONE": true,
+    "engine_rc": 0,
+    "generic_native_alias_empty_tail_ownership_tests": 15,
+    "existing_packet_tests": 56
+  },
+  "scope": "Complete original dequant/residual body: i32-to-f32 conversion, source constant scale, two separately rounded f32 multiplications, source residual addition, all input reads/stores; canonicalized buffer identities allow direct output forwarding with no temporary allocation or final copy. Exact1967 source data/control; no source reciprocal or precision change. GSIM capsule allocator/memory regime is separately scoped, not stock whole-model timing.",
+  "gsim_engine": {
+    "target": "gemmini",
+    "engine": "gsim",
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+    "available": true,
+    "refused": false,
+    "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+    "flavour": "binary",
+    "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "receipt_status": "bound",
+    "receipt": {
+      "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+      "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+      "schema_version": "merlin.gsim-model-build.v2",
+      "status": "complete",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+      "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+      "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+      "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+      "provenance": null,
+      "tools": {
+        "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+        "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+      }
+    }
+  },
+  "result": "Complete capsule positive; root review and original full-model qualification required.",
+  "whole_hardware_prediction": null,
+  "instruction_counter_is_not_hardware_cycles": true,
+  "token_usage_available": false,
+  "pins": {
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+    "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/llvm-objdump": "0f01943653ded3633801b474fa712f60ef105147dec81830fac90b30a0bdca45",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-opt": "c82b34f2100784f6191c496e3406c79db9cdbcca4cd279646565e5fb56d07d7a",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+    "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/opt": "260411170915c2f30ecce065d96711c901cab1ec01e59e31c65a6872dc05c06c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/docs/perf_records/tiny_two_multiplications_negative_journey.json": "60dd270c7062e87beeaa1fc542422064ed03d813e5d2a7ba6ad47e71bd3361f6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host/validation.json": "224dfb88e05b87b13031719d3294334728808f8226c0be9635a8a47d4bc4aa85",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-multiplication-packet4-whole-20261006/whole/host_llvm/expanded.native.ll": "a3108a73353e8736d191215cc1de775e46152c7897ffc2c37d951c9d16384f64",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capsule_result.json": "4f915eefcab7968d35626ab993bb3c375784ebe33cf5edd1043520a8a16cb69b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/accumulation.npy": "f9db18e9317f43dbb7718bd9c34feb9b2c634843492b38481bf78ef181199f17",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/expected.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.native.ll": "190bf934576f1735fae5b799a123541e5e9f907f236f2f2a9e94e089c0b07195",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.o": "24149878b529a184430eb12ec3dffa88e056789d5c6150486bd7d3b8f28bba79",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/model.so": "a0096b8f2ce61c8c896f34382da0a65eedeb83598c29ad5568201b21a1014782",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/receipt.json": "8847316fcdf1ee5012478fb14d0c908d35c18abae6e334c53399e82759e684d5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/residual.npy": "2b237ec7edbfe063877c5f0863809b892f3a04ba9493e73e85aa0580d4f58cbf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/scale.npy": "18900830fe34f1fe33dcc08d4c9d485d839630c1ec62af93962fa4aa725d8068",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/capture/tap.c": "9605f8830d286326aba042e39915885e9d28dcfc48c1f74d61d5f60b9ddb01ce",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.ll": "f3864e76311af4dd3923955a7ae25bc4c50c2255c7d9339aaeea4074b7188b65",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/control.o": "5de693747a7585da91b641eb08e19df92bcae472501625c249a2afd76efb79f0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/gsim_receipt.json": "a8f44a612ef096c2abfddddfc3f6d511f534f685a2d97e0e9f860fe159e1b786",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.ll": "46a6fa7604d8cd2492f54d483bb648ec3ce1fcdd151f652eea5d0b7aadcdfcf2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/packet.o": "c12214fd740b6ee09d65abf086d10493b1bf6b3250ae9e785e2b37d15ec90dd5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-multiplications-capsule-20261006/typed_source_witness.json": "0b0159f81cce22fb75ab3accd79d337546a56532c4b5396812520326e3a44308",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/archive_when_closed.py": "897eb51eb6aa35bf8becb14d5dc798f63254532b821da26382bccfd375613cf1",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/accumulation.bin": "62cdd5169887654765e571f65cc5c150ef772a3ab56d11c244a6cc0d810fd251",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/build.log": "766ce77552e2f2291414eca0fe16fa1e8d59a70d2bf8d0a4fc75412c0c352a8a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/build_capsule.py": "a5f527c114681f2896d27db95a8f74971aae8d496a4d1c752c9fc171c779f9b9",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/capsule_abi.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/capsule_qualification.json": "5eec790e2b15ac4c72f66dd130718bf17e6eb91567405905328555edc3de57a0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/capsule_result.json": "74f411f51d11a049ae511594374e3d9fe41120880d53e33cb2eb28b54eb3b6ab",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control.disassembly.txt": "3a17963e7685517ea0ea786e24a1fbf744af2229b34553c3e226a9f42a126a82",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control.ll": "f3864e76311af4dd3923955a7ae25bc4c50c2255c7d9339aaeea4074b7188b65",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control.o": "5de693747a7585da91b641eb08e19df92bcae472501625c249a2afd76efb79f0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control.so": "f328eb154a55c2b17069ea000d6e63acd7dd6d5fae0af51f64d0384d5a1c0ab7",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control_lower/lowering_recipe.json": "958d20209650b4b90f2460915c99ca9c56344a23acdd45e7e0a36fe8fc1e9aeb",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control_lower/model.ll": "e948fd63edde8d684f541b764d11690cc690640bd61fc78564a0240673ce339c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control_lower/model.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/data.S": "781ea2c0adf157f3c0d862d6eefc4c10def118d774cd0f07c5b873480875e0c4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/data.o": "4d9fc67a4669790b7798d19b5eefbad38fc5545f5888fe895d09b1f1dcec09e0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/expected.bin": "619186d0d5807c655213c676b23a6b2eeab2988f9f8e61780b5f59bd50fcb56f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/gsim.stdout": "39ef0def85b6fbad0bd3c4e371638806667f3641528052758bce9fa3f1815837",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/gsim_receipt.json": "bc1fdbaeb5c58a7a51cececb945c16750f3853c6314cdce9fd85385fce184428",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target.log": "1f2ca32fca469c1839f3c90e0696795676e8f463d6e7362f46f4fbb8256760dd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target.py": "9d926f241090e85f50e36bd70874fb557a514c0e6705dad1ef4b0b889115134e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/build/layer.elf": "6cc525c7dee2ae608e94868d032317ab3778272ed742a60ec1d2cc29bb692d9c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control.ll": "7a5ea40c4acac906f5d229ae663278ff2033b0f3e27bd4eeb4e2ebe858984ff4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control.o": "0111c0f890d576633e7598ccc95357f45c6b57d6321cae9fd76829a1930930f2",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control_lower/lowering_recipe.json": "5b0ff03cad9c03a55c5ca51cbb4de53f25cb8a3295e5bfa99b9b5a5150dcceca",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control_lower/model.ll": "9037626fdf53e8bbc60b0bed4888d6655a871fe6fdfb13d1e9a9090a369bf1a6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_control_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet.ll": "b5d56100b7ec4541e959811d8dfd4c30daf8ce85ee7fe021d80440446381854c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet.o": "7c430563aace408c723fafd00c548eae826817b028e36f002f709e83f8b390ff",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet_lower/lowering_recipe.json": "9ffb82c0c9841c9f5479c101773534fc7dd696708bb93233729bf6464b63aed3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet_lower/model.ll": "fd4631f8d4bc0a680d1189f40ab1381c59959151fda4d6aa8c734f9c02e0cba6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet_lower/model.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/edge_packet_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/main.c": "6f6367fc58fcead5f0534ae94c1044161ea166cc04ab85a7fc290baf257b5e34",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/main.o": "18e4e2309697773735ccaf270d0e50ee12d89df21028b48e08de2fcfa8d61164",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/qualification.json": "93c64d1c0396a978ca9af26e2c3493c620bbefd8f95fb15ccd497d62aa05f46e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/source.mlir": "144fa30ddc099cada3e6e1a6b0dbb210ce09f65724b0d0f3c58abce938001254",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/independent_target_v1/spike.log": "591f8fce4b6dd1a73ae384cb299ae9bc440feae67c68fe06ba131840cd2b15e8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.disassembly.txt": "ab4d055eb23cbab301cf7b0b83fa18408c48081200fe8fe7ac28ca550f593cfc",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.ll": "e4d5a55573e5a83baef3df13f006851222c148e466bf672572539b9d6b55048c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.o": "17a3af9c0a3733e231f11223f5c0c2abf835514d2ba6811d9849624202d230f8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.so": "a0ec3a4efa6073b7437eab41b60a8f8446bc242224e9fd760ca61e08712db75e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet_lower/lowering_recipe.json": "cf0a4360db6fddd240d1ea4f2be2d4dd04822450da5bd9a04513021b0b9c192d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet_lower/model.ll": "97a4f388d47bb4a3fdc7ffe35c9b670a42b690f85d614bb6b0c2638081c7a293",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet_lower/model.mlir": "0ad7db52db934ac503765d5522be78ebdf0e798f7e14b5bec11bd8b9bb2f5843",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet_lower/run_lowering.py": "1cec35e938155ca45035558ef4862d6fb61cbbacbf983dbcf33364a49b5b956e",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/residual.bin": "5404bdaeeff2a833a52a27ba8d6ffc941006c09ebddab40c001c0493e2d318c8",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/scale.bin": "b00b3b189c47c6545819cb5d75f4ca5aa7bb87b55cb7a7cf224bf76249bc889f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/source_capsule.mlir": "3bcf44ac4dbe184afe2e39c90bfaeee60c4846a4ae93fa624decc0379c017a0d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/source_receipt.json": "141d63e2032e2e596a6f1b62842c6835174217f862e2f8ecdfcf17092aee4c6f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_audit.json": "f3efe74bf8b73055b45df1cbc66e86d899df7fdc1a1edd22f2f34730efa06866",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_build/layer.elf": "f2f59f5c7f8763df3f2285116fb5ec68202ee456df35d67c8ae8d3cc375bfc76",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_main.c": "7e0c1ad8e2ec77f6b28bbe24e68a9bf3bbe7f216ccf2034825c9d9ec0f87f4ea",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_main.o": "005e6085b38dff3e989b1ecde360f1d3b7d83dde3f1633b3f9918000ecc72126",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/strict_spike.log": "b1fbfac714a375d72db85d344ac23e52508ac1d893a343a770105663eb8b0f63",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_audit.json": "8d1c8c64dc5cbfdc01e6a4b2707322faf225e692504737fa25129fb3480b81c1",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_build/crt.o": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_build/layer.elf": "4de12eaa80f16ea47f5cf68cd36b9e7d85910a3553ad03f39d86186bd5dc61df",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_build/link.derived.ld": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_build/syscalls.o": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_main.c": "eec94a8130d6b9656ea2f488b0c015cea2a4149474f21e23d93a8835bde1efd5",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_main.o": "9dce1165f2368eb710f2bdc8bc6452bc2a5d9198fa47821c008983e3ab5ff6f4",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/timing_spike.log": "e0642d879329b28973b1b31063a80e9bb386daaa51774057d7a9fe3e5f2886b3",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/typed_source_witness.json": "0b0159f81cce22fb75ab3accd79d337546a56532c4b5396812520326e3a44308",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/exposed.ll": "f5421665ca356b45477887f62490c5c0a00cd6d5731d54212238c8185a2d34a0",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/exposed.so": "85afdf09d5a1bd96741446a0a27b7bce29557e673d666fa32ccaa67badc25b51",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/lower.log": "ffe8340d61b4a6a284cc03ec5d825421a34868405473eb69de8e2bc7e7f2adca",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/module.ll": "97a4f388d47bb4a3fdc7ffe35c9b670a42b690f85d614bb6b0c2638081c7a293",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/output.npy": "01442a0304ebf057b89a7dd1384ecddf47090956ff678decf1bcfd53c3443917",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/screen.json": "97850c8d8342270c55b9b3576c167a882e50d839da92b181eb2d8b1ff330b6ed",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/screen.py": "a764e4cca77f77bc95ae8136f2dec2a36f28d83b5cce8076b1e506fdf8f9f741",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny1880-host-classes-20261005/prebuffer.mlir": "04a9a3eccb4578c446d51ad6ed23694911936bbbcc0bf00efd57b8c65f43a518",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/device/device_catalog_shim.c": "d90751eb471cfe6fea00bce5d2fce60ddf80e37ca1d0669abee83eb397ae3868",
+    "/scratch/agustin/tmp/gemmini-tiny-host-scheduling-20261005/out/artifacts/probes/tiny-pointwise-packet/whole_2/host/reference.c": "da8212be04251af298d8af7c753db810f1ab9a70562d8b8217e8c9f5f2e55889",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/merlin/tests/ir/test_bufferized_result_identity.py": "8803af3951e0e9f871e714b2819bf4d7c0a8f41a94b916500dcc30a547aa764c",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/merlin/tests/ir/test_scalar_pointwise_packet.py": "71156f2945b953b7c902847c7e30ea9c827a05969a05777358f019a8e5590fb5",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/llvmlower/abi.py": "2d80eba136e491b77a7ac4658a9f2803dcb408b89b9b6f76ecbe657582f03a6f",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/llvmlower/bufferized_result_identity.py": "666b9de34200515861bfb883051259d7a3128105376b95e3f462c714067680ce",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/llvmlower/impr_features.py": "6bf03f706864a9f34fe47dfce5f486d16c2110eed363a447fad8777af97f57f8",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/llvmlower/pipeline.py": "b7db32ca01c2b2439b3146533be3feca8d28dfe41e8f0d5402e79a269627793e",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/llvmlower/scalar_pointwise_packet.py": "1f093cd5e6d6e3ad0184cfc2ce00fa4a5e1e27b995eb894922212ccb55a7e89a",
+    "/scratch/agustin/tmp/merlin-bufferized-destination-identity-20261006/src/merlin/perf/layer_bench/__init__.py": "33e7981e2402a4c2f1e2899b6e03b3704de93f2ed91c89f635c429a4ba72457e",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/capture_receipt.json": "cccd35909715819444db03bd0ba0ca9fde4402e76e6d5848df4bc63bfc3fef92",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/extra.npz": "2e9f58d80a7b203e8031098657d2045c5db6bcfa80b13c0b8ef0d41cead8cc23",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/input_order.json": "c0396cc1a0040cf9cf5dba8d48e07530a9a372fdebf3429ef97b9c498595a811",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/inputs.npz": "4ef8c26df6c904c47fcccbe81a960f38b3859a9db042364b6f17dc3aba67c8a7",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/meta.json": "3eff695b58a1cde9636a47d0648ec42998cb04ff3333285a667570d9a976e3d7",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/model.mlir": "ea7475af98e5772bf7c5cf36d18dae9febdfa2119e596b58d803a524074624f5",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/weights.safetensors": "b76dd432a069d7b3bfb77e56a2c5f411d8fbbfb3927520b9fe6108d709d457a4",
+    "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/weights.safetensors.manifest.json": "4f080417a76be0b8f1260998c9dcb3dc8074c67e5186b5e8a59221860e18ef40",
+    "/scratch/agustin/tmp/merlin-tiny-qualified-pointwise-20261005/merlin/runtime/abi/mlir_runtime.c": "6d6d095c8b7dd2798ec1bda17230586e5744ded62daa9cdd500b64a25e0803c3",
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc": "4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4",
+    "/tmp/bufferized-result-identity-tests-extra-20261006.log": "782dddb7ad71a5911781f150aadad219a5abda383dc636461a453c59f2a5e4d3",
+    "/tmp/bufferized-result-identity-tests-final-20261006.log": "7b64331405b716013edf48471ccb38493813d5a29a6515c6250e1f01198fc244"
+  }
+}

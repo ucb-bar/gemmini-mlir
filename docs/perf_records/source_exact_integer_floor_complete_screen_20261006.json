@@ -1,0 +1,109 @@
+{
+  "schema": "source_exact_integer_floor_complete_screen_v1",
+  "status": "rejected",
+  "promoted_to_Merlin": false,
+  "original1024_intervals_endpoints_validity_guards_immutable_inputs": "pass",
+  "five_FRM_original_source_proof_checks": 443040,
+  "strict_functional_control": [
+    105499,
+    105500
+  ],
+  "strict_functional_candidate": [
+    127785,
+    127785
+  ],
+  "actual_GSIM_ABBA_cycles": [
+    [
+      0,
+      205932
+    ],
+    [
+      1,
+      218996
+    ],
+    [
+      2,
+      218226
+    ],
+    [
+      3,
+      204800
+    ]
+  ],
+  "control_mean_cycles": 205366.0,
+  "candidate_mean_cycles": 218611.0,
+  "candidate_cycle_change_pct": 6.449460962379372,
+  "complete_scope": "Original1024interval four-cell polynomial, identical source FMA/endpoint implementation, candidate changes only source floor. Both arms include all endpoint computation and stores. Exhaustive proof is outside ROI and separately run on Spike.",
+  "initial_bounded_run": "900s GSIM terminated before UART while executing pre-ROI exhaustive proof. No cycles inferred. A separate driver excludes only that independently-qualified proof; immutable control/candidate objects are reused.",
+  "original_proof_elf_sha256": "7059ad155e4f63552708f32a385d74a88ff26eedc1d20182805a9a2a3d3a89c5",
+  "measured_elf_sha256": "bb44f0ab1bd9cf868e2f9c49ca5a8ab60879ae7560bbb9832a63de5153f2b441",
+  "noFSM": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "bb44f0ab1bd9cf868e2f9c49ca5a8ab60879ae7560bbb9832a63de5153f2b441",
+    "executable_sections": 50,
+    "custom_funct_counts": {},
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "floating_contract": "Same result words including signed zero/nonfinites; finite bounded conversion only, original fallback outside bound. All five target FRM checks pass; exception flags are unobserved/nontrapping under the existing explicit policy.",
+  "decision": "Exact floor-to-integer conversion is slower in this complete source capsule. Keep current bit-floor implementation and do not add a production compiler alternative from this negative result.",
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/f32_floor_bits.h": "70dd6859bf15826e26ee361c7a83e1e61e45ccf4749d68df1ea6058b58587aa1",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_softmax_spans.h": "a54f02acf11965e364cdd9ab2df91b49d68e480ae420cb47d80fe50bd2a9ad82",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/fma_product_norms.h": "3540a49e788ca3ef2e4a601b76c31b4dfa742b25ddc768b49290c5625a7cb092",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/bf16_quant_frontier.h": "da2a02b5cfc9e3ff5a4d055a9fa190f6630ddd6b1052052960c06be53229eb92",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/dot_norm_requirements.h": "66346e904f83d663613ec79b73d97ce90257f0916e513098f21215214a2f4cc9",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/source_attention_frontier_api.h": "611cc867c996bd39b66fdc95801a2381cda3e41726f73deed220681a79059843",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_fma_product_bounds.h": "8ef6b05b393cd1925cde8eaec6a3f9cad19cfafbc69b1f66288a4161c4467ddc",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/f32_floor_integer.h": "edceb7acb81e05596a71e341155edcb6a7e1d7c998beda7c99b28c94e688b2dd",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/candidate.o": "4309e1065267191085fd3db25e02f341fdf9794b3082d352fc02929d1ceec196",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/numeric_capability.h": "a141a473ab451e9a0a42b3e4369dbf6e2be4e6e103f3bd009c78f7a96bdd1833",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/merlin_hal.h": "cf7887285b389bcad17861ae9ba20c683824eed2b9bcb5e639c4f2331a06fa7d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_dot_norms.h": "211ebe9a12123faf4a3937225d53c8272f3f9cf6f58a8d4083b4acd50db35db5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/build.json": "4df15d86c6144bd55bf58000a1f7bdb79063d024e5051febbb451b2a01624d99",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/candidate.c": "d89365aae6f3d4612107b09fc31b4eb24066270e56f9624e4213ec1726bf9c2d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/bf16_radix_pack.h": "816c9b08abed14527b8933fe4f43fd83a0b9333c7555f83866305d2eea034243",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/floor_proof.c": "0cb91b52addb04d1cc5b2458727ac9c65931f04f841254335b93a022255f139a",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/f32_interval_endpoint.h": "c57a5f987debe6bf69cdcd7e58ab7883eb50e38c2b32cff24eb14a0029813b2d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/model.elf": "7059ad155e4f63552708f32a385d74a88ff26eedc1d20182805a9a2a3d3a89c5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/driver.o": "6a319024caeee49d54bb5e27545add7a7d4d35a0018ad3bdb03e836c8f62ddb4",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/spike.log": "da043652f1270d3471328a9f57a8c252ee9ed586dd73bb15d21f9dd13c04f66f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_bf16_interval.h": "a140004824253ed7221f4b963243d25a97dcdde945159a32320271343b58b4ef",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/control.o": "bba29cfd16609f0935b0ffa9af81d9791de570417ebdf4f8d64dbbe29a6fea10",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/merlin_model.h": "10e8d78fd4c9fbd22185d786e5ecd3a3b107dc115bc451219837a295f76d0df9",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/positive_scalar_interval.h": "b4d4e3ed540c09a8082d2a6e40b88abf8417de9855fdd1111015398605838891",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/control.c": "ed6943f0d4b640a91f9aea80f5aa740fd064c0c7b6fb37af9dd67e2249049bf6",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/gsim_receipt.json": "38290708da5029c7d92f2fe23ba3e452d0e16f0f2dd809ad8f487cb0945b057f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/audit.json": "a48e8eb7e9c150cd673d4f1c2056fa29b00c0c1f4f43ae00c895427e2e60a2a5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/source_f32_math.h": "58a28cd025cc1fee0f4d74efb9ce5c775cd831ce33a2d08ed6a314f2e397c7f6",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/encoded_row_equality.h": "b123afd629a20009b334f84f9a90438a78447a77b06982be353d86f583c1c303",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/monotone_bit_polynomial.h": "aaa2f464616dd74e231f35598956ade67412bbffb844bc477b3ee9fe0c2f4159",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/run_gsim.py": "0b3477ed53d25a4e98357c5b9899038a1a3bd0ba6c176f4aa86a504ec6b594e9",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/representation_error_norms.h": "5a36053a350f8c0cd8819ba567e6b9d405bdc84f9463e3fb23bf2a182666bee9",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/gsim.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/fixed_outward_f64.h": "5897d76ee681ee681e8a18c204a1b54448e75f41491006bf380d1eb92781bc33",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_bit_polynomial.h": "c1c30366a19b8f755acfaccbe1304c4e175936725ea3369cf4a43cb1d9cdc556",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/libomp_pthread.h": "5f3ad9123ce2f49569b750e20736e9ec636c4cd3446b69dab7b2e5923016ab0f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/ordered_fma_bounds.h": "c8e85a6db7cab9b9202a7fd2c335e69a5458276a41fd4f895ede50ad88e483d5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/build.py": "af53f97d4d074900d2925aa62983280e1020c142535fc6cf2263be7ac11cf626",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_polynomial_batch.h": "cfe04f41a10329c0c4ac5f8d4596f760eac9eb1c113ed114d0c0b4213adf8da7",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/omp_static_schedule.h": "cff2070f05893794119c19d217c7b77723c43aca6b70ebf7e6430c7f0ba5ca7d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/libomp_zephyr.h": "af1b2f777ccd067c0c04990815a1ac4cefd3de4ceee5e582a6ae909dcf467dce",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/prepared_softmax_interval.h": "5aa4750578019127c8e3a85c4e05cf30f100a5c14066bc117de20229d033d648",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/floor_proof.o": "26a738aebaab228f2a2ddc7ae16f8a2e9f6ea000c52e123207643bf56a87014f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/driver.c": "808a6da86c7ef434c45824237b874913e7ea0851f024b719375340b648a476f1",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/inputs.h": "79c3ae2958b630ab73f31c5b963e61a5d3ea2cbfe2c5e8037a496a8b71b3ff1c",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/separable_fma_radius.h": "35425adc040e675d664bc0378fb2f7d108f1407604c83271b3bd76775e091cf8",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/build.json": "32a6257d18eab5b56e6732ede4f39bc2465b90276a7708313f35bf04cfaf4019",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/model.elf": "bb44f0ab1bd9cf868e2f9c49ca5a8ab60879ae7560bbb9832a63de5153f2b441",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/driver.o": "dfde2028bf54a2b3a65367ac519f3ed11911ca3932e3ce6ee53e5a07634a22ff",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/spike.log": "e6c19c8d1408f48632ad9acc3aca3c56752d5eee8836be998cd4d5044dc2915f",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/gsim_receipt.json": "e30fd0ee0423326af87347472724f270741056a9bcd9902c96aa4f57464ed880",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/run_gsim.py": "106e47e467b816866675debc469a13d60882ff2dad9d95d733e7654175b60712",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/gsim.log": "68e3a1a1be7b4c948e880799b193d189e62664c094196a764017b561717bbe71",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/root-exact-integer-floor-20261006/roi_only/driver.c": "07a15bc4883a84323644f9980e3d56743b0d0b8994d90bb9a82e72ee75520ade"
+  },
+  "pin_count": 54,
+  "token_usage_available": false
+}

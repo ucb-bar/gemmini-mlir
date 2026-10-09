@@ -1,0 +1,524 @@
+{
+  "schema": "exact_sparse_affine_adapter_complete_v1",
+  "timestamp_utc": "2026-10-06T14:31:49.944554+00:00",
+  "owner": "/root/reference_parity",
+  "token_usage_available": false,
+  "core_commit": "92abb4027",
+  "hypothesis": "Replace the full source mismatch bitmap lookup with an explicitly bounded, complete-domain derived byte-pair predicate; preserve exact source replay, producer and ranked ABI.",
+  "original1947_complete_adapter": {
+    "baseline_cycles": 1657423,
+    "candidate_cycles": 1748089,
+    "saved_cycles": -90666,
+    "candidate_vs_baseline_percent": 5.470299374390253,
+    "elements": 802816,
+    "mismatched_pairs": 1,
+    "source": {
+      "lhs_scale": 0.011258588172495365,
+      "rhs_scale": 0.00940733402967453,
+      "output_scale": 0.011643771082162857,
+      "relu": true
+    },
+    "predictor": {
+      "p": 298,
+      "q": 249,
+      "scale": 0.0032446938566863537
+    },
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/result.json",
+      "sha256": "91442cfad097608152b56db8c56e68abc44d7a3d35595cd38a8162944a2b5d18",
+      "bytes": 10053
+    },
+    "scope": "Complete original ranked adapter ABI checks, producer DMA/compute/store/fence, exact guard/replay and result descriptor; unchanged inputs; identical warmup/dirty poisoning/all-byte checks outsideROI",
+    "correctness": "Every output/input/descriptor/sentinel byte exact in strict RV64GC and elaborated RTL GSIM; common addresses, identical warmup and dirty poisoning outside ROI; no FSM",
+    "same_target_predictor": {
+      "path": "/scratch/agustin/tmp/gemmini-residual-output-normal-20261005/out/residual_output_normal/single_guard/gemmini_residual_0__output_guard/kernel.o",
+      "sha256": "d6aa85b14889e8a3d91472aab2bd7da8e7a031758e55f39c2defeb8dd610ec6a",
+      "bytes": 2432
+    }
+  },
+  "independent_signed_complete_domain": {
+    "baseline_cycles": 1443055,
+    "candidate_cycles": 1213531,
+    "saved_cycles": 229524,
+    "candidate_vs_baseline_percent": -15.905422870230169,
+    "elements": 65536,
+    "mismatched_pairs": 2,
+    "source": {
+      "lhs_scale": 0.011258588172495365,
+      "rhs_scale": 0.00940733402967453,
+      "output_scale": 0.011643771082162857,
+      "relu": false
+    },
+    "predictor": {
+      "p": 298,
+      "q": 249,
+      "scale": 0.0032446938566863537
+    },
+    "result": {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/result.json",
+      "sha256": "695c9e2ad8923264d8a7e7a066fe94d7de0bbfb8562143d6e0191ae4bb9ea1a1",
+      "bytes": 10061
+    },
+    "scope": "Complete original ranked adapter ABI checks, producer DMA/compute/store/fence, exact guard/replay and result descriptor; unchanged inputs; identical warmup/dirty poisoning/all-byte checks outsideROI",
+    "correctness": "Every output/input/descriptor/sentinel byte exact in strict RV64GC and elaborated RTL GSIM; common addresses, identical warmup and dirty poisoning outside ROI; no FSM",
+    "same_target_predictor": {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/kernel.o",
+      "sha256": "8f2a3b40d353f50ad93f0612334b06b1f9d5defc796498d74c0a8ba053e53a6b",
+      "bytes": 1488
+    }
+  },
+  "source_numeric_contract_relaxed": false,
+  "default_bytes_unchanged": true,
+  "normal_model_route_enabled": false,
+  "whole_accuracy_gate": "Original all1000 binary32 words exact, atol=rtol=0; unchanged and not yet invoked for sparse candidate.",
+  "hardware_qualification": "Pinned elaborated RTL GSIM, not stock FireSim. Both timing ELFs differ in one selector byte only. Shared actual1947 target predictor unchanged.",
+  "repaired_original_adapter": {
+    "ledger": {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/dump_section_rewrite_repaired.json",
+      "sha256": "396d079bb4d9339f6ee99b6de8c344d7911c2863ac578f8f2f670093f2e3c3af",
+      "bytes": 1670
+    },
+    "rewritten_sha256": "50b0871ebbbebb67d6286fbf06554dc6fe3aea3c9b9fcd20acfaab7394a863b8",
+    "restored_expected_sha256": "e5b0f2bac05d733ec47dc34c5fb5153ca67cf23b44698e20d5c1b30d0f07d3a7",
+    "scope": "GNU objcopy rewrote metadata only; old .text identity checked. Exact source/argv recompilation restored original full hash. Source, target predictor and controlled ELF unaffected. New extraction writes explicit fresh output with before/after reference hash and alias/overwrite refusals.",
+    "read_only_smoke": {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/extraction_fix_smoke/result.json",
+      "sha256": "2853cfad2a31bc58baade8b5adfe6b1521193c3eb67471eaa84bee60683a1135",
+      "bytes": 969
+    }
+  },
+  "outcome": "Actual original complete cost neutral or negative; no normal route promotion. Preserve exact independent positive separately.",
+  "unknown": [
+    "Whole-model cost and benefit",
+    "Physical DRAM traffic",
+    "Actual CPU/accelerator overlap",
+    "Current1988 per-section cost"
+  ],
+  "pins": [
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_affine_analytic/capture/receipt.json",
+      "sha256": "57dc53e33c3c030954782fb07aaab3f724ff1b0ff31e928eef68fc7bbcc20671",
+      "bytes": 1254
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/fixture/a.bin",
+      "sha256": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/residual_joint_predictors/original_capture/fixture/b.bin",
+      "sha256": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-residual-output-normal-20261005/out/residual_output_normal/single_guard/gemmini_residual_0__output_guard/adapter.c",
+      "sha256": "5dbffa286ac33358fcfc70498d2a463eb5e801b4936e71a73e4a2efb90e7c333",
+      "bytes": 21666
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-residual-output-normal-20261005/out/residual_output_normal/single_guard/gemmini_residual_0__output_guard/adapter.o",
+      "sha256": "e5b0f2bac05d733ec47dc34c5fb5153ca67cf23b44698e20d5c1b30d0f07d3a7",
+      "bytes": 14664
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-residual-output-normal-20261005/out/residual_output_normal/single_guard/gemmini_residual_0__output_guard/kernel.o",
+      "sha256": "d6aa85b14889e8a3d91472aab2bd7da8e7a031758e55f39c2defeb8dd610ec6a",
+      "bytes": 2432
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-residual-output-normal-20261005/out/residual_output_normal/single_guard/joint.json",
+      "sha256": "9d7b068093584c9c4897d63ba77261057a07b694f12b1059170f3c296192d04e",
+      "bytes": 28972
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/executed_driver_v1.py",
+      "sha256": "fc8cb88e0eb3057bf3d5f8fbc98d97ecd50e6a69d9316ff248787cb1e694909f",
+      "bytes": 15715
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/executed_driver_v2.py",
+      "sha256": "d753c2888b98209f6ad4f73d5aff42ca96c449b8d88aa89a7b50571c44ae015c",
+      "bytes": 15742
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/extraction_fix_smoke/reader.o",
+      "sha256": "50b0871ebbbebb67d6286fbf06554dc6fe3aea3c9b9fcd20acfaab7394a863b8",
+      "bytes": 14736
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/extraction_fix_smoke/result.json",
+      "sha256": "2853cfad2a31bc58baade8b5adfe6b1521193c3eb67471eaa84bee60683a1135",
+      "bytes": 969
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/extraction_fix_smoke/text.bin",
+      "sha256": "b9776f7049c295056bf95375be6f88606f135ccebd69d65eb5b3d109dd8cafaa",
+      "bytes": 986
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent.sh",
+      "sha256": "dcecd7c0635fd9fbc1cbca4ce5f9052a0def353ad2825ab72c84b1ebf0a1926d",
+      "bytes": 1958
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_proof.json",
+      "sha256": "d47973c845621fe73e02d7df7bd1590b992e345acbb1be300d42846e45efaa77",
+      "bytes": 17765
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/a.bin",
+      "sha256": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+      "bytes": 65536
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/crt.o",
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/fixture.o",
+      "sha256": "68a084239ef16f56bc9bbcf237acbaa8cdbd5e56cfd52da2ad006ce5dd0c3b18",
+      "bytes": 328816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/gsim.stdout",
+      "sha256": "531391b3d5c5faf2a85e0a5690eaeb8084e039661f46a12bc504a23ffb9903da",
+      "bytes": 102
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/layer.elf",
+      "sha256": "82cef69b45298dee59eedbc74621c0732a18c8a4f6e0d094fc17a5b8d1371049",
+      "bytes": 360512
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/link.derived.ld",
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/probe.o",
+      "sha256": "8d20eddffe4190607b6aacf1ef9e50245c3cdab883b6c04cd2d60e895de2b856",
+      "bytes": 9920
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/result.json",
+      "sha256": "0781c6c843aa71a732b44e4a5b9829a6d63829442f0aea3f523f036b6d82a296",
+      "bytes": 4642
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/spike.stdout",
+      "sha256": "b980f1287d2a63c4ae1f6396c07200e0b01adb12113efa58eeb99c0c1ff7963f",
+      "bytes": 15507
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm0/syscalls.o",
+      "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+      "bytes": 19024
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm1/gsim.stdout",
+      "sha256": "8cdc978100133c09aa2cba7549dd461cacd60603d43a68224269eeaa04cf65ca",
+      "bytes": 102
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm1/layer.elf",
+      "sha256": "c431acf3fbfbbe1cc8188c10f7f1e5cc352ffdf32cc64d464b2f41fa7bd71288",
+      "bytes": 360512
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm1/result.json",
+      "sha256": "1ce8b8eae475f0a891e4c799c1dc5681771eed61c90697bdd1a0e622789e3b2e",
+      "bytes": 4642
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/arm1/spike.stdout",
+      "sha256": "e00e199b781a7864e36e6ec37f9f9d2739e83614c0e783b25055a3e6c676740c",
+      "bytes": 15505
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/b.bin",
+      "sha256": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+      "bytes": 65536
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/baseline_rebound.o",
+      "sha256": "79cee2283b782871559c294865004e9614ace45459caf673c1a30fa321c3690a",
+      "bytes": 14368
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/baseline_text0.bin",
+      "sha256": "b59a744fec5e570d66cf26932d099e7fa985c0a103fa0d2c2ba7e34cb29f136f",
+      "bytes": 928
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/baseline_text1.bin",
+      "sha256": "b59a744fec5e570d66cf26932d099e7fa985c0a103fa0d2c2ba7e34cb29f136f",
+      "bytes": 928
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/benchmark_buffer.h",
+      "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+      "bytes": 3240
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/candidate.c",
+      "sha256": "e9cee2cd0eb28224fe57ae8437b0c17166a2c6b26f3581b502d69377ea97e574",
+      "bytes": 4882
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/candidate.o",
+      "sha256": "af1ba3f550f302ffcff8e1f1271f0a7ebb47ec548cbca434e7ee86407b317cfd",
+      "bytes": 6136
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/check_a.bin",
+      "sha256": "59d704c5afc45b802eb676ae096fe59f05c46c3981adb317322a6db46f195ec1",
+      "bytes": 65536
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/check_b.bin",
+      "sha256": "677b6129e3921ad7908181bb78316a8b7184e2e2a1882850a7016aeb74335723",
+      "bytes": 65536
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/control_original.c",
+      "sha256": "a69e43b6d09f45b999a10703fdd37d959604bdca3dc7fcbb47f29904cdeedca1",
+      "bytes": 21346
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/control_original.o",
+      "sha256": "429bcf2d6c33cd6be9407aa7f14371ad3258ae3b2f65dca767b0e6d53e7c5886",
+      "bytes": 14384
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/expected.bin",
+      "sha256": "477e78f6d695c4637c3b50413d01ba95e1b948e3f19763a5c4ef2be4c3a94eff",
+      "bytes": 65536
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/fixture.S",
+      "sha256": "973bf1045ea31790fa65bf14dcabdaea0909806723b471fe1b4503e5752cba5f",
+      "bytes": 899
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/device_compile.json",
+      "sha256": "ffa6fd2709d219ba3a70c4eb37de5ade9c59b038a02c08709556e5f7ab879b76",
+      "bytes": 1601
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/kernel.gemmini.mlir",
+      "sha256": "1d144212db460caeea52d16b14e837cfe209335798037b03128b83b5f8ffab4b",
+      "bytes": 8189
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/kernel.ll",
+      "sha256": "9cd7465e601ce20a48c30158246ea93a6f8e453a80b2f0e67a125bfae5429142",
+      "bytes": 7431
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/kernel.llvm.mlir",
+      "sha256": "fce521f2b7b03eff0184d35b68b3e2eb7692197407169955afadff1f92dbb04f",
+      "bytes": 13713
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/kernel.o",
+      "sha256": "8f2a3b40d353f50ad93f0612334b06b1f9d5defc796498d74c0a8ba053e53a6b",
+      "bytes": 1488
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/predictor/object_nofsm_audit.json",
+      "sha256": "d67ee6d69dcb69618d7c2277704232f8cabdb88b7e0d34019ae88f818b3096c4",
+      "bytes": 355
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/probe.c",
+      "sha256": "989b915f97aebf56ce9073da6c9a78f5d295a4c04404da69af02028843b0c17f",
+      "bytes": 2260
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/recipe.json",
+      "sha256": "da58db38c90829004d33353c8bb5bb5415b9584f7b88434f1e90d03313a48a4e",
+      "bytes": 41068
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/independent_signed_domain/result.json",
+      "sha256": "695c9e2ad8923264d8a7e7a066fe94d7de0bbfb8562143d6e0191ae4bb9ea1a1",
+      "bytes": 10061
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original.sh",
+      "sha256": "687d430cb2ffa74e59953602e40c9100651094bc501b4c59a97668856763db03",
+      "bytes": 2252
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/a.bin",
+      "sha256": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/crt.o",
+      "sha256": "8af20f7b9d77cf16e10c991eeaed86c3e4f84d5f9c26db4eb7212dcf422791bf",
+      "bytes": 2880
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/fixture.o",
+      "sha256": "4c91e4a7628821ad28f72c714c43a55da8c159965f2f69b8f1678eb81a2149a2",
+      "bytes": 4015216
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/gsim.stdout",
+      "sha256": "04f7a2bac3b5c32ced9116f0eb225d2eec798fa64e1b6b9412fbe619e999c804",
+      "bytes": 104
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/layer.elf",
+      "sha256": "90b171cfe5d3e73bdf25b4cfaa396d62792e142577f02bd7c0263bc817801841",
+      "bytes": 4048232
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/link.derived.ld",
+      "sha256": "77ff20ffb473836e779809ff47b34fbcc391152025d19de4d6fd7380948658f4",
+      "bytes": 1722
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/probe.o",
+      "sha256": "a622853979957175aa7d8caf508544c022fbbef72331debfabf7a0b372796a4a",
+      "bytes": 9936
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/result.json",
+      "sha256": "a679bf99554848a2f12d658404d57961f6e688101dd6dd63d77b4b37ab543620",
+      "bytes": 4641
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/spike.stdout",
+      "sha256": "8fb4819b05281b1e277043dbc0220a716f788835f7086e11fe1125fc2ce1bb03",
+      "bytes": 16815
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm0/syscalls.o",
+      "sha256": "3e5006bfec053c22a4c56c194961cb81cfc60728b4325609b2ff69a2eea1b153",
+      "bytes": 19024
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm1/gsim.stdout",
+      "sha256": "30ef381174fc035ec7ffd8bd5c47936e90b9fa4c72a54dca24a484aa8bb8a84c",
+      "bytes": 104
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm1/layer.elf",
+      "sha256": "bf0ba4b9440759b0eb3fdc9362d4a07e600d98291a4a134b335f1aea87bcd300",
+      "bytes": 4048232
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm1/result.json",
+      "sha256": "b14f253abb7e609ad536a0d80dad4fe9c6998b4d98062a05c66ad522db1a6460",
+      "bytes": 4640
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/arm1/spike.stdout",
+      "sha256": "b08ccec3b9171866e1b58ccdfcd8d812bbb8e4737d54dacdca423acad121b45b",
+      "bytes": 16805
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/b.bin",
+      "sha256": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/baseline_rebound.o",
+      "sha256": "613918c0e9654241c34da43393ac3993fbb92cda3ddc4e201297e1b8851c4662",
+      "bytes": 14712
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/baseline_text0.bin",
+      "sha256": "b9776f7049c295056bf95375be6f88606f135ccebd69d65eb5b3d109dd8cafaa",
+      "bytes": 986
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/baseline_text1.bin",
+      "sha256": "b9776f7049c295056bf95375be6f88606f135ccebd69d65eb5b3d109dd8cafaa",
+      "bytes": 986
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/benchmark_buffer.h",
+      "sha256": "24741b4e55c3e0185761179a6103510997d70521caff285bd16d6e2dae12ed85",
+      "bytes": 3240
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/candidate.c",
+      "sha256": "bd7b244e17fca0520f3021d052f8b6d814aeca57ef6dcf19f94c9a7b6bce44bc",
+      "bytes": 5118
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/candidate.o",
+      "sha256": "327626b05740b02fcca1d290bd23bfe8ba8929ba427759744537f748e0df5dfc",
+      "bytes": 7152
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/candidate_check_word.disassembly",
+      "sha256": "d7367a1f73078789e791811d38c07b3a495cb1328c5277b9608ce5cfcd417acb",
+      "bytes": 2372
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/check_a.bin",
+      "sha256": "7f3e425ff2d10d36c11688d7315716a771b5a373919be2891d696e7cc4f84c2d",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/check_b.bin",
+      "sha256": "10e0d7ec5e6f585a6b44033874ed85535b9d76010502e02d3da6664fa5ed7d79",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/dump_section_rewrite_repaired.json",
+      "sha256": "396d079bb4d9339f6ee99b6de8c344d7911c2863ac578f8f2f670093f2e3c3af",
+      "bytes": 1670
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/dump_section_rewritten_reference_adapter.o",
+      "sha256": "50b0871ebbbebb67d6286fbf06554dc6fe3aea3c9b9fcd20acfaab7394a863b8",
+      "bytes": 14736
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/expected.bin",
+      "sha256": "9ca77e898ed5ea2f95881084f76fef859feb835e82abd6988565efc213e651f9",
+      "bytes": 802816
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/fixture.S",
+      "sha256": "f050e363cecd6c24e896df0ab63d08032d59750c641c9125bd59807384fc2a18",
+      "bytes": 874
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/probe.c",
+      "sha256": "ca674f1b13e9b1979a71a4485ce6415cb59c1a8ee0e04aceac13da29726c831e",
+      "bytes": 2262
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/recipe.json",
+      "sha256": "1ebe8fed6a2edc7110e982f007773aeb88bef023c4908a70f45b9691c7830413",
+      "bytes": 51885
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/restored_reference_adapter.o",
+      "sha256": "e5b0f2bac05d733ec47dc34c5fb5153ca67cf23b44698e20d5c1b30d0f07d3a7",
+      "bytes": 14664
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/out/sparse_residual/original1947_adapter/result.json",
+      "sha256": "91442cfad097608152b56db8c56e68abc44d7a3d35595cd38a8162944a2b5d18",
+      "bytes": 10053
+    },
+    {
+      "path": "/scratch/agustin/tmp/gemmini-sparse-affine-correction-20261006/tests/gsim_sparse_residual_adapter_probe.py",
+      "sha256": "138117eb9cecd86aa14ed4d4c446588b07406d90ca4d5a38dbf1b6ba05880c12",
+      "bytes": 16435
+    },
+    {
+      "path": "/scratch/agustin/tmp/merlin-sparse-affine-correction-20261006/src/merlin/llvmlower/quantized_affine_pair.py",
+      "sha256": "488fe762ca25d7e8dba0abb8dafa6987535d8ac9e97fdfffa9d4ba80a6f0914e",
+      "bytes": 19541
+    }
+  ]
+}

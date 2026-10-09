@@ -1,0 +1,182 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "scope": "Exact default-off scalar host FMA/division factor-two partial unroll on measured1841 eight/K2+B-prefetch control; original source arithmetic, gates and device objects unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/model.elf",
+  "elf_sha256": "de5b6b53e4c1e19496582dc34cbaf81bd3ef20a28b5e6ce462da1f2e70c96967",
+  "reference_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/spike.log",
+  "spike_console_sha256": "d0211804e55424d17899a63b91416ca42f83b8280b404f2a75698e6fe495ac3e",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "metrics": {
+    "cycles": "168379371",
+    "build_hash": "74a05b8109e9",
+    "memref_rank_mismatch": "0"
+  },
+  "native_validation": {
+    "scope": "tiny_pointwise_unroll2: native host with scalar integer device stand-ins",
+    "llvm_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/host_llvm/model.native.ll",
+    "llvm_sha256": "68df16e7a8ed2dbed4c986fb72bad4751461e79e65fe110cfd83e7190e013efd",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "original_reference_gate": {
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+    "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true,
+    "unchanged": true
+  },
+  "prior_compiled_output_bitexact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "de5b6b53e4c1e19496582dc34cbaf81bd3ef20a28b5e6ce462da1f2e70c96967",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 312,
+      "2": 738,
+      "3": 320,
+      "4": 1248,
+      "6": 1248,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "compiler_contract": {
+    "feature": "unroll_scalar_pointwise_fma_division_by_2",
+    "default_off": true,
+    "target_independent": true,
+    "recognition": "Static step-one innermost no-iter-arg scalar f32 loops with at least4 existing FMA operations and a division, loads and stores; no calls/nested regions/vectors/fastmath/strict scopes/prior annotation.",
+    "annotated_loops": 22,
+    "llvm_changes": "Only22 backedge metadata additions; removing loop metadata produces byte-identical selected LLVM to1841 control. Existing45 scalar contraction reduction annotations unchanged.",
+    "arithmetic": "Metadata only; existing per-element operation graph and all loads/stores unchanged. No approximation, reassociation, contraction, reciprocal or noalias permission. LLVM owns legal unrolling and scalar tail.",
+    "core_commit": "18f0afa4c56adae1535091d954e69608c7f2a11e",
+    "source": {
+      "path": "/scratch/agustin/tmp/merlin-scalar-contraction-20261005/src/merlin/llvmlower/scalar_pointwise_unroll.py",
+      "sha256": "d06a89f7735a3f9694085cb1b0cf4f91b98e7424cfa29aa61b674c3ad233f869"
+    }
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "host_clang_optimization": "O3",
+    "fuse_quantize_round_convert": true,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "fuse_activation_polynomial_fma": true,
+    "activation_policy_unchanged": true,
+    "normalization_expf_calls": 22,
+    "activation_fma_calls": 176,
+    "new_contraction_fma_permissions": false
+  },
+  "build_hash": "74a05b8109e9",
+  "supplemental_objects_sha256": "c0f5b070384db6c90d234aac51ab47fe52f9310b0a1401dc7cfd86bdc35b446a",
+  "control": {
+    "job_id": 1841,
+    "firesim_forward_cycles": 571097507,
+    "receipt": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/spike_validation.json",
+      "sha256": "6203d1c3e6cbb48b255cb53edc1d36b1662a369e9b8b70addbc9d7998888b170"
+    },
+    "elf": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/model.elf",
+      "sha256": "faf4e81a2142353e7edd8741d1e7ce502c793e8a3a23abed61730f7300f8cd6e"
+    },
+    "spike_instructions": 171353332
+  },
+  "performance_screen": {
+    "spike_instructions": 168379371,
+    "control_spike_instructions": 171353332,
+    "fewer_instructions": 2973961,
+    "instruction_fraction_reduction": 0.017355723202394452,
+    "hardware_result": null,
+    "model_text_control_bytes": 1018880,
+    "model_text_selected_bytes": 1029160,
+    "text_growth_bytes": 10280,
+    "first_mlp_loop_fma_instructions": 16,
+    "first_mlp_loop_fdiv_instructions": 2,
+    "first_mlp_loop_inner_frame_spills": 0,
+    "assembly_limitation": "Two output copies retain mostly serial FMA/division chains due NaN-propagating clamp branches. No hardware ILP or cycle win claimed from instruction proxy."
+  },
+  "artifacts": {
+    "source_llvm": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/lower/model.ll",
+      "sha256": "cb64fc75d634864b59280a2af931da1c102df5de86c58997edb21d194889a8b0"
+    },
+    "selected_llvm": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/host_llvm/model.ll",
+      "sha256": "79078b663d0cc9207e2e92eae3721ca200eeea25d3edfd94cb0836f82dbc2d8c"
+    },
+    "native_llvm": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/host_llvm/model.native.ll",
+      "sha256": "68df16e7a8ed2dbed4c986fb72bad4751461e79e65fe110cfd83e7190e013efd"
+    },
+    "model_object": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/model.o",
+      "sha256": "6518415a2f92f85a12ab916c49ec99de3c02f97da9b3d01f60f9a80c40aca5c3"
+    },
+    "device_kernel_object": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/device_catalog/kernel.o",
+      "sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5"
+    },
+    "native_gate": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/native_gate.json",
+      "sha256": "1e0b08d42834fc4f7034dc6a77d758c852c0754073bb89e58d5fa8ed4ebf4db6"
+    },
+    "build_result": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build_result.json",
+      "sha256": "31d78b166e7828802354a58d4ef3370191779b7c6b4ca4d59cd2fc43294fc6a9"
+    }
+  },
+  "spike_argv": [
+    "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike",
+    "--extension=gemmini",
+    "--isa=rv64gc",
+    "-m0x80000000:0x400000000",
+    "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/host-mlp-screen/tiny_pointwise_unroll2/build/model.elf"
+  ],
+  "source_diagnosis": {
+    "profile_control_job": 1837,
+    "profile_source": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/tiny_current_k4_profile_firesim1837.json",
+      "sha256": "1fff4cd09581ed08c784094c3ecbcb42dad065c1a497357135cc6902058c5c41"
+    },
+    "host_interval_census": {
+      "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/docs/perf_records/tiny1837_host_interval_census.json",
+      "sha256": "bde19599fd51b2bb381ff70fa69ddf5c56f826f73ac2f6ffd242eb253c5fb4f1"
+    },
+    "measured_host_gap_total_cycles": 392405827,
+    "down_projection_preceding_intervals_total_cycles": 165369540,
+    "intervals": 22,
+    "scope": "Measured preceding host gaps include all intervening host instructions and profiling overhead, not individual source-op cycle attribution. Census is pre-fusion; accepted LLVM/assembly determines actual emitted work.",
+    "accepted_control_llvm": {
+      "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_four_outputs_unroll4/build/host_llvm/model.ll",
+      "sha256": "ba91e12cbd06e70454e079376a704281703cef342d4138ff9ee254c060e4991a"
+    },
+    "accepted_control_f64_arithmetic_or_float_double_cast_lines": 0,
+    "accepted_control_f32_fdiv_static_instructions": 89,
+    "accepted_control_f32_fma_static_calls": 176,
+    "first_mlp_interval_static_f32_fma_calls": 8,
+    "first_mlp_interval_static_f32_divides": 1,
+    "first_mlp_fused_body": "Gate/up i32 accumulator readout and scale application; f32 exp range reduction and Horner polynomial; reciprocal denominator division; SiLU/product; fixed captured scale quantization/clamp/exactRNE to i8. One45056-element loop, with no materialized f32 activation intermediate or dynamic quantization reduction in this gap.",
+    "first_control_mlp_inner_frame_spills": 0,
+    "remaining_schedule_limit": "NaN-propagating exp clamp produces two comparison/branch paths per element; dependent Horner FMAs and divide remain largely serial even after factor-two unrolling. This exact option saves loop/address overhead; stronger operation interleaving would require a separate structurally legal tensor schedule and actual qualification."
+  }
+}

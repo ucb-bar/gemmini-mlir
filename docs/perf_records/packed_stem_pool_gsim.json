@@ -1,0 +1,66 @@
+{
+  "shape": {
+    "h": 224,
+    "w": 224,
+    "cout": 64,
+    "scale": 0.0020730062387883663,
+    "pooled_rows": 4
+  },
+  "status": "pass",
+  "completed": true,
+  "returncode": 0,
+  "kernel_cycles": 1333146,
+  "elf_sha256": "e62f6ea6a9ad07ab15edc8c74f2ebc2501e77efc2064bb154bceb89d956c0da6",
+  "compilation": {
+    "schema": "gemmini_golden_device_compile_v1",
+    "target_ir_sha256": "2f36ab15104944082db75463035ef8442b9ecc0416fea0e53795117af455bc04",
+    "llvm_mlir_sha256": "cfe82b702a95d4f6e1458dec1bd79e3c5bc38e96aea1150c5db13d63e09b7b13",
+    "llvm_ir_sha256": "4fcfa4bab56a327b8b47b92f4de63a69bdda5f86c5a18387b597faf8b36f7685",
+    "object_sha256": "425f93cb7c305424b4e058a9e8f88035fc008aa7a400095fe70520314bb7ebc6",
+    "object_nofsm_status": "pass",
+    "compiler_sha256": {
+      "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+      "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+    },
+    "compiler_argv": [
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "--mlir-to-llvmir",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_pool_full/kernel.llvm.mlir",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_pool_full/kernel.ll"
+      ],
+      [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_pool_full/kernel.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-direct-conv-20261005/out/gsim_stem_pool_full/kernel.o"
+      ]
+    ]
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "e62f6ea6a9ad07ab15edc8c74f2ebc2501e77efc2064bb154bceb89d956c0da6",
+    "executable_sections": 3,
+    "custom_funct_counts": {
+      "0": 21,
+      "1": 14,
+      "2": 833,
+      "3": 16,
+      "4": 112,
+      "5": 6552,
+      "6": 6664,
+      "7": 1
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "stdout": "GOLDEN_STEM_POOL_CYCLES 1333146\nGOLDEN_STEM_POOL PASS\n"
+}

@@ -1,0 +1,631 @@
+{
+  "schema": "actual_current_source_stride_operand_capture_v1",
+  "status": "pass",
+  "kernel_symbol": "gemmini_exact_requant_11_kernel",
+  "source_route": {
+    "region": "matmul_12",
+    "symbol": "gemmini_exact_requant_11",
+    "kernel": "gemmini_exact_requant_11_kernel",
+    "direct_conv": true,
+    "schedule_kind": "spatial_banded_wide_a_separate_b",
+    "schedule": {
+      "h": 56,
+      "w": 56,
+      "cin": 128,
+      "cout": 128,
+      "stride": 2,
+      "bn": 4,
+      "output_dtype": "i8",
+      "scale": 0.0015212674625217915,
+      "relu": true,
+      "wide_b": true,
+      "explicit_halo": false
+    },
+    "virtual_padding_proof": {
+      "kind": "explicit_static_i8_zero_pad1",
+      "source_shape": [
+        1,
+        128,
+        56,
+        56
+      ],
+      "padded_shape": [
+        1,
+        128,
+        58,
+        58
+      ],
+      "offsets": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "virtual_padding_refusal": null,
+    "bias_argument": 12,
+    "bias_payload_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    "numeric_contract": {
+      "max_output_lsb_error": 0,
+      "selected_policy_limit": 0,
+      "source_region": "matmul_12"
+    },
+    "proof": {
+      "scale": 0.0015212674625217915,
+      "source_scales": [
+        0.03542175143957138,
+        0.001676637795753777
+      ],
+      "output_reciprocal": 25.615114212036133,
+      "accumulator_min": -18874368,
+      "accumulator_max": 18874368,
+      "relu": true,
+      "proof": "all monotone output transition constraints, including original f32 bias ordering",
+      "channels": 128,
+      "accepted_channels": 128,
+      "integer_bias": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "refused_channels": []
+    },
+    "integer_readout": null,
+    "adapter_compilation": {
+      "compiler_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O2",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-c",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/adapter.c",
+        "-o",
+        "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/adapter.o"
+      ],
+      "compiler_sha256": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+      "source_sha256": "c49c7d9290dc89139636dacbcc1450747951a983ceff75f25abc8a110feeae5b",
+      "object_sha256": "62217bdc6d13324a227380cb2f31261940c7d6bcd65f3817e9321b159aa1ac43"
+    },
+    "compilation": {
+      "schema": "gemmini_golden_device_compile_v1",
+      "target_ir_sha256": "1faf4e29548e5015676a11d45793ee091d4d516bd3f11b0f947b52483653e758",
+      "llvm_mlir_sha256": "d3eb2b3bbd93c512bd3bc2776fa2fe2fe795df89886233cb12412a2ceb865dc0",
+      "llvm_ir_sha256": "67049f0c66789af2726008ed9c83d868fbcafd07d4308ad0b0a39b83051ad03d",
+      "object_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "object_nofsm_status": "pass",
+      "compiler_sha256": {
+        "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+        "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+      },
+      "compiler_argv": [
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+          "--mlir-to-llvmir",
+          "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.llvm.mlir",
+          "-o",
+          "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.ll"
+        ],
+        [
+          "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+          "--target=riscv64-unknown-elf",
+          "-march=rv64gc",
+          "-mabi=lp64d",
+          "-mcmodel=medany",
+          "-O2",
+          "-c",
+          "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.ll",
+          "-o",
+          "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.o"
+        ]
+      ]
+    },
+    "resident_weight_slot_decision": {
+      "applied": false,
+      "automatic_policy": false,
+      "timing_claim": false,
+      "performance": "UNKNOWN",
+      "selection": "explicit remaining resident rows",
+      "refusal": "requires complete resident convolution input"
+    },
+    "resident_stripe_reduction_loop_decision": {
+      "applied": false,
+      "timing_claim": false,
+      "basis": "explicit bounded ordinary tap/K/N/row/X command retention",
+      "profitability": "UNKNOWN outside separately qualified paired scopes",
+      "refusal": "selected schedule is not the complete resident stripe family"
+    },
+    "resident_stripe_policy_decision": {
+      "applied": false,
+      "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+      "timing_claim": false,
+      "refusal": "resident stripes need unpadded stride1 and aligned Cin"
+    },
+    "source_stride_policy_decision": {
+      "applied": false,
+      "timing_claim": false,
+      "cost_unit": "padded_DIM_issue_plus_requested_16B_transfer_estimate",
+      "refusal": [
+        {
+          "row_residue": false,
+          "reason": "source stride layout needs unpadded stride2, output width<=DIM and aligned Cin"
+        },
+        {
+          "row_residue": true,
+          "reason": "source stride layout needs unpadded stride2, output width<=DIM and aligned Cin"
+        }
+      ]
+    },
+    "flat_resident_plane_decision": {
+      "applied": false,
+      "automatic_policy": false,
+      "performance": "UNKNOWN",
+      "timing_claim": false,
+      "selection": "explicit flat kw-plane residency",
+      "refusal": "flat resident planes require stride1 and no row grouping/residue"
+    },
+    "compact_resident_command_decision": {
+      "applied": false,
+      "selection": "explicit opt-in; profitability not inferred",
+      "refusal": "selected family is not resident channel planes",
+      "timing_claim": false
+    },
+    "resident_spatial_tail_decision": {
+      "applied": false,
+      "automatic_policy": false,
+      "performance": "UNKNOWN",
+      "timing_claim": false,
+      "selection": "explicit stationary-B spatial tail placement",
+      "refusal": "Requires an admitted resident layout"
+    },
+    "resident_weight_issue_decision": {
+      "applied": false,
+      "automatic_policy": false,
+      "timing_claim": false,
+      "performance": "UNKNOWN",
+      "selection": "explicit weight packet lookahead",
+      "refusal": "Current family has no proved complete resident input"
+    }
+  },
+  "shape": {
+    "h": 56,
+    "w": 56,
+    "cin": 128,
+    "cout": 128,
+    "stride": 2,
+    "bn": 4,
+    "output_dtype": "i32",
+    "scale": 1.0,
+    "relu": false,
+    "wide_b": true,
+    "explicit_halo": false
+  },
+  "actual_source_schedule": {
+    "h": 56,
+    "w": 56,
+    "cin": 128,
+    "cout": 128,
+    "stride": 2,
+    "bn": 4,
+    "output_dtype": "i8",
+    "scale": 0.0015212674625217915,
+    "relu": true,
+    "wide_b": true,
+    "explicit_halo": false
+  },
+  "source_numeric_proof": {
+    "scale": 0.0015212674625217915,
+    "source_scales": [
+      0.03542175143957138,
+      0.001676637795753777
+    ],
+    "output_reciprocal": 25.615114212036133,
+    "accumulator_min": -18874368,
+    "accumulator_max": 18874368,
+    "relu": true,
+    "proof": "all monotone output transition constraints, including original f32 bias ordering",
+    "channels": 128,
+    "accepted_channels": 128,
+    "integer_bias": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "refused_channels": []
+  },
+  "a_sha256": "d32eeebda425392473a2ac05bcf6be0a7d74749e03bf1126f269f8626f6b1496",
+  "b_sha256": "675c2e512a97f678522fab264fc130299709efb42fb1579572a94fa9d5d1989e",
+  "expected_sha256": "20bc7ab2c50b0a2dc3e83d2b3dd45144464055abaa8b534fe33227c3e89d7756",
+  "source_kernel_object": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.o",
+  "source_kernel_object_sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+  "all1000_original_f32_bits_exact": true,
+  "capture_epochs": 1,
+  "original_i8_leaf_mac_requant_assay_exact": true,
+  "compile_command": [
+    "cc",
+    "-O3",
+    "-march=native",
+    "-fPIC",
+    "-shared",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/qualification_normal/host/model.o",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/qualification_normal/host/reference.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_prepared/direct_conv/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/native_capture.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/stem_pool_bundle/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/domain_bundle/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/key_bundle/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/mean_bundle/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_prepared/segmented_inputs/native_oracle.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device/device_catalog_shim.c",
+    "/scratch/agustin/tmp/merlin-latest-20261004/merlin/runtime/abi/mlir_runtime.c",
+    "-lm",
+    "-o",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/capture.so"
+  ],
+  "source_catalog": "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_catalog/device_catalog.json",
+  "scope": "Read-only actual NHWC/HWIO inputs in the qualified fresh879 whole native model; all original arithmetic and outputs preserved. expected.bin is independently computed raw i32 MAC, while actual source provider returns i8. The i32 fixture supplies an accumulator screen, not the actual i8 provider's full service/cycle reproduction.",
+  "whole_hardware_cycles": "UNKNOWN",
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture_actual.py": {
+      "sha256": "1c2582da803ce8ac16dcccc5d71c58c950815c204b1f7a709a50854a9c2aaa30",
+      "bytes": 7471
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/docs/perf_records/checked_pair_scan_complete_verified_normal_source_whole_qualification.json": {
+      "sha256": "fa935bf4d883eb380869b504178af6c7fbda6ebeb91ccc53ad4cdaad83d81027",
+      "bytes": 2082850
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_catalog/device_catalog.json": {
+      "sha256": "32623d9090367db4248df443660591bdcc4495d4043049ca3abc931623a574c4",
+      "bytes": 1225956
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/requant.json": {
+      "sha256": "404235c529ba50b99fb7272ae50ac238b2463fa4e47162a8ae4abfc11a3d569a",
+      "bytes": 806383
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/native_oracle.c": {
+      "sha256": "53e7d700513bb6e84e46ae50adda11bb497f8c2c7699013d52884007c2a7a801",
+      "bytes": 81684
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/native_capture.c": {
+      "sha256": "4a95db3f3a4c1587952d56ef4ed6951fbb9f18f1b51c13a2768765db7f957e86",
+      "bytes": 82516
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/qualification_normal/host/model.o": {
+      "sha256": "258510f529cb6863e555fae03e26f637a19ea328cef039ab213f86e976d8271c",
+      "bytes": 184344
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/qualification_normal/host/reference.c": {
+      "sha256": "cfca7313a6d4fb2da2ecb44dc0a6958677875819f8e862d69355e04e278b1936",
+      "bytes": 351
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device/device_catalog_shim.c": {
+      "sha256": "8074abff6e4dbfe50feaa2c527a5540abba8ac07bcfc81cafa4cd587aba9345e",
+      "bytes": 4539
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/merlin/runtime/abi/mlir_runtime.c": {
+      "sha256": "46d1443f751be6e7e0690904580da1fbc88efa85b8051a549b3f44163cfa622c",
+      "bytes": 11013
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/requant_bundle/gemmini_exact_requant_11/kernel.o": {
+      "sha256": "7b2d088d2584cfdcf60df733c50927ba06ab3e79b7894ed20903a8eba21e4fa9",
+      "bytes": 212888
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/capture/model.mlir": {
+      "sha256": "33155581001b838e0eb4fa3c5754a876db6280d731affb2cc2ea55d330882820",
+      "bytes": 1106253
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/capture/golden.npy": {
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "bytes": 4128
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/capture.so": {
+      "sha256": "b70dd259a250db5553a5fbd92e89aacb2aaf35a2b0bdf3e372875f2889e6ef4b",
+      "bytes": 345112
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/a.bin": {
+      "sha256": "d32eeebda425392473a2ac05bcf6be0a7d74749e03bf1126f269f8626f6b1496",
+      "bytes": 401408
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/b.bin": {
+      "sha256": "675c2e512a97f678522fab264fc130299709efb42fb1579572a94fa9d5d1989e",
+      "bytes": 147456
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/expected.bin": {
+      "sha256": "20bc7ab2c50b0a2dc3e83d2b3dd45144464055abaa8b534fe33227c3e89d7756",
+      "bytes": 401408
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/original_i8_output.bin": {
+      "sha256": "a1602dcc56cf65b8ac660985d3a3f51286d93f0ebe943bfb6925640f7b12bd6d",
+      "bytes": 100352
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/output.npy": {
+      "sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+      "bytes": 4128
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/compile.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/artifacts/audits/resnet_source11_actual_20261007/capture/compile.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_prepared/direct_conv/native_oracle.c": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/stem_pool_bundle/native_oracle.c": {
+      "sha256": "dc0a114845ad7b99321bc8b97f8310308ce34ced6286c5264415daffcea652bb",
+      "bytes": 1569
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/domain_bundle/native_oracle.c": {
+      "sha256": "45380ec82fad60dc5552dde34b6c5e2fae007c05f2b52f43a55ba0fabe07422c",
+      "bytes": 47266
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_current/key_bundle/native_oracle.c": {
+      "sha256": "327b1d0cf5c08edff5dd20fcee3ca4b2b28c8e05cc66a8df5bec8a4bb52dc7e7",
+      "bytes": 5476
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/mean_bundle/native_oracle.c": {
+      "sha256": "b74e9c78bfa4fc7bac8750c89472505b1c802fb095ba67e650ae1aac2cdaf0c4",
+      "bytes": 50724
+    },
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/resnet-pair-scan-alignment-20261007/out/pair_scan_alignment/full_leaf_whole/normal/build_direct/device_prepared/segmented_inputs/native_oracle.c": {
+      "sha256": "2e3191b9053cb78a703f607ef59c06979b7768f1a039c802d05baf2ddc95773a",
+      "bytes": 4977
+    }
+  }
+}

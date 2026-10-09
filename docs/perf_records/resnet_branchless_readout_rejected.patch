@@ -1,0 +1,83 @@
+diff --git a/mlir_oot/exact_integer_readout.py b/mlir_oot/exact_integer_readout.py
+index fd8bd96..40b167c 100644
+--- a/mlir_oot/exact_integer_readout.py
++++ b/mlir_oot/exact_integer_readout.py
+@@ -61,27 +61,40 @@ def fixedpoint_candidate(proof):
+     return None
+ 
+ 
+-def emit_readout(proof,symbol,*,fixedpoint=False):
++def emit_readout(proof,symbol,*,fixedpoint=False,branchless=False):
+     # Re-derive rather than trusting mutable receipt fields from an external file.
+     expected=derive(proof['source_scales'],proof['accumulator_min'],proof['accumulator_max'],proof['output_min']==0)
+     if any(proof.get(k)!=expected[k] for k in expected):raise ValueError('readout proof fields changed')
+-    thresholds=','.join(str(x)+'LL' for x in proof['thresholds'])
++    if branchless and not fixedpoint:raise ValueError('branchless correction requires a proved fixed-point estimate')
+     low=proof['output_min'];count=len(proof['thresholds']);candidate=fixedpoint_candidate(proof) if fixedpoint else None
+     if fixedpoint and candidate is None:raise ValueError('no proven single-correction fixed-point estimate')
+-    if candidate:
++    if candidate and branchless:
++        # Domain sentinels make both neighboring loads valid even at saturated
++        # q. Complete monotonic thresholds ensure the two corrections cannot
++        # both apply. The unchanged estimate proof bounds the correction to one.
++        table=[proof['accumulator_min'],*proof['thresholds'],proof['accumulator_max']+1]
++        body=f'''int64_t q=((int64_t)x*{candidate['multiplier']}LL+{1<<(candidate['shift']-1)}LL)>>{candidate['shift']};
++ if(q<{low})q={low};if(q>127)q=127;
++ unsigned index=(unsigned)(q-({low}));
++ q+=((int64_t)x>={symbol}_thresholds[index+1])-((int64_t)x<{symbol}_thresholds[index]);
++ return (int8_t)q;'''
++    elif candidate:
++        table=proof['thresholds']
+         body=f'''int64_t q=((int64_t)x*{candidate['multiplier']}LL+{1<<(candidate['shift']-1)}LL)>>{candidate['shift']};
+  if(q<{low})q={low};if(q>127)q=127;
+  if(q<127 && (int64_t)x>={symbol}_thresholds[q-({low})])q++;
+  else if(q>{low} && (int64_t)x<{symbol}_thresholds[q-({low})-1])q--;
+  return (int8_t)q;'''
+     else:
++        table=proof['thresholds']
+         body=f'''unsigned lo=0,hi={count};
+  while(lo<hi){{unsigned mid=(lo+hi)/2;if((int64_t)x>={symbol}_thresholds[mid])lo=mid+1;else hi=mid;}}
+  return (int8_t)({low}+(int)lo);'''
++    thresholds=','.join(str(x)+'LL' for x in table)
+     return f'''#include <stdint.h>
+ #include <stddef.h>
+ _Static_assert((-1LL>>1)==-1LL,"arithmetic signed right shift required");
+-static const int64_t {symbol}_thresholds[{count}]={{{thresholds}}};
++static const int64_t {symbol}_thresholds[{len(table)}]={{{thresholds}}};
+ static inline int8_t {symbol}_scalar(int32_t x){{
+  if((int64_t)x<{proof['accumulator_min']}LL || (int64_t)x>{proof['accumulator_max']}LL)__builtin_trap();
+  {body}
+diff --git a/tests/test_exact_integer_readout.py b/tests/test_exact_integer_readout.py
+index 9121867..6e242b9 100644
+--- a/tests/test_exact_integer_readout.py
++++ b/tests/test_exact_integer_readout.py
+@@ -9,7 +9,7 @@ from mlir_oot.golden_requant import quantized
+ def test_integer_readout_against_compiled_original_source(tmp_path,scales,relu):
+     proof=derive(scales,relu=relu)
+     candidate=fixedpoint_candidate(proof);assert candidate and candidate['max_estimate_output_error']<=1
+-    source=emit_readout(proof,'binary')+emit_readout(proof,'fixed',fixedpoint=True)
++    source=emit_readout(proof,'binary')+emit_readout(proof,'fixed',fixedpoint=True)+emit_readout(proof,'branchless',fixedpoint=True,branchless=True)
+     body='volatile float value=(float)x;'
+     for s in scales:body+=f'value=value*{float(s).hex()}f;'
+     low=0 if relu else -128
+@@ -26,17 +26,18 @@ float y=nearbyintf(value);if(y<{low})y={low};if(y>127)y=127;b[i]=(int8_t)y;}}}}
+     interior=np.arange(max(-(1<<31),proof['thresholds'][0]-2),min((1<<31),proof['thresholds'][-1]+2),dtype=np.int32)
+     a=np.unique(np.concatenate([interior,np.array(sorted(boundaries),dtype=np.int32)]))
+     lib=ctypes.CDLL(str(tmp_path/'readout.so'));outputs=[]
+-    for name in ('binary','fixed','original'):
++    for name in ('binary','fixed','branchless','original'):
+         fn=getattr(lib,name);fn.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_size_t]
+         output=np.full(a.size+8,-77,dtype=np.int8);fn(a.ctypes.data,output.ctypes.data,a.size)
+         assert np.all(output[a.size:]==-77);outputs.append(output[:a.size])
+-    assert np.array_equal(outputs[0],outputs[2]);assert np.array_equal(outputs[1],outputs[2])
++    assert all(np.array_equal(output,outputs[-1]) for output in outputs[:-1])
+ 
+ 
+ def test_narrow_domain_repeated_sentinel_and_proof_tampering():
+     p=derive([.01],-1,1,False)
+     assert [evaluate(x,p) for x in (-1,0,1)]==[0,0,0]
+     with pytest.raises(ValueError):evaluate(2,p)
++    with pytest.raises(ValueError,match='requires'):emit_readout(p,'no_estimate',branchless=True)
+     p['thresholds'][0]+=1
+     with pytest.raises(ValueError,match='changed'):emit_readout(p,'bad')
+ 

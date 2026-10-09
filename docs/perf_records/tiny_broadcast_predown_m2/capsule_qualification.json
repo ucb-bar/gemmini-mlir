@@ -1,0 +1,66 @@
+{
+  "schema": "generic_source_exact_loop_broadcast_capsule_v1",
+  "shape": [
+    1,
+    2,
+    5632
+  ],
+  "original_native_i8_words": 11264,
+  "strict_compared_words": 56320,
+  "all5_frm_and_sticky_flags_match": true,
+  "dirty_guard_bytes": 128,
+  "immutable_inputs_bytes": 405504,
+  "cases": [
+    {
+      "name": "control",
+      "native_words_exact": 11264,
+      "native_sha256": "d100d73ac104f72b3d591fca1b81ca4e86c45c04898aa00033a677d2f4137abd",
+      "target_object_sha256": "08d8633cc95736d8a98a48299236c011aa066758db278e1bbb43415ef7f76011",
+      "target_llvm_sha256": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/control.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/control.o"
+      ]
+    },
+    {
+      "name": "broadcast",
+      "native_words_exact": 11264,
+      "native_sha256": "ccf94abcfe5504e91c4b9fe8edecc4749d9f0865d34b99930c742cc3cf835569",
+      "target_object_sha256": "90896ff9b6a8b233ce9727026cdc982fe7bf87952a51d6a492fc0690875891b5",
+      "target_llvm_sha256": "7545076dd964d9a90973605a9ed37858c5079d21448dfef698c21d195b5a32db",
+      "compile_argv": [
+        "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "--target=riscv64-unknown-elf",
+        "-march=rv64gc",
+        "-mabi=lp64d",
+        "-mcmodel=medany",
+        "-O3",
+        "-ffreestanding",
+        "-fno-builtin",
+        "-ffp-contract=off",
+        "-c",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/broadcast.target.ll",
+        "-o",
+        "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-broadcast-predown-m2-20261006/broadcast.o"
+      ]
+    }
+  ],
+  "source_sha256": "24f61771bba418f7a3375b29578124f772136a4c673d222402dec7ba88376ba1",
+  "control_raw_llvm_sha256": "351587e01e01d838e5b06096ffc61dd034713d634926afbb0d0d51505317847b",
+  "scope": "Complete original two-row preDown/all5632channels, including dequantization/polynomial/reciprocal/three rounded multiplies/quantization/loads/stores/allocated temporary/final copy. Existing boundedRNE policy identical; typed broadcast dimension2-indexed scale operands share one load across independent rows. No source arithmetic or output ownership changes.",
+  "whole_hardware_prediction": null,
+  "zero_FSM": true,
+  "elf_sha256": "52f5ac4813c7ae0230736e4ecd9e254b6f0f7660111395c0d7449fd6210d4c10",
+  "token_usage_available": false
+}

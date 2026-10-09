@@ -1,0 +1,607 @@
+{
+  "schema": "q1013_reference_diagnostic_elf_ledger_v1",
+  "scope": "Reference diagnostic only, not source-model qualification. Six dynamically dead library LOOP words replaced by RV64 NOP. Mixed .diag code/table section split at unchanged address; data symbols reassigned. Every loaded byte is unchanged except those six dead words. Program headers/addresses/entrypoint unchanged.",
+  "original_path": "/scratch/agustin/tmp/exo_q1013/exo-nofsm-t3-f.elf",
+  "original_sha256": "5d01bb246765ce2a10b10aae7e8ad1e954e239c75e9ac2cf724eda9778f749e6",
+  "diagnostic_path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_nofsm_diagnostic/q1013_diagnostic.elf",
+  "diagnostic_sha256": "ead80d2728ff7ed39b41bdeb60081703d6eb030df54d2db2985bb042f04b98e2",
+  "instruction_changes": [
+    {
+      "address": 2147494918,
+      "offset": 15366,
+      "before": "7b300713",
+      "after": "13000000",
+      "funct": 9,
+      "name": "LOOP_WS_CONFIG_BOUNDS"
+    },
+    {
+      "address": 2147494922,
+      "offset": 15370,
+      "before": "7b30b514",
+      "after": "13000000",
+      "funct": 10,
+      "name": "LOOP_WS_CONFIG_ADDRS_AB"
+    },
+    {
+      "address": 2147494936,
+      "offset": 15384,
+      "before": "7bb0d716",
+      "after": "13000000",
+      "funct": 11,
+      "name": "LOOP_WS_CONFIG_ADDRS_DC"
+    },
+    {
+      "address": 2147494944,
+      "offset": 15392,
+      "before": "7bb0e718",
+      "after": "13000000",
+      "funct": 12,
+      "name": "LOOP_WS_CONFIG_STRIDES_AB"
+    },
+    {
+      "address": 2147494966,
+      "offset": 15414,
+      "before": "7b30f31a",
+      "after": "13000000",
+      "funct": 13,
+      "name": "LOOP_WS_CONFIG_STRIDES_DC"
+    },
+    {
+      "address": 2147495028,
+      "offset": 15476,
+      "before": "7bb0e710",
+      "after": "13000000",
+      "funct": 8,
+      "name": "LOOP_WS"
+    }
+  ],
+  "metadata": {
+    "diag_original_size": 3490,
+    "diag_code_size": 144,
+    "diag_data_section_index": 17,
+    "data_symbols_remapped": 85,
+    "new_section_table_offset": 26454416
+  },
+  "actual_loaded_changed_byte_offsets": [
+    15366,
+    15367,
+    15368,
+    15369,
+    15370,
+    15371,
+    15372,
+    15373,
+    15384,
+    15385,
+    15386,
+    15387,
+    15392,
+    15393,
+    15394,
+    15395,
+    15414,
+    15415,
+    15416,
+    15417,
+    15476,
+    15477,
+    15478,
+    15479
+  ],
+  "original_histogram_changed_instruction_counts": {
+    "0x80002c06": 0,
+    "0x80002c0a": 0,
+    "0x80002c18": 0,
+    "0x80002c20": 0,
+    "0x80002c36": 0,
+    "0x80002c74": 0
+  },
+  "original_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "5d01bb246765ce2a10b10aae7e8ad1e954e239c75e9ac2cf724eda9778f749e6",
+    "executable_sections": 4,
+    "custom_funct_counts": {
+      "0": 159,
+      "1": 1537,
+      "2": 2183,
+      "3": 675,
+      "4": 5406,
+      "5": 8360,
+      "6": 13765,
+      "7": 1,
+      "8": 1,
+      "9": 1,
+      "10": 1,
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 909
+    },
+    "forbidden": [
+      {
+        "section": ".text",
+        "address": 2147494918,
+        "funct": 9,
+        "funct3": 3,
+        "name": "LOOP_WS_CONFIG_BOUNDS"
+      },
+      {
+        "section": ".text",
+        "address": 2147494922,
+        "funct": 10,
+        "funct3": 3,
+        "name": "LOOP_WS_CONFIG_ADDRS_AB"
+      },
+      {
+        "section": ".text",
+        "address": 2147494936,
+        "funct": 11,
+        "funct3": 3,
+        "name": "LOOP_WS_CONFIG_ADDRS_DC"
+      },
+      {
+        "section": ".text",
+        "address": 2147494944,
+        "funct": 12,
+        "funct3": 3,
+        "name": "LOOP_WS_CONFIG_STRIDES_AB"
+      },
+      {
+        "section": ".text",
+        "address": 2147494966,
+        "funct": 13,
+        "funct3": 3,
+        "name": "LOOP_WS_CONFIG_STRIDES_DC"
+      },
+      {
+        "section": ".text",
+        "address": 2147495028,
+        "funct": 8,
+        "funct3": 3,
+        "name": "LOOP_WS"
+      }
+    ],
+    "unknown": [
+      {
+        "section": ".diag",
+        "address": 2202338490,
+        "funct": 0,
+        "funct3": 0,
+        "name": "CONFIG_CMD"
+      }
+    ],
+    "status": "fail"
+  },
+  "diagnostic_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "ead80d2728ff7ed39b41bdeb60081703d6eb030df54d2db2985bb042f04b98e2",
+    "executable_sections": 4,
+    "custom_funct_counts": {
+      "0": 158,
+      "1": 1537,
+      "2": 2183,
+      "3": 675,
+      "4": 5406,
+      "5": 8360,
+      "6": 13765,
+      "7": 1,
+      "14": 909
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "actual_spike_equivalence": {
+    "isa": "rv64gc_zicntr",
+    "reason_for_counter_extension": "Original reference executable uses rdcycle; this explicit reference replay admits its stock counter CSR. It is not our strictRV64GC production gate.",
+    "stdout_byte_equal": true,
+    "pc_histogram_equal": true,
+    "unique_pcs": 200087,
+    "retired_instructions": 231665151,
+    "files": {
+      "original.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_nofsm_diagnostic/original.stdout",
+        "sha256": "f32e98c70596f9929c9df4c2e00c9c22da063a58cab6b0ee441b010a87171426"
+      },
+      "diagnostic.stdout": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_nofsm_diagnostic/diagnostic.stdout",
+        "sha256": "f32e98c70596f9929c9df4c2e00c9c22da063a58cab6b0ee441b010a87171426"
+      },
+      "original.histogram": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_nofsm_diagnostic/original.histogram",
+        "sha256": "1934bfc123339843a13fcc7b389a33cff683bf6cc8b3d7822affb4db75545d34"
+      },
+      "diagnostic.histogram": {
+        "path": "/scratch/agustin/tmp/gemmini-reference-parity-20261005/out/reference_nofsm_diagnostic/diagnostic.histogram",
+        "sha256": "1934bfc123339843a13fcc7b389a33cff683bf6cc8b3d7822affb4db75545d34"
+      }
+    }
+  },
+  "complete_file_change_ledger": {
+    "changed_original_byte_ranges": [
+      [
+        40,
+        42
+      ],
+      [
+        60,
+        61
+      ],
+      [
+        15366,
+        15374
+      ],
+      [
+        15384,
+        15388
+      ],
+      [
+        15392,
+        15396
+      ],
+      [
+        15414,
+        15418
+      ],
+      [
+        15476,
+        15480
+      ],
+      [
+        26435582,
+        26435583
+      ],
+      [
+        26435606,
+        26435607
+      ],
+      [
+        26435630,
+        26435631
+      ],
+      [
+        26435654,
+        26435655
+      ],
+      [
+        26435678,
+        26435679
+      ],
+      [
+        26435702,
+        26435703
+      ],
+      [
+        26435726,
+        26435727
+      ],
+      [
+        26435750,
+        26435751
+      ],
+      [
+        26435774,
+        26435775
+      ],
+      [
+        26435798,
+        26435799
+      ],
+      [
+        26435822,
+        26435823
+      ],
+      [
+        26435846,
+        26435847
+      ],
+      [
+        26435870,
+        26435871
+      ],
+      [
+        26435894,
+        26435895
+      ],
+      [
+        26435918,
+        26435919
+      ],
+      [
+        26435942,
+        26435943
+      ],
+      [
+        26435966,
+        26435967
+      ],
+      [
+        26435990,
+        26435991
+      ],
+      [
+        26436014,
+        26436015
+      ],
+      [
+        26436038,
+        26436039
+      ],
+      [
+        26436062,
+        26436063
+      ],
+      [
+        26436086,
+        26436087
+      ],
+      [
+        26436110,
+        26436111
+      ],
+      [
+        26436134,
+        26436135
+      ],
+      [
+        26436158,
+        26436159
+      ],
+      [
+        26436182,
+        26436183
+      ],
+      [
+        26436206,
+        26436207
+      ],
+      [
+        26436230,
+        26436231
+      ],
+      [
+        26436254,
+        26436255
+      ],
+      [
+        26436278,
+        26436279
+      ],
+      [
+        26436302,
+        26436303
+      ],
+      [
+        26436326,
+        26436327
+      ],
+      [
+        26436350,
+        26436351
+      ],
+      [
+        26436374,
+        26436375
+      ],
+      [
+        26436398,
+        26436399
+      ],
+      [
+        26436422,
+        26436423
+      ],
+      [
+        26436446,
+        26436447
+      ],
+      [
+        26436470,
+        26436471
+      ],
+      [
+        26436494,
+        26436495
+      ],
+      [
+        26436518,
+        26436519
+      ],
+      [
+        26436542,
+        26436543
+      ],
+      [
+        26436566,
+        26436567
+      ],
+      [
+        26436590,
+        26436591
+      ],
+      [
+        26436614,
+        26436615
+      ],
+      [
+        26436638,
+        26436639
+      ],
+      [
+        26436662,
+        26436663
+      ],
+      [
+        26436686,
+        26436687
+      ],
+      [
+        26436710,
+        26436711
+      ],
+      [
+        26436734,
+        26436735
+      ],
+      [
+        26436758,
+        26436759
+      ],
+      [
+        26436782,
+        26436783
+      ],
+      [
+        26436806,
+        26436807
+      ],
+      [
+        26436830,
+        26436831
+      ],
+      [
+        26436854,
+        26436855
+      ],
+      [
+        26436878,
+        26436879
+      ],
+      [
+        26436902,
+        26436903
+      ],
+      [
+        26436926,
+        26436927
+      ],
+      [
+        26436950,
+        26436951
+      ],
+      [
+        26436974,
+        26436975
+      ],
+      [
+        26436998,
+        26436999
+      ],
+      [
+        26437022,
+        26437023
+      ],
+      [
+        26437046,
+        26437047
+      ],
+      [
+        26437070,
+        26437071
+      ],
+      [
+        26437094,
+        26437095
+      ],
+      [
+        26437118,
+        26437119
+      ],
+      [
+        26437142,
+        26437143
+      ],
+      [
+        26437166,
+        26437167
+      ],
+      [
+        26437190,
+        26437191
+      ],
+      [
+        26437214,
+        26437215
+      ],
+      [
+        26437238,
+        26437239
+      ],
+      [
+        26437262,
+        26437263
+      ],
+      [
+        26437286,
+        26437287
+      ],
+      [
+        26437310,
+        26437311
+      ],
+      [
+        26437334,
+        26437335
+      ],
+      [
+        26437358,
+        26437359
+      ],
+      [
+        26437382,
+        26437383
+      ],
+      [
+        26437406,
+        26437407
+      ],
+      [
+        26437430,
+        26437431
+      ],
+      [
+        26437454,
+        26437455
+      ],
+      [
+        26437478,
+        26437479
+      ],
+      [
+        26437502,
+        26437503
+      ],
+      [
+        26437526,
+        26437527
+      ],
+      [
+        26437550,
+        26437551
+      ],
+      [
+        26437574,
+        26437575
+      ],
+      [
+        26437598,
+        26437599
+      ]
+    ],
+    "appended_metadata_offset": 26454256,
+    "appended_metadata_bytes": 1312,
+    "appended_metadata_sha256": "dff057b850bd8344059fd0c164bbaa29c762369bd433d61d7911739cb5d92b37",
+    "original_file_bytes": 26454256,
+    "diagnostic_file_bytes": 26455568
+  },
+  "firesim_expected_reference_only_markers": [
+    "FM full model cycles:",
+    "FM bracketed compute only sum:",
+    "FM buffered layer records: 54",
+    "Im2col cycles: 0 (0%)",
+    "Pooling cycles: 0 (0%)",
+    "Mismatching logits: 0 / 1000",
+    "Argmax: 258 (expected 258): MATCH",
+    "PASS"
+  ]
+}

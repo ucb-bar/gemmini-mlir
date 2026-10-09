@@ -1,0 +1,48 @@
+from pathlib import Path
+import collections,copy,hashlib,json,shutil,subprocess
+from mlir_oot.golden_device_profile import parse_profile
+from mlir_oot.no_fsm_audit import audit_elf
+oot=Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+w=oot/'out/artifacts/probes/root-resnet1974-profile-20261006';w.mkdir(parents=True,exist_ok=False)
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+q=json.loads((oot/'docs/perf_records/resident_weight_packet_normal_whole_qualification.json').read_text())
+old=Path('/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile')
+p=json.loads((old/'profile_build.json').read_text())
+actual=Path(q['controlled_link']['elf']);assert sha(actual)=='f9a068370cb253d4c3c1d1ba50db1bfb6eea8fdd332cfaa4a2da96080b43e532'
+argv=json.loads((actual.parent/'linker_argv.json').read_text());argv[-1]=str(w/'reproduced1974.elf')
+subprocess.run(argv,check=True,capture_output=True);assert sha(w/'reproduced1974.elf')==sha(actual)
+for src,digest in p['objects'].items():assert sha(src)==digest,src
+replace={}
+for row in q['controlled_link']['changed_leaves']:
+ assert sha(row['selected'])==row['selected_sha256']
+ found=[src for src,digest in p['objects'].items()if digest==row['original_sha256']]
+ assert len(found)==1,(row,found)
+ replace[found[0]]=row['selected']
+assert len(replace)==5
+reproductions=[]
+for row in p['leaf_component_reproduction']:
+ leaves=[replace.get(x,x)for x in row['leaves']]
+ out=w/('reproduced_'+Path(row['component']).name)
+ cmd=[row['argv'][0],'-r',*leaves,'-o',str(out)];subprocess.run(cmd,check=True,capture_output=True)
+ expected=actual.parent/'requant.o'if Path(row['component']).name=='requant.o'else Path(row['component'])
+ assert sha(out)==sha(expected),(out,expected)
+ reproductions.append(dict(component=str(expected),sha256=sha(expected),leaves={x:sha(x)for x in leaves},argv=cmd))
+for name in ('device_profile.c','device_profile.o'):shutil.copyfile(old/name,w/name)
+assert sha(w/'device_profile.c')==p['source_sha256']
+argv=[replace.get(x,x)for x in p['linker_argv']]
+argv=[str(w/'device_profile.o')if x==str(old/'device_profile.o')else str(w/'model.elf')if x==str(old/'model.elf')else x for x in argv]
+subprocess.run(argv,check=True,capture_output=True)
+audit=audit_elf((w/'model.elf').read_bytes());assert audit['status']=='pass'
+(w/'model.nofsm_audit.json').write_text(json.dumps(audit,indent=2)+'\n')
+objects=[replace.get(x,x)for x in p['objects']]
+p.update(base_elf=str(actual),base_elf_sha256=sha(actual),elf_sha256=sha(w/'model.elf'),objects={x:sha(x)for x in objects},linker_argv=argv,leaf_component_reproduction=reproductions,control_reproduced_byteidentical=True,control_job=1974,control_cycles=34830614,wrapper_object_sha256=sha(w/'device_profile.o'),wrapper_source_and_object_byteidentical1903=True,source_alignment='Exactly five admitted resident kernel leaves replace1903 objects; all other compute/host/runtime/adapter objects unchanged. Native actual1974 gate reused by exact source/object identity; diagnostic wrappers have no output arithmetic.',current_best_section_costs='UNKNOWN; current1982 paired-flat is a different artifact')
+(w/'profile_build.json').write_text(json.dumps(p,indent=2)+'\n')
+cmd=['/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike','--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(w/'model.elf')]
+with(w/'spike.log').open('w')as log:r=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,timeout=180)
+s=(w/'spike.log').read_text();assert r.returncode==0
+profile=parse_profile(s,p);assert len(profile['events'])==70 and collections.Counter(e[1]for e in profile['events'])==collections.Counter(range(70))
+assert 'OUT_SHA256 f32le 1000 4000 0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787'in s and '\nDONE\n'in s and 'METRIC memref_rank_mismatch 0'in s
+v=json.loads(Path(q['arms']['controlled']['strict_validation']).read_text())
+v.update(elf_sha256=p['elf_sha256'],spike_console_path=str(w/'spike.log'),spike_console_sha256=sha(w/'spike.log'),boundary_profile=profile,profile_build=str(w/'profile_build.json'),profile_build_sha256=sha(w/'profile_build.json'),scope='Instrumented exact1974 object set; Spike counters retired instructions, nothardwarecycles;1982sectioncostsUNKNOWN',executable_nofsm_audit=audit)
+(w/'reference_validation.json').write_text(json.dumps(v,indent=2)+'\n')
+print('RESNET1974_PROFILE_STRICT_PASS',sha(w/'model.elf'),profile['forward_counter'],flush=True)

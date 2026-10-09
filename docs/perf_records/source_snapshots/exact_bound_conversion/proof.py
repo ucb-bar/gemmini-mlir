@@ -1,0 +1,15 @@
+from pathlib import Path
+import json,subprocess,hashlib,sys
+from mlir_oot.host_outward_fp import emit_fixed_outward_f64_header
+from mlir_oot.no_fsm_audit import audit_elf
+sys.path.insert(0,'/scratch/agustin/tmp/merlin-exact-bound-conversion-20261006/merlin/tests/runtime')
+from test_exact_bound_conversion import C,cases
+w=Path(__file__).parent.resolve();d=w/'independent_target';d.mkdir(exist_ok=True);old=Path('/scratch/agustin/tmp/gemmini-polynomial-pair-provider-20261006/out/word_soft_i64_group');h=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+(d/'exact_provider.h').write_text(emit_fixed_outward_f64_header(name='certificate_f64',host_isa='rv64gc',exact_bound_f32=True))
+source=Path('/scratch/agustin/tmp/gemmini-polynomial-pair-provider-20261006/out/frontier_i64_allocated_pair_v2/driver.c').read_text().replace('int main(void){','int unused_group_main(void){');values=cases();table='\nstatic const struct{uint64_t value;uint32_t lo,hi,valid;} cases[]={\n'+',\n'.join('{UINT64_C(%d),%du,%du,%d}'%(raw,*(result or(0,0)),result is not None)for raw,result in values)+'\n};\n'
+source+='\n'+C+table+'int main(void){unsigned failures=0;for(unsigned m=0;m<5;m++)for(unsigned i=0;i<sizeof(cases)/sizeof(cases[0]);i++)if(!probe(cases[i].value,cases[i].lo,cases[i].hi,cases[i].valid,m))failures++;printf("EXACT_BOUND_CONVERSION %u\\n",failures);return failures!=0;}\n';(d/'proof.c').write_text(source)
+c=json.loads((old/'numeric_frozen/compile.json').read_text())['commands'][0];c=[str(d/'proof.c')if x==str(old/'numeric_frozen/provider.c')else str(d/'proof.o')if x==str(old/'numeric_frozen/provider.o')else str(d/'proof.d')if x==str(old/'numeric_frozen/provider.d')else str(d/'exact_provider.h')if x==str(old/'numeric_frozen/fixed_outward_f64.h')else x for x in c];c.insert(1,'-I/scratch/agustin/tmp/merlin-exact-bound-conversion-20261006/merlin/runtime/c');c.insert(1,'-frounding-math');c.insert(1,'-I/scratch/agustin/tmp/gemmini-polynomial-pair-provider-20261006/out/frontier_i64_allocated_pair_v2');subprocess.run(c,check=True)
+link=json.loads((old/'candidate/build.json').read_text())['link'];link=[str(d/'model.elf')if x==str(old/'candidate/model.elf')else str(d/'proof.o')if x.endswith('/frontier_i64_allocated_pair_v2/driver.o')else x for x in link];subprocess.run(link,check=True);a=audit_elf((d/'model.elf').read_bytes());assert a['status']=='pass';(d/'model.nofsm_audit.json').write_text(json.dumps(a,indent=2)+'\n')
+with(d/'spike.log').open('w')as f:p=subprocess.run(['/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/spike','--extension=gemmini','--isa=rv64gc','-m0x80000000:0x80000000',str(d/'model.elf')],stdout=f,stderr=subprocess.STDOUT,timeout=120)
+assert p.returncode==0 and 'EXACT_BOUND_CONVERSION 0'in(d/'spike.log').read_text()
+(d/'receipt.json').write_text(json.dumps({'status':'pass','rc':p.returncode,'independent_fraction_cases':len(values),'actual_frm_modes':5,'checks':len(values)*5,'compile':c,'link':link,'elf_sha256':h(d/'model.elf'),'log_sha256':h(d/'spike.log'),'source_rounding_unchanged':True,'signed_zero_exact':True,'nonfinite_and_out_of_range_refused':True},indent=2)+'\n');print('PASS',len(values)*5)

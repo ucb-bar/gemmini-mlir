@@ -1,0 +1,71 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/scratch/agustin/projects/model2MLIR/.venv/bin/python",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/independent/case0_control/run_lowering.py",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/independent/case0_control/model.mlir",
+        "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/independent/case0_control/model.ll",
+        "canonicalize,cse,__merlin_scalar_contraction_reduction_unroll_2__,__merlin_scalar_contraction_accumulator_8_outputs__,func.func(linalg-fuse-elementwise-ops),func.func(linalg-generalize-named-ops),one-shot-bufferize{bufferize-function-boundaries function-boundary-type-conversion=identity-layout-map},canonicalize,buffer-results-to-out-params{modify-public-functions hoist-static-allocs},ownership-based-buffer-deallocation,buffer-deallocation-simplification,bufferization-lower-deallocations,func.func(buffer-hoisting,buffer-loop-hoisting),func.func(convert-linalg-to-loops),convert-scf-to-cf,expand-strided-metadata,lower-affine,convert-math-to-libm,convert-math-to-llvm,convert-index-to-llvm,convert-arith-to-llvm,finalize-memref-to-llvm,convert-func-to-llvm,convert-cf-to-llvm,reconcile-unrealized-casts,canonicalize,cse,symbol-dce",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "environment": {
+        "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+        "MERLIN_GEMMINI_HARNESS_DIR": "/scratch2/agustin/chipyard/generators/gemmini/software/gemmini-rocc-tests",
+        "MERLIN_GEMMINI_LOAD_ADDRESS": "0x80000000",
+        "MERLIN_M2M_DIR": "/scratch/agustin/projects/model2MLIR",
+        "MERLIN_M2M_VENV": "/scratch/agustin/projects/model2MLIR/.venv",
+        "MERLIN_MLIR_TRANSLATE": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+        "MERLIN_RISCV_GCC": "/scratch2/agustin/chipyard/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc",
+        "MERLIN_TARGET_PATH": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/support/gemmini_gsim"
+      },
+      "environment_digest": "496912868a257bab",
+      "executable": {
+        "bytes": 27816648,
+        "path": "/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3.12",
+        "sha256": "9ed008e5a8685235361f0c53771b520ab082dd99a877ad2fd796a93fa4c0b488"
+      }
+    }
+  ],
+  "features": [
+    "canonicalize_bufferized_result_identity",
+    "scalar_contraction_accumulator_8_outputs",
+    "unroll_scalar_contraction_reduction_by_2"
+  ],
+  "returned_llvm_ir": {
+    "bytes": 6469,
+    "sha256": "8e6adaf33778e49f5c1845645114a9f88143fd28364508ec35c9efd77bb8d2c4"
+  },
+  "schema": "merlin.lowering_recipe.v1",
+  "scope": "upstream lowering through returned LLVM IR; not final codegen or link",
+  "sources": {
+    "pipeline_driver": {
+      "bytes": 102272,
+      "path": "/scratch/agustin/tmp/merlin-scalar-contraction-rectangular-20261006/src/merlin/llvmlower/pipeline.py",
+      "sha256": "cf7585f28d9b4c949323a0e7ef89e280e46e158439d7961a7369b20126810331"
+    },
+    "prepared_mlir": {
+      "bytes": 665,
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/independent/case0_control/model.mlir",
+      "sha256": "d78f117dc59fe76c798b7dbb3f505b018bd21b4e8da42709cdc62b6c27e1bb86"
+    },
+    "runner": {
+      "bytes": 127428,
+      "path": "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-rectangular-accumulators-20261006/independent/case0_control/run_lowering.py",
+      "sha256": "d97afb875fd470554e992e8dcbef3be2acba2bc3d3af7a349c16b905f9281480"
+    }
+  },
+  "status": "returned"
+}

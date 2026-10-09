@@ -1,0 +1,33 @@
+{
+  "schema": "gemmini_golden_device_compile_v1",
+  "target_ir_sha256": "d345c2d8f377ba69b72a05c789caef92412894aeaf902024e6481fc5165bbf6a",
+  "llvm_mlir_sha256": "ede6aad5acba5533a23c231c8adbaae7a1d1f487f83357e3b42e7123a03fb741",
+  "llvm_ir_sha256": "482e7e65e07921ebd26e7733001bb6ec06b7d07a716bf0a3b2ed06b656b8bb0f",
+  "object_sha256": "dc4edcaedb7d5b4c5ef871fafc3e11107e852793f98f504d7e978bd941bfb853",
+  "object_nofsm_status": "pass",
+  "compiler_sha256": {
+    "mlir-translate": "40ae9baf01a5966d596b07e16f4094a6d5fc6f32c908de8a46ecc3d567fe1b4d",
+    "clang": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125"
+  },
+  "compiler_argv": [
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/mlir-translate",
+      "--mlir-to-llvmir",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.llvm.mlir",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.ll"
+    ],
+    [
+      "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+      "--target=riscv64-unknown-elf",
+      "-march=rv64gc",
+      "-mabi=lp64d",
+      "-mcmodel=medany",
+      "-O2",
+      "-c",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.ll",
+      "-o",
+      "/scratch/agustin/tmp/gemmini-packed-rhs-current-20261006/out/artifacts/probes/tiny-packed-rhs-current-20261006/matched_bn64/independent/packed_2/kernel.o"
+    ]
+  ]
+}

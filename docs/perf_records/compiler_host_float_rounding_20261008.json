@@ -1,0 +1,152 @@
+{
+  "schema": "generic_xdsl_float_literal_ambient_rounding_v1",
+  "status": "SOURCE_WORD_MUTATION_REPRODUCED",
+  "xdsl_version": "0.68.0",
+  "input_text": "builtin.module {\n  func.func @constant() -> f32 {\n    %x = arith.constant 0.009489680640399456 : f32\n    func.return %x : f32\n  }\n}\n",
+  "input_parser_mode": "nearest",
+  "expected_f32_word": 1008433819,
+  "expected_f32_word_hex": "0x3c1b7a9b",
+  "rows": [
+    {
+      "renderer_mode": "nearest",
+      "text": "builtin.module {\n  func.func @constant() -> f32 {\n    %x = arith.constant 0.00948968064 : f32\n    func.return %x : f32\n  }\n}",
+      "text_sha256": "e303c24c115de993a914bdf4b4316a44ad0f04efbf49d3b9b4946543e6dc4106",
+      "parsed_words": [
+        {
+          "parser_mode": "nearest",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "downward",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        },
+        {
+          "parser_mode": "upward",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "toward_zero",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        }
+      ]
+    },
+    {
+      "renderer_mode": "downward",
+      "text": "builtin.module {\n  func.func @constant() -> f32 {\n    %x = arith.constant 0.00948968064 : f32\n    func.return %x : f32\n  }\n}",
+      "text_sha256": "e303c24c115de993a914bdf4b4316a44ad0f04efbf49d3b9b4946543e6dc4106",
+      "parsed_words": [
+        {
+          "parser_mode": "nearest",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "downward",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        },
+        {
+          "parser_mode": "upward",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "toward_zero",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        }
+      ]
+    },
+    {
+      "renderer_mode": "upward",
+      "text": "builtin.module {\n  func.func @constant() -> f32 {\n    %x = arith.constant 9.489680e-03 : f32\n    func.return %x : f32\n  }\n}",
+      "text_sha256": "71ba55b26430646d0f34f04eda25d4c3e9590b76fa6aad1cc67cbca25efd474d",
+      "parsed_words": [
+        {
+          "parser_mode": "nearest",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        },
+        {
+          "parser_mode": "downward",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        },
+        {
+          "parser_mode": "upward",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "toward_zero",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        }
+      ]
+    },
+    {
+      "renderer_mode": "toward_zero",
+      "text": "builtin.module {\n  func.func @constant() -> f32 {\n    %x = arith.constant 0.00948968064 : f32\n    func.return %x : f32\n  }\n}",
+      "text_sha256": "e303c24c115de993a914bdf4b4316a44ad0f04efbf49d3b9b4946543e6dc4106",
+      "parsed_words": [
+        {
+          "parser_mode": "nearest",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "downward",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        },
+        {
+          "parser_mode": "upward",
+          "f32_word": 1008433819,
+          "f32_word_hex": "0x3c1b7a9b",
+          "word_changed": false
+        },
+        {
+          "parser_mode": "toward_zero",
+          "f32_word": 1008433818,
+          "f32_word_hex": "0x3c1b7a9a",
+          "word_changed": true
+        }
+      ]
+    }
+  ],
+  "renderer_modes_changing_words_with_fixed_rne_parser": [
+    "upward"
+  ],
+  "original_typed_module_word_unchanged": true,
+  "implementation": "Printer.print_float checks short scientific notation with type.pack/unpack; the native f32 conversion observes ambient rounding, so the losslessness premise is not fixed to source RNE.",
+  "primary_owner": "xDSL printer and builtin float normalization/packing; Merlin and model2MLIR are callers",
+  "proposed_fix": "Use explicitly specified software RNE conversion for formatting/normalization, with independent rendered-text reparsing word tests across host modes. Conservative temporary caller admission requires compiler-host RNE before proof preparation/serialization and restores prior host state; no target ISA or static Linux enum in Merlin.",
+  "scope": "Minimal workload-independent scalar constant; no sealed compiler/package changed, no target or performance claim. Parser-mode matrix separates spelling differences from actual word mutation.",
+  "token_usage": null,
+  "pins": {
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/diagnose_float_literal_rounding_v1.py": "e50400fc17986b3a5d78b564b05159c78749e9a1d706258afb706210b521782d",
+    "/tmp/merlin-runtime-resource-installed-20261007/venv/lib/python3.12/site-packages/xdsl/printer.py": "1f7375fb7a293428bfb37c251c2f23efc94c25146e1318ce157caea0864574d3",
+    "/tmp/merlin-runtime-resource-installed-20261007/venv/lib/python3.12/site-packages/xdsl/dialects/builtin.py": "61e181fcc6bbf4244edc30e1545a370a387f602469d1db32f598bb93d2a80506",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/scalar_carrier_all22_v2/family.so": "9796616a4947c6715e21ea30857d10004207dc3d9c122e5ef5c1c133feae50fd",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/float_literal_rounding_diagnostic_v1/input.mlir": "61c0de2324f09dd3d4e4c6f6f5ca9580a6c2b5f61540ce94aab85777aa57248d",
+    "/scratch/agustin/tmp/merlin-latest-20261004/out/build/tiny-borrowed-pointwise-packet-20261007/float_literal_rounding_diagnostic_v1/print_float_source.txt": "7025e6b4fbc4da08ea6f35ba82bd7f288973ea10a30966adade99647f5b4d36a"
+  }
+}

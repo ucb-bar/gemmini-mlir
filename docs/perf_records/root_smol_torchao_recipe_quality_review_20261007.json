@@ -1,0 +1,97 @@
+{
+  "schema": "root_smol_torchao_original_recipe_quality_review_v1",
+  "status": "VERIFIED_ORIGINAL_QUANTIZED_GOLDEN_AND_SEPARATE_QUANTIZATION_LOSS",
+  "original_audit_pins_reclosed": 27,
+  "checkpoint": "lerobot/smolvla_base@c83c3163b8ca9b7e67c509fffd9121e66cb96205",
+  "versions": {
+    "torch": "2.10.0",
+    "torchao": "0.17.0",
+    "lerobot": "0.4.4",
+    "transformers": "4.57.6",
+    "numpy": "2.2.6",
+    "draccus": "0.10.0",
+    "safetensors": "0.7.0"
+  },
+  "recipe": {
+    "scheme": "int8_dyn_act_int8_weight",
+    "calibration_samples_argument": 1,
+    "static_calibration_performed": false,
+    "scope": "TorchAO default Linear filter; attention matmuls not selected"
+  },
+  "original_quantized_golden_all1600words_exact": true,
+  "metrics": {
+    "quantized_vs_unquantized_checkpoint": {
+      "elements": 1600,
+      "changed_f32_words": 1600,
+      "max_abs_error": 0.17730942368507385,
+      "rms_error": 0.03479411849389996,
+      "relative_l2": 0.02919884124753643,
+      "failures_at_existing_elementwise_gate": 181,
+      "finite": true
+    },
+    "reproduced_quantized_vs_original_golden": {
+      "elements": 1600,
+      "changed_f32_words": 0,
+      "max_abs_error": 0.0,
+      "rms_error": 0.0,
+      "relative_l2": 0.0,
+      "failures_at_existing_elementwise_gate": 0,
+      "finite": true
+    }
+  },
+  "registered_linear_modules": 303,
+  "registered_linear_modules_stored_i8": 303,
+  "captured_linear_call_sites_integerized": 302,
+  "call_site_counting_unit": "static captured call sites, not registered module count or dynamic execution count",
+  "remaining_attention": {
+    "quantized_graph_floating_matmul_call_sites": 64,
+    "quantized_graph_floating_SDPA_call_sites": 12,
+    "prepared_graph_floating_bmm_call_sites": 88
+  },
+  "unquantized_parameter_dtype_counts": {
+    "torch.bfloat16": 474,
+    "torch.float32": 26
+  },
+  "weight_scale_dtype_counts": {
+    "torch.bfloat16": 282,
+    "torch.float32": 21
+  },
+  "historical_full_dependency_environment_proven": false,
+  "overlay_import_repair": {
+    "path": "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/deps/diffusers/quantizers/torchao/torchao_quantizer.py",
+    "change": "Initialize Diffusers logger before its torch-safe-global compatibility handler; original trailing initializer retained.",
+    "original_wheel_record_sha256_recovered": "c1d30825e1bc88157abd0f5915cfadc86ced94b3c4483e6c529376129f10985e",
+    "only_40_byte_import_initialization_added": true,
+    "inference_or_arithmetic_change": false
+  },
+  "interpretation": "TorchAO applies the recorded Linear recipe and reproduces the retained golden on this fixture. Prequantization quality loss is distinct from additional compiler/attention approximation error against that quantized golden. The current compiler acceptance gate is unchanged.",
+  "not_established": [
+    "robot task success or held-out action quality",
+    "uniform FP32 checkpoint baseline",
+    "historical full dependency closure",
+    "quality or recipe audit for other models",
+    "compiler error measured by this forward audit",
+    "complete quantization of attention"
+  ],
+  "input_dataset_attribution": "UNKNOWN",
+  "inputs_unchanged": true,
+  "new_capture_or_golden": false,
+  "new_numeric_policy_selected": false,
+  "compiler_gate": {
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "oracle": "unchanged original quantized golden"
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward/validation.json": "83dadf50e784bad691f4ae542665a2827a96f27b0df392cdaf5ccf1b38f0296e",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/tests/review_smol_torchao_recipe_probe.py": "8c84ca8e961032021a17019f56bc235870d36ed3e815c4b3f192c4d0d1f0a923",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward.log": "d6f6b0bf9b0a8750dc73c273772e55921c71d8080868d0a5c71ff96b001ab8a2",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/deps/diffusers/quantizers/torchao/torchao_quantizer.py": "f4385532d8da6cf1de801ee3fb7ac96c935d90ba39a62ef626c623594effc6fa",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/deps/diffusers-0.35.2.dist-info/RECORD": "7522439d8d95d306d052c7609d3a40d090fe483367623b35a85903938076085e",
+    "/scratch/agustin/tmp/model2mlir-silu-opmath-20261005/uv.lock": "c3040f75bb8616ac5a0ea897fb63b965cc9ffe5feaa2ffdced6b86bb72d2512e",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward_failed_import_v1.log": "9776c42459cc27a979c06d5ff62f2e17b03a5cf126ecd1d72e394f0c68512cd5",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward_failed_import_v2.log": "7e5fc4bd97c76397d83526a67f60e672759aa0dfc081f1305a6444cd8f7fb4a2",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward_failed_import_v3.log": "d291ce2c3eff7d8a79cee6d5f4d601ed25c3ac5b4e5889dff1570967d4ab765d",
+    "/scratch/agustin/tmp/gemmini-golden-nofsm-20261004/out/artifacts/probes/smol-torchao-recipe-audit-20261007/forward_failed_import_v4.log": "ce1035857c83d39565716a2bf56b2f51bfc0ad2e1b4d0743d53723c07aceef11"
+  }
+}

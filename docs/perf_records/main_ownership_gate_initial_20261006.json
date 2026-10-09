@@ -1,0 +1,36 @@
+{
+  "schema": "readonly_main_ownership_gates_v1",
+  "checkout": "/scratch/agustin/tmp/merlin-golden-main-upstream-20261006",
+  "environment": "PYTHONPATH=src:packages/merlin-analysis/src:packages/merlin-dse/src:packages/merlin-experiments/src:packages/merlin-mining/src",
+  "python": "/scratch/agustin/projects/oscar-merlin/.venv/bin/python",
+  "command_template": "python build_tools/scripts/{name}.py",
+  "results": {
+    "check_no_regex": {
+      "rc": 0
+    },
+    "check_phase_split": {
+      "rc": 0,
+      "notes": "Missing measured certification history retained; no fabricated certification."
+    },
+    "check_ratchets_shrink": {
+      "rc": 0,
+      "scope": "versus HEAD"
+    },
+    "check_no_target_name": {
+      "rc": 1,
+      "failure": "qualify_installed.py:212 examples/gemmini/target/descriptor.yaml",
+      "already_in_HEAD": true
+    },
+    "check_no_assumed_constants": {
+      "rc": 1,
+      "failure": "isa_census.py:16 RV opcode/funct field bit slices",
+      "already_in_HEAD": true
+    },
+    "check_core_dependencies": {
+      "rc": 1,
+      "failure": "Temporary parse errors op_profile.py304/pipeline.py1751 while owner resolves conflicts",
+      "rerun_required": true
+    }
+  },
+  "edits": false
+}

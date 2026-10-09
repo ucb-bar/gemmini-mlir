@@ -1,0 +1,136 @@
+{
+  "variant": "fresh_complete_first_group_initialization",
+  "schema": "source_qk_exact_i64_reconstruction_complete_pair_v1",
+  "rows_round_arm_actual_cycles": [
+    [
+      0,
+      0,
+      1232879
+    ],
+    [
+      0,
+      1,
+      1193113
+    ],
+    [
+      1,
+      1,
+      1192731
+    ],
+    [
+      1,
+      0,
+      1218032
+    ]
+  ],
+  "shape": {
+    "m": 32,
+    "n": 64,
+    "k": 64,
+    "bm": 4,
+    "bn": 16
+  },
+  "scope": "Original first32 Q rows and first64 K rows. Complete original encoding, ten unchanged dense device group calls/readbacks, explicit zero-filled constant-i64 control versus direct complete first-group initialization; all remaining weighted updates and final conversion. No certificate/norm/replay/full-head or full-model timing projection.",
+  "qualification": {
+    "all4_calls_exact": true,
+    "exact_complete_values_per_call": 4096,
+    "i32_guard_words": 192,
+    "i64_guard_words": 2,
+    "immutable_dense_objects": {
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group0/kernel.o": "446e9953a68efc7d9c47912bb5ef72c7b19d0ed7be71a18daa4643462912900d",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group1/kernel.o": "1ee2eeba84f70aa32ac9f53173cf855e832a3f79c759e9cafb4ef9e77778eb26",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group2/kernel.o": "5e0ec507534e5599fdfefae04440e85f6bb2adcd228581f4a515584ff5be9813",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group3/kernel.o": "107d42ca5d25ac2bf6ae4a2416143cf9cc2249084f246a9674a859e1f9bb4341",
+      "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group4/kernel.o": "e793cd8eeb1efcd417047e196ce7e21aff5a4d65f9389283faa8186fbe78e14a"
+    },
+    "immutable_original_data_object": "7e59752b3bec64b1f307a87f94b81c997c464d7a88e7ae2ebcef5edbc39db0ad",
+    "scratch_bytes": 16384,
+    "spike_log_sha256": "515f95d31924836383379b28b562ec35382ba41e33cf0021a74e99dcb0e56c2f",
+    "elf_sha256": "147b549138562ec7b3f8464b950819bee35f5a4941997348bc394114a1d1d9db",
+    "nofsm": {
+      "schema": "gemmini_nofsm_elf_audit_v1",
+      "elf_sha256": "147b549138562ec7b3f8464b950819bee35f5a4941997348bc394114a1d1d9db",
+      "executable_sections": 8,
+      "custom_funct_counts": {
+        "0": 20,
+        "1": 18,
+        "2": 36,
+        "3": 40,
+        "4": 72,
+        "5": 72,
+        "6": 144,
+        "7": 5
+      },
+      "forbidden": [],
+      "unknown": [],
+      "status": "pass"
+    },
+    "token_usage_available": false
+  },
+  "source_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/q.bin": "e3298b27281460250b9a5a1e871e53ec98c4b10807909c92641ed8f5189ab5cd",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/k.bin": "0a7d5105447e13e99192e9eeb2443f2ebc324287d71cc96851c9eb2f2f78f38c",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/expected.bin": "30fe30cee6dd4b1fe729212af3a5d9ef784bb047e44c1c254723afb65cb20b21"
+  },
+  "objects": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group0/kernel.o": "446e9953a68efc7d9c47912bb5ef72c7b19d0ed7be71a18daa4643462912900d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group1/kernel.o": "1ee2eeba84f70aa32ac9f53173cf855e832a3f79c759e9cafb4ef9e77778eb26",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group2/kernel.o": "5e0ec507534e5599fdfefae04440e85f6bb2adcd228581f4a515584ff5be9813",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group3/kernel.o": "107d42ca5d25ac2bf6ae4a2416143cf9cc2249084f246a9674a859e1f9bb4341",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/arm0_group4/kernel.o": "e793cd8eeb1efcd417047e196ce7e21aff5a4d65f9389283faa8186fbe78e14a",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/main.o": "2ffd81d94722fb92b72c027c318e82f97091f9accb19c774fd381782f4667a5f",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/dispatch.o": "040dd74b819c6f7164e6c63c3d5141e063314d47d1751e413fe38d0ccbbe591b",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_small_support/data.o": "7e59752b3bec64b1f307a87f94b81c997c464d7a88e7ae2ebcef5edbc39db0ad"
+  },
+  "gsim_engine": {
+    "target": "gemmini",
+    "engine": "gsim",
+    "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+    "source": "env:MERLIN_GEMMINI_GSIM_EMU",
+    "available": true,
+    "refused": false,
+    "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (env:MERLIN_GEMMINI_GSIM_EMU, 1a3de02a19dd); lineage bound by build_receipt.json",
+    "flavour": "binary",
+    "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+    "receipt_status": "bound",
+    "receipt": {
+      "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+      "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+      "schema_version": "merlin.gsim-model-build.v2",
+      "status": "complete",
+      "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+      "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+      "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+      "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+      "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+      "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+      "provenance": null,
+      "tools": {
+        "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+        "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+        "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+      }
+    }
+  },
+  "full_head_cycles": null,
+  "full_model_cycles": null,
+  "token_usage_available": false,
+  "core_implementation_commit": "86d8a4ad8",
+  "receipt_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/result.json",
+  "receipt_sha256": "cba3475e6cb49a14544255d1a318a9f89d8cbee2ccae76e3324a3a0fb8a391d9",
+  "comparison": {
+    "control_mean_cycles": 1225455.5,
+    "candidate_mean_cycles": 1192922,
+    "saved_cycles_mean": 32533.5,
+    "saved_percent": 2.6548087629456965,
+    "warm_saved_percent": 2.0772032261878177,
+    "decision": "POSITIVE small complete capsule only; hold additional whole-head arm pending1924, prioritize larger typed normalization proof.",
+    "full_head_or_model_prediction": null
+  },
+  "source_and_console_pins": {
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/main.c": "b4c049cebfb9ff5a1ff115dfe05b402efb5bc9787c4c0f0d823688975cbf342d",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/reconstruct.h": "3b74ddba9e696c9a1a0c34a4001dc84e4280799a0faa2f3011b27bcadbfc5e17",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/gsim.stdout": "2fc6ae8a6870c2da756fe6c551c09825bc8abcb7c5042f412ca1b2b0fb6f1fc6",
+    "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/encoded-zero-groups-20261005/source_qk_integer_first_group/spike.log": "515f95d31924836383379b28b562ec35382ba41e33cf0021a74e99dcb0e56c2f"
+  }
+}

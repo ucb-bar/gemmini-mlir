@@ -1,0 +1,34 @@
+{
+  "schema": "border_whole_controlled_negative_v1",
+  "control_job": 1903,
+  "control_spike_instructions": 9246562,
+  "candidate_spike_instructions": 9247228,
+  "delta_instructions": 666,
+  "hardware_submission": "held",
+  "native_original_all_1000_bits": true,
+  "strict_target_original_all_1000_bits": true,
+  "no_fsm": true,
+  "control_elf_reproduced_byte_identical": true,
+  "only_changed_linked_object": "model.o",
+  "marker_inherited_nonunique": true,
+  "diagnosis": {
+    "control_assembly": "memset(158700), actual frozen1903 libc_min uses aligned word stores plus four-byte tail",
+    "candidate_assembly": "two slab temporaries; three memset, one memcpy, two genuine strided memrefCopy calls before stem",
+    "candidate_side_view": "source row stride9, destination row stride690, shape1x224x3x3; these are not selfcopies",
+    "isolated_capsule_runtime_confound": "legacy capsule memset uses byte loop when length is not divisible by8;158700mod8=4. Its instruction reduction is not transferable to the whole runtime",
+    "unresolved": "No stage hardware cost assigned; no claim that these command counts fully attribute all666 instructions"
+  },
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/controlled_link.json": "5cfc353f4b6c9b1bfbabdefb1bf4eee802e209c4b518586ee047fa757f980f4a",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/native_validation.json": "4970927c56584c407e86f1de7245a9512501a2882f158032fb33a1f7acccf785",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/spike_validation.json": "825e17feb9ec13033f32cadaf0f12b98b488aea5a85ea3c2e1b090d34e291893",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/spike.log": "dca040118dce0d14bc3b8c24f53f0a359eab056ba690567ece166581bbaab38c",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/build_direct/model.elf": "ef124e964acb081292f1ba6f69d84fe6d38a07ec0b728f81b4f193d236871086",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border_controlled1903/build_direct/model.nofsm_audit.json": "6d157bcdca099f8a135bb7fef4f7db07f9815fa85fce44e602f1f34fcb645184",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_control.dis": "953493f3a7c1baddeeada9d10725ccd1afe2cdcea5e8aee193fa0325b001fe7e",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_border.dis": "fe6bb216c4d7f042c08324963f514fe2bf1f75b0d204c1b2afc02f92c5edabff",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/stage_memset.dis": "c0d7cf4cb516f87e664413ffca4f657c85b9fddcd99b1eb1f91e928c3952f330",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet_border_stage/whole_memset.dis": "1ba83f3b161bfafd8c76a1ef79e75e485af54c895efda45f289ff91e9571319c"
+  },
+  "token_usage_available": false
+}

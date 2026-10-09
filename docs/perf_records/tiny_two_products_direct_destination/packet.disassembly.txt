@@ -1,0 +1,141 @@
+
+/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/tiny-two-products-destination-20261006/complete/packet.o:	file format elf64-littleriscv
+
+Disassembly of section .text:
+
+0000000000000000 <packet>:
+       0: 1141         	addi	sp, sp, -0x10
+       2: e422         	sd	s0, 0x8(sp)
+       4: 4301         	li	t1, 0x0
+       6: 7502         	ld	a0, 0x20(sp)
+       8: 6e4a         	ld	t3, 0x90(sp)
+       a: 76a6         	ld	a3, 0x68(sp)
+       c: 00858393     	addi	t2, a1, 0x8
+      10: 6289         	lui	t0, 0x2
+      12: 3a33a5b7     	lui	a1, 0x3a33a
+      16: 00828613     	addi	a2, t0, 0x8
+      1a: 2df58593     	addi	a1, a1, 0x2df
+      1e: f00587d3     	fmv.w.x	fa5, a1
+      22: 00868813     	addi	a6, a3, 0x8
+      26: 0e21         	addi	t3, t3, 0x8
+      28: 00850e93     	addi	t4, a0, 0x8
+      2c: 00c68f33     	add	t5, a3, a2
+      30: 48a1         	li	a7, 0x8
+      32: 859e         	mv	a1, t2
+      34: 87f6         	mv	a5, t4
+      36: 8772         	mv	a4, t3
+      38: 8642         	mv	a2, a6
+      3a: ff85a707     	flw	fa4, -0x8(a1)
+      3e: ffc5a687     	flw	fa3, -0x4(a1)
+      42: 0005a607     	flw	fa2, 0x0(a1)
+      46: 0045a587     	flw	fa1, 0x4(a1)
+      4a: ff87a503     	lw	a0, -0x8(a5)
+      4e: ffc7a683     	lw	a3, -0x4(a5)
+      52: 0007af83     	lw	t6, 0x0(a5)
+      56: 43c0         	lw	s0, 0x4(a5)
+      58: ff862507     	flw	fa0, -0x8(a2)
+      5c: ffc62007     	flw	ft0, -0x4(a2)
+      60: 00062087     	flw	ft1, 0x0(a2)
+      64: 00462107     	flw	ft2, 0x4(a2)
+      68: 0641         	addi	a2, a2, 0x10
+      6a: 07c1         	addi	a5, a5, 0x10
+      6c: d00571d3     	fcvt.s.w	ft3, a0
+      70: d006f253     	fcvt.s.w	ft4, a3
+      74: d00ff2d3     	fcvt.s.w	ft5, t6
+      78: d0047353     	fcvt.s.w	ft6, s0
+      7c: 10f1f1d3     	fmul.s	ft3, ft3, fa5
+      80: 10f27253     	fmul.s	ft4, ft4, fa5
+      84: 10f2f2d3     	fmul.s	ft5, ft5, fa5
+      88: 10f37353     	fmul.s	ft6, ft6, fa5
+      8c: 10357553     	fmul.s	fa0, fa0, ft3
+      90: 10407053     	fmul.s	ft0, ft0, ft4
+      94: 1050f0d3     	fmul.s	ft1, ft1, ft5
+      98: 10617153     	fmul.s	ft2, ft2, ft6
+      9c: 00a77753     	fadd.s	fa4, fa4, fa0
+      a0: 0006f6d3     	fadd.s	fa3, fa3, ft0
+      a4: 00167653     	fadd.s	fa2, fa2, ft1
+      a8: 0025f5d3     	fadd.s	fa1, fa1, ft2
+      ac: fee72c27     	fsw	fa4, -0x8(a4)
+      b0: fed72e27     	fsw	fa3, -0x4(a4)
+      b4: 00c72027     	fsw	fa2, 0x0(a4)
+      b8: 00b72227     	fsw	fa1, 0x4(a4)
+      bc: 0741         	addi	a4, a4, 0x10
+      be: 05c1         	addi	a1, a1, 0x10
+      c0: f7e61de3     	bne	a2, t5, 0x3a <packet+0x3a>
+      c4: 0305         	addi	t1, t1, 0x1
+      c6: 9e16         	add	t3, t3, t0
+      c8: 9e96         	add	t4, t4, t0
+      ca: 9396         	add	t2, t2, t0
+      cc: 01131063     	bne	t1, a7, 0xcc <packet+0xcc>
+      d0: 6422         	ld	s0, 0x8(sp)
+      d2: 0141         	addi	sp, sp, 0x10
+      d4: 8082         	ret
+
+00000000000000d6 <_mlir_ciface_packet>:
+      d6: 1141         	addi	sp, sp, -0x10
+      d8: e422         	sd	s0, 0x8(sp)
+      da: 4301         	li	t1, 0x0
+      dc: 6508         	ld	a0, 0x8(a0)
+      de: 0085be03     	ld	t3, 0x8(a1)
+      e2: 660c         	ld	a1, 0x8(a2)
+      e4: 0086b383     	ld	t2, 0x8(a3)
+      e8: 6289         	lui	t0, 0x2
+      ea: 3a33a637     	lui	a2, 0x3a33a
+      ee: 00828693     	addi	a3, t0, 0x8
+      f2: 2df60613     	addi	a2, a2, 0x2df
+      f6: f00607d3     	fmv.w.x	fa5, a2
+      fa: 00858813     	addi	a6, a1, 0x8
+      fe: 03a1         	addi	t2, t2, 0x8
+     100: 0e21         	addi	t3, t3, 0x8
+     102: 00850e93     	addi	t4, a0, 0x8
+     106: 00d58f33     	add	t5, a1, a3
+     10a: 48a1         	li	a7, 0x8
+     10c: 87f6         	mv	a5, t4
+     10e: 86f2         	mv	a3, t3
+     110: 861e         	mv	a2, t2
+     112: 8742         	mv	a4, a6
+     114: ff87a707     	flw	fa4, -0x8(a5)
+     118: ffc7a687     	flw	fa3, -0x4(a5)
+     11c: 0007a607     	flw	fa2, 0x0(a5)
+     120: 0047a587     	flw	fa1, 0x4(a5)
+     124: ff86a503     	lw	a0, -0x8(a3)
+     128: ffc6a583     	lw	a1, -0x4(a3)
+     12c: 0006af83     	lw	t6, 0x0(a3)
+     130: 42c0         	lw	s0, 0x4(a3)
+     132: ff872507     	flw	fa0, -0x8(a4)
+     136: ffc72007     	flw	ft0, -0x4(a4)
+     13a: 00072087     	flw	ft1, 0x0(a4)
+     13e: 00472107     	flw	ft2, 0x4(a4)
+     142: 0741         	addi	a4, a4, 0x10
+     144: 06c1         	addi	a3, a3, 0x10
+     146: d00571d3     	fcvt.s.w	ft3, a0
+     14a: d005f253     	fcvt.s.w	ft4, a1
+     14e: d00ff2d3     	fcvt.s.w	ft5, t6
+     152: d0047353     	fcvt.s.w	ft6, s0
+     156: 10f1f1d3     	fmul.s	ft3, ft3, fa5
+     15a: 10f27253     	fmul.s	ft4, ft4, fa5
+     15e: 10f2f2d3     	fmul.s	ft5, ft5, fa5
+     162: 10f37353     	fmul.s	ft6, ft6, fa5
+     166: 10357553     	fmul.s	fa0, fa0, ft3
+     16a: 10407053     	fmul.s	ft0, ft0, ft4
+     16e: 1050f0d3     	fmul.s	ft1, ft1, ft5
+     172: 10617153     	fmul.s	ft2, ft2, ft6
+     176: 00a77753     	fadd.s	fa4, fa4, fa0
+     17a: 0006f6d3     	fadd.s	fa3, fa3, ft0
+     17e: 00167653     	fadd.s	fa2, fa2, ft1
+     182: 0025f5d3     	fadd.s	fa1, fa1, ft2
+     186: fee62c27     	fsw	fa4, -0x8(a2)
+     18a: fed62e27     	fsw	fa3, -0x4(a2)
+     18e: 00c62027     	fsw	fa2, 0x0(a2)
+     192: 00b62227     	fsw	fa1, 0x4(a2)
+     196: 0641         	addi	a2, a2, 0x10
+     198: 07c1         	addi	a5, a5, 0x10
+     19a: f7e71de3     	bne	a4, t5, 0x114 <_mlir_ciface_packet+0x3e>
+     19e: 0305         	addi	t1, t1, 0x1
+     1a0: 9396         	add	t2, t2, t0
+     1a2: 9e16         	add	t3, t3, t0
+     1a4: 9e96         	add	t4, t4, t0
+     1a6: 01131063     	bne	t1, a7, 0x1a6 <_mlir_ciface_packet+0xd0>
+     1aa: 6422         	ld	s0, 0x8(sp)
+     1ac: 0141         	addi	sp, sp, 0x10
+     1ae: 8082         	ret

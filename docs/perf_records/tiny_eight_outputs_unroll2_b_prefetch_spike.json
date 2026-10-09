@@ -1,0 +1,333 @@
+{
+  "schema": "gemmini-language-target-validation-v1",
+  "output_elements": 256000,
+  "output_bytes": 1024000,
+  "output_shape": [
+    1,
+    8,
+    32000
+  ],
+  "cycles_scope": "Spike functional retired instructions, not FireSim cycles",
+  "compiler_contract": {
+    "feature": "scalar_contraction_accumulator_8_outputs",
+    "features": [
+      "scalar_contraction_accumulator_8_outputs",
+      "unroll_scalar_contraction_reduction_by_2"
+    ],
+    "default_off": true,
+    "target_independent": true,
+    "coverage": {
+      "coverage": "OK scalar_contraction_accumulator_8_outputs 45",
+      "reduction_unroll_coverage": "OK unroll_scalar_contraction_reduction_by_2 45",
+      "full_llvm_replay_bitexact_after_normal_abi_repair": true,
+      "abi_repair": {
+        "schema": "wide_ciface_inline_v1",
+        "max_flattened_arguments": 256,
+        "inlined": [
+          {
+            "implementation": "forward",
+            "wrapper": "_mlir_ciface_forward",
+            "flattened_arguments": 3973
+          }
+        ],
+        "count": 1
+      },
+      "llvm_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+      "source_runner_sha256": "43debad741af72b05d7a7529dc8cac3754e806ae8580facdbb0b10fd7ec135fe"
+    },
+    "supported": "Original strict static f32 tensor contraction body/maps/types, final parallel extent divisible by eight. Partial tiles remain unchanged.",
+    "f32_arithmetic": "Eight scalar scf.for iter_args. Each retains original increasing-K order and separate arith.mulf then arith.addf, original operand order and no fastmath permission. LLVM partial K-unroll count2 changes scheduling only.",
+    "alias_contract": "Original input SSA tensors remain immutable; destination tensor loop-carried, each of eight output inserts after its final K. Upstream bufferization owns physical aliases and required copies; no physical noalias assumption.",
+    "selection_metadata": "Output counts1/2/4/8 share one alternative_group. Unroll counts2/4 share another; each requires_exactly_one_of all output schedules after implication closure. Runtime guards remain."
+  },
+  "host_policy": {
+    "host_vectorize": false,
+    "march": "rv64gc",
+    "host_clang_optimization": "O3",
+    "fuse_quantize_round_convert": true,
+    "combined_clamp_rne": true,
+    "proved_late_routes": 89,
+    "fuse_activation_polynomial_fma": true,
+    "activation_policy_unchanged": true,
+    "normalization_expf_calls": 22,
+    "activation_fma_calls": 176,
+    "new_contraction_fma_permissions": false
+  },
+  "scope": "Full 22-layer pretrained TinyLlama,8 tokens; exact existing host schedule plus source-bound cached-A B-prefetch across K. Original reference, numeric gate and activation policy unchanged.",
+  "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/model.elf",
+  "elf_sha256": "faf4e81a2142353e7edd8741d1e7ce502c793e8a3a23abed61730f7300f8cd6e",
+  "reference_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/host/output.npy",
+  "reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/spike.log",
+  "spike_console_sha256": "ecc7e8492eae10d3a6c811ce912f1635211e3fd3377097713d55199325d01a77",
+  "spike_full_output_match": true,
+  "spike_output_sha256": "ebf524607c3254286fc5eda393436b607ace81866cb28b80fda8c4f62f435fe3",
+  "metrics": {
+    "cycles": "171353332",
+    "build_hash": "5ce326d4742e",
+    "memref_rank_mismatch": "0"
+  },
+  "native_validation": {
+    "scope": "tiny_eight_outputs_unroll2_b_prefetch: native host with scalar integer device stand-ins",
+    "llvm_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/host_llvm/model.native.ll",
+    "llvm_sha256": "5ff45995f67652191536619962e38b4a9af4369e0deadda7fb5d9385b0e040e6",
+    "finite": true,
+    "allclose": true,
+    "relative_l2": 2.1918432935308374e-07,
+    "cosine": 1.0,
+    "max_abs_error": 9.5367431640625e-06
+  },
+  "original_reference_gate": {
+    "original_golden_path": "/scratch/agustin/tmp/merlin-golden-language-models-20261005/out/language_models/tiny_fresh_bundle/golden.npy",
+    "original_golden_sha256": "3a4d0d1105d4fad150b9ff1b80d4b7838d9fcdb3933a72b71000d6ecc0f5caee",
+    "unchanged": true,
+    "atol": 0.03125,
+    "rtol": 0.02,
+    "allclose": true
+  },
+  "prior_compiled_output_bitexact": true,
+  "prior_compiled_reference_sha256": "af15b5b4cb6bcaf869ee413ea766d75bd0dbf5aa63033e08e8eeefbacfde66eb",
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "faf4e81a2142353e7edd8741d1e7ce502c793e8a3a23abed61730f7300f8cd6e",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 20,
+      "1": 312,
+      "2": 738,
+      "3": 320,
+      "4": 1248,
+      "6": 1248,
+      "7": 5
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "build_result": {
+    "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/model.elf",
+    "mem_bytes": 17179869184,
+    "build_hash": "5ce326d4742e",
+    "arena_base": 4552916992,
+    "weights_base": 2215641088,
+    "vlen": null,
+    "host_vectorize": false,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/lower/model.ll",
+      "source_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+      "selected_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/host_llvm/model.ll",
+      "selected_sha256": "46c48410c15c26b86bebbc43cc2903b9e0d4ff147392a6c74207a9e58080615f"
+    },
+    "supplemental_objects_sha256": "c0f5b070384db6c90d234aac51ab47fe52f9310b0a1401dc7cfd86bdc35b446a",
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 669,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          8,
+          32000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      8,
+      32000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": false,
+    "has_session_quality": false,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 155,
+    "weights_bytes": 2336468096,
+    "static_io_bytes": 1024064
+  },
+  "hardware_status": "Not yet measured for this final ELF. Hardware timing remains authoritative; Spike instructions are not an overlap estimate.",
+  "hardware_control": {
+    "job_id": 1835,
+    "forward_cycles": 610246484,
+    "scope": "Same exact host schedule with previous synchronous B schedule"
+  },
+  "host_bytes_unchanged": true,
+  "host_control": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2",
+  "source_artifacts": {
+    "model_object_sha256": "5e5178431fa4c4dcd7c16c262b5b3d3b2cd6e8acaeeb71836315cdcb6a0b9818",
+    "source_llvm_sha256": "6058476043f1e59fae134fda8c03f0b6c7b62a1ff9aff513ef59950ce0b78200",
+    "target_llvm_sha256": "46c48410c15c26b86bebbc43cc2903b9e0d4ff147392a6c74207a9e58080615f",
+    "native_llvm_sha256": "5ff45995f67652191536619962e38b4a9af4369e0deadda7fb5d9385b0e040e6",
+    "builder_script_sha256": "062308e19ff6b99d731c252c8cbddebc0e6bace65dee02b1ead477f3425aba81"
+  },
+  "compiler_coverage_reuse": {
+    "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/lowering_coverage.json",
+    "sha256": "d6930f1d060e69902a6b65900366ac3dd220efaf806077be4ff12189d87f4c69",
+    "justification": "Full selected/source/native LLVM and target host object bytes identical to qualified control; original45 rewrites/45 loop annotations and normal ABI repair replay proof retained."
+  },
+  "device_coverage": {
+    "contractions": 155,
+    "kernels": 5,
+    "hoisted_weight_arrays": 155,
+    "prefetch_b_kernels": 4,
+    "prefetch_b_bindings": 111,
+    "per_shape": [
+      {
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 2048,
+          "k": 2048
+        },
+        "prefetch_b": true,
+        "bindings": 44
+      },
+      {
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 256,
+          "k": 2048
+        },
+        "prefetch_b": false,
+        "bindings": 44
+      },
+      {
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 5632,
+          "k": 2048
+        },
+        "prefetch_b": true,
+        "bindings": 44
+      },
+      {
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 2048,
+          "k": 5632
+        },
+        "prefetch_b": true,
+        "bindings": 22
+      },
+      {
+        "dimensions": {
+          "batch": 1,
+          "m": 8,
+          "n": 32000,
+          "k": 2048
+        },
+        "prefetch_b": true,
+        "bindings": 1
+      }
+    ],
+    "catalog_source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/device_catalog/catalog_source.mlir",
+    "catalog_source_sha256": "86cd4946421ba3d03062721604c62ef4591e62fd6e5ea04304a0102ea5cde454",
+    "catalog_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/device_catalog/device_catalog.json",
+    "catalog_sha256": "9c3b15ccd1c464d7e52f200bdc29ec763316fda465a455b7068b11cdd4043816",
+    "object_sha256": "f8f49fbe81db69b7a0d8765eb618cbcfd31859b55c15efe9e78c3abe3e1e55f5"
+  },
+  "device_contract": {
+    "option": "prefetch_b",
+    "default_off": true,
+    "schedule": "Complete A resident in lower two banks. First B panel outside ordinary CPU K loop; paired loop loads next panel to bank2/3 before current preload/compute; static final drain, exact increasing-K accumulation and tail lengths.",
+    "capacity": "A fits8192 rows; one B panel fits4096 rows; no competing separate-B-bank placement. No hardware loop/FSM; BN16 kernel unchanged.",
+    "arithmetic": "Same signed i8 products, i32 accumulation, initial zero and complete output stores; no scaling or approximation added."
+  },
+  "default_catalog_neutral_proof": {
+    "source_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2_b_prefetch/build/device_catalog/catalog_source.mlir",
+    "new_default_object": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/full_default_catalog/kernel.o",
+    "new_default_object_sha256": "2c0ccc4eff4eba24f2f6479b466fad50a44175dfd49451ef58e1ca54ddc46dc2",
+    "old_default_object": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/scalar-contraction/tiny_eight_outputs_unroll2/build/device_catalog/kernel.o",
+    "byte_identical": true
+  },
+  "standalone_gsim_receipt": {
+    "path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/docs/perf_records/b_prefetch_gsim.json",
+    "sha256": "613d52ff31803536fcb340ee2fb6e9c8459fde78839c02a1f2d609a37c41a20f",
+    "control_cycles": 927138,
+    "candidate_cycles": 700215,
+    "improvement_fraction": 0.24475644402451413,
+    "scope": "Standalone exact source-bound M8/N2048/K2048 capsule; not whole-model cycles"
+  },
+  "k5632_bank1_safety_case": {
+    "receipt_path": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/k5632_gsim_retry.json",
+    "receipt_sha256": "e0b63139050331991d79b1caa2027a019352c8f7f953243af4a76bce1770c0b4",
+    "final": {
+      "status": "pass",
+      "elf": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/k5632_mcycle_gsim/layer.elf",
+      "elf_sha256": "9f5ea046f18c75c721498cf8f7bed319d6eaef71c09055ace38f834da4f64523",
+      "kernel_cycles": 1987584,
+      "engine_cycles_including_harness": 2215550,
+      "numeric_outputs": 16384,
+      "guard_bytes": 2048,
+      "gsim_engine": {
+        "target": "gemmini",
+        "engine": "gsim",
+        "path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator",
+        "source": "derived",
+        "available": true,
+        "refused": false,
+        "reason": "GSIM emulator /scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/emulator (derived, 1a3de02a19dd); lineage bound by build_receipt.json",
+        "flavour": "binary",
+        "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+        "receipt_status": "bound",
+        "receipt": {
+          "receipt_path": "/scratch/agustin/projects/oscar-merlin/out/build/rtl_engines/gemmini/gsim/build_receipt.json",
+          "receipt_sha256": "2da43b51596fe2011b24a8f3ccdd99e0553d23f8f6de92daf2d3208d90de5099",
+          "schema_version": "merlin.gsim-model-build.v2",
+          "status": "complete",
+          "binary_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+          "firrtl_sha256": "089d053b62523b5047e71ccca31dfbbe27d4e5daeab24050227a923e7b4628c8",
+          "firrtl_path": "/scratch/agustin/tmp/gsim_cert_serialclk_v1/chipyard-generated-src/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig/chipyard.harness.TestHarness.GemminiGsimSerialClkConfig.fir",
+          "model_manifest_sha256": "f822a628a3a809f64c91becea8b2d8bfae9c35633a7c4b21bbaced8a2ac6303d",
+          "inputs_sha256": "688be35ab4667d9b4056c458317f16a379b2789613bdc956ffa8d3e8edc53e9f",
+          "commands_sha256": "b2b9d1235b33af573e246abc076fecb2a6e1c25e440b822e42a4b91f65c0892c",
+          "provenance": null,
+          "tools": {
+            "cxx_compiler": "40b44020de84a10b8b613d37b96157e88f8433a000bdeb2ad9bdd79af6785125",
+            "cxx_wrapper": "bb45df5063d82c554592c0c24cf7bd2f507b8d9c3d1338f20b4387d4e2a05512",
+            "gsim_emitter": "246bfdac0a99bd88dfd860e0543cada0af048f8f699315209d6b50b48fe87446"
+          }
+        }
+      },
+      "stdout_tail": "GOLDEN_GEMM_CYCLES 1987584\nGOLDEN_GEMM PASS M=8 N=2048 K=5632\n",
+      "stdout_sha256": "ae93d9a6caa32ae878ea6004a8cce1cba8f80f865cfacb269b0103f739ec6348",
+      "original_timeout_evidence": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/k5632_mcycle_gsim/result.json",
+      "same_elf_retried": true,
+      "wall_timeout_s": 300
+    },
+    "strict_spike_log": "/scratch/agustin/tmp/gemmini-scalar-contraction-20261005/out/artifacts/probes/b-prefetch/k5632_mcycle_spike.log",
+    "strict_spike_log_sha256": "6c94609b6af631d76edcab870061804113149765cfbfdad4c44c4d2b47729a14",
+    "strict_spike_instructions": 281606,
+    "original_timeout_retained": true
+  },
+  "core_feature_commit": "9f3b77707",
+  "identity_fix_commit": "5f362809a",
+  "device_source_snapshot_commit": "5aaf932",
+  "device_source_commit": "ce18c4e",
+  "verification": {
+    "focused_oot_tests": 31,
+    "skips": 0,
+    "full_native_original_reference": "pass",
+    "full_spike_output_digest": "pass",
+    "full_final_elf_nofsm": "pass"
+  },
+  "infrastructure_findings": [
+    "B-prefetch exposes DMA/mesh overlap while increasing retired CPU instructions; primitive counts and array issue floor remain unchanged.",
+    "Final normal builder hashes actual supplemental object bytes and link order. Source catalog snapshot remains independently parseable and hash-pinned.",
+    "CPU width/unroll choice and device operand residency/prefetch are independent explicit schedule axes. Target capacity facts remain OOT."
+  ],
+  "device_bytes_match_isolated_four_k4_prefetch": true,
+  "hardware_submission_status": "Held until isolated four/K4 B-prefetch stock hardware result establishes a device win."
+}

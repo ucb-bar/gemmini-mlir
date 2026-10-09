@@ -1,0 +1,2051 @@
+{
+  "schema": "conserved_profile_gsim_diagnostic_v1",
+  "profile_job": 1919,
+  "stock_control": 1903,
+  "scope": "Unchanged exact1903 profile ELF on pinned GSIM/backdoor-load memory regime; not stock timing or new performance champion",
+  "elf_sha256": "33f7cdee3272c75812b95cd26c83d63a15ef225119ec78d19c5d8abc6f618007",
+  "engine_sha256": "1a3de02a19ddcb4704443e2b565fd6eb0299a940afdcc7c037e2604bbcbb52ea",
+  "full1000_original_bits": true,
+  "output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "no_fsm": true,
+  "events": [
+    {
+      "ordinal": 0,
+      "boundary": {
+        "symbol": "gemmini_exact_stem_pool_kernel",
+        "pointer_arity": 3,
+        "category": "pooled_stem",
+        "source_region": "stem",
+        "shape": {
+          "h": 224,
+          "w": 224,
+          "cout": 64,
+          "scale": 0.0020730062387883663,
+          "pooled_rows": 4
+        },
+        "id": 52
+      },
+      "device_cycles": 1344602,
+      "preceding_host_gap_cycles": 1776646
+    },
+    {
+      "ordinal": 1,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_0_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_1",
+        "shape": {
+          "m": 3136,
+          "n": 64,
+          "k": 64,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0038317402359098196,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 0
+      },
+      "device_cycles": 51733,
+      "preceding_host_gap_cycles": 942
+    },
+    {
+      "ordinal": 2,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_1_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_2",
+        "shape": {
+          "h": 56,
+          "w": 56,
+          "cin": 64,
+          "cout": 64,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.00206922204233706,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 11
+      },
+      "device_cycles": 618153,
+      "preceding_host_gap_cycles": 785
+    },
+    {
+      "ordinal": 3,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_2_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_3",
+        "shape": {
+          "m": 3136,
+          "n": 256,
+          "k": 64,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.004135518800467253,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 22
+      },
+      "device_cycles": 205759,
+      "preceding_host_gap_cycles": 946
+    },
+    {
+      "ordinal": 4,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_3_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_4",
+        "shape": {
+          "m": 3136,
+          "n": 256,
+          "k": 64,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.003588436171412468,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 33
+      },
+      "device_cycles": 205941,
+      "preceding_host_gap_cycles": 737
+    },
+    {
+      "ordinal": 5,
+      "boundary": {
+        "symbol": "gemmini_residual_0_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_6",
+        "shape": [
+          1,
+          256,
+          56,
+          56
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 54
+      },
+      "device_cycles": 1996875,
+      "preceding_host_gap_cycles": 770
+    },
+    {
+      "ordinal": 6,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_4_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_5",
+        "shape": {
+          "m": 3136,
+          "n": 64,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.003234761767089367,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 44
+      },
+      "device_cycles": 210444,
+      "preceding_host_gap_cycles": 826
+    },
+    {
+      "ordinal": 7,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_5_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_6",
+        "shape": {
+          "h": 56,
+          "w": 56,
+          "cin": 64,
+          "cout": 64,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0018834574148058891,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 47
+      },
+      "device_cycles": 620700,
+      "preceding_host_gap_cycles": 779
+    },
+    {
+      "ordinal": 8,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_6_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_7",
+        "shape": {
+          "m": 3136,
+          "n": 256,
+          "k": 64,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.004267181269824505,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 48
+      },
+      "device_cycles": 205752,
+      "preceding_host_gap_cycles": 945
+    },
+    {
+      "ordinal": 9,
+      "boundary": {
+        "symbol": "gemmini_residual_1_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_10",
+        "shape": [
+          1,
+          256,
+          56,
+          56
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 61
+      },
+      "device_cycles": 444170,
+      "preceding_host_gap_cycles": 669
+    },
+    {
+      "ordinal": 10,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_7_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_8",
+        "shape": {
+          "m": 3136,
+          "n": 64,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0028179886285215616,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 49
+      },
+      "device_cycles": 210460,
+      "preceding_host_gap_cycles": 715
+    },
+    {
+      "ordinal": 11,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_8_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_9",
+        "shape": {
+          "h": 56,
+          "w": 56,
+          "cin": 64,
+          "cout": 64,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0019949860870838165,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 50
+      },
+      "device_cycles": 620993,
+      "preceding_host_gap_cycles": 836
+    },
+    {
+      "ordinal": 12,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_9_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_10",
+        "shape": {
+          "m": 3136,
+          "n": 256,
+          "k": 64,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.00492976326495409,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 51
+      },
+      "device_cycles": 205790,
+      "preceding_host_gap_cycles": 896
+    },
+    {
+      "ordinal": 13,
+      "boundary": {
+        "symbol": "gemmini_residual_2_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_14",
+        "shape": [
+          1,
+          256,
+          56,
+          56
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 62
+      },
+      "device_cycles": 494555,
+      "preceding_host_gap_cycles": 736
+    },
+    {
+      "ordinal": 14,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_10_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_11",
+        "shape": {
+          "m": 3136,
+          "n": 128,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 1,
+          "bn": 8,
+          "bias": false,
+          "scale": 0.003538144286721945,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": false,
+          "cache_b": true,
+          "cache_a": false,
+          "pipeline_m": true,
+          "prefetch_m": true,
+          "banked_m": true,
+          "wide_a": true,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 1
+      },
+      "device_cycles": 410005,
+      "preceding_host_gap_cycles": 872
+    },
+    {
+      "ordinal": 15,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_11_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_12",
+        "shape": {
+          "h": 56,
+          "w": 56,
+          "cin": 128,
+          "cout": 128,
+          "stride": 2,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0015212674625217915,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 2
+      },
+      "device_cycles": 689004,
+      "preceding_host_gap_cycles": 846
+    },
+    {
+      "ordinal": 16,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_12_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_13",
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 128,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.0040965937077999115,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 3
+      },
+      "device_cycles": 338954,
+      "preceding_host_gap_cycles": 1066
+    },
+    {
+      "ordinal": 17,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_13_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_14",
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.0028477373998612165,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 4
+      },
+      "device_cycles": 555309,
+      "preceding_host_gap_cycles": 420292
+    },
+    {
+      "ordinal": 18,
+      "boundary": {
+        "symbol": "gemmini_residual_3_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_19",
+        "shape": [
+          1,
+          512,
+          28,
+          28
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 63
+      },
+      "device_cycles": 347498,
+      "preceding_host_gap_cycles": 848
+    },
+    {
+      "ordinal": 19,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_14_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_15",
+        "shape": {
+          "m": 784,
+          "n": 128,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 8,
+          "bn": 8,
+          "bias": false,
+          "scale": 0.0020125294104218483,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": true,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 5
+      },
+      "device_cycles": 323218,
+      "preceding_host_gap_cycles": 783
+    },
+    {
+      "ordinal": 20,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_15_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_16",
+        "shape": {
+          "h": 28,
+          "w": 28,
+          "cin": 128,
+          "cout": 128,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0013393994886428118,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 6
+      },
+      "device_cycles": 641568,
+      "preceding_host_gap_cycles": 818
+    },
+    {
+      "ordinal": 21,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_16_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_17",
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 128,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.0033892663195729256,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 7
+      },
+      "device_cycles": 322301,
+      "preceding_host_gap_cycles": 873
+    },
+    {
+      "ordinal": 22,
+      "boundary": {
+        "symbol": "gemmini_residual_4_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_23",
+        "shape": [
+          1,
+          512,
+          28,
+          28
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 64
+      },
+      "device_cycles": 226070,
+      "preceding_host_gap_cycles": 708
+    },
+    {
+      "ordinal": 23,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_17_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_18",
+        "shape": {
+          "m": 784,
+          "n": 128,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 8,
+          "bn": 8,
+          "bias": false,
+          "scale": 0.002155158668756485,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": true,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 8
+      },
+      "device_cycles": 324587,
+      "preceding_host_gap_cycles": 751
+    },
+    {
+      "ordinal": 24,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_18_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_19",
+        "shape": {
+          "h": 28,
+          "w": 28,
+          "cin": 128,
+          "cout": 128,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.001817011390812695,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 9
+      },
+      "device_cycles": 641515,
+      "preceding_host_gap_cycles": 729
+    },
+    {
+      "ordinal": 25,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_19_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_20",
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 128,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.0033718731720000505,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 10
+      },
+      "device_cycles": 323137,
+      "preceding_host_gap_cycles": 883
+    },
+    {
+      "ordinal": 26,
+      "boundary": {
+        "symbol": "gemmini_residual_5_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_27",
+        "shape": [
+          1,
+          512,
+          28,
+          28
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 65
+      },
+      "device_cycles": 451658,
+      "preceding_host_gap_cycles": 723
+    },
+    {
+      "ordinal": 27,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_20_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_21",
+        "shape": {
+          "m": 784,
+          "n": 128,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 8,
+          "bn": 8,
+          "bias": false,
+          "scale": 0.002431085566058755,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": true,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 12
+      },
+      "device_cycles": 324428,
+      "preceding_host_gap_cycles": 812
+    },
+    {
+      "ordinal": 28,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_21_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_22",
+        "shape": {
+          "h": 28,
+          "w": 28,
+          "cin": 128,
+          "cout": 128,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0013200863031670451,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 13
+      },
+      "device_cycles": 641357,
+      "preceding_host_gap_cycles": 784
+    },
+    {
+      "ordinal": 29,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_22_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_23",
+        "shape": {
+          "m": 784,
+          "n": 512,
+          "k": 128,
+          "output_dtype": "i8",
+          "bm": 49,
+          "bn": 1,
+          "bias": false,
+          "scale": 0.003938284236937761,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 14
+      },
+      "device_cycles": 324123,
+      "preceding_host_gap_cycles": 963
+    },
+    {
+      "ordinal": 30,
+      "boundary": {
+        "symbol": "gemmini_residual_6_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_31",
+        "shape": [
+          1,
+          512,
+          28,
+          28
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 66
+      },
+      "device_cycles": 171893,
+      "preceding_host_gap_cycles": 744
+    },
+    {
+      "ordinal": 31,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_23_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_24",
+        "shape": {
+          "m": 784,
+          "n": 256,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 8,
+          "bn": 8,
+          "bias": false,
+          "scale": 0.002614574274048209,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": false,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": true,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 15
+      },
+      "device_cycles": 610207,
+      "preceding_host_gap_cycles": 814
+    },
+    {
+      "ordinal": 32,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_24_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_25",
+        "shape": {
+          "h": 28,
+          "w": 28,
+          "cin": 256,
+          "cout": 256,
+          "stride": 2,
+          "bn": 4,
+          "output_dtype": "i32",
+          "scale": 1.0,
+          "relu": false,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": true,
+        "id": 16
+      },
+      "device_cycles": 821118,
+      "preceding_host_gap_cycles": 1082
+    },
+    {
+      "ordinal": 33,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_25_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_26",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.004480481613427401,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 17
+      },
+      "device_cycles": 241331,
+      "preceding_host_gap_cycles": 1060273
+    },
+    {
+      "ordinal": 34,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_26_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_27",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.002148456173017621,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 18
+      },
+      "device_cycles": 462152,
+      "preceding_host_gap_cycles": 188349
+    },
+    {
+      "ordinal": 35,
+      "boundary": {
+        "symbol": "gemmini_residual_7_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_36",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 67
+      },
+      "device_cycles": 249602,
+      "preceding_host_gap_cycles": 797
+    },
+    {
+      "ordinal": 36,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_27_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_28",
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0018832574132829905,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 19
+      },
+      "device_cycles": 297450,
+      "preceding_host_gap_cycles": 699
+    },
+    {
+      "ordinal": 37,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_28_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_29",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0012096002465113997,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 20
+      },
+      "device_cycles": 619306,
+      "preceding_host_gap_cycles": 747
+    },
+    {
+      "ordinal": 38,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_29_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_30",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.002441646996885538,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 21
+      },
+      "device_cycles": 243736,
+      "preceding_host_gap_cycles": 900
+    },
+    {
+      "ordinal": 39,
+      "boundary": {
+        "symbol": "gemmini_residual_8_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_40",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 68
+      },
+      "device_cycles": 113549,
+      "preceding_host_gap_cycles": 747
+    },
+    {
+      "ordinal": 40,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_30_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_31",
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.001596182002685964,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 23
+      },
+      "device_cycles": 298282,
+      "preceding_host_gap_cycles": 653
+    },
+    {
+      "ordinal": 41,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_31_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_32",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0011732920538634062,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 24
+      },
+      "device_cycles": 618853,
+      "preceding_host_gap_cycles": 785
+    },
+    {
+      "ordinal": 42,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_32_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_33",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.002687048399820924,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 25
+      },
+      "device_cycles": 243682,
+      "preceding_host_gap_cycles": 922
+    },
+    {
+      "ordinal": 43,
+      "boundary": {
+        "symbol": "gemmini_residual_9_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_44",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 69
+      },
+      "device_cycles": 213846,
+      "preceding_host_gap_cycles": 769
+    },
+    {
+      "ordinal": 44,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_33_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_34",
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.00168619304895401,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 26
+      },
+      "device_cycles": 297214,
+      "preceding_host_gap_cycles": 606
+    },
+    {
+      "ordinal": 45,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_34_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_35",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0009134782012552023,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 27
+      },
+      "device_cycles": 618377,
+      "preceding_host_gap_cycles": 777
+    },
+    {
+      "ordinal": 46,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_35_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_36",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0023570451885461807,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 28
+      },
+      "device_cycles": 243963,
+      "preceding_host_gap_cycles": 888
+    },
+    {
+      "ordinal": 47,
+      "boundary": {
+        "symbol": "gemmini_residual_10_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_48",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 55
+      },
+      "device_cycles": 113600,
+      "preceding_host_gap_cycles": 788
+    },
+    {
+      "ordinal": 48,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_36_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_37",
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0025493360590189695,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 29
+      },
+      "device_cycles": 297717,
+      "preceding_host_gap_cycles": 694
+    },
+    {
+      "ordinal": 49,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_37_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_38",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.0012214076705276966,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 30
+      },
+      "device_cycles": 618500,
+      "preceding_host_gap_cycles": 824
+    },
+    {
+      "ordinal": 50,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_38_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_39",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0023883753456175327,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 31
+      },
+      "device_cycles": 243542,
+      "preceding_host_gap_cycles": 893
+    },
+    {
+      "ordinal": 51,
+      "boundary": {
+        "symbol": "gemmini_residual_11_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_52",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 56
+      },
+      "device_cycles": 163791,
+      "preceding_host_gap_cycles": 631
+    },
+    {
+      "ordinal": 52,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_39_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_40",
+        "shape": {
+          "m": 196,
+          "n": 256,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0012121140025556087,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 32
+      },
+      "device_cycles": 297752,
+      "preceding_host_gap_cycles": 739
+    },
+    {
+      "ordinal": 53,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_40_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_41",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 256,
+          "cout": 256,
+          "stride": 1,
+          "bn": 4,
+          "output_dtype": "i8",
+          "scale": 0.001881117350421846,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 34
+      },
+      "device_cycles": 619684,
+      "preceding_host_gap_cycles": 780
+    },
+    {
+      "ordinal": 54,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_41_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_42",
+        "shape": {
+          "m": 196,
+          "n": 1024,
+          "k": 256,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.002844984643161297,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 35
+      },
+      "device_cycles": 243980,
+      "preceding_host_gap_cycles": 863
+    },
+    {
+      "ordinal": 55,
+      "boundary": {
+        "symbol": "gemmini_residual_12_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_56",
+        "shape": [
+          1,
+          1024,
+          14,
+          14
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 57
+      },
+      "device_cycles": 188842,
+      "preceding_host_gap_cycles": 717
+    },
+    {
+      "ordinal": 56,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_42_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_43",
+        "shape": {
+          "m": 196,
+          "n": 512,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 13,
+          "bn": 4,
+          "bias": false,
+          "scale": 0.0018682164372876287,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 36
+      },
+      "device_cycles": 586767,
+      "preceding_host_gap_cycles": 768
+    },
+    {
+      "ordinal": 57,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_43_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_44",
+        "shape": {
+          "h": 14,
+          "w": 14,
+          "cin": 512,
+          "cout": 512,
+          "stride": 2,
+          "bn": 16,
+          "output_dtype": "i8",
+          "scale": 0.0006653686286881566,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 37
+      },
+      "device_cycles": 874782,
+      "preceding_host_gap_cycles": 936
+    },
+    {
+      "ordinal": 58,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_44_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_45",
+        "shape": {
+          "m": 49,
+          "n": 2048,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.0023045858833938837,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 38
+      },
+      "device_cycles": 283151,
+      "preceding_host_gap_cycles": 994
+    },
+    {
+      "ordinal": 59,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_45_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_46",
+        "shape": {
+          "m": 49,
+          "n": 2048,
+          "k": 1024,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.0014519140822812915,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 39
+      },
+      "device_cycles": 549759,
+      "preceding_host_gap_cycles": 87734
+    },
+    {
+      "ordinal": 60,
+      "boundary": {
+        "symbol": "gemmini_residual_13_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_61",
+        "shape": [
+          1,
+          2048,
+          7,
+          7
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 58
+      },
+      "device_cycles": 168844,
+      "preceding_host_gap_cycles": 901
+    },
+    {
+      "ordinal": 61,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_46_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_47",
+        "shape": {
+          "m": 49,
+          "n": 512,
+          "k": 2048,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.001403828035108745,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 40
+      },
+      "device_cycles": 280496,
+      "preceding_host_gap_cycles": 548
+    },
+    {
+      "ordinal": 62,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_47_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_48",
+        "shape": {
+          "h": 7,
+          "w": 7,
+          "cin": 512,
+          "cout": 512,
+          "stride": 1,
+          "bn": 16,
+          "output_dtype": "i32",
+          "scale": 1.0,
+          "relu": false,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": true,
+        "id": 41
+      },
+      "device_cycles": 866346,
+      "preceding_host_gap_cycles": 1017
+    },
+    {
+      "ordinal": 63,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_48_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_49",
+        "shape": {
+          "m": 49,
+          "n": 2048,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.0026492802426218987,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 42
+      },
+      "device_cycles": 282939,
+      "preceding_host_gap_cycles": 530513
+    },
+    {
+      "ordinal": 64,
+      "boundary": {
+        "symbol": "gemmini_residual_14_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_65",
+        "shape": [
+          1,
+          2048,
+          7,
+          7
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 59
+      },
+      "device_cycles": 132339,
+      "preceding_host_gap_cycles": 751
+    },
+    {
+      "ordinal": 65,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_49_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_50",
+        "shape": {
+          "m": 49,
+          "n": 512,
+          "k": 2048,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.0008620530716143548,
+          "relu": true,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 43
+      },
+      "device_cycles": 279277,
+      "preceding_host_gap_cycles": 644
+    },
+    {
+      "ordinal": 66,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_50_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_51",
+        "shape": {
+          "h": 7,
+          "w": 7,
+          "cin": 512,
+          "cout": 512,
+          "stride": 1,
+          "bn": 16,
+          "output_dtype": "i8",
+          "scale": 0.0015428082551807165,
+          "relu": true,
+          "wide_b": true,
+          "explicit_halo": false
+        },
+        "cpu_integer_readout_after": false,
+        "id": 45
+      },
+      "device_cycles": 859161,
+      "preceding_host_gap_cycles": 888
+    },
+    {
+      "ordinal": 67,
+      "boundary": {
+        "symbol": "gemmini_exact_requant_51_kernel",
+        "pointer_arity": 3,
+        "category": "unary",
+        "source_region": "matmul_52",
+        "shape": {
+          "m": 49,
+          "n": 2048,
+          "k": 512,
+          "output_dtype": "i8",
+          "bm": 4,
+          "bn": 16,
+          "bias": false,
+          "scale": 0.001813241164200008,
+          "relu": false,
+          "wide_store": true,
+          "reuse_b": true,
+          "cache_b": false,
+          "cache_a": true,
+          "pipeline_m": false,
+          "prefetch_m": false,
+          "banked_m": false,
+          "wide_a": false,
+          "wide_b": true,
+          "separate_b_bank": false,
+          "prefetch_b": true
+        },
+        "cpu_integer_readout_after": false,
+        "id": 46
+      },
+      "device_cycles": 282521,
+      "preceding_host_gap_cycles": 878
+    },
+    {
+      "ordinal": 68,
+      "boundary": {
+        "symbol": "gemmini_residual_15_kernel",
+        "pointer_arity": 4,
+        "category": "residual",
+        "source_region": "quantize_69",
+        "shape": [
+          1,
+          2048,
+          7,
+          7
+        ],
+        "cpu_integer_readout_after": false,
+        "id": 60
+      },
+      "device_cycles": 35490,
+      "preceding_host_gap_cycles": 706
+    },
+    {
+      "ordinal": 69,
+      "boundary": {
+        "symbol": "gemmini_golden_4351727d24288d93",
+        "pointer_arity": 3,
+        "category": "dense",
+        "source_region": null,
+        "shape": null,
+        "id": 53
+      },
+      "device_cycles": 467751,
+      "preceding_host_gap_cycles": 329339
+    }
+  ],
+  "category_device_cycles": {
+    "pooled_stem": 1344602,
+    "pointwise": 11107859,
+    "spatial_convolution": 10989417,
+    "residual": 5512622,
+    "dense": 467751
+  },
+  "forward_cycles": 33939464,
+  "device_cycles": 29422251,
+  "host_gap_cycles": 4517213,
+  "host_tail_included_cycles": 73136,
+  "outer_metric_cycles": 33939729,
+  "emulator_cycles_including_harness": 34790286,
+  "elapsed_seconds": 3670.6386716209818,
+  "conservation": true,
+  "expected_events": 70,
+  "artifacts": {
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/gsim/receipt.json": "951c69f40272ab84c41d94fb8ca0b4fa39bb0ff298317315408933f64213620b",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/gsim/uart.log": "1714a25c2ce79cc87fcff48c8aff793e478d5bf5e77672ac7dc698715eee7652",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/profile_build.json": "a6d04368039952fd195b3da80b022cc87f161ab4e1b98d05d2d9e13d247ebe12",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/model.elf": "33f7cdee3272c75812b95cd26c83d63a15ef225119ec78d19c5d8abc6f618007",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/model.nofsm_audit.json": "7f927226868b871448d1170b8f3cdbe3bf9919adb50d71e5e2a6bda85ad22769",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/gsim/preflight.json": "5db29c8bdc8ce79ea4bed2d9c6b965aa94893a554ba757d764bded38b15f0319",
+    "/scratch/agustin/tmp/gemmini-smol-target-numeric-20261005/out/resnet1903_profile/gsim/run.py": "680a08366883bcb68fa579046c4d2a7a4271dc4343c4af4349b00bd6bcc0b7b9"
+  },
+  "token_usage_available": false
+}

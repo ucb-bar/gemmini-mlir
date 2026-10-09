@@ -1,0 +1,144 @@
+{
+  "schema": "source_monotone_polynomial_exact_consumer_group_screen_v1",
+  "arm": "zero_error",
+  "scope": "Originalgroup0 all12heads/256rows, exact source-quant observations; native integer product stand-in. No hardware or whole-model cycles.",
+  "source_endpoint_words": 196608,
+  "changed_endpoint_words": 125,
+  "original_i8_words_exact": true,
+  "i8_words": 196608,
+  "original_scale_words_exact": true,
+  "scale_words": 256,
+  "counts": {
+    "policy": "exact_source_quant_frontier",
+    "history": [
+      {
+        "scale_ambiguous_rows": 2,
+        "quant_ambiguous_cells": 259,
+        "extrema_candidates": 3
+      },
+      {
+        "scale_ambiguous_rows": 2,
+        "quant_ambiguous_cells": 35,
+        "extrema_candidates": 3
+      },
+      {
+        "scale_ambiguous_rows": 0,
+        "quant_ambiguous_cells": 1,
+        "extrema_candidates": 0
+      },
+      {
+        "scale_ambiguous_rows": 0,
+        "quant_ambiguous_cells": 0,
+        "extrema_candidates": 0
+      }
+    ],
+    "initial_qk_replay_fmas": 1723456,
+    "refine_counts": [
+      38573,
+      2468672,
+      38,
+      1578,
+      269312
+    ],
+    "replay_total_fmas": 4461440,
+    "source_dots": false
+  },
+  "native_seconds_not_cycles": 2.5416485080495477,
+  "tap_path": "/scratch/agustin/tmp/gemmini-smol-encoded-zero-groups-20261005/out/artifacts/probes/source-group-native-20261005/accepted_taps.json",
+  "tap_sha256": "422f5fdb9e99eac35503bd3dcd2592207931c84610a1e6776b4c7b757d60e3ef",
+  "source_contract": {
+    "qk_depth": 64,
+    "key_chunks": [
+      512,
+      512
+    ],
+    "pv_segments": [
+      192,
+      192,
+      128
+    ],
+    "denominator_lanes": 8,
+    "score_scale": 0.125,
+    "poly_cutoff": -87.3365478515625,
+    "poly_scale": 1.4426950216293335,
+    "poly_coefficients": [
+      -0.07920423895120621,
+      -0.2243383675813675,
+      0.3035426139831543,
+      0.00010703434963943437
+    ],
+    "poly_bit_multiplier": 8388608.0,
+    "poly_bit_bias": 1065353216.0,
+    "alpha": "f32(exp_f64(f32(oldmax-newmax)))",
+    "all_masked_max": 0,
+    "zero_denominator": 1,
+    "initial_max": "-inf",
+    "initial_denominator": 0,
+    "initial_accumulator": 0,
+    "source_fma": "ordered_f32_rne",
+    "pv_partial_accumulate": "separate_f32_add"
+  },
+  "quant_contract": {
+    "row_axis": "flatten(head,channel)",
+    "scale_divisor_f32": 127.0,
+    "scale_cast": "bf16_rne",
+    "epsilon_bf16_word": 14120,
+    "reciprocal": "bf16_rne",
+    "multiply": "bf16_rne",
+    "round": "ties_even",
+    "zero_point": 0,
+    "clamp": [
+      -127,
+      127
+    ],
+    "result": "signed_i8",
+    "escaping_scale": "bf16"
+  },
+  "pins": {
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/native_frontier_state_frozen.py": "8c3b863df8329e0038f272cf8cd79e8c9ab662835e0a36cf9ce51e037107c3e2",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/native_evaluator.py": "189c08e15c66e17d23ae52a30d892a22430fe55605fdc6518b69fadd58995283",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/native_quant_frontier_frozen.py": "bb0fbfe091bf2d8c383e0a2b32a486be7bdbc248a1bc671037907b8912a1972b",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/prepared_dot_norms.h": "64ff7fb45f420d78840c19bd59f7dbae3083d62afb9f3025eaa851fdeff94710",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/f32_interval_endpoint.h": "6982b0365b9a5341445607d828e973f7734e70eed7320c2b11b030e805d0b075",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/positive_scalar_interval.h": "afe59f7a1cb1d78fa3bbf9c363413251e1c0b82cea24059f8b1d745e262b4ac5",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/monotone_bit_polynomial.h": "eb062d49a7fb440f196fdb9a683f832d6baffb2104ebbb8a6505044446d9bde6",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/representation_error_norms.h": "6a1c549f2be3312aef2a2ef18c24c0ac85191f236574f11bd8fb6bd87ee7b895",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/prepared_bit_polynomial.h": "0bbfdd654817a6985042d3247ea33b1812db1d276c8f56630d8520fbe4951b2c",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/ordered_fma_bounds.h": "fe30d3117d0c0e76befff6688ac4155e0ab5a0e66685f264ace5d97fc92e6a83",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/native_endpoint_d76b4dd9cf176844.so": "6f3f669db836d16c31672132dc5af7567030d78545998e0f65164a04e27509ad",
+    "/scratch/agustin/tmp/gemmini-closed-bf16-certificate-20261005/out/closed_group_endpoint/zero_error_norm_screen/zero_error/frozen/screen_bounded.c": "aa7405adbfa2639b3cc1d48df4e266706b9d7ecaa486cadcf5701d7a72e8828a"
+  },
+  "accuracy_gate_changed": false,
+  "default_changed": false,
+  "token_usage_available": false,
+  "core_commit": "d5731895a",
+  "exact_representation_census": {
+    "scope": "Actualoriginalgroup0; censusonly, noeligibilityfromsample. Productionperrowfiniteequalitycheck required.",
+    "totals": {
+      "Q": {
+        "rows": 3072,
+        "exact_rows": 3072,
+        "values": 196608,
+        "exact_values": 196608
+      },
+      "K": {
+        "rows": 12288,
+        "exact_rows": 12288,
+        "values": 786432,
+        "exact_values": 786432
+      },
+      "P": {
+        "rows": 18432,
+        "exact_rows": 15404,
+        "values": 3145728,
+        "exact_values": 3099149
+      },
+      "V": {
+        "rows": 4608,
+        "exact_rows": 4608,
+        "values": 786432,
+        "exact_values": 786432
+      }
+    }
+  }
+}

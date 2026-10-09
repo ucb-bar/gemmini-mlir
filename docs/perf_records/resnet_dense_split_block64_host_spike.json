@@ -1,0 +1,152 @@
+{
+  "scope": "Complete same-source exact composition; queue pending, no hardware performance claim",
+  "elf_sha256": "4ef297f990815f309f80d6c2916af8e772b83e28d0b8cad686c5f5909b35092e",
+  "target_native_exact": true,
+  "native_reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "original_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "elements": 1000,
+  "exact_equal": true,
+  "max_abs_error": 0.0,
+  "relative_l2": 0.0,
+  "atol": 0.0,
+  "rtol": 0.0,
+  "allclose": true,
+  "quality_pass": true,
+  "numeric_policy": "exact_source",
+  "metrics": [
+    "METRIC cycles 11497420",
+    "METRIC build_hash f71783670baa",
+    "METRIC memref_rank_mismatch 0"
+  ],
+  "spike_output_sha256": "0c2fb2f53d4f080e8d2da3a2647b0daa6fe0759f3d15833c1af2125b3ed14787",
+  "output_elements": 1000,
+  "output_bytes": 4000,
+  "reference_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "reference_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/host/output.npy",
+  "spike_full_output_match": true,
+  "spike_console_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/spike.log",
+  "spike_console_sha256": "b098eac76dd35e37c24900fd6705071c0e4ec5ca49efb1ce591084630455386f",
+  "torch_golden_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/capture/golden.npy",
+  "torch_golden_sha256": "3ada92201aedf3da3a99441bc43c3b24b18063cbf91ea1173288d9534494f946",
+  "torch_atol": 0.0,
+  "torch_rtol": 0.0,
+  "torch_allclose": true,
+  "hardware_job": 1795,
+  "build": {
+    "elf": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/build_direct/model.elf",
+    "mem_bytes": 2147483648,
+    "build_hash": "f71783670baa",
+    "arena_base": 2268069888,
+    "weights_base": 2216689664,
+    "vlen": null,
+    "host_vectorize": true,
+    "host_llvm_transform": {
+      "source_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/build_direct/lower/model.ll",
+      "source_sha256": "15106df7e34ee1ae9cf80384400832c23dacbf38b2e297d0d177c03bbb1052bc",
+      "selected_path": "/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/out/resnet_dense_split_block64_host/build_direct/host_llvm/model.ll",
+      "selected_sha256": "0957aaf139697c725cb44298d5093ac3cb5e99a195b77008c21421f076d6c684"
+    },
+    "console": "htif",
+    "output_dump_cap": 1,
+    "output_sha256": true,
+    "chip_freq_hz": null,
+    "console_provenance": {},
+    "matrix": null,
+    "matrix_routing": null,
+    "n_args": 164,
+    "n_outputs": 1,
+    "outputs": [
+      [
+        [
+          1,
+          1000
+        ],
+        "f32"
+      ]
+    ],
+    "n_state_pairs": 0,
+    "out_shape": [
+      1,
+      1000
+    ],
+    "out_dt": "f32",
+    "has_session_correctness": true,
+    "has_session_quality": true,
+    "ciface_name": "forward",
+    "invoke_name": "merlin_invoke",
+    "n_qinner": 0,
+    "n_quant_hoist": 54,
+    "weights_bytes": 51116064,
+    "static_io_bytes": 1216224
+  },
+  "nofsm_audit": {
+    "schema": "gemmini_nofsm_elf_audit_v1",
+    "elf_sha256": "4ef297f990815f309f80d6c2916af8e772b83e28d0b8cad686c5f5909b35092e",
+    "executable_sections": 1,
+    "custom_funct_counts": {
+      "0": 329,
+      "1": 2996,
+      "2": 12503,
+      "3": 1334,
+      "4": 11966,
+      "5": 100544,
+      "6": 112510,
+      "7": 70,
+      "14": 48
+    },
+    "forbidden": [],
+    "unknown": [],
+    "status": "pass"
+  },
+  "host_policy": {
+    "MERLIN_GENERALIZE_BEFORE_FUSE": "1",
+    "MERLIN_FUSE_POST": "1",
+    "MERLIN_CLANG": "/scratch/agustin/projects/oscar-merlin/third_party/llvm-install/bin/clang",
+    "host_features": [
+      "fuse_quantize_round_convert"
+    ],
+    "host_vectorize": "true",
+    "host_llvm_transform": "clamp-rne",
+    "output_sha256": true,
+    "output_dump_cap": 1
+  },
+  "layout_report": {
+    "schema": "exact_physical_layout_v1",
+    "before": {
+      "copies": 102,
+      "output_bytes": 18623468,
+      "producer_boundaries": {
+        "linalg.transpose": 16,
+        "tensor.expand_shape": 49,
+        "tensor.extract_slice": 36,
+        "tensor.insert_slice": 1
+      }
+    },
+    "after": {
+      "copies": 1,
+      "output_bytes": 602112,
+      "producer_boundaries": {
+        "argument": 1
+      }
+    },
+    "rewrite": {
+      "requested": 295,
+      "canceled": 49,
+      "unit_views": 0,
+      "scalar_regions": 2,
+      "static_slices": 475,
+      "ordered_reductions": 1,
+      "blocked_reductions": 1,
+      "boundary_transposes": 50
+    },
+    "call_abi_changed": false,
+    "scalar_arithmetic_changed": false,
+    "source_sha256": "a18ac4b4c041333dad7aa5414132697fd251852b0b377eb716cbd4a978071724",
+    "rewritten_sha256": "c5ad4958edcdd4909a4fb06b7628aeef31377b5270ddf2fc54f8a859bccf795c"
+  },
+  "driver_source": "\"\"\"Explicit block64 composition; all production defaults remain unchanged.\"\"\"\nimport runpy\nimport merlin.llvmlower.layout_propagation as layout\noriginal=layout.rewrite_module\nlayout.rewrite_module=lambda module:original(module,reduction_channel_block=64)\nrunpy.run_path('/scratch/agustin/tmp/gemmini-resnet-dense-compose-20261005/tests/fused_whole_model_probe.py',run_name='__main__')\n",
+  "helper_commit": "e6e44ff",
+  "merlin_commit": "deac2d2d66fc65c3b8d01572c93629aa7a41d0dd",
+  "bundle": "/scratch/agustin/tmp/gemmini-virtual-padding-20261005/out/exact52_virtual_dense_split_bundle",
+  "comparison_control_job": 1789
+}

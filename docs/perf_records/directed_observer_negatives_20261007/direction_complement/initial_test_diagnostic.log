@@ -1,0 +1,290 @@
+.FFF........................................                             [100%]
+=================================== FAILURES ===================================
+__________ test_positive_factor_rederived_table_and_default_identity ___________
+
+    def test_positive_factor_rederived_table_and_default_identity():
+        _, cells, table = plan()
+        ordinary = emit_source_interval_i8_lookup(table_name="table", activation_name="activation", quantizer_name="quant", lookup_name="lookup", leading_bits=9)
+        code = emitted(cells, table)
+        assert ordinary == emit_source_interval_i8_lookup(table_name="table", activation_name="activation", quantizer_name="quant", lookup_name="lookup", leading_bits=9)
+        assert "high_word=quant" not in code and "bits(up)>>31" in code
+        assert "low_product=lo*up,high_product=hi*up" in code
+        assert "low_scaled=low_product*scale,high_scaled=high_product*scale" in code
+        assert "if(!(scale>0.0f))goto source_fallback" in code
+        assert "return 0;" in emitted(cells, table, zero_observer_cells=(cells,))
+        forged = bytes([table.data[0]^1]) + table.data[1:]
+        with pytest.raises(ValueError, match="rederived"):
+            emitted(cells, replace(table, data=forged))
+        for factor in ("-3.0", "0.0"):
+>           _, other = analyze(source().replace("3.0:f32", factor+":f32"))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+merlin/tests/ir/test_ordered_rne_endpoint.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+merlin/tests/ir/test_source_expression_interval.py:70: in analyze
+    proof = close_scalar_i8_observer(function.body.block.args[0], activation.results[0], effects=EFFECTS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cut = <BlockArgument[f32] name_hint: x, index: 0, uses: 1>
+endpoint = <OpResult[f32] name_hint: act, index: 0, operation: arith.mulf, uses: 1>
+
+    def close_scalar_i8_observer(cut, endpoint, *, effects: IntervalEffectContract):
+        """Prove the actual two rounded multiplies and saturated ties-even i8 DAG.
+    
+        No changed carrier may escape. Literals can retain unrelated uses; every
+        other expression/observer result must remain inside the closed source DAG.
+        Tensor coordinates/ownership and actual compilation identity are separate
+        caller obligations: this function moves no operation or memory access.
+        """
+        from xdsl.dialects import arith, func
+        from xdsl.dialects.builtin import FloatAttr, f32, i8
+        from xdsl.ir import Block, Region
+        from xdsl.traits import Pure
+    
+        from .bounded_rne_maps import prove_scalar_bounded_rne
+    
+        effects.validate()
+        expression, operations = extract_scalar_expression(cut, endpoint)
+    
+        def one_user(value):
+            uses = tuple(value.uses)
+            if len(uses) != 1:
+                raise ValueError("floating endpoint or intermediate has an escape")
+            return uses[0].operation
+    
+        product = one_user(endpoint)
+        if product.name != "arith.mulf" or len(product.results) != 1 or product.results[0].type != f32:
+            raise ValueError("first unchanged rounded binary32 multiply required")
+        _scalar_attributes(product)
+        up = next((x for x in product.operands if x is not endpoint), None)
+        if up is None or up.type != f32:
+            raise ValueError("independent binary32 finishing operand required")
+        scaled = one_user(product.results[0])
+        if scaled.name != "arith.mulf" or len(scaled.results) != 1 or scaled.results[0].type != f32:
+            raise ValueError("second unchanged rounded binary32 multiply required")
+        _scalar_attributes(scaled)
+        factor = next((x for x in scaled.operands if x is not product.results[0]), None)
+        if factor is None or not isinstance(factor.owner, arith.ConstantOp):
+            raise ValueError("typed literal finishing factor required")
+        constant = factor.owner.value
+        if not isinstance(constant, FloatAttr) or constant.type != f32 or not 0 < constant.value.data < math.inf:
+>           raise ValueError("finite positive nonzero binary32 finishing factor required")
+E           ValueError: finite positive nonzero binary32 finishing factor required
+
+src/merlin/llvmlower/source_expression_interval.py:235: ValueError
+______ test_actual_compiled_complete_products_and_source_fallback[False] _______
+
+tmp_path = PosixPath('/scratch/pytest-of-agustin/pytest-276/test_actual_compiled_complete_0')
+zero = False
+
+    @pytest.mark.parametrize("zero", [False, True])
+    def test_actual_compiled_complete_products_and_source_fallback(tmp_path, zero):
+        _, cells, table = plan()
+        code = emitted(cells, table, zero_observer_cells=(cells,) if zero else ())
+        rows = np.frombuffer(table.data, "<f4").reshape(-1, 2)
+        def literal(value):
+            return ("-INFINITY" if value < 0 else "INFINITY") if np.isinf(value) else float(value).hex()+"f"
+        declarations = ",".join("{"+literal(lo)+","+literal(hi)+"}" for lo, hi in rows)
+        text = "#include <math.h>\n#include <fenv.h>\n" + code + "\nconst float table[512][2]={"+declarations+"};\n" + """
+    static unsigned fallback_count;
+    float activation(float x){fallback_count++;return x*2.0f;}
+    signed char quant(float x){if(x<-128.0f)x=-128.0f;if(x>127.0f)x=127.0f;
+     int n=(int)x;float d=x-(float)n;float a=fabsf(d);
+     if(a>0.5f||(a==0.5f&&(n&1)))n+=x<0?-1:1;return (signed char)n;}
+    signed char original(float x,float up,float scale){float a=x*2.0f;float p=a*up;float s=p*scale;return quant(s);}
+    signed char guarded(float x,float up,float scale){return fegetround()==FE_TONEAREST?lookup(x,up,scale):original(x,up,scale);}
+    unsigned fallbacks(void){return fallback_count;}
+    """
+        c, so = tmp_path / "direction.c", tmp_path / "direction.so"
+        c.write_text(text)
+        subprocess.run([str(clang()), "-O3", "-ffp-contract=off", "-frounding-math", "-fPIC", "-shared", str(c), "-lm", "-o", str(so)], check=True, capture_output=True)
+        lib = ctypes.CDLL(str(so))
+        for name in ("guarded", "original"):
+            fn = getattr(lib, name);fn.argtypes=[ctypes.c_float]*3;fn.restype=ctypes.c_int8
+        env = ctypes.CDLL(None)
+        oldmode, oldflags = env.fegetround(), env.fetestexcept(61)
+        pairs = [(x, up, scale) for x in (-0.0,0.0,np.nextafter(np.float32(0),np.float32(1)), -0.5,0.5,-127.5,126.5,1.0,-1.0) for up in (-0.0,0.0,-1.0,1.0,np.finfo(np.float32).max,np.nextafter(np.float32(0),np.float32(1))) for scale in (3.0,0.0,-3.0)]
+        rng=np.random.default_rng(599)
+        pairs.extend(zip(rng.uniform(-63,63,1025),rng.uniform(-19,19,1025),[3.0]*1025))
+        try:
+            for mode in (0,0x400,0x800,0xc00):
+                assert env.fesetround(mode)==0
+                for sticky in (0,1,4,8,16,32,61):
+                    for x,up,scale in pairs:
+                        env.feclearexcept(61);env.feraiseexcept(sticky)
+                        got=lib.guarded(x,up,scale)
+                        assert env.fetestexcept(61)&sticky == sticky
+                        assert got==lib.original(x,up,scale)
+                        if mode==0:
+                            with np.errstate(all="ignore"):
+                                v=np.float32(np.float32(np.float32(x)*np.float32(2))*np.float32(up));v=np.float32(v*np.float32(scale))
+>                           assert got==(-128 if v<=-128 else 127 if v>=127 else round(Fraction(float(v))))
+                                                                                       ^^^^^^^^^^^^^^^^^^
+
+merlin/tests/ir/test_ordered_rne_endpoint.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'fractions.Fraction'>, numerator = nan, denominator = None
+
+    def __new__(cls, numerator=0, denominator=None):
+        """Constructs a Rational.
+    
+        Takes a string like '3/2' or '1.5', another Rational instance, a
+        numerator/denominator pair, or a float.
+    
+        Examples
+        --------
+    
+        >>> Fraction(10, -8)
+        Fraction(-5, 4)
+        >>> Fraction(Fraction(1, 7), 5)
+        Fraction(1, 35)
+        >>> Fraction(Fraction(1, 7), Fraction(2, 3))
+        Fraction(3, 14)
+        >>> Fraction('314')
+        Fraction(314, 1)
+        >>> Fraction('-35/4')
+        Fraction(-35, 4)
+        >>> Fraction('3.1415') # conversion from numeric string
+        Fraction(6283, 2000)
+        >>> Fraction('-47e-2') # string may include a decimal exponent
+        Fraction(-47, 100)
+        >>> Fraction(1.47)  # direct construction from float (exact conversion)
+        Fraction(6620291452234629, 4503599627370496)
+        >>> Fraction(2.25)
+        Fraction(9, 4)
+        >>> Fraction(Decimal('1.47'))
+        Fraction(147, 100)
+    
+        """
+        self = super(Fraction, cls).__new__(cls)
+    
+        if denominator is None:
+            if type(numerator) is int:
+                self._numerator = numerator
+                self._denominator = 1
+                return self
+    
+            elif isinstance(numerator, numbers.Rational):
+                self._numerator = numerator.numerator
+                self._denominator = numerator.denominator
+                return self
+    
+            elif isinstance(numerator, (float, Decimal)):
+                # Exact conversion
+>               self._numerator, self._denominator = numerator.as_integer_ratio()
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: cannot convert NaN to integer ratio
+
+/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/fractions.py:232: ValueError
+_______ test_actual_compiled_complete_products_and_source_fallback[True] _______
+
+tmp_path = PosixPath('/scratch/pytest-of-agustin/pytest-276/test_actual_compiled_complete_1')
+zero = True
+
+    @pytest.mark.parametrize("zero", [False, True])
+    def test_actual_compiled_complete_products_and_source_fallback(tmp_path, zero):
+        _, cells, table = plan()
+        code = emitted(cells, table, zero_observer_cells=(cells,) if zero else ())
+        rows = np.frombuffer(table.data, "<f4").reshape(-1, 2)
+        def literal(value):
+            return ("-INFINITY" if value < 0 else "INFINITY") if np.isinf(value) else float(value).hex()+"f"
+        declarations = ",".join("{"+literal(lo)+","+literal(hi)+"}" for lo, hi in rows)
+        text = "#include <math.h>\n#include <fenv.h>\n" + code + "\nconst float table[512][2]={"+declarations+"};\n" + """
+    static unsigned fallback_count;
+    float activation(float x){fallback_count++;return x*2.0f;}
+    signed char quant(float x){if(x<-128.0f)x=-128.0f;if(x>127.0f)x=127.0f;
+     int n=(int)x;float d=x-(float)n;float a=fabsf(d);
+     if(a>0.5f||(a==0.5f&&(n&1)))n+=x<0?-1:1;return (signed char)n;}
+    signed char original(float x,float up,float scale){float a=x*2.0f;float p=a*up;float s=p*scale;return quant(s);}
+    signed char guarded(float x,float up,float scale){return fegetround()==FE_TONEAREST?lookup(x,up,scale):original(x,up,scale);}
+    unsigned fallbacks(void){return fallback_count;}
+    """
+        c, so = tmp_path / "direction.c", tmp_path / "direction.so"
+        c.write_text(text)
+        subprocess.run([str(clang()), "-O3", "-ffp-contract=off", "-frounding-math", "-fPIC", "-shared", str(c), "-lm", "-o", str(so)], check=True, capture_output=True)
+        lib = ctypes.CDLL(str(so))
+        for name in ("guarded", "original"):
+            fn = getattr(lib, name);fn.argtypes=[ctypes.c_float]*3;fn.restype=ctypes.c_int8
+        env = ctypes.CDLL(None)
+        oldmode, oldflags = env.fegetround(), env.fetestexcept(61)
+        pairs = [(x, up, scale) for x in (-0.0,0.0,np.nextafter(np.float32(0),np.float32(1)), -0.5,0.5,-127.5,126.5,1.0,-1.0) for up in (-0.0,0.0,-1.0,1.0,np.finfo(np.float32).max,np.nextafter(np.float32(0),np.float32(1))) for scale in (3.0,0.0,-3.0)]
+        rng=np.random.default_rng(599)
+        pairs.extend(zip(rng.uniform(-63,63,1025),rng.uniform(-19,19,1025),[3.0]*1025))
+        try:
+            for mode in (0,0x400,0x800,0xc00):
+                assert env.fesetround(mode)==0
+                for sticky in (0,1,4,8,16,32,61):
+                    for x,up,scale in pairs:
+                        env.feclearexcept(61);env.feraiseexcept(sticky)
+                        got=lib.guarded(x,up,scale)
+                        assert env.fetestexcept(61)&sticky == sticky
+                        assert got==lib.original(x,up,scale)
+                        if mode==0:
+                            with np.errstate(all="ignore"):
+                                v=np.float32(np.float32(np.float32(x)*np.float32(2))*np.float32(up));v=np.float32(v*np.float32(scale))
+>                           assert got==(-128 if v<=-128 else 127 if v>=127 else round(Fraction(float(v))))
+                                                                                       ^^^^^^^^^^^^^^^^^^
+
+merlin/tests/ir/test_ordered_rne_endpoint.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'fractions.Fraction'>, numerator = nan, denominator = None
+
+    def __new__(cls, numerator=0, denominator=None):
+        """Constructs a Rational.
+    
+        Takes a string like '3/2' or '1.5', another Rational instance, a
+        numerator/denominator pair, or a float.
+    
+        Examples
+        --------
+    
+        >>> Fraction(10, -8)
+        Fraction(-5, 4)
+        >>> Fraction(Fraction(1, 7), 5)
+        Fraction(1, 35)
+        >>> Fraction(Fraction(1, 7), Fraction(2, 3))
+        Fraction(3, 14)
+        >>> Fraction('314')
+        Fraction(314, 1)
+        >>> Fraction('-35/4')
+        Fraction(-35, 4)
+        >>> Fraction('3.1415') # conversion from numeric string
+        Fraction(6283, 2000)
+        >>> Fraction('-47e-2') # string may include a decimal exponent
+        Fraction(-47, 100)
+        >>> Fraction(1.47)  # direct construction from float (exact conversion)
+        Fraction(6620291452234629, 4503599627370496)
+        >>> Fraction(2.25)
+        Fraction(9, 4)
+        >>> Fraction(Decimal('1.47'))
+        Fraction(147, 100)
+    
+        """
+        self = super(Fraction, cls).__new__(cls)
+    
+        if denominator is None:
+            if type(numerator) is int:
+                self._numerator = numerator
+                self._denominator = 1
+                return self
+    
+            elif isinstance(numerator, numbers.Rational):
+                self._numerator = numerator.numerator
+                self._denominator = numerator.denominator
+                return self
+    
+            elif isinstance(numerator, (float, Decimal)):
+                # Exact conversion
+>               self._numerator, self._denominator = numerator.as_integer_ratio()
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ValueError: cannot convert NaN to integer ratio
+
+/home/agustin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/fractions.py:232: ValueError
+=========================== short test summary info ============================
+FAILED merlin/tests/ir/test_ordered_rne_endpoint.py::test_positive_factor_rederived_table_and_default_identity
+FAILED merlin/tests/ir/test_ordered_rne_endpoint.py::test_actual_compiled_complete_products_and_source_fallback[False]
+FAILED merlin/tests/ir/test_ordered_rne_endpoint.py::test_actual_compiled_complete_products_and_source_fallback[True]
+3 failed, 41 passed in 1.12s

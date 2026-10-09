@@ -1,0 +1,23 @@
+from pathlib import Path
+import hashlib,json,shutil
+oot=Path('/scratch/agustin/tmp/gemmini-golden-nofsm-20261004')
+work=oot/'out/artifacts/probes/smol-soft-floor-composition-20261006'
+records=oot/'docs/perf_records'
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+pins=json.loads((work/'admitted_inputs.json').read_text())
+for p,digest in pins.items():assert sha(p)==digest,p
+for p in work.rglob('*'):
+ if p.is_file():pins[str(p)]=sha(p)
+native=json.loads((work/'normal_native/native/validation.json').read_text())
+execution=json.loads((work/'candidate/execution.json').read_text())
+assert native['elements']==1600 and native['bitwise_mismatches']==0 and native['allclose'] and native['calls'][:3]==[48,0,0] and native['product_calls']==23040
+assert native['original_golden_sha256']=='765a96d1cce0ff5a2be751c2ec13db3b745c5d13d28ea1915ec5f2552c67dcb5'
+assert execution['status']=='pass' and 'WORKSPACE_GROUP_INSTRUCTIONS 2739859187'in execution['metrics']
+stats=[4395,0,74169,97414,6234496,98,2742,467968]
+for i,value in enumerate(stats):assert f'WORKSPACE_STAT {i} {value}'in execution['metrics']
+snap=records/'source_snapshots/smol_soft_floor_composition';snap.mkdir(exist_ok=True,parents=True)
+for name in ('root_soft_floor_compose.py','root_soft_floor_archive.py'):
+ p=snap/(name+'.source');shutil.copyfile(Path('/tmp')/name,p);pins[str(p)]=sha(p)
+receipt=dict(schema='smol_private_soft_floor_composition_qualification_v1',feature_default=False,independent_capabilities='Previously qualified exact finite floor470600target checks/5FRM and source-derived private soft domain with signedPV checked',control_source='Frozen source242488f preparedsoft; only selected numeric capability floor header replaced',default_provider_and_elf_byte_identical=True,prepared_soft_control_elf= str(work/'control/model.elf'),prepared_soft_control_elf_sha256=sha(work/'control/model.elf'),candidate_elf=str(work/'candidate/model.elf'),candidate_elf_sha256=sha(work/'candidate/model.elf'),composed_control_retired_instructions=2879340410,prepared_soft_control_retired_instructions=2818251584,candidate_retired_instructions=2739859187,relative_instruction_change_vs_composed_control=2739859187/2879340410-1,relative_instruction_change_vs_prepared_soft=2739859187/2818251584-1,scope='Complete actual original12head provider ROI retired instructions, original54op consumer checks after ROI; not hardware cycles or whole-model estimate',original_consumer={'i8_words':786432,'escaping_bf16_scales':1024,'guards_inputs_descriptors':'pass','same_original_statistics':stats,'device_calls':480,'logical_readback_bytes':86507520},native_full48={k:native[k]for k in ('elements','bitwise_mismatches','allclose','maxabs','calls','product_calls','callback_errors','original_golden_sha256')},native_command_provenance='First validation commands entry is inherited frozen model-object compilation evidence, not re-executed; exact accepted object reused in fresh native directory. Other command entries executed for fresh outputs.',hardware_cycles='UNKNOWN',whole_model_accuracy_gate={'atol':.03125,'rtol':.02},old_unobserved_carrier_differences=3,original_gates_rebaselined=False,pins=pins)
+(records/'smol_private_soft_floor_composition_qualification.json').write_text(json.dumps(receipt,indent=2)+'\n')
+print('SOFT_FLOOR_COMPOSITION_ARCHIVED',len(pins),'whole_original1600pass',receipt['candidate_elf_sha256'])

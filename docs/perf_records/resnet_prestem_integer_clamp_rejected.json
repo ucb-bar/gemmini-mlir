@@ -1,0 +1,101 @@
+{
+  "status": "rejected_performance_no_promotion",
+  "scope": "Source-exact saturating integer clamp after explicit RV64GC RNE; default unchanged; archived core patch not enabled or integrated.",
+  "full_loop": {
+    "shape": [
+      224,
+      224,
+      3
+    ],
+    "baseline_cycles": 2892850,
+    "candidate_cycles": 3028385,
+    "regression_percent": 4.68517206215324,
+    "numeric": "all150528 outputs plus entire padded destination and2048 trailing bytes match"
+  },
+  "small_warm_loop": {
+    "shape": [
+      17,
+      19,
+      3
+    ],
+    "baseline_cycles": 16460,
+    "candidate_cycles": 17779,
+    "regression_percent": 8.013365735115432
+  },
+  "small_cold_order_warning": "First baseline19330/candidate18055 looked faster; warm repetition reversed the result. No cold-first promotion.",
+  "proof": "Strict Spike all i8/i16 half-integer transitions and adjacent f32, random non-NaN bit patterns, infinities/subnormals, all five rounding modes. Source NaN poison refinement only; FP exception flags not promised. Signed1..24 scalar matcher mathematically commutes integral clamp with saturating signed32 RNE.",
+  "tests": "34 core tests pass, no-target-name and no-regex pass.",
+  "core_patch_sha256": "1dc8316657306d20d583ee14f05d779b9684809ab1bc857fb57bc347ffbd4007",
+  "capsules": [
+    {
+      "work": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule",
+      "artifacts": {
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/quant.ll": "d95abbd714c0f433653554611e0542dd59108e3b34b28d2f2ae10609416f909b",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/main.o": "88ff980b13c880b07676a74725311798a5b9740e48dbdbdd208a10a8af3035e4",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/build/layer.elf": "02aaedbf9a8883548090c490cd5429d4ef3c1fec401e4b09e497ed8bf07e136e",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/spike.log": "b1d92a67238a4b5ffad285da3ca8aa63c7efb1cf6e66c3200c7299e9f9d3e44f",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/audit.json": "72558d8dcefaa3e06130f2bd475bb2d2ce411e177305b16e8f0e34cb30a7e1b6"
+      },
+      "gsim": {
+        "path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_range_capsule/gsim.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "console": ""
+      },
+      "spike_console": "BASE_CYCLES 1156526\nCANDIDATE_CYCLES 1357467\nINTEGER_CLAMP PASS\n"
+    },
+    {
+      "work": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule",
+      "artifacts": {
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/quant.ll": "d95abbd714c0f433653554611e0542dd59108e3b34b28d2f2ae10609416f909b",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/main.o": "0cb88b48c327d412463d80c5aafe627e0b6b8cc18729f12c3917f6a427d49e92",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/build/layer.elf": "d31d9c9a1352774e90be4a5ad4839627883eb26b64d0558e2fabea02a83fb65a",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/spike.log": "b1d92a67238a4b5ffad285da3ca8aa63c7efb1cf6e66c3200c7299e9f9d3e44f",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/audit.json": "59cb515412e74fec3dea3198e4add5cb788092fb8ba78316724bdd15a453cecf"
+      },
+      "gsim": {
+        "path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_timing_capsule/gsim.stdout",
+        "sha256": "d5c0dbc279c6a3e72d9c5c18a6b5e913820ad599a0a756036a6c99f876f8d7d1",
+        "console": "BASE_CYCLES 2892850\nCANDIDATE_CYCLES 3028385\nINTEGER_CLAMP PASS\n"
+      },
+      "spike_console": "BASE_CYCLES 1156526\nCANDIDATE_CYCLES 1357467\nINTEGER_CLAMP PASS\n"
+    },
+    {
+      "work": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule",
+      "artifacts": {
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/quant.ll": "d95abbd714c0f433653554611e0542dd59108e3b34b28d2f2ae10609416f909b",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/main.o": "f04c8d52574348612bdf2273c8799a7aa10861a59e00c1b0fde655957f629b2c",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/build/layer.elf": "df0ffe9e5cc5d65e6ce23828a523f3ee6648ccf3750506373383d5e65c1c22c2",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/spike.log": "6b2c364cdb18b140dff988dbc022472bf491dd2d7513f31fa5398c26cf895fd5",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/audit.json": "08942aa6f46a79c2d1edddd839570d4b7abf6fea30ad411bd65f1328c5897b20"
+      },
+      "gsim": {
+        "path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_capsule/gsim.stdout",
+        "sha256": "bb3169350737c8a3590061f179eb4b1abec00a315a3629b828e8b45ffb178d68",
+        "console": "BASE_CYCLES 19328\nCANDIDATE_CYCLES 18088\nINTEGER_CLAMP PASS\n"
+      },
+      "spike_console": "BASE_CYCLES 7630\nCANDIDATE_CYCLES 8937\nINTEGER_CLAMP PASS\n"
+    },
+    {
+      "work": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule",
+      "artifacts": {
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/quant.ll": "d95abbd714c0f433653554611e0542dd59108e3b34b28d2f2ae10609416f909b",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/main.o": "f68286f166b381974ccb86dd17f2fdf8cd202979d86e710f4d44717acdbad486",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/build/layer.elf": "b9fc3f7b4446c90fe6900971ae919ce649895f30f3002742773aa6fe1393beea",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/spike.log": "3044612e98a041144b3837b9b1de9c81222eebcbd35dea80f3065ddcd0cc9d66",
+        "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/audit.json": "1c76cd77ca82ec469a6ecb17450184ac231ac5a39700ca6f8b2ed0a34b1f7e64"
+      },
+      "gsim": {
+        "path": "/scratch/agustin/tmp/gemmini-prestem-scheduled-rne-20261005/out/integer_clamp_small_order_capsule/gsim.stdout",
+        "sha256": "a95876d8f68e387601a7acd344b62eea86c0c22b905a4d8b73c94cbab26b166f",
+        "console": "BASE2_CYCLES 16460\nCANDIDATE2_CYCLES 17779\nBASE_CYCLES 19330\nCANDIDATE_CYCLES 18055\nINTEGER_CLAMP PASS\n"
+      },
+      "spike_console": "BASE2_CYCLES 7630\nCANDIDATE2_CYCLES 8937\nBASE_CYCLES 7630\nCANDIDATE_CYCLES 8937\nINTEGER_CLAMP PASS\n"
+    }
+  ],
+  "prestem_census": "Actual1849 assembly already has memset plus a single fused NCHW-f32 to paddedNHWC-i8 traversal. Splitting inline assembly or rocket tuning did not alter serialized operation order. No redundant transpose loop remains.",
+  "caveats": [
+    "Exhaustive large fixture GSIM run stopped before timing; numerical all-mode proof is strict Spike, not GSIM.",
+    "Timing capsules use paired source-conversion functions and source input values; they are not whole-model hardware measurements.",
+    "Timing-only script retained a misleading FULL_MODE stdout label; its actual scope is captured loop only. Full mode gate is independently pinned above."
+  ]
+}
