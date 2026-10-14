@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+import argparse,json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).parent/'vendor'))
+from frontend import parse
+from lowering import lower,Scheduler
+from codegen import emit,format_artifact
+p=argparse.ArgumentParser()
+p.add_argument('--verify-diagnostics',action='store_true')
+p.add_argument('--convert-iface-to-gemmini',action='store_true')
+p.add_argument('--emit-target-artifact',action='store_true')
+p.add_argument('--emit-command-buffer')
+p.add_argument('input_mlir')
+a=p.parse_args()
+phase='parse'
+try:
+    source_text=Path(a.input_mlir).read_text()
+    module=parse(source_text)
+    if a.verify_diagnostics: print(module);sys.exit(0)
+    phase='lower'
+    cb,target=lower(module)
+    phase='schedule'
+    scheduler=Scheduler(cb)
+    try: program=scheduler.schedule()
+    except ValueError as e:
+        cb['declined']={'reason':str(e),'shape':[],'op':'unsupported'};cb['commands']=[]
+        from xdsl.dialects.builtin import ModuleOp
+        program=ModuleOp([])
+    if a.emit_command_buffer:Path(a.emit_command_buffer).write_text(json.dumps(cb,indent=2))
+    if a.emit_target_artifact:
+        phase='LLVM emission'
+        artifact=emit(program,scheduler.args)
+        phase='LLVM serialization'
+        print(format_artifact(artifact))
+    else:
+        phase='target serialization'
+        print(target)
+except Exception as e:
+    print(f'{phase}: {type(e).__name__}: {e}',file=sys.stderr);sys.exit(1)

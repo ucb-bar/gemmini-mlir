@@ -1,0 +1,242 @@
+artifact_type: mlir_oot_target_backend
+target: gemmini
+language: python
+authoring:
+  mode: agent_generated_from_rtl_facts
+  generated_by_agent: true
+integrity_exempt: false
+entrypoints:
+  tool: mlir_oot/gemmini-opt
+commands:
+  parse:
+    argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+  lower_interface_to_target:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - '{input_mlir}'
+  emit_command_buffer:
+    argv:
+    - '{tool}'
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+  lower_target_to_llvm:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-target-artifact
+    - '{input_mlir}'
+  emit_target_artifact:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-target-artifact
+    - '{input_mlir}'
+  emit_analysis_bundle:
+    argv:
+    - '{tool}'
+    - --convert-iface-to-gemmini
+    - --emit-command-buffer={output_json}
+    - --emit-target-artifact
+    - '{input_mlir}'
+components:
+  parse:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+  lower_interface_to_target:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+  emit_command_buffer:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+  lower_target_to_llvm:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+  emit_target_artifact:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+  emit_analysis_bundle:
+  - mlir_oot/gemmini-opt
+  - mlir_oot/frontend.py
+  - mlir_oot/lowering.py
+  - mlir_oot/codegen.py
+  - mlir_oot/hardware.json
+  - mlir_oot/templates.json
+  - mlir_oot/vendor
+optimization_surfaces:
+- id: dataflow
+  scope: heuristic
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.choose_dataflow
+  effects:
+  - layout
+  - issue
+  cca_axes:
+  - spatial.dataflow
+  mechanism: select a legal dataflow for the derived row-major contraction
+  emitted_delta: changed CONFIG dataflow and matching PRELOAD/COMPUTE sequence
+  validation: independent tiled contraction and complete regression
+  abandonment: numerical or resource legality failure
+- id: capacity
+  scope: heuristic
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.check_capacity
+  effects:
+  - tiling
+  - residency
+  cca_axes:
+  - memory.capacity_fit
+  mechanism: bound tile allocations against the RTL memory geometry
+  emitted_delta: legal tile descriptors across capacity regimes
+  validation: shape probes and native execution
+  abandonment: incomplete output coverage or allocation overflow
+- id: reduction-residency
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.contraction
+  effects:
+  - residency
+  - movement
+  - tiling
+  cca_axes:
+  - spatial.accumulator_resident
+  mechanism: retain an output tile through its complete K reduction
+  emitted_delta: accumulating PRELOAD descriptors with one STORE per output tile
+  validation: K-tail and multi-tile numerical checks
+  abandonment: reduction state leak or incomplete output coverage
+- id: convolution-dma-grouping
+  scope: codegen
+  path: mlir_oot/codegen.py
+  symbol: LLVMEmitter.gather
+  effects:
+  - movement
+  - issue
+  mechanism: group consecutive convolution source rows sharing a DMA row stride, splitting
+    at padding, output-row and tile boundaries
+  emitted_delta: fewer executed LOAD_CMD instructions carrying multiple rows, with
+    identical scratchpad row coverage and K reduction order
+  validation: focused padded, channel-tail and capacity-boundary convolution Spike
+    checks, then RTL and full regression
+  abandonment: address or padding mismatch, incomplete tile coverage or no native
+    execution improvement
+- id: paired-reduction-issue
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.loop_contraction
+  effects:
+  - tiling
+  - issue
+  cca_axes:
+  - spatial.accumulator_resident
+  mechanism: issue two consecutive full K tiles per host loop iteration while retaining
+    ordered partial sums in the same output tile
+  emitted_delta: K backedge advances by two mesh widths and the body contains two
+    ordered PRELOAD/COMPUTE sequences; unmatched full tiles and partial tails remain
+    covered
+  validation: inspect emitted tile addresses and complete K intervals, compile multi-axis
+    tails, then focused long-reduction numerical and host-activity checks
+  abandonment: missing or duplicated K work, wrong first-tile accumulation state,
+    output gaps or increased charged host arithmetic
+- id: residual-scratchpad-scaling
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.residual
+  effects:
+  - quantization
+  - movement
+  - issue
+  - tiling
+  mechanism: scale operands in independent scratchpad load streams and sum exact identity
+    products in i32 accumulator tiles
+  emitted_delta: scaled scratchpad descriptors, immutable identity LOAD3 and two ordered
+    mesh products per residual tile
+  validation: bounded-sum Spike witnesses, native residual checkpoint, then complete
+    regression
+  abandonment: any native rounding mismatch, incomplete output coverage or host-compute
+    veto
+- id: linear-movement-tiling
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.movement
+  effects:
+  - layout
+  - movement
+  - tiling
+  - issue
+  cca_axes:
+  - memory.capacity_fit
+  mechanism: preserve dense linear element order while streaming fixed-pitch mesh
+    blocks through one accumulator tile
+  emitted_delta: bounded runtime block loop with explicit row and column tails instead
+    of per-logical-row static DMA enumeration
+  validation: focused movement Spike and native checks, independent long-thin and
+    multi-block object generation, then full regression
+  abandonment: any scalar-order mismatch, output gap, physical-layout violation or
+    budget veto
+- id: independent-contraction-load-streams
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.configure_contraction
+  effects:
+  - movement
+  - issue
+  mechanism: assign invariant lhs, rhs and bias row pitches to three RTL-admitted
+    independent load states
+  emitted_delta: one load-state configuration per region instead of per K tile, with
+    lhs LOAD_CMD, rhs LOAD2_CMD and optional bias LOAD3_CMD
+  validation: focused reduction, bias, batch and native regression
+  abandonment: load-state mismatch or changed numerical results
+- id: runtime-convolution-reduction
+  scope: pass
+  path: mlir_oot/lowering.py
+  symbol: Scheduler.loop_conv
+  effects:
+  - tiling
+  - movement
+  - issue
+  mechanism: stream complete M/N/tap/channel coordinates with grouped direct DMA and
+    ordered resident partial sums
+  emitted_delta: bounded tile-loop IR including tap and channel backedges rather than
+    static instructions proportional to reduction/output extents
+  validation: public emission scale ladder plus padded/channel-tail Spike and native
+    cases
+  abandonment: output gaps, reduction reordering, padding/address mismatch or resource
+    veto
+
+- id: runtime-resident-canvas-loads
+  scope: codegen
+  path: mlir_oot/codegen.py
+  symbol: LLVMEmitter.resident_input
+  effects: [movement, residency, issue, tiling]
+  mechanism: load a capacity-proved padded NHWC canvas through bounded row and DMA-segment loops
+  emitted_delta: at most four resident-input LOAD sites independent of batch and canvas height or width
+  validation: complete source-address and local-row witness, focused capacity L2 and L3, then full regression
+  abandonment: any incomplete row coverage, padding/address mismatch or native numerical failure
