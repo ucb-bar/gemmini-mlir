@@ -8,14 +8,15 @@ submission; diagnostic capsules and experiment machinery remain in Merlin.
 
 The public self-check request
 `2_1792006095292728820_a64fab31f1b1deecf5775af3a4561354`
-certified all **146/146 public capsules at gSIM L3** for that digest. The
-supplemental offload census joined command-buffer artifacts for 133/146
-programs; 13 host-lane/source cases had no graded command buffer, so that
-census is incomplete. The public certificate does not establish private
-whole-model qualification.
+passed **146/146 public capsule verdicts** for that digest. Of these, 145
+passed gSIM L3; `SY_refuse_requant` passed by correctly refusing an unsupported
+requantization epilogue and did not run at L3. The supplemental offload census
+joined command-buffer artifacts for 133/146 programs; 13 host-lane/source
+cases had no graded command buffer, so that census is incomplete.
 
-The manager's final hidden/private verdict is pending. This record will be
-updated before the branch is published.
+This is a public, provisional compiler snapshot. The manager's final
+hidden/private verdict and full-model qualification are pending; this public
+result does not establish a complete Phase 1 compiler.
 
 The copied tool passed a focused parse and target-artifact emission check on
 the public `g0_matmul.interface.mlir` example.
