@@ -1,0 +1,74 @@
+{
+  "schema": "merlin.public.phase1.resource_gate_diagnosis.v1",
+  "captured_at": "2026-10-19T23:34:26.618503+00:00",
+  "compiler_hash_tree_sha256": "29213759089b71de26f8a5ab26ca6ef1b8071dc0bb690041eb7de5d0efb53f24",
+  "qualification_harness_revision": "0e6260da0b71f27d3a4adc8f0ebcd05adcc28cf8",
+  "resource_status": "unavailable_infrastructure",
+  "resource_complete": false,
+  "selected_policy": {
+    "schema": "merlin.public_codegen_resource_policy.v1",
+    "required": true,
+    "timeout_s": 120,
+    "capsules": [
+      "SY_conv_k3x3_s1x1_d1x1_pad1x1"
+    ],
+    "device_ir_budget": {
+      "mode": "enforce",
+      "max_bytes": null,
+      "max_code_bytes": 1048576,
+      "max_lines": null,
+      "max_inline_asm_sites": null,
+      "max_call_sites": null,
+      "max_functions": null,
+      "max_basic_blocks": null
+    }
+  },
+  "compiler_tool_profile_sha256": "6f6ad39ea482f8d7406c1ebdc2ef65b221318da8e9c162f0821591202c295822",
+  "profile_source_original_sha256": "018c36ec0edeac91a996ecec36cb9fab5602e0fadbe56a284d3af9448d052257",
+  "observed_resource_samples": [],
+  "selected_member_status": [
+    {
+      "member": "SY_conv_k3x3_s1x1_d1x1_pad1x1",
+      "status": "not_admitted",
+      "observed_wall_seconds": null,
+      "observed_function_code_bytes": null,
+      "resource_acceptance": null
+    }
+  ],
+  "retained_evidence": {
+    "source_directory_exists": true,
+    "source_files": 0,
+    "case_directories": 0,
+    "aggregate_report_exists": false
+  },
+  "classification": "No retained compiler emission/resource measurement: setup failed before any sample, so this is not evidence of a size or time limit violation.",
+  "causal_diagnosis": {
+    "basis": "exact selected source call chain and retained stage artifacts; original swallowed exception text was not separately retained",
+    "call_chain": [
+      "formal.main enters original_compiler_execution",
+      "formal._main invokes public_scalability_gate.run_gate",
+      "compile_only.observe selects parallel scale batch",
+      "scale_probe_batch.emit_cases unconditionally enters _original_execution_lifetime",
+      "_original_execution_lifetime rejects an already-active package executor before child/case directory creation"
+    ],
+    "selected_batch_workers": 2,
+    "guard_message": "original profile execution requires its exact owner and no foreign executor",
+    "source_module_sha256": {
+      "merlin_experiments.phase1.feedback.formal": "38502071f723c206a628049bec634c403df9ee13dbdf261a18f6ec254eb33bb0",
+      "merlin_experiments.phase1.feedback.public_scalability_gate": "54e1adf236cbb85f647fe8c2375860123117666ab4f09cda756b993d2e883aee",
+      "merlin_experiments.phase1.feedback.compile_only": "d220fbd43a3b189b23574cdf43e63185e33ac3b2fbbeba8e8f6852e5cd45d4eb",
+      "merlin_experiments.phase1.feedback.scale_probe_child": "4d7746ba9f1d78bd5b0addb2972bebad0d5022a2fba06c2c4f55448c4876957b",
+      "merlin_experiments.phase1.feedback.scale_probe_batch": "e78c445c34cd1686e0c205cf9b2c4fa932b034012e577ba82772242bd9345519",
+      "merlin_experiments.phase1.feedback.compiler_profile_runtime": "6d69108a3f55591dce4ce9f69361d31bd7292f5b65bfe8e3c0707da3ef2b0473"
+    }
+  },
+  "actionable_feedback": "Repair the nested original-executor infrastructure to reuse only the verified matching original owner/profile/target/candidate, preserve foreign-owner refusal and all selected limits, then perform separately attributed resource qualification of unchanged frozen compiler. Do not waive this gate or rewrite this failed qualification.",
+  "numerical_capsule_results": {
+    "public_passed": 153,
+    "public_selected": 153,
+    "hidden_passed": 8,
+    "hidden_selected": 8
+  },
+  "overall_capsule_certification": false,
+  "external_full_models_complete": false
+}

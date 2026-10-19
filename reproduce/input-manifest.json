@@ -1,0 +1,173 @@
+{
+  "schema": "merlin.public.experiment_inputs.v1",
+  "corpus": "sealed-v26",
+  "public_capsules": 153,
+  "hidden_capsules": 8,
+  "selected_models_config_sha256": "cd028d6af0a6f5540164b3026c8a6dc2e7137e6b5a03d8783a38a46dc28fb536",
+  "private_spec_sha256": "0cbe2f55cf1b1ceca289199f0e052131b5cebef56a00ebe4308802c16bf65b4e",
+  "corpus_seal_sha256": "39a12d1f1b27d45b7f0aa88f1ce17f3f35e8203f8a39078c3dc77ec2c752b155",
+  "rtl_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+  "target_contract_sha256": "bfbfac9e98ff028aa184b5b13ea44e7421afeac2c35e1d3bb572fd0cbad5aa55",
+  "instruction_selection": {
+    "path": "${INSTRUCTION_SELECTION}/selection.json",
+    "sha256": "93c2102f37914cffb7e6a2c884b7d62d8a3149f0cc4ef72703a3ea026d265ec6",
+    "approval": {
+      "path": "${INSTRUCTION_SELECTION}/approval.json",
+      "sha256": "20524cfe3f4447bea7d83a0668f626a3b093b84972d6d2e82d1fd1496fec7340"
+    }
+  },
+  "models": [
+    {
+      "id": "resnet50",
+      "source_identity": {
+        "model_id": "resnet50",
+        "scope": "complete_network",
+        "role": "private_validation"
+      },
+      "deployment_dtype": "int8",
+      "rtl_config": "GemminiGsimFireSimAlignedConfig",
+      "board": "firesim_gemmini_rocket_u250_30mhz",
+      "selected_input_bindings": [
+        {
+          "role": "checkpoint",
+          "kind": "tree",
+          "guest_member": "torch",
+          "sha256": "596923b5858495a4bc47947d48db2489851a98d2b34a4ec3aefb7a1cea80b9b9"
+        },
+        {
+          "role": "input",
+          "kind": "file",
+          "guest_member": "calibration_images.npz",
+          "sha256": "3ac8686b75a02a37a17eeb92dc31913bcafc37d22ab00827b7e66b8e749217d5"
+        }
+      ],
+      "input_provenance": {
+        "paper_ready": false,
+        "synthetic_inputs": true
+      },
+      "original_input_digests": {
+        "recipe_derivation_manifest_sha256": "7d80fb60a48dd4e18d9bb4bf1e0f498b05d0e4ed7505ca75dfe7da1890beb795",
+        "capture_tree_sha256": "970a6edf8b7ca75d44ede1572fe99def820c0f42e37f3e5c1b107666947db31a",
+        "host_package_tree_sha256": "89e00e39c929ec0310b0a60d1860d2d8fa833b7ef1a57af5775092c24d5ebb9a",
+        "capture_selection_sha256": "67ff63141e6f9ae25deff01ba670eb2aea10cc0465fb39ef38a0568f1f09b859",
+        "capture_execution_attestation_sha256": "30a6abb3f3c3216e406c84b8e5b5ff33d48958a6a676c57540d8ce6a53254b0f",
+        "capability_contract_sha256": "8e4e6eb5aff7e0f92012b9c306f5cc22978342c02fb8cafafee8788d8c517be4",
+        "rtl_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "board_catalog_sha256": "281ac256209ef06d531d2f22de6eb2fc7b0d02f0f6c6085135e4d2fee0f54292",
+        "host_dts_sha256": "c4a2009a405945ea98f731713e0f4e7dc483031ab8cd5156d871e4eb7594f1df",
+        "software_spec_sha256": "3c1b8aa1c77775e1c0e590af871f05e038743d7000a99860fb12843f7053372f",
+        "host_capabilities_sha256": "3ba449d6c292168d4f1b931d89a5bc36a9acce06281f9254367e2bba4d1138fa",
+        "capture_recipe_variant.base_file_sha256": "23f65ab903f9eb45ea08db191283ba4f95dcab2df69b5213db3f300362a7f418",
+        "capture_recipe_variant.base_recipe_sha256": "53684d23648f776345ba5b30bcc001cb1e0c8fbed1299af4cec09e5f36e542a6",
+        "capture_recipe_variant.selected_file_sha256": "b828e83887c53fd440668c664685989949a66edaf78ff79c7fe2c5127032f3f2",
+        "capture_recipe_variant.selected_recipe_sha256": "b840ae04104798799670015e39d2a5be692a70bc2a6ada42eb75d6878dd2ffbd"
+      },
+      "expected_location": "${INPUT_ROOT}/resnet50",
+      "scope": "Hash-bound external assets; model/capture/reference arrays are not embedded in this public bundle."
+    },
+    {
+      "id": "smolvla",
+      "source_identity": {
+        "model_id": "smolvla",
+        "scope": "complete_network",
+        "role": "private_validation"
+      },
+      "deployment_dtype": "int8",
+      "rtl_config": "GemminiGsimFireSimAlignedConfig",
+      "board": "firesim_gemmini_rocket_u250_30mhz",
+      "selected_input_bindings": [
+        {
+          "role": "checkpoint",
+          "kind": "tree",
+          "guest_member": "hf",
+          "sha256": "4d8536a290da16400404383d157b676826c1b43ffb68d394fb26e4487fab3a3f"
+        },
+        {
+          "role": "input",
+          "kind": "file",
+          "guest_member": "observation.npz",
+          "sha256": "98fe690fdb0f86a418f47b6718e0a32bf0f63f48d722954eeaab6ece0cbad9d2"
+        }
+      ],
+      "input_provenance": {
+        "paper_ready": null,
+        "synthetic_inputs": false
+      },
+      "original_input_digests": {
+        "recipe_derivation_manifest_sha256": "7d80fb60a48dd4e18d9bb4bf1e0f498b05d0e4ed7505ca75dfe7da1890beb795",
+        "capture_tree_sha256": "19876f74d7672bc4c36a2de4a8041d365f74eb9dd6e55658e44c3932876768c6",
+        "host_package_tree_sha256": "89e00e39c929ec0310b0a60d1860d2d8fa833b7ef1a57af5775092c24d5ebb9a",
+        "capture_selection_sha256": "2697dfb4f154bbdfd1adef0c85ea72a3245c2718c1aa5fb85ccde385c11a5f3c",
+        "capture_execution_attestation_sha256": "65be3a44601488fc37beb84292bce489590090188663fd005cddcd1984962bff",
+        "capability_contract_sha256": "8e4e6eb5aff7e0f92012b9c306f5cc22978342c02fb8cafafee8788d8c517be4",
+        "rtl_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "board_catalog_sha256": "281ac256209ef06d531d2f22de6eb2fc7b0d02f0f6c6085135e4d2fee0f54292",
+        "host_dts_sha256": "c4a2009a405945ea98f731713e0f4e7dc483031ab8cd5156d871e4eb7594f1df",
+        "software_spec_sha256": "3c1b8aa1c77775e1c0e590af871f05e038743d7000a99860fb12843f7053372f",
+        "host_capabilities_sha256": "3ba449d6c292168d4f1b931d89a5bc36a9acce06281f9254367e2bba4d1138fa",
+        "capture_recipe_variant.base_file_sha256": "23f65ab903f9eb45ea08db191283ba4f95dcab2df69b5213db3f300362a7f418",
+        "capture_recipe_variant.base_recipe_sha256": "53684d23648f776345ba5b30bcc001cb1e0c8fbed1299af4cec09e5f36e542a6",
+        "capture_recipe_variant.selected_file_sha256": "ce0027045998257aa6d2bb91afd401ce6be4b8d06c5937bd469bce5ceb48628c",
+        "capture_recipe_variant.selected_recipe_sha256": "cf31d473d2907e6c7c0a31b0c3101c6b5f1c8005ea6f476eb6ab77b48ac8bfad"
+      },
+      "expected_location": "${INPUT_ROOT}/smolvla",
+      "scope": "Hash-bound external assets; model/capture/reference arrays are not embedded in this public bundle."
+    },
+    {
+      "id": "tiny_llama",
+      "source_identity": {
+        "model_id": "tiny_llama",
+        "scope": "complete_network",
+        "role": "private_validation"
+      },
+      "deployment_dtype": "int8",
+      "rtl_config": "GemminiGsimFireSimAlignedConfig",
+      "board": "firesim_gemmini_rocket_u250_30mhz",
+      "selected_input_bindings": [
+        {
+          "role": "checkpoint",
+          "kind": "tree",
+          "guest_member": "hf",
+          "sha256": "d9a13ad59e2abfa8106c11e0c2ec55bb538d6f6a18d439c0d68d850a0d736563"
+        },
+        {
+          "role": "input",
+          "kind": "file",
+          "guest_member": "calibration_tokens.npz",
+          "sha256": "eb5592d934e96b0412d862c584ed670fd30de13e09696cc3ab0df5cd375bdcfb"
+        }
+      ],
+      "input_provenance": {
+        "paper_ready": null,
+        "synthetic_inputs": true
+      },
+      "original_input_digests": {
+        "recipe_derivation_manifest_sha256": "7d80fb60a48dd4e18d9bb4bf1e0f498b05d0e4ed7505ca75dfe7da1890beb795",
+        "capture_tree_sha256": "5db1bf4ef97dfb6fd9ed5466847b4154dc73c1f13bfaac2f1733e4e3e6434914",
+        "host_package_tree_sha256": "89e00e39c929ec0310b0a60d1860d2d8fa833b7ef1a57af5775092c24d5ebb9a",
+        "capture_selection_sha256": "724a9d443ca500a29654a76ccbaa850d4e722b786756dd148d2331ac2a8fc74a",
+        "capture_execution_attestation_sha256": "036312041299bbf71dc36aa5f769b1086ba2fecf0b03fcc36844e72782d3b1a3",
+        "capability_contract_sha256": "8e4e6eb5aff7e0f92012b9c306f5cc22978342c02fb8cafafee8788d8c517be4",
+        "rtl_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "board_catalog_sha256": "281ac256209ef06d531d2f22de6eb2fc7b0d02f0f6c6085135e4d2fee0f54292",
+        "host_dts_sha256": "c4a2009a405945ea98f731713e0f4e7dc483031ab8cd5156d871e4eb7594f1df",
+        "software_spec_sha256": "3c1b8aa1c77775e1c0e590af871f05e038743d7000a99860fb12843f7053372f",
+        "host_capabilities_sha256": "3ba449d6c292168d4f1b931d89a5bc36a9acce06281f9254367e2bba4d1138fa",
+        "capture_recipe_variant.base_file_sha256": "23f65ab903f9eb45ea08db191283ba4f95dcab2df69b5213db3f300362a7f418",
+        "capture_recipe_variant.base_recipe_sha256": "53684d23648f776345ba5b30bcc001cb1e0c8fbed1299af4cec09e5f36e542a6",
+        "capture_recipe_variant.selected_file_sha256": "f113dad1ac0f52d0cbff5f9398afae17282c9ab71c3a6107e98bdf8a096af9ad",
+        "capture_recipe_variant.selected_recipe_sha256": "4300d9d2f46160cab679672d384bdda664fd310862137f354b36c2845f45ed5f"
+      },
+      "expected_location": "${INPUT_ROOT}/tiny_llama",
+      "scope": "Hash-bound external assets; model/capture/reference arrays are not embedded in this public bundle."
+    }
+  ],
+  "required_external_assets": [
+    "reviewed sealed capsule bundle and private host-selection metadata",
+    "RTL facts and independently verified correspondence proof",
+    "pinned untuned Spike/libgemmini and gSIM runtime",
+    "LLVM/MLIR and RISC-V GCC tools",
+    "hash-bound captures, checkpoint weights and quantized references for separate model validation"
+  ],
+  "scope": "Asset identity and location roles; not a public redistribution of hidden answers, model data or executable runtimes."
+}
