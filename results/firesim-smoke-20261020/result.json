@@ -1,0 +1,64 @@
+{
+  "schema": "merlin.public.firesim_capsule_smoke.v1",
+  "status": "pass",
+  "capsule": "G_matmul_m1k16n16_raw",
+  "scope": "One post-freeze public matmul capsule; complete-model validation remains pending.",
+  "compiler_sha256": "29213759089b71de26f8a5ab26ca6ef1b8071dc0bb690041eb7de5d0efb53f24",
+  "elf_sha256": "043f476d63dfee3ca2642b1b3a58b8d0e7c017f924fd56f3f4d5392475d6cbd1",
+  "elf_bytes": 11632,
+  "kernel_object_sha256": "1301bed3ea0fba9b87d4bd37444a2901fbca2304a1864add52b7341e15dfd393",
+  "recompiled_for_fpga": false,
+  "new_authoring": false,
+  "readback": "all 16 INT32 values through existing lossless OUT_B64 console ABI",
+  "comparison": {
+    "policy": "exact_int",
+    "elements": 16,
+    "mismatches": 0,
+    "equals_retained_spike_outputs": true,
+    "equals_independent_integer_matmul": true
+  },
+  "kernel_call_cycles": 459,
+  "kernel_call_boundary": "entry through explicit completion; excludes output publication",
+  "total_target_cycles_including_boot_load_and_readback": 216514622,
+  "emulation_wall_s": 2.0,
+  "end_to_end_helper_wall_s": 468.790042,
+  "ssm_elapsed": "PT4M33.918S",
+  "ssm_status": "Success",
+  "ssm_exit_code": 0,
+  "hardware": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+  "agfi": "agfi-09268e63eac5f1c08",
+  "fpga_host_clock_mhz": 110.0,
+  "target_latency_conversion": null,
+  "teardown": {
+    "manager_state": "stopped",
+    "fpga_state": "terminated"
+  },
+  "paid_jobs": 1,
+  "retries": 0,
+  "uploaded_object_downloaded_sha256_matches": true,
+  "manager_result_records_consumed_elf_sha256": false,
+  "full_model_qualification": false,
+  "cross_platform_timing_qualification": false,
+  "notes": [
+    "UART output equals the retained Spike outputs and an independent exact integer A[1,16] x W[16,16] calculation.",
+    "The 459-cycle counter excludes output publication; the larger FireSim total includes boot/load and readback.",
+    "No cross-platform cycle equality is inferred: the prior gSIM grade used a different readback harness image.",
+    "A redundant post-run kill warned after runworkload had already initiated instance termination.",
+    "This smoke does not close complete-chain packaging, all-output model comparisons, memory-map correspondence or end-to-end latency evidence."
+  ],
+  "artifacts": {
+    "uartlog": {
+      "sha256": "0d94a97f1757f406219080cc6fb0fb76aac8e4da9d91cb61d90da298b0cf6468",
+      "bytes": 2541
+    },
+    "HW_CFG_SUMMARY": {
+      "sha256": "92e1976ffc4b8218119e96ea19d80bbb156ea375f6267b69d8eaedad44900ec0",
+      "bytes": 190
+    },
+    "sim-run.sh": {
+      "sha256": "e52ad924fae1b62d15c1ec8f8df4d5561c0696ca2f098e940400711d07cddc50",
+      "bytes": 640
+    }
+  },
+  "teardown_observed_at": "2026-10-20T01:16:25.395076+00:00"
+}

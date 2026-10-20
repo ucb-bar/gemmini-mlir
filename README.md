@@ -24,6 +24,7 @@ Validated captures, quantized references and hardware facts were reused.
 | Final compiler at the original deadline | 112/153 completed, all 112 passing | Not evaluated | 41 public results unfinished; original campaign stopped incomplete |
 | Unchanged final compiler, separate qualification | **153/153** | **8/8** | Numeric/trace/structural requirements pass; resource gate incomplete |
 | Independent resource completion, unchanged final compiler | **153/153 reused** | **8/8 reused** | All five resource cases pass; technical capsule qualification complete |
+| Post-freeze FireSim smoke | **1/1 selected public capsule** | — | All 16 INT32 outputs match exactly on the FPGA; complete models remain pending |
 | Full-model external validation | Pending | — | No complete-chain or all-output pass claimed |
 
 The original campaign remains `stopped_incomplete`. Its deadline and records are
@@ -60,6 +61,17 @@ The subsequent technical handoff separately reopens the original public/hidden
 results and the new resource observation. It records capsule completion and
 external-validation readiness; authoring convergence, overall-release
 qualification and full-model completion remain false.
+
+A subsequent [FireSim smoke](results/firesim-smoke-20261020/result.json) ran the
+retained `G_matmul_m1k16n16_raw` UART-output ELF without rebuilding the compiler
+or kernel. All 16 INT32 outputs matched the retained Spike results and an
+independent integer matmul calculation. The kernel-call counter measured
+**459 cycles**; FireSim reported about **2 seconds** of emulation and the complete
+on-demand helper took **468.790 seconds**, including manager/FPGA startup.
+The raw UART, hardware summary and launch script are retained beside the result.
+This single capsule does not complete external model validation or establish
+cross-platform cycle equality; full-chain payloads, memory-map correspondence
+and all-output model checks remain separate requirements.
 
 The selected public and hidden grades report exact numerics and complete required
 trace/structural evidence, with zero capsule infrastructure faults. The separate
@@ -99,6 +111,7 @@ kernels. This archive does not claim that its performance is optimized.
 | Post-freeze qualification | 22:48:40–23:25:35 UTC; approximately **36 min 55 s** | Unchanged compiler, public and hidden grading; no author |
 | Calendar span through that qualification | Approximately **4 h 11 min 35 s** | Includes approximately 34 min 40 s between campaigns |
 | Selected immutable-source resource observation | **97.490 s**; entire probe **116.053 s** | No author, numerical regrade or RTL execution |
+| Post-freeze FireSim capsule smoke | **468.790 s** helper wall time; about **2 s** emulation | One unchanged ELF, 16/16 exact outputs; no author |
 | Full-model validation | Pending for this compiler | Separate from capsule/authoring clocks |
 
 The original run spent approximately 3 min 54 s before the author started and
