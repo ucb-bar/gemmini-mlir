@@ -37,6 +37,102 @@ rtl_extraction:
     node: pooling_is_enabled
     dynamic_operand_contains: pool
     config_field: has_max_pool
+  timing_structure:
+    dispatch:
+      module: ReservationStation
+      classes:
+        load: io_issue_ld_
+        store: io_issue_st_
+        execute: io_issue_ex_
+    memory_protocol:
+      request: a_bits_
+      response: d_bits_
+      id: source
+      data: data
+      size: size
+      size_encoding: log2_bytes
+    memory_clients:
+      dma_read:
+        module: StreamReader
+        port_prefix: auto_core_out_
+      dma_write:
+        module: StreamWriter
+        port_prefix: auto_out_
+    dataflow:
+      cell_module: PE_256
+      select_port: io_in_control_dataflow
+    latencies:
+      scratchpad_bank_read:
+        module: ScratchpadBank
+        from: io_read_req_bits_addr
+        to: io_read_resp_bits_data
+      scratchpad_read:
+        module: Scratchpad
+        from: io_srams_read_0_req_bits_addr
+        to: io_srams_read_0_resp_bits_data
+      accumulator_bank_read:
+        module: AccumulatorMem
+        from: io_read_req_bits_addr
+        to: io_read_resp_bits_data_0_0
+      accumulator_read:
+        module: Scratchpad
+        from: io_acc_read_req_0_bits_addr
+        to: io_acc_read_resp_0_bits_data_0_0
+      accumulator_adder:
+        module: AccPipe
+        from: io_op1
+        to: io_sum
+      mesh_with_delays_ws:
+        module: MeshWithDelays
+        from: io_a_bits_0_0
+        to: io_resp_bits_data_0_0
+        mode: weight_stationary
+    array_paths:
+      mesh_activation_to_partial_sum_ws:
+        module: Mesh
+        from_prefix: io_in_a_
+        to_prefix: io_out_b_
+        mode: weight_stationary
+    profile_resources:
+      accelerator.load:
+        capacity:
+          buffer_instance: Gemmini/load_controller/cmd_tracker
+        queue_capacity:
+          from: command_classes.classes.load.entries.value
+          minus:
+            buffer_instance: Gemmini/load_controller/cmd_tracker
+        basis: 'capacity: load commands started and not completed (DMA command-tracker
+          slots); queue_capacity: load dispatch entries not in service (entries are
+          held until completion)'
+      accelerator.store:
+        capacity:
+          buffer_instance: Gemmini/store_controller/cmd_tracker
+        queue_capacity:
+          from: command_classes.classes.store.entries.value
+          minus:
+            buffer_instance: Gemmini/store_controller/cmd_tracker
+        basis: 'capacity: store commands started and not completed (DMA command-tracker
+          slots); queue_capacity: store dispatch entries not in service'
+      accelerator.execute:
+        capacity: null
+        queue_capacity: null
+        basis: the execute path overlaps preload/compute pairs through the mesh pipeline;
+          no structural in-flight bound maps onto engine lanes (dispatch entries and
+          command buffers are recorded)
+      accelerator.config:
+        capacity: null
+        queue_capacity: null
+        basis: configuration commands occupy the dispatch class of the unit they configure
+      accelerator.dma_read:
+        capacity: memory_clients.clients.dma_read.request_channels
+        queue_capacity: null
+        basis: one request channel issues one beat per cycle; in-flight transactions
+          bound latency hiding and are fitted together with read_bytes_per_cycle,
+          not a lane count
+      accelerator.dma_write:
+        capacity: memory_clients.clients.dma_write.request_channels
+        queue_capacity: null
+        basis: one request channel; in-flight transactions are fitted with write_bytes_per_cycle
 runner:
   suite: gemmini-capsule-bench
   dtype: i8xi8_i32
@@ -45,6 +141,19 @@ runner:
     L3: elaborated_rtl
     L4: firesim
   sim_via: chipyard
+  toolchain:
+    root_env: MERLIN_CHIPYARD
+    root_ext: chipyard
+    compiler:
+      path: .conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc
+      env: MERLIN_RISCV_GCC
+    spike:
+      path: .conda-env/riscv-tools/bin/spike
+    spike_library_dir: .conda-env/riscv-tools/lib
+    spike_extension_name: gemmini
+    verilator:
+      path: sims/verilator/simulator-chipyard.harness-{rtl_sim_config}
+    gsim_max_cycles: 20000000
 encoding:
   addr_len: 32
   rocc_custom_slot: 3
@@ -84,6 +193,292 @@ encoding:
     - PRELOAD
     - COMPUTE_PRELOADED
     - MVOUT
+rocc_operand_roles:
+  local_address_flags:
+    accumulator_select:
+      msb_offset: 0
+    accumulate:
+      msb_offset: 1
+    full_width_readout:
+      msb_offset: 2
+  isa_constants:
+    F1:
+      f32_bits: 1.0
+    C_ACC:
+      flags:
+      - accumulator_select
+      - full_width_readout
+    ACC_I8:
+      flags:
+      - accumulator_select
+    ACC_ACCUM:
+      flags:
+      - accumulate
+    FULL_C_BIT:
+      flags:
+      - full_width_readout
+  readout_bits:
+    f1: F1
+    c_acc: C_ACC
+    acc_i8: ACC_I8
+    acc_accum: ACC_ACCUM
+    full_c_bit: FULL_C_BIT
+  retain_sentinel:
+    bundle: ComputeRs
+    field: local_addr
+    value: all_ones
+  config:
+    class: CONFIG
+    selector:
+      operand: rs1
+      bundle: ConfigMvoutRs1
+      field: cmd_type
+    publish_layouts:
+      CONFIG_ST_LAYOUT: ConfigMvoutRs1
+  classes:
+    MVIN: &id001
+      fields:
+      - name: is_acc_addr
+        operand: rs2
+        bundle: MvinRs2
+        field: local_addr
+        as: flag
+        flag: accumulator_select
+      - name: dram
+        operand: rs1
+        as: operand
+      - name: rows
+        operand: rs2
+        bundle: MvinRs2
+        field: num_rows
+      - name: cols
+        operand: rs2
+        bundle: MvinRs2
+        field: num_cols
+      - name: addr
+        operand: rs2
+        bundle: MvinRs2
+        field: local_addr
+      - name: spad_addr
+        operand: rs2
+        bundle: MvinRs2
+        field: local_addr
+    MVIN2: *id001
+    MVIN3: *id001
+    MVOUT:
+      fields:
+      - name: dram
+        operand: rs1
+        as: operand
+      - name: rows
+        operand: rs2
+        bundle: MvoutRs2
+        field: num_rows
+      - name: cols
+        operand: rs2
+        bundle: MvoutRs2
+        field: num_cols
+      - name: addr
+        operand: rs2
+        bundle: MvoutRs2
+        field: local_addr
+      - name: acc_addr
+        operand: rs2
+        bundle: MvoutRs2
+        field: local_addr
+      - name: readout
+        operand: rs2
+        bundle: MvoutRs2
+        field: local_addr
+        as: flag_choice
+        flag: full_width_readout
+        set: i32
+        clear: i8
+    PRELOAD:
+      fields:
+      - name: weight_spad
+        operand: rs1
+        bundle: PreloadRs
+        field: local_addr
+      - name: c_addr
+        operand: rs2
+        bundle: PreloadRs
+        field: local_addr
+      - name: accumulate
+        operand: rs2
+        bundle: PreloadRs
+        field: local_addr
+        as: flag
+        flag: accumulate
+      - name: readout
+        operand: rs2
+        bundle: PreloadRs
+        field: local_addr
+        as: flag_choice
+        flag: full_width_readout
+        set: i32
+        clear: i8
+    COMPUTE_PRELOADED: &id002
+      fields:
+      - name: a_spad
+        operand: rs1
+        bundle: ComputeRs
+        field: local_addr
+      - name: bd
+        operand: rs2
+        bundle: ComputeRs
+        field: local_addr
+      - name: garbage
+        operand: rs2
+        bundle: ComputeRs
+        field: local_addr
+        as: all_ones
+    COMPUTE_ACCUMULATE: *id002
+    CONFIG_EX:
+      fields:
+      - name: subtype
+        const: EX
+    CONFIG_LD:
+      unresolved: 'null'
+      fields:
+      - name: subtype
+        const: LD
+      - name: stride
+        operand: rs2
+        as: raw
+      - name: scale
+        operand: rs1
+        bundle: ConfigMvinRs1
+        field: scale
+        as: f32
+      - name: scale_bits
+        operand: rs1
+        bundle: ConfigMvinRs1
+        field: scale
+    CONFIG_ST:
+      unresolved: 'null'
+      fields:
+      - name: subtype
+        const: ST
+      - name: acc_act
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: activation
+      - name: relu
+        from: acc_act
+        equals: 1
+      - name: acc_scale
+        operand: rs2
+        bundle: ConfigMvoutRs2
+        field: acc_scale
+        as: f32
+      - name: acc_scale_bits
+        operand: rs2
+        bundle: ConfigMvoutRs2
+        field: acc_scale
+      - name: out_stride_bytes
+        operand: rs2
+        bundle: ConfigMvoutRs2
+        field: stride
+      - operand: rs1
+        bundle: ConfigMvoutRs1
+        names:
+        - pool_stride
+        - pool_size
+        - pool_out_dim
+        - porows
+        - pocols
+        - orows
+        - ocols
+        - upad
+        - lpad
+rtl_checks:
+  class_roles:
+    FENCE:
+    - fence
+    CONFIG_EX:
+    - config_compute
+    CONFIG_LD:
+    - config_load
+    CONFIG_ST:
+    - config_store
+    MVIN:
+    - movement_in
+    MVIN2:
+    - movement_in
+    MVIN3:
+    - movement_in
+    MVOUT:
+    - movement_out
+    PRELOAD:
+    - preload
+    COMPUTE_PRELOADED:
+    - compute
+    - compute_preloaded
+    COMPUTE_ACCUMULATE:
+    - compute
+  role_labels:
+    fence: FENCE
+    config_compute: CONFIG_EX
+    config_load: CONFIG_LD
+    config_store: CONFIG_ST
+    movement_in: MVIN
+    movement_out: MVOUT
+    preload: PRELOAD
+    compute: COMPUTE
+    compute_preloaded: COMPUTE_PRELOADED
+  fields:
+    dram: dram
+    rows: rows
+    cols: cols
+    store_pitch: out_stride_bytes
+  local_addresses:
+  - role: movement_in
+    address: spad_addr
+    rows: rows
+  - role: movement_out
+    address: acc_addr
+    rows: rows
+  - role: preload
+    address: weight_spad
+  - role: preload
+    address: c_addr
+  - role: compute
+    address: a_spad
+  - role: compute
+    address: bd
+  native_pooling:
+    config_role: config_store
+    feature: max_pool
+    enable_field: pool_stride
+    output_positions:
+    - porows
+    - pocols
+  rules:
+  - id: T0.decode_clean
+    rule: decode_clean
+  - id: T0.decode_funct_legal
+    rule: funct_legal
+  - id: T0.local_address_bounds
+    rule: local_address_bounds
+  - id: T0.preload_before_compute
+    rule: precedes
+    first: preload
+    then: compute_preloaded
+  - id: T0.config_before_use
+    rule: config_before_use
+    pairs:
+    - use: compute
+      config: config_compute
+    - use: movement_in
+      config: config_load
+    - use: movement_out
+      config: config_store
+  - id: T0.fence_bracket
+    rule: bracket
+    role: fence
+  - id: T0.output_store_coverage
+    rule: output_store_coverage
 status: prototype
 features:
 - systolic_array
@@ -279,9 +674,12 @@ notes: 'Hand-curated prototype contract for the Gemmini C0 RTL-certification pat
   count as RTL-certified.'
 harness_abi:
   entry_symbol: gemmini_kernel
-  fence_symbol: gemmini_fence
+  fence_symbol: GEMMINI_FENCE
   includes:
-  - include/gemmini_testutils.h
+  - <stdint.h>
+  - <stdio.h>
+  - <stdlib.h>
+  - gemmini_isa.h
   cycle_window_metric: cycle_window_gemmini_region
 hardware_pins:
 - gemmini_rtl
@@ -291,5 +689,138 @@ unmaterializable_families:
     a deterministic offline probe), and capsule_golden._recompute_golden has no elementwise
     op, so it cannot be graded at all on an exact-integer datapath. Needs a merlin_iface
     elementwise mnemonic + a recompute entry.'
+execution_capabilities:
+  whole_program_kernel_abi: render_harness accepts kernel_abi.kind=whole_program and
+    calls declared tensor arguments without performing model arithmetic in the runner-owned
+    harness
+  warm_single_counter_region_cycles: the whole-program harness executes one unmeasured
+    warm invocation, then brackets exactly one complete kernel invocation with the
+    target cycle counter
+readout_semantics:
+  evidence_header:
+    file: include/gemmini_params.h
+    sha256: 3758ae967af3a179497660970201093a7fb624be00173990ce33d3f5c38da924
+  epilogue_capability:
+  - selector: i8
+    applies:
+    - acc_scale
+    - relu
+    - maxpool
+    evidence: the narrowing readout applies accumulator scale and activation; bias
+      is loaded into the accumulator before computation, not added during readout
+      (GemminiRocketConfig AccumulatorScale and LoopMatmulLdD/LoopConvLdBias); RTL-certified
+      bit-exact against Tensor.requant_acc_scale (decision A)
+  - selector: i32
+    applies: []
+    evidence: the full-width readout writes the raw accumulator without applying an
+      epilogue stage (RoCC accumulator mvout path); any contraction bias already in
+      the accumulator was loaded before computation, via the separate accumulator_seed
+      route
+  stage_routes:
+  - stages:
+    - bias_add
+    - bias
+    site: accumulator_seed
+    composed_with: contraction
+    readouts:
+    - i8
+    - i32
+    producer_opcodes:
+    - MATMUL_RESIDENT
+    - CONV2D
+    consumer_opcodes:
+    - COMMIT
+    - CONV2D
+    operand_attribute: bias
+    operand_role: bias
+    evidence: Selected GemminiRocketConfig FIRRTL LoopMatmulLdD and LoopConvLdBias
+      write bias into AccumulatorMem with accumulate=0; AccumulatorScale has no bias
+      operand.
+  scalar_abi:
+    schema: scalar_narrow_readout_contract_v1
+    accumulator_dtype: i32
+    output_dtype: i8
+    scale_dtype: f32
+    clamp_min: -128
+    clamp_max: 127
+  operand_sum:
+    schema: operand_sum_contract_v1
+    operands: 2
+    operand_dtype: i8
+    scale_dtype: f32
+    operand_rounding: half_even
+    operand_saturates: true
+counter_semantics:
+  engine_kinds:
+    EX: compute
+    LD: movement
+    ST: movement
+  partition:
+    module: Gemmini
+    counter_module: CounterController
+logical_harness:
+  cycle_counter_asm: rdcycle %0
+  completion_asm: fence
+  counter_bracket:
+    command: COUNTER_OP
+    config_fields:
+      reset:
+        lsb: 0
+        width: 1
+      snapshot_reset:
+        lsb: 1
+        width: 1
+      snapshot_take:
+        lsb: 2
+        width: 1
+      configure:
+        lsb: 3
+        width: 1
+      slot:
+        lsb: 4
+        width: 3
+      event:
+        lsb: 12
+        width: 6
+      external:
+        lsb: 31
+        width: 1
+    disabled_event: DISABLE
+    events:
+      internal:
+        DISABLE: 0
+        MAIN_LD_CYCLES: 1
+        MAIN_ST_CYCLES: 2
+        MAIN_EX_CYCLES: 3
+        MAIN_LD_ST_CYCLES: 4
+        MAIN_LD_EX_CYCLES: 5
+        MAIN_ST_EX_CYCLES: 6
+        MAIN_LD_ST_EX_CYCLES: 7
+      external:
+        RDMA_BYTES_REC: 4
+        WDMA_BYTES_SENT: 5
+    slot_capacity:
+      module: CounterFile
+      state_families:
+      - counter_config
+      - counter_snapshot
+      - counters
+    partition:
+      module: Gemmini
+      counter_module: CounterController
+    engine_kinds:
+      EX: compute
+      LD: movement
+      ST: movement
+rtl_source:
+  ext_root: chipyard
+  config: GemminiRocketConfig
+  generator: gemmini
+  source_revision: 0acc1e1de2d3284bcd4d876956932a013ffe1949
+  gitlinks:
+    generators/gemmini: 8c3f9923a44a2fe2c7930587be297d6d4f8c09ca
+  artifact_sha256:
+    fir: da2c38c1bdc5c7ddf1c12c0d4a10a41323bf420c869351e52f796d41db325485
+    hierarchy: 77693d9fdedb1bfdafb5a5a3c8998d59f4bbebef199540fd64c408abb3bc4d87
 plugin:
   backend: backend.py
