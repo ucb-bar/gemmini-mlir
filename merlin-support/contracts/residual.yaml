@@ -145,6 +145,15 @@ rocc_operand_roles:
       - name: dram
         operand: rs1
         as: operand
+      - name: dram_raw
+        operand: rs1
+        as: raw
+      - name: dram_source
+        all:
+        - from: dram_raw
+          equals: 0
+        set: zero_fill
+        clear: memory
       - name: rows
         operand: rs2
         bundle: MvinRs2
