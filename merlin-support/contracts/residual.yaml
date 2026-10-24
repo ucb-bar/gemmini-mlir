@@ -82,18 +82,30 @@ encoding:
   - CONFIG_EX
   - CONFIG_LD
   - MVIN
+  - MVIN3
   - CONFIG_ST
   - PRELOAD
   - COMPUTE_PRELOADED
   - MVOUT
+  stage_scoped_classes:
+    MVIN3:
+    - bias_add
+    - bias
+  class_alternatives:
+    MVIN3:
+    - class: MVIN
+      decoded:
+        is_acc_addr: true
   class_subsumes:
     LOOP_CONV:
     - MVIN
+    - MVIN3
     - PRELOAD
     - COMPUTE_PRELOADED
     - MVOUT
     LOOP_WS:
     - MVIN
+    - MVIN3
     - PRELOAD
     - COMPUTE_PRELOADED
     - MVOUT
