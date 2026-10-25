@@ -178,18 +178,30 @@ encoding:
   - CONFIG_EX
   - CONFIG_LD
   - MVIN
+  - MVIN3
   - CONFIG_ST
   - PRELOAD
   - COMPUTE_PRELOADED
   - MVOUT
+  stage_scoped_classes:
+    MVIN3:
+    - bias_add
+    - bias
+  class_alternatives:
+    MVIN3:
+    - class: MVIN
+      decoded:
+        is_acc_addr: true
   class_subsumes:
     LOOP_CONV:
     - MVIN
+    - MVIN3
     - PRELOAD
     - COMPUTE_PRELOADED
     - MVOUT
     LOOP_WS:
     - MVIN
+    - MVIN3
     - PRELOAD
     - COMPUTE_PRELOADED
     - MVOUT
@@ -237,6 +249,7 @@ rocc_operand_roles:
       CONFIG_ST_LAYOUT: ConfigMvoutRs1
   classes:
     MVIN: &id001
+      unresolved: 'null'
       fields:
       - name: is_acc_addr
         operand: rs2
@@ -244,6 +257,12 @@ rocc_operand_roles:
         field: local_addr
         as: flag
         flag: accumulator_select
+      - name: accumulate
+        operand: rs2
+        bundle: MvinRs2
+        field: local_addr
+        as: flag
+        flag: accumulate
       - name: dram
         operand: rs1
         as: operand
@@ -344,14 +363,23 @@ rocc_operand_roles:
         as: all_ones
     COMPUTE_ACCUMULATE: *id002
     CONFIG_EX:
+      unresolved: 'null'
       fields:
       - name: subtype
         const: EX
+      - name: dataflow
+        operand: rs1
+        bundle: ConfigExRs1
+        field: dataflow
     CONFIG_LD:
       unresolved: 'null'
       fields:
       - name: subtype
         const: LD
+      - name: state_id
+        operand: rs1
+        bundle: ConfigMvinRs1
+        field: state_id
       - name: stride
         operand: rs2
         as: raw
@@ -389,18 +417,42 @@ rocc_operand_roles:
         operand: rs2
         bundle: ConfigMvoutRs2
         field: stride
-      - operand: rs1
+      - name: pool_stride
+        operand: rs1
         bundle: ConfigMvoutRs1
-        names:
-        - pool_stride
-        - pool_size
-        - pool_out_dim
-        - porows
-        - pocols
-        - orows
-        - ocols
-        - upad
-        - lpad
+        field: pool_stride
+      - name: pool_size
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: pool_size
+      - name: pool_out_dim
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: pool_out_dim
+      - name: porows
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: porows
+      - name: pocols
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: pocols
+      - name: orows
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: orows
+      - name: ocols
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: ocols
+      - name: upad
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: upad
+      - name: lpad
+        operand: rs1
+        bundle: ConfigMvoutRs1
+        field: lpad
 rtl_checks:
   class_roles:
     FENCE:
@@ -509,7 +561,7 @@ compute_units:
   - int8
   ops:
   - matmul
-  scaling: per_tensor
+  scaling: from_output_path
   requant:
     ref: gemmini.accumulator_scale
   semantic_capabilities:
@@ -717,8 +769,9 @@ readout_semantics:
     - maxpool
     evidence: the narrowing readout applies accumulator scale and activation; bias
       is loaded into the accumulator before computation, not added during readout
-      (GemminiRocketConfig AccumulatorScale and LoopMatmulLdD/LoopConvLdBias); RTL-certified
-      bit-exact against Tensor.requant_acc_scale (decision A)
+      (GemminiRocketConfig AccumulatorScale and LoopMatmulLdD/LoopConvLdBias); signed
+      accumulator to f32 RNE, f32 product RNE, integer RNE and saturation to int8
+      (Configs.scala:117-151 at the pinned RTL revision)
   - selector: i32
     applies: []
     evidence: the full-width readout writes the raw accumulator without applying an
