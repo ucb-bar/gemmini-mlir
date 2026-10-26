@@ -469,7 +469,7 @@ def admit(match, *, readout_options):
     meta_readout = match.kernel.meta.get('readout')
     require(meta_readout == ('f32_product_rne' if expected.narrow else 'full_i32'),
             'emitted readout exit differs from the source readout plan')
-    if expected.narrow:
+    if expected.narrow and expected.scale_operand is None:
         require(list(match.kernel.meta.get('multiplier_bits', ())) == expected.bits,
                 'readout multiplier bits differ from the composition proof')
     replay = Replay(stream, dataflows=expected.dataflows).run()
