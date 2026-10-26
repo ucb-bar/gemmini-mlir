@@ -188,6 +188,11 @@ def _emit_readout_plan(kernel, op, planned, consumed):
         kernel.meta.update(output_dtype='i8', relu=relu, readout='f32_product_rne',
                            device_readout='f32_product_rne', requantization='device',
                            multiplier_bits=proof['multiplier_bits'])
+    elif plan.route == 'int32_readout' and chain.ops:
+        # A source-proved integer residual is part of the accumulator value;
+        # the full-width exit bypasses the complete narrow readout path.
+        result = chain.ops[-1]
+        consumed.extend(chain.ops)
     kernel.meta['composition_plan'] = plan.record()
     kernel.meta['raw_integer'] = plan.route == 'int32_readout'
     kernel.meta['integer_readout'] |= plan.route in NARROW_ROUTES + ('conv_pool',)
@@ -202,11 +207,12 @@ NARROW_ROUTES = ('epilogue', 'k_concat')
 def planned_readout(module, op, options):
     """The readout plan and any K-concat extension, derived from the source alone."""
     planned = _readout_plan(module, op, options)
-    if planned is not None or str(op.operands[0].type.get_element_type()) != 'i8':
+    if (planned is not None and planned[0].route != 'int32_readout'
+            or str(op.operands[0].type.get_element_type()) != 'i8'):
         return planned, None
     from . import compositions
     extension = compositions.k_extension(module, op, options, batch=len(shape(op.operands[0])) != 2)
-    return (None, None) if extension is None else ((extension.readout, extension.chain), extension)
+    return (planned, None) if extension is None else ((extension.readout, extension.chain), extension)
 
 
 @dataclass

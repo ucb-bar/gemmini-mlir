@@ -179,8 +179,10 @@ def test_k_concat_appends_digit_tiles_and_matches_reference(m, k, n, coefficient
     manifest, match = composed(text)
     stream = match.kernel.stream
     assert match.kernel.meta['k_extension_plan']['decision']['tile_digits'] == digits
-    tiles = stream.consts['kext_digits'].reshape(len(digits), 16, 16)
-    assert [int(t[0, 0]) for t in tiles] == digits
+    resident = list(dict.fromkeys(digits))
+    tiles = stream.consts['kext_digits'].reshape(len(resident), 16, 16)
+    assert [int(t[0, 0]) for t in tiles] == resident
+    assert sum(i.kind == 'mvin' and i.arg == stream._index['kext_digits'] for i in stream.ins) == len(resident)
     rng = np.random.default_rng(k + n)
     inputs = dict(a=rng.integers(-128, 128, (m, k)).astype(np.int8),
                   b=rng.integers(-128, 128, (k, n)).astype(np.int8),

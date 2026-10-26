@@ -150,10 +150,93 @@ class Extension:
     digits: tuple
 
 
+def _integer_residual(op):
+    """Match the closed i32 ``acc + coefficient * extsi(residual)`` mesh suffix."""
+    from .match import etype, shape, generic_maps, identity_map, iterators, _scalar_const
+
+    users = list(op.results[0].uses)
+    if len(users) != 1:
+        return None
+    suffix = users[0].operation
+    if (suffix.name != 'linalg.generic' or len(suffix.operands) != 3 or len(suffix.results) != 1
+            or suffix.operands[0] is not op.results[0] or etype(suffix.operands[1]) != 'i8'
+            or any(shape(v) != shape(op.results[0]) for v in (*suffix.operands, *suffix.results))
+            or any(etype(v) != 'i32' for v in (suffix.operands[0], suffix.operands[2], suffix.results[0]))
+            or not all(identity_map(m) for m in generic_maps(suffix))
+            or any(it != 'parallel' for it in iterators(suffix))):
+        return None
+    block = suffix.regions[0].blocks[0]
+    body = list(block.ops)
+    if [s.name for s in body] != ['arith.extsi', 'arith.constant', 'arith.muli', 'arith.addi', 'linalg.yield']:
+        return None
+    ext, constant, product, add, yielded = body
+    if (list(ext.operands) != [block.args[1]] or str(ext.results[0].type) != 'i32'
+            or str(constant.results[0].type) != 'i32'
+            or set(product.operands) != {ext.results[0], constant.results[0]}
+            or set(add.operands) != {block.args[0], product.results[0]}
+            or list(yielded.operands) != [add.results[0]]):
+        return None
+    coefficient = _scalar_const(constant)
+    return (suffix, coefficient) if type(coefficient) is int and coefficient != 0 else None
+
+
+def _integer_extension(module, op, options):
+    """Realize a raw accumulator residual using Merlin's all-prefix digit proof."""
+    from merlin.compile.composition_fusion import CompositionPlan, composition_routes, _closed_members
+    from merlin.targetgen.software_spec import validate_compositions
+    from merlin.targetgen.output_path import validate
+    from merlin.targetgen import model_coverage
+    from merlin.transforms.certificates import ir_digest
+    from merlin.verify.lean_contract import document_digest
+    from merlin.xdsl_dialects.lowering import output_fusion as OF
+    from merlin.xdsl_dialects.lowering.k_extension import lower_k_extension
+    from .match import shape
+
+    found = _integer_residual(op)
+    if found is None or not options.get('compositions'):
+        return None
+    suffix, coefficient = found
+    try:
+        path = validate(options['path'])
+        declarations = validate_compositions(options['compositions'])['chains']
+        if (path['accumulator']['dtype'] != 'i32' or not path['exits'].get('accumulator')
+                or not any('k_concat' in composition_routes(d) and 'accumulator' in d.get('exits', ())
+                           and d.get('readout_stages') == 'from_output_path'
+                           and all(requirement != 'required' or any(s['kind'] == kind for s in path['accumulator_stages'])
+                                   for kind, requirement in d.get('accumulator_stages', {}).items())
+                           for d in declarations)):
+            return None
+        _closed_members((op, suffix))
+        selected = facts(options.get('numerical_semantics'))
+        if selected.get('digit_bits') != 8 or selected.get('accumulator_bits') != 32:
+            return None
+        values = OF.Values()
+        chain = OF.Chain(op, shape(op.results[0])[-1], [], [suffix])
+        bound = OF._bound(chain, values, model_coverage._contraction_extents(module))
+        decision = lower_k_extension(coefficient, source_k=shape(op.operands[0])[-1],
+            residual_width=shape(op.results[0])[-1], digit_bits=selected['digit_bits'],
+            max_extended_k=selected['max_extended_k'], accumulator_bits=selected['accumulator_bits'],
+            source_bound=max(abs(v) for v in bound), residual_range=(-128, 127))
+    except (ValueError, OF._Refused):
+        return None
+    operations = tuple(module.walk())
+    ordinals = tuple(operations.index(member) for member in (op, suffix))
+    readout = dict(cut='accumulator', stages=[], proof={})
+    identity = dict(scheme_sha256=document_digest(options['scheme']), facts_sha256=document_digest(selected),
+                    output_path_sha256=document_digest(path))
+    plan = CompositionPlan('k_concat', ir_digest(module), ordinals,
+                           {**decision, **identity, 'readout': readout})
+    view = CompositionPlan('int32_readout', plan.source_ir_sha256, ordinals, {**readout, **identity})
+    return Extension(plan, view, chain, suffix.operands[1], tuple(decision['tile_digits']))
+
+
 def k_extension(module, op, options, *, batch):
     """Admit a K-concat residual whose integer coefficient Merlin decomposed into digits."""
     if options is None or batch:
         return None
+    integer = _integer_extension(module, op, options)
+    if integer is not None:
+        return integer
     plan = _plan(module, op, options, 'k_concat')
     if plan is None:
         return None

@@ -40,7 +40,8 @@ class KExtension:
     """Residual digit tiles appended along K: ``out += sum_t digit_t * residual``.
 
     ``residual`` is an i8 [M, N] argument with row stride ``ldr``; ``digits`` names a
-    constant of ``len(values)`` stacked DIM x DIM tiles, tile t equal to ``values[t] * I``.
+    constant of distinct stacked DIM x DIM tiles, one per digit value times I.
+    Repeated values replay contributions against the same resident tile.
     Only the diagonal tile of each digit panel is nonzero, so a digit reaches output
     column tile j through residual column tile j alone.
     """
@@ -53,10 +54,11 @@ class KExtension:
 def _extension_tiles(s: Stream, extension: KExtension, ldb: int, TI: int, TJ: int):
     """Load the constant digit tiles once; return (digit base, residual block base) rows."""
     import numpy as np
-    count = len(extension.values)
+    values = tuple(dict.fromkeys(extension.values))
+    count = len(values)
     digits = SPAD_ROWS - count * DIM
     residual = digits - TI * TJ * DIM
-    tiles = np.concatenate([np.eye(DIM, dtype=np.int64) * v for v in extension.values])
+    tiles = np.concatenate([np.eye(DIM, dtype=np.int64) * v for v in values])
     if tiles.min() < -128 or tiles.max() > 127:
         raise ValueError("K-extension digit exceeds a signed operand")
     s.const(extension.digits, tiles.astype(np.int8))
@@ -64,7 +66,7 @@ def _extension_tiles(s: Stream, extension: KExtension, ldb: int, TI: int, TJ: in
     for t in range(count):
         s.mvin(s.at(extension.digits, t * DIM * DIM), SP(digits + t * DIM), DIM, DIM, 1)
     s.config_ld(1, ldb)
-    return digits, residual
+    return {value: digits + t * DIM for t, value in enumerate(values)}, residual
 
 
 def _extend_block(s: Stream, extension: KExtension, bases, acc0: int,
@@ -78,12 +80,12 @@ def _extend_block(s: Stream, extension: KExtension, bases, acc0: int,
             cols = min(min(4, tj - j) * DIM, N - (jb + j) * DIM)
             s.mvin(s.at(extension.residual, ((ib + i) * DIM * extension.ldr + (jb + j) * DIM)),
                    SP(residual + (i * tj + j) * DIM), cols, mr, 0)
-    for t in range(len(extension.values)):
+    for value in extension.values:
         for j in range(tj):
             nc = min(DIM, N - (jb + j) * DIM)
             for i in range(ti):
                 mr = min(DIM, M - (ib + i) * DIM)
-                s.preload(SP(digits + t * DIM) if i == 0 else GARBAGE,
+                s.preload(SP(digits[value]) if i == 0 else GARBAGE,
                           ACC(acc0 + (i * tj + j) * DIM, accumulate=True), nc, nc, nc, mr)
                 s.compute(SP(residual + (i * tj + j) * DIM), nc, mr, accumulate=i > 0)
 
@@ -107,8 +109,8 @@ def blocked_matmul(s: Stream, A: tuple[str, int], lda: int, B: tuple[str, int], 
         raise ValueError("K-extension needs one configured full-width contraction")
     TI, TJ, TK = blocks(M, N, K)
     if extension is not None:
-        # The output block's residual tiles and every digit tile sit above both halves.
-        TI, TJ, TK = blocks(M, N, K, TI * TJ + len(extension.values))
+        # Residual tiles and distinct resident digit tiles sit above both halves.
+        TI, TJ, TK = blocks(M, N, K, TI * TJ + len(set(extension.values)))
     if configure:
         s.config_ex()
         s.config_ld(0, lda)
