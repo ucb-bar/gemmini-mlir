@@ -254,6 +254,32 @@ def test_runtime_binding_chain_mutations_are_authenticated(edge):
         authenticate_binding(binding, match)
 
 
+@pytest.mark.parametrize('mutation', ['second_input_token', 'meta_source'])
+def test_runtime_scale_admission_refuses_rebound_scale(mutation):
+    """A second bound f32[1] input or a restated meta source must not pass contraction_proof.admit."""
+    from mlir_oot.core_aten import contraction_proof
+    from mlir_oot.core_aten.stream_proof import ProofError
+
+    module, match = planned_kernel()
+    selected = dict(path=PATH, scheme=dict(readout_strategy='f32_product_rne'), facts=json.loads(FACTS_FILE.read_text()))
+    assert contraction_proof.admit(match, readout_options=selected) == 'f32_product_rne'
+    if mutation == 'second_input_token':
+        unused = next(op for op in module.walk() if op.name == 'func.func').body.blocks[0].args[2]
+        stream = match.kernel.stream
+        stream.args.append(Arg('readout_scale9', 'f32', (1,), 'input'))
+        stream.__post_init__()
+        match.operands.append(('readout_scale9', unused))
+        for index, ins in enumerate(stream.ins):
+            if ins.kind == 'config_st':
+                attrs = dict(ins.attrs, scale_operand=RuntimeScaleRef(len(stream.args) - 1))
+                stream.ins[index] = ins._replace(attrs=tuple(sorted(attrs.items())))
+    else:
+        meta = match.kernel.meta
+        meta['scale_operand'] = dict(meta['scale_operand'], source=dict(func_arg=2, element_index=0))
+    with pytest.raises((ProofError, ValueError)):
+        contraction_proof.admit(match, readout_options=selected)
+
+
 def test_runtime_v1_retains_nonzero_seed_readout_on_host():
     from mlir_oot.core_aten.integer_regions import _readout_plan
     text = source().replace('%acc_zero = arith.constant 0 : i32', '%acc_zero = arith.constant 1 : i32')

@@ -59,6 +59,7 @@ class Expectation:
     dataflow_plan: dict | None
     extension: object      # source-derived K-concat residual plan, or None
     scale_operand: RuntimeScaleRef | None = None  # RuntimeScaleRef; concrete bits remain None
+    scale_record: dict | None = None  # the proof's source scale-operand record the meta must restate
 
 
 def expectation(match, readout_options):
@@ -111,19 +112,20 @@ def expectation(match, readout_options):
     seed = np.zeros(out_shape, np.int64)
     if seeded.values is not None:
         seed = np.broadcast_to(np.asarray(seeded.values, np.int64), out_shape).copy()
-    bits = relu = scale_ref = None
+    bits = relu = scale_ref = scale_record = None
     if narrow:
         proof = planned[0].decision['proof']
         if "scale_operand" in proof:
             from .runtime_scale_replay import source_scale_ref
             scale_ref = source_scale_ref(proof["scale_operand"], module, match.operands, match.kernel.stream.args)
+            scale_record = proof["scale_operand"]
         else:
             bits = [int(v) for v in proof['multiplier_bits']]
         relu = 'relu' in planned[0].decision['stages']
         require(scale_ref is not None or len(bits) == dims.n, 'readout multiplier bits do not cover every output column')
     return Expectation(match.result[0], out_shape, narrow, bits, bool(relu), dims.k, (a_shape, b_shape),
                        tuple(atoms), atom_sources, seed, seeded.runtime_seed, seeded.bias_rows,
-                       seeded.guarded_range, dataflows, dataflow_plan, extension, scale_ref)
+                       seeded.guarded_range, dataflows, dataflow_plan, extension, scale_ref, scale_record)
 
 
 class _Check:
@@ -472,6 +474,9 @@ def admit(match, *, readout_options):
     if expected.narrow and expected.scale_operand is None:
         require(list(match.kernel.meta.get('multiplier_bits', ())) == expected.bits,
                 'readout multiplier bits differ from the composition proof')
+    elif expected.narrow:
+        require(match.kernel.meta.get('scale_operand') == expected.scale_record,
+                'recorded runtime scale operand differs from the composition proof')
     replay = Replay(stream, dataflows=expected.dataflows).run()
     require(not replay.unfenced, 'stream ends with unfenced stores')
     check = _Check(match, expected, replay)
