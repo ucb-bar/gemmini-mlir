@@ -81,7 +81,7 @@ for bad_digest,status in [('0'*64,'bound'),(b._sha(elf),'absent')]:
 
 def test_no_executable_discovery_without_explicit_selection():
     child("""import os
-os.environ.pop('MERLIN_TARGET_PATH',None)
+os.environ['MERLIN_TARGET_PATH']=''  # explicit no-selection; unset means vendored providers
 from merlin.runtime.backends.base import get_backend
 try:get_backend('gemmini')
 except (KeyError,ValueError):pass
