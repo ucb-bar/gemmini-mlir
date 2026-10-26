@@ -329,8 +329,9 @@ def _decoded_store(command, store_state, names, members, bases, element, bits):
     if (place.garbage or not place.accumulator or place.accumulate or command.arg not in outputs
             or store_state is None):
         raise ValueError('shared-input store is not an accumulator readout of a bound output')
+    owner = None
     if 'out' not in names:
-        member = next(i for i in range(len(members)) if command.arg == names[f'out{i}'])
+        member = owner = next(i for i in range(len(members)) if command.arg == names[f'out{i}'])
         element = 1 if members[member].narrow else 4
         position, remainder = divmod(command.off, element)
         position += bases[member]
@@ -339,6 +340,8 @@ def _decoded_store(command, store_state, names, members, bases, element, bits):
     member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
     if remainder or member is None:
         raise ValueError('shared-input store is misaligned with every sibling result')
+    if owner is not None and member != owner:
+        raise ValueError('shared-input store position belongs to a different sibling output')
     sibling = members[member]
     row, col = divmod(position - bases[member], sibling.n)
     cols = fields['num_cols']

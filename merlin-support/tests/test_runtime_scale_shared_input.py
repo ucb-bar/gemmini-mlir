@@ -248,3 +248,23 @@ def test_runtime_oracle_obligations_are_authenticated_and_surfaced(region):
     assert proof['status']=='proven',proof
     row,=proof['kernels']
     assert row['runtime_oracle_obligations']==obligations
+
+
+def test_decoded_store_cannot_escape_its_typed_sibling_buffer():
+    from types import SimpleNamespace
+    from mlir_oot.core_aten.readout_encoding import flags
+    from mlir_oot.core_aten.stream import ACC, Arg, Stream
+    from mlir_oot.core_aten.stream_proof import decode
+
+    members = [SimpleNamespace(n=2, narrow=False), SimpleNamespace(n=2, narrow=False)]
+    names = dict(out0=0, out1=1)
+    s = Stream([Arg(name, 'i32', (1, 2), 'output') for name in names])
+    s.config_st(8)
+    s.mvout((0, 0), ACC(0, full=True), 2, 1)
+    state = decode(s.ins[0]).fields
+    command = decode(s.ins[1])
+    assert shared_input._decoded_store(command, state, names, members, [0, 2], 4, flags()).member == 0
+    # An offset past out0 used to be reinterpreted as an in-bounds store to out1.
+    escaped = decode(s.ins[1]._replace(off=8))
+    with pytest.raises(ValueError, match='different sibling output'):
+        shared_input._decoded_store(escaped, state, names, members, [0, 2], 4, flags())
