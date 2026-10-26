@@ -254,29 +254,43 @@ def test_runtime_binding_chain_mutations_are_authenticated(edge):
         authenticate_binding(binding, match)
 
 
-@pytest.mark.parametrize('mutation', ['second_input_token', 'meta_source'])
-def test_runtime_scale_admission_refuses_rebound_scale(mutation):
-    """A second bound f32[1] input or a restated meta source must not pass contraction_proof.admit."""
+def test_runtime_scale_admission_refuses_second_bound_f32_input():
     from mlir_oot.core_aten import contraction_proof
+    from mlir_oot.core_aten.runtime_scale import validate_scale_ref
     from mlir_oot.core_aten.stream_proof import ProofError
 
     module, match = planned_kernel()
     selected = dict(path=PATH, scheme=dict(readout_strategy='f32_product_rne'), facts=json.loads(FACTS_FILE.read_text()))
+    stream = match.kernel.stream
+    unused = next(op for op in module.walk() if op.name == 'func.func').body.blocks[0].args[2]
+    stream.args.append(Arg('readout_scale9', 'f32', (1,), 'input'))
+    stream.__post_init__()
+    match.operands.append(('readout_scale9', unused))
+    # The extra binding is legal until CONFIG_ST reads it in place of the source scale.
     assert contraction_proof.admit(match, readout_options=selected) == 'f32_product_rne'
-    if mutation == 'second_input_token':
-        unused = next(op for op in module.walk() if op.name == 'func.func').body.blocks[0].args[2]
-        stream = match.kernel.stream
-        stream.args.append(Arg('readout_scale9', 'f32', (1,), 'input'))
-        stream.__post_init__()
-        match.operands.append(('readout_scale9', unused))
-        for index, ins in enumerate(stream.ins):
-            if ins.kind == 'config_st':
-                attrs = dict(ins.attrs, scale_operand=RuntimeScaleRef(len(stream.args) - 1))
-                stream.ins[index] = ins._replace(attrs=tuple(sorted(attrs.items())))
-    else:
-        meta = match.kernel.meta
-        meta['scale_operand'] = dict(meta['scale_operand'], source=dict(func_arg=2, element_index=0))
-    with pytest.raises((ProofError, ValueError)):
+    wrong = RuntimeScaleRef(len(stream.args) - 1)
+    validate_scale_ref(wrong, stream.args)
+    changed = 0
+    for index, ins in enumerate(stream.ins):
+        if ins.a('scale_operand') is not None:
+            attrs = dict(ins.attrs, scale_operand=wrong)
+            stream.ins[index] = ins._replace(attrs=tuple(sorted(attrs.items())))
+            changed += 1
+    assert changed
+    with pytest.raises(ProofError, match='decoded readout activation or scale'):
+        contraction_proof.admit(match, readout_options=selected)
+
+
+def test_runtime_scale_admission_refuses_rewritten_meta_source():
+    from mlir_oot.core_aten import contraction_proof
+    from mlir_oot.core_aten.stream_proof import ProofError
+
+    _, match = planned_kernel()
+    selected = dict(path=PATH, scheme=dict(readout_strategy='f32_product_rne'), facts=json.loads(FACTS_FILE.read_text()))
+    assert contraction_proof.admit(match, readout_options=selected) == 'f32_product_rne'
+    meta = match.kernel.meta
+    meta['scale_operand'] = dict(meta['scale_operand'], source=dict(func_arg=2, element_index=0))
+    with pytest.raises(ProofError, match='recorded runtime scale operand'):
         contraction_proof.admit(match, readout_options=selected)
 
 
