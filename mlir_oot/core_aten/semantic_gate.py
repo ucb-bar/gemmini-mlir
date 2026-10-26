@@ -131,13 +131,10 @@ def _reference(match, options):
     if match.kernel.stream.bitwise:
         return _bitwise_reference(match)
     if meta.get('scaled_operand_sum'):
-        from .operand_sum import _region_at
+        from .operand_sum import _region_at, source_reference
         region = _region_at(match.root, options)
         require(region is not None, 'no source evaluator for operand sum')
-        def evaluate(inputs):
-            a, b = (inputs[n].reshape(region.rows, region.cols) for n in ('a', 'b'))
-            return {'y': np.stack([region.source(a[:, c], b[:, c], c) for c in range(region.cols)], axis=1)}
-        return evaluate, {}
+        return source_reference(region), {}
     if meta.get('shared_input'):
         from .shared_input import source_reference
         return source_reference(match, options), {}
