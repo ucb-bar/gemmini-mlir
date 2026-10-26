@@ -270,3 +270,50 @@ def test_runtime_lint_rejects_invalid_config(mutation):
     stream.ins[0] = stream.ins[0]._replace(attrs=tuple(sorted(attrs.items())))
     with pytest.raises(ValueError):
         lint(stream)
+
+
+def selected_runtime_facts(monkeypatch, mutation):
+    from pathlib import Path
+    from mlir_oot.core_aten import readout_encoding
+
+    facts = json.loads((Path(__file__).parent / 'fixtures/runtime_scale/rtl-facts.json').read_text())
+    bundle = next(row for row in facts['facts']['interfaces']
+                  if row['name'] == 'register_bundle_layouts')['bundles']['ConfigMvoutRs2']
+    fields = bundle['fields']
+    if mutation == 'relocate':
+        fields['acc_scale']['offset'], fields['stride']['offset'] = 0, 32
+    elif mutation == 'overlap':
+        fields['acc_scale']['offset'] = 16
+    elif mutation == 'outside':
+        fields['acc_scale']['offset'] = 64
+    elif mutation == 'narrow_bundle':
+        bundle['width'] = 63
+    monkeypatch.setattr(readout_encoding, 'load_facts', lambda target: facts)
+    return facts
+
+
+def test_runtime_scale_transport_follows_relocated_slot(monkeypatch):
+    from mlir_oot.core_aten.readout_encoding import runtime_scale_facts
+    from test_runtime_scale_emission import PATH
+
+    facts = selected_runtime_facts(monkeypatch, 'relocate')
+    assert runtime_scale_slot() == (0, 32)
+    transport = runtime_scale_facts(facts, PATH)
+    assert (transport['offset'], transport['width']) == (0, 32)
+    s = runtime_stream()
+    s.config_st(17, scale_operand=RuntimeScaleRef(1))
+    assert encode(s.ins[0]).values[1] == 17 << 32
+    validate_runtime_record(encode(s.ins[0]), s.args)
+
+
+@pytest.mark.parametrize('mutation,reason', [('overlap', 'overlaps'), ('outside', 'inside'),
+                                           ('narrow_bundle', 'inside')])
+def test_runtime_scale_transport_refuses_invalid_slot(monkeypatch, mutation, reason):
+    from mlir_oot.core_aten.readout_encoding import runtime_scale_facts
+    from test_runtime_scale_emission import PATH
+
+    facts = selected_runtime_facts(monkeypatch, mutation)
+    with pytest.raises(ValueError, match=reason):
+        runtime_scale_slot()
+    with pytest.raises(ValueError, match=reason):
+        runtime_scale_facts(facts, PATH)
