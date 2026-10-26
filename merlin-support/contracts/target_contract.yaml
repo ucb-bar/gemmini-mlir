@@ -85,6 +85,9 @@ rtl_extraction:
       address:
         module: StoreController
         out_of_bounds: _T_8
+        out_of_bounds_checks:
+        - geq(orow, pool_orows)
+        - geq(ocol, pool_ocols)
         value: pool_row_addr
         fields:
         - is_acc_addr
