@@ -160,7 +160,7 @@ def shim_source(manifest: dict) -> str:
     body = []
     buffer_symbols = {b["symbol"] for b in manifest.get("bindings", []) if "result_buffers" in b}
     for k in manifest["kernels"]:
-        if k["symbol"] in buffer_symbols or any(a["dtype"] == "f32" for a in k["args"]):
+        if k["symbol"] in buffer_symbols or k.get("runtime_scale_arguments"):
             ranks.update(len(a["shape"]) for a in k["args"] if a["role"] in ("input", "output"))
             body += _buffer_shim(k, buffers=k["symbol"] in buffer_symbols)
             continue
@@ -245,8 +245,11 @@ def _buffer_shim(kernel, *, buffers=True):
     callee = ('ca_buffers_' if buffers else 'ca_') + sym
     params = [f'{result_type} *result'] + [f"ca_memref_{len(a['shape'])} *{a['name']}" for a in ins + outs]
     lines.append(f"void _mlir_ciface_{callee}({', '.join(params)}) {{")
+    scales = kernel.get('runtime_scale_arguments', [])
+    if not set(scales) <= {a['name'] for a in ins}:
+        raise ValueError('runtime scale argument has no input descriptor')
     for a in ins + outs:
-        lines += _checked_buffer_operand(a, sym)
+        lines += _checked_buffer_operand(a, sym, scale=a['name'] in scales)
     lines += _nonaliasing_results(ins + outs, sym)
     call = [f"{sym}__{a['name']}" if a['role'] == 'scratch' else f"p_{a['name']}" for a in args]
     lines.append(f"  {sym}({', '.join(call)});")
@@ -257,7 +260,7 @@ def _buffer_shim(kernel, *, buffers=True):
     return lines + ['}', '']
 
 
-def _checked_buffer_operand(arg, symbol):
+def _checked_buffer_operand(arg, symbol, *, scale=False):
     from .storage import itemsize
 
     name, rank, width = arg['name'], len(arg['shape']), itemsize(arg['dtype'])
@@ -268,8 +271,8 @@ def _checked_buffer_operand(arg, symbol):
              f'  uint8_t *p_{name} = (uint8_t *){name}->aligned + {name}->offset * {width};']
     if width > 1:
         lines.append(f'  if ((uintptr_t)p_{name} % {width}) ca_abort("{symbol}: misaligned operand");')
-    if arg['role'] == 'input' and arg['dtype'] == 'f32':
-        if tuple(arg['shape']) != (1,):
+    if scale:
+        if arg['dtype'] != 'f32' or tuple(arg['shape']) != (1,):
             raise ValueError('runtime scale must have f32[1] storage')
         lines.append(f'  uint32_t bits_{name}; memcpy(&bits_{name}, p_{name}, 4);')
         lines.append(f'  if ((bits_{name} & 0x7f800000u) == 0x7f800000u) '

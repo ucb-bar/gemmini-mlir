@@ -111,6 +111,7 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
         accepted.append(m)
         symbol = "gemmini_ca_" + digest[:16]
         if symbol not in kernels:
+            runtime_scales = _runtime_scale_arguments(m.kernel.stream)
             km, tree = build_module(m.kernel.stream, symbol, meta=m.kernel.meta)
             for op in list(km.body.blocks[0].ops):
                 op.detach()
@@ -120,6 +121,7 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
                                    instructions=report["instructions"], fences=report["fences"],
                                    counts=m.kernel.stream.counts(), meta=_jsonable(m.kernel.meta),
                                    requantization=_readout_contracts(m.kernel.stream),
+                                   **(dict(runtime_scale_arguments=runtime_scales) if runtime_scales else {}),
                                    **(dict(runtime_oracle_obligations=_jsonable(report['runtime_oracle_obligations']))
                                       if report.get('runtime_oracle_obligations') else {}))
         bindings.append(binding_record(m, symbol, ordinals, func_args))
@@ -209,6 +211,7 @@ def authenticate_catalog(manifest, matches):
         raise ValueError('catalog bindings differ from the admitted matches')
     digests = {}
     arguments = {}
+    scales = {}
     for binding, match in zip(manifest['bindings'], matches):
         authenticate_binding(binding, match)
         digest = _stream_digest(match.kernel)
@@ -217,11 +220,14 @@ def authenticate_catalog(manifest, matches):
             raise ValueError('catalog binding symbol aliases different kernel stream digests')
         digests[symbol] = digest
         arguments[symbol] = argument_records(match)
+        scales[symbol] = _runtime_scale_arguments(match.kernel.stream)
     if (len(manifest['kernels']) != len(digests)
             or {k['symbol']: k.get('stream_sha256') for k in manifest['kernels']} != digests):
         raise ValueError('catalog kernel digests differ from the authenticated binding streams')
     if any(k.get('args') != arguments[k['symbol']] for k in manifest['kernels']):
         raise ValueError('catalog kernel arguments differ from the source-bound kernel ABI')
+    if any(k.get('runtime_scale_arguments', []) != scales[k['symbol']] for k in manifest['kernels']):
+        raise ValueError('catalog runtime scale arguments differ from the authenticated stream references')
     return digests
 
 
@@ -270,6 +276,17 @@ def _result_slices(m, ordinals, func_args):
     return dict(result_slices=[dict(source=_source(value, ordinals, func_args), offset=offset, shape=list(extent),
                                     type=str(value.type)) for value, offset, extent, _ in m.outputs],
                 source_operation_ordinals=[ordinals[op] for _, _, _, op in m.outputs])
+
+
+def _runtime_scale_arguments(stream):
+    refs = [ins.a('scale_operand') for ins in stream.ins if ins.a('scale_operand') is not None]
+    if not refs:
+        return []
+    from .runtime_scale import validate_scale_ref
+
+    for ref in refs:
+        validate_scale_ref(ref, stream.args)
+    return [stream.args[ref.arg_index].name for ref in sorted(set(refs))]
 
 
 def _readout_contracts(stream):

@@ -154,6 +154,12 @@ def test_mixed_i8_i32_results_have_distinct_typed_buffers():
         assert _stream_digest(match.kernel)==digest
     shared_input.admit(match,readout_options=selected)
     authenticate_catalog(manifest,[match])
+    assert manifest['kernels'][0]['runtime_scale_arguments']==['readout_scale0']
+    import copy
+    changed=copy.deepcopy(manifest)
+    changed['kernels'][0].pop('runtime_scale_arguments')
+    with pytest.raises(ValueError,match='runtime scale arguments'):
+        authenticate_catalog(changed,[match])
     proof=provider().admit_numeric_schedule(text,package=PACKAGE,numeric_policy=POLICY,readout_options=selected)
     assert proof['status']=='proven',proof
     assert proof['kernels'][0]['quantization']=='device'

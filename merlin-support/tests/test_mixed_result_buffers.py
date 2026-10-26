@@ -132,7 +132,7 @@ def test_buffer_shim_rejects_misalignment_aliasing_and_nonfinite_scale(tmp_path)
     args=[dict(name='scale',dtype='f32',shape=[1],role='input'),
           dict(name='out0',dtype='i8',shape=[3],role='output'),
           dict(name='out1',dtype='i32',shape=[2],role='output')]
-    manifest=dict(kernels=[dict(symbol='checked',args=args)],bindings=[dict(symbol='checked',result_buffers=[])])
+    manifest=dict(kernels=[dict(symbol='checked',args=args,runtime_scale_arguments=['scale'])],bindings=[dict(symbol='checked',result_buffers=[])])
     c=tmp_path/'checked.c'
     c.write_text(shim_source(manifest)+r'''
 #include <stdlib.h>
@@ -161,3 +161,20 @@ int main(int argc,char **argv) {
     for mutation in ['v','i','o','a','b','n','f','s','p']:
         result=subprocess.run([str(exe),mutation],capture_output=True)
         assert result.returncode==(0 if mutation=='v' else 37),mutation
+
+
+def test_opaque_f32_inputs_are_not_runtime_scale_operands():
+    from test_shared_input_fusion import provider, PACKAGE, POLICY
+
+    text = """builtin.module {
+      func.func @forward(%a:tensor<3xf32>,%b:tensor<2xf32>) -> tensor<5xf32> {
+        %out = tensor.concat dim(0) %a,%b : (tensor<3xf32>,tensor<2xf32>) -> tensor<5xf32>
+        func.return %out : tensor<5xf32>
+      }
+    }"""
+    _, manifest, matches = build(text)
+    authenticate_catalog(manifest, matches)
+    assert all('runtime_scale_arguments' not in k for k in manifest['kernels'])
+    shim = shim_source(manifest)
+    assert 'nonfinite runtime scale' not in shim
+    assert 'ca_results_' not in shim
