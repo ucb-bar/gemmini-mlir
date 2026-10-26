@@ -111,7 +111,8 @@ def runtime_options():
     from pathlib import Path
 
     selected=options()
-    path=Path(os.environ.get('RT_FACTS', '/tmp/claude-201127/-scratch2-lorenhung-merlin/f6514365-8ad3-487f-ad90-ea36bb1de80f/scratchpad/kextdiag/rtl-facts.json'))
+    # Vendored kextdiag RTL facts, sha256 a8d92927fad2f4aa56602b64672f2cf694e3d8ae5094e80413795fb8d270abe3.
+    path=Path(os.environ.get('RT_FACTS', Path(__file__).resolve().parent/'fixtures/runtime_scale/rtl-facts.json'))
     selected['facts']=json.loads(path.read_text())
     return selected
 

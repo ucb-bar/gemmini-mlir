@@ -20,7 +20,9 @@ from mlir_oot.core_aten.trace import stream_from_module
 from mlir_oot.frontend.parse import parse_module
 from test_runtime_scale_encoding import runtime_stream, scale_record
 
-FACTS_FILE = Path('/tmp/claude-201127/-scratch2-lorenhung-merlin/f6514365-8ad3-487f-ad90-ea36bb1de80f/scratchpad/kextdiag/rtl-facts.json')
+# Vendored byte-for-byte from the kextdiag selected-RTL facts (Merlin session f6514365, kextdiag/rtl-facts.json),
+# sha256 a8d92927fad2f4aa56602b64672f2cf694e3d8ae5094e80413795fb8d270abe3.
+FACTS_FILE = Path(__file__).resolve().parent / 'fixtures/runtime_scale/rtl-facts.json'
 PATH = dict(schema='output_path_v1', accumulator=dict(dtype='i32'),
     accumulator_stages=[dict(kind='preload', dtype='i32')],
     readout=[dict(kind='activation', function='relu', domain='accumulator'),
