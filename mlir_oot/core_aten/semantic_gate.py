@@ -273,11 +273,12 @@ def _buffers(stream, ranges, trial, rng, *, exhaustive=None, scale_indices=None)
     from .runtime_scale_replay import runtime_scale_refs, runtime_scale_trial
     if scale_indices is None:
         scale_indices = {ref.arg_index for ref in runtime_scale_refs(stream)}
+    scale_offsets = {index: k for k, index in enumerate(sorted(scale_indices))}
     boundary_trials = _boundary_trials(stream)
     for index, arg in enumerate(stream.args):
         dtype = numpy_storage(arg.dtype)
         if index in scale_indices:
-            data = runtime_scale_trial(trial)
+            data = runtime_scale_trial(trial, offset=scale_offsets[index])
             inputs[arg.name] = data.copy()
         elif arg.role == 'input' and exhaustive is not None:
             data = exhaustive[arg.name].astype(dtype)

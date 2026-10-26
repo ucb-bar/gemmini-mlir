@@ -166,7 +166,7 @@ def test_mixed_i8_i32_results_have_distinct_typed_buffers():
     assert proof['kernels'][0]['quantization']=='device'
 
 
-def test_two_runtime_siblings_keep_distinct_scale_ssa():
+def test_two_runtime_siblings_keep_distinct_scale_ssa(monkeypatch):
     from mlir_oot.core_aten.runtime_scale import RuntimeScaleRef
     _,weights,selected,manifest,match=runtime_match(raw=(False,False))
     stream=match.kernel.stream
@@ -179,7 +179,18 @@ def test_two_runtime_siblings_keep_distinct_scale_ssa():
     want=np.concatenate([f32_readout(a.astype(np.int64)@w.astype(np.int64),np.float32(s),'i8').reshape(-1)
                          for w,s in zip(weights,(.25,.5))])
     np.testing.assert_array_equal(result,want)
+    from mlir_oot.core_aten import stream_proof
+    from mlir_oot.core_aten.runtime_scale_replay import runtime_scale_bits
+    execute = stream_proof.execute
+    trials = []
+    def distinct_scales(stream, buffers):
+        values = [runtime_scale_bits(ref, stream.args, buffers) for ref in sorted(refs)]
+        assert len(set(values)) == len(values)
+        trials.append(values)
+        return execute(stream, buffers)
+    monkeypatch.setattr(stream_proof, 'execute', distinct_scales)
     shared_input.admit(match,readout_options=selected)
+    assert len(trials) == 3
     first,second=sorted(refs)
     for index,ins in enumerate(stream.ins):
         if ins.a('scale_operand')==first:

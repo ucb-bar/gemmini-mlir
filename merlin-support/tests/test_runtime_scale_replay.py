@@ -235,3 +235,19 @@ def test_source_scale_binding_rejects_same_typed_argument_substitution():
     wrong = {**record, "source": {"func_arg": True, "element_index": 0}}
     with pytest.raises(ValueError, match="integers"):
         R.source_scale_ref(wrong, module, [("scale", other)], args)
+
+
+def test_semantic_gate_trials_distinguish_runtime_scale_arguments():
+    from mlir_oot.core_aten.semantic_gate import _buffers
+
+    s = Stream([Arg("first", "f32", (1,), "input"),
+                Arg("second", "f32", (1,), "input")])
+    s.config_st(4, scale_operand=RuntimeScaleRef(0))
+    s.config_st(4, scale_operand=RuntimeScaleRef(1))
+    for trial in range(len(R.SCALE_TRIAL_BITS)):
+        values, inputs = _buffers(s, {}, trial, np.random.default_rng(1))
+        bits = [R.runtime_scale_bits(RuntimeScaleRef(i), s.args, values) for i in range(2)]
+        assert bits == [R.SCALE_TRIAL_BITS[(trial + i) % len(R.SCALE_TRIAL_BITS)] for i in range(2)]
+        assert bits[0] != bits[1]
+        for i, name in enumerate(("first", "second")):
+            np.testing.assert_array_equal(inputs[name].view(np.uint32), values[i].view(np.uint32))

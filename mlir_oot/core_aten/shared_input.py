@@ -547,7 +547,10 @@ def source_reference(match, options):
 def _backstop(stream, members, weights, bases, trials=3):
     """Execute the decoded commands and compare bit for bit with Merlin's exact readout reference."""
     from .stream_proof import execute, require
+    from .runtime_scale_replay import runtime_scale_trial
 
+    scale_args = sorted({m.scale_ref.arg_index for m in members if m.scale_ref is not None})
+    scale_offsets = {index: k for k, index in enumerate(scale_args)}
     rng = np.random.default_rng(0x51b1)
     names = {a.name: i for i, a in enumerate(stream.args)}
     for trial in range(trials):
@@ -560,9 +563,8 @@ def _backstop(stream, members, weights, bases, trials=3):
             if arg.role == 'const':
                 data = stream.consts[arg.name]
             elif arg.role == 'input':
-                scale_args = {m.scale_ref.arg_index for m in members if m.scale_ref is not None}
-                data = sources[arg.name] = (np.array([(0., .25, .5)[trial % 3]], np.float32)
-                                            if index in scale_args else operand(arg.shape))
+                data = sources[arg.name] = (runtime_scale_trial(trial, offset=scale_offsets[index])
+                                            if index in scale_offsets else operand(arg.shape))
             else:
                 data = np.full(arg.shape, 0x5A if arg.dtype == 'i8' else 0x5A5A5A5A,
                                np.int8 if arg.dtype == 'i8' else np.int32)
