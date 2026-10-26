@@ -400,6 +400,14 @@ def trailing_block(amap) -> int | None:
 # Matches
 # ---------------------------------------------------------------------------------------------
 
+@dataclass(frozen=True)
+class ResultBuffer:
+    value: SSAValue
+    argument: str
+    shape: tuple[int, ...]
+    root: Operation
+
+
 @dataclass
 class Match:
     op: str                                     # Core ATen overload the region implements
@@ -414,6 +422,7 @@ class Match:
     # (source value, element offset, shape, source contraction) per result of a
     # flat multi-result kernel.
     outputs: list = field(default_factory=list)
+    result_buffers: list[ResultBuffer] = field(default_factory=list)
 
 
 def _sandwich_out(v: SSAValue):

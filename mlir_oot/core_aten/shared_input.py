@@ -20,7 +20,7 @@ from __future__ import annotations
 import numpy as np
 
 from .source import module_of
-from .match import Decline, Match, dense_values, shape
+from .match import Decline, Match, ResultBuffer, dense_values, shape
 from .stream import ACC, ACC_ROWS, DIM, GARBAGE, NO_ACT, SP, SPAD_ROWS, Arg
 
 OPERATION = 'merlin.shared_input'
@@ -76,12 +76,41 @@ class _Member:
         self.k, self.n = shape(op.operands[1])
         proof = plan.decision.get('proof') or {}
         self.narrow = plan.route == 'epilogue'
-        self.bits = tuple(int(v) for v in proof['multiplier_bits']) if self.narrow else None
+        self.scale_operand = proof.get('scale_operand') if self.narrow else None
+        self.scale_ref = None
+        self.bits = (tuple(int(v) for v in proof['multiplier_bits'])
+                     if self.narrow and self.scale_operand is None else None)
         self.relu = self.narrow and 'relu' in plan.decision['stages']
         self.result = chain.ops[-1].results[0] if self.narrow else op.results[0]
         self.consumed = list(chain.ops) if self.narrow else []
         if self.narrow and np.any(np.asarray(proof.get('offsets', 0))):
             raise Decline('shared-input siblings do not seed accumulator offsets')
+
+
+def _bind_scales(module, members, operands, args):
+    for member in members:
+        if member.scale_operand is not None:
+            from .runtime_scale import bind_scale_operand
+            member.scale_ref = bind_scale_operand(member.scale_operand, module, operands, args)
+
+
+def _readout_matches(member, scale, column, columns):
+    if member.scale_ref is not None:
+        return scale == member.scale_ref
+    return set(member.bits[column:column + columns]) == {scale}
+
+
+def _reference(member, acc, stream, buffers):
+    from merlin.runtime.exact_readout import f32_readout
+
+    if not member.narrow:
+        return acc.astype(np.int32)
+    if member.scale_ref is not None:
+        from .runtime_scale_replay import runtime_scale_value
+        scale = runtime_scale_value(member.scale_ref, stream.args, buffers)
+    else:
+        scale = np.array(member.bits, np.uint32).view(np.float32)
+    return f32_readout(acc, scale, 'i8', relu=member.relu)
 
 
 def _members(module, group, readout_options):
@@ -99,8 +128,6 @@ def _members(module, group, readout_options):
         if planned[0].route not in ('epilogue', 'int32_readout'):
             raise Decline(f'sibling {index} has an unsupported shared-input readout route: {planned[0].route}')
         members.append(_Member(ordinal, op, *planned))
-    if len({m.narrow for m in members}) != 1:
-        raise Decline('shared-input siblings must share one exit width')
     return body, members
 
 
@@ -160,7 +187,7 @@ def _fuse(module, group, readout_options):
     if schedule is None:
         raise Decline('no shared-input schedule fits the private storage')
     width, layouts = _layouts(members)
-    element = 1 if members[0].narrow else 4
+    mixed = len({m.narrow for m in members}) > 1
     dtype = 'i8' if members[0].narrow else 'i32'
     bases, total = [], 0
     for member in members:
@@ -169,7 +196,14 @@ def _fuse(module, group, readout_options):
     args = [Arg('a', 'i8', (group.m, group.k), 'input')]
     args += [Arg(f'w{i}', 'i8', (m.k, m.n), 'input') for i, (m, layout) in enumerate(zip(members, layouts))
              if layout is None]
-    args.append(Arg('out', dtype, (total,), 'output'))
+    operands = [('a', members[0].op.operands[0])] + [
+        (f'w{i}', m.op.operands[1]) for i, (m, l) in enumerate(zip(members, layouts)) if l is None]
+    _bind_scales(module, members, operands, args)
+    if mixed:
+        args += [Arg(f'out{i}', 'i8' if m.narrow else 'i32', (group.m, m.n), 'output')
+                 for i, m in enumerate(members)]
+    else:
+        args.append(Arg('out', dtype, (total,), 'output'))
     s = _begin(args)
     for i, (member, layout) in enumerate(zip(members, layouts)):
         if layout is not None:
@@ -199,17 +233,24 @@ def _fuse(module, group, readout_options):
         elif kind == 'Store':
             sibling = members[member]
             if sibling.narrow:
-                selected = set(sibling.bits[op.dram_col:op.dram_col + op.cols])
-                if len(selected) != 1:
-                    raise Decline('sibling store tile spans two readout multipliers')
-                config = (sibling.n, activation(sibling.relu), selected.pop())
+                if sibling.scale_ref is not None:
+                    config = (sibling.n, activation(sibling.relu), None, sibling.scale_ref)
+                else:
+                    selected = set(sibling.bits[op.dram_col:op.dram_col + op.cols])
+                    if len(selected) != 1:
+                        raise Decline('sibling store tile spans two readout multipliers')
+                    config = (sibling.n, activation(sibling.relu), selected.pop(), None)
             else:
-                config = (sibling.n * 4, NO_ACT, None)
+                config = (sibling.n * 4, NO_ACT, None, None)
             if config != store_config:
-                s.config_st(config[0], config[1], multiplier_bits=config[2])
+                if config[3] is None:
+                    s.config_st(config[0], config[1], multiplier_bits=config[2])
+                else:
+                    s.config_st(config[0], config[1], scale_operand=config[3])
                 store_config = config
-            offset = (bases[member] + op.dram_row * sibling.n + op.dram_col) * element
-            s.mvout(s.at('out', offset), ACC(op.accumulator_row, full=not sibling.narrow), op.cols, op.rows)
+            element = 1 if sibling.narrow else 4
+            offset = ((0 if mixed else bases[member]) + op.dram_row * sibling.n + op.dram_col) * element
+            s.mvout(s.at(f'out{member}' if mixed else 'out', offset), ACC(op.accumulator_row, full=not sibling.narrow), op.cols, op.rows)
         else:
             raise Decline('unknown shared-input schedule effect')
     s.fence()
@@ -220,20 +261,22 @@ def _fuse(module, group, readout_options):
                                         relu=m.relu, weight_layout=None if l is None else l.record(),
                                         composition_plan=m.plan.record())
                                    for m, b, l in zip(members, bases, layouts)]),
-        integer_producer=True, integer_readout=members[0].narrow, raw_integer=not members[0].narrow,
+        integer_producer=True, integer_readout=any(m.narrow for m in members), raw_integer=all(not m.narrow for m in members),
         dimensions=dict(batch=0, m=group.m, n=sum(group.widths), k=group.k), seed='zero', bias=False,
-        output_dtype=dtype, relu=False, readout='f32_product_rne' if members[0].narrow else 'full_i32',
-        device_readout='f32_product_rne' if members[0].narrow else 'full_i32',
+        output_dtype='mixed' if mixed else dtype, relu=False,
+        readout='mixed' if mixed else ('f32_product_rne' if members[0].narrow else 'full_i32'),
+        device_readout='mixed' if mixed else ('f32_product_rne' if members[0].narrow else 'full_i32'),
         accumulator_min=-group.k * 16384, accumulator_max=group.k * 16384)
     kernel = Kernel(OPERATION, s, meta)
     consumed = [body[i] for i in group.source_op_indices] + [op for m in members for op in m.consumed]
-    operands = [('a', members[0].op.operands[0])] + [
-        (f'w{i}', m.op.operands[1]) for i, (m, l) in enumerate(zip(members, layouts)) if l is None]
     outputs = [(m.result, b, (group.m, m.n), m.op) for m, b in zip(members, bases)]
-    return Match(OPERATION, members[0].op, consumed, operands, ('out', members[-1].result), kernel,
+    return Match(OPERATION, members[0].op, consumed, operands,
+                 (('out0', members[0].result) if mixed else ('out', members[-1].result)), kernel,
                  numeric=dict(integer_producer=True, shared_input=True, seed=None, runtime_seed=False,
-                              raw_integer=not members[0].narrow, integer_readout=members[0].narrow),
-                 outputs=outputs)
+                              raw_integer=all(not m.narrow for m in members), integer_readout=any(m.narrow for m in members)),
+                 outputs=[] if mixed else outputs,
+                 result_buffers=[ResultBuffer(m.result, f'out{i}', (group.m, m.n), m.op)
+                                 for i, m in enumerate(members)] if mixed else [])
 
 
 # ---------------------------------------------------------------------------------------------
@@ -282,10 +325,17 @@ def _decoded_store(command, store_state, names, members, bases, element, bits):
 
     fields = command.fields
     place = local(fields['local_addr'])
-    if place.garbage or not place.accumulator or place.accumulate or command.arg != names['out'] or \
-            store_state is None:
-        raise ValueError('shared-input store is not an accumulator readout of the flat output')
-    position, remainder = divmod(command.off, element)
+    outputs = [names['out']] if 'out' in names else [names[f'out{i}'] for i in range(len(members))]
+    if (place.garbage or not place.accumulator or place.accumulate or command.arg not in outputs
+            or store_state is None):
+        raise ValueError('shared-input store is not an accumulator readout of a bound output')
+    if 'out' not in names:
+        member = next(i for i in range(len(members)) if command.arg == names[f'out{i}'])
+        element = 1 if members[member].narrow else 4
+        position, remainder = divmod(command.off, element)
+        position += bases[member]
+    else:
+        position, remainder = divmod(command.off, element)
     member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
     if remainder or member is None:
         raise ValueError('shared-input store is misaligned with every sibling result')
@@ -296,7 +346,7 @@ def _decoded_store(command, store_state, names, members, bases, element, bits):
     if place.full == sibling.narrow or stride != sibling.n * element:
         raise ValueError('sibling store width or pitch differs from its exit')
     if sibling.narrow:
-        if set(sibling.bits[col:col + cols]) != {scale_bits} or act != activation(sibling.relu):
+        if not _readout_matches(sibling, scale_bits, col, cols) or act != activation(sibling.relu):
             raise ValueError('decoded sibling readout differs from its proved multiplier bits')
     elif act != NO_ACT or scale_bits != bits['f1']:
         raise ValueError('full-width sibling store applies a readout stage')
@@ -391,7 +441,16 @@ def _replayed_outputs(replay, group, members, weights, bases, total):
     from .readout_encoding import activation
     from .stream_proof import _f1, is_zero, require
 
-    content = replay.content.get('out', {})
+    if 'out' in replay.content:
+        content = replay.content['out']
+    else:
+        content = {}
+        for i, sibling in enumerate(members):
+            piece = replay.content.get(f'out{i}', {})
+            size = group.m * sibling.n
+            require(len(piece) == size and set(piece) == set(range(size)),
+                    'stores do not write every sibling output element')
+            content.update({bases[i] + flat: state for flat, state in piece.items()})
     require(len(content) == total and all(0 <= flat < total for flat in content),
             'stores do not write every sibling output element')
     require(sum(len(store.rows) * store.columns for store in replay.stores) == total,
@@ -413,7 +472,7 @@ def _replayed_outputs(replay, group, members, weights, bases, total):
         require(store.accumulator and store.full != sibling.narrow, 'sibling store width differs from its exit')
         if sibling.narrow:
             require(store.config['activation'] == activation(sibling.relu) and
-                    all(store.config['acc_scale'] == b for b in sibling.bits[n0:n0 + cols]),
+                    _readout_matches(sibling, store.config['acc_scale'], n0, cols),
                     'decoded sibling readout differs from its proved multiplier bits')
         else:
             require(store.config['activation'] == NO_ACT and store.config['acc_scale'] == _f1(),
@@ -447,10 +506,11 @@ def _replayed_outputs(replay, group, members, weights, bases, total):
 def source_reference(match, options):
     """Plan each bound source result independently of the emitted sibling metadata."""
     from .integer_regions import _readout_plan
-    from merlin.runtime.exact_readout import f32_readout
 
     plans = []
-    for value, offset, extent, op in match.outputs:
+    outputs = ([(b.value, 0, b.shape, b.root) for b in match.result_buffers]
+               if match.result_buffers else match.outputs)
+    for value, offset, extent, op in outputs:
         planned = _readout_plan(module_of(op), op, options)
         if planned is None:
             raise ValueError('sibling result has no source readout plan')
@@ -459,7 +519,11 @@ def source_reference(match, options):
             raise ValueError('sibling result differs from its source readout')
         plans.append((member, offset, extent))
 
+    _bind_scales(module_of(match.root), [m for m, _, _ in plans], list(match.operands),
+                 list(match.kernel.stream.args))
+
     def evaluate(inputs):
+        buffers = {i: inputs[a.name] for i, a in enumerate(match.kernel.stream.args) if a.role == 'input'}
         bound = {value: inputs[name] for name, value in match.operands}
         pieces = []
         for member, offset, extent in plans:
@@ -470,18 +534,18 @@ def source_reference(match, options):
             if weight is None:
                 raise ValueError('sibling source weight is unbound')
             acc = lhs @ np.asarray(weight, np.int64)
-            result = (f32_readout(acc, np.array(member.bits, np.uint32).view(np.float32), 'i8', relu=member.relu)
-                      if member.narrow else acc)
-            if offset != sum(p.size for p in pieces) or tuple(result.shape) != tuple(extent):
+            result = _reference(member, acc, match.kernel.stream, buffers)
+            if (not match.result_buffers and offset != sum(p.size for p in pieces)) or tuple(result.shape) != tuple(extent):
                 raise ValueError('sibling source output slices are not contiguous')
             pieces.append(result.reshape(-1))
+        if match.result_buffers:
+            return {b.argument: p.reshape(b.shape) for b, p in zip(match.result_buffers, pieces)}
         return {'out': np.concatenate(pieces)}
     return evaluate
 
 
 def _backstop(stream, members, weights, bases, trials=3):
     """Execute the decoded commands and compare bit for bit with Merlin's exact readout reference."""
-    from merlin.runtime.exact_readout import f32_readout
     from .stream_proof import execute, require
 
     rng = np.random.default_rng(0x51b1)
@@ -496,13 +560,15 @@ def _backstop(stream, members, weights, bases, trials=3):
             if arg.role == 'const':
                 data = stream.consts[arg.name]
             elif arg.role == 'input':
-                data = sources[arg.name] = operand(arg.shape)
+                scale_args = {m.scale_ref.arg_index for m in members if m.scale_ref is not None}
+                data = sources[arg.name] = (np.array([(0., .25, .5)[trial % 3]], np.float32)
+                                            if index in scale_args else operand(arg.shape))
             else:
                 data = np.full(arg.shape, 0x5A if arg.dtype == 'i8' else 0x5A5A5A5A,
                                np.int8 if arg.dtype == 'i8' else np.int32)
             buffers[index] = np.ascontiguousarray(data).copy()
         execute(stream, buffers)
-        actual = buffers[names['out']].reshape(-1)
+        actual = buffers[names['out']].reshape(-1) if 'out' in names else None
         lhs = sources['a'].astype(np.int64)
         for member, (sibling, base) in enumerate(zip(members, bases)):
             name = f'w{member}'
@@ -510,9 +576,10 @@ def _backstop(stream, members, weights, bases, trials=3):
                       else dense_values(sibling.op.operands[1])).astype(np.int64)
             acc = lhs @ weight
             require(np.all((acc >= -(1 << 31)) & (acc < (1 << 31))), 'reference accumulator leaves i32')
-            reference = (f32_readout(acc, np.array(sibling.bits, np.uint32).view(np.float32), 'i8', relu=sibling.relu)
-                         if sibling.narrow else acc.astype(np.int32))
-            require(np.array_equal(actual[base:base + reference.size], reference.reshape(-1)),
+            reference = _reference(sibling, acc, stream, buffers)
+            got = (actual[base:base + reference.size] if actual is not None
+                   else buffers[names[f'out{member}']].reshape(-1))
+            require(np.array_equal(got, reference.reshape(-1)),
                     f'instruction model differs from the exact reference on differential trial {trial}')
 
 
@@ -531,20 +598,31 @@ def admit(match, *, readout_options):
     body, members = _members(module, group, readout_options)  # re-planned from source, not from meta
     stream = match.kernel.stream
     names = {a.name: i for i, a in enumerate(stream.args)}
+    rebound_operands, rebound_args = list(match.operands), list(stream.args)
+    _bind_scales(module, members, rebound_operands, rebound_args)
+    if rebound_operands != match.operands or rebound_args != stream.args:
+        raise ValueError('runtime scale argument differs from its source operand')
     bound = dict(match.operands)
     if bound.get('a') is not members[0].op.operands[0] or stream.args[names['a']].shape != (group.m, group.k):
         raise ValueError('shared input argument differs from the source group input')
     element = 1 if members[0].narrow else 4
-    out = stream.args[names['out']]
     bases, total = [], 0
     for member in members:
         bases.append(total)
         total += group.m * member.n
-    if out.shape != (total,) or out.dtype != ('i8' if members[0].narrow else 'i32'):
-        raise ValueError('flat sibling output differs from the source results')
-    if [(id(v), b, s, id(op)) for v, b, s, op in match.outputs] != [
-            (id(m.result), b, (group.m, m.n), id(m.op)) for m, b in zip(members, bases)]:
-        raise ValueError('sibling result slices differ from the source results')
+    if match.result_buffers:
+        expected = [ResultBuffer(m.result, f'out{i}', (group.m, m.n), m.op) for i, m in enumerate(members)]
+        if match.outputs or match.result_buffers != expected:
+            raise ValueError('sibling result buffers differ from the source results')
+        from .catalog import _validate_result_buffers
+        _validate_result_buffers(match)
+    else:
+        out = stream.args[names['out']]
+        if out.shape != (total,) or out.dtype != ('i8' if members[0].narrow else 'i32'):
+            raise ValueError('flat sibling output differs from the source results')
+        if [(id(v), b, s, id(op)) for v, b, s, op in match.outputs] != [
+                (id(m.result), b, (group.m, m.n), id(m.op)) for m, b in zip(members, bases)]:
+            raise ValueError('sibling result slices differ from the source results')
     layouts = {}
     for i, member in enumerate(members):
         name = f'w{i}'
@@ -576,6 +654,8 @@ def admit(match, *, readout_options):
     return dict(group=group.record(), decoded_effects=len(effects), realization=realization,
                 members=[dict(n=m.n, exit='f32_product_rne' if m.narrow else 'full_i32', relu=m.relu,
                               multiplier_bits=None if m.bits is None else sorted(set(m.bits)),
+                              **(dict(scale_operand=m.scale_operand, scale_ref=list(m.scale_ref))
+                                 if m.scale_ref is not None else {}),
                               weight_layout='panel' if layouts[names[f'w{i}']][1] is not None else 'row_major')
                          for i, m in enumerate(members)],
                 panel_width=record['panel_width'])

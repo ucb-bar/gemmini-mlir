@@ -679,9 +679,6 @@ def _admit_shared_input(match, binding, *, package, numeric_policy, readout_opti
         return dict(status='declined', reason=str(exc))
     if bound is None or bound['max_padded_k'] < tile_dim:
         return dict(status='declined', reason='provider padded mesh K exceeds selected internal MAC bound')
-    if match.kernel.meta['readout'] == 'f32_product_rne' and numeric_policy.get(
-            'numerical_semantics', {}).get('readout', {}).get('strategy') != 'f32_product_rne':
-        return dict(status='declined', reason='composition boundary differs from selected numerical policy')
     computes = [i for i in match.kernel.stream.ins if i.kind == 'compute']
     if not computes or any(i.a('a_cols') > tile_dim for i in computes):
         return dict(status='declined', reason='sibling primitive exceeds the proved mesh depth')
@@ -692,10 +689,13 @@ def _admit_shared_input(match, binding, *, package, numeric_policy, readout_opti
         proof = shared.admit(match, readout_options=readout_options)
     except ValueError as exc:
         return dict(status='declined', reason=str(exc))
+    narrow = any(m['exit'] == 'f32_product_rne' for m in proof['members'])
+    if narrow and numeric_policy.get('numerical_semantics', {}).get('readout', {}).get('strategy') != 'f32_product_rne':
+        return dict(status='declined', reason='composition boundary differs from selected numerical policy')
     return dict(symbol=binding['symbol'], status='proven', schedule=match.kernel.meta, shared_input=proof,
                 padded_primitive_k=tile_dim, max_partial_sum_bound=tile_dim*bound['maximum_product'],
                 bound=bound, exact_arithmetic=True, device_readout=match.kernel.meta['device_readout'],
-                quantization='device' if match.kernel.meta['device_readout'] == 'f32_product_rne' else 'none',
+                quantization='device' if narrow else 'none',
                 seed='zero', emitted_schedule_sha256=hashlib.sha256(repr(match.kernel.stream.ins).encode()).hexdigest())
 
 
@@ -813,7 +813,9 @@ def _admit_integer_regions(source, *, package, numeric_policy, readout_options=N
                 if op in live and shape.dtypes[-1] == 'i32'}
     covered = [ordinal for binding,match in zip(catalog['bindings'],matches)
                if match.kernel.meta.get('integer_producer') or match.kernel.meta.get('integer_readout')
-               for ordinal in binding.get('source_operation_ordinals', [binding['source_operation_ordinal']])]
+               for ordinal in ([b['source_operation_ordinal'] for b in binding['result_buffers']]
+                               if 'result_buffers' in binding else
+                               binding.get('source_operation_ordinals', [binding['source_operation_ordinal']]))]
     if require_full_coverage and proofs and (set(covered) != proposed or len(covered) != len(set(covered))):
         return refuse('provider did not cover every live integer producer')
     # Every admitted symbol authenticates its complete stream and source binding.

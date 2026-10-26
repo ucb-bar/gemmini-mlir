@@ -119,7 +119,9 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
                                    args=argument_records(m),
                                    instructions=report["instructions"], fences=report["fences"],
                                    counts=m.kernel.stream.counts(), meta=_jsonable(m.kernel.meta),
-                                   requantization=_readout_contracts(m.kernel.stream))
+                                   requantization=_readout_contracts(m.kernel.stream),
+                                   **(dict(runtime_oracle_obligations=_jsonable(report['runtime_oracle_obligations']))
+                                      if report.get('runtime_oracle_obligations') else {}))
         bindings.append(binding_record(m, symbol, ordinals, func_args))
     device.verify()
     manifest = dict(schema=SCHEMA, source_sha256=hashlib.sha256(source.encode()).hexdigest(),
@@ -147,6 +149,10 @@ def argument_records(match):
 
 def binding_record(m, symbol, ordinals, func_args):
     """The manifest binding ``offload.rewrite`` replays, derived from the match's source values."""
+    if m.outputs and m.result_buffers:
+        raise ValueError("result buffers and flat slices are mutually exclusive")
+    if m.result_buffers:
+        _validate_result_buffers(m)
     out_name, out_val = m.result
     provs = [getattr(o.attributes.get("prov.aten"), "data", "") for o in m.consumed if o is not None]
     provs = [p for p in provs if p and not p.startswith("quantized_decomposed.")]
@@ -161,7 +167,8 @@ def binding_record(m, symbol, ordinals, func_args):
         result_type=str(out_val.type), operand_types={n: str(v.type) for n, v in m.operands},
         region=getattr(m.root.attributes.get("prov.region_id"), "data", ""),
         layout=m.layout, numeric=_jsonable(m.numeric),
-        **(_result_slices(m, ordinals, func_args) if m.outputs else {}))
+        **(_result_slices(m, ordinals, func_args) if m.outputs else {}),
+        **(_result_buffers(m, ordinals, func_args) if m.result_buffers else {}))
 
 
 def authenticate_binding(binding, m):
@@ -183,8 +190,12 @@ def authenticate_binding(binding, m):
         raise ValueError('catalog binding differs from the source values its match binds')
     consumed = {id(op) for op in m.consumed if op is not None}
     results = [m.result[1]] if not m.outputs else [value for value, _, _, _ in m.outputs]
+    if m.result_buffers:
+        results = [buffer.value for buffer in m.result_buffers]
     escaping = {id(value) for op in m.consumed if op is not None for value in op.results
                 if any(id(use.operation) not in consumed for use in value.uses)}
+    if m.result_buffers and escaping != {id(v) for v in results}:
+        raise ValueError('result buffers must bind exactly the escaping source values')
     if (any(not isinstance(v, OpResult) or id(v.owner) not in consumed for v in results)
             or not escaping <= {id(v) for v in results}):
         raise ValueError('bound results are not the values escaping the replaced source operations')
@@ -222,6 +233,36 @@ def authenticate_proof(manifest, matches, proof):
             or len(proof.get('kernels', [])) != len(digests)
             or {k['symbol']: k.get('stream_sha256') for k in proof.get('kernels', [])} != digests):
         raise ValueError('compiled catalog differs from the proved numerical schedule or stream digests')
+
+
+def _validate_result_buffers(m):
+    from .match import shape
+    from .storage import itemsize
+
+    outputs = [a for a in m.kernel.args if a.role == 'output']
+    if (len(outputs) != len(m.result_buffers)
+            or len({id(b.value) for b in m.result_buffers}) != len(outputs)
+            or len({b.argument for b in m.result_buffers}) != len(outputs)):
+        raise ValueError('result buffers do not bind every output exactly once')
+    if m.result != (m.result_buffers[0].argument, m.result_buffers[0].value):
+        raise ValueError('result compatibility view differs from the first buffer')
+    for buffer, arg in zip(m.result_buffers, outputs):
+        dtype = str(buffer.value.type.get_element_type())
+        if (any(type(d) is not int for d in buffer.shape)
+                or buffer.argument != arg.name or tuple(buffer.shape) != shape(buffer.value)
+                or tuple(arg.shape) != tuple(buffer.shape) or arg.dtype != dtype
+                or itemsize(dtype) not in (1, 4) or buffer.root not in m.consumed):
+            raise ValueError('result buffer differs from its source shape, type or output argument')
+
+
+def _result_buffers(m, ordinals, func_args):
+    from math import prod
+    from .storage import itemsize
+
+    return dict(result_buffers=[dict(source=_source(b.value, ordinals, func_args), argument=b.argument,
+        shape=list(b.shape), type=str(b.value.type), byte_offset=0,
+        byte_length=prod(b.shape) * itemsize(str(b.value.type.get_element_type())),
+        source_operation_ordinal=ordinals[b.root]) for b in m.result_buffers])
 
 
 def _result_slices(m, ordinals, func_args):
