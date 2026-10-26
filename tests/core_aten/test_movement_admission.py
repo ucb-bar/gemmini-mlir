@@ -71,13 +71,16 @@ def test_distinct_input_contracts_and_unsigned_codes_are_admitted(axis):
 
 @pytest.mark.parametrize('low,high,zp,storage', [(-127,127,-7,'int8'), (1,254,129,'uint8')])
 @pytest.mark.parametrize('literal', [None, .015, -1.5])
-def test_legal_domains_zero_points_and_literals_are_admitted(low, high, zp, storage, literal):
+def test_quantized_domains_zero_points_and_literals(low, high, zp, storage, literal):
     text = source(low=low, high=high, zp=zp, storage=storage)
     if literal is not None:
         text = text.replace('linalg.yield %a : f32',
                             f'%c = arith.constant {literal} : f32\n linalg.yield %c : f32')
     proof = provider().admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY)
-    assert proof['status'] == 'proven', proof
+    # A raw copy cannot implement the quantizer's clamp outside the declared range.
+    assert proof['status'] == ('declined' if literal is None else 'proven'), proof
+    if literal is None:
+        assert 'semantic gate' in proof['reason']
 
 
 def test_movement_provenance_capacity_refuses_before_interpreting_large_maps():
@@ -99,3 +102,28 @@ def test_decoded_differential_backstop_is_independent(monkeypatch):
     monkeypatch.setattr(module, 'execute', wrong_execution)
     proof = api.admit_numeric_schedule(source(), package=PACKAGE, numeric_policy=POLICY)
     assert proof['status'] == 'declined' and 'differential' in proof['reason'], proof
+
+
+@pytest.mark.parametrize('fixture', ['select_scatter', 'slice_scatter'])
+@pytest.mark.parametrize('corrupt', [False, True])
+def test_scatter_source_numbering_and_stride_proof(monkeypatch, fixture, corrupt):
+    from fixture_source import read
+    api = provider()
+    catalog = api._core_aten_module(PACKAGE, 'catalog')
+    original = catalog.match_all
+
+    def matches(*args, **kwargs):
+        found, declines = original(*args, **kwargs)
+        if corrupt:
+            for match in found:
+                stream = match.kernel.stream
+                stream.ins = [i._replace(attrs=tuple(sorted({**dict(i.attrs), 'stride': 0}.items())))
+                              if i.kind == 'config_ld' else i for i in stream.ins]
+        return found, declines
+
+    monkeypatch.setattr(catalog, 'match_all', matches)
+    text = read(PACKAGE / 'tests/fixtures/core_aten' / fixture / 'model.mlir')
+    proof = api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY)
+    assert proof['status'] == ('declined' if corrupt else 'proven'), proof
+    if not corrupt:
+        assert proof['kernels'][0]['movement']['code_domain'] == 'every_legal_storage_code'

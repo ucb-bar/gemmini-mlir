@@ -376,10 +376,41 @@ class _Check:
                     'operand planes do not sum to the source operand')
 
 
+def source_reference(match, expected, inputs):
+    """Evaluate the independently source-derived operand selectors and readout plan."""
+    from merlin.runtime.exact_readout import f32_readout
+    bound = dict(match.operands)
+    values = []
+    for role in (0, 1):
+        atom, flat, constant = expected.atoms[role]
+        total = constant.copy()
+        for code, (value, packed) in enumerate(expected.atom_sources):
+            names = [n for n, v in bound.items() if v is value]
+            require(names, 'reference source byte tensor has no bound argument')
+            raw = inputs[names[0]].reshape(-1).astype(np.int64)
+            data = (raw & 0xFF) - 128 if packed else raw
+            chosen = atom == code
+            total[chosen] += data[flat[chosen]]
+        values.append(total.reshape(expected.operand_shapes[role]))
+    acc = np.matmul(values[0].astype(object), values[1].astype(object)).astype(np.int64) + expected.seed
+    if expected.extension is not None:
+        names = [n for n, v in bound.items() if v is expected.extension.residual]
+        require(names, 'reference residual has no bound argument')
+        acc = acc + expected.extension.plan.decision['coefficient'] * inputs[names[0]].astype(np.int64)
+    if expected.runtime_seed is not None:
+        names = [n for n, v in bound.items() if v is expected.runtime_seed]
+        acc = acc + np.broadcast_to(inputs[names[0]].astype(np.int64), expected.out_shape)
+    require(np.all((acc >= -(1 << 31)) & (acc < (1 << 31))), 'reference accumulator leaves i32')
+    if expected.narrow:
+        multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
+        result = f32_readout(acc, multiplier, 'i8', relu=expected.relu)
+    else:
+        result = acc.astype(np.int32)
+    return result
+
+
 def _backstop(match, expected, trials=3):
     """Bit-exact differential check of the decoded commands against Merlin's reference."""
-    from merlin.runtime.exact_readout import f32_readout
-
     stream = match.kernel.stream
     bound = dict(match.operands)
     rng = np.random.default_rng(0x5eed)
@@ -404,32 +435,7 @@ def _backstop(match, expected, trials=3):
         for source, dest in stream.packs:
             buffers[index_of[dest]].view(np.uint8).flat[:] = buffers[index_of[source]].view(np.uint8).reshape(-1) ^ 128
         execute(stream, buffers)
-        values = []
-        for role in (0, 1):
-            atom, flat, constant = expected.atoms[role]
-            total = constant.copy()
-            for code, (value, packed) in enumerate(expected.atom_sources):
-                names = [n for n, v in bound.items() if v is value]
-                require(names, 'reference source byte tensor has no bound argument')
-                raw = sources[names[0]].reshape(-1).astype(np.int64)
-                data = (raw & 0xFF) - 128 if packed else raw
-                chosen = atom == code
-                total[chosen] += data[flat[chosen]]
-            values.append(total.reshape(expected.operand_shapes[role]))
-        acc = np.matmul(values[0].astype(object), values[1].astype(object)).astype(np.int64) + expected.seed
-        if expected.extension is not None:
-            names = [n for n, v in bound.items() if v is expected.extension.residual]
-            require(names, 'reference residual has no bound argument')
-            acc = acc + expected.extension.plan.decision['coefficient'] * sources[names[0]].astype(np.int64)
-        if expected.runtime_seed is not None:
-            names = [n for n, v in bound.items() if v is expected.runtime_seed]
-            acc = acc + np.broadcast_to(sources[names[0]].astype(np.int64), expected.out_shape)
-        require(np.all((acc >= -(1 << 31)) & (acc < (1 << 31))), 'reference accumulator leaves i32')
-        if expected.narrow:
-            multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
-            reference = f32_readout(acc, multiplier, 'i8', relu=expected.relu)
-        else:
-            reference = acc.astype(np.int32)
+        reference = source_reference(match, expected, sources)
         actual = buffers[index_of[expected.out]]
         require(np.array_equal(actual.reshape(reference.shape), reference),
                 f'instruction model differs from the exact reference on differential trial {trial}')

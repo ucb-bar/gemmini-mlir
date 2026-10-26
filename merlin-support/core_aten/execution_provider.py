@@ -122,35 +122,21 @@ def routing(directory, *, target, package, facts, eligible, readout_options=None
     _, inventory = backend.build_catalog(source)
     if not inventory["covered_contractions"]:
         return None
-    builder = backend.merlin_builder(toolchain.llvm_install() / "bin")
-    admission_path = Path(directory) / "spec-int8-admission.json"
-    if admission_path.exists() or numeric_policy is not None:
-        import json
+    def checked_builder(prepared, workdir):
+        policy = _selected_numeric_policy(directory)
+        proof = admit_numeric_schedule(Path(prepared).read_text(), package=package, numeric_policy=policy)
+        if proof.get('status') != 'proven':
+            return _write_refusal(workdir, proof), None
+        backend.compile_catalog(Path(prepared), toolchain.llvm_install() / 'bin', Path(workdir),
+                                         numeric_schedule_proof=proof)
+        return Path(workdir) / 'device_catalog.json', Path(workdir) / 'kernel.o'
 
-        def checked_builder(prepared, workdir):
-            proof = admit_numeric_schedule(Path(prepared).read_text(), package=package, numeric_policy=numeric_policy)
-            if proof.get('status') != 'proven':
-                return _write_refusal(workdir, proof), None
-            manifest, obj = builder(prepared, workdir)
-            actual = json.loads(Path(manifest).read_text())
-            if actual["source_sha256"] != proof["source_sha256"] or any(
-                kernel["schedule"] != next(p["schedule"] for p in proof["kernels"] if p["symbol"] == kernel["symbol"])
-                for kernel in actual["kernels"]
-            ):
-                raise ValueError("compiled catalog differs from the proved numerical schedule")
-            actual["numeric_schedule_proof"] = proof
-            Path(manifest).write_text(json.dumps(actual, indent=2) + "\n")
-            return manifest, obj
-
-        selected_builder = checked_builder
-    else:
-        selected_builder = builder
     return DeviceRouting(
         device=target,
         package_dir=package,
         operand_dtype=operand,
         accum_dtype=accum,
-        catalog_builder=selected_builder,
+        catalog_builder=checked_builder,
         final_elf_audit=backend.final_elf_audit,
     )
 
@@ -268,6 +254,35 @@ def full_call_oracle(target):
 
 
 def admit_numeric_schedule(source, *, package, numeric_policy, readout_options=None, require_full_coverage=True):
+    """Structural admission followed by the common command/source semantic gate."""
+    if numeric_policy is None:
+        numeric_policy = _selected_numeric_policy()
+    proof = _admit_numeric_schedule(source, package=package, numeric_policy=numeric_policy,
+        readout_options=readout_options, require_full_coverage=require_full_coverage)
+    if proof is None or proof.get('status') != 'proven':
+        return proof
+    catalog = _core_aten_module(package, 'catalog')
+    gate = _core_aten_module(package, 'semantic_gate')
+    options = readout_options or _readout_options(numeric_policy)
+    try:
+        if proof.get('abi') == 'gemmini_core_aten_catalog_v1':
+            _, manifest, matches = catalog.build(source, readout_options=options)
+            catalog.authenticate_proof(manifest, matches, proof)
+        else:
+            from importlib import import_module
+            backend = import_module(catalog.__package__.rsplit('.', 1)[0] + '.golden_device_catalog')
+            device, manifest = backend.build_catalog(source)
+            matches = gate.legacy_matches(source, device, manifest)
+            digests = gate.legacy_stream_digests(manifest, matches)
+            for row in proof['kernels']:
+                row['stream_sha256'] = digests[row['symbol']]
+        proof['semantic_gate'] = gate.certify(matches, manifest['bindings'], readout_options=options)
+    except ValueError as exc:
+        return dict(status='declined', reason=str(exc), source_sha256=proof['source_sha256'], kernels=[], bindings=[])
+    return proof
+
+
+def _admit_numeric_schedule(source, *, package, numeric_policy, readout_options=None, require_full_coverage=True):
     """Prove selected streams and bindings; optionally require coverage of every live producer.
 
     Region offload preserves unmatched host operations. Whole-source numeric

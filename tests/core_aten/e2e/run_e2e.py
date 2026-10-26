@@ -27,8 +27,7 @@ sys.path.insert(0, str(HERE.parent))
 from exact_oracle import evaluate, host_guard_values
 
 import runner  # noqa: E402
-from mlir_oot.core_aten.catalog import build  # noqa: E402
-from mlir_oot.core_aten.emit import compile_to_object  # noqa: E402
+from mlir_oot.core_aten.catalog import build, compile_catalog, _execution_provider  # noqa: E402
 from mlir_oot.core_aten.stream import simulate  # noqa: E402
 from mlir_oot.frontend.parse import parse_module  # noqa: E402
 
@@ -56,7 +55,14 @@ class DeviceRefusal(Exception):
 def prepare(case_dir: Path, prefix: str, wd: Path):
     from fixture_source import read
     text = read(case_dir / "model.mlir")
-    device, manifest, matches = build(text)
+    api = _execution_provider()
+    package = HERE.parents[2]
+    policy = api._selected_numeric_policy(case_dir)
+    proof = api.admit_numeric_schedule(text, package=package, numeric_policy=policy, require_full_coverage=False)
+    if proof is None or proof.get('status') != 'proven':
+        raise DeviceRefusal(f"{case_dir.name}: admission refused: {proof}")
+    selected_readout = api._readout_options(policy)
+    _, manifest, matches = build(text, readout_options=selected_readout)
     if not manifest["bindings"]:
         raise DeviceRefusal(f"{case_dir.name}: no exact region matched; declines={manifest['declines']}")
     # rename every kernel symbol per case so one ELF can hold many cases
@@ -121,7 +127,15 @@ def prepare(case_dir: Path, prefix: str, wd: Path):
                    model_vs_eager_max=worst_max, model_vs_eager_exact=worst_exact,
                    eager_float_divergence=dict(informational=True, max_code_difference=worst_max, exact_fraction=worst_exact),
                    declines=manifest["declines"])
-    obj = compile_to_object(device, wd, stem=prefix)["object"]
+    work = wd / prefix
+    work.mkdir(parents=True, exist_ok=True)
+    prepared = work / 'model.mlir'
+    prepared.write_text(text)
+    compiled = compile_catalog(prepared, work, llvm_bin=api.toolchain.llvm_install() / 'bin',
+                               numeric_schedule_proof=proof, readout_options=selected_readout)
+    if compiled['status'] != 'compiled':
+        raise DeviceRefusal(f"{case_dir.name}: compilation refused: {compiled.get('reason')}")
+    obj = work / 'core_aten.o'
     return Path(obj), buffers, calls, checks, outputs, summary
 
 

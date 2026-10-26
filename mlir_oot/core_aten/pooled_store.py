@@ -10,8 +10,8 @@
 * Window mean: Merlin's ``avgpool`` plan supplies the multiplier for a
   ones-contraction sum read out on the device.
 
-Register padding is never used: garbage taps read zero, which beats negative
-inputs. Admission replays the emitted stream (``stream_proof``) and checks every
+Register padding reads zero and is used only for source-proved nonnegative
+fused readouts with zero point zero. Admission replays the emitted stream and checks every
 output element, every window tap and every effective configuration against the
 source. Anything unproved keeps the unfused route.
 """
@@ -111,8 +111,13 @@ def plan_fused(module, op, options, chain):
     candidate = dict(route="conv_pool", operation_ordinals=[operations.index(o) for o in members],
                      detail=dict(composition=declaration, root_ordinal=operations.index(op)))
     facts = {**(options.get("facts") or {}), **pool_plan.composition_facts()}
+    # StoreController's out-of-image addresses select Scratchpad's all-zero
+    # data. Supply that hardware fact to Merlin's source-bound composition plan.
+    path = {**options["path"], "readout": [
+        {**stage, "padding": "zero_tap"} if stage["kind"] == "pool" else dict(stage)
+        for stage in options["path"]["readout"]]}
     try:
-        plan = plan_composition(module, candidate, path=options["path"], scheme=options["scheme"], facts=facts)
+        plan = plan_composition(module, candidate, path=path, scheme=options["scheme"], facts=facts)
         geometry = _fused_geometry(op, chain, plan.decision["proof"])
     except ValueError:
         return None
@@ -131,22 +136,34 @@ def _fused_geometry(op, chain, proof):
     m, _ = shape(op.operands[0])
     channels = shape(op.results[0])[1]
     pool = next(stage.op for stage in chain.stages if stage.kind == "pool")
+    unpadded = _unpad(pool.operands[0])
+    if unpadded is None:
+        raise ValueError("pool padding is not a source -inf border")
+    value, pad, insert = unpadded
     for member in chain.ops[: chain.ops.index(pool)]:
+        if member is insert:
+            continue
         dims = shape(member.results[0])
         if (member.name not in ("linalg.generic", *_RESHAPES) or dims[-1] != channels
                 or int(np.prod(dims)) != m * channels):
             raise ValueError("pool input is not a channels-last view of the contraction rows")
     found = _pool_window(pool)
     geometry = proof.get("pool_geometry") or {}
-    if found is None or geometry.get("padded") is not False:
-        raise ValueError("unpadded square channels-last window maximum not established")
+    if found is None or geometry.get("padded") != (insert is not None):
+        raise ValueError("square channels-last window maximum not established")
+    if any(pad):
+        kinds = [stage.kind for stage in chain.stages]
+        before = kinds[:kinds.index("pool")]
+        if ("relu" not in before or any(kind != "pad" for kind in before[before.index("relu") + 1:])
+                or chain.stages[-1].detail.get("zero_point") != 0):
+            raise ValueError("zero pool taps require a source nonnegative readout and zero point zero")
     size, stride = found
     if geometry.get("window") != [size, size] or geometry.get("stride") != [stride, stride]:
         raise ValueError("pool geometry differs from the composition proof")
-    batch, rows, cols, last = shape(pool.operands[0])
+    batch, rows, cols, last = shape(value)
     if last != channels or batch * rows * cols != m:
         raise ValueError("pool image does not cover the contraction rows")
-    image, window = pool_plan.Image(batch, rows, cols, channels), pool_plan.Window(size, stride)
+    image, window = pool_plan.Image(batch, rows, cols, channels), pool_plan.Window(size, stride, pad)
     out = window.output(image)
     if shape(pool.results[0]) != (batch, *out, channels) or shape(chain.ops[-1].results[0]) != shape(pool.results[0]):
         raise ValueError("pooled result extent differs from floor-mode windows")
@@ -156,7 +173,7 @@ def _fused_geometry(op, chain, proof):
 def _units(geometry, capacity):
     from .stream import DIM
 
-    bands = pool_plan.plan(geometry.image, geometry.window, capacity_rows=capacity)
+    bands = pool_plan.plan(geometry.image, geometry.window, capacity_rows=capacity, register_padding=True)
     channels = geometry.image.channels
     return [(band, c0, min(DIM, channels - c0)) for band in bands for c0 in range(0, channels, DIM)]
 
@@ -232,7 +249,7 @@ def emit_fused(kernel, planned):
     kernel.meta.update(output_dtype="i8", relu=relu, readout="f32_product_rne", device_readout="f32_product_rne",
                        requantization="device", multiplier_bits=proof["multiplier_bits"],
                        pooled_store=dict(kind="fused", image=[image.batch, image.rows, image.cols, image.channels],
-                                         window=window.size, stride=window.stride))
+                                         window=window.size, stride=window.stride, pad=list(window.pad)))
 
 
 def _reset_store(s):
@@ -304,6 +321,9 @@ def validate_fused(stream, expected):
     batch, rows, cols, channels = (expected.image.batch, expected.image.rows, expected.image.cols,
                                    expected.image.channels)
     size, step, depth, bits = expected.window.size, expected.window.stride, expected.depth, expected.bits
+    top, left, _, _ = expected.window.pad
+    require(not any(expected.window.pad) or expected.relu,
+            "zero garbage taps require the source nonnegative readout proof")
     require(len(bits) == channels, "readout multiplier bits do not cover the source channels")
     require(not stream.readouts and not stream.packs, "pooled readout retains a host epilogue")
     args = {a.name: a for a in stream.args}
@@ -341,6 +361,8 @@ def validate_fused(stream, expected):
         require(st["pool_stride"] != 0 and local & acc_bit and not local & full,
                 "fused readout store is not a narrow pooled accumulator store")
         require(st["activation"] == act, "decoded store activation differs from the source")
+        require(st["pool_size"] == size and st["pool_stride"] == step,
+                "decoded pool window or stride differs from the source")
         base = local & 0x3FFF
         checked = {}
         for porow in range(st["porows"]):
@@ -352,14 +374,22 @@ def validate_fused(stream, expected):
                     counts[byte + ch] += 1
                 require(all(st["acc_scale"] == bits[c] for c in range(c0, c0 + width)),
                         "decoded multiplier bits differ from the proved column block")
-                source = {(n * rows + pr * step + i) * cols + pc * step + j for i in range(size) for j in range(size)}
+                source = {(n * rows + r) * cols + c
+                          for r in range(pr * step - top, pr * step - top + size)
+                          for c in range(pc * step - left, pc * step - left + size)
+                          if 0 <= r < rows and 0 <= c < cols}
                 device = set()
                 for wrow in range(st["pool_size"]):
                     for wcol in range(st["pool_size"]):
                         orow = porow * st["pool_stride"] + wrow - st["upad"]
                         ocol = pocol * st["pool_stride"] + wcol - st["lpad"]
-                        require(0 <= orow < st["orows"] and 0 <= ocol < st["ocols"],
-                                "pool window reads a zero garbage tap")
+                        r, c = pr * step + wrow - top, pc * step + wcol - left
+                        padded = not (0 <= orow < st["orows"] and 0 <= ocol < st["ocols"])
+                        require(padded == (not (0 <= r < rows and 0 <= c < cols)),
+                                "pool window garbage taps differ from the source padding")
+                        if padded:
+                            require(expected.relu, "pool window reads an unproved zero garbage tap")
+                            continue  # decoded out-of-image taps select the hardware all-zero data
                         row = base + orow * st["ocols"] + ocol
                         require(row // ACC_BANK_ROWS == base // ACC_BANK_ROWS,
                                 "pooled image leaves the accumulator bank its store is ordered against")
@@ -373,6 +403,8 @@ def validate_fused(stream, expected):
                                             seed_ok=lambda tag: seed_ok(tag, source_row, c0, width))
                             checked[(row, c0)] = source_row
                         device.add(checked[(row, c0)])
+                        require(checked[(row, c0)] == (n * rows + r) * cols + c,
+                                "pool window tap differs from the source pixel")
                 require(device == source, "pool window taps differ from the source window")
         for row in range(base, base + st["orows"] * st["ocols"]):
             if row in replay.acc:
@@ -781,7 +813,7 @@ def _fused_reference(inputs, expected):
     readout = f32_readout(acc, multiplier, "i8", relu=expected.relu).astype(np.int64)
     image = expected.image
     return _window_max(readout.reshape(image.batch, image.rows, image.cols, image.channels),
-                       expected.window.size, expected.window.stride)
+                       expected.window.size, expected.window.stride, expected.window.pad)
 
 
 def _mean_reference(x, rows, bits):

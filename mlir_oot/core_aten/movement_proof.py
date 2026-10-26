@@ -53,7 +53,11 @@ def _selectors(match):
     """Read only source SSA, Q/DQ operands and the closed selector body."""
     qout = quant_sink(match.root.operands[0])
     require(qout is not None and qout.op is match.root, 'movement root is not its source quantizer')
-    sources, ids = [], {}
+    bound = dict(match.operands)
+    require(len(bound) == len(match.operands) and set(bound) == {f'x{i}' for i in range(len(bound))}
+            and len({id(v) for v in bound.values()}) == len(bound),
+            'movement operands are not unique source selector bindings')
+    sources, ids = [None] * len(bound), {}
 
     def leaf(value):
         if producer(value) is None or name_of(producer(value)) != 'quant_ext.dequantize_per_tensor':
@@ -61,8 +65,11 @@ def _selectors(match):
         q = dequant(value)
         require(q is not None and q.dtype == 'i8', 'movement leaf has no byte Q/DQ contract')
         if value not in ids:
-            ids[value] = len(sources)
-            sources.append(q)
+            positions = [i for i in range(len(bound)) if bound[f'x{i}'] is q.value]
+            require(len(positions) == 1, 'movement operand is not a source selector leaf')
+            ids[value] = positions[0]
+            require(sources[positions[0]] is None, 'movement source has multiple dequantization contracts')
+            sources[positions[0]] = q
         return ids[value], 1
 
     try:
@@ -73,8 +80,8 @@ def _selectors(match):
     require(found is not None, 'source movement combines input elements')
     which, indices, constants = found
     require(np.all(constants[which >= 0] == 0), 'source selector adds to an input element')
-    bound = dict(match.operands)
-    require(len(bound) == len(sources) and all(bound.get(f'x{i}') is q.value for i, q in enumerate(sources)),
+    require(all(q is not None for q in sources) and len(bound) == len(sources)
+            and all(bound.get(f'x{i}') is q.value for i, q in enumerate(sources)),
             'movement operands differ from source selector leaves')
     require(match.result[0] == 'y' and match.result[1] is qout.value,
             'movement result differs from source quantizer')

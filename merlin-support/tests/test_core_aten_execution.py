@@ -1,5 +1,7 @@
 """The target edge supplies source-bound backend hooks and simulator options."""
 
+import json
+
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -44,7 +46,11 @@ def test_provider_binds_catalog_and_derives_precision_from_selected_facts(tmp_pa
             tmp_path, target="synthetic_core_aten", package=tmp_path, facts=document, eligible=eligible, readout_options=readout_options
         )
         assert (route.operand_dtype, route.accum_dtype) == ("i8", "i32")
-        assert route.select is None and route.catalog_builder is builder
+        assert route.select is None and route.catalog_builder is not builder
+        # Even the legacy route without a policy receipt must go through admission.
+        manifest, obj = route.catalog_builder(tmp_path / 'model.mlir', tmp_path / 'work')
+        assert obj is None
+        assert json.loads(manifest.read_text())['status'] == 'declined'
         assert provider.routing(
             tmp_path,
             target="synthetic_core_aten",

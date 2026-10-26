@@ -57,10 +57,12 @@ _POOL = '''%ninf{t}=arith.constant 0xFF800000:f32
 def fused_source(n=1, h=4, w=4, k=8, c=5, *, window=2, stride=2, relu=True, bias=True, column_block=False, pad=0):
     """conv-as-matmul rows [n*h*w, k] x [k, c] -> f32 readout -> NHWC max pool -> quantize."""
     m = n * h * w
-    ph, pw = (h + 2 * pad - window) // stride + 1, (w + 2 * pad - window) // stride + 1
+    top, left, bottom, right = (pad,) * 4 if isinstance(pad, int) else pad
+    padded = any((top, left, bottom, right))
+    ph, pw = (h + top + bottom - window) // stride + 1, (w + left + right - window) // stride + 1
     itype, ftype = f'tensor<{m}x{c}xi32>', f'tensor<{m}x{c}xf32>'
     image, pooled = f'tensor<{n}x{h}x{w}x{c}xf32>', f'tensor<{n}x{ph}x{pw}x{c}xf32>'
-    framed = f'tensor<{n}x{h + 2 * pad}x{w + 2 * pad}x{c}xf32>'
+    framed = f'tensor<{n}x{h + top + bottom}x{w + left + right}x{c}xf32>'
     ident, col = 'affine_map<(m,n)->(m,n)>', 'affine_map<(m,n)->(n)>'
     scales = np.array([2.0 ** (-1 - (j // DIM if column_block else 0)) for j in range(c)])
     offsets = (np.arange(c) - 2) if bias else np.zeros(c, dtype=int)
@@ -98,12 +100,12 @@ def fused_source(n=1, h=4, w=4, k=8, c=5, *, window=2, stride=2, relu=True, bias
                          '^bb0(%x:f32,%o:f32): %rz=arith.constant 0.0:f32 %v=arith.maximumf %x,%rz:f32 linalg.yield %v:f32')]
         last = 'relu'
     text += [f'%img=tensor.expand_shape %{last} [[0,1,2],[3]] output_shape [{n},{h},{w},{c}] : {ftype} into {image}']
-    if pad:
+    if padded:
         text += [f'''%pinf=arith.constant 0xFF800000:f32
         %border=tensor.splat %pinf:{framed}
-        %framed=tensor.insert_slice %img into %border[0,{pad},{pad},0][{n},{h},{w},{c}][1,1,1,1]:{image} into {framed}''']
-    text += [_POOL.format(t='', pooled=pooled, image=framed if pad else image, k=window, s=stride,
-                          src='%framed' if pad else '%img'),
+        %framed=tensor.insert_slice %img into %border[0,{top},{left},0][{n},{h},{w},{c}][1,1,1,1]:{image} into {framed}''']
+    text += [_POOL.format(t='', pooled=pooled, image=framed if padded else image, k=window, s=stride,
+                          src='%framed' if padded else '%img'),
              '%qs=arith.constant dense<7.0>:tensor<f32>', '%qz=arith.constant dense<0>:tensor<i64>',
              f'''%q="quant_ext.quantize_per_tensor"(%pool,%qs,%qz) <{{quant_min=-128:i64,quant_max=127:i64,output_dtype="int8"}}>:
              ({pooled},tensor<f32>,tensor<i64>)->tensor<{n}x{ph}x{pw}x{c}xi8>
@@ -199,6 +201,11 @@ def composition(text, kind):
 
 
 FUSED_CASES = [dict(), dict(n=2, h=9, w=7, k=37, c=35, window=3, stride=2, column_block=True),
+               dict(h=5, w=5, window=3, stride=2, pad=1),
+               dict(n=2, h=41, w=13, k=20, c=17, window=3, stride=2, pad=1),
+               dict(h=6, w=8, window=3, stride=2, pad=1),
+               dict(h=4, w=5, window=3, stride=2, pad=(1, 0, 0, 1)),
+               dict(h=1, w=1, window=3, stride=2, pad=1),
                dict(n=1, h=40, w=20, k=20, c=17, window=2, stride=1, relu=False),
                dict(n=1, h=6, w=6, k=3, c=4, window=3, stride=3, bias=False, relu=False)]
 
@@ -217,7 +224,9 @@ def test_fused_pool_equals_source_readout_then_window_max(case):
     inputs = dict(a=rng.integers(-40, 41, (n * h * w, k), dtype=np.int8), b=rng.integers(-9, 10, (k, c), dtype=np.int8))
     acc = inputs['a'].astype(np.int64) @ inputs['b'].astype(np.int64) + offsets
     readout = f32_readout(acc, form_multiplier(scales * .25, 7), 'i8', relu=case.get('relu', True))
-    expected = window_max(readout.reshape(n, h, w, c), window, stride)
+    pad = case.get('pad', 0)
+    expected = window_max(readout.reshape(n, h, w, c), window, stride,
+                          (pad,) * 4 if isinstance(pad, int) else pad)
     np.testing.assert_array_equal(simulate(stream, inputs)['out'], expected)
     assert 'quant_ext.quantize' not in rewrite(text, manifest)
     proof = provider().admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
@@ -243,13 +252,32 @@ def test_negative_readouts_are_never_padded_by_garbage_taps():
         check(tampered, match)
 
 
-def test_padded_fused_pool_keeps_the_unfused_route():
-    # The output path derives no pool padding value, so a -inf border refuses fusion.
+@pytest.mark.parametrize('window,stride', [(3, 2), (2, 2)])
+def test_padded_fused_pool_without_nonnegative_proof_keeps_the_unfused_route(window, stride):
+    text, _, _ = fused_source(h=5, w=5, window=window, stride=stride, pad=1, relu=False)
+    manifest, found = fused(text)
+    assert not found
+    assert 'quant_ext.quantize_per_tensor' in rewrite(text, manifest)
+
+
+def test_padded_fused_pool_requires_declared_pool_and_zero_point_zero():
     text, _, _ = fused_source(h=5, w=5, window=3, stride=2, pad=1)
-    for selected in (options(), {**options(), 'path': {**options()['path'], 'readout': options(pool=False)['path']['readout']}}):
-        manifest, found = fused(text, selected)
-        assert not found
-        assert 'quant_ext.quantize_per_tensor' in rewrite(text, manifest)
+    assert not fused(text, options(pool=False))[1]
+    assert not fused(text.replace('%qz=arith.constant dense<0>', '%qz=arith.constant dense<1>'))[1]
+
+
+@pytest.mark.parametrize('field', ['upad', 'lpad', 'acc_act'])
+def test_padded_fused_pool_tampered_padding_or_dropped_relu_is_declined(field):
+    text, _, _ = fused_source(h=5, w=5, window=3, stride=2, pad=1)
+
+    def mutate(match):
+        match.kernel.stream.ins = [
+            _set(i, **{field: 0}) if i.kind == 'config_st' and i.a('pool_stride') else i
+            for i in match.kernel.stream.ins]
+        if field == 'acc_act':
+            match.kernel.meta['relu'] = False
+    proof = _decline_via_provider(text, mutate)
+    assert proof['status'] == 'declined', proof
 
 
 def test_register_limits_are_derived_and_refuse_wide_windows():

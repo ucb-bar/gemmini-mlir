@@ -133,7 +133,8 @@ def build_catalog(source: str, *, max_kernels: int | None = None, large_n: bool 
 
 def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
                     *, max_kernels: int | None = None, large_n: bool = False,
-                    prefetch_b: bool = False, contraction_calibrations: Path | None = None) -> dict:
+                    prefetch_b: bool = False, contraction_calibrations: Path | None = None,
+                    numeric_schedule_proof=None) -> dict:
     # The model compiler may overwrite its prepared path during offload. Keep
     # the exact bytes consumed here so bindings remain independently replayable.
     source_bytes = source_path.read_bytes()
@@ -141,16 +142,12 @@ def compile_catalog(source_path: Path, llvm_bin: Path, workdir: Path,
                                      large_n=large_n,prefetch_b=prefetch_b)
     if not manifest["covered_contractions"]:
         raise ValueError("source has no exact integer GEMM contractions")
-    if contraction_calibrations is None:
-        receipt = compile_module(module, llvm_bin, workdir)
-    else:
-        from .golden_calibrated_catalog import compile_calibrated_catalog
-        workdir.mkdir(parents=True, exist_ok=True)
-        snapshot = workdir / 'catalog_source.mlir'
-        snapshot.write_bytes(source_bytes)
-        manifest = compile_calibrated_catalog(snapshot, module, manifest, llvm_bin, workdir,
-                                              contraction_calibrations)
-        receipt = manifest.pop('compilation')
+    from .core_aten.semantic_gate import compile_admitted, legacy_matches
+    if contraction_calibrations is not None:
+        raise ValueError('calibrated catalog has no source semantic evaluator')
+    matches = legacy_matches(source_bytes.decode('utf-8'), module, manifest)
+    receipt = compile_admitted(manifest, matches, numeric_schedule_proof,
+                               lambda: compile_module(module, llvm_bin, workdir))
     source_snapshot = workdir / 'catalog_source.mlir'
     source_snapshot.write_bytes(source_bytes)
     result = {**manifest, "compilation": receipt,
@@ -168,8 +165,14 @@ def merlin_builder(llvm_bin: Path, *, large_n: bool = False, prefetch_b: bool = 
 
     def build(prepared: Path, workdir: Path) -> tuple[Path, Path]:
         prepared, workdir = Path(prepared), Path(workdir)
+        from .core_aten.catalog import _execution_provider
+        api = _execution_provider()
+        proof = api.admit_numeric_schedule(prepared.read_text(), package=Path(__file__).resolve().parents[1],
+                                           numeric_policy=api._selected_numeric_policy(prepared.parent))
+        if proof.get('status') != 'proven':
+            return api._write_refusal(workdir, proof), None
         result = compile_catalog(prepared, compiler, workdir,large_n=large_n,prefetch_b=prefetch_b,
-                                 contraction_calibrations=contraction_calibrations)
+                                 contraction_calibrations=contraction_calibrations, numeric_schedule_proof=proof)
         if declare_full_writes:
             # This owner emits kernels that completely store their output and
             # neither retain nor release any input/output pointer.

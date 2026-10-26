@@ -630,6 +630,8 @@ def execute(stream, buffers, *, host_epilogues=False):
         dt = np.int32 if width == 4 else np.int8
         for r in range(rows):
             start = off + r * stride
+            require(arg in dram and 0 <= start and start % width == 0
+                    and start + cols * width <= dram[arg].size, 'concrete DMA read leaves its argument')
             out[r] = np.frombuffer(dram[arg][start:start + cols * width].tobytes(), dt)
         return out
 
@@ -637,6 +639,8 @@ def execute(stream, buffers, *, host_epilogues=False):
         dt = np.int32 if width == 4 else np.int8
         for r in range(block.shape[0]):
             start = off + r * stride
+            require(arg in dram and 0 <= start and start % width == 0
+                    and start + block.shape[1] * width <= dram[arg].size, 'concrete DMA write leaves its argument')
             dram[arg][start:start + block.shape[1] * width] = np.frombuffer(block[r].astype(dt).tobytes(), np.uint8)
 
     from ..tables import isa
@@ -660,10 +664,23 @@ def execute(stream, buffers, *, host_epilogues=False):
         if kind in ("FENCE", "FLUSH"):
             continue
         if kind == "CONFIG_EX":
+            fixed = execute_model()
+            for name in ('dataflow', 'activation', 'c_stride'):
+                fixed.pop(name)
+            _matches(f, fixed, ('dataflow', 'activation', 'c_stride'), 'execute fields have no concrete model')
+            require(f['dataflow'] in (isa.WEIGHT_STATIONARY, isa.OUTPUT_STATIONARY)
+                    and f['activation'] in (isa.NO_ACTIVATION, relu), 'execute mode has no concrete model')
             ex = f
         elif kind == "CONFIG_LD":
+            require(set(f) <= {'cmd_type', 'state_id', 'dram_stride', 'shrink', 'pixel_repeats', 'stride', 'scale'}
+                    and f['pixel_repeats'] == 1 and f['state_id'] in (0, 1, 2)
+                    and np.isfinite(_f32(f['scale'])), 'load fields have no concrete model')
             ld[f["state_id"]] = f
         elif kind == "CONFIG_ST":
+            from .pool_plan import POOL_FIELDS
+            require(not any(value for name, value in f.items()
+                            if name not in {'cmd_type', 'stride', 'activation', 'acc_scale', *POOL_FIELDS})
+                    and np.isfinite(_f32(f['acc_scale'])), 'store fields have no concrete model')
             st = f
         elif kind in ("MVIN", "MVIN2", "MVIN3"):
             cfg, place = ld[f["state"]], local(f["local_addr"])
@@ -671,10 +688,17 @@ def execute(stream, buffers, *, host_epilogues=False):
             width = 4 if place.accumulator and not cfg['shrink'] else 1
             data = (np.zeros((rows, cols), np.int64) if command.arg is None else
                     read(command.arg, command.off, rows, cols, cfg["dram_stride"], width))
+            if width == 4:
+                require(cfg['scale'] == _f1(), 'scaled full-width accumulator load has no concrete model')
+            elif cfg['scale'] != _f1():
+                data = np.clip(np.rint(data.astype(np.float32) * _f32(cfg['scale'])), -128, 127).astype(np.int64)
             for b0 in range(0, cols, DIM):
                 block = data[:, b0:b0 + DIM]
                 base = place.row + (b0 // DIM) * cfg["stride"]
-                (acc if place.accumulator else spad)[base:base + rows, :block.shape[1]] = block
+                target_rows = (acc if place.accumulator else spad)[base:base + rows, :block.shape[1]]
+                target_rows[:] = target_rows + block if place.accumulate else block
+                if place.accumulator:
+                    target_rows[:] = ((target_rows + (1 << 31)) % (1 << 32)) - (1 << 31)
         elif kind == "PRELOAD":
             bd, c = local(f["bd_local_addr"]), local(f["c_local_addr"])
             if not bd.garbage and ex["dataflow"] == isa.WEIGHT_STATIONARY:
@@ -697,9 +721,16 @@ def execute(stream, buffers, *, host_epilogues=False):
             c, c_rows, c_cols = target
             if c.garbage:
                 continue
-            block = acc[c.row:c.row + c_rows, :c_cols]
-            block[:] = (block if c.accumulate else 0) + out[:c_rows, :c_cols]
-            block[:] = ((block + (1 << 31)) % (1 << 32)) - (1 << 31)
+            for row in range(c_rows):
+                dest = c.row + row * ex['c_stride']
+                if c.accumulator:
+                    block = acc[dest, :c_cols]
+                    block[:] = (block if c.accumulate else 0) + out[row, :c_cols]
+                    block[:] = ((block + (1 << 31)) % (1 << 32)) - (1 << 31)
+                else:
+                    block = np.clip(out[row, :c_cols], -128, 127)
+                    require(ex['activation'] in (0, relu), 'execute activation has no concrete model')
+                    spad[dest, :c_cols] = np.maximum(block, 0) if ex['activation'] == relu else block
         elif kind == "MVOUT":
             place = local(f["local_addr"])
             rows, cols = f["num_rows"], f["num_cols"]

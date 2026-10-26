@@ -262,19 +262,17 @@ def compile_catalog(source_path: Path, workdir: Path, *, llvm_bin: Path | None =
     workdir.mkdir(parents=True, exist_ok=True)
     try:
         if manifest['kernels']:
-            if numeric_schedule_proof is None:
-                raise ValueError('catalog compilation requires a source-bound numerical schedule proof')
-            authenticate_proof(manifest, matches, numeric_schedule_proof)
+            from .semantic_gate import compile_admitted
+            manifest['compilation'] = compile_admitted(manifest, matches, numeric_schedule_proof,
+                lambda: compile_to_object(device, workdir, llvm_bin=llvm_bin, stem="core_aten"),
+                readout_options=readout_options)
+            manifest['status'] = 'compiled'
     except ValueError as exc:
         manifest.update(status='declined', reason=str(exc),
                         kernels=[], bindings=[], matched=0, unique_kernels=0)
     if numeric_schedule_proof is not None:
         manifest['numeric_schedule_proof'] = numeric_schedule_proof
-    if manifest["kernels"]:
-        receipt = compile_to_object(device, workdir, llvm_bin=llvm_bin, stem="core_aten")
-        manifest["compilation"] = receipt
-        manifest['status'] = 'compiled'
-    elif manifest.get('status') != 'declined':
+    if not manifest["kernels"] and manifest.get('status') != 'declined':
         manifest.update(status='declined', reason='no exact device kernel produced')
     (workdir / "core_aten_catalog.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest

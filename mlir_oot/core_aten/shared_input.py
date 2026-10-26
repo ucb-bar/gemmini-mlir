@@ -442,6 +442,41 @@ def _replayed_outputs(replay, group, members, weights, bases, total):
         require(position == group.k, 'reduction tiles do not cover K exactly once')
 
 
+def source_reference(match, options):
+    """Plan each bound source result independently of the emitted sibling metadata."""
+    from .integer_regions import _readout_plan
+    from merlin.runtime.exact_readout import f32_readout
+
+    plans = []
+    for value, offset, extent, op in match.outputs:
+        planned = _readout_plan(module_of(op), op, options)
+        if planned is None:
+            raise ValueError('sibling result has no source readout plan')
+        member = _Member(0, op, *planned)
+        if member.result is not value:
+            raise ValueError('sibling result differs from its source readout')
+        plans.append((member, offset, extent))
+
+    def evaluate(inputs):
+        bound = {value: inputs[name] for name, value in match.operands}
+        pieces = []
+        for member, offset, extent in plans:
+            lhs = bound[member.op.operands[0]].astype(np.int64)
+            weight = bound.get(member.op.operands[1])
+            if weight is None:
+                weight = dense_values(member.op.operands[1])
+            if weight is None:
+                raise ValueError('sibling source weight is unbound')
+            acc = lhs @ np.asarray(weight, np.int64)
+            result = (f32_readout(acc, np.array(member.bits, np.uint32).view(np.float32), 'i8', relu=member.relu)
+                      if member.narrow else acc)
+            if offset != sum(p.size for p in pieces) or tuple(result.shape) != tuple(extent):
+                raise ValueError('sibling source output slices are not contiguous')
+            pieces.append(result.reshape(-1))
+        return {'out': np.concatenate(pieces)}
+    return evaluate
+
+
 def _backstop(stream, members, weights, bases, trials=3):
     """Execute the decoded commands and compare bit for bit with Merlin's exact readout reference."""
     from merlin.runtime.exact_readout import f32_readout
