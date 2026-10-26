@@ -218,7 +218,6 @@ def test_offload_binds_each_source_result_to_its_slice():
 @pytest.mark.parametrize('reason,text', [
     ('different inputs', None),
     ('bias offsets', 'bias'),
-    ('mixed exits', 'mixed'),
     ('no readout options', 'none'),
 ])
 def test_unprovable_groups_fall_back_to_separate_contractions(reason, text):
@@ -391,3 +390,12 @@ def test_pool_plan_keeps_shared_siblings_unfused(monkeypatch):
     assert not matches
     assert any('unsupported shared-input readout route: conv_pool' in d['reason']
                for d in declines)
+
+
+def test_mixed_width_groups_use_typed_destination_buffers():
+    text, _, _ = source(4, 6, (5, 3), raw=(False, True))
+    manifest, matches, found = fused(text)
+    match, = found
+    assert len(matches) == 1 and len(match.result_buffers) == 2
+    assert [(b['argument'], b['type']) for b in manifest['bindings'][0]['result_buffers']] == [
+        ('out0', 'tensor<4x5xi8>'), ('out1', 'tensor<4x3xi32>')]
