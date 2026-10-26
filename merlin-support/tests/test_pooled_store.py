@@ -181,6 +181,11 @@ def window_max(y, window, stride, pad=(0, 0, 0, 0)):
     return out.astype(np.int64)
 
 
+def check(stream, match):
+    """Pooled admission of ``stream`` against the source of ``match``."""
+    return validate(stream, match.kernel.meta, match.numeric, match=match, readout_options=options())
+
+
 def fused(text, selected=None):
     _, manifest, matches = build(text, readout_options=options() if selected is None else selected)
     found = [m for m in matches if m.kernel.meta.get('pooled_store')]
@@ -207,7 +212,7 @@ def test_fused_pool_equals_source_readout_then_window_max(case):
     window, stride = meta['pooled_store']['window'], meta['pooled_store']['stride']
     k = stream.args[0].shape[1]
     lint(stream)
-    assert validate(stream, meta, match.numeric) == 'f32_product_rne'
+    assert check(stream, match) == 'f32_product_rne'
     rng = np.random.default_rng(k + c)
     inputs = dict(a=rng.integers(-40, 41, (n * h * w, k), dtype=np.int8), b=rng.integers(-9, 10, (k, c), dtype=np.int8))
     acc = inputs['a'].astype(np.int64) @ inputs['b'].astype(np.int64) + offsets
@@ -235,7 +240,7 @@ def test_negative_readouts_are_never_padded_by_garbage_taps():
     tampered.ins = padded
     assert (simulate(tampered, inputs)['out'] == 0).any()
     with pytest.raises(ValueError, match='garbage'):
-        validate(tampered, match.kernel.meta, match.numeric)
+        check(tampered, match)
 
 
 def test_padded_fused_pool_keeps_the_unfused_route():
@@ -332,7 +337,7 @@ def test_fused_admission_rejects_tampered_streams(name):
     _, (match,) = fused(text)
     tampered = _tamper(match.kernel.stream, _fused_adversaries()[name])
     with pytest.raises(ValueError):
-        validate(tampered, match.kernel.meta, match.numeric)
+        check(tampered, match)
 
 
 def test_provider_declines_tampered_fused_stream(monkeypatch):
@@ -358,7 +363,7 @@ def test_fused_seed_tamper_and_exact_policy_decline():
     stream = copy.copy(match.kernel.stream)
     stream.consts = {**stream.consts, 'bias_c': stream.consts['bias_c'] + 1}
     with pytest.raises(ValueError, match='seed'):
-        validate(stream, match.kernel.meta, match.numeric)
+        check(stream, match)
     exact = copy.deepcopy(POLICY)
     exact['numerical_semantics']['readout']['strategy'] = 'exact_rational_host'
     proof = provider().admit_numeric_schedule(text, package=PACKAGE, numeric_policy=exact, readout_options=options())
@@ -373,7 +378,7 @@ def test_standalone_pooled_store_matches_padded_window_max(case):
     manifest, (match,) = composition(text, 'pooled_movement')
     stream, meta = match.kernel.stream, match.kernel.meta
     lint(stream)
-    assert validate(stream, meta) == 'storage_codes'
+    assert check(stream, match) == 'storage_codes'
     n, h, w, c = meta['pooled_store']['image']
     x = np.random.default_rng(h * w).integers(-128, -1, (n, h, w, c), dtype=np.int8)  # all negative
     expected = window_max(x, meta['pooled_store']['window'], meta['pooled_store']['stride'], tuple(case.get('pad', (1, 1, 1, 1))))
@@ -422,7 +427,7 @@ def test_standalone_admission_rejects_tampered_streams(name):
     if name == 'zero_border':
         tampered.consts = {'pool_border': np.zeros_like(tampered.consts['pool_border'])}
     with pytest.raises(ValueError):
-        validate(tampered, match.kernel.meta)
+        check(tampered, match)
 
 
 def test_unfenced_scratchpad_pool_is_a_lint_hazard():
@@ -460,8 +465,118 @@ def test_window_mean_refuses_a_divisor_other_than_its_window_and_tampering():
                               else x for x in ins],
                  lambda ins: [x for x in ins if not (x.kind == 'compute' and x is [c for c in ins if c.kind == 'compute'][-1])]):
         with pytest.raises(ValueError):
-            validate(_tamper(stream, edit), match.kernel.meta)
+            check(_tamper(stream, edit), match)
     ones = copy.copy(stream)
     ones.consts = {'ones16': np.full_like(stream.consts['ones16'], 2)}
     with pytest.raises(ValueError):
-        validate(ones, match.kernel.meta)
+        check(ones, match)
+
+
+# -- admission derives every expectation from the source, never from emitter records ---------------
+
+def _decline_via_provider(text, mutate):
+    api = provider()
+    backend = api._core_aten_module(PACKAGE, 'catalog')
+    original = backend.build
+
+    def altered(*args, **kwargs):
+        module, manifest, matches = original(*args, **kwargs)
+        for match in matches:
+            if match.kernel.meta.get('pooled_store') or match.kernel.meta.get('composition_kernel'):
+                mutate(match)
+        return module, manifest, matches
+    backend.build = altered
+    try:
+        return api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
+    finally:
+        backend.build = original
+
+
+def test_dropped_relu_in_records_and_registers_is_declined():
+    text, _, _ = fused_source(n=1, h=4, w=4, k=8, c=5, relu=True)
+
+    def mutate(match):
+        match.kernel.meta['relu'] = False
+        match.kernel.stream.ins = [_set(i, acc_act=0) if i.kind == 'config_st' else i for i in match.kernel.stream.ins]
+    proof = _decline_via_provider(text, mutate)
+    assert proof['status'] == 'declined' and 'activation' in proof['reason'], proof
+
+
+def test_consistently_tampered_fused_multiplier_is_declined():
+    text, _, _ = fused_source()
+
+    def mutate(match):
+        bits = [b + 1 for b in match.kernel.meta['multiplier_bits']]
+        match.kernel.meta['multiplier_bits'] = bits
+        match.kernel.meta['composition_plan']['decision']['proof']['multiplier_bits'] = bits
+        match.kernel.stream.ins = [
+            _set(i, multiplier_bits=i.a('multiplier_bits') + 1,
+                 acc_scale=float(np.uint32(i.a('multiplier_bits') + 1).view(np.float32)))
+            if i.kind == 'config_st' and i.a('pool_stride') else i for i in match.kernel.stream.ins]
+    proof = _decline_via_provider(text, mutate)
+    assert proof['status'] == 'declined' and 'multiplier' in proof['reason'], proof
+
+
+@pytest.mark.parametrize('lie', [dict(window=3), dict(stride=1), dict(window=3, stride=1)])
+def test_fused_geometry_records_are_not_trusted(lie):
+    # Re-emit a self-consistent stream and records for a window the source does not have.
+    import dataclasses
+    from mlir_oot.core_aten import ops
+    from mlir_oot.core_aten.integer_regions import contraction, planned_readout
+    from mlir_oot.core_aten.pooled_store import emit_fused
+    from mlir_oot.core_aten.source import module_of
+    text, _, _ = fused_source(n=1, h=6, w=6, k=8, c=5, window=2, stride=2)
+    _, (match,) = fused(text)
+    (plan, chain, geometry), _ = planned_readout(module_of(match.root), match.root, options())
+    dims, seed = contraction(match.root), match.kernel.stream.consts.get('bias_c')
+    match.kernel.stream = ops.matmul('aten.mm.default', dims.m, dims.k, dims.n, s_out=None, bias=seed is not None,
+                                     bias_const=seed).stream
+    window = pool_plan.Window(lie.get('window', 2), lie.get('stride', 2))
+    emit_fused(match.kernel, (plan, chain, dataclasses.replace(geometry, window=window)))
+    with pytest.raises(ValueError, match='operands|window'):
+        check(match.kernel.stream, match)
+
+
+@pytest.mark.parametrize('lie', [dict(window=2), dict(stride=1), dict(pad=(0, 0, 0, 0)), dict(pad=(1, 0, 1, 0))])
+def test_standalone_geometry_records_are_not_trusted(lie):
+    from mlir_oot.core_aten.pooled_store import _pooled_movement_kernel
+    text = movement_source(n=1, h=7, w=7, c=4, window=3, stride=2, pad=(1, 1, 1, 1))
+    _, (match,) = composition(text, 'pooled_movement')
+    image = pool_plan.Image(*match.kernel.meta['pooled_store']['image'])
+    window = pool_plan.Window(lie.get('window', 3), lie.get('stride', 2), lie.get('pad', (1, 1, 1, 1)))
+    match.kernel = _pooled_movement_kernel(image, window)
+    with pytest.raises(ValueError, match='operands|window|tap'):
+        check(match.kernel.stream, match)
+
+    def mutate(m):
+        m.kernel = _pooled_movement_kernel(image, window)
+    assert _decline_via_provider(text, mutate)['status'] == 'declined'
+
+
+def test_window_mean_plan_records_are_not_trusted():
+    from mlir_oot.core_aten.pooled_store import _mean_kernel
+    text = mean_source()
+    _, (match,) = composition(text, 'window_mean')
+    rows, window = match.kernel.meta['dimensions']['rows'], match.kernel.meta['dimensions']['k']
+    bits = match.kernel.meta['multiplier_bits'][0] ^ 1
+
+    def mutate(m):
+        plan = m.kernel.meta['composition_plan']
+        m.kernel = _mean_kernel((2, 8, 3, 4), (2, 8), rows, window, bits)
+        plan['decision']['multiplier_bits'] = [bits]
+        m.kernel.meta['composition_plan'] = plan
+    mutate(match)
+    with pytest.raises(ValueError, match='multiplier'):
+        check(match.kernel.stream, match)
+    proof = _decline_via_provider(text, mutate)
+    assert proof['status'] == 'declined', proof
+
+
+def test_admission_requires_the_source_binding():
+    text, _, _ = fused_source()
+    _, (match,) = fused(text)
+    with pytest.raises(ValueError, match='source match'):
+        validate(match.kernel.stream, match.kernel.meta, match.numeric)
+    match.operands[:] = list(reversed(match.operands))
+    with pytest.raises(ValueError, match='bound'):
+        check(match.kernel.stream, match)

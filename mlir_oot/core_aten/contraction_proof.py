@@ -28,13 +28,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .source import module_of
 from .stream_proof import ProofError, Replay, execute, is_zero, require
-
-
-def _module_of(op):
-    while op.parent is not None:
-        op = op.parent
-    return op
 
 
 def _split(flat, shape):
@@ -73,7 +68,7 @@ def expectation(match, readout_options):
     dims = contraction(op)
     require(dims is not None, 'admitted root is not a source integer contraction')
     from . import compositions
-    module = _module_of(op)
+    module = module_of(op)
     planned, extension = planned_readout(module, op, readout_options)
     seeded = source_seed(op, dims, planned)
     planned = seeded.planned

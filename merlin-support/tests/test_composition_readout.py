@@ -447,3 +447,67 @@ def test_full_width_seed_loads_are_replayed(monkeypatch, layer):
     assert proof['status'] == 'declined', proof
     if layer == 'differential':
         assert 'differential' in proof['reason']
+
+
+@pytest.mark.parametrize('mode', ['arg', 'json', 'env'])
+def test_routing_declines_tampered_stream_without_admission_receipt(tmp_path, monkeypatch, mode):
+    """route_noadmit.py: the altered multiplier used to offload 8/15 wrong results."""
+    from merlin.targetgen.rtl.facts import load_facts
+
+    text, scales, offsets = source()
+    prepared = tmp_path / 'model.mlir'
+    prepared.write_text(text)
+    monkeypatch.delenv('MERLIN_CORE_ATEN_SOFTWARE_SPEC', raising=False)
+    if mode == 'json':
+        (tmp_path / 'spec-int8-admission.json').write_text(json.dumps(dict(selection=dict(spec=POLICY))))
+    elif mode == 'env':
+        monkeypatch.setenv('MERLIN_CORE_ATEN_SOFTWARE_SPEC', str(tmp_path / 'selected.yaml'))
+        from merlin.targetgen import software_spec
+        monkeypatch.setattr(software_spec, 'load_software_spec', lambda *args, **kwargs: POLICY)
+    api = provider()
+    monkeypatch.setattr(api, '_readout_options', lambda policy: options() if policy else None)
+    backend = api._core_aten_module(PACKAGE, 'catalog')
+    original = backend.build
+    tampered = []
+
+    def altered(*args, **kwargs):
+        module, manifest, matches = original(*args, **kwargs)
+        for match in matches:
+            stream = match.kernel.stream
+            stream.ins = [i._replace(attrs=tuple(sorted({**dict(i.attrs),
+                'multiplier_bits': int(np.float32(.25).view(np.uint32)), 'acc_scale': .25}.items())))
+                if i.kind == 'config_st' else i for i in stream.ins]
+            tampered.append(match)
+        return module, manifest, matches
+
+    monkeypatch.setattr(backend, 'build', altered)
+    called = []
+    monkeypatch.setattr(api, 'core_aten_offload', lambda *args, **kwargs: called.append(kwargs))
+    route = api.routing(tmp_path, target='gemmini', package=PACKAGE, facts=load_facts('gemmini'),
+                        eligible=[], readout_options=options() if mode == 'arg' else None)
+    result = route.region_offload(prepared, tmp_path / 'work')
+    assert not called
+    assert result[:3] == (None, None, None)
+    manifest = json.loads(result[3].read_text())
+    assert manifest['status'] == 'declined' and not manifest['kernels']
+    assert 'compilation' not in manifest
+    rng = np.random.default_rng(0)
+    inputs = dict(a=rng.integers(-32, 33, (3, 17)).astype(np.int8),
+                  b=rng.integers(-8, 9, (17, 5)).astype(np.int8))
+    expected = f32_readout(inputs['a'].astype(np.int64) @ inputs['b'].astype(np.int64) + offsets,
+                           form_multiplier(scales * .25, 7), 'i8', relu=True)
+    match = next(m for m in tampered if m.kernel.meta.get('readout') == 'f32_product_rne')
+    actual = simulate(match.kernel.stream, inputs)['out']
+    assert np.count_nonzero(actual != expected) == 8
+
+
+@pytest.mark.parametrize('entry', ['core_aten_catalog', 'core_aten_offload'])
+def test_public_numeric_entry_requires_admission(tmp_path, monkeypatch, entry):
+    monkeypatch.delenv('MERLIN_CORE_ATEN_SOFTWARE_SPEC', raising=False)
+    prepared = tmp_path / 'model.mlir'
+    prepared.write_text(source()[0])
+    result = getattr(provider(), entry)(prepared, tmp_path / 'work', package=PACKAGE, readout_options=options())
+    manifest = json.loads(result[0 if entry == 'core_aten_catalog' else 3].read_text())
+    assert manifest['status'] == 'declined'
+    assert 'no selected numerical policy' in manifest['reason']
+    assert not manifest['kernels'] and 'compilation' not in manifest

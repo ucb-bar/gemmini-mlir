@@ -20,8 +20,13 @@ target: gemmini
 # machine>} -- the caller-declared header whose content is the ABI digest the registry declares for that
 # machine. An optional `sha256` is asserted.
 sources:
-  # The elaboration the reference Verilator simulator is built from (GemminiRocketConfig).
-  elaboration: {artifact: gemmini_verilator_firrtl}
+  # The elaboration the contract's rtl_source selects: GemminiRocketConfig at chipyard 0acc1e1 with the
+  # generators/gemmini gitlink 8c3f9923, read from the MERLIN_EXT_CHIPYARD checkout. The digest is the
+  # contract's rtl_source.artifact_sha256.fir, so any other elaboration is refused rather than read.
+  elaboration:
+    ext_root: chipyard
+    path: sims/verilator/generated-src/chipyard.harness.TestHarness.GemminiRocketConfig/chipyard.harness.TestHarness.GemminiRocketConfig.fir
+    sha256: da2c38c1bdc5c7ddf1c12c0d4a10a41323bf420c869351e52f796d41db325485
   # The generated parameter header the curated harness compiles against (acc_read_full_width = true).
   header: {pin: gemmini_isa_headers, path: include/gemmini_params.h}
   # The vendor's own software reference, for corroboration only.

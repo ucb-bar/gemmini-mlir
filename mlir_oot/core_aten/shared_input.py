@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from .source import module_of
 from .match import Decline, Match, dense_values, shape
 from .stream import ACC, ACC_ROWS, DIM, GARBAGE, NO_ACT, SP, SPAD_ROWS, Arg
 
@@ -237,10 +238,70 @@ def _fuse(module, group, readout_options):
 # Admission: decode the emitted stream, never the emitter's plan
 # ---------------------------------------------------------------------------------------------
 
-def _module_of(op):
-    while op.parent is not None:
-        op = op.parent
-    return op
+def _decoded_load(command, load_state, names, layouts, members, group):
+    from merlin.compile.scheduling.block_schedule import Load
+    from merlin.compile.scheduling.shared_input_schedule import SharedInputEffect
+    from .stream_proof import load_model, local, _matches
+
+    fields = command.fields
+    place = local(fields['local_addr'])
+    rows, cols = fields['num_rows'], fields['num_cols']
+    if place.garbage or place.accumulator or command.arg is None or not 1 <= cols <= DIM or not 1 <= rows <= DIM:
+        raise ValueError('shared-input stream seeds the accumulator or loads a multi-tile row')
+    state = load_state.get(fields['state'])
+
+    def require_load(stride):
+        if state is None:
+            raise ValueError('effective load configuration differs from the declared layout')
+        _matches(state, {**load_model(), 'dram_stride': stride}, ('state_id',),
+                 'effective load configuration differs from the declared layout')
+    if command.arg == names['a']:
+        require_load(group.k)
+        row, col = divmod(command.off, group.k)
+        effect = SharedInputEffect(None, Load('lhs', (row // DIM, col // DIM), row, col, rows, cols,
+                                                    place.row, col // DIM))
+    elif command.arg in layouts:
+        member, layout = layouts[command.arg]
+        sibling = members[member]
+        require_load(layout.row_pitch if layout is not None else sibling.n)
+        row, col = layout.source(command.off, cols) if layout is not None else divmod(command.off, sibling.n)
+        effect = SharedInputEffect(member, Load('weight', (row // DIM, col // DIM), row, col, rows,
+                                                      cols, place.row, row // DIM))
+    else:
+        raise ValueError('shared-input stream loads an unbound argument')
+    return effect
+
+
+def _decoded_store(command, store_state, names, members, bases, element, bits):
+    from merlin.compile.scheduling.block_schedule import Store
+    from merlin.compile.scheduling.shared_input_schedule import SharedInputEffect
+    from .readout_encoding import activation, code
+    from .stream_proof import local
+
+    fields = command.fields
+    place = local(fields['local_addr'])
+    if place.garbage or not place.accumulator or place.accumulate or command.arg != names['out'] or \
+            store_state is None:
+        raise ValueError('shared-input store is not an accumulator readout of the flat output')
+    position, remainder = divmod(command.off, element)
+    member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
+    if remainder or member is None:
+        raise ValueError('shared-input store is misaligned with every sibling result')
+    sibling = members[member]
+    row, col = divmod(position - bases[member], sibling.n)
+    cols = fields['num_cols']
+    stride, act, scale_bits = store_state['stride'], store_state['activation'], store_state['acc_scale']
+    if place.full == sibling.narrow or stride != sibling.n * element:
+        raise ValueError('sibling store width or pitch differs from its exit')
+    if sibling.narrow:
+        if set(sibling.bits[col:col + cols]) != {scale_bits} or act != activation(sibling.relu):
+            raise ValueError('decoded sibling readout differs from its proved multiplier bits')
+    elif act != NO_ACT or scale_bits != bits['f1']:
+        raise ValueError('full-width sibling store applies a readout stage')
+    if store_state['cmd_type'] != code('config_subtype', 'CONFIG_ST') or any(
+            v for k, v in store_state.items() if k not in ('cmd_type', 'stride', 'activation', 'acc_scale')):
+        raise ValueError('effective store configuration sets an unproved readout field')
+    return SharedInputEffect(member, Store(row, col, fields['num_rows'], cols, place.row))
 
 
 def _decoded_effects(stream, names, layouts, members, group, bases, element, bits):
@@ -250,20 +311,22 @@ def _decoded_effects(stream, names, layouts, members, group, bases, element, bit
     a configuration changed between uses and restored is still caught. Every
     decoded field must be one this realization models (an allowlist).
     """
-    from merlin.compile.scheduling.block_schedule import Compute, Load, Preload, Store
+    from merlin.compile.scheduling.block_schedule import Compute, Preload
     from merlin.compile.scheduling.shared_input_schedule import SharedInputEffect
-    from .readout_encoding import activation, code
-    from .stream_proof import decode, execute_model, load_model, local, _matches
+    from .stream_proof import decode, execute_model, local, _matches
 
     execute_state, load_state, store_state = None, {}, None
     effects, owners, stationary = [], {}, None
     pending_member = None
+    unfenced = False
     for ins in stream.ins:
         command = decode(ins)
         kind, fields = command.kind, command.fields
+        if kind == 'FENCE':
+            unfenced = False
         if kind in ('FENCE', 'FLUSH'):
             continue
-        if kind in ('PRELOAD', 'COMPUTE_PRELOADED', 'COMPUTE_ACCUMULATE'):
+        if kind in ('PRELOAD', 'COMPUTE_PRELOADED', 'COMPUTE_ACCUMULATE', 'MVOUT'):
             if execute_state is None:
                 raise ValueError('effective execute configuration is unset')
             _matches(execute_state, execute_model(), (),
@@ -275,31 +338,10 @@ def _decoded_effects(stream, names, layouts, members, group, bases, element, bit
         elif kind == 'CONFIG_ST':
             store_state = fields
         elif kind in ('MVIN', 'MVIN2', 'MVIN3'):
+            effect = _decoded_load(command, load_state, names, layouts, members, group)
+            effects.append(effect)
             place = local(fields['local_addr'])
-            rows, cols = fields['num_rows'], fields['num_cols']
-            if place.garbage or place.accumulator or command.arg is None or not 1 <= cols <= DIM or not 1 <= rows <= DIM:
-                raise ValueError('shared-input stream seeds the accumulator or loads a multi-tile row')
-            state = load_state.get(fields['state'])
-
-            def require_load(stride):
-                if state is None:
-                    raise ValueError('effective load configuration differs from the declared layout')
-                _matches(state, {**load_model(), 'dram_stride': stride}, ('state_id',),
-                         'effective load configuration differs from the declared layout')
-            if command.arg == names['a']:
-                require_load(group.k)
-                row, col = divmod(command.off, group.k)
-                effects.append(SharedInputEffect(None, Load('lhs', (row // DIM, col // DIM), row, col, rows, cols,
-                                                            place.row, col // DIM)))
-            elif command.arg in layouts:
-                member, layout = layouts[command.arg]
-                sibling = members[member]
-                require_load(layout.row_pitch if layout is not None else sibling.n)
-                row, col = layout.source(command.off, cols) if layout is not None else divmod(command.off, sibling.n)
-                effects.append(SharedInputEffect(member, Load('weight', (row // DIM, col // DIM), row, col, rows,
-                                                              cols, place.row, row // DIM)))
-            else:
-                raise ValueError('shared-input stream loads an unbound argument')
+            rows = fields['num_rows']
             for r in range(rows):
                 owners[place.row + r] = effects[-1].member, effects[-1].operation.dram_row + r, effects[-1].operation.dram_col
         elif kind == 'PRELOAD':
@@ -333,32 +375,108 @@ def _decoded_effects(stream, names, layouts, members, group, bases, element, bit
                                                                      kind == 'COMPUTE_PRELOADED')))
             pending_member = None
         elif kind == 'MVOUT':
-            place = local(fields['local_addr'])
-            if place.garbage or not place.accumulator or place.accumulate or command.arg != names['out'] or \
-                    store_state is None:
-                raise ValueError('shared-input store is not an accumulator readout of the flat output')
-            position, remainder = divmod(command.off, element)
-            member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
-            if remainder or member is None:
-                raise ValueError('shared-input store is misaligned with every sibling result')
-            sibling = members[member]
-            row, col = divmod(position - bases[member], sibling.n)
-            cols = fields['num_cols']
-            stride, act, scale_bits = store_state['stride'], store_state['activation'], store_state['acc_scale']
-            if place.full == sibling.narrow or stride != sibling.n * element:
-                raise ValueError('sibling store width or pitch differs from its exit')
-            if sibling.narrow:
-                if set(sibling.bits[col:col + cols]) != {scale_bits} or act != activation(sibling.relu):
-                    raise ValueError('decoded sibling readout differs from its proved multiplier bits')
-            elif act != NO_ACT or scale_bits != bits['f1']:
-                raise ValueError('full-width sibling store applies a readout stage')
-            if store_state['cmd_type'] != code('config_subtype', 'CONFIG_ST') or any(
-                    v for k, v in store_state.items() if k not in ('cmd_type', 'stride', 'activation', 'acc_scale')):
-                raise ValueError('effective store configuration sets an unproved readout field')
-            effects.append(SharedInputEffect(member, Store(row, col, fields['num_rows'], cols, place.row)))
+            effects.append(_decoded_store(command, store_state, names, members, bases, element, bits))
+            unfenced = True
         else:
             raise ValueError('shared-input stream contains an unknown command')
+    if unfenced:
+        raise ValueError('shared-input stream ends with unfenced stores')
     return effects
+
+
+def _replayed_outputs(replay, group, members, weights, bases, total):
+    """Every output element is one store of one accumulator row holding exactly its source products."""
+    from .readout_encoding import activation
+    from .stream_proof import _f1, is_zero, require
+
+    content = replay.content.get('out', {})
+    require(len(content) == total and all(0 <= flat < total for flat in content),
+            'stores do not write every sibling output element')
+    require(sum(len(store.rows) * store.columns for store in replay.stores) == total,
+            'stores write some sibling output element more than once')
+    groups = {}
+    for flat, (index, r, c) in content.items():
+        groups.setdefault((index, r), []).append((c, flat))
+    for (index, r), columns in groups.items():
+        columns.sort()
+        c0, flat0 = columns[0]
+        require(all(c == c0 + i and f == flat0 + i for i, (c, f) in enumerate(columns)),
+                'stored row is split across sibling output positions')
+        cols = len(columns)
+        member = max(i for i, base in enumerate(bases) if base <= flat0)
+        sibling = members[member]
+        row, n0 = divmod(flat0 - bases[member], sibling.n)
+        require(n0 + cols <= sibling.n, 'stored row leaves its sibling output row')
+        store = replay.stores[index]
+        require(store.accumulator and store.full != sibling.narrow, 'sibling store width differs from its exit')
+        if sibling.narrow:
+            require(store.config['activation'] == activation(sibling.relu) and
+                    all(store.config['acc_scale'] == b for b in sibling.bits[n0:n0 + cols]),
+                    'decoded sibling readout differs from its proved multiplier bits')
+        else:
+            require(store.config['activation'] == NO_ACT and store.config['acc_scale'] == _f1(),
+                    'full-width sibling store applies a readout stage')
+        state = store.rows[r]
+        require(state.seed is None or (is_zero(state.seed) and state.seed.width >= c0 + cols),
+                'sibling accumulator holds a seed the source does not have')
+        spans = []
+        for a_tag, w_tags, depth, width in state.terms:
+            require(a_tag.name == 'a' and a_tag.content is None and a_tag.width >= depth,
+                    'mesh input is not the shared source input')
+            a_row, k0 = divmod(a_tag.flat, group.k)
+            require(a_row == row and k0 + depth <= group.k, 'mesh row reads a different shared input row')
+            require(width >= c0 + cols and len(w_tags) == depth, 'mesh tile does not cover the stored columns')
+            for j, tag in enumerate(w_tags):
+                owner = weights.get(tag.name)
+                require(owner is not None and owner[0] == member and tag.content is None and tag.width >= c0 + cols,
+                        'stationary rows are not this sibling\'s source weight')
+                layout = owner[1]
+                k, col = layout.source(tag.flat, tag.width) if layout is not None else divmod(tag.flat, sibling.n)
+                require(k == k0 + j and col + c0 == n0 and col + tag.width <= sibling.n,
+                        'stationary operand differs from the source contraction')
+            spans.append((k0, k0 + depth))
+        position = 0
+        for lo, hi in sorted(spans):
+            require(lo == position, 'reduction tiles do not cover K exactly once')
+            position = hi
+        require(position == group.k, 'reduction tiles do not cover K exactly once')
+
+
+def _backstop(stream, members, weights, bases, trials=3):
+    """Execute the decoded commands and compare bit for bit with Merlin's exact readout reference."""
+    from merlin.runtime.exact_readout import f32_readout
+    from .stream_proof import execute, require
+
+    rng = np.random.default_rng(0x51b1)
+    names = {a.name: i for i, a in enumerate(stream.args)}
+    for trial in range(trials):
+        def operand(shape):
+            if trial < 2:
+                return np.full(shape, (-128, 127)[trial], np.int8)
+            return rng.integers(-128, 128, shape).astype(np.int8)
+        buffers, sources = {}, {}
+        for index, arg in enumerate(stream.args):
+            if arg.role == 'const':
+                data = stream.consts[arg.name]
+            elif arg.role == 'input':
+                data = sources[arg.name] = operand(arg.shape)
+            else:
+                data = np.full(arg.shape, 0x5A if arg.dtype == 'i8' else 0x5A5A5A5A,
+                               np.int8 if arg.dtype == 'i8' else np.int32)
+            buffers[index] = np.ascontiguousarray(data).copy()
+        execute(stream, buffers)
+        actual = buffers[names['out']].reshape(-1)
+        lhs = sources['a'].astype(np.int64)
+        for member, (sibling, base) in enumerate(zip(members, bases)):
+            name = f'w{member}'
+            weight = (sources[name] if weights[name][1] is None
+                      else dense_values(sibling.op.operands[1])).astype(np.int64)
+            acc = lhs @ weight
+            require(np.all((acc >= -(1 << 31)) & (acc < (1 << 31))), 'reference accumulator leaves i32')
+            reference = (f32_readout(acc, np.array(sibling.bits, np.uint32).view(np.float32), 'i8', relu=sibling.relu)
+                         if sibling.narrow else acc.astype(np.int32))
+            require(np.array_equal(actual[base:base + reference.size], reference.reshape(-1)),
+                    f'instruction model differs from the exact reference on differential trial {trial}')
 
 
 def admit(match, *, readout_options):
@@ -372,7 +490,7 @@ def admit(match, *, readout_options):
     fields = record['group']
     group = SharedInputGroup(fields['source_ir_sha256'], tuple(fields['source_op_indices']),
                              tuple(fields['contraction_ordinals']), fields['m'], fields['k'], tuple(fields['widths']))
-    module = _module_of(match.root)
+    module = module_of(match.root)
     body, members = _members(module, group, readout_options)  # re-planned from source, not from meta
     stream = match.kernel.stream
     names = {a.name: i for i, a in enumerate(stream.args)}
@@ -407,10 +525,17 @@ def admit(match, *, readout_options):
             if bound.get(name) is not member.op.operands[1] or arg.shape != (member.k, member.n):
                 raise ValueError('sibling weight argument differs from its source contraction')
             layouts[names[name]] = (i, None)
+    from .stream_proof import Replay, require
+    replay = Replay(stream).run()
+    require(not replay.unfenced, 'shared-input stream ends with unfenced stores')
+    weights = {stream.args[index].name: (member, layout) for index, (member, layout) in layouts.items()}
+    _replayed_outputs(replay, group, members, weights, bases, total)
+    # Merlin's independent sibling checker, over the same words decoded as logical effects.
     effects = _decoded_effects(stream, names, layouts, members, group, bases, element, flags())
     tile, storage, resources = _views(group)
     realization = verify_shared_input(tuple(effects), module=module, group=group, primitive_tile=tile,
                                       resources=resources, storage=storage)
+    _backstop(stream, members, weights, bases)
     return dict(group=group.record(), decoded_effects=len(effects), realization=realization,
                 members=[dict(n=m.n, exit='f32_product_rne' if m.narrow else 'full_i32', relu=m.relu,
                               multiplier_bits=None if m.bits is None else sorted(set(m.bits)),

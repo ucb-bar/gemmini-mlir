@@ -517,7 +517,7 @@ def match(op, *, readout_options):
             return None
         candidate, proof = prove(region, readout_options)
         kernel = emit(region, candidate, proof)
-    except (Decline, Refused, ValueError, OverflowError, FloatingPointError, ZeroDivisionError):
+    except (Decline, Refused):
         return None
     root = region.members[-1]
     return Match('scaled_operand_sum', root, region.members, [('a', region.left), ('b', region.right)],
@@ -615,3 +615,64 @@ def validate(stream, meta):
     if np.any(written != 1):
         raise ValueError('readout does not cover every output element exactly once')
     return 'scaled_operand_sum'
+
+
+def _region_at(root, options):
+    """Rebuild the source region whose result ``root`` produces, from the IR alone."""
+    from .match import name_of, producer
+    if name_of(root) == 'quant_ext.quantize_per_tensor':
+        generic = producer(root.operands[0])
+        return dequantized_sum(generic, options) if generic is not None else None
+    upstream, frontier = {root}, [root]
+    for _ in range(2):
+        frontier = [p for op in frontier for v in op.operands
+                    if (p := producer(v)) is not None and p.name == 'linalg.generic']
+        upstream.update(frontier)
+    block = root.parent_block()
+    order = {o: i for i, o in enumerate(block.ops)} if block is not None else {}
+    for op in sorted(upstream, key=lambda o: order.get(o, -1)):
+        region = staged_sum(op, options)
+        if region is not None and region.result is root.results[0]:
+            return region
+    return None
+
+
+def _differential(stream, region, proof):
+    """Execute the emitted words on a byte sweep and compare with the source, column by column."""
+    from .stream import simulate
+    rows, cols = region.rows, region.cols
+    flat = np.arange(rows * cols, dtype=np.int64)
+    a = ((flat * 73 + 11) % 256 - 128).reshape(rows, cols)
+    b = ((flat * 151 + 5) % 256 - 128).reshape(rows, cols)
+    shapes = {arg.name: arg.shape for arg in stream.args}
+    out = simulate(stream, dict(a=a.astype(np.int8).reshape(shapes['a']),
+                                b=b.astype(np.int8).reshape(shapes['b'])))['y'].reshape(rows, cols)
+    for column in range(cols):
+        if not np.array_equal(out[:, column].astype(np.int64), region.source(a[:, column], b[:, column], column)):
+            raise ValueError('emitted stream differs from the source on the differential sweep')
+
+
+def admit(match, *, readout_options):
+    """Re-derive the region and its proof from ``match.root``; authenticate the match and stream.
+
+    Nothing in the emitter's meta is trusted: the proof is rebuilt from the
+    source IR, must equal the recorded one, and drives stream validation.
+    """
+    region = _region_at(match.root, readout_options)
+    if region is None:
+        raise ValueError('operand-sum root no longer forms a provable source region')
+    try:
+        _, proof = prove(region, readout_options)
+    except Refused as exc:
+        raise ValueError(str(exc)) from exc
+    if match.kernel.meta.get('scaled_operand_sum') != proof:
+        raise ValueError('recorded operand-sum proof differs from the source-derived proof')
+    if [id(op) for op in match.consumed] != [id(op) for op in region.members] or match.root is not region.members[-1]:
+        raise ValueError('replaced operations differ from the source region')
+    bound = dict(match.operands)
+    if (len(match.operands) != 2 or bound.get('a') is not region.left or bound.get('b') is not region.right
+            or match.result[0] != 'y' or match.result[1] is not region.result):
+        raise ValueError('kernel bindings differ from the source operands and result')
+    device_readout = validate(match.kernel.stream, {'scaled_operand_sum': proof})
+    _differential(match.kernel.stream, region, proof)
+    return proof, device_readout

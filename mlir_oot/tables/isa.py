@@ -61,7 +61,24 @@ def f32_bits(value: float) -> int:
 
 
 def _u64(value: int) -> int:
-    return int(value) & MASK64
+    return _field(value, 64, "register word")
+
+
+def _field(value, width: int, name: str) -> int:
+    """``value`` as an unsigned ``width``-bit field; anything out of range refuses.
+
+    A masked encoding would silently issue a different, legal command than the
+    one the stream describes (``cols=0x80000010`` becoming 16 columns).
+    """
+    if isinstance(value, bool):
+        value = int(value)
+    if type(value) is not int or not 0 <= value < 1 << width:
+        raise ValueError(f"{name}={value!r} does not fit its {width}-bit field")
+    return value
+
+
+def _flag(value, name: str) -> int:
+    return _field(value, 1, name)
 
 
 def assert_legal(funct: int) -> int:
@@ -98,14 +115,14 @@ def config_ex(*, dataflow: int = WEIGHT_STATIONARY, sys_act: int = NO_ACTIVATION
     rs2: [63:48] c_stride | [31:0] in_shift
     """
     rs1 = ((f32_bits(acc_scale) << 32)
-           | ((a_stride & 0xFFFF) << 16)
-           | ((1 if b_transpose else 0) << 9)
-           | ((1 if a_transpose else 0) << 8)
-           | ((1 if set_only_strides else 0) << 7)
-           | ((sys_act & 0x3) << 3)
-           | ((dataflow & 0x1) << 2)
+           | (_field(a_stride, 16, "a_stride") << 16)
+           | (_flag(b_transpose, "b_transpose") << 9)
+           | (_flag(a_transpose, "a_transpose") << 8)
+           | (_flag(set_only_strides, "set_only_strides") << 7)
+           | (_field(sys_act, 2, "activation") << 3)
+           | (_field(dataflow, 1, "dataflow") << 2)
            | CONFIG_EX)
-    rs2 = ((c_stride & 0xFFFF) << 48) | (int(sys_shift) & 0xFFFFFFFF)
+    rs2 = (_field(c_stride, 16, "c_stride") << 48) | _field(sys_shift, 32, "in_shift")
     return K_CONFIG, _u64(rs1), _u64(rs2)
 
 
@@ -118,10 +135,10 @@ def config_ld(*, stride: int, scale: float = 1.0, shrunk: bool = False,
     rs2: DRAM row stride in bytes
     """
     rs1 = ((f32_bits(scale) << 32)
-           | ((block_stride & 0xFFFF) << 16)
-           | ((pixel_repeats & 0xFF) << 8)
-           | ((load_id & 0x3) << 3)
-           | ((1 if shrunk else 0) << 2)
+           | (_field(block_stride, 16, "block_stride") << 16)
+           | (_field(pixel_repeats, 8, "pixel_repeats") << 8)
+           | (_field(load_id, 2, "load_id") << 3)
+           | (_flag(shrunk, "shrunk") << 2)
            | CONFIG_LD)
     return K_CONFIG, _u64(rs1), _u64(stride)
 
@@ -137,30 +154,32 @@ def config_st(*, stride: int, acc_act: int = NO_ACTIVATION, acc_scale: float = 1
          [5:4] pool_stride | [3:2] acc_act | [1:0] cmd_type
     rs2: [63:32] acc_scale | [31:0] DRAM row stride in bytes
     """
-    rs1 = (((ocols & 0xFF) << 56)
-           | ((orows & 0xFF) << 48)
-           | ((pocols & 0xFF) << 40)
-           | ((porows & 0xFF) << 32)
-           | ((pool_out_dim & 0xFF) << 24)
-           | ((lpad & 0x3F) << 10)
-           | ((upad & 0x3) << 8)
-           | ((pool_size & 0x3) << 6)
-           | ((pool_stride & 0x3) << 4)
-           | ((acc_act & 0x3) << 2)
+    rs1 = ((_field(ocols, 8, "ocols") << 56)
+           | (_field(orows, 8, "orows") << 48)
+           | (_field(pocols, 8, "pocols") << 40)
+           | (_field(porows, 8, "porows") << 32)
+           | (_field(pool_out_dim, 8, "pool_out_dim") << 24)
+           | (_field(lpad, 6, "lpad") << 10)
+           | (_field(upad, 2, "upad") << 8)
+           | (_field(pool_size, 2, "pool_size") << 6)
+           | (_field(pool_stride, 2, "pool_stride") << 4)
+           | (_field(acc_act, 2, "activation") << 2)
            | CONFIG_ST)
-    rs2 = (f32_bits(acc_scale) << 32) | (int(stride) & 0xFFFFFFFF)
+    rs2 = (f32_bits(acc_scale) << 32) | _field(stride, 32, "stride")
     return K_CONFIG, _u64(rs1), _u64(rs2)
 
 
 def _mem_rs2(local_addr: int, cols: int, rows: int) -> int:
-    return _u64(((rows & 0xFFFF) << (ADDR_LEN + 16))
-                | ((cols & 0xFFFF) << ADDR_LEN)
-                | (local_addr & 0xFFFFFFFF))
+    return _u64((_field(rows, 16, "rows") << (ADDR_LEN + 16))
+                | (_field(cols, 16, "cols") << ADDR_LEN)
+                | _field(local_addr, ADDR_LEN, "local_addr"))
 
 
 def mvin(*, local_addr: int, cols: int, rows: int, load_id: int = 0):
     """`gemmini_extended_mvin`; rs1 is the DRAM address (runtime pointer)."""
-    funct = {0: K_MVIN, 1: K_MVIN2, 2: K_MVIN3}[load_id]
+    funct = {0: K_MVIN, 1: K_MVIN2, 2: K_MVIN3}.get(load_id)
+    if funct is None or type(load_id) is not int:
+        raise ValueError(f"load_id={load_id!r} names no load state")
     return funct, None, _mem_rs2(local_addr, cols, rows)
 
 
@@ -178,7 +197,7 @@ def preload(*, bd_addr: int, c_addr: int, bd_cols: int, bd_rows: int,
 def compute(*, a_addr: int, bd_addr: int, a_cols: int, a_rows: int,
             bd_cols: int = DIM, bd_rows: int = DIM, accumulate: bool = False):
     """`gemmini_extended_compute_{preloaded,accumulated}`."""
-    funct = K_COMPUTE_ACCUMULATE if accumulate else K_COMPUTE_PRELOADED
+    funct = K_COMPUTE_ACCUMULATE if _flag(accumulate, "accumulate") else K_COMPUTE_PRELOADED
     return funct, _mem_rs2(a_addr, a_cols, a_rows), _mem_rs2(bd_addr, bd_cols, bd_rows)
 
 

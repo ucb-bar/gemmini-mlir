@@ -26,7 +26,7 @@ sys.path.insert(0, str(HERE.parent))
 import runner  # noqa: E402
 from exact_oracle import SourceOracle  # noqa: E402
 from fixture_source import read  # noqa: E402
-from mlir_oot.core_aten.catalog import compile_catalog  # noqa: E402
+from mlir_oot.core_aten.catalog import merlin_builder  # noqa: E402
 from mlir_oot.core_aten.emit import llvm_bin_dir  # noqa: E402
 from mlir_oot.core_aten.offload import rewrite, shim_source  # noqa: E402
 from mlir_oot.frontend.parse import parse_module  # noqa: E402
@@ -56,12 +56,15 @@ def _ctype(dt):
     return {"int8": "int8_t", "uint8": "uint8_t", "int32": "int32_t", "float32": "float"}[dt]
 
 
-def build_case(case: Path, wd: Path) -> Path:
+def build_case(case: Path, wd: Path, *, numeric_policy=None) -> Path:
     wd.mkdir(parents=True, exist_ok=True)
     source=read(case / "model.mlir")
     input_path=wd / "source.mlir"
     input_path.write_text(source+"\n")
-    manifest = compile_catalog(input_path, wd)
+    manifest_path, obj = merlin_builder(llvm_bin_dir(), numeric_policy=numeric_policy)(input_path, wd)
+    manifest = json.loads(manifest_path.read_text())
+    if obj is None:
+        raise ValueError('Core ATen catalog admission declined: ' + manifest.get('reason', 'no exact kernels'))
     rewritten=rewrite(source,manifest)
     if 'quant_ext.' in rewritten:
         from mlir_oot.frontend.parse import context
@@ -146,14 +149,19 @@ def main() -> int:
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--batch", default="offload")
     ap.add_argument("--json", type=Path)
+    ap.add_argument("--numeric-policy", type=Path)
     a = ap.parse_args()
+    policy = None
+    if a.numeric_policy is not None:
+        from merlin.targetgen.software_spec import load_software_spec
+        policy = load_software_spec(a.numeric_policy, target='gemmini')
     cases = sorted(p for p in a.capture.iterdir() if (p / "model.mlir").exists())
     if a.only:
         cases = [c for c in cases if c.name in a.only]
     rows = []
     for case in cases:
         try:
-            elf = build_case(case, runner.work_root() / a.batch / case.name)
+            elf = build_case(case, runner.work_root() / a.batch / case.name, numeric_policy=policy)
             r = runner.run_spike(elf)
             rows.append(dict(case=case.name, status=r.status, info=r.info, failed=r.failed, perf=r.perf,
                              tail=None if r.ok else r.log[-1500:]))

@@ -92,7 +92,7 @@ def _plan(module, op, options, route):
             candidate = dict(route=route, operation_ordinals=[operations.index(m) for m in members], detail=detail)
             return plan_composition(module, candidate, path=options['path'], scheme=options['scheme'],
                                     facts=facts(options.get('numerical_semantics')))
-    except (ValueError, KeyError, TypeError, ArithmeticError):
+    except ValueError:
         return None  # Any unproved premise keeps the ordinary schedule.
     return None
 

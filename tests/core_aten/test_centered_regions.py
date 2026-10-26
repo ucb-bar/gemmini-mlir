@@ -72,11 +72,10 @@ def test_unproved_centered_form_declines_cleanly(options,reason):
     assert any(reason in d['reason'] for d in manifest['declines']),manifest['declines']
 
 
-def test_repeated_centered_bindings_share_one_unambiguous_schedule_proof():
+def repeated_centered_source():
     from xdsl.dialects import func
     from xdsl.dialects.builtin import FunctionType
     from mlir_oot.frontend.parse import parse_module
-    from conftest import provider,PACKAGE,POLICY
     module=parse_module(source())
     fn=next(o for o in module.walk() if o.name=='func.func')
     contraction=next(o for o in fn.walk() if o.name=='linalg.matmul')
@@ -89,9 +88,41 @@ def test_repeated_centered_bindings_share_one_unambiguous_schedule_proof():
     fn.body.block.insert_op_before(replacement,ret);fn.body.block.erase_op(ret)
     fn.properties['function_type']=FunctionType.from_lists(list(fn.function_type.inputs),[replacement.operands[0].type]*2)
     module.verify()
-    proof=provider().admit_numeric_schedule(str(module),package=PACKAGE,numeric_policy=POLICY)
+    return str(module)
+
+
+def test_repeated_centered_bindings_share_one_unambiguous_schedule_proof():
+    from conftest import provider, PACKAGE, POLICY
+    from mlir_oot.core_aten.offload import rewrite
+    text = repeated_centered_source()
+    proof=provider().admit_numeric_schedule(text,package=PACKAGE,numeric_policy=POLICY)
     assert proof['status']=='proven',proof
     assert len(proof['bindings'])==2 and len(proof['kernels'])==1
+    _, manifest, matches = build(text)
+    shared = set(matches[0].root.operands[:2])
+    assert all(value.owner not in match.consumed for value in shared for match in matches)
+    rewritten = rewrite(text, manifest)
+    assert rewritten.count('func.call @ca_') == 2
+    assert 'linalg.matmul' not in rewritten
+
+
+def test_shared_centered_matches_still_decline_swapped_results(monkeypatch):
+    from conftest import provider, PACKAGE, POLICY
+    api = provider()
+    catalog = api._core_aten_module(PACKAGE, 'catalog')
+    original = catalog.build
+
+    def swapped(*args, **kwargs):
+        device, manifest, matches = original(*args, **kwargs)
+        matches[0].result, matches[1].result = matches[1].result, matches[0].result
+        rows = manifest['bindings']
+        rows[0]['result'], rows[1]['result'] = rows[1]['result'], rows[0]['result']
+        return device, manifest, matches
+
+    monkeypatch.setattr(catalog, 'build', swapped)
+    proof = api.admit_numeric_schedule(repeated_centered_source(), package=PACKAGE, numeric_policy=POLICY)
+    assert proof['status'] == 'declined'
+    assert 'bound results' in proof['reason']
 
 
 @pytest.mark.parametrize('overflow,reason',[

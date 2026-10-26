@@ -21,7 +21,7 @@ def validate_device_readout(stream, meta, *, numeric=None, match=None, readout_o
     """
     if meta.get('pooled_store'):
         from .pooled_store import validate
-        return validate(stream, meta, numeric)
+        return validate(stream, meta, numeric, match=match, readout_options=readout_options)
     from .contraction_proof import admit
 
     if match is None or match.kernel.stream is not stream or match.kernel.meta is not meta:

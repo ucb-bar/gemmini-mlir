@@ -59,9 +59,9 @@ def encode(ins: Ins) -> Rec:
     elif k == "config_ex":
         f, r1, r2 = isa.config_ex(dataflow=a("dataflow"), sys_act=a("act"), acc_scale=a("acc_scale"),
                                   a_stride=a("a_stride"), c_stride=a("c_stride"),
-                                  a_transpose=bool(a("a_transpose")), b_transpose=bool(a("b_transpose")))
+                                  a_transpose=a("a_transpose"), b_transpose=a("b_transpose"))
     elif k == "config_ld":
-        f, r1, r2 = isa.config_ld(stride=a("stride"), scale=a("scale"), shrunk=bool(a("shrunk")),
+        f, r1, r2 = isa.config_ld(stride=a("stride"), scale=a("scale"), shrunk=a("shrunk"),
                                   block_stride=a("block_stride"), pixel_repeats=a("pixel_repeats"),
                                   load_id=a("load_id"))
     elif k == "config_st":
@@ -76,16 +76,16 @@ def encode(ins: Ins) -> Rec:
             f, r1, r2 = config_st(a('stride'), a('acc_act'), a('multiplier_bits'), pool)
     elif k == "mvin":
         f, _, r2 = isa.mvin(local_addr=a("local"), cols=a("cols"), rows=a("rows"), load_id=a("load_id"))
-        r1 = 0 if a("zero") else ins.off
+        r1 = 0 if a("zero") else isa._u64(ins.off)
     elif k == "mvout":
         f, _, r2 = isa.mvout(local_addr=a("local"), cols=a("cols"), rows=a("rows"))
-        r1 = ins.off
+        r1 = isa._u64(ins.off)
     elif k == "preload":
         f, r1, r2 = isa.preload(bd_addr=a("bd"), c_addr=a("c"), bd_cols=a("bd_cols"), bd_rows=a("bd_rows"),
                                 c_cols=a("c_cols"), c_rows=a("c_rows"))
     elif k == "compute":
         f, r1, r2 = isa.compute(a_addr=a("a"), bd_addr=a("bd"), a_cols=a("a_cols"), a_rows=a("a_rows"),
-                                bd_cols=a("bd_cols"), bd_rows=a("bd_rows"), accumulate=bool(a("accumulate")))
+                                bd_cols=a("bd_cols"), bd_rows=a("bd_rows"), accumulate=a("accumulate"))
     else:
         raise ValueError(f"no encoding for {k}")
     isa.assert_legal(f)

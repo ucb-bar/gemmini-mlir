@@ -316,3 +316,59 @@ def test_exhaustive_proof_detects_double_rounding_against_single_rounding_source
     # 0 + 1 * 0.5 rounds to 0 once, but a ratio load of b rounds 0.5 first: the scheme matters.
     assert region.source(a, b, 0).tolist() == [0]
     assert f32_readout(b, np.float32(0.5), 'i8').tolist() == [0]
+
+
+def _mutate_trusted_inputs(match, manifest, kind):
+    """Alter what the emitter records, keeping the meta and stream mutually consistent."""
+    if kind == 'swapped_binding':
+        bound = dict(match.operands)
+        match.operands[:] = [('a', bound['b']), ('b', bound['a'])]
+    elif kind == 'swapped_manifest_binding':
+        for row in manifest['bindings']:
+            row['operands'] = dict(a=row['operands']['b'], b=row['operands']['a'])
+    elif kind == 'consistent_multiplier_bits':
+        proof = match.kernel.meta['scaled_operand_sum']
+        new = proof['multiplier_bits'][0] + 0x00100000
+        proof['multiplier_bits'] = [new] * len(proof['multiplier_bits'])
+        match.kernel.stream.ins = [
+            i._replace(attrs=tuple(sorted({**dict(i.attrs), 'multiplier_bits': new,
+                                           'acc_scale': float(np.uint32(new).view(np.float32))}.items())))
+            if i.kind == 'config_st' else i for i in match.kernel.stream.ins]
+    elif kind == 'consistent_load_bits':
+        proof = match.kernel.meta['scaled_operand_sum']
+        proof['load_scale_bits'][1] += 1
+        scale = float(np.uint32(proof['load_scale_bits'][1]).view(np.float32))
+        instructions = list(match.kernel.stream.ins)
+        index = [k for k, ins in enumerate(instructions) if ins.kind == 'config_ld'][1]
+        instructions[index] = instructions[index]._replace(
+            attrs=tuple((k, scale if k == 'scale' else v) for k, v in instructions[index].attrs))
+        match.kernel.stream.ins = instructions
+    elif kind == 'consistent_relu':
+        proof = match.kernel.meta['scaled_operand_sum']
+        proof['relu'] = not proof['relu']
+        match.kernel.stream.ins = [
+            i._replace(attrs=tuple((k, 0 if k == 'acc_act' else v) for k, v in i.attrs))
+            if i.kind == 'config_st' else i for i in match.kernel.stream.ins]
+
+
+@pytest.mark.parametrize('kind', ['swapped_binding', 'swapped_manifest_binding', 'consistent_multiplier_bits',
+                                  'consistent_load_bits', 'consistent_relu'])
+def test_admission_rederives_the_proof_and_binding_from_source(monkeypatch, kind):
+    text, capsule = staged(17, 20, 'per_operand', GRID[:2], GRID[2:])
+    api = provider()
+    backend = api._core_aten_module(PACKAGE, 'catalog')
+    original = backend.build
+    altered_matches = []
+
+    def altered(*args, **kwargs):
+        module, manifest, matches = original(*args, **kwargs)
+        for match in matches:
+            if match.kernel.meta.get('scaled_operand_sum'):
+                _mutate_trusted_inputs(match, manifest, kind)
+                altered_matches.append(match)
+        return module, manifest, matches
+    monkeypatch.setattr(backend, 'build', altered)
+    proof = api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
+    assert altered_matches and proof['status'] == 'declined', proof
+    if kind != 'swapped_manifest_binding':
+        assert kind == 'swapped_binding' or 'proof' in proof['reason']

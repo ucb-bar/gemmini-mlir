@@ -29,12 +29,13 @@ import json
 from pathlib import Path
 
 from xdsl.dialects.builtin import ModuleOp
-from xdsl.ir import BlockArgument
+from xdsl.ir import BlockArgument, OpResult
 
 from ..frontend.parse import parse_module
 from .emit import build_module, compile_to_object, encode
 from .lint import HazardError, lint
 from .match import match_all
+from .source import module_of
 
 SCHEMA = "gemmini_core_aten_catalog_v1"
 
@@ -46,7 +47,7 @@ def _stream_digest(kernel) -> str:
     if kernel.meta.get('integer_producer') or kernel.meta.get('integer_readout'):
         # A source-retained readout contract belongs to its schedule proof.
         # Equal commands with different exact factors must not share metadata.
-        h.update(json.dumps(kernel.meta,sort_keys=True).encode())
+        h.update(json.dumps(dict(kernel.meta),sort_keys=True).encode())
     if 'limb_plan' in kernel.meta:
         # A symbol's metadata authenticates one representation plan. Identical
         # instructions with different host weights need distinct records.
@@ -83,7 +84,6 @@ def _source(value, ordinals, func_args):
 
 
 def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
-    from .storage import itemsize
     module = parse_module(source)
     ordinals = {op: i for i, op in enumerate(module.walk())}
     funcs = [op for op in module.walk() if op.name == "func.func"]
@@ -95,6 +95,9 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
     accepted = []
     audits = {}
     for m in matches:
+        # Emission records this contract in metadata. Finalize it before
+        # naming the stream so authentication sees the same bytes afterward.
+        m.kernel.meta['host_readout_contract'] = 'exact_rational_RNE_v1'
         digest = _stream_digest(m.kernel)
         try:
             report = audits.get(digest)
@@ -113,26 +116,11 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
                 op.detach()
                 device.body.blocks[0].add_op(op)
             kernels[symbol] = dict(symbol=symbol, op=m.op, stream_sha256=digest,
-                                   args=[dict(name=a.name, dtype=a.dtype, shape=list(a.shape), role=a.role,
-                                              **(dict(element_bytes=itemsize(a.dtype)) if m.kernel.stream.bitwise else {}))
-                                         for a in m.kernel.args],
+                                   args=argument_records(m),
                                    instructions=report["instructions"], fences=report["fences"],
                                    counts=m.kernel.stream.counts(), meta=_jsonable(m.kernel.meta),
                                    requantization=_readout_contracts(m.kernel.stream))
-        argmap = {name: _source(v, ordinals, func_args) for name, v in m.operands}
-        out_name, out_val = m.result
-        provs = [getattr(o.attributes.get("prov.aten"), "data", "") for o in m.consumed if o is not None]
-        provs = [p for p in provs if p and not p.startswith("quantized_decomposed.")]
-        bindings.append(dict(
-            op=m.op, aten=provs[0] if provs else "", symbol=symbol, root_ordinal=ordinals[m.root],
-            source_operation_ordinal=ordinals[m.root] if 'limb_plan' in m.numeric else ordinals[m.consumed[0]],
-            replaced_ordinals=sorted({ordinals[o] for o in m.consumed if o is not None}),
-            **(dict(constant_operands={name:_source(value,ordinals,func_args) for name,value in m.constant_operands}) if m.constant_operands else {}),
-            operands=argmap, result={out_name: _source(out_val, ordinals, func_args)},
-            result_type=str(out_val.type), operand_types={n: str(v.type) for n, v in m.operands},
-            region=getattr(m.root.attributes.get("prov.region_id"), "data", ""),
-            layout=m.layout, numeric=_jsonable(m.numeric),
-            **(_result_slices(m, ordinals, func_args) if m.outputs else {})))
+        bindings.append(binding_record(m, symbol, ordinals, func_args))
     device.verify()
     manifest = dict(schema=SCHEMA, source_sha256=hashlib.sha256(source.encode()).hexdigest(),
                     abi=dict(argument_order="kernels[].args", pointee_layout="dense_row_major",
@@ -142,6 +130,98 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
                     kernels=list(kernels.values()), bindings=bindings, declines=declines,
                     matched=len(bindings), unique_kernels=len(kernels))
     return device, manifest, accepted
+
+
+def argument_records(match):
+    """The ordered physical ABI of a source-bound match, including private scratch.
+
+    Source admission authenticates the match's operands, outputs and physical
+    representation. The manifest must reproduce that complete argument list;
+    its own names, roles and order cannot serve as evidence for the ABI.
+    """
+    from .storage import itemsize
+    return [dict(name=a.name, dtype=a.dtype, shape=list(a.shape), role=a.role,
+                 **(dict(element_bytes=itemsize(a.dtype)) if match.kernel.stream.bitwise else {}))
+            for a in match.kernel.args]
+
+
+def binding_record(m, symbol, ordinals, func_args):
+    """The manifest binding ``offload.rewrite`` replays, derived from the match's source values."""
+    out_name, out_val = m.result
+    provs = [getattr(o.attributes.get("prov.aten"), "data", "") for o in m.consumed if o is not None]
+    provs = [p for p in provs if p and not p.startswith("quantized_decomposed.")]
+    return dict(
+        op=m.op, aten=provs[0] if provs else "", symbol=symbol, root_ordinal=ordinals[m.root],
+        source_operation_ordinal=ordinals[m.root] if 'limb_plan' in m.numeric else ordinals[m.consumed[0]],
+        replaced_ordinals=sorted({ordinals[o] for o in m.consumed if o is not None}),
+        **(dict(constant_operands={name: _source(value, ordinals, func_args) for name, value in m.constant_operands})
+           if m.constant_operands else {}),
+        operands={name: _source(v, ordinals, func_args) for name, v in m.operands},
+        result={out_name: _source(out_val, ordinals, func_args)},
+        result_type=str(out_val.type), operand_types={n: str(v.type) for n, v in m.operands},
+        region=getattr(m.root.attributes.get("prov.region_id"), "data", ""),
+        layout=m.layout, numeric=_jsonable(m.numeric),
+        **(_result_slices(m, ordinals, func_args) if m.outputs else {}))
+
+
+def authenticate_binding(binding, m):
+    """Raise unless ``binding`` is exactly what ``m``'s own source values and kernel bind.
+
+    The manifest binding is what offload rewrites, so every admission path
+    authenticates it here: operand/result/slice source references and replaced
+    ordinals are re-derived, and the bound results must be the only values
+    escaping the replaced ops.
+    """
+    module = module_of(m.root)
+    ordinals = {op: i for i, op in enumerate(module.walk())}
+    funcs = [op for op in module.walk() if op.name == "func.func"]
+    func_args = list(funcs[0].body.blocks[0].args) if funcs else []
+    symbol = 'gemmini_ca_' + _stream_digest(m.kernel)[:16]
+    if binding.get('symbol') != symbol:
+        raise ValueError('catalog binding symbol differs from its kernel stream digest')
+    if _jsonable(binding) != _jsonable(binding_record(m, symbol, ordinals, func_args)):
+        raise ValueError('catalog binding differs from the source values its match binds')
+    consumed = {id(op) for op in m.consumed if op is not None}
+    results = [m.result[1]] if not m.outputs else [value for value, _, _, _ in m.outputs]
+    escaping = {id(value) for op in m.consumed if op is not None for value in op.results
+                if any(id(use.operation) not in consumed for use in value.uses)}
+    if (any(not isinstance(v, OpResult) or id(v.owner) not in consumed for v in results)
+            or not escaping <= {id(v) for v in results}):
+        raise ValueError('bound results are not the values escaping the replaced source operations')
+    if any(isinstance(v, OpResult) and id(v.owner) in consumed for _, v in (*m.operands, *m.constant_operands)):
+        raise ValueError('bound operand is produced inside the replaced source operations')
+
+
+def authenticate_catalog(manifest, matches):
+    """Authenticate the complete binding table and full stream digests before linking."""
+    if len(manifest['bindings']) != len(matches):
+        raise ValueError('catalog bindings differ from the admitted matches')
+    digests = {}
+    arguments = {}
+    for binding, match in zip(manifest['bindings'], matches):
+        authenticate_binding(binding, match)
+        digest = _stream_digest(match.kernel)
+        symbol = binding['symbol']
+        if symbol in digests and digests[symbol] != digest:
+            raise ValueError('catalog binding symbol aliases different kernel stream digests')
+        digests[symbol] = digest
+        arguments[symbol] = argument_records(match)
+    if (len(manifest['kernels']) != len(digests)
+            or {k['symbol']: k.get('stream_sha256') for k in manifest['kernels']} != digests):
+        raise ValueError('catalog kernel digests differ from the authenticated binding streams')
+    if any(k.get('args') != arguments[k['symbol']] for k in manifest['kernels']):
+        raise ValueError('catalog kernel arguments differ from the source-bound kernel ABI')
+    return digests
+
+
+def authenticate_proof(manifest, matches, proof):
+    """Require the compiler's actual streams and bindings to equal the admitted catalog."""
+    digests = authenticate_catalog(manifest, matches)
+    if (proof.get('status') != 'proven' or proof.get('source_sha256') != manifest['source_sha256']
+            or proof.get('bindings') != manifest['bindings']
+            or len(proof.get('kernels', [])) != len(digests)
+            or {k['symbol']: k.get('stream_sha256') for k in proof.get('kernels', [])} != digests):
+        raise ValueError('compiled catalog differs from the proved numerical schedule or stream digests')
 
 
 def _result_slices(m, ordinals, func_args):
@@ -175,26 +255,44 @@ def _jsonable(obj):
         return str(obj)
 
 
-def compile_catalog(source_path: Path, workdir: Path, *, llvm_bin: Path | None = None, readout_options=None) -> dict:
+def compile_catalog(source_path: Path, workdir: Path, *, llvm_bin: Path | None = None, readout_options=None,
+                    numeric_schedule_proof=None) -> dict:
     source = Path(source_path).read_text()
-    device, manifest, _ = build(source, readout_options=readout_options)
+    device, manifest, matches = build(source, readout_options=readout_options)
     workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        if manifest['kernels']:
+            if numeric_schedule_proof is None:
+                raise ValueError('catalog compilation requires a source-bound numerical schedule proof')
+            authenticate_proof(manifest, matches, numeric_schedule_proof)
+    except ValueError as exc:
+        manifest.update(status='declined', reason=str(exc),
+                        kernels=[], bindings=[], matched=0, unique_kernels=0)
+    if numeric_schedule_proof is not None:
+        manifest['numeric_schedule_proof'] = numeric_schedule_proof
     if manifest["kernels"]:
         receipt = compile_to_object(device, workdir, llvm_bin=llvm_bin, stem="core_aten")
         manifest["compilation"] = receipt
         manifest['status'] = 'compiled'
-    else:
+    elif manifest.get('status') != 'declined':
         manifest.update(status='declined', reason='no exact device kernel produced')
     (workdir / "core_aten_catalog.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest
 
 
-def merlin_builder(llvm_bin: Path):
-    """Return (manifest, object); an empty catalog returns (refusal manifest, None)."""
+def _execution_provider():
+    from merlin.targetgen.core_aten_device import load_execution_provider
+    package = Path(__file__).resolve().parents[2]
+    return load_execution_provider('gemmini', package / 'merlin-support/core_aten/execution_provider.py')
+
+
+def merlin_builder(llvm_bin: Path, *, numeric_policy=None, readout_options=None):
+    """Admit the prepared source before compiling; refusals return no object."""
 
     def build_fn(prepared: Path, workdir: Path):
-        manifest = compile_catalog(Path(prepared), Path(workdir), llvm_bin=Path(llvm_bin))
-        return Path(workdir) / "core_aten_catalog.json", (Path(workdir) / "core_aten.o" if manifest['kernels'] else None)
+        return _execution_provider().core_aten_catalog(Path(prepared), Path(workdir),
+            package=Path(__file__).resolve().parents[2], llvm_bin=Path(llvm_bin),
+            numeric_policy=numeric_policy, readout_options=readout_options)
 
     return build_fn
 
@@ -204,10 +302,18 @@ def main() -> int:
     ap.add_argument("input", type=Path)
     ap.add_argument("--workdir", type=Path, required=True)
     ap.add_argument("--llvm-bin", type=Path)
+    ap.add_argument("--numeric-policy", type=Path, help="explicit reviewed Merlin software spec")
     args = ap.parse_args()
-    m = compile_catalog(args.input, args.workdir, llvm_bin=args.llvm_bin)
-    print(json.dumps({k: m[k] for k in ("matched", "unique_kernels")} | {"declines": len(m["declines"])}))
-    return 0
+    policy = None
+    if args.numeric_policy is not None:
+        from merlin.targetgen.software_spec import load_software_spec
+        policy = load_software_spec(args.numeric_policy, target='gemmini')
+    manifest, _ = _execution_provider().core_aten_catalog(args.input, args.workdir,
+        package=Path(__file__).resolve().parents[2], llvm_bin=args.llvm_bin, numeric_policy=policy)
+    m = json.loads(manifest.read_text())
+    print(json.dumps(dict(status=m['status'], matched=m.get('matched', 0),
+                         unique_kernels=m.get('unique_kernels', 0), declines=len(m.get('declines', ())))))
+    return 0 if m['status'] == 'compiled' else 1
 
 
 if __name__ == "__main__":

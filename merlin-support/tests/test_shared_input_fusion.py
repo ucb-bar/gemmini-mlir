@@ -244,20 +244,24 @@ def test_unprovable_groups_fall_back_to_separate_contractions(reason, text):
 
 
 CORRUPTIONS = {
-    'skip_input_tile': 'uninitialized shared input',
-    'offset_weight': 'loses products',
+    'skip_input_tile': 'mesh input row was never loaded',
+    'offset_weight': 'stationary operand differs from the source contraction',
     'multiplier': 'proved multiplier bits',
     'activation': 'proved multiplier bits',
-    'store_pitch': 'width or pitch',
+    'store_pitch': 'stores do not write every sibling output element',
     'weight_bytes': 'not the source weight',
-    'drop_store': 'overwrites an unread output',
-    'load_stride': 'declared layout',
-    'store_width': 'width or pitch',
+    'drop_store': 'mesh result overwrites a live unstored accumulator row',
+    'load_stride': 'DMA row leaves its argument',
+    'store_width': 'DMA element width differs from its argument type',
     'swap_weights': 'differs from its source contraction',
     # Configuration changed between dependent commands, then restored.
-    'execute_stride_restored': 'effective execute configuration',
-    'load_scale_restored': 'effective load configuration',
+    'execute_stride_restored': 'effective CONFIG_EX differs',
+    'load_scale_restored': 'effective CONFIG_LD differs',
     'store_scale_mid_panel': 'proved multiplier bits',
+    # CONFIG_EX changed only around a store: readout depends on the execute state too.
+    'execute_changed_at_store': 'effective CONFIG_EX differs',
+    # The last stores are never ordered before the kernel returns.
+    'no_final_fence': 'unfenced stores',
 }
 
 
@@ -328,6 +332,12 @@ def test_admission_declines_tampered_streams(monkeypatch, corruption):
                 other = _configured('config_st', current.a('stride'), current.a('acc_act'),
                                     multiplier_bits=int(np.float32(.125).view(np.uint32)))
                 s.ins[n:n + 1] = [other, s.ins[n], current]
+            elif corruption == 'execute_changed_at_store':
+                n = index(lambda i: i.kind == 'mvout')
+                s.ins[n:n + 1] = [_configured('config_ex', c_stride=2), s.ins[n], _configured('config_ex')]
+            elif corruption == 'no_final_fence':
+                while s.ins[-1].kind == 'fence':
+                    s.ins.pop()
             elif corruption == 'store_width':
                 n = index(lambda i: i.kind == 'mvout')
                 s.ins[n] = replace_attr(s.ins[n], 'local', s.ins[n].a('local') | (1 << 29))
@@ -337,3 +347,25 @@ def test_admission_declines_tampered_streams(monkeypatch, corruption):
     proof = api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
     assert proof['status'] == 'declined', corruption
     assert CORRUPTIONS[corruption] in proof['reason'], proof['reason']
+
+
+def test_backstop_compares_against_the_exact_reference():
+    """The differential model refuses when the stream and the source reference disagree."""
+    from merlin.compile.scheduling.panel_layout import PanelLayout
+    from merlin.compile.scheduling.shared_input_groups import find_shared_input_groups
+    from mlir_oot.core_aten.shared_input import _backstop, _members
+    from mlir_oot.core_aten.stream_proof import ProofError
+    text, _, _ = source(6, 20, (18, 4))  # constant weights: both siblings use panels
+    _, _, found = fused(text)
+    match, = found
+    from mlir_oot.core_aten.source import module_of
+    module = module_of(match.root)
+    group, = find_shared_input_groups(module)
+    _, members = _members(module, group, options())
+    width = match.kernel.meta['shared_input']['panel_width']
+    weights = {f'w{i}': (i, PanelLayout(m.k, m.n, width)) for i, m in enumerate(members)}
+    bases = [0, 6 * 18]
+    _backstop(match.kernel.stream, members, weights, bases)
+    members[1].bits = tuple(int(np.float32(.5).view(np.uint32)) for _ in members[1].bits)
+    with pytest.raises(ProofError, match='differs from the exact reference'):
+        _backstop(match.kernel.stream, members, weights, bases)

@@ -23,6 +23,7 @@ from fractions import Fraction
 
 import numpy as np
 
+from .source import module_of
 from . import pool_plan
 from .stream_proof import ProofError, Replay, contraction_row, execute, is_zero, require, written_once
 
@@ -253,35 +254,70 @@ def _unravel(flat, dims):
     return tuple(int(v) for v in np.unravel_index(flat, dims))
 
 
-def validate_fused(stream, meta, numeric):
-    """Authenticate every pooled output of a fused readout against the source plan."""
+@dataclass(frozen=True)
+class FusedExpectation:
+    """A fused pooled readout derived from the source contraction and its plan alone."""
+    image: pool_plan.Image
+    window: pool_plan.Window
+    depth: int
+    bits: list
+    relu: bool
+    seed: object  # int64 [N] or [M, N]; None when the source accumulator starts at zero
+
+
+def _bound(match, operands, result):
+    """The match binds exactly these source values (by identity), not emitter-named look-alikes."""
+    bound = list(match.operands)
+    require(len(bound) == len(operands) and all(
+        name == want and value is source for (name, value), (want, source) in zip(bound, operands)),
+        "kernel operands are not bound to the source values")
+    require(match.result[0] == result[0] and match.result[1] is result[1], "kernel result is not the source result")
+
+
+def fused_expectation(match, readout_options):
+    from .integer_regions import contraction, planned_readout, source_seed
+
+    op = match.root
+    dims = contraction(op)
+    require(dims is not None and readout_options is not None, "pooled readout root is not a source contraction")
+    planned, _ = planned_readout(module_of(op), op, readout_options)
+    seeded = source_seed(op, dims, planned)
+    planned = seeded.planned
+    require(planned is not None and planned[0].route == "conv_pool" and seeded.runtime_seed is None,
+            "the source does not plan a fused pooled readout")
+    plan, chain, geometry = planned
+    proof = plan.decision["proof"]
+    require(plan.decision.get("cut") == "pool" and proof.get("definitional") == "f32_product_rne",
+            "the source pool plan is not a closed f32 readout")
+    _bound(match, [("a", op.operands[0]), ("b", op.operands[1])], ("out", chain.ops[-1].results[0]))
+    require({id(o) for o in (op, *chain.ops)} <= {id(o) for o in match.consumed},
+            "the kernel does not replace the whole source chain")
+    seed = None if seeded.values is None else np.asarray(seeded.values, np.int64)
+    return FusedExpectation(geometry.image, geometry.window, dims.k, list(proof["multiplier_bits"]),
+                            "relu" in plan.decision["stages"], seed)
+
+
+def validate_fused(stream, expected):
+    """Authenticate every pooled output of a fused readout against the source expectation."""
     from .readout_encoding import activation, flags
 
-    plan = meta.get("composition_plan") or {}
-    decision = plan.get("decision") or {}
-    proof = decision.get("proof") or {}
-    pooled = meta["pooled_store"]
-    batch, rows, cols, channels = pooled["image"]
-    size, step = pooled["window"], pooled["stride"]
-    require(plan.get("route") == "conv_pool" and decision.get("cut") == "pool"
-            and proof.get("definitional") == "f32_product_rne", "pooled readout lacks a closed composition proof")
-    require(proof.get("pool_geometry") == dict(window=[size, size], stride=[step, step], padded=False),
-            "pooled store geometry differs from the composition proof")
-    bits = list(meta.get("multiplier_bits") or ())
-    require(bits == proof.get("multiplier_bits") and len(bits) == channels,
-            "readout multiplier bits differ from the composition proof")
+    batch, rows, cols, channels = (expected.image.batch, expected.image.rows, expected.image.cols,
+                                   expected.image.channels)
+    size, step, depth, bits = expected.window.size, expected.window.stride, expected.depth, expected.bits
+    require(len(bits) == channels, "readout multiplier bits do not cover the source channels")
     require(not stream.readouts and not stream.packs, "pooled readout retains a host epilogue")
     args = {a.name: a for a in stream.args}
-    m, depth = args["a"].shape
-    require(m == batch * rows * cols and args["b"].shape == (depth, channels), "operands differ from the source")
-    out = args["out"].shape
-    out_rows, out_cols = (rows - size) // step + 1, (cols - size) // step + 1
-    require(out == (batch, out_rows, out_cols, channels) and args["out"].dtype == "i8", "pooled output extent")
-    expected_seed = None if (numeric or {}).get("seed") is None else np.asarray(numeric["seed"], np.int64)
+    out = (batch, *expected.window.output(expected.image), channels)
+    require(set(args) == {"a", "b", "out", *stream.consts} and
+            (args["a"].shape, args["a"].dtype, args["a"].role) == ((batch * rows * cols, depth), "i8", "input") and
+            (args["b"].shape, args["b"].dtype, args["b"].role) == ((depth, channels), "i8", "input") and
+            (args["out"].shape, args["out"].dtype, args["out"].role) == (out, "i8", "output"),
+            "kernel arguments differ from the source operands")
+    expected_seed = expected.seed
     for name, data in stream.consts.items():
         require(name == "bias_c" and expected_seed is not None and np.array_equal(data, expected_seed),
                 "accumulator seed constant differs from the source-proved bias")
-    act = activation(meta["relu"])
+    act = activation(expected.relu)
     counts = np.zeros(int(np.prod(out)), np.int64)
     acc_bit, full = flags()["acc_i8"], flags()["full_c_bit"]
 
@@ -345,7 +381,7 @@ def validate_fused(stream, meta, numeric):
     _replay(stream, store)
     written_once(counts)
     _final_store_unpooled(stream)
-    _backstop(stream, "out", lambda inputs: _fused_reference(inputs, meta, expected_seed, out))
+    _backstop(stream, "out", lambda inputs: _fused_reference(inputs, expected))
     return "f32_product_rne"
 
 
@@ -393,14 +429,21 @@ def _unpad(value):
     return source, (top, left, outer[1] - inner[1] - top, outer[2] - inner[2] - left), owner
 
 
-def match_pooled_movement(op):
-    """Identical-qparam int8 max pooling as a fenced scratchpad pooled store."""
-    from .match import Match, dequant, quant_sink, shape, users
+@dataclass(frozen=True)
+class MovementSource:
+    qx: object
+    q: object
+    insert: object
+    image: pool_plan.Image
+    window: pool_plan.Window
+
+
+def movement_source(op):
+    """The identical-qparam int8 max pool rooted at pool ``op``, read from the source alone."""
+    from .match import dequant, quant_sink, shape
 
     found = _pool_window(op)
-    if found is None:
-        return None
-    unpadded = _unpad(op.operands[0])
+    unpadded = None if found is None else _unpad(op.operands[0])
     if unpadded is None:
         return None
     value, pad, insert = unpadded
@@ -410,10 +453,24 @@ def match_pooled_movement(op):
     batch, rows, cols, channels = shape(qx.value)
     image, window = pool_plan.Image(batch, rows, cols, channels), pool_plan.Window(*found, pad)
     try:
-        out = window.output(image)
-        if shape(op.results[0]) != (batch, *out, channels):
+        if shape(op.results[0]) != (batch, *window.output(image), channels):
             return None
-        kernel = _pooled_movement_kernel(image, window)
+    except pool_plan.PoolPlanRefused:
+        return None
+    return MovementSource(qx, q, insert, image, window)
+
+
+def match_pooled_movement(op):
+    """Identical-qparam int8 max pooling as a fenced scratchpad pooled store."""
+    from .match import Match, users
+
+    found = movement_source(op)
+    if found is None:
+        return None
+    qx, q, insert, window = found.qx, found.q, found.insert, found.window
+    pad = window.pad
+    try:
+        kernel = _pooled_movement_kernel(found.image, window)
     except pool_plan.PoolPlanRefused:
         return None
     consumed = [op, q.op, *([insert] if insert is not None else [])]
@@ -472,19 +529,31 @@ def _pooled_movement_kernel(image, window):
                           window=window.size, stride=window.stride, pad=list(window.pad))))
 
 
-def validate_movement(stream, meta):
-    """Authenticate every pooled output of a standalone pooled store."""
+def movement_expectation(match):
+    from .match import producer
+
+    q = match.root
+    pool = producer(q.operands[0]) if q.operands else None
+    found = None if pool is None else movement_source(pool)
+    require(found is not None and found.q.op is q, "the source is not an identical-qparam max pool")
+    _bound(match, [("x", found.qx.value)], ("out", found.q.value))
+    require(id(pool) in {id(o) for o in match.consumed}, "the kernel does not replace the source pool")
+    return found
+
+
+def validate_movement(stream, expected):
+    """Authenticate every pooled output of a standalone pooled store against the source pool."""
     from .readout_encoding import flags
 
-    pooled = meta["pooled_store"]
-    batch, rows, cols, channels = pooled["image"]
-    size, step = pooled["window"], pooled["stride"]
-    top, left, bottom, right = pooled["pad"]
-    window = pool_plan.Window(size, step, (top, left, bottom, right))
-    out_rows, out_cols = window.output(pool_plan.Image(batch, rows, cols, channels))
+    image, window = expected.image, expected.window
+    batch, rows, cols, channels = image.batch, image.rows, image.cols, image.channels
+    size, step = window.size, window.stride
+    top, left, _, _ = window.pad
+    out = (batch, *window.output(image), channels)
     args = {a.name: a for a in stream.args}
-    out = (batch, out_rows, out_cols, channels)
-    require(args["x"].shape == (batch, rows, cols, channels) and args["out"].shape == out,
+    require(set(args) == {"x", "out", *stream.consts} and
+            (args["x"].shape, args["x"].dtype, args["x"].role) == ((batch, rows, cols, channels), "i8", "input") and
+            (args["out"].shape, args["out"].dtype, args["out"].role) == (out, "i8", "output"),
             "pooled movement operands differ from the source")
     require(not stream.readouts and not stream.packs and not any(i.kind in ("preload", "compute") for i in stream.ins),
             "pooled movement contains arithmetic")
@@ -532,17 +601,29 @@ def validate_movement(stream, meta):
     _replay(stream, store)
     written_once(counts)
     _final_store_unpooled(stream)
-    _backstop(stream, "out", lambda inputs: _window_max(inputs["x"].astype(np.int64), size, step, pooled["pad"]))
+    _backstop(stream, "out", lambda inputs: _window_max(inputs["x"].astype(np.int64), size, step, window.pad))
     return "storage_codes"
 
 
 # -- window mean as a ones contraction ---------------------------------------------------------
 
-def match_window_mean(op, module, options):
-    """A closed DQ -> trailing sum -> divide -> Q chain with Merlin's avgpool multiplier."""
+@dataclass(frozen=True)
+class MeanSource:
+    qx: object
+    reduce: object
+    divide: object
+    quantize: object
+    plan: object
+    rows: int
+    window: int
+    bits: int
+
+
+def mean_source(op, module, options):
+    """A closed DQ -> trailing sum -> divide -> Q chain and its Merlin avgpool plan, from the source."""
     from merlin.compile.composition_fusion import plan_composition
 
-    from .match import Match, dequant, producer, shape, users
+    from .match import dequant, producer, shape, users
 
     if options is None or op.name != "linalg.reduce" or len(users(op.results[0])) != 1:
         return None
@@ -568,10 +649,24 @@ def match_window_mean(op, module, options):
     decision = plan.decision
     rows, window = decision["rows"], decision["window"]
     xshape, yshape = shape(qx.value), shape(quantize.results[0])
-    if int(np.prod(xshape)) != rows * window or int(np.prod(yshape)) != rows:
+    if (int(np.prod(xshape)) != rows * window or int(np.prod(yshape)) != rows
+            or decision.get("definitional") != "f32_product_rne" or decision.get("lowering") != "ones_matmul"
+            or len(decision["multiplier_bits"]) != 1):
         return None
-    kernel = _mean_kernel(xshape, yshape, rows, window, decision["multiplier_bits"][0])
-    kernel.meta["composition_plan"] = plan.record()
+    return MeanSource(qx, op, divide, quantize, plan, rows, window, decision["multiplier_bits"][0])
+
+
+def match_window_mean(op, module, options):
+    """The window mean as a ones contraction read out under Merlin's avgpool multiplier."""
+    from .match import Match, shape, users
+
+    found = mean_source(op, module, options)
+    if found is None:
+        return None
+    qx, divide, quantize = found.qx, found.divide, found.quantize
+    dequantize, rows, window = qx.dq, found.rows, found.window
+    kernel = _mean_kernel(shape(qx.value), shape(quantize.results[0]), rows, window, found.bits)
+    kernel.meta["composition_plan"] = found.plan.record()
     consumed = [op, divide, quantize, *([dequantize] if len(users(dequantize.results[0])) == 1 else [])]
     return Match("aten.mean.dim", quantize, consumed, [("x", qx.value)], ("y", quantize.results[0]), kernel,
                  numeric=dict(readout="f32_product_rne", rows=rows, window=window))
@@ -602,19 +697,30 @@ def _mean_kernel(xshape, yshape, rows, window, bits):
                                            dimensions=dict(rows=rows, k=window)))
 
 
-def validate_mean(stream, meta):
+def mean_expectation(match, readout_options):
+    from .match import producer
+
+    quantize = match.root
+    divide = producer(quantize.operands[0]) if quantize.operands else None
+    reduce = None if divide is None or not divide.operands else producer(divide.operands[0])
+    found = None if reduce is None else mean_source(reduce, module_of(reduce), readout_options)
+    require(found is not None and found.quantize is quantize, "the source is not a planned window mean")
+    _bound(match, [("x", found.qx.value)], ("y", quantize.results[0]))
+    require({id(reduce), id(divide), id(quantize)} <= {id(o) for o in match.consumed},
+            "the kernel does not replace the source mean")
+    return found
+
+
+def validate_mean(stream, expected):
+    """Authenticate every window-mean output against the source plan."""
+    from .match import shape
     from .readout_encoding import flags
 
-    plan = meta.get("composition_plan") or {}
-    decision = plan.get("decision") or {}
-    rows, window = meta["dimensions"]["rows"], meta["dimensions"]["k"]
-    require(plan.get("route") == "avgpool" and decision.get("definitional") == "f32_product_rne"
-            and decision.get("lowering") == "ones_matmul", "window mean lacks a closed composition proof")
-    require(list(meta["multiplier_bits"]) == decision.get("multiplier_bits")
-            and (decision.get("rows"), decision.get("window")) == (rows, window),
-            "window mean multiplier differs from the composition proof")
+    rows, window, bits = expected.rows, expected.window, expected.bits
     args = {a.name: a for a in stream.args}
-    require(int(np.prod(args["x"].shape)) == rows * window and int(np.prod(args["y"].shape)) == rows,
+    require(set(args) == {"x", "y", *stream.consts} and
+            (args["x"].shape, args["x"].dtype, args["x"].role) == (shape(expected.qx.value), "i8", "input") and
+            (args["y"].shape, args["y"].dtype, args["y"].role) == (shape(expected.quantize.results[0]), "i8", "output"),
             "window mean operands differ from the source")
     require(not stream.readouts and not stream.packs, "window mean retains a host epilogue")
     counts = np.zeros(rows, np.int64)
@@ -628,7 +734,7 @@ def validate_mean(stream, meta):
         local = ins.a("local")
         require(st["pool_stride"] == 0 and local & acc_bit and not local & full,
                 "window mean store is not a narrow accumulator readout")
-        require(st["activation"] == 0 and st["acc_scale"] == meta["multiplier_bits"][0],
+        require(st["activation"] == 0 and st["acc_scale"] == bits,
                 "decoded readout fields differ from the proved multiplier bits")
         require(ins.a("cols") == 1, "window mean stores one column")
         for i in range(ins.a("rows")):
@@ -642,7 +748,7 @@ def validate_mean(stream, meta):
 
     _replay(stream, store)
     written_once(counts)
-    _backstop(stream, "y", lambda inputs: _mean_reference(inputs["x"], rows, meta["multiplier_bits"][0]))
+    _backstop(stream, "y", lambda inputs: _mean_reference(inputs["x"], rows, bits))
     return "f32_product_rne"
 
 
@@ -665,17 +771,17 @@ def _window_max(image, size, step, pad=(0, 0, 0, 0)):
     return out.astype(np.int64)
 
 
-def _fused_reference(inputs, meta, seed, out):
+def _fused_reference(inputs, expected):
     from merlin.runtime.exact_readout import f32_readout
 
     acc = inputs["a"].astype(np.int64) @ inputs["b"].astype(np.int64)
-    if seed is not None:
-        acc = acc + seed
-    multiplier = np.array(meta["multiplier_bits"], dtype=np.uint32).view(np.float32)
-    readout = f32_readout(acc, multiplier, "i8", relu=meta["relu"]).astype(np.int64)
-    batch, rows, cols, channels = meta["pooled_store"]["image"]
-    return _window_max(readout.reshape(batch, rows, cols, channels), meta["pooled_store"]["window"],
-                       meta["pooled_store"]["stride"]).reshape(out)
+    if expected.seed is not None:
+        acc = acc + expected.seed
+    multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
+    readout = f32_readout(acc, multiplier, "i8", relu=expected.relu).astype(np.int64)
+    image = expected.image
+    return _window_max(readout.reshape(image.batch, image.rows, image.cols, image.channels),
+                       expected.window.size, expected.window.stride)
 
 
 def _mean_reference(x, rows, bits):
@@ -710,37 +816,50 @@ def _backstop(stream, output, reference, trials=3):
 
 # -- admission entry points ---------------------------------------------------------------------
 
-def validate(stream, meta, numeric=None):
-    """Device readout check for a pooled or window-mean kernel; raises ValueError."""
+def _prove(stream, meta, match, readout_options):
+    """``(device readout, reduction depth or None)`` from source-derived expectations only.
+
+    ``meta`` only selects which proof applies; a wrong selection fails that proof.
+    """
+    require(match is not None, "pooled admission requires the source match of the emitted stream")
     try:
         if meta.get("composition") == "window_mean":
-            return validate_mean(stream, meta)
-        if meta["pooled_store"]["kind"] == "movement":
-            return validate_movement(stream, meta)
-        return validate_fused(stream, meta, numeric)
-    except (KeyError, IndexError, TypeError) as error:
+            expected = mean_expectation(match, readout_options)
+            return validate_mean(stream, expected), expected.window
+        if meta.get("composition") == "pooled_movement":
+            require(readout_options is not None, "standalone pooled store without a selected readout scheme")
+            return validate_movement(stream, movement_expectation(match)), None
+        expected = fused_expectation(match, readout_options)
+        return validate_fused(stream, expected), expected.depth
+    except (KeyError, IndexError, TypeError, AttributeError) as error:
         raise ProofError(f"malformed fused-store schedule: {error}") from None
 
 
-def admit(match, numeric_policy, *, tile_dim):
+def validate(stream, meta, numeric=None, *, match=None, readout_options=None):
+    """Device readout check for a pooled or window-mean kernel; raises ValueError."""
+    return _prove(stream, meta, match, readout_options)[0]
+
+
+def admit(match, numeric_policy, *, tile_dim, readout_options):
     """Numeric admission record of a standalone composition kernel."""
     import hashlib
 
     from merlin.targetgen.operation_numerics import integer_split_k_limit
 
     meta, stream = match.kernel.meta, match.kernel.stream
+    readout, depth = _prove(stream, meta, match, readout_options)
     strategy = (numeric_policy or {}).get("numerical_semantics", {}).get("readout", {}).get("strategy")
-    if meta.get("readout") == "f32_product_rne" and strategy != "f32_product_rne":
+    if readout == "f32_product_rne" and strategy != "f32_product_rne":
         raise ProofError("composition boundary differs from selected numerical policy")
-    record = dict(status="proven", schedule=meta, exact_arithmetic=True,
+    record = dict(status="proven", schedule=meta, exact_arithmetic=True, device_readout=readout,
+                  quantization="device" if readout == "f32_product_rne" else "storage_codes",
                   emitted_schedule_sha256=hashlib.sha256(repr(stream.ins).encode()).hexdigest())
     computes = [i for i in stream.ins if i.kind == "compute"]
     if computes:
-        bound = integer_split_k_limit(numeric_policy, tile_dim=tile_dim, full_k=meta["dimensions"]["k"])
+        require(depth is not None, "pooled movement contains arithmetic")
+        bound = integer_split_k_limit(numeric_policy, tile_dim=tile_dim, full_k=depth)
         require(bound is not None and bound["max_padded_k"] >= tile_dim
                 and all(i.a("a_cols") <= tile_dim for i in computes),
                 "provider padded mesh K exceeds selected internal MAC bound")
         record["bound"] = bound
-    record["device_readout"] = validate(stream, meta)
-    record["quantization"] = "device" if record["device_readout"] == "f32_product_rne" else "storage_codes"
     return record

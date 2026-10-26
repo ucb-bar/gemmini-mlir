@@ -248,12 +248,13 @@ class Replay:
     the whole list is written (or accumulated) into the preload's target.
     """
 
-    def __init__(self, stream, on_store=None, *, store_fields=(), dataflows=None):
+    def __init__(self, stream, on_store=None, *, store_fields=(), dataflows=None, byte_widening=False):
         from ..tables import isa
         from .stream import DIM
 
         self.stream, self.on_store, self.isa, self.dim = stream, on_store, isa, DIM
         self.store_fields = frozenset(store_fields)
+        self.byte_widening = byte_widening
         self.dataflows = frozenset((isa.WEIGHT_STATIONARY,) if dataflows is None else dataflows)
         self.pe = None  # output-stationary per-row terms held in the mesh
         self.ld, self.used_ld = {}, {}
@@ -357,7 +358,9 @@ class Replay:
         rows, cols = fields["num_rows"], fields["num_cols"]
         what = "accumulator seed load" if place.accumulator else "operand load"
         require(cfg is not None, f"{what} before its CONFIG_LD state")
-        _matches(cfg, load_model(), ("state_id", "dram_stride"), f"effective CONFIG_LD differs at an {what}")
+        widening = self.byte_widening and place.accumulator and cfg.get('shrink') == 1
+        model = dict(load_model(), shrink=1) if widening else load_model()
+        _matches(cfg, model, ("state_id", "dram_stride"), f"effective CONFIG_LD differs at an {what}")
         require(not place.garbage and not place.accumulate and not place.full,
                 f"{what} uses an unmodelled destination (accumulating or garbage)")
         require(1 <= rows <= DIM and 1 <= cols <= (DIM if place.accumulator else 4 * DIM),
@@ -366,7 +369,7 @@ class Replay:
         zero = command.arg is None
         require(not zero or command.off == 0, f"{what} has no source argument")
         arg = None if zero else self._arg(command)
-        width = 4 if place.accumulator else 1
+        width = 4 if place.accumulator and not widening else 1
         for b0 in range(0, cols, DIM):
             nc = min(DIM, cols - b0)
             base = place.row + (b0 // DIM) * cfg["stride"]
@@ -500,7 +503,7 @@ class Replay:
         rows, cols = fields["num_rows"], fields["num_cols"]
         require(not place.garbage and not place.accumulate, "accumulator store width or address flags differ")
         require(1 <= rows <= DIM and 1 <= cols <= DIM, "store extent is outside the modelled primitive")
-        if place.accumulator:
+        if place.accumulator and not (self.byte_widening and place.full):
             self._execute_state()
         if self.on_store is not None:
             self.on_store(self, ins, dict(st))
@@ -606,7 +609,7 @@ def _pooled_store(command, place, cols, st, acc, spad, write, relu):
             write(command.arg, offset, np.asarray(value, np.int64).reshape(1, -1), 0, 1)
 
 
-def execute(stream, buffers):
+def execute(stream, buffers, *, host_epilogues=False):
     """Run ``stream`` on ``buffers`` ({arg index: ndarray}, modified in place).
 
     Only the semantics ``Replay`` admits are implemented; anything else raises.
@@ -639,7 +642,19 @@ def execute(stream, buffers):
     from ..tables import isa
     from .readout_encoding import activation
     relu = activation(True)
-    for ins in stream.ins:
+    boundaries = {}
+    if host_epilogues:
+        from .requant import apply
+        names = {a.name: i for i, a in enumerate(stream.args)}
+        for source, dest in stream.packs:
+            buffers[names[dest]].view(np.uint8).flat[:] = buffers[names[source]].view(np.uint8).reshape(-1) ^ 128
+        for readout in stream.readouts:
+            boundary = len(stream.ins) if readout.after is None else readout.after
+            require(type(boundary) is int and 0 <= boundary <= len(stream.ins), 'host readout boundary leaves stream')
+            boundaries.setdefault(boundary, []).append(readout)
+    for index, ins in enumerate(stream.ins):
+        if index in boundaries:
+            apply(stream, buffers, boundaries[index])
         command = decode(ins)
         kind, f = command.kind, command.fields
         if kind in ("FENCE", "FLUSH"):
@@ -653,7 +668,7 @@ def execute(stream, buffers):
         elif kind in ("MVIN", "MVIN2", "MVIN3"):
             cfg, place = ld[f["state"]], local(f["local_addr"])
             rows, cols = f["num_rows"], f["num_cols"]
-            width = 4 if place.accumulator else 1
+            width = 4 if place.accumulator and not cfg['shrink'] else 1
             data = (np.zeros((rows, cols), np.int64) if command.arg is None else
                     read(command.arg, command.off, rows, cols, cfg["dram_stride"], width))
             for b0 in range(0, cols, DIM):
@@ -706,4 +721,6 @@ def execute(stream, buffers):
             write(command.arg, command.off, np.clip(scaled, -128, 127).astype(np.int64), st["stride"], 1)
         else:
             raise ProofError(f"{kind} has no concrete model")
+    if len(stream.ins) in boundaries:
+        apply(stream, buffers, boundaries[len(stream.ins)])
     return buffers

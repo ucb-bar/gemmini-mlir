@@ -299,9 +299,9 @@ def match_integer_region(op, *, allow_raw=False, module=None, readout_options=No
         extension = None  # Its offsets needed a runtime seed: keep the host boundary.
     operands = [('a', op.operands[0]), ('b', op.operands[1])]
     if str(op.operands[0].type.get_element_type()) == 'i32':
-        from .centered_regions import kernel as centered_kernel
+        from .centered_regions import kernel as centered_kernel, private_producers
         kernel, operands, producers = centered_kernel(op, dims, batch, bias, values, bias_rows, guarded_range)
-        consumed.extend(producers)
+        consumed.extend(private_producers(producers, consumed))
     else:
         from . import compositions
         dataflow_plan = None

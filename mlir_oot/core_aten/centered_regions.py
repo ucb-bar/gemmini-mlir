@@ -84,6 +84,18 @@ def operand_selectors(op):
     return sources, selectors, constants, list(dict.fromkeys([*region.ops, *carriers]))
 
 
+def private_producers(producers, consumed):
+    """Retain shared centered values in the source until all of their users are replaced."""
+    private = set(producers)
+    while True:
+        replaced = private | set(consumed)
+        shared = {op for op in private for value in op.results
+                  if any(use.operation not in replaced for use in value.uses)}
+        if not shared:
+            return [op for op in producers if op in private]
+        private -= shared
+
+
 def kernel(op, dims, batch, bias, seed, bias_rows, seed_range):
     sources, selectors, constants, producers = operand_selectors(op)
 

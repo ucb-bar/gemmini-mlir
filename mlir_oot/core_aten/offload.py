@@ -189,18 +189,26 @@ def main() -> int:
     import argparse
     from pathlib import Path
 
-    from .catalog import compile_catalog
+    from .catalog import _execution_provider
 
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("input", type=Path)
     ap.add_argument("--workdir", type=Path, required=True)
     ap.add_argument("--llvm-bin", type=Path)
+    ap.add_argument("--numeric-policy", type=Path, help="explicit reviewed Merlin software spec")
     a = ap.parse_args()
-    manifest = compile_catalog(a.input, a.workdir, llvm_bin=a.llvm_bin)
-    (a.workdir / "offloaded.mlir").write_text(rewrite(a.input.read_text(), manifest) + "\n")
-    (a.workdir / "core_aten_shim.c").write_text(shim_source(manifest))
-    print(json.dumps({"bindings": len(manifest["bindings"]), "kernels": len(manifest["kernels"])}))
-    return 0
+    policy = None
+    if a.numeric_policy is not None:
+        from merlin.targetgen.software_spec import load_software_spec
+        policy = load_software_spec(a.numeric_policy, target='gemmini')
+    result = _execution_provider().core_aten_offload(a.input, a.workdir,
+        package=Path(__file__).resolve().parents[2], llvm_bin=a.llvm_bin, numeric_policy=policy)
+    manifest = json.loads(result[3].read_text())
+    if result[0] is not None:
+        (a.workdir / 'offloaded.mlir').write_text(result[0].read_text())
+    print(json.dumps(dict(status=manifest['status'], bindings=len(manifest['bindings']),
+                         kernels=len(manifest['kernels']))))
+    return 0 if manifest['status'] == 'compiled' else 1
 
 
 if __name__ == "__main__":
