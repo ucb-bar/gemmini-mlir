@@ -70,3 +70,38 @@ def supports_narrow_path(path):
             convert.get('to') == abi['scale_dtype'] and scale.get('dtype') == abi['scale_dtype'] and
             requant.get('to') == abi['output_dtype'] and
             requant.get('clamp') == [abi['clamp_min'], abi['clamp_max']])
+
+
+def runtime_scale_facts(raw_facts, path):
+    """Re-derive transport from selected facts, provider roles, layout and scalar ABI."""
+    from merlin.targetgen.composition_facts import derive_runtime_readout_scale
+
+    result = derive_runtime_readout_scale(facts=raw_facts, contract=contract(), output_path=path)
+    if result.get('status') != 'derived' or not result.get('evidence'):
+        raise ValueError('UNKNOWN runtime readout scale: ' + result.get('reason', 'missing evidence'))
+    value = result.get('value')
+    expected = dict(schema='merlin.runtime_readout_scale.v1', dtype='f32', granularity='per_command',
+                    operand='rs2', bundle='ConfigMvoutRs2', field='acc_scale', offset=32, width=32,
+                    encoding='ieee754_binary32_bits')
+    if (value != expected or type(value.get('offset')) is not int
+            or type(value.get('width')) is not int):
+        raise ValueError('unsupported runtime readout scale transport')
+    if field('ConfigMvoutRs2', 'acc_scale') != (value['offset'], value['width']):
+        raise ValueError('runtime scale transport differs from selected register layout')
+    return value
+
+
+def runtime_scale_slot():
+    """The selected register field and ABI used by runtime CONFIG_ST emission."""
+    roles = contract()['rocc_operand_roles']['classes']['CONFIG_ST']['fields']
+    selected = [row for row in roles if row['name'] in ('acc_scale', 'acc_scale_bits')]
+    if not selected or any(row.get('as', 'f32') != 'f32' for row in selected) or any(
+                           (row.get('operand'), row.get('bundle'), row.get('field')) !=
+                           ('rs2', 'ConfigMvoutRs2', 'acc_scale') for row in selected):
+        raise ValueError('UNKNOWN runtime scale CONFIG_ST role')
+    if contract()['readout_semantics']['scalar_abi']['scale_dtype'] != 'f32':
+        raise ValueError('runtime scale requires the f32 scalar ABI')
+    slot = field('ConfigMvoutRs2', 'acc_scale')
+    if slot != (32, 32):
+        raise ValueError('runtime scale requires the whole binary32 CONFIG_ST field')
+    return slot

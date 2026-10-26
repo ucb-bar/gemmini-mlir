@@ -142,17 +142,26 @@ def _readout_plan(module, op, options):
         return plan_fused(module, op, options, chain)
     # Decline unsupported stages before planning: a residual chain's exhaustive
     # accumulator-cut search is costly and could never be emitted here.
-    if any(stage.kind not in ('convert', 'scale', 'bias', 'relu', 'quantize') for stage in chain.stages):
+    if any(stage.kind not in ('convert', 'scale', 'bias', 'relu', 'quantize', 'runtime_readout') for stage in chain.stages):
         return None
+    runtime = any('scale_value' in stage.detail for stage in chain.stages)
+    if runtime and (len(shape(op.results[0])) != 2 or not _zero_init(op.operands[2])):
+        return None  # Runtime v1 binds only a zero-seeded rank-2 contraction.
     try:
+        runtime_options = {}
+        if runtime:
+            from .readout_encoding import runtime_scale_facts
+            runtime_options['runtime_scale_facts'] = runtime_scale_facts(options['facts'], options['path'])
         plan = plan_contraction_readout(module, op, path=options['path'], scheme=options['scheme'],
-                                        facts=options['facts'])
+                                        facts=options['facts'], **runtime_options)
     except ValueError:
         return None  # Retain the original integer producer and host boundary.
     from .readout_encoding import supports_narrow_path
     if plan.route == 'epilogue' and not supports_narrow_path(options['path']):
         return None
-    if len(chain.ops) != len(chain.stages):
+    if len(chain.ops) != len(chain.stages) and not all(
+            stage.op in chain.ops and (stage.kind == 'quantize' or stage.detail.get('closed_readout'))
+            for stage in chain.stages):
         return None  # Layout/pooling partitions have separate emission obligations.
     if chain.ops and shape(chain.ops[-1].results[0]) != shape(op.results[0]):
         return None
@@ -166,7 +175,7 @@ def _readout_plan(module, op, options):
     return plan, chain
 
 
-def _emit_readout_plan(kernel, op, planned, consumed):
+def _emit_readout_plan(kernel, op, planned, consumed, *, module=None, operands=None):
     if planned is None:
         return op
     plan, chain = planned[:2]
@@ -180,14 +189,20 @@ def _emit_readout_plan(kernel, op, planned, consumed):
         from .stream import DIM
         proof = plan.decision['proof']
         relu = 'relu' in plan.decision['stages']
-        width = proof.get('columns_per_scale', max(shape(op.results[0])[-1], DIM))
-        width = ((width + DIM - 1) // DIM) * DIM
-        kernel.stream.narrow_readout(proof['multiplier_bits'], relu=relu, columns_per_scale=width)
+        if 'scale_operand' in proof:
+            from .runtime_scale import bind_scale_operand
+            ref = bind_scale_operand(proof['scale_operand'], module, operands, kernel.stream.args)
+            kernel.stream.narrow_readout(relu=relu, scale_operand=ref)
+        else:
+            width = proof.get('columns_per_scale', max(shape(op.results[0])[-1], DIM))
+            width = ((width + DIM - 1) // DIM) * DIM
+            kernel.stream.narrow_readout(proof['multiplier_bits'], relu=relu, columns_per_scale=width)
         result = chain.ops[-1]
         consumed.extend(chain.ops)
         kernel.meta.update(output_dtype='i8', relu=relu, readout='f32_product_rne',
                            device_readout='f32_product_rne', requantization='device',
-                           multiplier_bits=proof['multiplier_bits'])
+                           **({'scale_operand': proof['scale_operand']} if 'scale_operand' in proof
+                              else {'multiplier_bits': proof['multiplier_bits']}))
     elif plan.route == 'int32_readout' and chain.ops:
         # A source-proved integer residual is part of the accumulator value;
         # the full-width exit bypasses the complete narrow readout path.
@@ -335,7 +350,7 @@ def match_integer_region(op, *, allow_raw=False, module=None, readout_options=No
     if scale is not None:
         kernel.meta.update(scale_numerator=[str(v.numerator) for v in scale],
                            scale_denominator=[str(v.denominator) for v in scale])
-    result = _emit_readout_plan(kernel, op, planned, consumed)
+    result = _emit_readout_plan(kernel, op, planned, consumed, module=module, operands=operands)
     return Match(kernel.op, op, consumed, operands + ([('bias',runtime_seed)] if runtime_seed is not None else []),
                  ('out', result.results[0]), kernel,
                  numeric=dict(integer_producer=True, integer_readout=kernel.meta['integer_readout'], raw_integer=kernel.meta['raw_integer'], scale=scale, relu=kernel.meta['relu'], seed=None if values is None else values.tolist(), runtime_seed=runtime_seed is not None,

@@ -22,7 +22,7 @@ from pathlib import Path
 import numpy as np
 from xdsl.dialects import llvm
 from xdsl.dialects.builtin import (BytesAttr, DenseIntOrFPElementsAttr, Float32Type, FloatAttr, IntegerAttr, ModuleOp,
-                                   StringAttr, TensorType, i8, i64)
+                                   StringAttr, TensorType, i8, i32, i64)
 
 from ..codegen.builder import PTR, FnBuilder
 from ..ir import gemmini_dialect as G
@@ -51,6 +51,14 @@ def _attr(value):
 def encode(ins: Ins) -> Rec:
     """The RoCC words of one command; a DRAM rs1 excludes its argument's base pointer."""
     a = ins.a
+    if 'scale_operand' in dict(ins.attrs):
+        from .runtime_scale import validate_runtime_config
+        from .readout_encoding import config_st, runtime_scale_slot
+        ref = validate_runtime_config(ins)
+        runtime_scale_slot()
+        f, r1, r2 = config_st(a('stride'), a('acc_act'), 0)
+        isa.assert_legal(f)
+        return Rec((f, None, ref), (r1, r2))
     k = ins.kind
     if k == "fence":
         return Rec(("fence",), ())
@@ -104,7 +112,15 @@ def verify_forms(stream: Stream) -> int:
     fb = FnBuilder([PTR])
     from .stream import CompactInstructions
     for ins in (stream.ins.templates() if isinstance(stream.ins, CompactInstructions) else stream.ins):
-        form = (ins.kind, tuple((k, v) for k, v in ins.attrs if k not in _DROP))
+        attrs = ins.attrs
+        if 'scale_operand' in dict(ins.attrs):
+            from .runtime_scale import validate_runtime_config, validate_runtime_record
+            validate_runtime_config(ins, stream.args)
+            validate_runtime_record(encode(ins), stream.args)
+            # Dialect verification checks static fields only. This legal placeholder
+            # never enters a record, digest, replay, or emitted instruction.
+            attrs = tuple((k, v) for k, v in attrs if k != 'scale_operand') + (('acc_scale', 1.0),)
+        form = (ins.kind, tuple((k, v) for k, v in attrs if k not in _DROP))
         if form in seen:
             continue
         seen.add(form)
@@ -160,11 +176,32 @@ class _Emitter:
         if rec.key == ("fence",):
             self.fb.add(llvm.InlineAsmOp("fence", "~{memory}", [], [], has_side_effects=True))
             return
+        if len(rec.key) == 3:
+            self._runtime_leaf(rec, terms)
+            return
         funct, arg = rec.key
         rs1 = self._value(rec.values[0], [(iv, s[0]) for iv, s in terms],
                           self.base[arg] if arg is not None else None)
         rs2 = self._value(rec.values[1], [(iv, s[1]) for iv, s in terms])
         self.fb.add(llvm.InlineAsmOp(isa.asm_string(funct), "r,r,~{memory}", [rs1, rs2], [], has_side_effects=True))
+
+    def _runtime_leaf(self, rec, terms):
+        from .runtime_scale import validate_runtime_record
+        from .readout_encoding import runtime_scale_slot
+
+        validate_runtime_record(rec, self.stream.args)
+        ref = rec.key[2]
+        offset, _ = runtime_scale_slot()
+        address = self._value(ref.byte_offset, [], self.base[ref.arg_index])
+        pointer = self.fb.add(llvm.IntToPtrOp(address)).results[0]
+        bits = self.fb.add(llvm.LoadOp(pointer, i32, alignment=4)).results[0]
+        widened = self.fb.add(llvm.ZExtOp(bits, i64)).results[0]
+        shifted = self.fb.shl_i(widened, offset)
+        static_rs2 = self._value(rec.values[1], [(iv, step[1]) for iv, step in terms])
+        rs2 = self.fb.or_i(shifted, static_rs2)
+        rs1 = self._value(rec.values[0], [(iv, step[0]) for iv, step in terms])
+        self.fb.add(llvm.InlineAsmOp(isa.asm_string(rec.key[0]), 'r,r,~{memory}',
+                                      [rs1, rs2], [], has_side_effects=True))
 
     def nodes(self, nodes, terms):
         """``terms``: [(iv, [step per flat value of ``nodes``])]."""
@@ -220,7 +257,11 @@ def instruction_tree(instructions):
             if isinstance(item, InstructionLoop):
                 body = nodes(item.body)
                 strides = dict(item.strides)
-                templates = CompactInstructions(item.body).templates()
+                templates = list(CompactInstructions(item.body).templates())
+                for ins in templates:
+                    ref = ins.a('scale_operand')
+                    if ref is not None and strides.get(ref.arg_index, 0):
+                        raise ValueError('compact loops may not advance a runtime scale reference')
                 step = tuple(v for ins in templates for v in (strides.get(ins.arg, 0), 0))
                 result.append(Loop(item.count, tuple(body), step))
             else:
@@ -240,6 +281,14 @@ def build_module(stream: Stream, symbol: str, *, check_expand: bool = True, meta
     verify_forms(stream)
     module = _Emitter(stream, symbol, meta).module(tree)
     module.attributes["gemmini.core_aten_kernel"] = StringAttr(symbol)
+    from .stream import CompactInstructions
+    templates = stream.ins.templates() if isinstance(stream.ins, CompactInstructions) else stream.ins
+    if any(ins.a('scale_operand') is not None for ins in templates):
+        marker = StringAttr('CONFIG_ST.rs2.acc_scale')
+        module.attributes['gemmini.runtime_scale'] = marker
+        for op in module.body.blocks[0].ops:
+            if isinstance(op, llvm.FuncOp) and op.sym_name.data == symbol:
+                op.attributes['gemmini.runtime_scale'] = marker
     if stream.readouts:
         module.attributes["gemmini.host_readout_contract"] = StringAttr("exact_rational_RNE_v1")
     return module, tree

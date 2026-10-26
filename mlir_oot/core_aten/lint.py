@@ -16,7 +16,8 @@ Rules (analysis/recipe_corrections.md, HW1-HW4 and the DRAM rule):
        rows of the bank its base row selects.
 * DRAM a MVIN or MVOUT overlapping bytes an earlier MVOUT of this stream wrote needs a
        fence in between (the reservation station does not track DRAM addresses).
-* C7   ReLU is never combined with a negative readout scale (Spike and RTL disagree).
+* C7   A negative constant ReLU scale rejects; a runtime ReLU scale records the
+       Spike/RTL activation-order obligation for the execution qualifier.
 * Spike a scratchpad MVOUT reads rows below 1024 only.
 """
 
@@ -86,6 +87,7 @@ def lint(stream: Stream) -> dict:
     fences = 0
     dataflow = WS
     errors: list[str] = []
+    runtime_oracle_obligations = []
 
     def err(i, msg):
         errors.append(f"#{i} {msg}")
@@ -108,7 +110,17 @@ def lint(stream: Stream) -> dict:
             from .pool_plan import POOL_FIELDS
             st = dict(stride=ins.a("stride"), acc_act=ins.a("acc_act"), acc_scale=ins.a("acc_scale"),
                       **{key: ins.a(key, 0) for key in POOL_FIELDS})
-            if st["acc_act"] and st["acc_scale"] < 0:
+            if 'scale_operand' in dict(ins.attrs):
+                from .runtime_scale import validate_runtime_config
+                from .emit import encode
+                ref = validate_runtime_config(ins, stream.args)
+                encode(ins)  # Validate static fields against the selected register layout.
+                st['acc_scale'] = ref
+                if st['acc_act']:
+                    runtime_oracle_obligations.append(dict(
+                        instruction_index=i, scale_operand=list(ref),
+                        requires='relu_scale_order_parity_or_nonnegative_test_input'))
+            elif st["acc_act"] and st["acc_scale"] < 0:
                 err(i, "C7: ReLU readout with a negative scale")
         elif k == "config_ex":
             if ins.a("act") not in (0, 1):
@@ -212,4 +224,7 @@ def lint(stream: Stream) -> dict:
             touch("sp", a, max(ins.a("a_rows"), ins.a("a_cols")))
     if errors:
         raise HazardError(f"{len(errors)} hazard(s): " + "; ".join(errors[:8]))
-    return {"status": "pass", "instructions": len(stream.ins), "fences": fences}
+    report = {"status": "pass", "instructions": len(stream.ins), "fences": fences}
+    if runtime_oracle_obligations:
+        report['runtime_oracle_obligations'] = runtime_oracle_obligations
+    return report

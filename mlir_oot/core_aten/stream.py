@@ -1,8 +1,8 @@
 """Static primitive Gemmini instruction streams and their bit-level reference semantics.
 
 A recipe issues instructions into a ``Stream`` exactly as the validated bare-metal recipes
-issue ``gemmini.h`` macros: every operand is a compile-time constant except the DRAM base
-pointers, which are kernel arguments.  A DRAM operand is ``(argument index, byte offset)``.
+issue ``gemmini.h`` macros: static command fields and DRAM base pointers, plus a typed
+runtime f32 scale token for CONFIG_ST.  A DRAM operand is ``(argument index, byte offset)``.
 ``None`` as a MVIN source is the DRAM-address-zero zero-fill primitive.
 
 ``simulate`` executes a stream on byte buffers with the stock datapath semantics the
@@ -20,6 +20,8 @@ from collections.abc import Sequence
 from itertools import islice
 
 import numpy as np
+
+from .runtime_scale import RuntimeScaleRef
 
 DIM = 16
 SPAD_ROWS = 16384
@@ -248,12 +250,28 @@ class Stream:
         self._emit("config_ld", load_id=state, stride=int(stride), scale=f32(scale), shrunk=int(bool(shrink)),
                    block_stride=int(block_stride), pixel_repeats=int(pixel_repeats))
 
-    def config_st(self, stride: int, act: int = NO_ACT, scale: float = 1.0, *, multiplier_bits=None, pool=None):
+    def config_st(self, stride: int, act: int = NO_ACT, scale: float | None = None, *,
+                  multiplier_bits: int | None = None,
+                  scale_operand: RuntimeScaleRef | None = None, pool=None) -> None:
         """``pool`` holds the store-path window fields (``pool_plan.POOL_FIELDS``).
 
         Pooled fields are checked against the derived CONFIG_ST register widths and
         are always encoded with explicit multiplier bits through the derived layout.
         """
+        if sum(v is not None for v in (scale, multiplier_bits, scale_operand)) > 1:
+            raise ValueError('ambiguous CONFIG_ST scale sources')
+        if scale_operand is not None:
+            from .runtime_scale import validate_scale_ref
+            from .readout_encoding import config_st, runtime_scale_slot
+            validate_scale_ref(scale_operand, self.args)
+            if pool is not None:
+                raise ValueError('pooled runtime readout scale is unsupported')
+            if type(stride) is not int or type(act) is not int or act not in (NO_ACT, RELU):
+                raise ValueError('invalid runtime CONFIG_ST static fields')
+            runtime_scale_slot()
+            config_st(stride, act, 0)  # Check every static field before recording.
+            self._emit('config_st', stride=stride, acc_act=act, scale_operand=scale_operand)
+            return
         fields = {}
         if pool is not None:
             from .pool_plan import POOL_FIELDS, register_limits
@@ -265,17 +283,25 @@ class Stream:
                 raise ValueError('a pooled store configuration states its multiplier bits')
             fields.update(pool)
         if multiplier_bits is not None:
+            if type(multiplier_bits) is not int or not 0 <= multiplier_bits < 1 << 32:
+                raise ValueError('readout multiplier bits must fit binary32')
             scale = struct.unpack('<f', struct.pack('<I', multiplier_bits))[0]
             if not np.isfinite(scale):
                 raise ValueError('readout multiplier bits must denote finite f32')
             fields['multiplier_bits'] = multiplier_bits
-        self._emit("config_st", stride=int(stride), acc_act=int(act), acc_scale=f32(scale), **fields)
+        self._emit("config_st", stride=int(stride), acc_act=int(act), acc_scale=f32(1.0 if scale is None else scale), **fields)
 
-    def narrow_readout(self, multiplier_bits, *, relu, columns_per_scale):
+    def narrow_readout(self, multiplier_bits=None, *, relu: bool,
+                       columns_per_scale=None, scale_operand=None) -> None:
         """Drain an existing exact MAC stream under source-proved register bits."""
         from dataclasses import replace
         from .readout_encoding import activation, flags
 
+        if (multiplier_bits is None) == (scale_operand is None):
+            raise ValueError('narrow readout requires exactly one constant or runtime scale')
+        if scale_operand is not None:
+            self._narrow_runtime_readout(scale_operand, relu=relu, columns_per_scale=columns_per_scale)
+            return
         bits = tuple(int(v) for v in multiplier_bits)
         output = self.args[self._index['out']]
         columns = output.shape[-1]
@@ -296,6 +322,37 @@ class Stream:
                 if selected != current:
                     self.config_st(columns, activation(relu), multiplier_bits=selected)
                     current = selected
+                attrs = dict(ins.attrs)
+                attrs['local'] &= ~flags()['full_c_bit']
+                ins = ins._replace(attrs=tuple(sorted(attrs.items())), off=ins.off // 4)
+            self.ins.append(ins)
+
+    def _narrow_runtime_readout(self, ref, *, relu, columns_per_scale):
+        from dataclasses import replace
+        from .readout_encoding import activation, flags
+        from .runtime_scale import validate_scale_ref
+
+        validate_scale_ref(ref, self.args)
+        if columns_per_scale is not None:
+            raise ValueError('runtime scale is tensor-wide, without column partitions')
+        self.__post_init__()  # Source binding may have appended the scale argument.
+        output = self.args[self._index['out']]
+        if output.dtype != 'i32':
+            raise ValueError('runtime narrow readout requires a full i32 producer')
+        for ins in self.ins:
+            if ins.kind == 'mvout' and (ins.arg != self._index['out'] or ins.off % 4
+                    or not ins.a('local') & ACC_BIT or not ins.a('local') & FULL_BIT):
+                raise ValueError('runtime narrow readout requires its aligned full i32 producer output')
+        self.args[self._index['out']] = replace(output, dtype='i8')
+        original, self.ins = self.ins, []
+        configured = False
+        for ins in original:
+            if ins.kind == 'config_st':
+                continue
+            if ins.kind == 'mvout':
+                if not configured:
+                    self.config_st(output.shape[-1], activation(relu), scale_operand=ref)
+                    configured = True
                 attrs = dict(ins.attrs)
                 attrs['local'] &= ~flags()['full_c_bit']
                 ins = ins._replace(attrs=tuple(sorted(attrs.items())), off=ins.off // 4)
@@ -380,6 +437,7 @@ class Machine:
             buf[start:start + block.shape[1] * width] = np.frombuffer(block[r].astype(dt).tobytes(), np.uint8)
 
     def run(self, stream: Stream):
+        self.args = stream.args
         for ins in stream.ins:
             getattr(self, "_" + ins.kind)(ins)
 
@@ -402,6 +460,9 @@ class Machine:
             raise NotImplementedError("pixel repeats are not modelled")
 
     def _config_st(self, ins):
+        if ins.a('scale_operand') is not None:
+            from .runtime_scale_replay import resolve_config_instruction
+            ins = resolve_config_instruction(ins, self.args, self.dram)
         from .pool_plan import POOL_FIELDS
         self.st = {k: ins.a(k) for k in ("stride", "acc_act", "acc_scale")}
         self.st.update({k: ins.a(k, 0) for k in POOL_FIELDS})
@@ -550,6 +611,16 @@ class Machine:
 
 def simulate(stream: Stream, inputs: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
     """Run ``stream`` on copies of ``inputs``; returns every non-const argument buffer."""
+    templates = stream.ins.templates() if isinstance(stream.ins, CompactInstructions) else stream.ins
+    refs = {ins.a('scale_operand') for ins in templates if ins.a('scale_operand') is not None}
+    from .runtime_scale import validate_scale_ref
+    for ref in refs:
+        validate_scale_ref(ref, stream.args)
+        arg = stream.args[ref.arg_index]
+        data = inputs.get(arg.name)
+        if (not isinstance(data, np.ndarray) or data.dtype != np.dtype('float32')
+                or data.shape != (1,) or not np.all(np.isfinite(data))):
+            raise ValueError('runtime scale input must contain one finite f32: ' + arg.name)
     buffers = {}
     for i, arg in enumerate(stream.args):
         if arg.role != 'const' and (stream.bitwise or arg.dtype not in ('i8', 'i32')):

@@ -40,6 +40,11 @@ _KEEP = {
 def stream_from_module(module, args: list[Arg], symbol: str | None = None) -> Stream:
     from merlin.llvmlower.static_llvm_cfg import StaticInt, StaticPointer, trace_static_function
 
+    if ('gemmini.runtime_scale' in module.attributes or
+            any('gemmini.runtime_scale' in op.attributes
+                or 'scale_operand' in op.attributes or 'scale_operand' in op.properties
+                for op in module.walk())):
+        raise ValueError('unsupported dynamic trace: runtime CONFIG_ST scale requires decoded emitted stream')
     fns = [op for op in module.walk() if isinstance(op, llvm.FuncOp)
            and (symbol is None or op.sym_name.data == symbol) and op.body.blocks]
     fn = fns[-1]
