@@ -42,6 +42,27 @@ rtl_extraction:
     value: io.in.bits.acc_read_resp.data
     scale: io.in.bits.acc_read_resp.scale
     activation: io.in.bits.acc_read_resp.act
+    pool_disable:
+      module: StoreController
+      selector: pool_stride
+      configured_by: config_mvout_rs1.pool_stride
+      enabled: pooling_is_enabled
+    pool_padding:
+      address:
+        module: StoreController
+        out_of_bounds: _T_8
+        value: pool_row_addr
+        fields:
+        - is_acc_addr
+        - accumulate
+        - read_full_acc_row
+        - garbage_bit
+        - data
+      tap:
+        module: Scratchpad
+        address: write_issue_q.io.deq.bits.laddr
+        sentinel: writeData_is_all_zeros
+        data: writer.io.req.bits.data
   timing_structure:
     dispatch:
       module: ReservationStation
