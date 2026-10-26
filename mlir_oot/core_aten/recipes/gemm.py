@@ -70,7 +70,8 @@ def _extension_tiles(s: Stream, extension: KExtension, ldb: int, TI: int, TJ: in
 
 
 def _extend_block(s: Stream, extension: KExtension, bases, acc0: int,
-                  ib: int, jb: int, ti: int, tj: int, M: int, N: int) -> None:
+                  ib: int, jb: int, ti: int, tj: int, M: int, N: int, *,
+                  row_start: int = 0, column_start: int = 0) -> None:
     """Accumulate every digit tile of output block (ib, jb) after its source K."""
     digits, residual = bases
     s.config_ld(0, extension.ldr)
@@ -78,7 +79,8 @@ def _extend_block(s: Stream, extension: KExtension, bases, acc0: int,
         mr = min(DIM, M - (ib + i) * DIM)
         for j in range(0, tj, 4):
             cols = min(min(4, tj - j) * DIM, N - (jb + j) * DIM)
-            s.mvin(s.at(extension.residual, ((ib + i) * DIM * extension.ldr + (jb + j) * DIM)),
+            s.mvin(s.at(extension.residual, (row_start + (ib + i) * DIM) * extension.ldr
+                        + column_start + (jb + j) * DIM),
                    SP(residual + (i * tj + j) * DIM), cols, mr, 0)
     for value in extension.values:
         for j in range(tj):

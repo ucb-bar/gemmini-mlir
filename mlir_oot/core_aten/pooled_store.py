@@ -94,7 +94,7 @@ def _pool_window(op):
 
 # -- fused contraction readout + pool ------------------------------------------------------
 
-def plan_fused(module, op, options, chain):
+def plan_fused(module, op, options, chain, *, extension=None):
     """A Merlin ``conv_pool`` plan the store path can realize, or None (unfused route)."""
     from merlin.compile.composition_fusion import plan_composition
 
@@ -104,6 +104,8 @@ def plan_fused(module, op, options, chain):
 
     if options is None or len(shape(op.operands[0])) != 2 or not supports_narrow_path(options["path"]):
         return None
+    if any(stage.kind == 'residual' for stage in chain.stages) and extension is None:
+        return None  # A readout theorem alone does not emit the residual contribution.
     operations = list(module.walk())
     members = (op, *chain.ops)
     declaration = dict(id="store_path_window_max", producer="contraction", reduction_kinds=["max"],
@@ -117,7 +119,8 @@ def plan_fused(module, op, options, chain):
         {**stage, "padding": "zero_tap"} if stage["kind"] == "pool" else dict(stage)
         for stage in options["path"]["readout"]]}
     try:
-        plan = plan_composition(module, candidate, path=path, scheme=options["scheme"], facts=facts)
+        plan = (extension.readout if extension is not None else
+                plan_composition(module, candidate, path=path, scheme=options["scheme"], facts=facts))
         geometry = _fused_geometry(op, chain, plan.decision["proof"])
     except ValueError:
         return None
@@ -189,11 +192,17 @@ def emit_fused(kernel, planned):
     proof = plan.decision["proof"]
     relu = "relu" in plan.decision["stages"]
     old = kernel.stream
+    extension = None
+    if kernel.meta.get('k_extension_plan') is not None:
+        from .recipes.gemm import KExtension
+        digits = kernel.meta['k_extension_plan']['decision']['tile_digits']
+        extension = KExtension('residual', image.channels, 'kext_digits', tuple(digits))
     m = image.batch * image.rows * image.cols
     depth, channels = old.args[old._index["a"]].shape[1], image.channels
     out_rows, out_cols = window.output(image)
+    inputs = [Arg('residual', 'i8', (m, channels), 'input')] if extension is not None else []
     s = Stream([Arg("a", "i8", (m, depth), "input"), Arg("b", "i8", (depth, channels), "input"),
-                Arg("out", "i8", (image.batch, out_rows, out_cols, channels), "output")])
+                *inputs, Arg("out", "i8", (image.batch, out_rows, out_cols, channels), "output")])
     seed = old.consts.get("bias_c")
     if seed is not None:
         s.const("bias_c", seed)
@@ -205,13 +214,18 @@ def emit_fused(kernel, planned):
     s.config_ld(1, channels)
     s.config_ld(2, channels * 4 if row_seeds else 0)
     k_tiles = -(-depth // DIM)
-    half = SPAD_ROWS // 2 // DIM
+    reserved = 0 if extension is None else (len(set(extension.values)) + 1) * DIM
+    half = (SPAD_ROWS - reserved) // 2 // DIM
+    if extension is not None:
+        from .recipes.gemm import _extension_tiles, _extend_block
+        bases = _extension_tiles(s, extension, channels, 1, 1)
     blocks = 0
     for unit, (band, c0, width) in enumerate(_units(geometry, ACC_BANK_ROWS)):
         base = (unit % ACC_BANKS) * ACC_BANK_ROWS
         first = (band.batch * image.rows + band.in_rows[0]) * image.cols
         rows = band.orows * band.ocols
         tiles = -(-rows // DIM)
+        s.config_ld(0, depth)
         span = max(1, half // (tiles + 1))
         if seed is not None:
             for t in range(tiles):
@@ -239,6 +253,10 @@ def emit_fused(kernel, planned):
                     s.preload(SP(b_base + k * DIM) if t == 0 else GARBAGE,
                               ACC(base + t * DIM, accumulate=accumulate), width, kr, width, mr)
                     s.compute(SP(a_base + (t * tk + k) * DIM), kr, mr, accumulate=t > 0)
+        if extension is not None:
+            for t in range(tiles):
+                _extend_block(s, extension, bases, base + t * DIM, 0, 0, 1, 1,
+                              min(DIM, rows - t * DIM), width, row_start=first + t * DIM, column_start=c0)
         s.config_st(channels, activation(relu), multiplier_bits=proof["multiplier_bits"][c0],
                     pool=band.fields(window, out_cols))
         s.mvout(s.at("out", (band.batch * out_rows + band.out_rows[0]) * out_cols * channels + c0),
@@ -280,6 +298,7 @@ class FusedExpectation:
     bits: list
     relu: bool
     seed: object  # int64 [N] or [M, N]; None when the source accumulator starts at zero
+    extension: object = None
 
 
 def _bound(match, operands, result):
@@ -297,7 +316,7 @@ def fused_expectation(match, readout_options):
     op = match.root
     dims = contraction(op)
     require(dims is not None and readout_options is not None, "pooled readout root is not a source contraction")
-    planned, _ = planned_readout(module_of(op), op, readout_options)
+    planned, extension = planned_readout(module_of(op), op, readout_options)
     seeded = source_seed(op, dims, planned)
     planned = seeded.planned
     require(planned is not None and planned[0].route == "conv_pool" and seeded.runtime_seed is None,
@@ -306,12 +325,15 @@ def fused_expectation(match, readout_options):
     proof = plan.decision["proof"]
     require(plan.decision.get("cut") == "pool" and proof.get("definitional") == "f32_product_rne",
             "the source pool plan is not a closed f32 readout")
-    _bound(match, [("a", op.operands[0]), ("b", op.operands[1])], ("out", chain.ops[-1].results[0]))
+    operands = [("a", op.operands[0]), ("b", op.operands[1])]
+    if extension is not None:
+        operands.append(('residual', extension.residual))
+    _bound(match, operands, ("out", chain.ops[-1].results[0]))
     require({id(o) for o in (op, *chain.ops)} <= {id(o) for o in match.consumed},
             "the kernel does not replace the whole source chain")
     seed = None if seeded.values is None else np.asarray(seeded.values, np.int64)
     return FusedExpectation(geometry.image, geometry.window, dims.k, list(proof["multiplier_bits"]),
-                            "relu" in plan.decision["stages"], seed)
+                            "relu" in plan.decision["stages"], seed, extension)
 
 
 def validate_fused(stream, expected):
@@ -328,13 +350,19 @@ def validate_fused(stream, expected):
     require(not stream.readouts and not stream.packs, "pooled readout retains a host epilogue")
     args = {a.name: a for a in stream.args}
     out = (batch, *expected.window.output(expected.image), channels)
-    require(set(args) == {"a", "b", "out", *stream.consts} and
+    residuals = {'residual'} if expected.extension is not None else set()
+    require(set(args) == {"a", "b", "out", *stream.consts, *residuals} and
             (args["a"].shape, args["a"].dtype, args["a"].role) == ((batch * rows * cols, depth), "i8", "input") and
             (args["b"].shape, args["b"].dtype, args["b"].role) == ((depth, channels), "i8", "input") and
             (args["out"].shape, args["out"].dtype, args["out"].role) == (out, "i8", "output"),
             "kernel arguments differ from the source operands")
+    if expected.extension is not None:
+        require((args['residual'].shape, args['residual'].dtype, args['residual'].role) ==
+                ((batch * rows * cols, channels), 'i8', 'input'), 'residual argument differs from source')
     expected_seed = expected.seed
     for name, data in stream.consts.items():
+        if expected.extension is not None and name == 'kext_digits':
+            continue  # Every used digit is authenticated against the source plan below.
         require(name == "bias_c" and expected_seed is not None and np.array_equal(data, expected_seed),
                 "accumulator seed constant differs from the source-proved bias")
     act = activation(expected.relu)
@@ -395,9 +423,13 @@ def validate_fused(stream, expected):
                                 "pooled image leaves the accumulator bank its store is ordered against")
                         state = replay.acc.get(row)
                         require(state is not None and state.terms, "pool window reads an unwritten row")
-                        source_row = state.terms[0][0].flat // depth
+                        products = [term for term in state.terms if term[0].name == 'a']
+                        require(products, 'pool window has no source contraction terms')
+                        source_row = products[0][0].flat // depth
                         if (row, c0) not in checked:
-                            contraction_row(state, lhs="a", row=source_row, depth=depth, cols=width,
+                            _pooled_digits(state, products, stream, expected, source_row, c0, width)
+                            from .stream_proof import AccRow
+                            contraction_row(AccRow(state.seed, products), lhs="a", row=source_row, depth=depth, cols=width,
                                             weight_ok=lambda tag, k: (tag.name == "b" and tag.flat == k * channels + c0
                                                                       and tag.width >= width),
                                             seed_ok=lambda tag: seed_ok(tag, source_row, c0, width))
@@ -415,6 +447,18 @@ def validate_fused(stream, expected):
     _final_store_unpooled(stream)
     _backstop(stream, "out", lambda inputs: _fused_reference(inputs, expected))
     return "f32_product_rne"
+
+
+def _pooled_digits(state, products, stream, expected, row, c0, width):
+    from .compositions import digit_term, require_digits
+
+    terms = [term for term in state.terms if term[0].name != 'a']
+    if expected.extension is None:
+        require(not terms, 'unproved pooled residual terms')
+        return
+    digits = [digit_term(term, stream.consts, residual='residual', n=expected.image.channels,
+                         position=(0, row, c0), c0=0, cols=width) for term in terms]
+    require_digits(digits, expected.extension)
 
 
 # -- standalone pooled store ---------------------------------------------------------------
@@ -809,6 +853,8 @@ def _fused_reference(inputs, expected):
     acc = inputs["a"].astype(np.int64) @ inputs["b"].astype(np.int64)
     if expected.seed is not None:
         acc = acc + expected.seed
+    if expected.extension is not None:
+        acc = acc + expected.extension.plan.decision['coefficient'] * inputs['residual'].astype(np.int64)
     multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
     readout = f32_readout(acc, multiplier, "i8", relu=expected.relu).astype(np.int64)
     image = expected.image

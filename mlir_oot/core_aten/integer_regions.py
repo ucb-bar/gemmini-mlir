@@ -212,6 +212,10 @@ def planned_readout(module, op, options):
         return planned, None
     from . import compositions
     extension = compositions.k_extension(module, op, options, batch=len(shape(op.operands[0])) != 2)
+    if extension is not None and extension.readout.route == 'conv_pool':
+        from .pooled_store import plan_fused
+        pooled = plan_fused(module, op, options, extension.chain, extension=extension)
+        return (pooled, extension) if pooled is not None else (planned, None)
     return (planned, None) if extension is None else ((extension.readout, extension.chain), extension)
 
 

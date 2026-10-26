@@ -90,8 +90,16 @@ def _plan(module, op, options, route):
             if found != route or detail.get('root_ordinal') != root:
                 continue
             candidate = dict(route=route, operation_ordinals=[operations.index(m) for m in members], detail=detail)
-            return plan_composition(module, candidate, path=options['path'], scheme=options['scheme'],
-                                    facts=facts(options.get('numerical_semantics')))
+            selected, path = facts(options.get('numerical_semantics')), options['path']
+            if route == 'k_concat' and 'max' in detail['composition'].get('reduction_kinds', ()):
+                from .pool_plan import composition_facts
+                selected.update(composition_facts())
+                # StoreController's out-of-image taps select hardware zero.
+                path = {**path, 'readout': [
+                    {**stage, 'padding': 'zero_tap'} if stage['kind'] == 'pool' else dict(stage)
+                    for stage in path['readout']]}
+            return plan_composition(module, candidate, path=path, scheme=options['scheme'],
+                                    facts=selected)
     except ValueError:
         return None  # Any unproved premise keeps the ordinary schedule.
     return None
@@ -250,19 +258,57 @@ def k_extension(module, op, options, *, batch):
     readout = decision['readout']
     chain = OF.source_chain(op, OF.Values())
     width = readout['proof'].get('columns_per_scale')
-    if (readout['cut'] != 'requant' or not supports_narrow_path(options['path'])
-            or len(chain.ops) != len(chain.stages) or shape(chain.ops[-1].results[0]) != shape(op.results[0])
+    pooled = readout['cut'] == 'pool'
+    if (readout['cut'] not in ('requant', 'pool') or not supports_narrow_path(options['path'])
+            or (not pooled and (len(chain.ops) != len(chain.stages)
+                                or shape(chain.ops[-1].results[0]) != shape(op.results[0])))
             or readout['proof'].get('output_column_partition')
             or (width is not None and (width < DIM or width % DIM))
             or sum(decision['tile_digits']) != decision['coefficient']):
         return None
-    if any(s.kind not in ('convert', 'scale', 'bias', 'residual', 'relu', 'quantize') for s in chain.stages):
+    allowed = ('convert', 'scale', 'bias', 'residual', 'relu', 'quantize') + (('pad', 'pool') if pooled else ())
+    if any(s.kind not in allowed for s in chain.stages):
         return None
     residual = next(s for s in chain.stages if s.kind == 'residual').detail['operand'].owner.operands[0]
-    view = CompositionPlan('k_concat', plan.source_ir_sha256, plan.operation_ordinals,
+    if pooled and not _source_exact_pooled_extension(module, chain, options, readout):
+        return None
+    view = CompositionPlan('conv_pool' if pooled else 'k_concat', plan.source_ir_sha256, plan.operation_ordinals,
                            {**readout, **{key: decision[key] for key in
                                           ('scheme_sha256', 'facts_sha256', 'output_path_sha256')}})
     return Extension(plan, view, chain, residual, tuple(int(d) for d in decision['tile_digits']))
+
+
+def _source_exact_pooled_extension(module, chain, options, readout):
+    """Delegate sequential source f32 equality to Merlin's threshold theorem.
+
+    The scheme's definitional single-product boundary alone does not authorize
+    reassociating a residual. Pooling preserves equal per-pixel quantized codes.
+    """
+    import numpy as np
+    from merlin.targetgen import model_coverage
+    from merlin.xdsl_dialects.lowering import output_fusion as OF
+    from merlin.runtime.exact_readout import f32_readout
+
+    values = OF.Values()
+    try:
+        table = OF._residual(chain, options['path'], values, absorbing=True, integer_extension=True)
+        lo, hi = OF._bound(chain, values, model_coverage._contraction_extents(module))
+    except OF._Refused:
+        return False
+    bits = np.asarray(readout['proof']['multiplier_bits'], np.uint32).view(np.float32)
+    offsets = np.asarray(readout['proof']['offsets'], np.int64)
+    quantize = chain.stages[-1]
+    levels = np.arange(quantize.detail['min'], quantize.detail['max'] + 2)[:, None]
+    shape = (len(levels), chain.channels)
+    for shift, residual in table.items():
+        # Batch the output levels of Merlin's monotone threshold theorem. The
+        # offset is fixed by the emitted preload, so no offset search is needed.
+        source = lambda x: OF._evaluate(chain.stages, np.float32, x, residual=residual)
+        target = lambda x: f32_readout(x + shift + offsets, bits, 'i8', relu='relu' in readout['stages'])
+        if not np.array_equal(OF._threshold(source, levels, lo, hi, shape),
+                              OF._threshold(target, levels, lo, hi, shape)):
+            return False
+    return True
 
 
 def digit_term(term, consts, *, residual, n, position, c0, cols):
