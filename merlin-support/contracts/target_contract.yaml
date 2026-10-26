@@ -3,6 +3,40 @@ version: 0.1
 family: tensor_resident
 endpoint_kind: inline_asm_insn
 rtl_extraction:
+  load_states:
+    fields:
+    - bundle: ConfigMvinRs1
+      name: state_id
+      module: LoadController
+      field: config_mvin_rs1.state_id
+      input: cmd_q.io.deq.bits.cmd.rs1
+    - bundle: ConfigMvinRs1
+      name: scale
+      module: LoadController
+      field: config_mvin_rs1.scale
+      input: cmd_q.io.deq.bits.cmd.rs1
+    selection:
+      module: LoadController
+      command: cmd_q.io.deq.bits.cmd.inst.funct
+      state: state_id
+      config_state: config_mvin_rs1.state_id
+      config_field:
+        bundle: ConfigMvinRs1
+        name: state_id
+      config_class: CONFIG_LD
+      stride_register: strides
+      stride_input: cmd_q.io.deq.bits.cmd.rs2
+      dram_address: cmd_q.io.deq.bits.cmd.rs1
+      row_index: row_counter
+      stride_sink: io.dma.req.bits.vaddr
+      load_classes:
+      - MVIN
+      - MVIN2
+      - MVIN3
+    scale:
+      register: scales
+      input: config_mvin_rs1.scale
+      sink: io.dma.req.bits.scale
   firrtl_role_probe:
     array:
       name: mesh
@@ -426,6 +460,10 @@ rocc_operand_roles:
         operand: rs1
         bundle: ConfigMvinRs1
         field: state_id
+      - name: shrink
+        operand: rs1
+        bundle: ConfigMvinRs1
+        field: shrink
       - name: stride
         operand: rs2
         as: raw
