@@ -270,13 +270,19 @@ def _boundaries(low, high, shape, offset):
     return values[indices].reshape(shape)
 
 
-def _buffers(stream, ranges, trial, rng, *, exhaustive=None):
+def _buffers(stream, ranges, trial, rng, *, exhaustive=None, scale_indices=None):
     from .storage import numpy_storage
     buffers, inputs = {}, {}
+    from .runtime_scale_replay import runtime_scale_refs, runtime_scale_trial
+    if scale_indices is None:
+        scale_indices = {ref.arg_index for ref in runtime_scale_refs(stream)}
     boundary_trials = _boundary_trials(stream)
     for index, arg in enumerate(stream.args):
         dtype = numpy_storage(arg.dtype)
-        if arg.role == 'input' and exhaustive is not None:
+        if index in scale_indices:
+            data = runtime_scale_trial(trial)
+            inputs[arg.name] = data.copy()
+        elif arg.role == 'input' and exhaustive is not None:
             data = exhaustive[arg.name].astype(dtype)
             inputs[arg.name] = data.copy()
         elif (arg.role == 'input' and stream.bitwise and dtype.kind in 'ib' and
@@ -376,8 +382,12 @@ def _uniform_dma_readout(stream):
 def _trial_buffers(match, ranges, *, uniform=False):
     stream = match.kernel.stream
     rng = np.random.default_rng(0x5eed)
-    for trial in range(TRIALS + _boundary_trials(stream) - 1):
-        yield _buffers(stream, ranges, trial, rng)
+    from .runtime_scale_replay import SCALE_TRIAL_BITS, runtime_scale_refs
+    refs = runtime_scale_refs(stream)
+    scale_indices = {ref.arg_index for ref in refs}
+    count = max(TRIALS + _boundary_trials(stream) - 1, len(SCALE_TRIAL_BITS) if refs else 0)
+    for trial in range(count):
+        yield _buffers(stream, ranges, trial, rng, scale_indices=scale_indices)
     domain = _elementwise_domain(match, ranges)
     if domain is None:
         return
@@ -393,7 +403,7 @@ def _trial_buffers(match, ranges, *, uniform=False):
             # Decode joint-domain points into full storage codes for each input.
             inputs[name] = (((points // stride) % cardinality) + low).reshape(match.result[1].type.get_shape())
             stride *= cardinality
-        yield _buffers(stream, ranges, 0, rng, exhaustive=inputs)
+        yield _buffers(stream, ranges, 0, rng, exhaustive=inputs, scale_indices=scale_indices)
 
 
 def certify(matches, bindings, *, readout_options=None, timings=None):
