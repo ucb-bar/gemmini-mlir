@@ -1,0 +1,16 @@
+# Conditional oracle repair; apply only to an explicitly selected copied model.
+# RNE and params-header definitions remain unchanged. Re-pin resulting extension.
+--- a/gemmini.cc
++++ b/gemmini.cc
+@@ -260 +260,6 @@
+-          acc_value = apply_pre_activation_acc(acc_value);
++          // RTL full_data is raw; narrow ReLU precedes scale, including signed scales.
++          if (!full) {
++            acc_value = apply_pre_activation_acc(acc_value);
++            if (gemmini_state.acc_act == gemmini_state_t::RELU)
++              acc_value = acc_value > 0 ? acc_value : static_cast<acc_t>(0);
++          }
+@@ -263 +268,2 @@
+-          elem_t activated = apply_activation_acc(shifted); // Activation is always applied in either WS/OS mode
++          elem_t activated = gemmini_state.acc_act == gemmini_state_t::RELU
++              ? shifted : apply_activation_acc(shifted);
