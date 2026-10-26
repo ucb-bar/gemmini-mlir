@@ -135,7 +135,13 @@ def decode(ins) -> Command:
     record = encode(ins)
     if record.key == ("fence",):
         return Command("FENCE", {}, None, 0)
-    funct, arg = record.key
+    require(len(record.key) in (2, 3), "unknown encoded operand key")
+    funct, arg = record.key[:2]
+    token = record.key[2] if len(record.key) == 3 else None
+    if len(record.key) == 3:
+        from .runtime_scale import RuntimeScaleRef
+        require(isinstance(token, RuntimeScaleRef) and arg is None,
+                "runtime scale key has an invalid token or DMA argument")
     rs1, rs2 = record.values
     kind = _names("semantic_class").get(funct)
     require(kind is not None, f"funct {funct} has no declared semantic class")
@@ -156,7 +162,12 @@ def decode(ins) -> Command:
         else:
             fields = _bundle(rs1, "ConfigMvoutRs1", covered=selector)
             fields.update(_bundle(rs2, "ConfigMvoutRs2"))
+        if token is not None:
+            require(kind == "CONFIG_ST" and fields["acc_scale"] == 0,
+                    "runtime token must fill only the zeroed CONFIG_ST scale field")
+            fields["acc_scale"] = token
         return Command(kind, fields, None, 0)
+    require(token is None, "runtime token is only legal on CONFIG_ST")
     if kind in _load_states():
         fields = _bundle(rs2, "MvinRs2")
         fields["state"] = _load_states()[kind]
@@ -348,6 +359,11 @@ class Replay:
         self.ld[command.fields["state_id"]] = dict(command.fields)
 
     def _config_st(self, command, ins):
+        require(command.fields["acc_scale"] != 0xffffffff,
+                "CONFIG_ST retain sentinel is outside the replay model")
+        from .runtime_scale import RuntimeScaleRef, validate_scale_ref
+        if isinstance(command.fields["acc_scale"], RuntimeScaleRef):
+            validate_scale_ref(command.fields["acc_scale"], self.stream.args)
         self.st = dict(command.fields)
 
     def _load(self, command, ins):
@@ -659,7 +675,9 @@ def execute(stream, buffers, *, host_epilogues=False):
     for index, ins in enumerate(stream.ins):
         if index in boundaries:
             apply(stream, buffers, boundaries[index])
-        command = decode(ins)
+        # Resolve on a temporary instruction. The authenticated stream stays symbolic.
+        from .runtime_scale_replay import resolve_config_instruction
+        command = decode(resolve_config_instruction(ins, stream.args, buffers))
         kind, f = command.kind, command.fields
         if kind in ("FENCE", "FLUSH"):
             continue
