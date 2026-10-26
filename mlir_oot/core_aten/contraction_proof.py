@@ -29,6 +29,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .source import module_of
+from .runtime_scale import RuntimeScaleRef
 from .stream_proof import ProofError, Replay, execute, is_zero, require
 
 
@@ -57,6 +58,7 @@ class Expectation:
     dataflows: frozenset   # CONFIG_EX dataflow codes the source-derived plan licenses
     dataflow_plan: dict | None
     extension: object      # source-derived K-concat residual plan, or None
+    scale_operand: RuntimeScaleRef | None = None  # RuntimeScaleRef; concrete bits remain None
 
 
 def expectation(match, readout_options):
@@ -109,15 +111,19 @@ def expectation(match, readout_options):
     seed = np.zeros(out_shape, np.int64)
     if seeded.values is not None:
         seed = np.broadcast_to(np.asarray(seeded.values, np.int64), out_shape).copy()
-    bits = relu = None
+    bits = relu = scale_ref = None
     if narrow:
         proof = planned[0].decision['proof']
-        bits = [int(v) for v in proof['multiplier_bits']]
+        if "scale_operand" in proof:
+            from .runtime_scale_replay import source_scale_ref
+            scale_ref = source_scale_ref(proof["scale_operand"], module, match.operands, match.kernel.stream.args)
+        else:
+            bits = [int(v) for v in proof['multiplier_bits']]
         relu = 'relu' in planned[0].decision['stages']
-        require(len(bits) == dims.n, 'readout multiplier bits do not cover every output column')
+        require(scale_ref is not None or len(bits) == dims.n, 'readout multiplier bits do not cover every output column')
     return Expectation(match.result[0], out_shape, narrow, bits, bool(relu), dims.k, (a_shape, b_shape),
                        tuple(atoms), atom_sources, seed, seeded.runtime_seed, seeded.bias_rows,
-                       seeded.guarded_range, dataflows, dataflow_plan, extension)
+                       seeded.guarded_range, dataflows, dataflow_plan, extension, scale_ref)
 
 
 class _Check:
@@ -210,9 +216,12 @@ class _Check:
         expected = self.expected
         require(store.accumulator, 'output element is not an accumulator readout')
         require(store.full != expected.narrow, 'accumulator store width differs from the composition exit')
+        require(store.config['stride'] == expected.out_shape[-1] * (1 if expected.narrow else 4),
+                'decoded store stride differs from the source result')
         if expected.narrow:
             require(store.config['activation'] == activation(expected.relu) and
-                    all(store.config['acc_scale'] == b for b in expected.bits[n0:n0 + cols]),
+                    (store.config['acc_scale'] == expected.scale_operand if expected.scale_operand is not None else
+                     all(store.config['acc_scale'] == b for b in expected.bits[n0:n0 + cols])),
                     'decoded readout activation or scale differs from the proved multiplier bits')
         else:
             require(self._neutral(store.config), 'full-width readout applies an unproved scale or activation')
@@ -402,7 +411,13 @@ def source_reference(match, expected, inputs):
         acc = acc + np.broadcast_to(inputs[names[0]].astype(np.int64), expected.out_shape)
     require(np.all((acc >= -(1 << 31)) & (acc < (1 << 31))), 'reference accumulator leaves i32')
     if expected.narrow:
-        multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
+        if expected.scale_operand is None:
+            multiplier = np.array(expected.bits, dtype=np.uint32).view(np.float32)
+        else:
+            from .runtime_scale_replay import runtime_scale_value
+            args = match.kernel.stream.args
+            buffers = {i: inputs[a.name] for i, a in enumerate(args) if a.name in inputs}
+            multiplier = runtime_scale_value(expected.scale_operand, args, buffers)
         result = f32_readout(acc, multiplier, 'i8', relu=expected.relu)
     else:
         result = acc.astype(np.int32)
@@ -414,12 +429,16 @@ def _backstop(match, expected, trials=3):
     stream = match.kernel.stream
     bound = dict(match.operands)
     rng = np.random.default_rng(0x5eed)
-    for trial in range(trials):
+    from .runtime_scale_replay import SCALE_TRIAL_BITS
+    for trial in range(max(trials, len(SCALE_TRIAL_BITS)) if expected.scale_operand is not None else trials):
         buffers, sources = {}, {}
         for index, arg in enumerate(stream.args):
-            dt = np.int32 if arg.dtype == 'i32' else np.int8
+            dt = np.float32 if arg.dtype == 'f32' else np.int32 if arg.dtype == 'i32' else np.int8
             if arg.role == 'const':
                 data = stream.consts[arg.name]
+            elif expected.scale_operand is not None and index == expected.scale_operand.arg_index:
+                from .runtime_scale_replay import runtime_scale_trial
+                data = runtime_scale_trial(trial)
             elif arg.role == 'input' and bound.get(arg.name) is expected.runtime_seed and expected.runtime_seed is not None:
                 low, high = expected.seed_range
                 low, high = max(low, -(1 << 20)), min(high, 1 << 20)
