@@ -212,3 +212,28 @@ def test_runtime_narrow_raw_narrow_store_state_is_independent():
                                                       for key,value in ins.attrs))
     with pytest.raises(ValueError,match='full-width sibling store'):
         shared_input.admit(match,readout_options=selected)
+
+
+@pytest.mark.parametrize('region',['integer_region','shared_input'])
+def test_runtime_oracle_obligations_are_authenticated_and_surfaced(region):
+    import copy
+    from test_runtime_scale_emission import source as integer_source
+    selected=runtime_options()
+    text=integer_source(relu=True) if region=='integer_region' else runtime_match(relu=True)[0]
+    _,manifest,matches=build(text,readout_options=selected)
+    kernel,=manifest['kernels']
+    obligations=kernel['runtime_oracle_obligations']
+    assert [row['requires'] for row in obligations]==['relu_scale_order_parity_or_nonnegative_test_input']
+    authenticate_catalog(manifest,matches)
+    for mutation in ('drop','retarget'):
+        changed=copy.deepcopy(manifest)
+        if mutation=='drop':
+            changed['kernels'][0].pop('runtime_oracle_obligations')
+        else:
+            changed['kernels'][0]['runtime_oracle_obligations'][0]['scale_operand'][0]+=1
+        with pytest.raises(ValueError,match='runtime oracle obligations'):
+            authenticate_catalog(changed,matches)
+    proof=provider().admit_numeric_schedule(text,package=PACKAGE,numeric_policy=POLICY,readout_options=selected)
+    assert proof['status']=='proven',proof
+    row,=proof['kernels']
+    assert row['runtime_oracle_obligations']==obligations

@@ -487,8 +487,14 @@ def _authenticate_schedule_proofs(catalog_module, catalog, matches, proofs):
     digests = catalog_module.authenticate_catalog(catalog, matches)
     if {row['symbol'] for row in proofs} != set(digests):
         raise ValueError('catalog includes kernels without an admitted numerical schedule')
+    # The authenticated lint obligations travel with each admitted row, so an
+    # execution consumer reads them from the proof as well as the catalog.
+    obligations = {k['symbol']: k['runtime_oracle_obligations'] for k in catalog['kernels']
+                   if k.get('runtime_oracle_obligations')}
     for row in proofs:
         row['stream_sha256'] = digests[row['symbol']]
+        if row['symbol'] in obligations:
+            row['runtime_oracle_obligations'] = obligations[row['symbol']]
 
 
 def _admit_quantized_linear_regions(source, *, package, numeric_policy, require_full_coverage=True):

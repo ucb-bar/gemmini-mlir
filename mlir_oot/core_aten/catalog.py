@@ -122,7 +122,7 @@ def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
                                    counts=m.kernel.stream.counts(), meta=_jsonable(m.kernel.meta),
                                    requantization=_readout_contracts(m.kernel.stream),
                                    **(dict(runtime_scale_arguments=runtime_scales) if runtime_scales else {}),
-                                   **(dict(runtime_oracle_obligations=_jsonable(report['runtime_oracle_obligations']))
+                                   **(dict(runtime_oracle_obligations=_runtime_oracle_obligations(report))
                                       if report.get('runtime_oracle_obligations') else {}))
         bindings.append(binding_record(m, symbol, ordinals, func_args))
     device.verify()
@@ -212,6 +212,7 @@ def authenticate_catalog(manifest, matches):
     digests = {}
     arguments = {}
     scales = {}
+    obligations = {}
     for binding, match in zip(manifest['bindings'], matches):
         authenticate_binding(binding, match)
         digest = _stream_digest(match.kernel)
@@ -221,6 +222,7 @@ def authenticate_catalog(manifest, matches):
         digests[symbol] = digest
         arguments[symbol] = argument_records(match)
         scales[symbol] = _runtime_scale_arguments(match.kernel.stream)
+        obligations[symbol] = _runtime_oracle_obligations(match.kernel.stream)
     if (len(manifest['kernels']) != len(digests)
             or {k['symbol']: k.get('stream_sha256') for k in manifest['kernels']} != digests):
         raise ValueError('catalog kernel digests differ from the authenticated binding streams')
@@ -228,6 +230,8 @@ def authenticate_catalog(manifest, matches):
         raise ValueError('catalog kernel arguments differ from the source-bound kernel ABI')
     if any(k.get('runtime_scale_arguments', []) != scales[k['symbol']] for k in manifest['kernels']):
         raise ValueError('catalog runtime scale arguments differ from the authenticated stream references')
+    if any(k.get('runtime_oracle_obligations', []) != obligations[k['symbol']] for k in manifest['kernels']):
+        raise ValueError('catalog runtime oracle obligations differ from the authenticated stream lint')
     return digests
 
 
@@ -276,6 +280,12 @@ def _result_slices(m, ordinals, func_args):
     return dict(result_slices=[dict(source=_source(value, ordinals, func_args), offset=offset, shape=list(extent),
                                     type=str(value.type)) for value, offset, extent, _ in m.outputs],
                 source_operation_ordinals=[ordinals[op] for _, _, _, op in m.outputs])
+
+
+def _runtime_oracle_obligations(source):
+    """The lint's runtime oracle obligations, from a lint report or by linting a stream."""
+    report = source if isinstance(source, dict) else lint(source)
+    return _jsonable(report.get('runtime_oracle_obligations', []))
 
 
 def _runtime_scale_arguments(stream):
