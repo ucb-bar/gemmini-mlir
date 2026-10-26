@@ -796,7 +796,12 @@ class LinearMap:
 
 def extract(root: SSAValue, leaf, *, region_type=Region) -> tuple[LinearMap, list[Operation]]:
     reg = region_type(leaf)
-    val = reg.tensor(root)
+    try:
+        val = reg.tensor(root)
+    except TypeError as exc:
+        # A symbolic form reached integer-only arithmetic (e.g. a float product
+        # feeding an integer conversion): not an exactly modeled linear region.
+        raise NotLinear(f"symbolic value in unmodeled arithmetic: {exc}") from exc
     shp = _shape(root)
     n = int(np.prod(shp)) if shp else 1
     extra = []

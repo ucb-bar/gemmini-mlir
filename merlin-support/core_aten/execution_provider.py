@@ -10,6 +10,35 @@ from merlin.targetgen.plugins import load_module
 TARGET = "gemmini"
 
 
+def _selected_numeric_policy(directory=None):
+    import json
+    import os
+    from merlin.targetgen.software_spec import load_software_spec
+
+    admission = Path(directory) / 'spec-int8-admission.json' if directory is not None else None
+    if admission is not None and admission.exists():
+        return json.loads(admission.read_text())['selection']['spec']
+    selected = os.environ.get('MERLIN_CORE_ATEN_SOFTWARE_SPEC')
+    return load_software_spec(Path(selected), target=TARGET) if selected else None
+
+
+def _readout_options(numeric_policy):
+    """An explicitly selected f32 scheme may request the derived store path."""
+    strategy = ((numeric_policy or {}).get('numerical_semantics', {}).get('readout') or {}).get('strategy')
+    if strategy != 'f32_product_rne':
+        return None
+    from merlin.targetgen.rtl.facts import load_facts
+    from merlin.targetgen.rtl.output_epilogue import derive
+    from merlin.targetgen.target_experiment import load_capability_manifest
+
+    facts = load_facts(TARGET)
+    contract = load_capability_manifest(TARGET).contract
+    path = (contract.get('output_epilogue') or derive(facts, contract=contract)).get('output_path')
+    if path is None or not any(path.get('exits', {}).values()):
+        return None
+    return dict(path=path, scheme=dict(readout_strategy=strategy), facts=facts)
+
+
 def prepare_bundle(directory, *, target, facts):
     from merlin.llvmlower.modular_contractions import prepare_bundle as prepare
     from merlin.system.offload import device_dtype_triples
@@ -17,7 +46,7 @@ def prepare_bundle(directory, *, target, facts):
     return prepare(Path(directory), device_dtype_triples(target))
 
 
-def routing(directory, *, target, package, facts, eligible):
+def routing(directory, *, target, package, facts, eligible, readout_options=None):
     from merlin.system.offload import device_dtype_triples
 
     # A closed seeded MAC + byte readout needs the region ABI: its seed and
@@ -27,11 +56,14 @@ def routing(directory, *, target, package, facts, eligible):
     parsing = _core_aten_module(package, "catalog")
     source = (Path(directory) / "model.mlir").read_text()
     parsed = parsing.parse_module(source)
-    if regions.has_integer_readout(parsed) or limbs.has_limb_plan(parsed):
-        _, inventory, matches = parsing.build(source)
-        selected = [m for m in matches if m.kernel.meta.get("integer_producer") or m.kernel.meta.get("integer_readout") or m.kernel.meta.get('limb_plan')]
-        if not selected:
-            return None
+    numeric_policy = _selected_numeric_policy(directory)
+    readout_options = readout_options or _readout_options(numeric_policy)
+    selected = []
+    if regions.has_integer_readout(parsed) or limbs.has_limb_plan(parsed) or readout_options is not None:
+        _, inventory, matches = parsing.build(source, readout_options=readout_options)
+        selected = [m for m in matches if m.kernel.meta.get("integer_producer") or m.kernel.meta.get("integer_readout") or m.kernel.meta.get('limb_plan')
+                    or m.kernel.meta.get('scaled_operand_sum')]
+    if selected:
         # Logical centered operands are i32, but their proved physical
         # products are signed byte x byte -> i32. Admission derives that
         # datapath from the closed lowering, never by narrowing the source.
@@ -43,14 +75,16 @@ def routing(directory, *, target, package, facts, eligible):
             if (Path(directory) / "spec-int8-admission.json").exists():
                 import json
                 policy = json.loads((Path(directory) / "spec-int8-admission.json").read_text())["selection"]["spec"]
-                proof = admit_numeric_schedule(Path(prepared).read_text(), package=package, numeric_policy=policy)
+                proof = admit_numeric_schedule(Path(prepared).read_text(), package=package, numeric_policy=policy,
+                                                readout_options=readout_options)
                 if proof.get('status') != 'proven':
                     workdir = Path(workdir);workdir.mkdir(parents=True,exist_ok=True)
                     manifest = workdir/'core_aten_catalog.json'
                     manifest.write_text(json.dumps(dict(status='declined',reason=proof.get('reason'),
                         kernels=[],bindings=[],numeric_schedule_proof=proof),indent=2)+'\n')
                     return None,None,None,manifest
-            return core_aten_offload(prepared, workdir, package=package)
+            return core_aten_offload(prepared, workdir, package=package, numeric_policy=numeric_policy,
+                                     readout_options=readout_options)
         audit = load_module(package, "mlir_oot.golden_device_catalog", package_name="core_aten_region_audit")
         return DeviceRouting(device=target, package_dir=package, operand_dtype=operand,
                              accum_dtype=accum, region_offload=region_builder,
@@ -108,7 +142,7 @@ def _core_aten_module(package, name):
     return load_module(package, f"mlir_oot.core_aten.{name}", package_name=f"core_aten_backend_{identity}")
 
 
-def core_aten_catalog(prepared, workdir, *, package, llvm_bin=None):
+def core_aten_catalog(prepared, workdir, *, package, llvm_bin=None, numeric_policy=None, readout_options=None):
     """Bind and compile the exactly implementable Core ATen regions of ``prepared``.
 
     Returns (manifest path, object path), or (manifest path, None) when declined.
@@ -116,15 +150,20 @@ def core_aten_catalog(prepared, workdir, *, package, llvm_bin=None):
     lists each kernel's argument table and each binding's root ordinal, replaced ordinals and
     operand sources; regions it cannot implement exactly are listed under ``declines``.  This is
     opt-in beside ``routing``: the integer GEMM catalog and its bindings are unchanged.
+    ``readout_options`` selects Merlin's path/scheme/facts composition contract;
+    a missing or refused proof retains the source host boundary.
     """
     catalog = _core_aten_module(package, "catalog")
+    if readout_options is None:
+        readout_options = _readout_options(numeric_policy or _selected_numeric_policy())
     workdir = Path(workdir)
     manifest = catalog.compile_catalog(Path(prepared), workdir,
-                            llvm_bin=Path(llvm_bin) if llvm_bin else toolchain.llvm_install() / "bin")
+                            llvm_bin=Path(llvm_bin) if llvm_bin else toolchain.llvm_install() / "bin",
+                            readout_options=readout_options)
     return workdir / "core_aten_catalog.json", (workdir / "core_aten.o" if manifest['kernels'] else None)
 
 
-def core_aten_offload(prepared, workdir, *, package, llvm_bin=None):
+def core_aten_offload(prepared, workdir, *, package, llvm_bin=None, numeric_policy=None, readout_options=None):
     """Rewrite the bound regions of ``prepared`` into C-interface calls.
 
     Returns (rewritten MLIR, shim C source, kernel object, manifest).  After any lowering with
@@ -136,7 +175,8 @@ def core_aten_offload(prepared, workdir, *, package, llvm_bin=None):
     """
     import json
 
-    manifest_path, obj = core_aten_catalog(prepared, workdir, package=package, llvm_bin=llvm_bin)
+    manifest_path, obj = core_aten_catalog(prepared, workdir, package=package, llvm_bin=llvm_bin,
+                                         numeric_policy=numeric_policy, readout_options=readout_options)
     if obj is None:
         return None, None, None, manifest_path
     offload = _core_aten_module(package, "offload")
@@ -179,7 +219,7 @@ def full_call_oracle(target):
     )
 
 
-def admit_numeric_schedule(source, *, package, numeric_policy):
+def admit_numeric_schedule(source, *, package, numeric_policy, readout_options=None):
     """Prove the selected integer stream and its complete source-bound region."""
     from merlin.targetgen.operation_numerics import integer_split_k_limit
 
@@ -200,8 +240,17 @@ def admit_numeric_schedule(source, *, package, numeric_policy):
     parsed = catalog_module.parse_module(source)
     if limbs.has_limb_plan(parsed):
         return _admit_limb_regions(source, package=package, numeric_policy=numeric_policy)
-    if regions.has_integer_readout(parsed):
-        return _admit_integer_regions(source, package=package, numeric_policy=numeric_policy)
+    readout_options = readout_options or _readout_options(numeric_policy)
+    integer_matches = []
+    if readout_options is not None:
+        _, _, matches = catalog_module.build(source, readout_options=readout_options)
+        # The same region kinds routing selects; a scaled operand sum has no
+        # contraction, so the legacy GEMM admission would find nothing to cover.
+        integer_matches = [m for m in matches if m.kernel.meta.get('integer_producer') or
+                           m.kernel.meta.get('integer_readout') or m.kernel.meta.get('scaled_operand_sum')]
+    if regions.has_integer_readout(parsed) or integer_matches:
+        return _admit_integer_regions(source, package=package, numeric_policy=numeric_policy,
+                                      readout_options=readout_options)
     linear_refusal = None
     if any(getattr(getattr(o, 'op_name', None), 'data', o.name).startswith('quant_ext.') for o in parsed.walk()):
         proof = _admit_quantized_linear_regions(source, package=package, numeric_policy=numeric_policy)
@@ -426,50 +475,115 @@ def _admit_limb_regions(source, *, package, numeric_policy):
                 bindings=catalog['bindings'], declines=catalog['declines'], abi='gemmini_core_aten_catalog_v1')
 
 
-def _admit_integer_regions(source, *, package, numeric_policy):
+def _admit_shared_input(match, binding, *, package, numeric_policy, readout_options):
+    """Prove one fused sibling kernel from its decoded stream; see ``core_aten.shared_input``."""
+    from merlin.targetgen.operation_numerics import integer_split_k_limit
+    shared = _core_aten_module(package, 'shared_input')
+    tile_dim = _core_aten_module(package, 'stream').DIM
+    dims = match.kernel.meta['dimensions']
+    try:
+        bound = integer_split_k_limit(numeric_policy, tile_dim=tile_dim, full_k=dims['k'])
+    except ValueError as exc:
+        return dict(status='declined', reason=str(exc))
+    if bound is None or bound['max_padded_k'] < tile_dim:
+        return dict(status='declined', reason='provider padded mesh K exceeds selected internal MAC bound')
+    if match.kernel.meta['readout'] == 'f32_product_rne' and numeric_policy.get(
+            'numerical_semantics', {}).get('readout', {}).get('strategy') != 'f32_product_rne':
+        return dict(status='declined', reason='composition boundary differs from selected numerical policy')
+    computes = [i for i in match.kernel.stream.ins if i.kind == 'compute']
+    if not computes or any(i.a('a_cols') > tile_dim for i in computes):
+        return dict(status='declined', reason='sibling primitive exceeds the proved mesh depth')
+    slices = [(row['offset'], tuple(row['shape'])) for row in binding.get('result_slices', ())]
+    if slices != [(offset, tuple(extent)) for _, offset, extent, _ in match.outputs]:
+        return dict(status='declined', reason='bound result slices differ from the emitted sibling results')
+    try:
+        proof = shared.admit(match, readout_options=readout_options)
+    except ValueError as exc:
+        return dict(status='declined', reason=str(exc))
+    return dict(symbol=binding['symbol'], status='proven', schedule=match.kernel.meta, shared_input=proof,
+                padded_primitive_k=tile_dim, max_partial_sum_bound=tile_dim*bound['maximum_product'],
+                bound=bound, exact_arithmetic=True, device_readout=match.kernel.meta['device_readout'],
+                quantization='device' if match.kernel.meta['device_readout'] == 'f32_product_rne' else 'none',
+                seed='zero', emitted_schedule_sha256=hashlib.sha256(repr(match.kernel.stream.ins).encode()).hexdigest())
+
+
+def _admit_scaled_operand_sum(binding, match, *, package, numeric_policy):
+    """Authenticate the emitted scaled loads and readout against the source-derived proof."""
+    operand_sum = _core_aten_module(package, 'operand_sum')
+    proof = match.kernel.meta['scaled_operand_sum']
+    try:
+        device_readout = operand_sum.validate(match.kernel.stream, match.kernel.meta)
+    except ValueError as exc:
+        return dict(status='declined', reason=str(exc))
+    strategy = numeric_policy.get('numerical_semantics', {}).get('readout', {}).get('strategy')
+    if proof['reference'] == 'source_f32_operations' and strategy != 'f32_product_rne':
+        return dict(status='declined', reason='scaled operand sum differs from selected numerical policy')
+    return dict(symbol=binding['symbol'], status='proven', schedule=match.kernel.meta, exact_arithmetic=True,
+                device_readout=device_readout, quantization='device', operand_sum=proof,
+                emitted_schedule_sha256=hashlib.sha256(repr(match.kernel.stream.ins).encode()).hexdigest())
+
+
+def _admit_integer_regions(source, *, package, numeric_policy, readout_options=None):
     """Prove the emitted seeded MAC/readout stream, including its source binding."""
     from merlin.targetgen.operation_numerics import integer_split_k_limit
     catalog_module = _core_aten_module(package, "catalog")
-    _, catalog, matches = catalog_module.build(source)
+    stream_module = _core_aten_module(package, 'stream')
+    requant = _core_aten_module(package, 'requant')
+    from importlib import import_module
+    isa = import_module(stream_module.__package__.rsplit('.', 1)[0] + '.tables.isa')
+    tile_dim = stream_module.DIM
+    _, catalog, matches = catalog_module.build(source, readout_options=readout_options)
     proofs = []
     def refuse(reason):
         return dict(status='declined',reason=reason,source_sha256=catalog['source_sha256'],
                     kernels=[],bindings=[],declines=catalog['declines'])
     for binding, match in zip(catalog["bindings"], matches):
+        if match.kernel.meta.get('scaled_operand_sum'):
+            proof = _admit_scaled_operand_sum(binding, match, package=package, numeric_policy=numeric_policy)
+            if proof.get('status') != 'proven':
+                return refuse(proof['reason'])
+            proofs.append(proof)
+            continue
         if not (match.kernel.meta.get("integer_producer") or match.kernel.meta.get("integer_readout")):
+            continue
+        if match.kernel.meta.get('shared_input'):
+            row = _admit_shared_input(match, binding, package=package, numeric_policy=numeric_policy,
+                                      readout_options=readout_options)
+            if row.get('status') != 'proven':
+                return refuse(row['reason'])
+            proofs.append(row)
             continue
         dims = match.kernel.meta["dimensions"]
         try:
-            bound = integer_split_k_limit(numeric_policy, tile_dim=16, full_k=dims["k"])
+            bound = integer_split_k_limit(numeric_policy, tile_dim=tile_dim, full_k=dims["k"])
         except ValueError as exc:
             return refuse(str(exc))
-        if bound is None or bound["max_padded_k"] < 16:
+        if bound is None or bound["max_padded_k"] < tile_dim:
             return refuse("provider padded mesh K exceeds selected internal MAC bound")
         stream = match.kernel.stream
         computes = [i for i in stream.ins if i.kind == "compute"]
-        if not computes or any(i.a("a_cols") > 16 or i.a("bd") != 0xffffffff for i in computes):
+        if not computes or any(i.a("a_cols") > tile_dim or i.a("bd") != isa.GARBAGE_ADDR for i in computes):
             return refuse("seeded WS primitive differs from the proved independent dot product")
-        if any(i.a("dataflow") != 1 for i in stream.ins if i.kind == "config_ex"):
+        if any(i.a("dataflow") != isa.WEIGHT_STATIONARY for i in stream.ins if i.kind == "config_ex"):
             return refuse("seeded proof requires weight-stationary execution")
-        # The bound producer is exact integer math with raw full-width DMA.
-        # Source exact readout remains on the host, including bias and RNE.
-        stores=[i for i in stream.ins if i.kind=='mvout']
-        accumulator_stores = [i for i in stores if i.a('local') & (1 << 31)]
-        byte_layout = match.kernel.meta.get('centered_byte_contraction')
-        if (not accumulator_stores or any(not (i.a('local') & (1 << 29)) for i in accumulator_stores)
-                or (not byte_layout and len(accumulator_stores) != len(stores))):
-            return refuse('exact producer requires full-width i32 readout')
-        if any(i.a('scale') != 1 for i in stream.ins if i.kind=='config_ld') or any(
-                i.a('acc_scale') != 1 for i in stream.ins if i.kind=='config_st'):
-            return refuse('exact producer contains an unproved FP32 data-path scale')
+        try:
+            device_readout = requant.validate_device_readout(stream, match.kernel.meta, numeric=match.numeric)
+        except ValueError as exc:
+            return refuse(str(exc))
+        plan = match.kernel.meta.get('composition_plan')
+        if plan is not None and plan['decision']['proof'].get('definitional') == 'f32_product_rne':
+            strategy = numeric_policy.get('numerical_semantics', {}).get('readout', {}).get('strategy')
+            if strategy != 'f32_product_rne':
+                return refuse('composition boundary differs from selected numerical policy')
         proofs.append(dict(symbol=binding["symbol"], status="proven", schedule=match.kernel.meta,
-            primitive_k=sorted({i.a("a_cols") for i in computes}), padded_primitive_k=16,
-            k_split=[min(16, dims["k"]-k) for k in range(0,dims["k"],16)],
-            max_partial_sum_bound=16*bound["maximum_product"],
+            primitive_k=sorted({i.a("a_cols") for i in computes}), padded_primitive_k=tile_dim,
+            k_split=[min(tile_dim, dims["k"]-k) for k in range(0,dims["k"],tile_dim)],
+            max_partial_sum_bound=tile_dim*bound["maximum_product"],
             mac_positive_limit=(1 << (bound["mac_result_bits"]-1))-1,
-            headroom=((1 << (bound["mac_result_bits"]-1))-1)-16*bound["maximum_product"],
-            bound=bound, exact_arithmetic=True, device_readout="full_i32",
-            quantization=('none' if match.kernel.meta.get('raw_integer') else 'retained_source_exact_integer_host_readout'),
+            headroom=((1 << (bound["mac_result_bits"]-1))-1)-tile_dim*bound["maximum_product"],
+            bound=bound, exact_arithmetic=True, device_readout=device_readout,
+            quantization=('device' if device_readout == 'f32_product_rne' else
+                          'none' if match.kernel.meta.get('raw_integer') else 'retained_source_exact_integer_host_readout'),
             seed=match.kernel.meta["seed"],
             accumulator_min=match.kernel.meta["accumulator_min"], accumulator_max=match.kernel.meta["accumulator_max"],
             full_result_bound=max(abs(match.kernel.meta["accumulator_min"]),abs(match.kernel.meta["accumulator_max"])),
@@ -480,8 +594,9 @@ def _admit_integer_regions(source, *, package, numeric_policy):
     ordinals = {op:i for i,op in enumerate(parsed.walk())}
     proposed = {ordinals[op] for op,shape in observe_contractions(parsed)
                 if op in live and shape.dtypes[-1] == 'i32'}
-    covered = [binding['source_operation_ordinal'] for binding,match in zip(catalog['bindings'],matches)
-               if match.kernel.meta.get('integer_producer') or match.kernel.meta.get('integer_readout')]
+    covered = [ordinal for binding,match in zip(catalog['bindings'],matches)
+               if match.kernel.meta.get('integer_producer') or match.kernel.meta.get('integer_readout')
+               for ordinal in binding.get('source_operation_ordinals', [binding['source_operation_ordinal']])]
     if proofs and (set(covered) != proposed or len(covered) != len(set(covered))):
         return refuse('provider did not cover every live integer producer')
     proofs = list({row['symbol']: row for row in proofs}.values())

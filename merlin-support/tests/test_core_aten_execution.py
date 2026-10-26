@@ -21,7 +21,8 @@ def test_runner_settings_follow_the_selected_spike_installation(monkeypatch):
     assert options["path_prepend"] == [Path("/selected/env/bin")]
 
 
-def test_provider_binds_catalog_and_derives_precision_from_selected_facts(tmp_path, monkeypatch):
+@pytest.mark.parametrize('readout_options', [None, dict(scheme=dict(readout_strategy='f32_product_rne'))])
+def test_provider_binds_catalog_and_derives_precision_from_selected_facts(tmp_path, monkeypatch, readout_options):
     provider = load_execution_provider("gemmini", PROVIDER)
     (tmp_path / "model.mlir").write_text("builtin.module {}")
 
@@ -40,7 +41,7 @@ def test_provider_binds_catalog_and_derives_precision_from_selected_facts(tmp_pa
     eligible = [(None, SimpleNamespace(dtypes=("i8", "i8", "i32")))]
     with selected_facts("synthetic_core_aten", fixture) as document:
         route = provider.routing(
-            tmp_path, target="synthetic_core_aten", package=tmp_path, facts=document, eligible=eligible
+            tmp_path, target="synthetic_core_aten", package=tmp_path, facts=document, eligible=eligible, readout_options=readout_options
         )
         assert (route.operand_dtype, route.accum_dtype) == ("i8", "i32")
         assert route.select is None and route.catalog_builder is builder
@@ -54,7 +55,7 @@ def test_provider_binds_catalog_and_derives_precision_from_selected_facts(tmp_pa
         backend.build_catalog = lambda source: (None, {"covered_contractions": 0})
         assert (
             provider.routing(
-                tmp_path, target="synthetic_core_aten", package=tmp_path, facts=document, eligible=eligible
+                tmp_path, target="synthetic_core_aten", package=tmp_path, facts=document, eligible=eligible, readout_options=readout_options
             )
             is None
         )

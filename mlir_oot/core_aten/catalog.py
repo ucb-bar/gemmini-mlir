@@ -1,6 +1,9 @@
 """Source-bound Core ATen device catalog: match a linalg-on-tensors module, emit one object.
 
-``build(source)`` matches every supported region (``match.match_all``), lints each kernel
+``build(source, readout_options=...)`` accepts explicitly selected Merlin
+path/scheme/facts declarations for source-bound composition planning. Without
+a usable readout proof, the integer producer retains its full-width exit.
+It matches every supported region (``match.match_all``), lints each kernel
 stream against the stock-RTL hazard rules, deduplicates identical kernels by their exact
 command stream, and returns the combined device module plus a manifest:
 
@@ -79,13 +82,13 @@ def _source(value, ordinals, func_args):
     return {"op_ordinal": ordinals[owner], "result": list(owner.results).index(value)}
 
 
-def build(source: str) -> tuple[ModuleOp, dict, list]:
+def build(source: str, *, readout_options=None) -> tuple[ModuleOp, dict, list]:
     from .storage import itemsize
     module = parse_module(source)
     ordinals = {op: i for i, op in enumerate(module.walk())}
     funcs = [op for op in module.walk() if op.name == "func.func"]
     func_args = list(funcs[0].body.blocks[0].args) if funcs else []
-    matches, declines = match_all(module)
+    matches, declines = match_all(module, readout_options=readout_options)
     kernels: dict[str, dict] = {}
     device = ModuleOp([])
     bindings = []
@@ -128,7 +131,8 @@ def build(source: str) -> tuple[ModuleOp, dict, list]:
             operands=argmap, result={out_name: _source(out_val, ordinals, func_args)},
             result_type=str(out_val.type), operand_types={n: str(v.type) for n, v in m.operands},
             region=getattr(m.root.attributes.get("prov.region_id"), "data", ""),
-            layout=m.layout, numeric=_jsonable(m.numeric)))
+            layout=m.layout, numeric=_jsonable(m.numeric),
+            **(_result_slices(m, ordinals, func_args) if m.outputs else {})))
     device.verify()
     manifest = dict(schema=SCHEMA, source_sha256=hashlib.sha256(source.encode()).hexdigest(),
                     abi=dict(argument_order="kernels[].args", pointee_layout="dense_row_major",
@@ -138,6 +142,13 @@ def build(source: str) -> tuple[ModuleOp, dict, list]:
                     kernels=list(kernels.values()), bindings=bindings, declines=declines,
                     matched=len(bindings), unique_kernels=len(kernels))
     return device, manifest, accepted
+
+
+def _result_slices(m, ordinals, func_args):
+    """A flat multi-result kernel binds each source result to one dense element range."""
+    return dict(result_slices=[dict(source=_source(value, ordinals, func_args), offset=offset, shape=list(extent),
+                                    type=str(value.type)) for value, offset, extent, _ in m.outputs],
+                source_operation_ordinals=[ordinals[op] for _, _, _, op in m.outputs])
 
 
 def _readout_contracts(stream):
@@ -164,9 +175,9 @@ def _jsonable(obj):
         return str(obj)
 
 
-def compile_catalog(source_path: Path, workdir: Path, *, llvm_bin: Path | None = None) -> dict:
+def compile_catalog(source_path: Path, workdir: Path, *, llvm_bin: Path | None = None, readout_options=None) -> dict:
     source = Path(source_path).read_text()
-    device, manifest, _ = build(source)
+    device, manifest, _ = build(source, readout_options=readout_options)
     workdir.mkdir(parents=True, exist_ok=True)
     if manifest["kernels"]:
         receipt = compile_to_object(device, workdir, llvm_bin=llvm_bin, stem="core_aten")

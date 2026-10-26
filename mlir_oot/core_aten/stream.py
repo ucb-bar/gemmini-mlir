@@ -247,8 +247,44 @@ class Stream:
         self._emit("config_ld", load_id=state, stride=int(stride), scale=f32(scale), shrunk=int(bool(shrink)),
                    block_stride=int(block_stride), pixel_repeats=int(pixel_repeats))
 
-    def config_st(self, stride: int, act: int = NO_ACT, scale: float = 1.0):
-        self._emit("config_st", stride=int(stride), acc_act=int(act), acc_scale=f32(scale))
+    def config_st(self, stride: int, act: int = NO_ACT, scale: float = 1.0, *, multiplier_bits=None):
+        fields = {}
+        if multiplier_bits is not None:
+            scale = struct.unpack('<f', struct.pack('<I', multiplier_bits))[0]
+            if not np.isfinite(scale):
+                raise ValueError('readout multiplier bits must denote finite f32')
+            fields['multiplier_bits'] = multiplier_bits
+        self._emit("config_st", stride=int(stride), acc_act=int(act), acc_scale=f32(scale), **fields)
+
+    def narrow_readout(self, multiplier_bits, *, relu, columns_per_scale):
+        """Drain an existing exact MAC stream under source-proved register bits."""
+        from dataclasses import replace
+        from .readout_encoding import activation, flags
+
+        bits = tuple(int(v) for v in multiplier_bits)
+        output = self.args[self._index['out']]
+        columns = output.shape[-1]
+        if len(bits) != columns or columns_per_scale < DIM or columns_per_scale % DIM:
+            raise ValueError('readout gain blocks must cover whole output column tiles')
+        for start in range(0, columns, columns_per_scale):
+            if len(set(bits[start:start + columns_per_scale])) != 1:
+                raise ValueError('unproved column partition within a gain block')
+        self.args[self._index['out']] = replace(output, dtype='i8')
+        original, self.ins = self.ins, []
+        current = None
+        for ins in original:
+            if ins.kind == 'config_st':
+                continue
+            if ins.kind == 'mvout':
+                column = (ins.off // 4) % columns
+                selected = bits[column]
+                if selected != current:
+                    self.config_st(columns, activation(relu), multiplier_bits=selected)
+                    current = selected
+                attrs = dict(ins.attrs)
+                attrs['local'] &= ~flags()['full_c_bit']
+                ins = ins._replace(attrs=tuple(sorted(attrs.items())), off=ins.off // 4)
+            self.ins.append(ins)
 
     def mvin(self, src, local: int, cols: int, rows: int, state: int = 0):
         """``src`` is ``(arg, off)`` or ``None`` for the zero-fill primitive."""

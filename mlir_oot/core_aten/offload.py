@@ -40,6 +40,14 @@ def rewrite(source: str, manifest: dict) -> str:
     replacements = {}
     for b in manifest["bindings"]:
         k = kernels[b["symbol"]]
+        if "result_slices" in b:
+            callee, ftype = _rewrite_flat(b, k, ops_, func_args, replacements)
+            doomed += [ops_[i] for i in b["replaced_ordinals"]]
+            if callee not in declared:
+                decl = func.FuncOp.external(callee, ftype.inputs.data, ftype.outputs.data)
+                decl.attributes["llvm.emit_c_interface"] = UnitAttr()
+                declared[callee] = decl
+            continue
         (out_name, out_src), = b["result"].items()
         out_val = _value(out_src, ops_, func_args)
         root = ops_[b["root_ordinal"]]
@@ -79,6 +87,38 @@ def rewrite(source: str, manifest: dict) -> str:
     module.verify()
     from .storage import module_text
     return module_text(module)
+
+
+def _rewrite_flat(b, k, ops_, func_args, replacements):
+    """One call writes a flat result; each source result is a dense row-major element range."""
+    from xdsl.dialects.builtin import ArrayAttr, IntegerAttr, TensorType, i64
+
+    out, = [a for a in k["args"] if a["role"] == "output"]
+    root = ops_[b["root_ordinal"]]
+    ins = [_value(b["operands"][a["name"]], ops_, func_args) for a in k["args"] if a["role"] == "input"]
+    ins = [replacements.get(value, value) for value in ins]
+    values = [_value(s["source"], ops_, func_args) for s in b["result_slices"]]
+    element = values[0].type.get_element_type()
+    if any(v.type.get_element_type() != element or str(v.type) != s["type"]
+           for v, s in zip(values, b["result_slices"])):
+        raise ValueError("flat result slices differ from their source result types")
+    flat = TensorType(element, out["shape"])
+    empty = tensor.EmptyOp([], flat)
+    callee = "ca_" + b["symbol"]
+    call = func.CallOp(callee, [*ins, empty.results[0]], [flat])
+    created = [empty, call]
+    for value, piece in zip(values, b["result_slices"]):
+        extent = 1
+        for d in piece["shape"]:
+            extent *= d
+        part = tensor.ExtractSliceOp.from_static_parameters(call.results[0], [piece["offset"]], [extent])
+        reassociation = ArrayAttr([ArrayAttr([IntegerAttr(i, i64) for i in range(len(piece["shape"]))])])
+        view = tensor.ExpandShapeOp(part.results[0], [], reassociation, piece["shape"], value.type)
+        created += [part, view]
+        value.replace_all_uses_with(view.results[0])
+        replacements[value] = view.results[0]
+    root.parent_block().insert_ops_before(created, root)
+    return callee, FunctionType.from_lists([v.type for v in ins] + [flat], [flat])
 
 
 def shim_source(manifest: dict) -> str:

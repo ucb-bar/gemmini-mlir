@@ -37,9 +37,11 @@ def live_bindings(matches, live):
     not a second model DCE implementation.
     """
     replaced = {child for m in matches for op in m.consumed if op is not None for child in op.walk()}
-    owners = {m.result[1]: i for i, m in enumerate(matches)}
+    def results(m):
+        return [output[0] for output in m.outputs] if m.outputs else [m.result[1]]
+    owners = {value: i for i, m in enumerate(matches) for value in results(m)}
     pending = [i for i, m in enumerate(matches) if any(
-        use.operation in live and use.operation not in replaced for use in m.result[1].uses)]
+        use.operation in live and use.operation not in replaced for value in results(m) for use in value.uses)]
     kept = set()
     while pending:
         i = pending.pop()

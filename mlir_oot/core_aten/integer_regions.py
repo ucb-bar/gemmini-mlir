@@ -1,8 +1,9 @@
-"""Source-bound seeded integer MAC with full-width readout and retained host quantization.
+"""Source-bound integer MAC and proof-selected accumulator or narrow readout.
 
 Only a checked closed body grants semantics. Provenance describes bindings but
 never substitutes for that check. Unbounded runtime seeds stay on the host:
 i32 SRAM cannot implement an infinite-precision seeded sum without overflow.
+Unproved epilogues retain their original full-width producer and host boundary.
 """
 
 import numpy as np
@@ -127,13 +128,67 @@ def seed_guard(value):
     return guard, guard.operands[0], (int(lower),int(upper))
 
 
-def match_integer_region(op, *, allow_raw=False):
+def _readout_plan(module, op, options):
+    if options is None or any(str(v.type.get_element_type()) != 'i8' for v in op.operands[:2]):
+        return None
+    from merlin.compile.composition_fusion import plan_contraction_readout
+    from merlin.xdsl_dialects.lowering import output_fusion as OF
+
+    try:
+        plan = plan_contraction_readout(module, op, **options)
+    except ValueError:
+        return None  # Retain the original integer producer and host boundary.
+    chain = OF.source_chain(op, OF.Values())
+    from .readout_encoding import supports_narrow_path
+    if plan.route == 'epilogue' and not supports_narrow_path(options['path']):
+        return None
+    if any(stage.kind not in ('convert', 'scale', 'bias', 'relu', 'quantize') for stage in chain.stages):
+        return None
+    if len(chain.ops) != len(chain.stages):
+        return None  # Layout/pooling partitions have separate emission obligations.
+    if chain.ops and shape(chain.ops[-1].results[0]) != shape(op.results[0]):
+        return None
+    proof = plan.decision['proof']
+    if proof.get('output_column_partition'):
+        return None
+    width = proof.get('columns_per_scale')
+    from .stream import DIM
+    if width is not None and (width < DIM or width % DIM):
+        return None
+    return plan, chain
+
+
+def _emit_readout_plan(kernel, op, planned, consumed):
+    if planned is None:
+        return op
+    plan, chain = planned
+    result = op
+    if plan.route == 'epilogue':
+        from .stream import DIM
+        proof = plan.decision['proof']
+        relu = 'relu' in plan.decision['stages']
+        width = proof.get('columns_per_scale', max(shape(op.results[0])[-1], DIM))
+        width = ((width + DIM - 1) // DIM) * DIM
+        kernel.stream.narrow_readout(proof['multiplier_bits'], relu=relu, columns_per_scale=width)
+        result = chain.ops[-1]
+        consumed.extend(chain.ops)
+        kernel.meta.update(output_dtype='i8', relu=relu, readout='f32_product_rne',
+                           device_readout='f32_product_rne', requantization='device',
+                           multiplier_bits=proof['multiplier_bits'])
+    kernel.meta['composition_plan'] = plan.record()
+    kernel.meta['raw_integer'] = plan.route == 'int32_readout'
+    kernel.meta['integer_readout'] |= plan.route == 'epilogue'
+    return result
+
+
+def match_integer_region(op, *, allow_raw=False, module=None, readout_options=None):
     dims = contraction(op)
     if dims is None:
         return None
     selected = readout(op)
+    planned = _readout_plan(module, op, readout_options)
     if selected is None:
-        if not allow_raw or not _zero_init(op.operands[2]):
+        if planned is None and readout_options is None and (not allow_raw or not _zero_init(op.operands[2])):
             return None
         if any(k.startswith('prov.quant.') for k in op.attributes):
             from .quant_schema import attributes
@@ -179,6 +234,16 @@ def match_integer_region(op, *, allow_raw=False):
             values = np.asarray(values, np.int32)
         else:
             runtime_seed = seed
+    if planned is not None and planned[0].route == 'epilogue':
+        offsets = np.asarray(planned[0].decision['proof']['offsets'], dtype=np.int64)
+        if np.any(offsets):
+            if runtime_seed is not None:
+                planned = None
+            else:
+                values = offsets if values is None else values.astype(np.int64) + offsets
+                bias = True
+                if values.ndim == 1:
+                    bias_rows = False
     operands = [('a', op.operands[0]), ('b', op.operands[1])]
     if str(op.operands[0].type.get_element_type()) == 'i32':
         from .centered_regions import kernel as centered_kernel
@@ -197,8 +262,9 @@ def match_integer_region(op, *, allow_raw=False):
     if scale is not None:
         kernel.meta.update(scale_numerator=[str(v.numerator) for v in scale],
                            scale_denominator=[str(v.denominator) for v in scale])
+    result = _emit_readout_plan(kernel, op, planned, consumed)
     return Match(kernel.op, op, consumed, operands + ([('bias',runtime_seed)] if runtime_seed is not None else []),
-                 ('out', op.results[0]), kernel,
-                 numeric=dict(integer_producer=True, integer_readout=selected is not None, raw_integer=selected is None, scale=scale, relu=relu, seed=None if values is None else values.tolist(), runtime_seed=runtime_seed is not None,
+                 ('out', result.results[0]), kernel,
+                 numeric=dict(integer_producer=True, integer_readout=kernel.meta['integer_readout'], raw_integer=kernel.meta['raw_integer'], scale=scale, relu=kernel.meta['relu'], seed=None if values is None else values.tolist(), runtime_seed=runtime_seed is not None,
                               **(dict(centered_byte_contraction=kernel.meta["centered_byte_contraction"])
                                  if "centered_byte_contraction" in kernel.meta else {})))

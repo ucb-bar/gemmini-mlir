@@ -34,7 +34,7 @@ _OPS = {
     "flush": G.FlushOp, "config_ex": G.ConfigExOp, "config_ld": G.ConfigLdOp, "config_st": G.ConfigStOp,
     "mvin": G.MvinOp, "mvout": G.MvoutOp, "preload": G.PreloadOp, "compute": G.ComputeOp, "fence": G.FenceOp,
 }
-_DROP = {"zero"}
+_DROP = {"zero", "multiplier_bits"}
 _MASK = (1 << 64) - 1
 
 
@@ -65,7 +65,13 @@ def encode(ins: Ins) -> Rec:
                                   block_stride=a("block_stride"), pixel_repeats=a("pixel_repeats"),
                                   load_id=a("load_id"))
     elif k == "config_st":
-        f, r1, r2 = isa.config_st(stride=a("stride"), acc_act=a("acc_act"), acc_scale=a("acc_scale"))
+        if a('multiplier_bits') is None:
+            f, r1, r2 = isa.config_st(stride=a('stride'), acc_act=a('acc_act'), acc_scale=a('acc_scale'))
+        else:
+            from .readout_encoding import config_st
+            if a('multiplier_bits') != isa.f32_bits(a('acc_scale')):
+                raise ValueError('readout scale differs from its supplied multiplier bits')
+            f, r1, r2 = config_st(a('stride'), a('acc_act'), a('multiplier_bits'))
     elif k == "mvin":
         f, _, r2 = isa.mvin(local_addr=a("local"), cols=a("cols"), rows=a("rows"), load_id=a("load_id"))
         r1 = 0 if a("zero") else ins.off

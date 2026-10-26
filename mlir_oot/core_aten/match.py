@@ -411,6 +411,9 @@ class Match:
     layout: dict = field(default_factory=dict)
     numeric: dict = field(default_factory=dict)
     constant_operands: list = field(default_factory=list)
+    # (source value, element offset, shape, source contraction) per result of a
+    # flat multi-result kernel.
+    outputs: list = field(default_factory=list)
 
 
 def _sandwich_out(v: SSAValue):
@@ -1319,14 +1322,15 @@ def _bind_dense_layouts(match):
     match.operands[:] = [(name,value) for name,value in match.operands if name not in constant_names]
 
 
-def match_all(module) -> tuple[list[Match], list[dict]]:
+def match_all(module, *, readout_options=None) -> tuple[list[Match], list[dict]]:
     """Every matched region in program order, plus recorded declines (with reasons)."""
     from .integer_regions import match_integer_region, has_integer_readout
     from functools import partial
     # A region-ABI program must cover its raw producers as well as producers
     # with retained exact readouts. Raw-only programs keep the legacy route.
     retained_integer_readout = has_integer_readout(module)
-    match_integer_region = partial(match_integer_region, allow_raw=retained_integer_readout)
+    match_integer_region = partial(match_integer_region, allow_raw=retained_integer_readout,
+                                   module=module, readout_options=readout_options)
     from .bitwise import match as match_bitwise
     from .limbs import match as match_limb
     from .liveness import live_source_ops, live_bindings
@@ -1341,6 +1345,13 @@ def match_all(module) -> tuple[list[Match], list[dict]]:
         for o in module.walk() if len(o.operands)>=3 and etype(o.operands[0])!='i32')
     taken: set[int] = set()
     host_readout_values = set()
+    from .shared_input import match_shared_input
+    # Declined sibling groups are not source declines: their contractions
+    # continue through the ordinary per-region matchers below.
+    fused, _ = match_shared_input(module, readout_options=readout_options)
+    for m in fused:
+        matches.append(m)
+        taken.update(id(o) for o in m.consumed)
     # Prove whole selector islands before older local matchers consume their
     # carriers. A failed identity proof leaves the existing exact path intact.
     for op in module.walk():
@@ -1386,6 +1397,11 @@ def match_all(module) -> tuple[list[Match], list[dict]]:
                        for v in plan[0])))
               and not any(k.startswith('prov.quant.') for k in op.attributes)):
             selected_matchers = (match_native_layout, *selected_matchers)
+        if readout_options is not None:
+            # A proved scaled-load sum precedes the exact integer linear path,
+            # which keeps every region the proof declines.
+            from .operand_sum import match as match_operand_sum
+            selected_matchers = (partial(match_operand_sum, readout_options=readout_options), *selected_matchers)
         if 'gemmini.limb' in op.attributes:
             selected_matchers = (match_limb,)
         for fn in selected_matchers:
