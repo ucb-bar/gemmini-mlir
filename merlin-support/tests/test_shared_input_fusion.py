@@ -369,3 +369,25 @@ def test_backstop_compares_against_the_exact_reference():
     members[1].bits = tuple(int(np.float32(.5).view(np.uint32)) for _ in members[1].bits)
     with pytest.raises(ProofError, match='differs from the exact reference'):
         _backstop(match.kernel.stream, members, weights, bases)
+
+
+def test_pool_plan_keeps_shared_siblings_unfused(monkeypatch):
+    """Extended pool plans must decline before the plain sibling emitter."""
+    from dataclasses import replace
+    from merlin.common import mlir_query as mq
+    from mlir_oot.core_aten import integer_regions
+
+    original = integer_regions._readout_plan
+
+    def pooled(module, op, selected):
+        planned = original(module, op, selected)
+        if planned is None:
+            return None
+        return replace(planned[0], route='conv_pool'), planned[1], object()
+
+    monkeypatch.setattr(integer_regions, '_readout_plan', pooled)
+    text, _, _ = source(3, 4, (5, 7), raw=False)
+    matches, declines = shared_input.match_shared_input(mq.parse(text), readout_options=options())
+    assert not matches
+    assert any('unsupported shared-input readout route: conv_pool' in d['reason']
+               for d in declines)

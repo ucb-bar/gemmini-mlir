@@ -96,6 +96,8 @@ def _members(module, group, readout_options):
         planned = _readout_plan(module, op, readout_options)
         if planned is None:
             raise Decline(f'sibling {index} has no proved readout composition')
+        if planned[0].route not in ('epilogue', 'int32_readout'):
+            raise Decline(f'sibling {index} has an unsupported shared-input readout route: {planned[0].route}')
         members.append(_Member(ordinal, op, *planned))
     if len({m.narrow for m in members}) != 1:
         raise Decline('shared-input siblings must share one exit width')
