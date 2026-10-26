@@ -6,6 +6,8 @@ i32 SRAM cannot implement an infinite-precision seeded sum without overflow.
 Unproved epilogues retain their original full-width producer and host boundary.
 """
 
+from dataclasses import dataclass
+
 import numpy as np
 
 from ..contraction_patterns import match_integer_gemm, _zero_init
@@ -134,15 +136,21 @@ def _readout_plan(module, op, options):
     from merlin.compile.composition_fusion import plan_contraction_readout
     from merlin.xdsl_dialects.lowering import output_fusion as OF
 
+    chain = OF.source_chain(op, OF.Values())
+    if any(stage.kind == 'pool' for stage in chain.stages):
+        from .pooled_store import plan_fused
+        return plan_fused(module, op, options, chain)
+    # Decline unsupported stages before planning: a residual chain's exhaustive
+    # accumulator-cut search is costly and could never be emitted here.
+    if any(stage.kind not in ('convert', 'scale', 'bias', 'relu', 'quantize') for stage in chain.stages):
+        return None
     try:
-        plan = plan_contraction_readout(module, op, **options)
+        plan = plan_contraction_readout(module, op, path=options['path'], scheme=options['scheme'],
+                                        facts=options['facts'])
     except ValueError:
         return None  # Retain the original integer producer and host boundary.
-    chain = OF.source_chain(op, OF.Values())
     from .readout_encoding import supports_narrow_path
     if plan.route == 'epilogue' and not supports_narrow_path(options['path']):
-        return None
-    if any(stage.kind not in ('convert', 'scale', 'bias', 'relu', 'quantize') for stage in chain.stages):
         return None
     if len(chain.ops) != len(chain.stages):
         return None  # Layout/pooling partitions have separate emission obligations.
@@ -161,9 +169,14 @@ def _readout_plan(module, op, options):
 def _emit_readout_plan(kernel, op, planned, consumed):
     if planned is None:
         return op
-    plan, chain = planned
+    plan, chain = planned[:2]
     result = op
-    if plan.route == 'epilogue':
+    if plan.route == 'conv_pool':
+        from .pooled_store import emit_fused
+        emit_fused(kernel, planned)
+        result = chain.ops[-1]
+        consumed.extend(chain.ops)
+    elif plan.route in NARROW_ROUTES:
         from .stream import DIM
         proof = plan.decision['proof']
         relu = 'relu' in plan.decision['stages']
@@ -177,34 +190,46 @@ def _emit_readout_plan(kernel, op, planned, consumed):
                            multiplier_bits=proof['multiplier_bits'])
     kernel.meta['composition_plan'] = plan.record()
     kernel.meta['raw_integer'] = plan.route == 'int32_readout'
-    kernel.meta['integer_readout'] |= plan.route == 'epilogue'
+    kernel.meta['integer_readout'] |= plan.route in NARROW_ROUTES + ('conv_pool',)
     return result
 
 
-def match_integer_region(op, *, allow_raw=False, module=None, readout_options=None):
-    dims = contraction(op)
-    if dims is None:
-        return None
-    selected = readout(op)
-    planned = _readout_plan(module, op, readout_options)
-    if selected is None:
-        if planned is None and readout_options is None and (not allow_raw or not _zero_init(op.operands[2])):
-            return None
-        if any(k.startswith('prov.quant.') for k in op.attributes):
-            from .quant_schema import attributes
-            attributes(op,'contraction')
-        scale, relu = None, False
-    else:
-        reader, scale, relu = selected
+#: Plans whose proved readout narrows on the device: a plain epilogue, or one
+#: whose residual moved into the contraction as K-concat digit tiles.
+NARROW_ROUTES = ('epilogue', 'k_concat')
+
+
+def planned_readout(module, op, options):
+    """The readout plan and any K-concat extension, derived from the source alone."""
+    planned = _readout_plan(module, op, options)
+    if planned is not None or str(op.operands[0].type.get_element_type()) != 'i8':
+        return planned, None
+    from . import compositions
+    extension = compositions.k_extension(module, op, options, batch=len(shape(op.operands[0])) != 2)
+    return (None, None) if extension is None else ((extension.readout, extension.chain), extension)
+
+
+@dataclass
+class SourceSeed:
+    """The source accumulator initializer, with readout offsets folded in."""
+    bias: bool
+    values: object            # int64/int32 constant seed, [N] or the full result shape; None if runtime/zero
+    bias_rows: bool           # False when ``values`` (or the runtime seed) is one row broadcast over M
+    guarded_range: tuple | None
+    runtime_seed: object      # source SSA value of a guarded runtime seed
+    planned: object           # the readout plan, dropped when its offsets need a runtime seed
+    consumed: list
+
+
+def source_seed(op, dims, planned):
+    """Derive the seed from the source contraction; emission and admission share it."""
     rank = len(shape(op.operands[0]))
-    batch = dims.batch if rank == 3 else 0
     seed = op.operands[2]
-    consumed = [op]
+    consumed = []
     bias = not _zero_init(seed)
     bias_rows = True
     values = None
     guarded_range = None
-    guard_op = None
     runtime_seed = None
     if bias:
         seed_op = producer(seed)
@@ -234,7 +259,9 @@ def match_integer_region(op, *, allow_raw=False, module=None, readout_options=No
             values = np.asarray(values, np.int32)
         else:
             runtime_seed = seed
-    if planned is not None and planned[0].route == 'epilogue':
+    if planned is not None and planned[0].route == 'conv_pool' and runtime_seed is not None:
+        planned = None  # pooled bands load only compile-time seeds
+    if planned is not None and planned[0].route in NARROW_ROUTES + ('conv_pool',):
         offsets = np.asarray(planned[0].decision['proof']['offsets'], dtype=np.int64)
         if np.any(offsets):
             if runtime_seed is not None:
@@ -244,15 +271,51 @@ def match_integer_region(op, *, allow_raw=False, module=None, readout_options=No
                 bias = True
                 if values.ndim == 1:
                     bias_rows = False
+    return SourceSeed(bias, values, bias_rows, guarded_range, runtime_seed, planned, consumed)
+
+
+def match_integer_region(op, *, allow_raw=False, module=None, readout_options=None):
+    dims = contraction(op)
+    if dims is None:
+        return None
+    selected = readout(op)
+    planned, extension = planned_readout(module, op, readout_options)
+    if selected is None:
+        if planned is None and readout_options is None and (not allow_raw or not _zero_init(op.operands[2])):
+            return None
+        if any(k.startswith('prov.quant.') for k in op.attributes):
+            from .quant_schema import attributes
+            attributes(op,'contraction')
+        scale, relu = None, False
+    else:
+        reader, scale, relu = selected
+    rank = len(shape(op.operands[0]))
+    batch = dims.batch if rank == 3 else 0
+    seeded = source_seed(op, dims, planned)
+    consumed = [op, *seeded.consumed]
+    bias, values, bias_rows = seeded.bias, seeded.values, seeded.bias_rows
+    guarded_range, runtime_seed, planned = seeded.guarded_range, seeded.runtime_seed, seeded.planned
+    if planned is None:
+        extension = None  # Its offsets needed a runtime seed: keep the host boundary.
     operands = [('a', op.operands[0]), ('b', op.operands[1])]
     if str(op.operands[0].type.get_element_type()) == 'i32':
         from .centered_regions import kernel as centered_kernel
         kernel, operands, producers = centered_kernel(op, dims, batch, bias, values, bias_rows, guarded_range)
         consumed.extend(producers)
     else:
+        from . import compositions
+        dataflow_plan = None
+        if extension is None:
+            dataflow_plan = compositions.output_stationary(module, op, readout_options, batch=rank != 2,
+                                                           runtime_seed=runtime_seed is not None)
+        recipe, inputs = compositions.recipe(dataflow_plan, extension, dims.n)
         kernel = ops.matmul('aten.bmm.default' if batch else 'aten.addmm.default' if bias else 'aten.mm.default', dims.m, dims.k, dims.n,
                             batch=batch, s_out=None, bias=bias, bias_const=values,
-                            bias_rows=bias_rows, relu=relu, bias_range=guarded_range)
+                            bias_rows=bias_rows, relu=relu, bias_range=guarded_range,
+                            recipe=recipe, inputs=inputs)
+        compositions.annotate(kernel, dataflow_plan, extension)
+        if extension is not None:
+            operands.append(('residual', extension.residual))
     kernel.meta.update(output_dtype='i32', scale=1, relu=False, bias=bias,
                        integer_producer=True, integer_readout=selected is not None, raw_integer=selected is None,
                        dimensions=dict(batch=dims.batch,m=dims.m,n=dims.n,k=dims.k),

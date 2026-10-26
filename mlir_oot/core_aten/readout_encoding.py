@@ -55,9 +55,9 @@ def activation(relu):
     return next(row['equals'] for row in roles if row['name'] == 'relu') if relu else isa.NO_ACTIVATION
 
 
-def config_st(stride, act, multiplier_bits):
+def config_st(stride, act, multiplier_bits, pool=None):
     return (code('semantic_class', 'CONFIG'),
-            pack('ConfigMvoutRs1', cmd_type=code('config_subtype', 'CONFIG_ST'), activation=act),
+            pack('ConfigMvoutRs1', cmd_type=code('config_subtype', 'CONFIG_ST'), activation=act, **(pool or {})),
             pack('ConfigMvoutRs2', stride=stride, acc_scale=multiplier_bits))
 
 

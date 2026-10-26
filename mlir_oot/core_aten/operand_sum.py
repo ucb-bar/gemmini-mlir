@@ -528,9 +528,9 @@ def match(op, *, readout_options):
 
 def validate(stream, meta):
     """Replay the actual command words against the proof; raise unless they implement it."""
-    from .emit import encode
-    from .readout_encoding import activation, code, flags, unpack
+    from .readout_encoding import activation, code
     from .stream import ACC_ROWS, DIM
+    from .stream_proof import decode, load_model, local, _matches
     proof = meta.get('scaled_operand_sum')
     if not proof or proof.get('status') != 'proven':
         raise ValueError('scaled operand sum lacks a proof')
@@ -546,10 +546,6 @@ def validate(stream, meta):
         arg = stream.args[index[name]] if name in index else None
         if arg is None or arg.role != role or arg.dtype != 'i8' or int(np.prod(arg.shape)) != rows * cols:
             raise ValueError('kernel arguments differ from the proved operand layout')
-    address = flags()
-    local_mask = ~(address['acc_i8'] | address['acc_accum'] | address['full_c_bit'])
-    load_class = {code('semantic_class', n): state for state, n in enumerate(('MVIN', 'MVIN2', 'MVIN3'))}
-    store_class, config_class = code('semantic_class', 'MVOUT'), code('semantic_class', 'CONFIG')
     states, store = {}, None
     # Per accumulator cell: (source arg, element, scale bits, accumulate flag, fence epoch) per load.
     history = {}
@@ -557,66 +553,58 @@ def validate(stream, meta):
     epoch = 0
     expected_act = activation(proof['relu'])
     for ins in stream.ins:
-        if ins.kind == 'fence':
+        command = decode(ins)
+        kind, fields = command.kind, command.fields
+        if kind == 'FENCE':
             epoch += 1
             continue
-        if ins.kind == 'flush':
+        if kind == 'FLUSH':
             continue
-        record = encode(ins)
-        funct = record.key[0]
-        rs1, rs2 = record.values
-        if funct == config_class:
-            subtype = unpack(rs1, 'ConfigMvoutRs1', 'cmd_type')
-            if subtype == code('config_subtype', 'CONFIG_LD'):
-                states[unpack(rs1, 'ConfigMvinRs1', 'state_id')] = dict(
-                    scale=unpack(rs1, 'ConfigMvinRs1', 'scale'), shrink=unpack(rs1, 'ConfigMvinRs1', 'shrink'),
-                    repeats=unpack(rs1, 'ConfigMvinRs1', 'pixel_repeats'), stride=rs2)
-            elif subtype == code('config_subtype', 'CONFIG_ST'):
-                store = (unpack(rs2, 'ConfigMvoutRs2', 'acc_scale'), unpack(rs1, 'ConfigMvoutRs1', 'activation'),
-                         unpack(rs2, 'ConfigMvoutRs2', 'stride'),
-                         *(unpack(rs1, 'ConfigMvoutRs1', f) for f in ('pool_size', 'pool_stride', 'upad', 'lpad')))
-            else:
-                raise ValueError('scaled operand sum issues an unproved configuration')
+        if kind == 'CONFIG_LD':
+            states[fields['state_id']] = fields
             continue
-        if funct in load_class:
-            state = states.get(load_class[funct])
-            local = unpack(rs2, 'MvinRs2', 'local_addr')
-            height, width = unpack(rs2, 'MvinRs2', 'num_rows'), unpack(rs2, 'MvinRs2', 'num_cols')
-            if (state is None or not state['shrink'] or state['repeats'] != 1 or state['stride'] != cols
-                    or not local & address['acc_i8'] or local & address['full_c_bit'] or width > DIM
-                    or record.key[1] is None):
+        if kind == 'CONFIG_ST':
+            store = fields
+            continue
+        if kind in ('MVIN', 'MVIN2', 'MVIN3'):
+            state = states.get(fields['state'])
+            place = local(fields['local_addr'])
+            height, width = fields['num_rows'], fields['num_cols']
+            if state is None:
                 raise ValueError('scaled load state, width or destination differs from the proof')
-            source = names[record.key[1]]
-            if rs1 % cols + width > cols:
+            _matches(state, {**load_model(), 'shrink': 1, 'scale': state['scale'], 'dram_stride': cols},
+                     ('state_id',), 'scaled load state, width or destination differs from the proof')
+            if (place.garbage or not place.accumulator or place.full or width > DIM or command.arg is None):
+                raise ValueError('scaled load state, width or destination differs from the proof')
+            source = names[command.arg]
+            if command.off % cols + width > cols:
                 raise ValueError('scaled load crosses its operand row')
-            row = local & local_mask
-            accumulate = bool(local & address['acc_accum'])
-            start = rs1
             for r in range(height):
                 for c in range(width):
-                    element = start + r * cols + c
-                    cell = (row + r, c)
-                    if not 0 <= row + r < ACC_ROWS:
+                    element = command.off + r * cols + c
+                    cell = (place.row + r, c)
+                    if not 0 <= place.row + r < ACC_ROWS:
                         raise ValueError('scaled load leaves the accumulator')
-                    entry = (source, element, state['scale'], accumulate, epoch)
-                    history[cell] = history.get(cell, []) + [entry] if accumulate else [entry]
+                    entry = (source, element, state['scale'], place.accumulate, epoch)
+                    history[cell] = history.get(cell, []) + [entry] if place.accumulate else [entry]
             continue
-        if funct == store_class:
-            local = unpack(rs2, 'MvoutRs2', 'local_addr')
-            height, width = unpack(rs2, 'MvoutRs2', 'num_rows'), unpack(rs2, 'MvoutRs2', 'num_cols')
-            if (record.key[1] is None or names[record.key[1]] != 'y' or not local & address['acc_i8']
-                    or local & address['full_c_bit'] or width > DIM or store is None):
+        if kind == 'MVOUT':
+            place = local(fields['local_addr'])
+            height, width = fields['num_rows'], fields['num_cols']
+            if (command.arg is None or names[command.arg] != 'y' or place.garbage or not place.accumulator
+                    or place.accumulate or place.full or width > DIM or store is None):
                 raise ValueError('readout destination, width or source differs from the proof')
-            scale, act, stride, *pooling = store
-            if act != expected_act or stride != cols or any(pooling):
+            if (store['activation'] != expected_act or store['stride'] != cols or
+                    store['cmd_type'] != code('config_subtype', 'CONFIG_ST') or
+                    any(v for k, v in store.items() if k not in ('cmd_type', 'activation', 'stride', 'acc_scale'))):
                 raise ValueError('decoded readout state differs from the proof')
-            row = local & local_mask
+            scale = store['acc_scale']
             for r in range(height):
                 for c in range(width):
-                    element = rs1 + r * cols + c
-                    if not 0 <= element < rows * cols or rs1 % cols + width > cols:
+                    element = command.off + r * cols + c
+                    if not 0 <= element < rows * cols or command.off % cols + width > cols:
                         raise ValueError('readout leaves its output row')
-                    cell = history.get((row + r, c), [])
+                    cell = history.get((place.row + r, c), [])
                     if (len(cell) != 2 or [e[:4] for e in cell] != [('a', element, loads[0], False),
                                                                     ('b', element, loads[1], True)]
                             or cell[1][4] <= cell[0][4] or scale != bits[element % cols]):

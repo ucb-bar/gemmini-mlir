@@ -1367,6 +1367,19 @@ def match_all(module, *, readout_options=None) -> tuple[list[Match], list[dict]]
                 taken.update(id(o) for o in m.consumed)
         except (Decline, ValueError, OverflowError, ZeroDivisionError):
             pass  # The normal matcher records malformed/unsupported contracts.
+    if readout_options is not None:
+        # Window-reduction compositions are opt-in under the selected readout scheme.
+        from .pooled_store import match_pooled_movement, match_window_mean
+        for op in module.walk():
+            if op not in live or id(op) in taken:
+                continue
+            try:
+                m = match_pooled_movement(op) or match_window_mean(op, module, readout_options)
+            except (Decline, ValueError, OverflowError, ZeroDivisionError):
+                continue  # The unfused matchers keep or record this region.
+            if m is not None and not any(id(o) in taken for o in m.consumed):
+                matches.append(m)
+                taken.update(id(o) for o in m.consumed)
     for op in module.walk():
         ordinal = ordinals[op]
         if op not in live or id(op) in taken:

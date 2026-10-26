@@ -25,7 +25,9 @@ def _ones(s: Stream):
         s.const("ones16", np.ones(DIM, np.int8))
 
 
-def mean_last(s: Stream, x: str, out: str, R: int, L: int, scale: float, *, out_i32: bool = False) -> None:
+def mean_last(s: Stream, x: str, out: str, R: int, L: int, scale: float, *, out_i32: bool = False,
+              multiplier_bits: int | None = None) -> None:
+    """``multiplier_bits`` programs a proved narrow f32 readout instead of ``scale``."""
     _ones(s)
     s.config_ex()
     s.config_ld(1, 1)
@@ -44,7 +46,10 @@ def mean_last(s: Stream, x: str, out: str, R: int, L: int, scale: float, *, out_
                 s.mvin(s.at(x, (r0 + i0) * L + k0), SP(slot), kr, mr, 0)
                 s.preload(SP(ONES), ACC(acc + i0, accumulate=k0 > 0), 1, kr, 1, mr)
                 s.compute(SP(slot), kr, mr)
-        s.config_st(4 if out_i32 else 1, NO_ACT, scale)
+        if multiplier_bits is None:
+            s.config_st(4 if out_i32 else 1, NO_ACT, scale)
+        else:
+            s.config_st(1, NO_ACT, multiplier_bits=multiplier_bits)
         for i in range(0, rr, DIM):
             s.mvout(s.at(out, (r0 + i)*(4 if out_i32 else 1)), ACC(acc + i, full=out_i32), 1, min(DIM, rr - i))
 

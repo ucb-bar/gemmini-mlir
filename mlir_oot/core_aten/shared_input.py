@@ -243,30 +243,130 @@ def _module_of(op):
     return op
 
 
-def _decoded_config_st(rec):
-    from .readout_encoding import unpack
-    return (unpack(rec.values[1], 'ConfigMvoutRs2', 'stride'), unpack(rec.values[0], 'ConfigMvoutRs1', 'activation'),
-            unpack(rec.values[1], 'ConfigMvoutRs2', 'acc_scale'))
+def _decoded_effects(stream, names, layouts, members, group, bases, element, bits):
+    """Logical sibling effects of the emitted words, through ``stream_proof.decode``.
 
+    Effective register state is validated at every command that depends on it:
+    a configuration changed between uses and restored is still caught. Every
+    decoded field must be one this realization models (an allowlist).
+    """
+    from merlin.compile.scheduling.block_schedule import Compute, Load, Preload, Store
+    from merlin.compile.scheduling.shared_input_schedule import SharedInputEffect
+    from .readout_encoding import activation, code
+    from .stream_proof import decode, execute_model, load_model, local, _matches
 
-def _canonical(kind, *args, **kwargs):
-    """The encoded register words of one configuration this pattern depends on."""
-    from .emit import encode
-    from .stream import Stream
-    probe = Stream([])
-    getattr(probe, kind)(*args, **kwargs)
-    return encode(probe.ins[0])
+    execute_state, load_state, store_state = None, {}, None
+    effects, owners, stationary = [], {}, None
+    pending_member = None
+    for ins in stream.ins:
+        command = decode(ins)
+        kind, fields = command.kind, command.fields
+        if kind in ('FENCE', 'FLUSH'):
+            continue
+        if kind in ('PRELOAD', 'COMPUTE_PRELOADED', 'COMPUTE_ACCUMULATE'):
+            if execute_state is None:
+                raise ValueError('effective execute configuration is unset')
+            _matches(execute_state, execute_model(), (),
+                     'effective execute configuration differs from untransposed unit-stride WS')
+        if kind == 'CONFIG_EX':
+            execute_state = fields
+        elif kind == 'CONFIG_LD':
+            load_state[fields['state_id']] = fields
+        elif kind == 'CONFIG_ST':
+            store_state = fields
+        elif kind in ('MVIN', 'MVIN2', 'MVIN3'):
+            place = local(fields['local_addr'])
+            rows, cols = fields['num_rows'], fields['num_cols']
+            if place.garbage or place.accumulator or command.arg is None or not 1 <= cols <= DIM or not 1 <= rows <= DIM:
+                raise ValueError('shared-input stream seeds the accumulator or loads a multi-tile row')
+            state = load_state.get(fields['state'])
+
+            def require_load(stride):
+                if state is None:
+                    raise ValueError('effective load configuration differs from the declared layout')
+                _matches(state, {**load_model(), 'dram_stride': stride}, ('state_id',),
+                         'effective load configuration differs from the declared layout')
+            if command.arg == names['a']:
+                require_load(group.k)
+                row, col = divmod(command.off, group.k)
+                effects.append(SharedInputEffect(None, Load('lhs', (row // DIM, col // DIM), row, col, rows, cols,
+                                                            place.row, col // DIM)))
+            elif command.arg in layouts:
+                member, layout = layouts[command.arg]
+                sibling = members[member]
+                require_load(layout.row_pitch if layout is not None else sibling.n)
+                row, col = layout.source(command.off, cols) if layout is not None else divmod(command.off, sibling.n)
+                effects.append(SharedInputEffect(member, Load('weight', (row // DIM, col // DIM), row, col, rows,
+                                                              cols, place.row, row // DIM)))
+            else:
+                raise ValueError('shared-input stream loads an unbound argument')
+            for r in range(rows):
+                owners[place.row + r] = effects[-1].member, effects[-1].operation.dram_row + r, effects[-1].operation.dram_col
+        elif kind == 'PRELOAD':
+            bd, c = local(fields['bd_local_addr']), local(fields['c_local_addr'])
+            if c.garbage or not c.accumulator or c.full or (not bd.garbage and bd.accumulator):
+                raise ValueError('shared-input descriptor addresses the wrong local memory')
+            if bd.garbage:
+                if stationary is None:
+                    raise ValueError('shared-input descriptor retains no resident weights')
+                member, block, weight_row = stationary, None, None
+            else:
+                owner = owners.get(bd.row)
+                if owner is None or owner[0] is None:
+                    raise ValueError('shared-input descriptor reads unowned weight rows')
+                member, block, weight_row = owner[0], (owner[1] // DIM, owner[2] // DIM), bd.row
+                stationary = member
+            pending_member = member
+            effects.append(SharedInputEffect(member, Preload(weight_row, block, c.row, c.accumulate,
+                                                             fields['c_num_rows'], fields['c_num_cols'],
+                                                             fields['bd_num_rows'])))
+            if fields['bd_num_cols'] != fields['c_num_cols']:
+                raise ValueError('shared-input descriptor weight and output widths differ')
+        elif kind in ('COMPUTE_PRELOADED', 'COMPUTE_ACCUMULATE'):
+            a, bd = local(fields['a_local_addr']), local(fields['bd_local_addr'])
+            if not bd.garbage or a.garbage or a.accumulator or pending_member is None:
+                raise ValueError('shared-input compute differs from the independent dot product')
+            owner = owners.get(a.row)
+            block = None if owner is None else (owner[1] // DIM, owner[2] // DIM)
+            effects.append(SharedInputEffect(pending_member, Compute(a.row, block, fields['a_num_rows'],
+                                                                     fields['a_num_cols'],
+                                                                     kind == 'COMPUTE_PRELOADED')))
+            pending_member = None
+        elif kind == 'MVOUT':
+            place = local(fields['local_addr'])
+            if place.garbage or not place.accumulator or place.accumulate or command.arg != names['out'] or \
+                    store_state is None:
+                raise ValueError('shared-input store is not an accumulator readout of the flat output')
+            position, remainder = divmod(command.off, element)
+            member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
+            if remainder or member is None:
+                raise ValueError('shared-input store is misaligned with every sibling result')
+            sibling = members[member]
+            row, col = divmod(position - bases[member], sibling.n)
+            cols = fields['num_cols']
+            stride, act, scale_bits = store_state['stride'], store_state['activation'], store_state['acc_scale']
+            if place.full == sibling.narrow or stride != sibling.n * element:
+                raise ValueError('sibling store width or pitch differs from its exit')
+            if sibling.narrow:
+                if set(sibling.bits[col:col + cols]) != {scale_bits} or act != activation(sibling.relu):
+                    raise ValueError('decoded sibling readout differs from its proved multiplier bits')
+            elif act != NO_ACT or scale_bits != bits['f1']:
+                raise ValueError('full-width sibling store applies a readout stage')
+            if store_state['cmd_type'] != code('config_subtype', 'CONFIG_ST') or any(
+                    v for k, v in store_state.items() if k not in ('cmd_type', 'stride', 'activation', 'acc_scale')):
+                raise ValueError('effective store configuration sets an unproved readout field')
+            effects.append(SharedInputEffect(member, Store(row, col, fields['num_rows'], cols, place.row)))
+        else:
+            raise ValueError('shared-input stream contains an unknown command')
+    return effects
 
 
 def admit(match, *, readout_options):
     """Return a proof record for ``match``'s emitted stream or raise ``ValueError``."""
-    from merlin.compile.scheduling.block_schedule import Compute, Load, Preload, Store
     from merlin.compile.scheduling.panel_layout import PanelLayout
     from merlin.compile.scheduling.shared_input_groups import SharedInputGroup
-    from merlin.compile.scheduling.shared_input_schedule import SharedInputEffect
     from merlin.compile.scheduling.shared_input_verification import verify_shared_input
-    from .readout_encoding import activation, flags
-    from ..tables import isa
+    from .readout_encoding import flags
 
     record = match.kernel.meta['shared_input']
     fields = record['group']
@@ -307,111 +407,7 @@ def admit(match, *, readout_options):
             if bound.get(name) is not member.op.operands[1] or arg.shape != (member.k, member.n):
                 raise ValueError('sibling weight argument differs from its source contraction')
             layouts[names[name]] = (i, None)
-    from .emit import encode
-
-    bits = flags()
-    address_flags = bits['acc_i8'] | bits['acc_accum'] | bits['full_c_bit']
-    # Effective register state, validated at every command that depends on it:
-    # a configuration changed between uses and restored is still caught.
-    execute_state, load_state, store_state = None, {}, None
-    execute_expected = _canonical('config_ex')
-    effects, owners, stationary = [], {}, None
-    pending_member = None
-    for ins in stream.ins:
-        kind = ins.kind
-        if kind in ('fence', 'flush'):
-            continue
-        if kind in ('preload', 'compute') and execute_state != execute_expected:
-            raise ValueError('effective execute configuration differs from untransposed unit-stride WS')
-        if kind == 'config_ex':
-            execute_state = encode(ins)
-        elif kind == 'config_ld':
-            load_state[ins.a('load_id')] = encode(ins)
-        elif kind == 'config_st':
-            store_state = encode(ins)
-        elif kind == 'mvin':
-            local, rows, cols = ins.a('local'), ins.a('rows'), ins.a('cols')
-            if local & bits['acc_i8'] or ins.a('zero') or cols > DIM:
-                raise ValueError('shared-input stream seeds the accumulator or loads a multi-tile row')
-            state = load_state.get(ins.a('load_id'))
-
-            def require_load(stride):
-                if state != _canonical('config_ld', ins.a('load_id'), stride):
-                    raise ValueError('effective load configuration differs from the declared layout')
-            if ins.arg == names['a']:
-                require_load(group.k)
-                row, col = divmod(ins.off, group.k)
-                effects.append(SharedInputEffect(None, Load('lhs', (row // DIM, col // DIM), row, col, rows, cols,
-                                                            local, col // DIM)))
-            elif ins.arg in layouts:
-                member, layout = layouts[ins.arg]
-                sibling = members[member]
-                require_load(layout.row_pitch if layout is not None else sibling.n)
-                row, col = layout.source(ins.off, cols) if layout is not None else divmod(ins.off, sibling.n)
-                effects.append(SharedInputEffect(member, Load('weight', (row // DIM, col // DIM), row, col, rows,
-                                                              cols, local, row // DIM)))
-            else:
-                raise ValueError('shared-input stream loads an unbound argument')
-            for r in range(rows):
-                owners[local + r] = effects[-1].member, effects[-1].operation.dram_row + r, effects[-1].operation.dram_col
-        elif kind == 'preload':
-            bd, c = ins.a('bd'), ins.a('c')
-            if not c & bits['acc_i8'] or (bd != isa.GARBAGE_ADDR and bd & bits['acc_i8']):
-                raise ValueError('shared-input descriptor addresses the wrong local memory')
-            if bd == isa.GARBAGE_ADDR:
-                if stationary is None:
-                    raise ValueError('shared-input descriptor retains no resident weights')
-                member, block, weight_row = stationary, None, None
-            else:
-                owner = owners.get(bd)
-                if owner is None or owner[0] is None:
-                    raise ValueError('shared-input descriptor reads unowned weight rows')
-                member, block, weight_row = owner[0], (owner[1] // DIM, owner[2] // DIM), bd
-                stationary = member
-            pending_member = member
-            effects.append(SharedInputEffect(member, Preload(weight_row, block, c & ~address_flags,
-                                                             bool(c & bits['acc_accum']), ins.a('c_rows'),
-                                                             ins.a('c_cols'), ins.a('bd_rows'))))
-            if ins.a('bd_cols') != ins.a('c_cols'):
-                raise ValueError('shared-input descriptor weight and output widths differ')
-        elif kind == 'compute':
-            a = ins.a('a')
-            if ins.a('bd') != isa.GARBAGE_ADDR or a & bits['acc_i8'] or pending_member is None:
-                raise ValueError('shared-input compute differs from the independent dot product')
-            owner = owners.get(a)
-            block = None if owner is None else (owner[1] // DIM, owner[2] // DIM)
-            effects.append(SharedInputEffect(pending_member, Compute(a, block, ins.a('a_rows'), ins.a('a_cols'),
-                                                                     not ins.a('accumulate'))))
-            pending_member = None
-        elif kind == 'mvout':
-            local = ins.a('local')
-            if not local & bits['acc_i8'] or ins.arg != names['out'] or store_state is None:
-                raise ValueError('shared-input store is not an accumulator readout of the flat output')
-            position, remainder = divmod(ins.off, element)
-            member = next((i for i in range(len(members) - 1, -1, -1) if bases[i] <= position), None)
-            if remainder or member is None:
-                raise ValueError('shared-input store is misaligned with every sibling result')
-            sibling = members[member]
-            row, col = divmod(position - bases[member], sibling.n)
-            cols = ins.a('cols')
-            full = bool(local & bits['full_c_bit'])
-            stride, act, scale_bits = _decoded_config_st(store_state)
-            if full == sibling.narrow or stride != sibling.n * element:
-                raise ValueError('sibling store width or pitch differs from its exit')
-            if sibling.narrow:
-                expected = set(sibling.bits[col:col + cols])
-                if expected != {scale_bits} or act != activation(sibling.relu):
-                    raise ValueError('decoded sibling readout differs from its proved multiplier bits')
-                canonical = _canonical('config_st', stride, act, multiplier_bits=scale_bits)
-            elif act != isa.NO_ACTIVATION or scale_bits != bits['f1']:
-                raise ValueError('full-width sibling store applies a readout stage')
-            else:
-                canonical = _canonical('config_st', stride)
-            if store_state != canonical:
-                raise ValueError('effective store configuration sets an unproved readout field')
-            effects.append(SharedInputEffect(member, Store(row, col, ins.a('rows'), cols, local & ~address_flags)))
-        else:
-            raise ValueError('shared-input stream contains an unknown command')
+    effects = _decoded_effects(stream, names, layouts, members, group, bases, element, flags())
     tile, storage, resources = _views(group)
     realization = verify_shared_input(tuple(effects), module=module, group=group, primitive_tile=tile,
                                       resources=resources, storage=storage)

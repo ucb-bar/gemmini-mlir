@@ -87,11 +87,13 @@ def _readout(s, name, scale, relu=False):
 def matmul(op: str, M: int, K: int, N: int, *, batch: int = 0, s_a: float = 1.0, s_b: float = 1.0,
            s_out: float | None = None, alpha: float = 1.0, bias: bool = False, relu: bool = False,
            bias_const: np.ndarray | None = None, bias_rows: bool = False,
-           bias_range: tuple[int, int] | None = None) -> Kernel:
+           bias_range: tuple[int, int] | None = None, recipe=None, inputs=()) -> Kernel:
     """mm / bmm (batch > 0) / addmm (bias: int32 [N] in accumulator units, i.e. at scale alpha s_a s_b).
 
     ``bias_const`` makes the (compile-time quantized) bias a private constant instead of an argument.
     s_out None selects the raw int32 readout of the exact integer contraction.
+    ``recipe`` replaces the blocked weight-stationary schedule with an argument-compatible one,
+    and ``inputs`` declares the extra operands it reads; both come from an admitted composition.
     """
     require(min(M, K, N) > 0 and batch >= 0, "empty or dynamic contraction")
     require(s_out is not None or not relu,'raw i32 contraction cannot silently apply byte-readout ReLU')
@@ -114,7 +116,7 @@ def matmul(op: str, M: int, K: int, N: int, *, batch: int = 0, s_a: float = 1.0,
     B = max(batch, 1)
     lead = (batch,) if batch else ()
     out_i32 = True
-    args = [Arg("a", "i8", lead + (M, K), "input"), Arg("b", "i8", lead + (K, N), "input")]
+    args = [Arg("a", "i8", lead + (M, K), "input"), Arg("b", "i8", lead + (K, N), "input"), *inputs]
     if bias and bias_const is None:
         args.append(Arg("bias", "i32", lead + (M, N) if bias_rows else (N,), "input"))
     args.append(Arg("out", "i32" if out_i32 else "i8", lead + (M, N), "output"))
@@ -132,7 +134,7 @@ def matmul(op: str, M: int, K: int, N: int, *, batch: int = 0, s_a: float = 1.0,
         if bi:
             # Each batch reuses the same local seed and operand tiles.
             s.fence()
-        blocked_matmul(s, ("a", bi * M * K), K, ("b", bi * K * N), N, ("out", bi * M * N * (4 if out_i32 else 1)), N,
+        (recipe or blocked_matmul)(s, ("a", bi * M * K), K, ("b", bi * K * N), N, ("out", bi * M * N * (4 if out_i32 else 1)), N,
                        M, K, N, bias=(bname, bi * M * N * 4 if bias_rows else 0) if bias else None, scale=scale, relu=False, out_i32=out_i32,
                        configure=bi == 0, bias_rows=bias_rows)
     return _end(op, s, readout_scale=scale, accumulator_min=lo, accumulator_max=hi)

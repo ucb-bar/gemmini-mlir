@@ -36,7 +36,12 @@ def _readout_options(numeric_policy):
     path = (contract.get('output_epilogue') or derive(facts, contract=contract)).get('output_path')
     if path is None or not any(path.get('exits', {}).values()):
         return None
-    return dict(path=path, scheme=dict(readout_strategy=strategy), facts=facts)
+    options = dict(path=path, scheme=dict(readout_strategy=strategy), facts=facts)
+    if numeric_policy.get('compositions'):
+        # Declared compositions are planned only from the selected policy.
+        options.update(compositions=numeric_policy['compositions'],
+                       numerical_semantics=numeric_policy['numerical_semantics'])
+    return options
 
 
 def prepare_bundle(directory, *, target, facts):
@@ -62,7 +67,7 @@ def routing(directory, *, target, package, facts, eligible, readout_options=None
     if regions.has_integer_readout(parsed) or limbs.has_limb_plan(parsed) or readout_options is not None:
         _, inventory, matches = parsing.build(source, readout_options=readout_options)
         selected = [m for m in matches if m.kernel.meta.get("integer_producer") or m.kernel.meta.get("integer_readout") or m.kernel.meta.get('limb_plan')
-                    or m.kernel.meta.get('scaled_operand_sum')]
+                    or m.kernel.meta.get('scaled_operand_sum') or m.kernel.meta.get('composition_kernel')]
     if selected:
         # Logical centered operands are i32, but their proved physical
         # products are signed byte x byte -> i32. Admission derives that
@@ -247,7 +252,8 @@ def admit_numeric_schedule(source, *, package, numeric_policy, readout_options=N
         # The same region kinds routing selects; a scaled operand sum has no
         # contraction, so the legacy GEMM admission would find nothing to cover.
         integer_matches = [m for m in matches if m.kernel.meta.get('integer_producer') or
-                           m.kernel.meta.get('integer_readout') or m.kernel.meta.get('scaled_operand_sum')]
+                           m.kernel.meta.get('integer_readout') or m.kernel.meta.get('scaled_operand_sum') or
+                           m.kernel.meta.get('composition_kernel')]
     if regions.has_integer_readout(parsed) or integer_matches:
         return _admit_integer_regions(source, package=package, numeric_policy=numeric_policy,
                                       readout_options=readout_options)
@@ -538,6 +544,13 @@ def _admit_integer_regions(source, *, package, numeric_policy, readout_options=N
         return dict(status='declined',reason=reason,source_sha256=catalog['source_sha256'],
                     kernels=[],bindings=[],declines=catalog['declines'])
     for binding, match in zip(catalog["bindings"], matches):
+        if match.kernel.meta.get('composition_kernel'):
+            try:
+                proofs.append(dict(symbol=binding['symbol'], **_core_aten_module(package, 'pooled_store').admit(
+                    match, numeric_policy, tile_dim=tile_dim)))
+            except ValueError as exc:
+                return refuse(str(exc))
+            continue
         if match.kernel.meta.get('scaled_operand_sum'):
             proof = _admit_scaled_operand_sum(binding, match, package=package, numeric_policy=numeric_policy)
             if proof.get('status') != 'proven':
@@ -562,12 +575,20 @@ def _admit_integer_regions(source, *, package, numeric_policy, readout_options=N
             return refuse("provider padded mesh K exceeds selected internal MAC bound")
         stream = match.kernel.stream
         computes = [i for i in stream.ins if i.kind == "compute"]
-        if not computes or any(i.a("a_cols") > tile_dim or i.a("bd") != isa.GARBAGE_ADDR for i in computes):
-            return refuse("seeded WS primitive differs from the proved independent dot product")
-        if any(i.a("dataflow") != isa.WEIGHT_STATIONARY for i in stream.ins if i.kind == "config_ex"):
+        composed = (readout_options or {}).get('numerical_semantics')
+        if composed is not None and composed != numeric_policy.get('numerical_semantics'):
+            return refuse('composition facts differ from the selected numerical policy')
+        if not computes or any(i.a("a_cols") > tile_dim for i in computes):
+            return refuse("seeded primitive exceeds the proved mesh depth")
+        # The replayed dataflow (``contraction_proof``) admits a non-WS command
+        # only where the source-derived composition plan licenses it.
+        if not match.kernel.meta.get('dataflow_plan') and (
+                any(i.a("bd") != isa.GARBAGE_ADDR for i in computes) or
+                any(i.a("dataflow") != isa.WEIGHT_STATIONARY for i in stream.ins if i.kind == "config_ex")):
             return refuse("seeded proof requires weight-stationary execution")
         try:
-            device_readout = requant.validate_device_readout(stream, match.kernel.meta, numeric=match.numeric)
+            device_readout = requant.validate_device_readout(stream, match.kernel.meta, numeric=match.numeric,
+                                                             match=match, readout_options=readout_options)
         except ValueError as exc:
             return refuse(str(exc))
         plan = match.kernel.meta.get('composition_plan')

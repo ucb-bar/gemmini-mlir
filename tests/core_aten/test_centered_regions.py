@@ -129,3 +129,74 @@ def test_centered_i32_source_routes_to_proved_physical_byte_datapath(tmp_path):
     manifest=json.loads(result[3].read_text())
     assert manifest['status']=='declined' and not manifest['kernels']
     assert 'compilation' not in manifest
+
+
+def _admission_with(monkeypatch, text, mutate):
+    """Admit ``text`` with ``mutate(stream)`` applied to every emitted kernel."""
+    from conftest import provider, PACKAGE, POLICY
+    api = provider()
+    backend = api._core_aten_module(PACKAGE, 'catalog')
+    original = backend.build
+
+    def altered(*args, **kwargs):
+        module, manifest, matches = original(*args, **kwargs)
+        for match in matches:
+            if match.numeric.get('integer_readout'):
+                mutate(match.kernel.stream)
+        return module, manifest, matches
+
+    monkeypatch.setattr(backend, 'build', altered)
+    return api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY)
+
+
+def _mutated_value(text, mutate, feed):
+    _, _, matches = build(text)
+    match, = [m for m in matches if m.numeric.get('integer_readout')]
+    mutate(match.kernel.stream)
+    return int(simulate(match.kernel.stream, feed)['out'][0, 0])
+
+
+def _centered_operands(k, b):
+    return dict(x0=np.arange(1, k + 1, dtype=np.int8).reshape(1, k), x1=np.asarray(b, np.int8).reshape(k, 1))
+
+
+def test_centered_operand_load_stride_is_replayed(monkeypatch):
+    """B's operand stride 1 -> 0 re-reads B[0]: 1*4+2*4+3*4 = 24, not 32."""
+    from conftest import provider, PACKAGE, POLICY
+    text = source(k=3, unsigned=False, zp=0)
+    feed = _centered_operands(3, [4, 5, 6])
+
+    def mutate(stream):
+        stream.ins = [i._replace(attrs=tuple((k, 0 if k == 'stride' else v) for k, v in i.attrs))
+                      if i.kind == 'config_ld' and i.a('load_id') == 1 and i.a('stride') == 1 else i
+                      for i in stream.ins]
+
+    assert _mutated_value(text, lambda s: None, feed) == 32
+    assert _mutated_value(text, mutate, feed) == 24
+    assert provider().admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY)['status'] == 'proven'
+    proof = _admission_with(monkeypatch, text, mutate)
+    assert proof['status'] == 'declined', proof
+
+
+def test_centered_scratchpad_store_stride_is_replayed(monkeypatch):
+    """A zero CONFIG_ST stride around two gather stores: 140633, not 12529."""
+    from mlir_oot.core_aten.readout_encoding import flags
+    text = source(k=33, unsigned=False, zp=0)
+    feed = _centered_operands(33, np.arange(1, 34))
+
+    def mutate(stream):
+        current, out = None, []
+        for ins in stream.ins:
+            if ins.kind == 'config_st':
+                current = ins
+            if (ins.kind == 'mvout' and not ins.a('local') & flags()['acc_i8'] and ins.a('rows') == 2):
+                zero = current._replace(attrs=tuple((k, 0 if k == 'stride' else v) for k, v in current.attrs))
+                out.extend([zero, ins, current])
+            else:
+                out.append(ins)
+        stream.ins = out
+
+    assert _mutated_value(text, lambda s: None, feed) == 12529
+    assert _mutated_value(text, mutate, feed) == 140633
+    proof = _admission_with(monkeypatch, text, mutate)
+    assert proof['status'] == 'declined', proof

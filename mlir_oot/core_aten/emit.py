@@ -71,7 +71,9 @@ def encode(ins: Ins) -> Rec:
             from .readout_encoding import config_st
             if a('multiplier_bits') != isa.f32_bits(a('acc_scale')):
                 raise ValueError('readout scale differs from its supplied multiplier bits')
-            f, r1, r2 = config_st(a('stride'), a('acc_act'), a('multiplier_bits'))
+            from .pool_plan import POOL_FIELDS
+            pool = {k: a(k) for k in POOL_FIELDS if a(k) is not None}
+            f, r1, r2 = config_st(a('stride'), a('acc_act'), a('multiplier_bits'), pool)
     elif k == "mvin":
         f, _, r2 = isa.mvin(local_addr=a("local"), cols=a("cols"), rows=a("rows"), load_id=a("load_id"))
         r1 = 0 if a("zero") else ins.off

@@ -35,7 +35,14 @@ def extension(value):
     return op.operands[0], body[0].name == 'arith.extui'
 
 
-def kernel(op, dims, batch, bias, seed, bias_rows, seed_range):
+def operand_selectors(op):
+    """Each i32 operand as one byte selector plus a literal constant, from the source.
+
+    Returns ``(sources, selectors, constants, ops)``: ``sources[i]`` is ``(raw byte
+    value, unsigned)``; selector ``(which, indices)`` picks ``sources[which]`` at
+    flat ``indices`` (``which < 0``: none); unsigned selections read the packed
+    signed byte, so their constants carry the +128. Emission and admission share it.
+    """
     require(all(int(np.prod(shape(v))) <= 1 << 23 for v in (*op.operands, *op.results)),
             'centered contraction exceeds static operand-map capacity')
     sources, keys, carriers = [], {}, []
@@ -73,6 +80,12 @@ def kernel(op, dims, batch, bias, seed, bias_rows, seed_range):
                 'centered byte correction is not a bounded integer constant')
         selectors.append((which, indices))
         constants.append(np.asarray(constant, np.int64))
+
+    return sources, selectors, constants, list(dict.fromkeys([*region.ops, *carriers]))
+
+
+def kernel(op, dims, batch, bias, seed, bias_rows, seed_range):
+    sources, selectors, constants, producers = operand_selectors(op)
 
     # Every source intermediate was independently range checked by IntegerRegion.
     # The expanded absolute sum proves *all* schedule prefixes, including seed,
@@ -151,4 +164,4 @@ def kernel(op, dims, batch, bias, seed, bias_rows, seed_range):
                  rounding='none', device_scales='unit', readout='full_i32')
     result = ops._end('aten.bmm.default' if batch else 'aten.mm.default', s,
                       accumulator_min=lo, accumulator_max=hi, centered_byte_contraction=proof)
-    return result, operands, list(dict.fromkeys([*region.ops, *carriers]))
+    return result, operands, producers

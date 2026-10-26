@@ -1,0 +1,251 @@
+"""Merlin composition plans realized as Gemmini contraction schedules.
+
+Merlin owns the semantic proofs: the constant-weight output-stationary value
+bound (``merlin.targetgen.native_mac_bound``), the integer residual coefficient
+decomposed into digit tiles (``merlin.xdsl_dialects.lowering.k_extension``) and
+the readout boundary (``output_fusion``), all reached through
+``merlin.compile.composition_fusion.plan_composition``.  This module supplies
+the target facts those proofs consume, selects the provider schedule, and
+lets the shared replay (``contraction_proof``) admit the emitted stream with
+the dataflows and terms the re-derived plan licenses.
+
+A refused premise returns None, which keeps the weight-stationary producer and
+the host residual and readout boundary exactly as before.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+
+#: Dataflow names in Merlin's composition vocabulary.
+_DATAFLOWS = {'WS': 'weight_stationary', 'OS': 'output_stationary'}
+
+
+def _dtype_bits(dtype):
+    digits = ''.join(ch for ch in str(dtype) if ch.isdigit())
+    return int(digits) if digits else None
+
+
+def _dataflow_codes():
+    """CONFIG_EX dataflow codes, with RTL-derived modes cross-checked when present."""
+    from ..tables import isa
+    from .readout_encoding import contract, field
+    from merlin.targetgen.rtl.facts import load_facts
+
+    roles = contract()['rocc_operand_roles']['classes']['CONFIG_EX']['fields']
+    if not any(row.get('name') == 'dataflow' for row in roles):
+        return {}
+    _, width = field('ConfigExRs1', 'dataflow')
+    codes = {'WS': isa.WEIGHT_STATIONARY, 'OS': isa.OUTPUT_STATIONARY}
+    if width is None or any(not 0 <= v < 1 << width for v in codes.values()) or len(set(codes.values())) != 2:
+        return {}
+    timing = (load_facts(contract()['name']).get('facts') or {}).get('timing_structure') or {}
+    modes = (timing.get('dataflow') or {}).get('modes')
+    if modes:
+        derived = {label: int(value) for value, label in modes.items()}
+        if any(derived.get(_DATAFLOWS[name]) != code for name, code in codes.items()):
+            return {}
+    return codes
+
+
+def facts(semantics):
+    """Composition facts from the selected numeric semantics and the synced contract."""
+    from merlin.targetgen.rtl.facts import load_facts
+    from .readout_encoding import contract
+
+    semantics = semantics or {}
+    internal = semantics.get('internal_arithmetic') or {}
+    datapaths = {row.get('name'): row.get('dtype') for row in
+                 (load_facts(contract()['name']).get('facts') or {}).get('datapaths', ())}
+    operand_bits, accumulator_bits = _dtype_bits(datapaths.get('input')), _dtype_bits(datapaths.get('accumulator'))
+    out = dict(dataflows=['WS'])
+    mesh = internal.get('mac_result_bits')
+    if (type(mesh) is int and mesh > 1 and internal.get('mac_result_overflow') == f'wrap_to_{mesh}_bits'):
+        out['mesh_signed_bits'] = mesh
+        declared = (semantics.get('native_unit_contract') or {}).get('mesh_mac') or {}
+        if ('OS' in declared.get('dataflows', ()) and declared.get('signed_bits') == mesh
+                and 'OS' in _dataflow_codes()):
+            out['dataflows'].append('OS')
+    if (operand_bits and accumulator_bits and internal.get('signed_operand_bits') == operand_bits
+            and _dtype_bits(semantics.get('accumulator_dtype')) == accumulator_bits):
+        out['digit_bits'] = operand_bits
+        out['accumulator_bits'] = accumulator_bits
+        # Every extended-K prefix of signed operand products stays an exact accumulator value.
+        out['max_extended_k'] = ((1 << (accumulator_bits - 1)) - 1) // (1 << (operand_bits - 1)) ** 2
+    return out
+
+
+def _plan(module, op, options, route):
+    """Merlin's plan for ``route`` rooted at ``op``, or None on any refused premise."""
+    from merlin.compile.composition_fusion import composition_proposals, plan_composition
+
+    block = (options or {}).get('compositions')
+    if not block:
+        return None
+    operations = tuple(module.walk())
+    root = operations.index(op)
+    try:
+        for found, members, detail, _ in composition_proposals(module, block, max_region_operations=len(operations)):
+            if found != route or detail.get('root_ordinal') != root:
+                continue
+            candidate = dict(route=route, operation_ordinals=[operations.index(m) for m in members], detail=detail)
+            return plan_composition(module, candidate, path=options['path'], scheme=options['scheme'],
+                                    facts=facts(options.get('numerical_semantics')))
+    except (ValueError, KeyError, TypeError, ArithmeticError):
+        return None  # Any unproved premise keeps the ordinary schedule.
+    return None
+
+
+def output_stationary(module, op, options, *, batch, runtime_seed):
+    """Admit OS for a constant-weight rank-two product whose mesh partials are bounded.
+
+    Merlin's interval includes the IR initializer, as a D preload would.  This
+    schedule seeds the accumulator instead and starts the mesh at zero, so the
+    proof is re-read without the seed for the partials the mesh actually holds.
+    """
+    if options is None or batch or runtime_seed:
+        return None
+    plan = _plan(module, op, options, 'output_stationary')
+    if plan is None:
+        return None
+    from merlin.targetgen.native_mac_bound import constant_tensor
+    from .recipes.output_stationary import resident_rows
+
+    decision = plan.decision
+    m, k, n = decision['shape_m_k_n']
+    try:
+        resident_rows(m, n, k)
+        seed = constant_tensor(op.operands[2])
+    except ValueError:
+        return None
+    lower = [int(v) - int(seed[:, c].min()) for c, v in enumerate(decision['column_lower'])]
+    upper = [int(v) - int(seed[:, c].max()) for c, v in enumerate(decision['column_upper'])]
+    limit = 1 << (decision['mesh_signed_bits'] - 1)
+    if min(lower) < -limit or max(upper) >= limit:
+        return None
+    return dict(plan=plan.record(), mesh_partial_lower=lower, mesh_partial_upper=upper)
+
+
+def dataflows(module, op, options, *, batch, runtime_seed):
+    """Dataflow codes an admitted replay may accept, re-derived from the source alone.
+
+    Output-stationary is accepted only when the same plan and seed-free mesh
+    bound that selected it at emission hold again; otherwise only WS.
+    """
+    from ..tables import isa
+    planned = output_stationary(module, op, options, batch=batch, runtime_seed=runtime_seed)
+    codes = {isa.WEIGHT_STATIONARY}
+    if planned is not None:
+        codes.add(isa.OUTPUT_STATIONARY)
+    return frozenset(codes), planned
+
+
+@dataclass
+class Extension:
+    plan: object
+    readout: object       # the plan's readout boundary, as a narrow composition plan
+    chain: object
+    residual: object      # the i8 source tensor of the residual dequantize
+    digits: tuple
+
+
+def k_extension(module, op, options, *, batch):
+    """Admit a K-concat residual whose integer coefficient Merlin decomposed into digits."""
+    if options is None or batch:
+        return None
+    plan = _plan(module, op, options, 'k_concat')
+    if plan is None:
+        return None
+    from merlin.compile.composition_fusion import CompositionPlan
+    from merlin.xdsl_dialects.lowering import output_fusion as OF
+    from .match import shape
+    from .readout_encoding import supports_narrow_path
+    from .stream import DIM
+
+    decision = plan.decision
+    readout = decision['readout']
+    chain = OF.source_chain(op, OF.Values())
+    width = readout['proof'].get('columns_per_scale')
+    if (readout['cut'] != 'requant' or not supports_narrow_path(options['path'])
+            or len(chain.ops) != len(chain.stages) or shape(chain.ops[-1].results[0]) != shape(op.results[0])
+            or readout['proof'].get('output_column_partition')
+            or (width is not None and (width < DIM or width % DIM))
+            or sum(decision['tile_digits']) != decision['coefficient']):
+        return None
+    if any(s.kind not in ('convert', 'scale', 'bias', 'residual', 'relu', 'quantize') for s in chain.stages):
+        return None
+    residual = next(s for s in chain.stages if s.kind == 'residual').detail['operand'].owner.operands[0]
+    view = CompositionPlan('k_concat', plan.source_ir_sha256, plan.operation_ordinals,
+                           {**readout, **{key: decision[key] for key in
+                                          ('scheme_sha256', 'facts_sha256', 'output_path_sha256')}})
+    return Extension(plan, view, chain, residual, tuple(int(d) for d in decision['tile_digits']))
+
+
+def digit_term(term, consts, *, residual, n, position, c0, cols):
+    """The digit a replayed mesh term adds to a residual element, or a refusal.
+
+    A term reading residual row r, columns a0.., through stationary rows that
+    hold ``d * I`` adds ``d * residual[r, a0 + c]`` to accumulator column c, so
+    it lands on output column ``n0`` exactly when ``a0 + c0 == n0``.
+    """
+    import numpy as np
+    from .stream_proof import is_zero, require
+    from .stream import DIM
+
+    a_tag, w_tags, depth, width = term
+    _, row, n0 = position
+    require(a_tag.name == residual and a_tag.width >= depth, 'residual term reads unloaded columns')
+    a_row, a0 = divmod(a_tag.flat, n)
+    require(a_row == row and a0 + c0 == n0 and c0 + cols <= depth <= width, 'residual term leaves its output tile')
+    first = w_tags[0]
+    require(not is_zero(first) and first.name in consts and all(t.name == first.name for t in w_tags),
+            'residual term weights are not one constant')
+    data = np.asarray(consts[first.name]).reshape(-1).astype(np.int64)
+    rows = np.stack([data[t.flat:t.flat + depth] for t in w_tags])
+    digit = int(rows[0, 0])
+    require(rows.shape == (depth, depth) and np.array_equal(rows, digit * np.eye(depth, dtype=np.int64)),
+            'residual term weights are not a digit times identity')
+    require(all(t.width >= depth for t in w_tags) and depth <= DIM, 'residual digit tile exceeds the mesh')
+    return digit
+
+
+def require_digits(found, extension):
+    """Each proved digit tile exactly once, summing to the proved coefficient."""
+    from .stream_proof import require
+    require(sorted(found) == sorted(extension.digits) and sum(found) == extension.plan.decision['coefficient'],
+            'residual digit tiles do not sum to the proved coefficient exactly once')
+
+
+def is_scheduled(meta):
+    return meta.get('dataflow_plan') is not None
+
+
+def recipe(dataflow_plan, extension=None, n=None):
+    """The schedule and extra kernel inputs for an admitted composition."""
+    from functools import partial
+    from .recipes.gemm import KExtension, blocked_matmul
+    from .recipes.output_stationary import os_matmul
+
+    if dataflow_plan is not None:
+        return os_matmul, ()
+    if extension is not None:
+        from .match import shape
+        from .stream import Arg
+        residual = Arg('residual', 'i8', tuple(shape(extension.residual)), 'input')
+        return partial(blocked_matmul, extension=KExtension('residual', n, 'kext_digits', extension.digits)), (residual,)
+    return None, ()
+
+
+def annotate(kernel, dataflow_plan, extension=None):
+    """Record the admitted plan; widen the accumulator interval by the residual terms."""
+    if dataflow_plan is not None:
+        kernel.meta.update(dataflow_plan=dataflow_plan, dataflow='OS')
+    if extension is not None:
+        from .match import etype
+        bits = _dtype_bits(etype(extension.residual))
+        reach = abs(extension.plan.decision['coefficient']) * (1 << (bits - 1))
+        lo, hi = kernel.meta['accumulator_min'] - reach, kernel.meta['accumulator_max'] + reach
+        if not -(1 << 31) <= lo <= hi < (1 << 31):
+            raise ValueError('K-extension accumulator interval exceeds i32')
+        kernel.meta.update(k_extension_plan=extension.plan.record(), accumulator_min=lo, accumulator_max=hi)

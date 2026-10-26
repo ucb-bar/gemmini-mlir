@@ -6,7 +6,7 @@ pointers, which are kernel arguments.  A DRAM operand is ``(argument index, byte
 ``None`` as a MVIN source is the DRAM-address-zero zero-fill primitive.
 
 ``simulate`` executes a stream on byte buffers with the stock datapath semantics the
-recipes rely on (weight-stationary mesh with zero-padded tiles, int32 accumulator,
+recipes rely on (weight- or output-stationary mesh with zero-padded tiles, int32 accumulator,
 fp32 MVIN/readout scale with round-half-even and saturation, ReLU before scale as in
 ``AccumulatorScale.scala``).  It is the bit-level model the device must match exactly.
 """
@@ -29,7 +29,8 @@ ACC_BIT = 1 << 31
 ACCUM_BIT = 1 << 30
 FULL_BIT = 1 << 29
 NO_ACT, RELU = 0, 1
-WS = 1
+# Dataflow select codes follow the provider's ISA transcription (CONFIG_EX rs1 dataflow).
+from ..tables.isa import OUTPUT_STATIONARY as OS, WEIGHT_STATIONARY as WS  # noqa: E402
 
 
 def SP(row: int) -> int:
@@ -247,8 +248,22 @@ class Stream:
         self._emit("config_ld", load_id=state, stride=int(stride), scale=f32(scale), shrunk=int(bool(shrink)),
                    block_stride=int(block_stride), pixel_repeats=int(pixel_repeats))
 
-    def config_st(self, stride: int, act: int = NO_ACT, scale: float = 1.0, *, multiplier_bits=None):
+    def config_st(self, stride: int, act: int = NO_ACT, scale: float = 1.0, *, multiplier_bits=None, pool=None):
+        """``pool`` holds the store-path window fields (``pool_plan.POOL_FIELDS``).
+
+        Pooled fields are checked against the derived CONFIG_ST register widths and
+        are always encoded with explicit multiplier bits through the derived layout.
+        """
         fields = {}
+        if pool is not None:
+            from .pool_plan import POOL_FIELDS, register_limits
+            limits = register_limits()
+            if set(pool) != set(POOL_FIELDS) or any(
+                    type(pool[k]) is not int or not 0 <= pool[k] <= limits[k] for k in POOL_FIELDS):
+                raise ValueError('pooled store fields do not fit the derived CONFIG_ST register')
+            if multiplier_bits is None:
+                raise ValueError('a pooled store configuration states its multiplier bits')
+            fields.update(pool)
         if multiplier_bits is not None:
             scale = struct.unpack('<f', struct.pack('<I', multiplier_bits))[0]
             if not np.isfinite(scale):
@@ -344,7 +359,7 @@ class Machine:
         self.spad = np.zeros((SPAD_ROWS, DIM), np.int64)
         self.acc = np.zeros((ACC_ROWS, DIM), np.int64)
         self.ld = {s: dict(stride=0, scale=1.0, shrunk=0, block_stride=DIM, pixel_repeats=1) for s in range(3)}
-        self.st = dict(stride=0, acc_act=0, acc_scale=1.0)
+        self.st = dict(stride=0, acc_act=0, acc_scale=1.0, pool_stride=0)
         self.ex = dict(dataflow=WS, act=0, a_transpose=0, b_transpose=0, c_stride=1, a_stride=1)
         self.weights = np.zeros((DIM, DIM), np.int64)
 
@@ -376,8 +391,10 @@ class Machine:
 
     def _config_ex(self, ins):
         self.ex.update({k: ins.a(k) for k in ("dataflow", "act", "a_transpose", "b_transpose", "c_stride", "a_stride")})
-        if self.ex["dataflow"] != WS or self.ex["act"] not in (NO_ACT, RELU) or self.ex["a_stride"] != 1:
-            raise NotImplementedError("model covers WS with no activation or ReLU and unit a_stride")
+        if self.ex["dataflow"] not in (WS, OS) or self.ex["act"] not in (NO_ACT, RELU) or self.ex["a_stride"] != 1:
+            raise NotImplementedError("model covers WS/OS with no activation or ReLU and unit a_stride")
+        if self.ex["dataflow"] == OS and (self.ex["a_transpose"] or self.ex["b_transpose"]):
+            raise NotImplementedError("output-stationary transposes are not modelled")
 
     def _config_ld(self, ins):
         self.ld[ins.a("load_id")] = {k: ins.a(k) for k in ("stride", "scale", "shrunk", "block_stride", "pixel_repeats")}
@@ -385,7 +402,9 @@ class Machine:
             raise NotImplementedError("pixel repeats are not modelled")
 
     def _config_st(self, ins):
+        from .pool_plan import POOL_FIELDS
         self.st = {k: ins.a(k) for k in ("stride", "acc_act", "acc_scale")}
+        self.st.update({k: ins.a(k, 0) for k in POOL_FIELDS})
 
     def _mvin(self, ins):
         cfg = self.ld[ins.a("load_id")]
@@ -417,7 +436,42 @@ class Machine:
             else:
                 self.spad[base:base + rows, :blk.shape[1]] = blk
 
+    def _pooled_mvout(self, ins):
+        """Store-path max pooling as StoreController/DMA implement it.
+
+        Window taps outside ``orows x ocols`` (including upad/lpad) are garbage
+        addresses, whose write data is all zeros (Scratchpad.scala: is_all_zeros);
+        the first tap is stored and later taps are maxed into it.
+        """
+        local, cols, st = ins.a("local"), ins.a("cols"), self.st
+        if cols > DIM or local & FULL_BIT:
+            raise NotImplementedError("pooled stores move one narrow column block")
+        acc = bool(local & ACC_BIT)
+        base = local & 0x3FFF if acc else local
+        size, step = st["pool_size"], st["pool_stride"]
+        for porow in range(st["porows"]):
+            for pocol in range(st["pocols"]):
+                value = None
+                for wrow in range(size):
+                    for wcol in range(size):
+                        orow = porow * step + wrow - st["upad"]
+                        ocol = pocol * step + wcol - st["lpad"]
+                        if not (0 <= orow < st["orows"] and 0 <= ocol < st["ocols"]):
+                            elem = np.zeros(cols, np.int64)
+                        elif acc:
+                            elem = self.acc[base + orow * st["ocols"] + ocol, :cols]
+                            if st["acc_act"] == RELU:
+                                elem = np.maximum(elem, 0)
+                            elem = _rne_sat(scale_f32(elem, st["acc_scale"]), -128, 127)
+                        else:
+                            elem = self.spad[base + orow * st["ocols"] + ocol, :cols]
+                        value = elem if value is None else np.maximum(value, elem)
+                offset = ins.off + (porow * st["pool_out_dim"] + pocol) * st["stride"]
+                self._write(ins.arg, offset, value.reshape(1, -1), 0, 1)
+
     def _mvout(self, ins):
+        if self.st.get("pool_stride"):
+            return self._pooled_mvout(ins)
         local, rows, cols = ins.a("local"), ins.a("rows"), ins.a("cols")
         row = local & 0x3FFF
         stride = self.st["stride"]
@@ -444,6 +498,11 @@ class Machine:
 
     def _preload(self, ins):
         self._c = (ins.a("c"), ins.a("c_rows"), ins.a("c_cols"))
+        if self.ex["dataflow"] == OS:
+            # The PEs hold the partial sums; D seeds them on the next preloaded compute.
+            self._d = (np.zeros((DIM, DIM), np.int64) if ins.a("bd") == GARBAGE else
+                       self._local_tile(ins.a("bd"), ins.a("bd_rows"), ins.a("bd_cols")))
+            return
         if ins.a("bd") != GARBAGE:
             rows, cols = ins.a("bd_rows"), ins.a("bd_cols")
             if self.ex["b_transpose"]:
@@ -459,9 +518,18 @@ class Machine:
             a = self._local_tile(ins.a("a"), a_cols, a_rows).T
         else:
             a = self._local_tile(ins.a("a"), a_rows, a_cols)
-        if ins.a("bd") != GARBAGE:
+        if self.ex["dataflow"] == OS:
+            # Exact partial sums: admission proves the mesh never wraps them.
+            if not ins.a("accumulate"):
+                self._pe = self._d.copy()
+            b = (np.zeros((DIM, DIM), np.int64) if ins.a("bd") == GARBAGE else
+                 self._local_tile(ins.a("bd"), ins.a("bd_rows"), ins.a("bd_cols")))
+            self._pe = self._pe + a @ b
+            out = self._pe
+        elif ins.a("bd") != GARBAGE:
             raise NotImplementedError("WS D operand is not modelled")
-        out = a @ self.weights
+        else:
+            out = a @ self.weights
         c, c_rows, c_cols = self._c
         if c == GARBAGE:
             return

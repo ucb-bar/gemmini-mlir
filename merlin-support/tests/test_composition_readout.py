@@ -4,6 +4,7 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -405,3 +406,44 @@ def test_full_matrix_seed_uses_each_output_rows_bias_slice():
     inputs = dict(a=np.ones((m,k), np.int8), b=np.ones((k,n), np.int8))
     expected = f32_readout(seed.astype(np.int64) + 1 + offsets, form_multiplier(scales*.25, 7), 'i8', relu=True)
     np.testing.assert_array_equal(simulate(match.kernel.stream, inputs)['out'], expected)
+
+
+@pytest.mark.parametrize('layer', ['both', 'replay', 'differential'])
+def test_full_width_seed_loads_are_replayed(monkeypatch, layer):
+    """Deleting every seed load from a full i32 exit gives 77 instead of 96 everywhere.
+
+    The structural replay and the differential backstop each decline it alone.
+    """
+    m, k, n = 17, 1, 35
+    text, _, _ = source(m, k, n, raw=True)
+    text = text.replace(f'%init=linalg.fill ins(%z:i32) outs(%e:tensor<{m}x{n}xi32>)->tensor<{m}x{n}xi32>',
+                        f'%init=arith.constant dense<19>:tensor<{m}x{n}xi32>')
+    inputs = dict(a=np.full((m, k), 11, np.int8), b=np.full((k, n), 7, np.int8))
+    api = provider()
+    proof = api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
+    assert proof['status'] == 'proven', proof
+    backend = api._core_aten_module(PACKAGE, 'catalog')
+    original = backend.build
+
+    def altered(*args, **kwargs):
+        module, manifest, matches = original(*args, **kwargs)
+        for match in matches:
+            stream = match.kernel.stream
+            np.testing.assert_array_equal(simulate(stream, inputs)['out'], np.full((m, n), 96))
+            stream.ins = [i for i in stream.ins if not (i.kind == 'mvin' and i.a('local') & flags()['acc_i8'])]
+            assert np.count_nonzero(simulate(stream, inputs)['out'] == 77) == m * n
+        return module, manifest, matches
+
+    monkeypatch.setattr(backend, 'build', altered)
+    checker = api._core_aten_module(PACKAGE, 'contraction_proof')
+    if layer == 'replay':
+        monkeypatch.setattr(checker, '_backstop', lambda *args, **kwargs: None)
+    elif layer == 'differential':
+        monkeypatch.setattr(checker, 'Replay', lambda stream, **options: SimpleNamespace(run=lambda: SimpleNamespace(
+            unfenced=())))
+        monkeypatch.setattr(checker, '_Check', lambda *args: SimpleNamespace(outputs=lambda: None,
+                                                                             operands=lambda: None))
+    proof = api.admit_numeric_schedule(text, package=PACKAGE, numeric_policy=POLICY, readout_options=options())
+    assert proof['status'] == 'declined', proof
+    if layer == 'differential':
+        assert 'differential' in proof['reason']
