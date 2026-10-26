@@ -115,3 +115,26 @@ def test_integer_residual_refusal_retains_host_boundary(mutation):
     _, match = composed(text, selected)
     assert 'k_extension_plan' not in match.kernel.meta
     assert match.result[1] is match.root.results[0]
+
+
+def test_requant_source_inexact_f32_residual_stays_on_host(monkeypatch):
+    """The unpooled twin of the pooled refusal: f32(1/6) does not reassociate over ``+ residual``."""
+    from mlir_oot.core_aten import compositions
+    from mlir_oot.core_aten.stream import simulate
+    text = source(16, 16, 16, coefficient=1, bias=False, relu=False)[0]
+    text = text.replace('1.250000e-01', '1.666666716e-01').replace('dense<7.000000e+00>', 'dense<1.000000e+00>')
+    assert '1.666666716e-01:f32' in text and 'dense<1.666666716e-01>:tensor<f32>' in text
+    _, match = composed(text)
+    assert 'k_extension_plan' not in match.kernel.meta
+    assert match.result[1] is match.root.results[0]
+    # The gate is what refuses it: bypassed, the region fuses and disagrees with the source.
+    monkeypatch.setattr(compositions, '_source_exact_extension', lambda *args: True)
+    _, fused = composed(text)
+    assert fused.kernel.meta.get('k_extension_plan') is not None
+    a, b, r = (np.zeros((16, 16), np.int8) for _ in range(3))
+    a[0, :2], b[:2, 0], r[0, 0] = (127, 61), (6, 1), -64
+    gain = np.float32(1 / 6)
+    sequential = np.rint(np.float32(np.float32(823) * gain + np.float32(-64) * gain))
+    assert sequential == 127 and np.rint(np.float32(823 - 64) * gain) == 126
+    out = simulate(fused.kernel.stream, dict(a=a, b=b, residual=r))['out']
+    assert out[0, 0] == 126 != sequential

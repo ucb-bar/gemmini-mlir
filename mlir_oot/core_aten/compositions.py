@@ -194,6 +194,7 @@ def _integer_extension(module, op, options):
     from merlin.targetgen.software_spec import validate_compositions
     from merlin.targetgen.output_path import validate
     from merlin.targetgen import model_coverage
+    from merlin.targetgen.native_mac_bound import constant_tensor, signed_matmul_shape
     from merlin.transforms.certificates import ir_digest
     from merlin.verify.lean_contract import document_digest
     from merlin.xdsl_dialects.lowering import output_fusion as OF
@@ -209,11 +210,15 @@ def _integer_extension(module, op, options):
         declarations = validate_compositions(options['compositions'])['chains']
         if (path['accumulator']['dtype'] != 'i32' or not path['exits'].get('accumulator')
                 or not any('k_concat' in composition_routes(d) and 'accumulator' in d.get('exits', ())
+                           and 'contraction' in ({d['producer']} if isinstance(d['producer'], str) else set(d['producer']))
                            and d.get('readout_stages') == 'from_output_path'
                            and all(requirement != 'required' or any(s['kind'] == kind for s in path['accumulator_stages'])
                                    for kind, requirement in d.get('accumulator_stages', {}).items())
                            for d in declarations)):
             return None
+        # The same producer premises Merlin's _k_concat checks on the requant route.
+        _, k, n = signed_matmul_shape(op)
+        constant_tensor(op.operands[2])
         _closed_members((op, suffix))
         selected = facts(options.get('numerical_semantics'))
         if selected.get('digit_bits') != 8 or selected.get('accumulator_bits') != 32:
@@ -221,8 +226,8 @@ def _integer_extension(module, op, options):
         values = OF.Values()
         chain = OF.Chain(op, shape(op.results[0])[-1], [], [suffix])
         bound = OF._bound(chain, values, model_coverage._contraction_extents(module))
-        decision = lower_k_extension(coefficient, source_k=shape(op.operands[0])[-1],
-            residual_width=shape(op.results[0])[-1], digit_bits=selected['digit_bits'],
+        decision = lower_k_extension(coefficient, source_k=k,
+            residual_width=n, digit_bits=selected['digit_bits'],
             max_extended_k=selected['max_extended_k'], accumulator_bits=selected['accumulator_bits'],
             source_bound=max(abs(v) for v in bound), residual_range=(-128, 127))
     except (ValueError, OF._Refused):
@@ -270,7 +275,8 @@ def k_extension(module, op, options, *, batch):
     if any(s.kind not in allowed for s in chain.stages):
         return None
     residual = next(s for s in chain.stages if s.kind == 'residual').detail['operand'].owner.operands[0]
-    if pooled and not _source_exact_pooled_extension(module, chain, options, readout):
+    # Merlin's definitional f32 boundary is not a reassociation proof, for either cut.
+    if not _source_exact_extension(module, chain, options, readout):
         return None
     view = CompositionPlan('conv_pool' if pooled else 'k_concat', plan.source_ir_sha256, plan.operation_ordinals,
                            {**readout, **{key: decision[key] for key in
@@ -278,11 +284,13 @@ def k_extension(module, op, options, *, batch):
     return Extension(plan, view, chain, residual, tuple(int(d) for d in decision['tile_digits']))
 
 
-def _source_exact_pooled_extension(module, chain, options, readout):
+def _source_exact_extension(module, chain, options, readout):
     """Delegate sequential source f32 equality to Merlin's threshold theorem.
 
     The scheme's definitional single-product boundary alone does not authorize
-    reassociating a residual. Pooling preserves equal per-pixel quantized codes.
+    reassociating a residual into the accumulator, so both the requant and the
+    pool cut must reproduce the source's per-pixel quantized codes exactly for
+    every residual value. Pooling then preserves equal per-pixel codes.
     """
     import numpy as np
     from merlin.targetgen import model_coverage
