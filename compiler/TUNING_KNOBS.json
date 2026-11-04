@@ -1,0 +1,115 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "settings.json",
+  "knobs": {
+    "matmul_blocking": {
+      "values": [
+        true,
+        false
+      ],
+      "mechanism": "dma_batching"
+    },
+    "matmul_tile": {
+      "values": [
+        "64x64x128",
+        "64x128x64",
+        "128x64x64",
+        "64x64x64",
+        "auto"
+      ],
+      "mechanism": "tiling"
+    },
+    "conv_blocking": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "dma_batching"
+    },
+    "structured_control": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "column_batching": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "dma_batching"
+    },
+    "pool_stripe_blocking": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "dma_batching"
+    },
+    "conv_coordinate_loops": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "conv_gather_batching": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "dma_batching"
+    },
+    "pool_gather_batching": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "dma_batching"
+    },
+    "constant_column_scales": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "conv_gather_outer_coordinates": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "conservative_ir": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "pool_static_control": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "loop_scheduling"
+    },
+    "conv_row_batch": {
+      "values": [
+        "64",
+        "128"
+      ],
+      "mechanism": "dma_batching"
+    },
+    "column_readout_tile": {
+      "values": [
+        "64x8",
+        "128x4",
+        "auto"
+      ],
+      "mechanism": "dma_batching"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+artifact_type: mlir_oot_target_backend
+package_id: general_rtl_gemmini_cpp
+target: gemmini
+language: cpp
+authoring:
+  mode: hand_curated
+  generated_by_agent: true
+integrity_exempt: false
+llvm:
+  version: 23.0.0git
+  commit: a47bddccec30
+build:
+  command: [sh, build.sh]
+  tool_output: build/gemmini-compile
+entrypoints:
+  tool: build/gemmini-compile
+commands:
+  parse:
+    argv: ['{tool}', --verify-diagnostics, '{input_mlir}']
+  lower_interface_to_target:
+    argv: ['{tool}', --lower-program-to-gemmini, '{input_mlir}']
+  emit_command_buffer:
+    argv: ['{tool}', --lower-program-to-gemmini, '--emit-command-buffer={output_json}', '{input_mlir}']
+  lower_target_to_llvm:
+    argv: ['{tool}', --lower-program-to-gemmini, --emit-target-artifact, '{input_mlir}']
+  emit_analysis_bundle:
+    argv: ['{tool}', --lower-program-to-gemmini, '--emit-command-buffer={output_json}', --emit-target-artifact, '{input_mlir}']
