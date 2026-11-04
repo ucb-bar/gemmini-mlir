@@ -1,0 +1,398 @@
+version: '0.1'
+artifact_type: mlir_oot_target_backend
+manifest:
+  file: manifest.yaml
+  schema: schemas/manifest.schema.json
+  required:
+  - artifact_type
+  - target
+  - language
+  - authoring
+  - integrity_exempt
+  - entrypoints
+  - commands
+llvm_pin:
+  version: 23.0.0git
+  commit: a47bddccec30
+  source: third_party/llvm-project
+  install: third_party/llvm-install
+  cmake: find_package(MLIR REQUIRED CONFIG) with MLIR_DIR=$install/lib/cmake/mlir
+  rv64_compiler: clang-23 (MERLIN_CLANG)
+argv_templates:
+  notes: '{tool} resolves to entrypoints.tool inside the package (or build.tool_output
+    if built).'
+entrypoints:
+  parse:
+    purpose: parse + verify the interface.mlir; nonzero exit on diagnostics
+    example_argv:
+    - '{tool}'
+    - --verify-diagnostics
+    - '{input_mlir}'
+    output: exit code (0 = ok)
+  lower_interface_to_target:
+    purpose: merlin_iface -> target dialect MLIR
+    example_argv:
+    - '{tool}'
+    - --convert-iface-to-{target}
+    - '{input_mlir}'
+    output: target MLIR on stdout
+  emit_command_buffer:
+    purpose: interface -> command_buffer.json
+    example_argv:
+    - '{tool}'
+    - --convert-iface-to-{target}
+    - --emit-command-buffer={output_json}
+    - '{input_mlir}'
+    output: writes {output_json} (schema-valid command buffer)
+  lower_target_to_llvm:
+    purpose: target dialect -> the target's codegen artifact (per endpoint_kind; not
+      necessarily LLVM)
+    example_argv:
+    - '{tool}'
+    - --convert-iface-to-{target}
+    - --emit-target-artifact
+    - '{input_mlir}'
+    output: the target artifact on stdout (its kind is decided by the target's endpoint_kind)
+  emit_analysis_bundle:
+    required: false
+    purpose: 'optional one-pass whole-model analysis: emit both independently required
+      artifacts'
+    example_argv:
+    - '{tool}'
+    - --convert-iface-to-{target}
+    - --emit-command-buffer={output_json}
+    - --emit-target-artifact
+    - '{input_mlir}'
+    output: writes the command buffer to {output_json} and the target artifact to
+      stdout
+    fallback: when absent, the runner invokes emit_command_buffer and lower_target_to_llvm
+      separately
+logical_kernel_abi:
+  version: 2
+  symbol: kernel_entry
+  signature: void kernel_entry(void *arg_0, ..., void *arg_{N-1})  -- every argument
+    a data pointer
+  argument_order:
+    whole_program:
+    - declared_whole_program_args
+    default:
+    - logical_inputs_in_declaration_order
+    - logical_outputs_in_result_order
+  tokens:
+    declared_whole_program_args: 'kernel_abi.args[].tensor in array order (kind =
+      whole_program). Outputs must be write-only. readwrite does not confer source
+      initialization or a seed: scratch requires a source-owned task writer before
+      its first read. A reset allocation is not source provenance.'
+    logical_inputs_in_declaration_order: every declared tensor that no command produces,
+      that no params derivation recipe derives, and whose role is not output/intermediate
+      (input, weight, bias, scale), in `tensors` declaration order. A resident handle,
+      an accumulator and any matrix a params recipe derives are compiler artifacts
+      and never pointers.
+    logical_outputs_in_result_order: every destination Merlin's reference publishes
+      as a result (the `dst` of a `published_by` command, in program order), then
+      every declared role=output tensor not yet listed (in declaration order; a host-lane
+      program's results have no producing command), restricted to the buffer's declared
+      `outputs` when it declares them.
+  published_by:
+  - COMMIT
+  - BIAS_ADD
+  - RESIDUAL_ADD
+  - ATTENTION_QK
+  - ATTENTION_PV
+  - CONV2D
+  - BATCHED_MATMUL
+  - MOVEMENT
+  pointee:
+    layout: 'dense row-major in the tensor''s LOGICAL shape: element (i0, ..., ik)
+      at the C-order linear index, no padding, no stride, no packing. An output''s
+      logical shape is its declared tensor, else Merlin''s own derivation for the
+      command producing it (COMMIT: [rows after pooling, n]).'
+    element: 'the declared dtype''s storage width: int8_t / int16_t / int32_t / int64_t
+      for signed integers, uint<bits>_t for unsigned ones, and floats as their stored
+      bit pattern in uint<bits>_t.'
+    alignment_bytes: 64
+    explicit_storage: a whole-program buffer may declare params.storage_encodings
+      (its OWN physical layout); the harness then allocates and packs exactly that
+      encoding (merlin.runtime.storage_binding).
+  outputs:
+    poison_byte: 165
+    access: write_only
+  completion: The candidate package must also define `void kernel_complete(void)`
+    with external C linkage. After each entry invocation the runner calls this function
+    before the closing cycle read and before any readback. It must wait until all
+    results are visible in memory. The runner does not supply this function. Its normalized
+    LLVM form must obey normalized_lowered_representation, including the exact fixed
+    runtime ABI completion sequence in selected_abi.completion_asm. This metadata
+    is supplied runtime support, not a kernel implementation or schedule.
+  readout: 'OUT <name> <rows> <cols> v...: rows = product of all but the last logical
+    extent (1 below rank 2), cols = the last extent (1 for a scalar); values in C
+    order; floats as bit patterns.'
+  blob_min_elements: 1024
+  includes: only <stdint.h> and <stdio.h> (plus Merlin's own output codec headers
+    for an explicitly selected full-value readback). No target header, so no target
+    library routine is visible to, or callable by, the candidate's code.
+  selected_host_toolchain: For a whole-program kernel with a host lane, read the selected
+    read-only host package's knobs.yaml cflags. Its -march and -mabi are the host
+    object ISA and calling convention; the emitted LLVM module, runner-owned harness,
+    selected board/DTS and linker must agree. Do not infer these flags from the accelerator
+    name, substitute the build machine's ISA, or implement a second host runtime.
+    The runner owns the harness, link and execution; a package's emitted code must
+    obey this pointer ABI.
+  required_callables:
+  - role: entry
+    symbol: kernel_entry
+    return_type: void
+    linkage: C
+    parameters: per_case_logical_tensor_pointers
+    defined_by: candidate_package
+  - role: completion
+    symbol: kernel_complete
+    return_type: void
+    linkage: C
+    parameters: []
+    defined_by: candidate_package
+    signature: void kernel_complete(void)
+    called_by: runner_after_entry_before_cycle_end_and_readback
+  software_limits:
+    entry_max_static_stack_bytes: 8192
+    dynamic_stack_allocation_allowed: false
+    stack_report_scope: all_functions_in_lowered_translation_unit
+  normalized_lowered_representation:
+    selected_abi:
+      entry_symbol: kernel_entry
+      completion_symbol: kernel_complete
+      completion_asm: fence
+    scope: normalized LLVM-dialect artifact subject to source/task ownership validation
+    functions: Inline all ordinary helper definitions into the selected entry. The
+      only permitted additional defined llvm.func is the optional selected completion
+      shim.
+    entry: Define the selected entry with external linkage, ccc convention, void result,
+      no variadic arguments, and exactly the declared number of ordinary address-space-zero
+      pointer arguments. Entry argument and result attribute dictionaries must be
+      empty.
+    completion_shim:
+      purpose: fixed runtime ABI completion sequence; not a kernel or scheduling implementation
+      signature: external ccc void(void)
+      blocks: 1
+      operations:
+      - llvm.inline_asm
+      - llvm.return
+      inline_asm_constraints: ~{memory}
+      inline_asm_has_side_effects: true
+      inline_asm_operands: 0
+      inline_asm_results: none, or one unused LLVM void result
+      return_operands: 0
+      task_attributes: No merlin.global_task or merlin.source_op_index on the shim
+        or its operations.
+      instruction: Use exactly selected_abi.completion_asm, without an added or substituted
+        sequence.
+whole_program_attribution:
+  public_plan_schema: schemas/mixed_program_plan.schema.json
+  public_preflight: Use schemas/mixed_program_plan.schema.json and the selected_source_inventory
+    rules below. Bind exact source bytes and source operation indices, not payload-only
+    operation indices. This is structural provenance validation, not numerical or
+    execution evidence. A helper library is supplied only if present in the selected
+    environment source/tool inventory.
+  source_to_task: 'Preserve each source operation''s stable prov.region_id where present
+    while lowering. In params.global_program_plan (schema mixed_program_plan_v1),
+    tasks enumerate actual emission order with unique, contiguous nonnegative task_index
+    values, nonempty kind, and source_op_indices referring to the selected source
+    inventory operation order. Bind source_sha256 and source_op_count to the public
+    inventory. Include the scheduled instruction count, wrapper ranges, task instruction
+    ranges, reads/writes, entry_bindings, source_values, output_bindings and compiler_temporaries
+    specified by the typed schema; every materialized tensor needs source or temporary
+    provenance. The source_op_indices must cover each source operation exactly once;
+    derive any source-region-to-task/group map from those indices and the source IR,
+    including repeated operations in one region. Do not invent a region ID from a
+    capsule name, opcode count or output shape. A group may contain several source
+    operations, but it may not hide an unassigned or duplicated source operation.
+    For the one-shot whole-program pointer ABI, each output_bindings tensor must bind
+    exactly one source_values operation result and have exactly one task declaring
+    it in writes; that task''s source_op_indices must include the result''s source
+    operation. Its kernel_abi.args entry must be write-only. An output cannot borrow
+    another task''s writer or alias an entry argument: neither an input/output alias
+    nor an epilogue copy is declared by this ABI. Source/plan validation checks this
+    consistency; it does not prove actual output writes, execution, numerics or placement.'
+  lowered_ir_task: Carry the same task_index into the lowered LLVM-dialect IR as the
+    merlin.global_task attribute on operations owned by that task, including host
+    arithmetic. Keep this identity consistent with params.global_program_plan.tasks;
+    untagged arithmetic or a tag naming no planned task is not attributable host work.
+    The plan's kind describes the proposed host/device route; it does not prove that
+    the device executed it.
+  device_command_source: Attribute device work to its source operation using merlin.source_op_index
+    and the source's prov.region_id. A region ID can be shared by several source operations;
+    a shared ID alone cannot establish that every operation ran. A fused command may
+    implement several source operations only with independently checked transformation
+    evidence; no command count, region tag or candidate declaration supplies that
+    proof.
+  host_compute_boundary: In an accepted device task, scalar addressing, loop control
+    and dispatch are legitimate host instructions; arithmetic on tensor elements is
+    not. Helper functions remain inside the same audit boundary. Explicit host tasks
+    may compute only independently ineligible work; moving eligible source operations
+    into host tasks does not waive accelerator placement. Missing or opaque computation
+    ownership remains unverified, never implicitly clean. In the normalized source/task-audited
+    LLVM artifact, ordinary helper definitions must be inlined into the selected entry;
+    the only permitted additional definition is the optional fixed-ABI completion
+    shim described in logical_kernel_abi.
+  independent_proof: These are candidate declarations, not certification. The independent
+    grader checks source and emitted-IR identity, complete source/task coverage, selected
+    target legality, numerical outputs and a completed source-region-to-dispatch ledger.
+    Static placement, task tags, command or opcode counts, and a linked ELF alone
+    cannot establish accelerator execution or correctness.
+  selected_source_inventory:
+    input_format: shared_interface_v1
+    identity: Hash the exact delivered source file bytes consumed by the compiler,
+      without reserialization.
+    selected_representation: 'For module-level merlin_iface input, ordered merlin_iface.tensor
+      declarations form the entry arguments and are excluded from source_op_count
+      and source_op_indices. Number every other module-level operation in source order,
+      including resident_pack, matmul and evict lifetime/state operations. source_values.result_index
+      follows each operation result order. entry_bindings follow the tensor declarations.
+      output_bindings follow published tensor results in module order: resident_pack,
+      matmul and evict do not publish tensor results. Opaque resident/accumulator
+      results do not authorize shaped tensor storage. Preserve existing prov.region_id
+      values.'
+    generic_mathematical_mlir: 'For generic mathematical MLIR, use the unique defined
+      single-block func: ordered block arguments are entry arguments; number every
+      direct operation except func.return, including constants, tensor.empty, tensor.splat
+      and linalg.fill. Do not number nested scalar-body operations. Result indices
+      follow each operation result order; returns follow func.return operand order.
+      Preserve existing prov.region_id values.'
+    bindings: entry_bindings covers source arguments exactly once in order. source_values
+      binds materialized source results by op_index/result_index with matching shape
+      and dtype. output_bindings matches source return order and kernel_abi.outputs;
+      each output is write-only and has its unique writer in the task owning that
+      source result. kernel_abi.args covers every materialized tensor exactly once.
+      Compiler temporaries require the schema-declared source-result provenance and
+      an owning writer before any read.
+  required_plan: params.global_program_plan is mandatory for a kernel_abi.kind whole_program
+    buffer with any role=intermediate tensor, even when the mathematical case has
+    a single operation. Use the complete mixed_program_plan_v1 schema, covering every
+    source operation exactly once. readwrite access grants no seed or initialization;
+    mutable scratch needs a source-owned writer before its first read. Do not invent
+    source regions or rely on allocation reset bytes.
+build:
+  optional: true
+  purpose: C++ packages declare a build block; the runner builds before first use
+  fields:
+    configure: '[argv]'
+    command: '[argv]'
+    tool_output: relative path to built tool
+admission:
+  routes:
+    A: accepted -- the buffer emits target work for the admitted region
+    H: an explicit host or composed route; the seam is declared and checked separately
+    D: an explicit decline -- no target command, no target-visible effect, and a stated
+      reason
+  obligations:
+    exactly_one_route: every well-formed input lands in exactly one of A, H, D
+    disjoint: a buffer may not both decline and emit. A consumer reading `declined`
+      excuses the case while a consumer reading `commands` executes it, so a buffer
+      doing both simultaneously grades as declined AND runs
+    decline_is_explicit: an empty `commands` list plus a zero exit code is NOT a decline.
+      A decline declares a `declined` object; absent that, an empty buffer is indistinguishable
+      from a program dropped on the floor and reported as success
+    decline_states_a_reason: '`declined.reason` is required and must be readable by
+      whoever has to act on it. `declined.op` names the operation that was not lowered,
+      when one operation is responsible'
+    no_silent_host_loss: a decline may not drop a declared output. If the interface
+      program commits an output, declining means saying so -- never omitting the tensor
+      and exiting 0
+    unsupported_is_not_a_fourth_route: a checker's or compiler's own out-of-model
+      disposition must resolve to H or D. It may never resolve to A, and it may never
+      be left unstated
+    host_route_states_a_reason_the_target_does_not_contradict: 'a region placed on
+      a host lane is a refusal, and it must say why in `params.lane_placement[].reason`.
+      The reason must not be contradicted by the target''s OWN derived capability:
+      if the target''s readout facet (`merlin.targetgen.readout_facet`) licenses the
+      epilogue stage the family needs, then `family X has no datapath here` is false
+      and the region was refused for a reason the hardware denies. Measured on a deployable
+      ResNet-50 package: 116 of 119 host-routed regions state a no-datapath reason
+      while the target''s own backend declares a readout applying acc_scale, relu
+      and maxpool. Fix the lowering or state the real reason -- a declaration gap
+      is not a hardware limit. Adjudicated by `merlin.runtime.route_quality.declaration_quality`,
+      gate `route_declaration_quality`'
+    accepted_region_does_not_compute_on_the_host: a region routed A may configure,
+      address and synchronize on the host, but it may not COMPUTE there. An arithmetic
+      operation in the region's host IR whose operand chain reaches a load from a
+      tensor buffer (a `kernel_abi` argument, a module-level buffer, or a stack slot
+      such a value was stored into) is target work that was accepted and then done
+      on the scalar core anyway, with nothing in the buffer saying so. Arithmetic
+      that reaches only induction variables, constants and pointer roots is ADDRESSING
+      and is explicitly permitted -- a rule that counted arithmetic by opcode family
+      would veto every legal descriptor setup. The same arithmetic in an H region
+      is coverage, not a defect. Absent host IR is `incomplete` with a stated cause,
+      never a pass. Adjudicated by `merlin.runtime.route_quality.host_compute`, gate
+      `route_host_compute`
+  route_quality:
+    purpose: the QUALITY of an A or H claim, as distinct from the SHAPE of the partition
+      above. `route_partition` says every region lands in exactly one route; this
+      says the route it landed in is one the target's own facts support
+    host_refusal_evidence:
+      quantize:
+        epilogue_stage: acc_scale
+        note: narrowing a wide accumulator by a scale, a round and a clamp is what
+          a readout path does; a target whose readout applies the accumulator scale
+          has a datapath for it
+      minmax:
+        epilogue_stage: relu
+        note: a rectifier is a clamp on the readout path, not a separate elementwise
+          pass
+      pool:
+        epilogue_stage: maxpool
+        note: pooling geometry carried in DEVICE fields of the convolution descriptor
+          is a readout stage, not host work
+      elementwise:
+        facet_field: operand_sum
+        facet_absent_field: operand_sum_absent
+        requires_derived:
+        - accumulator_kind
+        note: a residual add is an integer sum of two separately scaled tensors. A
+          design whose LOAD multiplies and whose accumulator is addressable can sum
+          them on the unit; one whose accumulator lives inside the datapath cannot.
+          The rung is `readout_facet.operand_sum`, and it is UNKNOWN -- not a confirmation
+          -- while `accumulator_kind` is underived
+  declined:
+    purpose: route D, stated in the command buffer itself so every consumer reads
+      the same verdict
+    required:
+    - reason
+    optional:
+    - op
+    example:
+      op: rmsnorm
+      reason: no lowering for this operation on this target yet
+whole_model_optional:
+  whole_model_regions:
+    manifest_field: 'whole_model_regions: true'
+    purpose: opt in to being offered a legal run of consecutive whole-model groups
+      as ONE FUSED REGION capsule (a single lower_interface_to_target call over the
+      merged bodies), in addition to being asked for each group alone. A declining
+      package (this field absent, or the offered capsule refused/incomplete) is asked
+      group by group exactly as if this did not exist.
+    answer: ONE kernel for the whole region. It must commit the BOUNDARY member's
+      output (the last member's) under the capsule's own output name for it; an internal
+      member's output is the kernel's own business -- bound to that member's program
+      buffer when the reply declares it under its capsule name, never required. Its
+      kernel arguments resolve like any reply's (logical_kernel_abi; a multi-command
+      region states them as kernel_abi.kind whole_program).
+    graded: 'at the region''s BOUNDARY, against the independent oracle: every internal
+      member is recomputed from the inputs the device held and the boundary is checked
+      from them. Every member counts as package-answered while the region''s kernel
+      is linked; a region whose kernel is not linked puts every member back on the
+      target''s library.'
+    who_decides_legality: 'merlin.llvmlower.region_legality.legal_regions, from the
+      model''s own dataflow, and the TARGET''s own declaration of which ops its driver
+      can hold as an internal member (its whole-model driver''s FUSED_REGION_INTERNAL_OPS;
+      a target that declares LINKS_FUSED_REGIONS false or nothing is never offered
+      a region) -- never the package''s; a package cannot request a specific window,
+      only answer or decline the ones it is offered: from each member, a region grown
+      one group at a time while the package keeps accepting it.'
+  whole_model_passes:
+    manifest_field: 'whole_model_passes: [name, ...]'
+    purpose: opt in to running the package's own named whole-model passes over the
+      capsule's interface MLIR before it is split into groups. Each name must also
+      be one of the package's own declared `commands` (schemas/manifest.schema.json);
+      the transformed module is used for the rest of the build ONLY if it verifies
+      as computing the same function as the untransformed one -- never trusted from
+      the pass's own claim. A package that declares no passes here sees no change.

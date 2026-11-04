@@ -1,0 +1,70 @@
+{
+  "schema": "operator.final12h_runtime_provenance.v1",
+  "source_root": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/runtime",
+  "source_hashes": {
+    "htif.c": "bdf0d455bfe1c4555f2f99196beedaf9a67e0f54a5939d58ac7842a6532dd707",
+    "htif.h": "b65661ffa2c7f5857b5d3513d05bf4078c809d3141e6c1bdb51d2680908d6f82",
+    "crt.S": "a437e507cdb0e02f11f2e4ae4e08cfbc83a41c4ccbec12c26574ff687da2ba46",
+    "libc_min.c": "6326f21c6914f3cd0ac4351d5ca2ac2158cd38305168638e4c512bff84e1be7a"
+  },
+  "identical_sources_in_frameworks": [
+    "f9d7fb5c3d6f",
+    "afcf34be293c",
+    "adff3ab95cae"
+  ],
+  "linker_script": {
+    "path": "/work/merlin/tasks/el4-grader-throughput-20261024/.tmp/v8-fresh3-firesim/ref/elf/common/link.ld",
+    "sha256": "7007ecebbb5e05ab69eef6c3c2fa1de1174e0c2871eed6f1162de2c632a83746",
+    "notes": "This retained 571-byte source adds aligned NOLOAD .noinit after stack. Framework default link.ld differs (494 bytes); preserve retained source for same arena layout."
+  },
+  "timing_header": {
+    "path": "/work/merlin/tasks/el4-grader-throughput-20261024/.tmp/v8-fresh3-firesim/ref/elf/common/timing.h",
+    "sha256": "2414ff119c796f6c6add6ec39af9b9ad6d2ac8e565e56c56c1f927ba8620d417",
+    "notes": "Source text directly retained; rd_mcycle volatile csrr with memory clobber. It does not itself drain accelerator; completion belongs in invocation."
+  },
+  "startup": {
+    "mtvec": "_merlin_trap installed first",
+    "mstatus": "FS=Initial bit13 and VS=Initial bit9; VS bit is WARL on no-vector core; no vector instructions in startup",
+    "rounding": "fcsr=0 when compiled FP ISA => round-nearest ties-even and exception flags cleared",
+    "stack": "_stack_top - mhartid*16384; script reserves0x40000 bytes before .noinit",
+    "bss": "hart0 clears [_bss_start,_bss_end) then fence and sets boot_ready; each hart waits then main(mhartid)",
+    "uninitialized_arena": "NOLOAD .noinit intentionally not cleared; caller initializes every input and poisons outputs"
+  },
+  "console": {
+    "type": "HTIF syscall-proxy through host fesvr/FireSim TSI; no target UART MMIO",
+    "addressing": "Host finds tohost/fromhost by ELF symbol names in .htif, not one hard-coded MMIO address. Linker places .htif at next4KiB after text. Retain symbol table and record each final linked address.",
+    "console_init": "Resets buffer length; no MMIO bringup",
+    "protocol": "Static8192-byte buffer; static8-byte-aligned4xuint64 request [64,1,buffer_address,length]. Fence rw,rw then tohost=request_address; spin until fromhost!=0; clear fromhost; fence. Default newline flush enabled.",
+    "exit": "Flush output then tohost=(uint32(code)<<1)|1 and spin; code0 produces tohost1 success.",
+    "reentrancy": "HTIF buffered state is not interrupt/reentrant safe; do not print from timed kernel or interrupt concurrently."
+  },
+  "traps": {
+    "policy": "Fail fast; no illegal-instruction emulation or skipping",
+    "report": "TRAP mcause=<decimal> mepc=0x<16hex> mtval=0x<16hex>",
+    "exit_code": "0x800|mcause through htif_exit",
+    "illegal_instruction": {
+      "mcause": 2,
+      "htif_exit_code": "0x802",
+      "tohost_word": "0x1005",
+      "usable_cycles": false
+    },
+    "limitation": "Handler calls C console and assumes stack already valid, as comment documents; faults in first startup instructions before stack setup may lack full diagnostic."
+  },
+  "host_isa": {
+    "evidence": "/work/merlin/tasks/disk-reclamation-20261021/.tmp/firesim-access-20261028/build.log:445",
+    "generated_dts_isa": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+    "advertised_extensions_relevant_to_EL1": [
+      "zba",
+      "zbb",
+      "zbs",
+      "zfh"
+    ],
+    "vector_advertised": false,
+    "source_chain": "Gemmini8c3f9923 chipyard/GemminiConfigs.scala selects rocket.WithNHugeCores; Rocket55bcad0f src/main/scala/rocket/Configs.scala:30 enables Zba/Zbb/Zbs and minFLen16.",
+    "qualification_limit": "This is archived build elaboration evidence joined to deployed AGFI via summary, not a freshly read target CSR. Final object/ELF disassembly remains necessary."
+  },
+  "hardware_changes": [],
+  "upstream_receipt": "/work/merlin/tasks/disk-reclamation-20261021/.tmp/firesim-access-20261028/runtime-provenance.json",
+  "upstream_receipt_sha256": "85726748fae45eeb8afb3e073b0d23411a86024a4137e89423453d0ef9cbc627",
+  "adaptation_receipt": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v3/perf-studies_gemmini_v3_20261028T225915Z_744bcbb/runtime-adaptation.json"
+}

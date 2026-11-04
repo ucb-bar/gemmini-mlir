@@ -1,0 +1,652 @@
+[
+  {
+    "elf_sha256": "dfb5f277e6f4e0f971ef00e2fb07eead90b96cf4535d2d2f6883967b85a6216c",
+    "execution_observed": true,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:03 +blkdev0=elf-run1-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run1-el123-r5-el3-final-c01.elf-20261029130420-1.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run1-el123-r5-el3-final-c01.elf-20261029130420-1.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "b1e95935e711ba8a931938c3003fb322b77f9da5c14f2e66407d8eb468626f38",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "el123-r5-el3-final-c01",
+    "records": [
+      {
+        "bytes": 6748,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-c01/hardware.json",
+        "sha256": "2535ac9d02804838322a885c37264fcdb982b43cf201db947bb6387de85a1d6f"
+      },
+      {
+        "bytes": 14862,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-c01/image-manifest.json",
+        "sha256": "c7b1236cb4137506d1fd85037557d7cbd7a7ef8d7a38ec82c097bce4c5888c69"
+      },
+      {
+        "bytes": 20821,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-c01/receipt.json",
+        "sha256": "22438c48491f5fcff0307fffad5a97823f49aff3583b67c301faded0d3a24a49"
+      }
+    ]
+  },
+  {
+    "elf_sha256": "763ae19214cb5f6b8fb61804c7921be1a0ef93171064787ed4729d2eee89c678",
+    "execution_observed": true,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=elf-run0-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run0-el123-r5-el3-final-safe.elf-20261029130420-0.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run0-el123-r5-el3-final-safe.elf-20261029130420-0.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "e05d507c146a10bf255794aa5cd1c7b34fe3e0dad4c8422211d821de6e4e7a53",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "el123-r5-el3-final-safe",
+    "records": [
+      {
+        "bytes": 6758,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-safe/hardware.json",
+        "sha256": "3ee874ce7ccb11346c54520e1fa58f74ea2f55e1213c37329cd9dc7c3fe3a489"
+      },
+      {
+        "bytes": 539086,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-safe/image-manifest.json",
+        "sha256": "f8b44e0d702d1d35a2d4ec4b6f225a9a40ffa433d731cf69612b5fffed34220a"
+      },
+      {
+        "bytes": 41400,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-final-safe/receipt.json",
+        "sha256": "51425617408ca31241cb83c659a2ae4a0cdf767d2ae002b5e03e5b3d82bc1b16"
+      }
+    ]
+  },
+  {
+    "elf_sha256": "055e5203f66aba189aa42d89c6fc0ce2b0167e56f17d5b8028dee99aba05ca9f",
+    "execution_observed": false,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:03 +blkdev0=elf-run1-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run1-el123-r5-el3-rerun-s1.elf-20261029114812-1.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run1-el123-r5-el3-rerun-s1.elf-20261029114812-1.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "97f7a3f78e8da6f03d8bed300eb6c873007694dcd5737bd4f8a28ae523ee9de7",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "el123-r5-el3-rerun-s1",
+    "records": [
+      {
+        "bytes": 6736,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-rerun-s1/hardware.json",
+        "sha256": "cd330f231b1db74afaa307eefb77b8c78cf748afca45287217e0d984ff090a8c"
+      },
+      {
+        "bytes": 678204,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-rerun-s1/image-manifest.json",
+        "sha256": "399bd1d2526cbe61f4fe5db1a95b659b725ab6413c31137a849737da632d3c9e"
+      },
+      {
+        "bytes": 55336,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-el3-rerun-s1/receipt.json",
+        "sha256": "95903b7c67320553205d665fca4fbb0eeda062729e61fb5575ddfe875283425d"
+      }
+    ]
+  },
+  {
+    "elf_sha256": "bd47afe6a8d8ae0388ed255ac2471542dbc3252bcbbe756e3b69b26274926855",
+    "execution_observed": true,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:03 +blkdev0=elf-run1-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run1-el123-r5-full-v2-s2.elf-20261029093939-1.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run1-el123-r5-full-v2-s2.elf-20261029093939-1.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "199499ac061c48ae2579cbf98a111f6acaf9db2bc1a3eb86bc91b3e4750594bb",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "el123-r5-full-v2-s2",
+    "records": [
+      {
+        "bytes": 6708,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-full-v2-s2/hardware.json",
+        "sha256": "dda995ad7158ca76dc1179007a516212f25ceebd24b72c59590a8768eccc4f75"
+      },
+      {
+        "bytes": 1416344,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-full-v2-s2/image-manifest.json",
+        "sha256": "10f6408950c1d5f7aa16e8fee7d7340696525298d792f92b12d63a1996d310b3"
+      },
+      {
+        "bytes": 119286,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-full-v2-s2/receipt.json",
+        "sha256": "73378816c6bf14e6f11f3283df94d3c3947c72555770055c6897b92b6360633f"
+      }
+    ]
+  },
+  {
+    "elf_sha256": "ec8f998374f5d5fdb238d23898cc3fddb3da2564111477177d7b04bc29f5b286",
+    "execution_observed": true,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:04 +blkdev0=elf-run2-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run2-el123-r5-suspect-el3.elf-20261029112358-2.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run2-el123-r5-suspect-el3.elf-20261029112358-2.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "8db4585c7d2f03d1adea2e74f27c93879c156493b5cbb38530b4eb575735f855",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "el123-r5-suspect-el3",
+    "records": [
+      {
+        "bytes": 6718,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-suspect-el3/hardware.json",
+        "sha256": "0e7c2109835753bb926d1be41d3c6888939dd1f8eb34a50610abea8fcb540412"
+      },
+      {
+        "bytes": 22773,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-suspect-el3/image-manifest.json",
+        "sha256": "39965aecec89f20c75965588727b64b52312bfc881dfd165d40f113577afe658"
+      },
+      {
+        "bytes": 21489,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/el123-r5-suspect-el3/receipt.json",
+        "sha256": "b7dd8d901a42ba7f87269ff669d86289f75800906b7cc6d2c081028f4a44b766"
+      }
+    ]
+  }
+]
