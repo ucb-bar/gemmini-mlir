@@ -1,0 +1,432 @@
+{
+  "hypothesis": "Extend exact source flattened M gather across arbitrary positive OW; retain complete K resident N phases and full reduction epochs",
+  "decision": "Three distinct large wide spatial cases all L2 exact and complete matched model improves901847/3326809/4934651 vs1549438/4410081/6758150; promote existing3x3 full-channel semantic class with arbitrary OW, retain off/narrow choices.",
+  "before": {
+    "request": "7_1793224041663510380_245e24cc4fe0da9a67dd1ac5a725ed85",
+    "source_sha256": "e5d4de18318969ae5eb75139c8cebc22210f2cb0ad9e4029f3353d181ac8ca0f",
+    "variant": "variants/conv_wide_spatial_off",
+    "cases": [
+      {
+        "case": "RN_conv3x3_s2p1_c128_h56_i8",
+        "input_sources": {
+          "public_sources/RN_conv3x3_s2p1_c128_h56_i8.mlir": "e0eeaf479892c9a692f3a9bd93c90d112d881c0224df7122c6b7a54f46d161f4"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "1a6241da9c7fbfa96f104610f6a2d583fb740650dd802c58be2e8248a344dcd1",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 1549438,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 29.3441,
+            "median_abs_log_error": 0.2249,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.569,
+              "p25": 0.743,
+              "p50": 0.92,
+              "p75": 1.203,
+              "p90": 1.398
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 95668,
+            "complete": true,
+            "fences": 1350,
+            "sites": 174,
+            "unproved_sites": 0
+          },
+          "cycles": 2204333,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 3081657,
+          "limited_by": "command issue",
+          "low_cycles": 1254265,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 2164718.1,
+            "fence_drain_cycles": 39614.5,
+            "structural_floor_cycles": 451584.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      },
+      {
+        "case": "ZA_conv_3x3x28x28x128x128x4_native_i8",
+        "input_sources": {
+          "public_sources/ZA_conv_3x3x28x28x128x128x4_native_i8.mlir": "34df2ae647ae42784ef7d96f287da61be6e788681c6eb2fd7c37a269f62a9b4c"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "44df14348f2c7a1172442f177594e86a00c65c23295b6d2afffeebbbe40e8ee4",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 4410081,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 29.3441,
+            "median_abs_log_error": 0.2249,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.572,
+              "p25": 0.743,
+              "p50": 0.92,
+              "p75": 1.203,
+              "p90": 1.398
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 296260,
+            "complete": true,
+            "fences": 5382,
+            "sites": 174,
+            "unproved_sites": 0
+          },
+          "cycles": 6861523,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 9592410,
+          "limited_by": "command issue",
+          "low_cycles": 3924791,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 6703593.5,
+            "fence_drain_cycles": 157929.9,
+            "structural_floor_cycles": 1806336.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      },
+      {
+        "case": "ZA_conv_3x3x56x56x64x64x4_native_i8",
+        "input_sources": {
+          "public_sources/ZA_conv_3x3x56x56x64x64x4_native_i8.mlir": "22e51d9fe8f1d6b08581c5faa8e0f3c38560bd3c8060bf66a4b92a2ad85f2ba2"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "c89c90b694635053b46c4d9f3e3e67f6a47ac8c49b9731a74c058b65350b92b4",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 6758150,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 24.6754,
+            "median_abs_log_error": 0.2207,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.594,
+              "p25": 0.772,
+              "p50": 0.985,
+              "p75": 1.223,
+              "p90": 1.462
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 333460,
+            "complete": true,
+            "fences": 10758,
+            "sites": 98,
+            "unproved_sites": 0
+          },
+          "cycles": 7810791,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 11419376,
+          "limited_by": "command issue",
+          "low_cycles": 4639610,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 7545332.8,
+            "fence_drain_cycles": 265458.0,
+            "structural_floor_cycles": 1806336.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      }
+    ]
+  },
+  "after": {
+    "request": "6_1793224041663505660_ee16381c473a490d99448b4f5d6a964b",
+    "source_sha256": "9ecc1e49e595de5054098812c2c20c99e01ba36e92aab019772ba0a2507a4c69",
+    "variant": "variants/conv_wide_spatial_on",
+    "cases": [
+      {
+        "case": "RN_conv3x3_s2p1_c128_h56_i8",
+        "input_sources": {
+          "public_sources/RN_conv3x3_s2p1_c128_h56_i8.mlir": "e0eeaf479892c9a692f3a9bd93c90d112d881c0224df7122c6b7a54f46d161f4"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "cac531c5b86e39c1338a461c2c66aaedd4201662a32513f1f68f0661f966995c",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 901847,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 29.3441,
+            "median_abs_log_error": 0.2249,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.568,
+              "p25": 0.743,
+              "p50": 0.92,
+              "p75": 1.203,
+              "p90": 1.398
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 63909,
+            "complete": true,
+            "fences": 938,
+            "sites": 87,
+            "unproved_sites": 0
+          },
+          "cycles": 1473619,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 2060120,
+          "limited_by": "command issue",
+          "low_cycles": 837016,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 1446094.5,
+            "fence_drain_cycles": 27524.8,
+            "structural_floor_cycles": 451584.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      },
+      {
+        "case": "ZA_conv_3x3x28x28x128x128x4_native_i8",
+        "input_sources": {
+          "public_sources/ZA_conv_3x3x28x28x128x128x4_native_i8.mlir": "34df2ae647ae42784ef7d96f287da61be6e788681c6eb2fd7c37a269f62a9b4c"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "e413f9e5ea0af17e3300519dfa5bed635f04dcfa2c8608b9e0b7d0575beae3b6",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 3326809,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 29.3441,
+            "median_abs_log_error": 0.2249,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.572,
+              "p25": 0.743,
+              "p50": 0.92,
+              "p75": 1.203,
+              "p90": 1.398
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 251237,
+            "complete": true,
+            "fences": 3731,
+            "sites": 87,
+            "unproved_sites": 0
+          },
+          "cycles": 5794323,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 8100463,
+          "limited_by": "command issue",
+          "low_cycles": 3314353,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 5684840.1,
+            "fence_drain_cycles": 109482.8,
+            "structural_floor_cycles": 1806336.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      },
+      {
+        "case": "ZA_conv_3x3x56x56x64x64x4_native_i8",
+        "input_sources": {
+          "public_sources/ZA_conv_3x3x56x56x64x64x4_native_i8.mlir": "22e51d9fe8f1d6b08581c5faa8e0f3c38560bd3c8060bf66a4b92a2ad85f2ba2"
+        },
+        "artifact_hashes": null,
+        "emitted_elf_sha256": "c95ff8db0ac393f57df9e3a2576567fe1222a5058f8784f9b6528e5ed4b92d3b",
+        "execution_digest": null,
+        "realized_compiler_lowering": null,
+        "numerics": null,
+        "structural": null,
+        "cycles": 4934651,
+        "program_identity": null,
+        "fast_estimate": {
+          "band": "p10-p90 of complete/estimated over the calibration pairs",
+          "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+          "calibration": {
+            "cycles_per_command": 22.6274,
+            "cycles_per_fence": 24.6754,
+            "median_abs_log_error": 0.2212,
+            "pairs": 512,
+            "ratio_quantiles": {
+              "p10": 0.594,
+              "p25": 0.77,
+              "p50": 0.985,
+              "p75": 1.223,
+              "p90": 1.462
+            },
+            "source": "this run's complete timing-model estimates"
+          },
+          "census": {
+            "commands": 267605,
+            "complete": true,
+            "fences": 8631,
+            "sites": 55,
+            "unproved_sites": 0
+          },
+          "cycles": 6268179,
+          "evidence_kind": "fast_estimate",
+          "high_cycles": 9164077,
+          "limited_by": "command issue",
+          "low_cycles": 3723298,
+          "lower_bound": false,
+          "schema": "merlin.phase1.fast_estimate.v1",
+          "status": "ESTIMATED",
+          "terms": {
+            "command_issue_cycles": 6055205.4,
+            "fence_drain_cycles": 212973.4,
+            "structural_floor_cycles": 1806336.0
+          }
+        },
+        "roofline": {
+          "roofline_bound_cycles": null,
+          "gap_ratio": null,
+          "headroom_cycles": null,
+          "bound_by": null,
+          "array_utilization_pct": null
+        },
+        "timing_identity": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "timing_mode": "untuned",
+          "status": "PROVISIONAL",
+          "complete_event_accounting": true
+        },
+        "artifact_absence": "not retained by broker"
+      }
+    ]
+  }
+}

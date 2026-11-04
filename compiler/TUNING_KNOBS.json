@@ -1,0 +1,297 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "capacity",
+        "regional"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "ATTENTION_HEAD_FOLD": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "attention_contiguous_head_rows"
+    },
+    "LOAD_CONFIGURATION_CSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "configuration_cse"
+    },
+    "ATTENTION_MEMBER_ROWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "shared_rhs_physical_member_rows"
+    },
+    "DENSE_CAPACITY_PANEL": {
+      "values": [
+        "completion",
+        "wide",
+        "deep",
+        "area"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_COORDINATE_HOIST": {
+      "values": [
+        "off",
+        "on",
+        "narrow_rows"
+      ],
+      "mechanism": "coordinate loop invariant hoisting",
+      "note": "narrow_rows uses output width < DIM/2; retains wide-row incumbent after paired cycle regressions"
+    },
+    "CONV_POOL_FUSION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "fused_convolution_requant_pool"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "bounded_rne",
+        "bounded_rne_fused"
+      ],
+      "mechanism": "shared_host_lowering"
+    },
+    "ATTENTION_MEMBER_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_m",
+        "literal",
+        "banked",
+        "literal_banked",
+        "regional"
+      ],
+      "mechanism": "shared_rhs_retained_member_panels"
+    },
+    "DENSE_RHS_BATCH": {
+      "values": [
+        "off",
+        "2",
+        "4",
+        "8"
+      ],
+      "mechanism": "checked_rhs_load_loop_unroll"
+    },
+    "CONV_POOL_HORIZONTAL_K": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "horizontal_convolution_panels"
+    },
+    "DENSE_PANEL_EPOCHS": {
+      "values": [
+        "off",
+        "on",
+        "regional"
+      ],
+      "mechanism": "checked_dense_panel_epochs"
+    },
+    "DENSE_EPOCH_N_TILES": {
+      "values": [
+        "4",
+        "8",
+        "16",
+        "32"
+      ],
+      "mechanism": "dense_panel_epoch_geometry"
+    },
+    "EPOCH_COMPLETION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "dense_panel_epoch_completion"
+    },
+    "CONV_SPATIAL_READOUT_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_convolution_readout_epochs"
+    },
+    "ATTENTION_MEMBER_ROW_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_member_row_completion_epochs"
+    },
+    "CONV_POINTWISE_SPATIAL": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_strided_pointwise_spatial_raw_producer"
+    },
+    "DENSE_EPOCH_LHS_RETAIN": {
+      "values": [
+        "off",
+        "on",
+        "regional"
+      ],
+      "mechanism": "checked_immutable_complete_lhs_segmented_epochs",
+      "note": "regional requires existing coarse epoch region and more than one actual N group, then independent capacity/source/ordering admission"
+    },
+    "DENSE_EPOCH_ISSUE_ORDER": {
+      "values": [
+        "current",
+        "prefetch_rhs_between_columns",
+        "prefetch_rhs_between_k_tiles"
+      ],
+      "mechanism": "checked_segmented_frontier_interleave",
+      "note": "current incumbent; alternatives under provisional matched model exploration; k_tiles is loop-fusion control when block.k=1"
+    },
+    "CONV_SPATIAL_M_GROUPS": {
+      "values": [
+        "1",
+        "2"
+      ],
+      "mechanism": "checked_disjoint_spatial_m_groups",
+      "note": "Source-bound disjoint rows and original target pending/ordering laws; default1 retained after fresh stride-two complete modeled regression."
+    },
+    "DENSE_MULTI_M_EPOCHS": {
+      "values": [
+        "off",
+        "full_m"
+      ],
+      "mechanism": "checked_complete_m_group_panel_epochs",
+      "note": "Default off. full_m extends regional epochs only when the checked block holds all original M tiles in one scope; common scales/current issue order/full-K LHS capacity and existing K/N/reload predicates required; provisional profitability disagreement remains."
+    }
+  }
+}
