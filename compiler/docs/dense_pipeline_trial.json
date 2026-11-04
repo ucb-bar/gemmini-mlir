@@ -1,0 +1,26 @@
+{
+  "hypothesis": "Use two disjoint operand windows and drain each K epoch; batch readouts only after compute completion. Raw i32 no-bias path only; all epilogues keep compact incumbent.",
+  "source": "variants/dense_pipeline/dense.py",
+  "parent_request": "7_1793063988823112513_20754d3192b2ebd69637e03a30a62502",
+  "candidate_request": "2_1793064257352700479_dec7958da5bf5d074b6110f1b00c7aab",
+  "modeled_cycles": {
+    "USER_matmul_m512k512n512_raw": [
+      3667583,
+      975675
+    ],
+    "PD_tiny_llama_decode_m1k2048n256_raw": [
+      311877,
+      112316
+    ]
+  },
+  "confidence": "provisional same-provider complete-call model; not a measured speedup",
+  "physical_witness": {
+    "request": "3_1793064592043302536_a3dabf24740ab8c179c95ef61071a2ae",
+    "case": "G_matmul_m32k32n32_raw",
+    "L3": "pass",
+    "barrier_cycles": 1287,
+    "scope": "this executable only"
+  },
+  "dense_sha256": "2a7a24fc3da3a327c24d5adaded480f8f1c3f02d3e59a4bd942d1b197344c1d9",
+  "decision": "retain as guarded raw i32 path; expand shape validation, epilogue path unchanged"
+}
