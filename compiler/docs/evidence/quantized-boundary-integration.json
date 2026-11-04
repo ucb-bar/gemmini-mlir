@@ -1,0 +1,225 @@
+[
+  {
+    "source_options": {},
+    "plan": {
+      "schema": "submission.accumulator_quantize_proof.v1",
+      "source": {
+        "type": "tensor<1x17xi32>",
+        "dtype": "i32",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "output": {
+        "type": "tensor<1x17xi8>",
+        "dtype": "i8",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "source_chain": [
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "quant_ext.quantize_per_tensor",
+          "source_ids": {}
+        }
+      ],
+      "source_scales_f32": [
+        0.5,
+        2.0
+      ],
+      "numeric_proof": {
+        "scale": 1.0,
+        "source_scales": [
+          0.5,
+          2.0
+        ],
+        "accumulator_min": -2147483648,
+        "accumulator_max": 2147483647,
+        "rounding": "nearest_even",
+        "output_min": -128,
+        "output_max": 127,
+        "proof": "exhaustive monotone integer-output transition comparison",
+        "transitions": 255
+      },
+      "readout_attributes": {
+        "output_dtype": "i8",
+        "acc_scale": 1.0,
+        "epilogue": [
+          "acc_scale"
+        ]
+      },
+      "live_intermediate_outputs": [],
+      "standalone_form": "ACCUMULATOR_READOUT",
+      "fusion_obligations": [
+        "retain every live intermediate output",
+        "independently prove source integer producer membership, ownership and completion"
+      ],
+      "scope": "exact source arithmetic over the complete signed-i32 domain; no placement/effect grant"
+    },
+    "llvm_bytes": 3901
+  },
+  {
+    "source_options": {
+      "relu": true
+    },
+    "plan": {
+      "schema": "submission.accumulator_quantize_proof.v1",
+      "source": {
+        "type": "tensor<1x17xi32>",
+        "dtype": "i32",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "output": {
+        "type": "tensor<1x17xi8>",
+        "dtype": "i8",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "source_chain": [
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "quant_ext.quantize_per_tensor",
+          "source_ids": {}
+        }
+      ],
+      "source_scales_f32": [
+        0.5,
+        2.0
+      ],
+      "numeric_proof": {
+        "scale": 1.0,
+        "source_scales": [
+          0.5,
+          2.0
+        ],
+        "accumulator_min": -2147483648,
+        "accumulator_max": 2147483647,
+        "rounding": "nearest_even",
+        "output_min": 0,
+        "output_max": 127,
+        "proof": "exhaustive monotone integer-output transition comparison",
+        "transitions": 127
+      },
+      "readout_attributes": {
+        "output_dtype": "i8",
+        "acc_scale": 1.0,
+        "epilogue": [
+          "acc_scale",
+          "relu"
+        ]
+      },
+      "live_intermediate_outputs": [],
+      "standalone_form": "ACCUMULATOR_READOUT",
+      "fusion_obligations": [
+        "retain every live intermediate output",
+        "independently prove source integer producer membership, ownership and completion"
+      ],
+      "scope": "exact source arithmetic over the complete signed-i32 domain; no placement/effect grant"
+    },
+    "llvm_bytes": 3901
+  },
+  {
+    "source_options": {
+      "low": 0
+    },
+    "plan": {
+      "schema": "submission.accumulator_quantize_proof.v1",
+      "source": {
+        "type": "tensor<1x17xi32>",
+        "dtype": "i32",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "output": {
+        "type": "tensor<1x17xi8>",
+        "dtype": "i8",
+        "shape": [
+          1,
+          17
+        ],
+        "dense": true
+      },
+      "source_chain": [
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "linalg.generic",
+          "source_ids": {}
+        },
+        {
+          "operation": "quant_ext.quantize_per_tensor",
+          "source_ids": {}
+        }
+      ],
+      "source_scales_f32": [
+        0.5,
+        2.0
+      ],
+      "numeric_proof": {
+        "scale": 1.0,
+        "source_scales": [
+          0.5,
+          2.0
+        ],
+        "accumulator_min": -2147483648,
+        "accumulator_max": 2147483647,
+        "rounding": "nearest_even",
+        "output_min": 0,
+        "output_max": 127,
+        "proof": "exhaustive monotone integer-output transition comparison",
+        "transitions": 127
+      },
+      "readout_attributes": {
+        "output_dtype": "i8",
+        "acc_scale": 1.0,
+        "epilogue": [
+          "acc_scale",
+          "relu"
+        ]
+      },
+      "live_intermediate_outputs": [],
+      "standalone_form": "ACCUMULATOR_READOUT",
+      "fusion_obligations": [
+        "retain every live intermediate output",
+        "independently prove source integer producer membership, ownership and completion"
+      ],
+      "scope": "exact source arithmetic over the complete signed-i32 domain; no placement/effect grant"
+    },
+    "llvm_bytes": 3901
+  }
+]

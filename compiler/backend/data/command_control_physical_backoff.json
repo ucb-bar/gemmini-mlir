@@ -1,0 +1,33 @@
+{
+  "schema": "submission.command_control_physical_backoff.v1",
+  "selection": "small_complete",
+  "status": "conservative backoff of previously admitted class",
+  "primitive_dim_source": "backend.isa.DIM",
+  "incumbent_regions": [
+    "K > 2*DIM and N > 2*DIM",
+    "K % DIM != 0 and N > DIM"
+  ],
+  "additional_existing_limits": [
+    "original M <= DIM",
+    "original K,N <= 4*DIM",
+    "all selected actual deepest work loops have tripcount <=4",
+    "complete ordered library unroll fits 512 static operations,16 transforms"
+  ],
+  "M_dependent_new_restriction": false,
+  "physical_pair_artifact": "artifacts/control-physical-paired.json",
+  "physical_pair_sha256": "4fe2f1acc9943545644b57c6b983aff73d73aee7a981f7c7e71dc9c6ef128b75",
+  "measured_training_pairs": 31,
+  "reverted_regressions": 5,
+  "unchanged_measured_improvements": 26,
+  "all5_reverted_llvm_identical_physical_incumbent": true,
+  "all26_improved_llvm_identical_previous_candidate": true,
+  "preserved_native_source_controls": [
+    "TL_att_qk_q32kv4_m16k64n16_raw",
+    "TL_att_pv_q32kv4_m16k16n64_raw",
+    "PB01_no_island_m16k32h16n16"
+  ],
+  "local_full_ordered_effect_geometries": 34,
+  "fresh_local_source_emission_geometries": 8,
+  "unknowns": "Local neighboring geometries establish legality/source emission only. No new regional speedup or holdout physical timing claim; this rule conservatively declines two measured regression regions. Existing QK/PV/PB01 modeled evidence remains modeled.",
+  "executable_identity": "LLVM bytes compared. No new ELF build or simulation requested."
+}
