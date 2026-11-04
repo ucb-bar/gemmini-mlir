@@ -1,0 +1,32 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked capacity-legal full-K LHS retention",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "projection_schedule": {
+      "values": [
+        "seed",
+        "epochs",
+        "wide_epochs",
+        "capacity_wide_epochs"
+      ],
+      "mechanism": "checked raw-i32 projection LHS retention, exact wide loads and fact-backed completion epochs",
+      "note": "Generic geometry/capacity selection only; library source/address/epoch checks are mandatory. Seed is unconditional safe schedule alternative."
+    }
+  }
+}
