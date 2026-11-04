@@ -1,0 +1,310 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "capacity"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "stacked"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "CONV_GATHER_COORDINATES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_exact_spatial_matrix_gathers"
+    },
+    "DENSE_SEGMENT_K_MAX": {
+      "values": [
+        16,
+        32,
+        64
+      ],
+      "mechanism": "capacity_admitted_segmented_k_windows"
+    },
+    "MIXED_DENSE_INPUT_VIEWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_readonly_dense_descriptor_offsets"
+    },
+    "CONV_POOL_RHS_RESIDENCY": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_spatial_producer_complete_rhs_residency"
+    },
+    "MIXED_SOURCE_SEQUENCES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_ordered_typed_device_sequences"
+    },
+    "DENSE_SEGMENT_ISSUE_ORDER": {
+      "values": [
+        "compute_then_prefetch",
+        "prefetch_rhs_between_columns",
+        "prefetch_rhs_between_k_tiles"
+      ],
+      "mechanism": "checked_segmented_frontier_issue_order"
+    },
+    "CONV_POOL_HORIZONTAL": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_spatial_pool_producer"
+    },
+    "MIXED_SOURCE_PREPARATIONS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_exact_preparation_cse_before_device_partition"
+    },
+    "RHS_RAGGED_STACK": {
+      "values": [
+        "off",
+        "on",
+        "decode_rows"
+      ],
+      "mechanism": "source_exact_fragmented_rows_for_shared_rhs_products"
+    },
+    "MIXED_INTEGER_VIEW_MOVEMENT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "proved_static_integer_view_movement"
+    },
+    "ELEMENTWISE_SUM_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "MIXED_QUANTIZED_RESIDUAL_EDGES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_exact_quantized_residual_edges"
+    },
+    "HOST_MEMORY_CSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "stock_llvm_host_memory_value_cse"
+    },
+    "CONV_COLUMN_READOUT_ORDER": {
+      "values": [
+        "row_major",
+        "palette_major",
+        "blocked_palette2",
+        "blocked_palette4",
+        "blocked_palette8"
+      ],
+      "mechanism": "checked_spatial_palette_readout_interchange"
+    },
+    "DENSE_DISJOINT_READOUT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_disjoint_accumulator_readout_compute_epochs"
+    },
+    "CONV_VALID_GATHER": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_proven_valid_convolution_gather"
+    },
+    "FLOAT_MOVEMENT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "exact_raw_f32_logical_abi_transport"
+    },
+    "DENSE_SOURCE_PEEL": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_ordered_dense_first_reduction_specialization"
+    },
+    "HOST_DESTINATION_REUSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_full_write_movement_destination_forwarding"
+    },
+    "CONV_INTERIOR_GATHER": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_interior_convolution_panel_specialization"
+    },
+    "DENSE_STORAGE_SPLIT": {
+      "values": [
+        "half",
+        "adaptive"
+      ],
+      "mechanism": "capacity_checked_simultaneous_dense_operand_partition"
+    },
+    "DENSE_RHS_RESIDENCY": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_full_source_dense_m_panel_rhs_residency"
+    },
+    "CONV_CHANNEL_UNROLL": {
+      "values": [
+        "baseline",
+        "factor2",
+        "factor4"
+      ],
+      "mechanism": "ordered_source_convolution_channel_loop_unroll"
+    },
+    "MIXED_PERMUTED_DENSE_PREPARATIONS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_permutation_materialized_dense_preparation"
+    }
+  }
+}

@@ -1,0 +1,214 @@
+"""Capacity-bounded retained-LHS alternatives with explicit completion epochs.
+
+The compact incumbent and these alternatives share their operation adapter and
+terminal encoder. Execute completion order comes from the selected public RTL
+ordering facts. Full drains protect every operand ownership change; no generic
+RAW/WAR scoreboard premise or latency spacing replaces completion.
+"""
+from __future__ import annotations
+from dataclasses import replace
+from functools import lru_cache,partial
+import hashlib,json,os
+from pathlib import Path
+from merlin.compile.scheduling.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource,emit_compact_dense
+from merlin.compile.scheduling.dense_panel_pipeline import DenseRetainedReductionAdmission,dense_retained_operand_hoists,dense_retained_compute_order
+from merlin.compile.scheduling.dense_ready_readout import schedule_dense_pipeline
+from merlin.compile.scheduling.schedule_ir import make_dense_schedule_plan
+from merlin.compile.scheduling.loop_schedule import propose_loop_transforms
+from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
+from merlin.compile.tuning_knobs import knob
+from . import isa
+from .dense_verification import verify_dense_with_budget
+
+RETAINED_CAPACITY_REFUSAL='full-K retained panel exceeds assigned operand storage'
+# Finite wall-clock budget for the unchanged segmented source/epoch proof.
+# Ragged N groups introduce additional quantified residency/continuation cases;
+# the connected M1/K2048/N5728 plan takes about 16s to construct and verify.
+# This changes neither the program nor its original correctness obligations.
+SEGMENTED_VERIFICATION_TIMEOUT_MS=30000
+SEGMENT_K_LIMITS=(16,32,64)
+SEGMENT_ISSUE_ORDERS=('compute_then_prefetch','prefetch_rhs_between_columns',
+                      'prefetch_rhs_between_k_tiles')
+
+
+def segment_issue_order():
+    # Existing counted frontier rewrite runs before complete source/epoch
+    # verification. It preserves RHS slots, descriptor pairs and full drains;
+    # the terminal encoder consumes the rewritten kernel directly.
+    return knob('DENSE_SEGMENT_ISSUE_ORDER',default=SEGMENT_ISSUE_ORDERS[0],
+                values=SEGMENT_ISSUE_ORDERS,root=Path(__file__).resolve().parents[1])
+
+
+def segment_k_limit():
+    return knob('DENSE_SEGMENT_K_MAX',default=16,values=SEGMENT_K_LIMITS,
+                root=Path(__file__).resolve().parents[1])
+
+
+PANEL_GEOMETRIES={'balanced':(4,4),'wide':(8,8),'tall':(8,4),'wide_n':(4,8),
+                  'wide_16':(4,16),'tall_16':(16,4)}
+
+
+def retained_schedule(m,k,n,bias,column_scales=False,segmented=False,*,geometry=None):
+    """Resolve a panel resource bound before entering the geometry-keyed cache."""
+    configured=knob('DENSE_PANEL_GEOMETRY',default='balanced',values=tuple(PANEL_GEOMETRIES),
+                    root=Path(__file__).resolve().parents[1])
+    selection=geometry if geometry is not None else os.environ.get('DENSE_PANEL_GEOMETRY',configured)
+    if selection not in PANEL_GEOMETRIES:
+        raise ValueError('DENSE_PANEL_GEOMETRY must be one of '+', '.join(PANEL_GEOMETRIES))
+    split=knob('DENSE_STORAGE_SPLIT',default='half',values=('half','adaptive'),
+               root=Path(__file__).resolve().parents[1])
+    from .dense_readout_epochs import enabled
+    from .dense_source_peeling import enabled as source_peeling_enabled
+    from .dense_rhs_residency import enabled as rhs_residency_enabled
+    return _retained_schedule(m,k,n,bias,column_scales,segmented,selection,split,segment_k_limit(),segment_issue_order(),enabled(),source_peeling_enabled(),rhs_residency_enabled())
+
+
+def capacity_schedule(m,k,n,bias,column_scales=False,*,geometry=None):
+    """Opt-in structural policy; preserve the shared planner and encoder."""
+    from .dense_pipeline_policy import execute_capacity_pipeline
+    configured=knob('DENSE_PANEL_GEOMETRY',default='balanced',values=tuple(PANEL_GEOMETRIES),
+                    root=Path(__file__).resolve().parents[1])
+    selection=geometry if geometry is not None else os.environ.get('DENSE_PANEL_GEOMETRY',configured)
+    if selection not in PANEL_GEOMETRIES:
+        raise ValueError('DENSE_PANEL_GEOMETRY must be one of '+', '.join(PANEL_GEOMETRIES))
+    split=knob('DENSE_STORAGE_SPLIT',default='half',values=('half','adaptive'),
+               root=Path(__file__).resolve().parents[1])
+    from .dense_readout_epochs import enabled
+    from .dense_source_peeling import enabled as source_peeling_enabled
+    from .dense_rhs_residency import enabled as rhs_residency_enabled
+    return execute_capacity_pipeline(m,k,n,bias,column_scales,geometry=selection,
+        storage_split=split,segment_k_tiles=segment_k_limit(),retained_planner=partial(_retained_schedule,issue_order=segment_issue_order(),disjoint_readout=enabled(),source_peeling=source_peeling_enabled(),rhs_residency=rhs_residency_enabled()))
+
+
+@lru_cache(maxsize=256)
+def _retained_schedule(m,k,n,bias,column_scales,segmented,geometry,storage_split='half',segment_k_tiles=16,issue_order='compute_then_prefetch',disjoint_readout=False,source_peeling=False,rhs_residency=False):
+    if type(segment_k_tiles) is not int or segment_k_tiles not in SEGMENT_K_LIMITS:
+        raise ValueError('dense segment K tile limit must be 16, 32 or 64')
+    if issue_order not in SEGMENT_ISSUE_ORDERS:
+        raise ValueError('unsupported dense segmented issue order')
+    from .dense import _adapter
+    a=_adapter()
+    dim=isa.DIM
+    p=DenseProblem(m,k,n,dim,dim,1 if column_scales else dim,1,1,4,bias=bias)
+    s=DenseLoopStorage(DenseMemoryView('lhs','spad',dim,0,isa.SPAD_ROWS//2),DenseMemoryView('rhs','spad',dim,isa.SPAD_ROWS//2,isa.SPAD_ROWS//2),DenseMemoryView('acc','acc',4*dim,0,isa.ACC_ROWS))
+    max_m,max_n=PANEL_GEOMETRIES[geometry]
+    r=DenseResources(isa.SPAD_ROWS*dim,isa.ACC_ROWS*4*dim,max_m_blocks=max_m,max_n_blocks=max_n,max_k_blocks=p.tiles[1],partial_output_tiles=True,partial_output_blocks=True)
+    partition_receipt=None
+    if storage_split=='adaptive' and not segmented:
+        from .dense_storage_partition import select_full_k_partition
+        partition=select_full_k_partition(p,r,max_m_blocks=max_m,max_n_blocks=max_n)
+        if partition is None:
+            return None,RETAINED_CAPACITY_REFUSAL
+        s,adaptive_block,partition_receipt=partition
+        candidates=[adaptive_block]
+    elif segmented:
+        # Retain complete LHS while double buffering bounded RHS segments.
+        # This is a separate experimental family, never an incumbent default.
+        from merlin.compile.scheduling.dense_segmented_pipeline import DenseSegmentedAdmission,dense_segmented_blocks
+        from merlin.compile.scheduling.dense_panel_pipeline import DensePanelOverlapAdmission
+        cap=min(segment_k_tiles,p.tiles[1]-1)
+        if cap<1:
+            return None,'segmented reduction requires more than one K tile'
+        r=replace(r,max_k_blocks=cap)
+        if storage_split=='adaptive':
+            from .dense_storage_partition import select_segmented_partition
+            partition=select_segmented_partition(p,r)
+            if partition is None:
+                return None,RETAINED_CAPACITY_REFUSAL
+            s,adaptive_block,partition_receipt=partition
+            candidates=[adaptive_block]
+        else:
+            candidates=dense_segmented_blocks(p,r,s)
+    else:
+        candidates=[b for b in dense_blocks(p,r,k_limit=lambda m,n:s.k_limit(p,r,m,n)) if b.k==p.tiles[1] and s.admits(p,b,r)]
+    if not candidates:
+        return None,RETAINED_CAPACITY_REFUSAL
+    block=min(candidates,key=lambda b:(b.loads,-b.m*b.n,b.m,b.n))
+    if segmented:
+        # The two-slot capacity callback can narrow the requested search cap.
+        # Freeze that admitted K domain for plan construction and the shared
+        # panel diagnostic, whose canonical dense_blocks proposes maximal K.
+        r=replace(r,max_k_blocks=block.k)
+    evidence=json.loads(Path(__file__).with_name('dense_ordering.json').read_text())
+    if evidence['completion_order']['execute']['order']!='in_order':
+        return None,'selected execute completion order is unknown'
+    # Pending capacities are selected structural queue depths (the command
+    # queue holds 8, paired execution control holds at least two instructions).
+    issued_loads=max(1,(block.m+block.n)*block.k)
+    if segmented:
+        # The first pure-load epoch fills the COMPLETE resident LHS panel;
+        # subsequent RHS epochs fill one of two disjoint bounded K slots.
+        # Issued counts bound the finite counted program, not simultaneous
+        # pending commands. Preserve the selected 2/8 ready/valid capacities.
+        issued_loads=max(issued_loads,block.m*p.tiles[1])
+    law=DenseRetainedReductionAdmission(a.configuration_identity,a.numerical_policy_identity,evidence['identity'],max(1,block.m*block.k*block.n),issued_loads,2,8)
+    bias_source=DenseBiasSource(n,'i32') if bias else None
+    if segmented:
+        overlap=DensePanelOverlapAdmission(a.configuration_identity,a.numerical_policy_identity,evidence['identity']+':disjoint-owned-operand-windows',law.max_issued_compute_pairs,law.max_issued_loads,2,8)
+        combined=DenseSegmentedAdmission(overlap,law,evidence['identity']+':pure-inorder-execute-with-disjoint-future-rhs-loads')
+        readout_options={'readout_mode':'separate'}
+        readout_receipt=None
+        if disjoint_readout and not column_scales:
+            from .dense_readout_epochs import options
+            combined,chosen,readout_receipt=options(p,block,s,a,combined,bias=bias)
+            readout_options.update(chosen)
+        source=hashlib.sha256(json.dumps([m,k,n,bias,'i8-i8-i32'],sort_keys=True).encode()).hexdigest()
+        plan=make_dense_schedule_plan(p,r,s,a,source_identity=source,dtypes=('i8','i8','i32'),static_budget=128,block_tiles=(block.m,block.k,block.n),pipeline_kind='retained_lhs_segmented_k',pipeline_prefetch=True,pipeline_issue_order=issue_order,bias_source=bias_source)
+        result=verify_dense_with_budget(lambda timeout: schedule_dense_pipeline(p,r,s,a,name='dense_segmented',dtypes=('i8','i8','i32'),source_identity=source,external_buffers_disjoint=True,schedule_plan=plan,pipeline_admission=combined,bias_source=bias_source,**readout_options,static_budget=128,timeout_ms=timeout),initial_timeout_ms=SEGMENTED_VERIFICATION_TIMEOUT_MS)
+        _record_geometry(result,geometry,block,p,r,s)
+        if readout_receipt is not None:
+            result.realization['disjoint_readout_admission']=readout_receipt
+        result.realization['verification_timeout_ms']=SEGMENTED_VERIFICATION_TIMEOUT_MS
+        result.realization['storage_partition']=partition_receipt or {'selection':'half',
+            'lhs_window_rows':s.lhs.capacity,'rhs_window_rows':s.rhs.capacity}
+        result.realization['segmented_k_limit']=segment_k_tiles
+        result.realization['segmented_epoch_bounds']={
+            'retained_lhs_loads':block.m*p.tiles[1],
+            'rhs_slot_loads':block.k*block.n,
+            'retained_lhs_rows':block.m*p.tiles[1]*dim,
+            'rhs_slot_rows':block.k*block.n*dim,'rhs_slots':2,
+            'max_issued_loads':law.max_issued_loads,
+            'max_issued_compute_pairs':law.max_issued_compute_pairs,
+            'pending_loads':law.pending_loads,'pending_compute_pairs':law.pending_compute_pairs}
+        if source_peeling:
+            from .dense_source_peeling import select
+            result=select(result)
+        return result,None
+    raw=emit_compact_dense(p,block,s,a,name='dense_retained',dtypes=('i8','i8','i32'),bias_source=bias_source)
+    transforms=dense_retained_operand_hoists(raw,a,role='lhs')
+    transforms+=dense_retained_compute_order(propose_loop_transforms(raw,transforms),a,order=('k','n','m'))
+    source=hashlib.sha256(json.dumps({'m':m,'k':k,'n':n,'bias':bias,'dtype':['i8','i8','i32']},sort_keys=True).encode()).hexdigest()
+    plan=make_dense_schedule_plan(p,r,s,a,source_identity=source,dtypes=('i8','i8','i32'),static_budget=128,block_tiles=(block.m,block.k,block.n),loop_transforms=transforms,pipeline_kind='retained_full_k',pipeline_prefetch=False,bias_source=bias_source)
+    result=verify_dense_with_budget(lambda timeout: schedule_dense_pipeline(p,r,s,a,name='dense_retained',dtypes=('i8','i8','i32'),source_identity=source,external_buffers_disjoint=True,schedule_plan=plan,pipeline_admission=law,bias_source=bias_source,readout_mode='separate',static_budget=128,timeout_ms=timeout),initial_timeout_ms=5000)
+    if rhs_residency:
+        from .dense_rhs_residency import select
+        result,block=select(result,problem=p,resources=r,storage=s,adapter=a,
+            admission=law,block=block,source_identity=source,bias_source=bias_source)
+    _record_geometry(result,geometry,block,p,r,s)
+    result.realization['storage_partition']=partition_receipt or {'selection':'half',
+        'lhs_window_rows':s.lhs.capacity,'rhs_window_rows':s.rhs.capacity}
+    if source_peeling:
+        from .dense_source_peeling import select
+        result=select(result)
+    return result,None
+
+
+def _record_geometry(result,geometry,block,problem,resources,storage):
+    from .dense_panel_predicates import describe_dense_panel
+    # Consume the exact selected model, rather than reconstructing a candidate
+    # from diagnostic receipts. Admission failures stop before LLVM emission.
+    facts=describe_dense_panel(problem,resources,storage,block)
+    result.realization['panel_geometry']={
+        'selection':geometry,'max_m_blocks':PANEL_GEOMETRIES[geometry][0],
+        'max_n_blocks':PANEL_GEOMETRIES[geometry][1],
+        'selected_block_tiles':[block.m,block.k,block.n],
+        'accumulator_rows':facts.accumulator.live,
+        'accumulator_capacity_rows':facts.accumulator.assigned,
+        'lhs_window_rows':facts.lhs.assigned,'rhs_window_rows':facts.rhs.assigned}
+    # Keep JSON receipts detached from the immutable typed admission facts.
+    result.realization['panel_facts']=facts.as_dict()
+
+
+# Retain the cache inspection API for callers comparing explicit alternatives.
+retained_schedule.cache_clear=_retained_schedule.cache_clear
+retained_schedule.cache_info=_retained_schedule.cache_info
