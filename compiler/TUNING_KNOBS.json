@@ -1,0 +1,46 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked full-K LHS retention for multi-M-tile blocks",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "merge_k_completion_epochs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "schedule_dense_panel_epochs: checked K-stream completion placement",
+      "note": "Goal: fewer redundant K-step drains; preserve all data calls, storage, readout/block/final drains. Unknown premises or unproved consumption retain original.",
+      "goals": [
+        "Remove redundant K-stream completion boundaries",
+        "Preserve exact data issue order and all readout/block/final completions"
+      ]
+    },
+    "k_completion_scope": {
+      "values": [
+        "paired_steps",
+        "output_block"
+      ],
+      "mechanism": "schedule_dense_panel_epochs: issued K-stream scope",
+      "note": "Goal: compare two-step versus complete-output-block drain merging under unchanged physical pending queues and live windows; consumed only when merge_k_completion_epochs is true.",
+      "goals": [
+        "Compare two-step versus whole-output-block completion epochs",
+        "Keep live storage and physical pending queue bounds fixed"
+      ]
+    }
+  }
+}
