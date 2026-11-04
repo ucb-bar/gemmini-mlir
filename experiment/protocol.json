@@ -1,0 +1,53 @@
+{
+  "schema": "kernel-study-protocol.v1",
+  "primary_systems": [
+    "el1",
+    "el2",
+    "el3",
+    "fresh10cca-live",
+    "fresh10seed-live"
+  ],
+  "baseline_systems": [
+    "gemmini-fsm",
+    "gemmini-primitive-ws"
+  ],
+  "external_systems_requested": [],
+  "snapshot_selection": "exact four-hour live author source for allfive; latest graded source retained as provenance only",
+  "snapshot_selection_user_answer": "Whatever would be fair with EL1, EL2 and EL3",
+  "convolution_sweep_user_answer": "Both, with separate case IDs",
+  "case_families": {
+    "main16": 16,
+    "gemm17": 17,
+    "conv18_same": 18,
+    "conv18_valid": 18,
+    "qk10": 10,
+    "pv10": 10
+  },
+  "total_case_ids": 89,
+  "primary_engine": "FireSim target mcycle completed call; no gSIM/Spike timing substitutes",
+  "hardware_id": "agfi-09268e63eac5f1c08/firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+  "peak_macs_per_cycle": 256,
+  "utilization_definition": "useful_macs / (256 * completed_call_cycles); useful peak attainment, not PE-busy counter",
+  "unavailable_counters": "null",
+  "freeze": "frozen authors source never modified; no schedule retuning on hidden cases; library policies unchanged; external direct intake baseline settings frozen before hidden attempts",
+  "baseline_difference": "stock WS FSM vs disclosed restored WS primitive-library baseline; no-FSM conv includes timed CPU im2col and primitive GEMM",
+  "active_experiments": "untouched; monitor independent; no study results injected to authors",
+  "correctness": "independent NumPy int64 complete exact references; INT8 signed saturation or exact FP32 1/128 ties-even as specified; raw INT32 exact; input SHA256s and output reference SHA256s retained; guards checked each reportedcall",
+  "cache_scope": "historical_2MiB_sweep is not proven cold fordeployed4MiB LLC; warm_repeat separately identified",
+  "reports": "cycles unranked unless validated samebinary/case and guards pass; missing counters null; source and ELFs hashed",
+  "scope_correction": {
+    "user": "Do not run IREE or TVM or Voyager; handoff reference for shapes only; friends running those systems",
+    "official_systems": [
+      "el1",
+      "el2",
+      "el3",
+      "fresh10cca-live",
+      "fresh10seed-live",
+      "gemmini-fsm",
+      "gemmini-primitive-ws"
+    ],
+    "external_work_stopped": true,
+    "external_FireSim_jobs_submitted": 0,
+    "updated_utc": "2026-10-28T17:29:21.023549+00:00"
+  }
+}
