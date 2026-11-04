@@ -1,0 +1,246 @@
+{
+  "scope": "Functional rank generalization, not a performance trial",
+  "parent_snapshot": "variants/final_selected",
+  "candidate_snapshot": "variants/integrated_rank6",
+  "candidate_inventory_sha256": "0b68470f027f09982f83b643e7429e7693683e3cc3f265637efc89f0a3172cfc",
+  "changed_sources": {
+    "backend/elementwise.py": "b4ddc8c9058ca3251d0c7d1b0a974869f70a91cdc2446524ae2ff76c1fcd0a58",
+    "backend/frontend.py": "93f7382a0171dee82fcf0410d3dab96577d04901004e6307c47f618727351c14",
+    "backend/source_groups.py": "6cb134b450f0572a5904efbc844f4696382bb3bccdba901e8c01471717b9c8a6",
+    "backend/transpose.py": "61273e50f30eb7a45016cffef8768d4ad911187cf0f8903dfed5efc88e801793",
+    "backend/transpose_proof.py": "ca9649dde2bcf0bc45bae8c0bb9caf173f754e6a48dccf1e0c9d5b3db69b806d"
+  },
+  "source_pipeline": "typed source axes/maps/effects -> source grouping -> existing logical ABI -> checked counted DMA -> shared terminal encoder",
+  "transpose": {
+    "implementation": "General rank1-through-rank6 exact positive-static signed i8/rawi32 permutations using bounded counted accumulator DMA; no tensor arithmetic on the CPU.",
+    "proof": "No-z3 exact canonical stream identity plus affine descriptor equality, mixed-radix axis/cardinality and full/tail Cartesian partition, bounded source/output endpoints and completion before accumulator reuse.",
+    "owned_sources": {
+      "transpose.py": "61273e50f30eb7a45016cffef8768d4ad911187cf0f8903dfed5efc88e801793",
+      "transpose_proof.py": "ca9649dde2bcf0bc45bae8c0bb9caf173f754e6a48dccf1e0c9d5b3db69b806d"
+    },
+    "checks": {
+      "no_z3": true,
+      "interpreted_programs": 1770,
+      "interpreted_elements": 80622,
+      "invalid_sources_rejected": 18,
+      "mutated_streams_rejected": 3
+    },
+    "incumbent_llvm_identities": 112,
+    "incumbent_snapshot": "variants/final_selected/backend/transpose.py (source SHA256 matches saved transpose_before.py)",
+    "integration": "Parent widens source_groups.py::_integer_transpose rank guard from2..4 to1..6. Backend lower_transpose API unchanged. Source examples supplied for ranks1,5,6.",
+    "limitations": "Optional batched schedule retains its existing z3-dependent proof and falls back to canonical baseline when z3 is missing. No broker, numerical hardware execution, or timing claims from these source/program checks."
+  },
+  "bias": {
+    "schema": "rank6-bias-implementation-report.v1",
+    "changes": {
+      "submission/backend/frontend.py:_bias_add": {
+        "sha256": "07e03c45dae94845fe41362a7b332f687c54b5f06f22e05bd9c131a352ef0222",
+        "first_line": 96
+      },
+      "submission/backend/elementwise.py:lower_bias": {
+        "sha256": "3e8ed2f54a40c89b785822d7213e6e1246f76cea539969f130f00b4e44faf58a",
+        "first_line": 151
+      }
+    },
+    "files_sha256": {
+      "submission/backend/frontend.py": "93f7382a0171dee82fcf0410d3dab96577d04901004e6307c47f618727351c14",
+      "submission/backend/elementwise.py": "b4ddc8c9058ca3251d0c7d1b0a974869f70a91cdc2446524ae2ff76c1fcd0a58"
+    },
+    "behavior": "Exact static dense rank1..6 i32 source + rank1 last-axis i32 bias -> same ranked i32 output. Original indexing maps, iterator count, init/result dtype/shape and scalar add/yield SSA are proved. Overflow promises refuse. Flatten only at terminal DMA boundary; each row loads full i32 src, completes, accumulates zero-stride full i32 bias, completes, raw-i32 stores, completes. Addition modulo 2**32; host emits addresses and commands only.",
+    "geometry_bounds": "All extents positive exact Python ints (bools refuse); rank1..6; total elements <= floor((2**63-1)/4); column byte pitch <2**32. Last axis determines bias width. Tiles at most16x16, independent of rank.",
+    "tests": {
+      "check_results": "artifacts/rank6_bias/check_results.json",
+      "cli_results": "artifacts/rank6_bias/cli_results.json",
+      "llvm_numeric_cases": 13,
+      "rank2_frozen_terminal_byte_identities": 5,
+      "rank2_actual_cli_identity": true,
+      "malformed_domains_refused": 14,
+      "optional_solver_disabled_cli": true
+    },
+    "native_sources": [
+      "artifacts/rank6_bias/rank1.mlir",
+      "artifacts/rank6_bias/rank5.mlir",
+      "artifacts/rank6_bias/rank6.mlir"
+    ],
+    "ownership": "Only frontend._bias_add and elementwise.lower_bias changed by this agent. Parent transpose inference rank guard edit retained. source_groups and tuning unchanged. Rank2 contraction fusion roots remain rank2; higher rank bias admitted through existing standalone route.",
+    "limits": "Local actual LLVM CFG/packet numeric interpretation and full CLI admission only; no native execution/performance claim. No broker requests; parent batches public regressions."
+  },
+  "public_regressions": [
+    {
+      "request_id": "4_1793262890319256393_52e9dfeb45c9b45d8b85052251c05afd",
+      "source_sha256": "612e36416d10fd920b9bf7a675fea1ce7b295fe3b8a10c2e6cfbf2e225130b23",
+      "cases": [
+        {
+          "case": "SY_micro_model",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_micro_model/09b0d7f22069dab7428c1eedeb5605b7bf47f62bdff70e2d99a929bfa6947ffa.json",
+            "sha256": "09b0d7f22069dab7428c1eedeb5605b7bf47f62bdff70e2d99a929bfa6947ffa"
+          }
+        },
+        {
+          "case": "SY_movement_i8_aligned",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": null,
+          "detail": {
+            "path": "qa/cases/SY_movement_i8_aligned/317773bc475870ba317d1455407b13cbe54ac64f5b3101aad5811f99a3e61660.json",
+            "sha256": "317773bc475870ba317d1455407b13cbe54ac64f5b3101aad5811f99a3e61660"
+          }
+        },
+        {
+          "case": "SY_movement_i8_partial",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": null,
+          "detail": {
+            "path": "qa/cases/SY_movement_i8_partial/9529089c45dd54c76f3645caa9345ae23d108bc220001fcab7c14c33799bf0b0.json",
+            "sha256": "9529089c45dd54c76f3645caa9345ae23d108bc220001fcab7c14c33799bf0b0"
+          }
+        },
+        {
+          "case": "SY_movement_i8_sub_tile",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": null,
+          "detail": {
+            "path": "qa/cases/SY_movement_i8_sub_tile/a1dd7a4ceea3e688391431b920eff397fa012f9d712b3ec0e4c1ca91a27d0796.json",
+            "sha256": "a1dd7a4ceea3e688391431b920eff397fa012f9d712b3ec0e4c1ca91a27d0796"
+          }
+        },
+        {
+          "case": "SY_source_causal_decoder",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_source_causal_decoder/7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a.json",
+            "sha256": "7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a"
+          }
+        },
+        {
+          "case": "SY_source_causal_decoder_decode_step",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_source_causal_decoder_decode_step/06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4.json",
+            "sha256": "06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4"
+          }
+        },
+        {
+          "case": "SY_source_coverage_mlp",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_source_coverage_mlp/c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b.json",
+            "sha256": "c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b"
+          }
+        },
+        {
+          "case": "SY_source_multimodal_policy",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_source_multimodal_policy/6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac.json",
+            "sha256": "6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac"
+          }
+        },
+        {
+          "case": "SY_source_residual_cnn",
+          "numerical_execution_passed": true,
+          "barrier_tier": "L2",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass",
+            "L3": "unverified"
+          },
+          "detail": {
+            "path": "qa/cases/SY_source_residual_cnn/3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee.json",
+            "sha256": "3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee"
+          }
+        }
+      ]
+    },
+    {
+      "request_id": "3_1793262895492311948_7329734d65b5e43ad452a94248cbf1cc",
+      "source_sha256": "5d696bbad7cf64c3348045d2f4b351672e2ba161ef6e19e18ab327f410b9c91b",
+      "cases": [
+        {
+          "capsule": "PF02_bias_add_m16k16n16",
+          "status": "pass",
+          "tiers": {
+            "L0": "pass",
+            "L1": "pass",
+            "L2": "pass"
+          },
+          "failure_plane": null,
+          "failure_category": null,
+          "performance": {
+            "status": "UNKNOWN",
+            "estimated_whole_soc_cycles": null,
+            "bound_by": "read requests"
+          },
+          "detail": {
+            "path": "qa/cases/PF02_bias_add_m16k16n16/0de6a7e3f6102742dcfdeaff03a38eef105da406632de3d45dfb6728e93beb44.json",
+            "sha256": "0de6a7e3f6102742dcfdeaff03a38eef105da406632de3d45dfb6728e93beb44"
+          }
+        }
+      ]
+    }
+  ],
+  "retained_public_emissions": {
+    "cases": 15,
+    "all_llvm_identical": true,
+    "source_cases": [
+      "JC_resnet50_prepared_connected",
+      "JC_tiny_llama_prepared_connected",
+      "JH_resnet_bias_scale_relu_h8",
+      "JH_resnet_dequant_scale_h16",
+      "PB00_island_m16k32h16n16",
+      "SY_micro_model",
+      "SY_source_causal_decoder",
+      "SY_source_causal_decoder_decode_step",
+      "SY_source_coverage_mlp",
+      "SY_source_multimodal_policy",
+      "SY_source_residual_cnn",
+      "PF02_bias_add_m16k16n16",
+      "PG_source_attention_cache_representative",
+      "PG_source_repeated_inference_representative",
+      "PG_source_residual_block_medium"
+    ]
+  },
+  "physical_scope": "Three movement programs match previous physical LLVM/input bytes. Six native authored CLI products are identical; this is not a new native physical verification or ELF certificate. Native required-tier results and the three historical instruction-trace conflicts remain separate.",
+  "numerical_hardware_scope": "Named public regressions only. New rank1/5/6 standalone examples checked through actual CLI and independent DMA/LLVM interpretation, not additional physical simulations.",
+  "performance": "No timing improvement claimed for rank extension; no instruction-count selection."
+}

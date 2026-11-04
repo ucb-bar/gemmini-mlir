@@ -1,0 +1,36 @@
+{
+  "change": "Canonical rolling-window verification uses bounded constructive actual-SSA proof without z3; noncanonical IR retains original SMT verification.",
+  "default_lowering_unchanged": true,
+  "same_backend_tuning": "CONV_ROLLING_EPOCHS=on",
+  "native_source": "ZA_conv_3x3x56x56x64x64x4_native_i8.mlir",
+  "native_ifm": [
+    4,
+    58,
+    58,
+    64
+  ],
+  "native_llvm": {
+    "original_checker_current_backend.mlir": {
+      "bytes": 104202,
+      "sha256": "7bad79ba0323530dd76286bdb1a40aad5ee90b1be73111cdd499b847a4bc51aa"
+    },
+    "after_no_z3.mlir": {
+      "bytes": 104202,
+      "sha256": "7bad79ba0323530dd76286bdb1a40aad5ee90b1be73111cdd499b847a4bc51aa"
+    }
+  },
+  "verification": {
+    "geometry_programs": 236,
+    "grouped_programs": 125,
+    "adversarial_mutations": 7,
+    "equivalent_noncanonical_smt_queries": 59,
+    "no_z3": "All canonical verification and native compilation performed with imports of z3 and z3.* blocked."
+  },
+  "source_hashes": {
+    "rolling_window.py": "6a1485f9d801f983401ea4b5b4938e87f93481bd5c221751a60e4e5542dbaddc",
+    "rolling_window_constructive.py": "c28e4456891bb1f43e723b323ce07842b5b248ef4f5f8bf07fa23f367ad50eaf",
+    "library_sources.py": "556908f90820927033bf49ad92f11810ec1e6e90b3777d7f0ba9ba60c3af1a25"
+  },
+  "scope": "Proof of row address, padding guard, coverage, retained-row mapping and completion for canonical counted transport. Exact guarded row payload, immutable original input, disjoint storage, and original consumer lowering remain explicit conditional premises. No cycle or target-law claim.",
+  "fallback": "Noncanonical semantically valid IR remains accepted by original SMT checker when optional z3 is installed; without it raises explicit unsupported noncanonical verification error."
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "rank6-bias-implementation-report.v1",
+  "changes": {
+    "submission/backend/frontend.py:_bias_add": {
+      "sha256": "07e03c45dae94845fe41362a7b332f687c54b5f06f22e05bd9c131a352ef0222",
+      "first_line": 96
+    },
+    "submission/backend/elementwise.py:lower_bias": {
+      "sha256": "3e8ed2f54a40c89b785822d7213e6e1246f76cea539969f130f00b4e44faf58a",
+      "first_line": 151
+    }
+  },
+  "files_sha256": {
+    "submission/backend/frontend.py": "93f7382a0171dee82fcf0410d3dab96577d04901004e6307c47f618727351c14",
+    "submission/backend/elementwise.py": "b4ddc8c9058ca3251d0c7d1b0a974869f70a91cdc2446524ae2ff76c1fcd0a58"
+  },
+  "behavior": "Exact static dense rank1..6 i32 source + rank1 last-axis i32 bias -> same ranked i32 output. Original indexing maps, iterator count, init/result dtype/shape and scalar add/yield SSA are proved. Overflow promises refuse. Flatten only at terminal DMA boundary; each row loads full i32 src, completes, accumulates zero-stride full i32 bias, completes, raw-i32 stores, completes. Addition modulo 2**32; host emits addresses and commands only.",
+  "geometry_bounds": "All extents positive exact Python ints (bools refuse); rank1..6; total elements <= floor((2**63-1)/4); column byte pitch <2**32. Last axis determines bias width. Tiles at most16x16, independent of rank.",
+  "tests": {
+    "check_results": "artifacts/rank6_bias/check_results.json",
+    "cli_results": "artifacts/rank6_bias/cli_results.json",
+    "llvm_numeric_cases": 13,
+    "rank2_frozen_terminal_byte_identities": 5,
+    "rank2_actual_cli_identity": true,
+    "malformed_domains_refused": 14,
+    "optional_solver_disabled_cli": true
+  },
+  "native_sources": [
+    "artifacts/rank6_bias/rank1.mlir",
+    "artifacts/rank6_bias/rank5.mlir",
+    "artifacts/rank6_bias/rank6.mlir"
+  ],
+  "ownership": "Only frontend._bias_add and elementwise.lower_bias changed by this agent. Parent transpose inference rank guard edit retained. source_groups and tuning unchanged. Rank2 contraction fusion roots remain rank2; higher rank bias admitted through existing standalone route.",
+  "limits": "Local actual LLVM CFG/packet numeric interpretation and full CLI admission only; no native execution/performance claim. No broker requests; parent batches public regressions."
+}

@@ -1,0 +1,58 @@
+{
+  "identity": "selected-rtl-ordered-accumulator-commit:3ce83f25443d9bbb72bd6aa0e2bc6d7938aab6f4f17a4f17a62566085792cfd1",
+  "completion_order": {
+    "execute": {
+      "order": "in_order",
+      "basis": "no memory client is on this queue's path; its unit writes in command order",
+      "downstream": [
+        "Gemmini/ex_controller/mesh_cntl_signals_q",
+        "Gemmini/ex_controller/mesh/tagq",
+        "Gemmini/ex_controller/mesh/total_rows_q"
+      ]
+    },
+    "load": {
+      "order": "out_of_order",
+      "clients": [
+        "dma_read: 16 response IDs, 16 transaction slots"
+      ],
+      "basis": "the dispatch releases a younger command at the older one's issue, and the memory client tracks several transactions whose responses may return in any order"
+    },
+    "store": {
+      "order": "in_order",
+      "basis": "no memory client is on this queue's path; its unit writes in command order",
+      "downstream": [
+        "Gemmini/store_controller/cmd_tracker",
+        "Gemmini/spad/write_dispatch_q_q",
+        "Gemmini/spad/write_norm_q",
+        "Gemmini/spad/write_scale_q",
+        "Gemmini/spad/write_issue_q",
+        "Gemmini/spad/norm_unit_passthru_q"
+      ]
+    }
+  },
+  "same_queue": {
+    "execute": {
+      "release": "issue",
+      "by_class": {
+        "COMPUTE_ACCUMULATE": "issue",
+        "COMPUTE_PRELOADED": "issue",
+        "PRELOAD": "issue"
+      }
+    },
+    "load": {
+      "release": "issue",
+      "by_class": {
+        "MVIN": "issue",
+        "MVIN2": "issue",
+        "MVIN3": "issue"
+      }
+    },
+    "store": {
+      "release": "completion",
+      "by_class": {
+        "MVOUT": "completion"
+      }
+    }
+  },
+  "basis": "pure staging epochs complete before all readers; pure compute epochs use in-order execute completion; no operand overwrite crosses a completion epoch"
+}

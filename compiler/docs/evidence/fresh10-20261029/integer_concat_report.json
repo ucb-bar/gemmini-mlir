@@ -1,0 +1,359 @@
+{
+  "schema": "submission.source_integer_movement_report.v1",
+  "behavior": "Static dense rank1\u20136 signed i8/i32 concat, exact direct DMA of each input to cumulative disjoint output axis intervals; no arithmetic or base copy.",
+  "coverage_delta": {
+    "integer_concat_host_to_device": 17,
+    "i8": 12,
+    "i32": 5
+  },
+  "full_source": [
+    {
+      "case": "model/SY_source_residual_cnn",
+      "argv": [
+        "python",
+        "artifacts/source_weighted_residual/no_z3_cli.py",
+        "--debug",
+        "--convert-iface-to-gemmini",
+        "--emit-target-artifact",
+        "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_integer_movement/cnn.commands.json",
+        "model/SY_source_residual_cnn/capsule.interface.mlir"
+      ],
+      "exit_code": 0,
+      "seconds": 73.40306507500645,
+      "llvm_bytes": 7888487,
+      "llvm_sha256": "67412119443532a62ed2a027aa880991fbe246d219193334a263bb3f07210d25",
+      "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+      "original_source_input_output_abi_preserved": true,
+      "device_groups": 315,
+      "new_concat_groups": [
+        {
+          "symbol": "merlin_device_group_159_kernel",
+          "kernel_sha256": "da2eef69de669fcd312ea43362834dacb18fdc2c6b36552cb311588ef533690a",
+          "input_count": 49,
+          "dtype": "i8",
+          "output_shape": [
+            100,
+            147
+          ],
+          "axis": 1,
+          "bytes_each_direction": 14700,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_195_kernel",
+          "kernel_sha256": "8d7b1e297e22d27a195778eb23918f29a21e4fc0b05c9d7ac8a6e73f9005c372",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            25,
+            27
+          ],
+          "axis": 1,
+          "bytes_each_direction": 675,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_237_kernel",
+          "kernel_sha256": "8d7b1e297e22d27a195778eb23918f29a21e4fc0b05c9d7ac8a6e73f9005c372",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            25,
+            27
+          ],
+          "axis": 1,
+          "bytes_each_direction": 675,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_274_kernel",
+          "kernel_sha256": "40343be7b7ca46338bc499b2e7ec47fccc82ef6f12ef391815e6b23bf3f2a97b",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            9,
+            108
+          ],
+          "axis": 1,
+          "bytes_each_direction": 972,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_305_kernel",
+          "kernel_sha256": "45ac82f8537ba429a95af8d3c72edc53b04d428ecbde0f5e737f47d45573f371",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            9,
+            216
+          ],
+          "axis": 1,
+          "bytes_each_direction": 1944,
+          "extra_base_copy_bytes": 0
+        }
+      ],
+      "concat_transfer_bytes": 37932,
+      "new_scratch_dram_bytes": 0,
+      "accumulator_tile_elements": 256,
+      "original_top_level_tensors_and_kernel_abi_unchanged": true
+    },
+    {
+      "case": "model/SY_source_multimodal_policy",
+      "argv": [
+        "python",
+        "artifacts/source_weighted_residual/no_z3_cli.py",
+        "--debug",
+        "--convert-iface-to-gemmini",
+        "--emit-target-artifact",
+        "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_integer_movement/multimodal.commands.json",
+        "model/SY_source_multimodal_policy/capsule.interface.mlir"
+      ],
+      "exit_code": 0,
+      "seconds": 16.784761173010338,
+      "llvm_bytes": 1706877,
+      "llvm_sha256": "aa7a393da7453012d459c42136b6ce18561d0dc1ecc9ab41d974ac2af522d7da",
+      "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+      "original_source_input_output_abi_preserved": true,
+      "device_groups": 69,
+      "new_concat_groups": [
+        {
+          "symbol": "merlin_device_group_57_kernel",
+          "kernel_sha256": "7b26ddd4e7f28ca15edfe6013358c77b314977268d0e748a823e8184ba385562",
+          "input_count": 16,
+          "dtype": "i8",
+          "output_shape": [
+            4,
+            48
+          ],
+          "axis": 1,
+          "bytes_each_direction": 192,
+          "extra_base_copy_bytes": 0
+        }
+      ],
+      "concat_transfer_bytes": 384,
+      "new_scratch_dram_bytes": 0,
+      "accumulator_tile_elements": 256,
+      "original_top_level_tensors_and_kernel_abi_unchanged": true
+    },
+    {
+      "case": "public_program_sources/PG_source_attention_cache_representative",
+      "argv": [
+        "python",
+        "artifacts/source_weighted_residual/no_z3_cli.py",
+        "--debug",
+        "--convert-iface-to-gemmini",
+        "--emit-target-artifact",
+        "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_integer_movement/attention.commands.json",
+        "public_program_sources/PG_source_attention_cache_representative/capsule.interface.mlir"
+      ],
+      "exit_code": 0,
+      "seconds": 37.66322286801005,
+      "llvm_bytes": 3681487,
+      "llvm_sha256": "640da1750d9f76807f94605cbc41b449e0234442296dfb9ca348bb08ed5c8a29",
+      "source_sha256": "17a5ee5867165f8effb06015895246dcc7a6d0f16d36df0bf3c07a63a9e09a1e",
+      "original_source_input_output_abi_preserved": true,
+      "device_groups": 138,
+      "new_concat_groups": [
+        {
+          "symbol": "merlin_device_group_64_kernel",
+          "kernel_sha256": "98b34860d5c77d4787e417f06dea86fad5f793a2cc5565991c71bab3f68ea881",
+          "input_count": 8,
+          "dtype": "i32",
+          "output_shape": [
+            256,
+            160
+          ],
+          "axis": 0,
+          "bytes_each_direction": 163840,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_81_kernel",
+          "kernel_sha256": "ae7354e5f6a108e0e2b0f0e0cf9115b42d81c302a59404e13b54b0cc4b852090",
+          "input_count": 8,
+          "dtype": "i32",
+          "output_shape": [
+            256,
+            64
+          ],
+          "axis": 0,
+          "bytes_each_direction": 65536,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_98_kernel",
+          "kernel_sha256": "ae7354e5f6a108e0e2b0f0e0cf9115b42d81c302a59404e13b54b0cc4b852090",
+          "input_count": 8,
+          "dtype": "i32",
+          "output_shape": [
+            256,
+            64
+          ],
+          "axis": 0,
+          "bytes_each_direction": 65536,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_115_kernel",
+          "kernel_sha256": "ae7354e5f6a108e0e2b0f0e0cf9115b42d81c302a59404e13b54b0cc4b852090",
+          "input_count": 8,
+          "dtype": "i32",
+          "output_shape": [
+            256,
+            64
+          ],
+          "axis": 0,
+          "bytes_each_direction": 65536,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_132_kernel",
+          "kernel_sha256": "ae7354e5f6a108e0e2b0f0e0cf9115b42d81c302a59404e13b54b0cc4b852090",
+          "input_count": 8,
+          "dtype": "i32",
+          "output_shape": [
+            256,
+            64
+          ],
+          "axis": 0,
+          "bytes_each_direction": 65536,
+          "extra_base_copy_bytes": 0
+        }
+      ],
+      "concat_transfer_bytes": 851968,
+      "new_scratch_dram_bytes": 0,
+      "accumulator_tile_elements": 256
+    },
+    {
+      "case": "public_program_sources/PG_source_residual_block_medium",
+      "argv": [
+        "python",
+        "artifacts/source_weighted_residual/no_z3_cli.py",
+        "--debug",
+        "--convert-iface-to-gemmini",
+        "--emit-target-artifact",
+        "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_integer_movement/residual.commands.json",
+        "public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir"
+      ],
+      "exit_code": 0,
+      "seconds": 26.663744142002543,
+      "llvm_bytes": 3114037,
+      "llvm_sha256": "8704014a2ef3e28336aad5756ab01e961347fad9b4b7f57f3a6dfc7567b60446",
+      "source_sha256": "b4de3c3663ec71654d404de022983caaf43f008b0d19f50a640b9abf09edcf86",
+      "original_source_input_output_abi_preserved": true,
+      "device_groups": 120,
+      "new_concat_groups": [
+        {
+          "symbol": "merlin_device_group_43_kernel",
+          "kernel_sha256": "98c5d364e82643b5a8ac2878593bbdf056486f28a59c2a3642e7a16786e38f9c",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            196,
+            144
+          ],
+          "axis": 1,
+          "bytes_each_direction": 28224,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_52_kernel",
+          "kernel_sha256": "d2ec438ed57b718ce94550e6bc78a822cc647111a1fbb70c6ac754681babc207",
+          "input_count": 2,
+          "dtype": "i8",
+          "output_shape": [
+            1,
+            32,
+            14,
+            14
+          ],
+          "axis": 1,
+          "bytes_each_direction": 6272,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_59_kernel",
+          "kernel_sha256": "d2ec438ed57b718ce94550e6bc78a822cc647111a1fbb70c6ac754681babc207",
+          "input_count": 2,
+          "dtype": "i8",
+          "output_shape": [
+            1,
+            32,
+            14,
+            14
+          ],
+          "axis": 1,
+          "bytes_each_direction": 6272,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_66_kernel",
+          "kernel_sha256": "d2ec438ed57b718ce94550e6bc78a822cc647111a1fbb70c6ac754681babc207",
+          "input_count": 2,
+          "dtype": "i8",
+          "output_shape": [
+            1,
+            32,
+            14,
+            14
+          ],
+          "axis": 1,
+          "bytes_each_direction": 6272,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_73_kernel",
+          "kernel_sha256": "d2ec438ed57b718ce94550e6bc78a822cc647111a1fbb70c6ac754681babc207",
+          "input_count": 2,
+          "dtype": "i8",
+          "output_shape": [
+            1,
+            32,
+            14,
+            14
+          ],
+          "axis": 1,
+          "bytes_each_direction": 6272,
+          "extra_base_copy_bytes": 0
+        },
+        {
+          "symbol": "merlin_device_group_112_kernel",
+          "kernel_sha256": "98c5d364e82643b5a8ac2878593bbdf056486f28a59c2a3642e7a16786e38f9c",
+          "input_count": 9,
+          "dtype": "i8",
+          "output_shape": [
+            196,
+            144
+          ],
+          "axis": 1,
+          "bytes_each_direction": 28224,
+          "extra_base_copy_bytes": 0
+        }
+      ],
+      "concat_transfer_bytes": 163072,
+      "new_scratch_dram_bytes": 0,
+      "accumulator_tile_elements": 256
+    }
+  ],
+  "independent_checks": {
+    "alias_shape_and_extra_attribute_refusals_before_effects": 5,
+    "additional_rank_axis_tail_cases": 46,
+    "all_exact": true,
+    "all_elements_written_once": true,
+    "mutations_refused": 63,
+    "invalid_geometry_refused": 5
+  },
+  "duplicate_source_and_live_fanout_cli": [
+    "i8",
+    "i32"
+  ],
+  "files_sha256": {
+    "submission/backend/source_integer_movement.py": "0ded9d83c199eed29aee1b961dac59ff5a47b6d43a8e78bd1098d9bb3b3366c0",
+    "submission/backend/source_groups.py": "d8f8779314faa31c23e982580b87c3b1f3b464263d3bc4646fd284935ab7d777"
+  },
+  "limitations": [
+    "f32 concat remains a host numerical boundary",
+    "No fullchain numeric execution or cycle improvement claimed",
+    "Native model/PG owner ignores custom source group hooks; no ineffective queue pair submitted"
+  ]
+}

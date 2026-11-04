@@ -1,0 +1,105 @@
+{
+  "decision": "exact bounded finite source checker applies before optional SMT to shared retained and compact dense schedules",
+  "implementation_files_sha256": {
+    "submission/compiler_library/merlin/compile/scheduling/dense_finite_certificate.py": "b6fc0f87273f2a0ecdb50b9cdc8444ccb05f4b4738d905335a796a8d7356897a",
+    "submission/compiler_library/merlin/compile/scheduling/compact_verification.py": "73f151ee8887a6e7d6d13c3622ddb20e401d30b55087970954c069e34a231a8a",
+    "submission/compiler_library/merlin/compile/scheduling/dense_panel_pipeline.py": "593068ae85a75376e255de3ac007bb113258f7c58c5d8eae5b87c6297271033b",
+    "submission/compiler_library/merlin/compile/scheduling/library_sources.py": "125eb1fed179f78c21afdd0b2cd3d026ae069479ead5c7b7108c6235367c9ba2"
+  },
+  "custody_roster": "all three edited verifier modules already included in library_sources selected rosters; no additional module copy",
+  "semantic_scope": {
+    "source": "i8 lhs times i8 rhs, ordered signed modular i32 accumulator; optional exact contiguous per-column i32 broadcast bias",
+    "tiles": "square primitive tile_m=tile_k=tile_n; ragged full/tail primitive rectangles",
+    "serial": "original synchronous/exact-continuation DenseLoopAdapter law; every actual projected command interpreted",
+    "retained": "original validated DenseRetainedReductionAdmission; full-K block and hardware capacity checks retained before finite checker; pure drained staging/init/compute/readout epochs, actual WAW/hazards and issue counts",
+    "segmented": "existing separate admitted segmented path reuses same checker with disjoint actual operand residency maps",
+    "readout": "finite source boundary raw i32; scalar acc_scale/relu/i8 in common backend terminal emitter unchanged. Explicit typed DenseIntegerReadout/DenseTiledIntegerReadout schedule contracts remain original SMT"
+  },
+  "proof_obligations": [
+    "exact original argument shape/dtype/access and static/index bounds",
+    "actual source-aligned full/ragged load rectangles and source block identity",
+    "physical view bounds/alignment/row-width and hardware high-water capacity",
+    "actual latest loaded row identity, contiguous row maps and preload/compute counted-domain adjacency",
+    "declared contiguous bias source/strides and exact initializer coverage through reduction ownership",
+    "exact initialization and strictly ordered complete K prefix per physical ACC/source output owner",
+    "unique complete output primitive cover with no overwritten unobserved sum",
+    "all original command/loop effects and required completion epochs; no annotation erasure",
+    "independent issued-command bounds and actual in-flight ownership hazards"
+  ],
+  "bounds": {
+    "all_dynamic_command_calls": 2000000,
+    "output_row_primitive_spans": 100000,
+    "cap_before_enumeration": true,
+    "state": "O(actual bounded commands + physical rows + output row-spans); dictionary output primitive cover avoids quadratic overlap scans"
+  },
+  "unsupported_original_SMT_domains": [
+    "non-i8/i8/i32 source types",
+    "non-square primitive geometry including per-column tile_n1 schedules",
+    "typed integer/tiled output readout contracts",
+    "finite command count or output-span cap exceeded"
+  ],
+  "outside_cap_no_solver_behavior": "symbolic compact dense checking requires z3-solver",
+  "invalid_supported_mutations": "ValueError, never swallowed as proof unavailable or converted to successful certificate",
+  "checks": {
+    "actual_source_schedules": 20,
+    "independent_modular_numeric_checks": "all20 actual schedules including6weighted geometries per mode, ragged and biasoverflow",
+    "mutation_rejections": 21,
+    "ordinary_no_z3_CLI_programs": 12,
+    "weighted_projection_integrations": [
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_residual_cnn_696.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_residual_cnn_696_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_residual_cnn_696_no_z3.llvm.mlir",
+        "llvm_sha256": "104c9b2e70c2f45a22865369205cf2adfae78a7f98677abce674f903094aa5ed",
+        "command_buffer_sha256": "1eed6c85ca83bd6965f01a288754bd317f44e7a25e6fd4e0a0de6d2a9f4c6bcc",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      },
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_residual_cnn_970.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_residual_cnn_970_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_residual_cnn_970_no_z3.llvm.mlir",
+        "llvm_sha256": "b31f5b6a7200e12662633b138ad753ee57bf612784be3711565e0e270418555a",
+        "command_buffer_sha256": "7be49793ae641a6ce6445c40b67359d71532d51b5aed1fcb7121d7363aaa6fc7",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      },
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_residual_cnn_1297.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_residual_cnn_1297_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_residual_cnn_1297_no_z3.llvm.mlir",
+        "llvm_sha256": "8d5aef82eef5d8d44c3c612689c53b5c0f2852ae9b59577047c2856ad04bffe4",
+        "command_buffer_sha256": "396dd8b399dec2cca732ece679fe1768794726e7ef127bb149391ee04322967e",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      },
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_multimodal_policy_366.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_multimodal_policy_366_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_multimodal_policy_366_no_z3.llvm.mlir",
+        "llvm_sha256": "d1fe0c7037ed569f32d01f0f5ab22217262dbb13b3072128a567a88df0280e28",
+        "command_buffer_sha256": "19a98b3e8b0c90603cedd0b47f6cfe18bddba852222cab0c01656b6fce17ff24",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      },
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_causal_decoder_471.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_causal_decoder_471_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_causal_decoder_471_no_z3.llvm.mlir",
+        "llvm_sha256": "588e1f4489e9293dd944d0785397d0b992ca1d68fe0323a132ddd5f421834b53",
+        "command_buffer_sha256": "57a23fc20a16f82193acec0b8c2ac7bfe44aea0d793787657becfefc863e3dbe",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      },
+      {
+        "projection": "artifacts/source_weighted_residual/SY_source_causal_decoder_decode_step_469.mlir",
+        "command_buffer": "artifacts/source_weighted_residual/SY_source_causal_decoder_decode_step_469_no_z3.commands.json",
+        "llvm": "artifacts/source_weighted_residual/SY_source_causal_decoder_decode_step_469_no_z3.llvm.mlir",
+        "llvm_sha256": "7a12b6fc6084115543ee48b54383289ff67b52bd9f94c416f7bab37ce84c8739",
+        "command_buffer_sha256": "ba1b4f4f8ac2ca5e27d850f726bd174231e5e85856c1c62da43b1c0abe5c912c",
+        "scope": "frontend independent ordinary no-z3 CLI weighted projection"
+      }
+    ],
+    "checks_files": [
+      "finite_common_checks.json",
+      "finite_common_cli_checks.json",
+      "finite_certificate_checks.json"
+    ]
+  },
+  "remaining": "Full weighted connected model currently blocked before dense by unrelated transpose.py check_projection optional z3 import; parent owns follow-up. No new complete-call or RTL timing evidence claimed."
+}

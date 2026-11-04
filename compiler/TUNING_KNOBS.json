@@ -1,0 +1,332 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "CONV_ROLLING_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "convolution_readout_epochs"
+    },
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "auto",
+        "frontier_class"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "literal",
+        "reduction"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16",
+        "skinny"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "CONV_ROLLING_ROWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "original_nhwc_input_row_ring"
+    },
+    "ATTENTION_RHS_REUSE": {
+      "values": [
+        "off",
+        "on",
+        "all_rows"
+      ],
+      "mechanism": "source_contiguous_query_head_folding"
+    },
+    "POOL_BLOCKS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "bounded_spatial_pool_blocks"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "scalar_fused",
+        "bounded_rne",
+        "bounded_rne_fused",
+        "scalar_copies"
+      ],
+      "mechanism": "shared_scalar_host_lowering"
+    },
+    "DENSE_SEGMENT_K_TILES": {
+      "values": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "mechanism": "capacity_admitted_segmented_k"
+    },
+    "DENSE_SEGMENTED_ISSUE_ORDER": {
+      "values": [
+        "compute_then_prefetch",
+        "prefetch_rhs_between_k_tiles",
+        "prefetch_rhs_between_columns"
+      ],
+      "mechanism": "segmented_rhs_overlap"
+    },
+    "DENSE_STORAGE_SPLIT": {
+      "values": [
+        "half",
+        "adaptive"
+      ],
+      "mechanism": "capacity_admitted_operand_partition"
+    },
+    "SOURCE_SLICE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "contiguous_source_slice_dense_views"
+    },
+    "POINTWISE_STRIDED_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "affine_stride2_pointwise_resident_rhs"
+    },
+    "RESIDENT_READOUT_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "disjoint_product_accumulator_readout_epochs"
+    },
+    "CONV_PATCH_PANELS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "exact_nonoverlapping_patch_row_panels"
+    },
+    "DENSE_FRONTIER_ISSUE_ORDER": {
+      "values": [
+        "prefetch_rhs_between_k_tiles",
+        "prefetch_rhs_between_columns",
+        "aspect"
+      ],
+      "mechanism": "registered_dense_frontier_issue_order"
+    },
+    "POOL_BLOCK_SCHEDULE": {
+      "values": [
+        "baseline",
+        "issue",
+        "traffic"
+      ],
+      "mechanism": "effect_checked_pool_rectangle_schedules"
+    },
+    "POINTWISE_RESIDENT_PANELS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source-qualified positive-stride 1x1 resident convolution panels"
+    },
+    "RESIDUAL_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "capacity-bounded disjoint accumulator residual epochs"
+    },
+    "DENSE_FRONTIER_PANEL": {
+      "values": [
+        "wide",
+        "deep",
+        "order"
+      ],
+      "mechanism": "segmented_k_retained_operand_pipeline",
+      "description": "Resource-bound RHS panels: wide N64, deep N32; order uses deep only for M>1 existing K-prefetch frontier, with original columns-order and all other regions retained."
+    },
+    "SOURCE_WINDOW_PRODUCTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_window_product"
+    },
+    "DENSE_PANEL_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "dense_panel_epochs"
+    },
+    "WEIGHTED_PACKING_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "readonly_accumulator_packing_epochs"
+    },
+    "CONV_POOL_FUSION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "convolution_pooling_composition"
+    },
+    "TRANSPOSE_SCHEDULE": {
+      "values": [
+        "baseline",
+        "batched"
+      ],
+      "mechanism": "transpose_transfer_batching"
+    },
+    "SHARED_RHS_SCATTERED_READOUT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "shared_rhs_original_row_readout"
+    },
+    "CONV_INPUT_READY_DEPENDENCIES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "original_row_ring_first_reader_dependencies"
+    },
+    "ATTENTION_STATIC_FRAGMENTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "scattered_readout_static_full_rows"
+    },
+    "CONV_FUTURE_ROWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "disjoint_future_row_last_panel_transport"
+    }
+  }
+}

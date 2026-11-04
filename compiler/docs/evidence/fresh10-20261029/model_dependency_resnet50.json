@@ -1,0 +1,626 @@
+{
+  "status": "pass",
+  "model": "resnet50",
+  "action": "check",
+  "source_sha256": "3214abdc9ad0ecac21b694948dd6a3cd33fd8eae183bd73c847b818aa001e3e8",
+  "returncode": 0,
+  "report": {
+    "schema": "merlin.model_check.report.v1",
+    "command": "check",
+    "status": "pass",
+    "exit_code": 0,
+    "tool": {
+      "name": "merlin.model_check",
+      "contract": "1.22",
+      "commit": "0fd4c78fa148e9ef164fe55dcfd9eff084c1bde0"
+    },
+    "submission": {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/.tmp/cca-coverage/raw/tmp/model-check-985fjuot/submission",
+      "tree_sha256": "f623ad525a3ba4ea4c035570429686ed716d5a752c792fed76e3d80c5f1ae1a3"
+    },
+    "model": "resnet50",
+    "split": "visible",
+    "agent_view": true,
+    "bundle": {
+      "merlin_commit": "8e4ad32a33e58c4913bae7e68c005bb244c30bb1"
+    },
+    "binding": {
+      "receipt": "binding-v3.json",
+      "receipt_sha256": "4389226998f53bffba5e134dd40ba3475d6546aacd29cb25ef18bee7921c484f",
+      "status": "pass"
+    },
+    "gates": {
+      "build": {
+        "status": "pass",
+        "detail": "24/24 kernels built"
+      },
+      "kernel_exact": {
+        "status": "pass",
+        "partial": false,
+        "detail": "45/45 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+      },
+      "model_numerics": {
+        "status": "pass",
+        "detail": "every kernel exact, so the model computes its INT8 reference"
+      }
+    },
+    "programs": [
+      {
+        "program": "model",
+        "build": {
+          "seconds": 16.4,
+          "built": 24,
+          "refused": 0,
+          "cache": {
+            "enabled": true,
+            "hits": 0,
+            "misses": 24,
+            "stored": 24
+          }
+        },
+        "kernels": [
+          {
+            "symbol": "merlin_dev_gemmini_0",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_0",
+            "source_region_ids": [
+              "matmul_0"
+            ],
+            "interface_sha256": "5464b484f704711ec92dbe3f1173278f7edbbeccfad99187007812891fd64cb3",
+            "shape_sha256": "f80d139f97eb8e911ccec5e00d0f1c989ec31dc9471a67f42b18a4dde5883892",
+            "form": "conv2d 7x7/s2 Cin=3 Cout=64 on 224x224 pad [3, 3, 3, 3] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 672091,
+              "max": 672091,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_1",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_1",
+            "source_region_ids": [
+              "matmul_1"
+            ],
+            "interface_sha256": "a4ae32f9c263e82776783e041825a3c7d91343672a7ea90eec502d199ef173db",
+            "shape_sha256": "bcdcae4cab0f8c248af525c14bf2729800476c05af64ff16385dc0dd61924b34",
+            "form": "conv2d 1x1/s1 Cin=64 Cout=64 on 56x56 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 34560,
+              "max": 34560,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_10",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_16",
+            "source_region_ids": [
+              "matmul_16",
+              "matmul_19",
+              "matmul_22"
+            ],
+            "interface_sha256": "f616be23af9c178662cb1e2d44a9940f6195ed157dcae6201d416cfff4461c53",
+            "shape_sha256": "44800faf8c619c2570c95c76ad8a59dbfce0e4e2635106e45cd92f4c9f241313",
+            "form": "conv2d 3x3/s1 Cin=128 Cout=128 on 28x28 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 198516,
+              "max": 198516,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_11",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_24",
+            "source_region_ids": [
+              "matmul_24"
+            ],
+            "interface_sha256": "48d09bb3847a632085291609b80da2a52069347feb89a037e2a87a1393c8a821",
+            "shape_sha256": "9022ef72d21c029aa38ce9d310a5584f63c896604293d1cb0931584539bac61c",
+            "form": "conv2d 1x1/s1 Cin=512 Cout=256 on 28x28 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 122124,
+              "max": 122124,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_12",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_25",
+            "source_region_ids": [
+              "matmul_25"
+            ],
+            "interface_sha256": "da3e28f01bd3aa54e18026f6fb1e0f74eebabc67c79d6b3604a1302df2fa05fb",
+            "shape_sha256": "0067007c7acfeb79308b4622d97afcd154a7b64041911e14821ba18168f677b9",
+            "form": "conv2d 3x3/s2 Cin=256 Cout=256 on 28x28 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 236206,
+              "max": 236206,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_13",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_26",
+            "source_region_ids": [
+              "matmul_26",
+              "matmul_30",
+              "matmul_33",
+              "matmul_36",
+              "matmul_39",
+              "matmul_42"
+            ],
+            "interface_sha256": "4a38701dc4a029f358a8a1afe39bde920a7ce6b550b9cbf1aecc3368d6421628",
+            "shape_sha256": "2cb8fc7c4cc4a2e16088175d7243ba0c8ba74ad4baab7677090ef256c84e11e2",
+            "form": "conv2d 1x1/s1 Cin=256 Cout=1024 on 14x14 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 68695,
+              "max": 68695,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_14",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_27",
+            "source_region_ids": [
+              "matmul_27"
+            ],
+            "interface_sha256": "8e6213a392a4855bcb70098aa584fcf6e40369f0d61ea39d4ece4546c2c40caf",
+            "shape_sha256": "c957572f8858511dca3e270f1d98113b407f38b453c7691cdc64d639ee524baf",
+            "form": "conv2d 1x1/s2 Cin=512 Cout=1024 on 28x28 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 131508,
+              "max": 131508,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_15",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_28",
+            "source_region_ids": [
+              "matmul_28",
+              "matmul_31",
+              "matmul_34",
+              "matmul_37",
+              "matmul_40"
+            ],
+            "interface_sha256": "cb90dda23ba649a401ac94225636269ce5bb8dbb0d12a9eef0159b960fdc8a5c",
+            "shape_sha256": "4dea55fbea10926f0342592e24b57e636a5fc798aa67faa20f26c9d21ac11176",
+            "form": "conv2d 1x1/s1 Cin=1024 Cout=256 on 14x14 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 73284,
+              "max": 73284,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_16",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_29",
+            "source_region_ids": [
+              "matmul_29",
+              "matmul_32",
+              "matmul_35",
+              "matmul_38",
+              "matmul_41"
+            ],
+            "interface_sha256": "2f28bf58f5d93e8a1050c867400a7c64c34780ce69a0d80935eaffcf6fd68b79",
+            "shape_sha256": "23ef9272a6181bb4416557b8bffeda1d6b8a38c27baa7643644c1fd0b14e38b0",
+            "form": "conv2d 3x3/s1 Cin=256 Cout=256 on 14x14 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 216434,
+              "max": 216434,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_17",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_43",
+            "source_region_ids": [
+              "matmul_43"
+            ],
+            "interface_sha256": "9ba7711d9e816e877b9099908221787413a59f31c26d48b78384548c44d8d7a7",
+            "shape_sha256": "eb98b78539eda71ee1fc95fc2c1cc941ac4ce6515ad57bd8ce6228bc709afad3",
+            "form": "conv2d 1x1/s1 Cin=1024 Cout=512 on 14x14 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 138308,
+              "max": 138308,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_18",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_44",
+            "source_region_ids": [
+              "matmul_44"
+            ],
+            "interface_sha256": "a648071590722c32bd15a3f245155f11a694a65447084eca95cb989950f33e7f",
+            "shape_sha256": "f6c67f65e86862e4cadbe43a435df5da093bd7822f87fee37eb4d12d8654a6ee",
+            "form": "conv2d 3x3/s2 Cin=512 Cout=512 on 14x14 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 577108,
+              "max": 577108,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_19",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_45",
+            "source_region_ids": [
+              "matmul_45",
+              "matmul_49",
+              "matmul_52"
+            ],
+            "interface_sha256": "6c68314713f5e25e08e54881b23260a369c224963e6d20e49d646b7a9f18f794",
+            "shape_sha256": "2eab65c1f0463d4f9034b0eb2cc652bbbac3f164132f6f2baa6686a4350d54c6",
+            "form": "conv2d 1x1/s1 Cin=512 Cout=2048 on 7x7 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 88971,
+              "max": 88971,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_2",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_2",
+            "source_region_ids": [
+              "matmul_2",
+              "matmul_6",
+              "matmul_9"
+            ],
+            "interface_sha256": "e12593f84bce8168b43f646abf78f359b3a8fc8292c1b33b0077c5e244dab510",
+            "shape_sha256": "24305b8b4a56e2442f28132b709ec4b1051ddbf409c6a94397b8f003b66e11c5",
+            "form": "conv2d 3x3/s1 Cin=64 Cout=64 on 56x56 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 298132,
+              "max": 298132,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_20",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_46",
+            "source_region_ids": [
+              "matmul_46"
+            ],
+            "interface_sha256": "79ebd7e0c8c51b19c53dafb5ff338e4584afd59b24d3320a143b6a63ca639e85",
+            "shape_sha256": "8093c27701cee3c920a0808e7c8d3b9fab09578d5e3272fe3db66fea81e906dc",
+            "form": "conv2d 1x1/s2 Cin=1024 Cout=2048 on 14x14 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 183862,
+              "max": 183862,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_21",
+            "cases": 2,
+            "exact": 2,
+            "mismatches": [],
+            "source_region_id": "matmul_47",
+            "source_region_ids": [
+              "matmul_47",
+              "matmul_50"
+            ],
+            "interface_sha256": "167a167261a05f47efc21e7d6e621d695e4a393adcad5d28270550ac1fa17bab",
+            "shape_sha256": "ac036e946bd356036a24e4641a62a843bfb8340569f62d4ff18a20a7789edff4",
+            "form": "conv2d 1x1/s1 Cin=2048 Cout=512 on 7x7 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 107102,
+              "max": 107102,
+              "calls": 2
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_22",
+            "cases": 2,
+            "exact": 2,
+            "mismatches": [],
+            "source_region_id": "matmul_48",
+            "source_region_ids": [
+              "matmul_48",
+              "matmul_51"
+            ],
+            "interface_sha256": "b582d84f47f50a3de0d41fc2d1b6e3304dd4f2a8e194747da0381157020d292e",
+            "shape_sha256": "362df62d5719a996cd698300ee757c51636be1e70b4fd1b980f34f12358c541b",
+            "form": "conv2d 3x3/s1 Cin=512 Cout=512 on 7x7 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 533404,
+              "max": 533404,
+              "calls": 2
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_23",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_53",
+            "source_region_ids": [
+              "matmul_53"
+            ],
+            "interface_sha256": "173d6c6567640be7b2c51e9576bc3aa7bab38ad8db3f0946e896a333fdad8366",
+            "shape_sha256": "df7cfd612c6fbd24945594ba3dc62eb630e68e192bb8f3e4407c362711a7fee0",
+            "form": "matmul M=1 K=2048 N=1000 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 143878,
+              "max": 143878,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_3",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_10",
+            "source_region_ids": [
+              "matmul_10",
+              "matmul_3",
+              "matmul_4",
+              "matmul_7"
+            ],
+            "interface_sha256": "999bc7fe951e9d73cedcf5bbdd38e8dd1545f410da5cc91ed6f0a0d559607376",
+            "shape_sha256": "ff1bbe4f5d68bca76022d361dc922ba7b42ec617b1154c0eda1145de4008c10e",
+            "form": "conv2d 1x1/s1 Cin=64 Cout=256 on 56x56 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 89780,
+              "max": 89780,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_4",
+            "cases": 2,
+            "exact": 2,
+            "mismatches": [],
+            "source_region_id": "matmul_5",
+            "source_region_ids": [
+              "matmul_5",
+              "matmul_8"
+            ],
+            "interface_sha256": "eebd27a1cc27b77f931ba6ab7e667c3c4376155f6390ba414c31b6d34e5dff6c",
+            "shape_sha256": "41ae0a3793cead36d8e1a087f1d4d7c0f56f760936c3b5007cc05b9e1651924e",
+            "form": "conv2d 1x1/s1 Cin=256 Cout=64 on 56x56 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 88965,
+              "max": 88965,
+              "calls": 2
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_5",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_11",
+            "source_region_ids": [
+              "matmul_11"
+            ],
+            "interface_sha256": "554826cdaa30f73b4fbcc10d7d961a28ec5bea0c386d48b0d49ed937c96102d0",
+            "shape_sha256": "173f35decd7bfbd0a6f8f7d2fb6c529c4ed75e43091ed027898e85a4aa7312c2",
+            "form": "conv2d 1x1/s1 Cin=256 Cout=128 on 56x56 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 147388,
+              "max": 147388,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_6",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_12",
+            "source_region_ids": [
+              "matmul_12"
+            ],
+            "interface_sha256": "18609bbb27635f9bead9609653275b08478aa8068c2b2090812b4c24fe93d5e9",
+            "shape_sha256": "aaad0e55eb26d5b212ff84a1f3df26125ed04660bf06dbb759374b38a57eaaea",
+            "form": "conv2d 3x3/s2 Cin=128 Cout=128 on 56x56 pad [1, 1, 1, 1] -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 223711,
+              "max": 223711,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_7",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_13",
+            "source_region_ids": [
+              "matmul_13",
+              "matmul_17",
+              "matmul_20",
+              "matmul_23"
+            ],
+            "interface_sha256": "07d078ba59a2613a1bef3ec3c95b6895d62d86044ecae0a831635e15496d4415",
+            "shape_sha256": "23e83c9539aea518a58404df32a5dadca11f7a85ddd081990f33178bcd0a6f08",
+            "form": "conv2d 1x1/s1 Cin=128 Cout=512 on 28x28 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 68035,
+              "max": 68035,
+              "calls": 3
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_8",
+            "cases": 1,
+            "exact": 1,
+            "mismatches": [],
+            "source_region_id": "matmul_14",
+            "source_region_ids": [
+              "matmul_14"
+            ],
+            "interface_sha256": "6d123eb74f8c8dbd097acd15cdd5a887f684a12befb6aabaf7a8b38305e3541e",
+            "shape_sha256": "3f0f16a9235234e88276201259ecb93869665740296b1b37c816d8df4029be8c",
+            "form": "conv2d 1x1/s2 Cin=256 Cout=512 on 56x56 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 122151,
+              "max": 122151,
+              "calls": 1
+            }
+          },
+          {
+            "symbol": "merlin_dev_gemmini_9",
+            "cases": 3,
+            "exact": 3,
+            "mismatches": [],
+            "source_region_id": "matmul_15",
+            "source_region_ids": [
+              "matmul_15",
+              "matmul_18",
+              "matmul_21"
+            ],
+            "interface_sha256": "409410adbebae4941931ce219387bdfbb070a9cb88c288a090698b5a561f5369",
+            "shape_sha256": "be72d7782dcf520456ac58587e4b661a1baa55b69bbffbbf2183b534fbbb776a",
+            "form": "conv2d 1x1/s1 Cin=512 Cout=128 on 28x28 -> i32",
+            "status": "pass",
+            "cycles": {
+              "kind": "functional",
+              "min": 68326,
+              "max": 68326,
+              "calls": 3
+            }
+          }
+        ],
+        "images": [
+          {
+            "cases": 45,
+            "engine": "spike",
+            "seconds": 14.2,
+            "elf": "/work/merlin/tasks/el4-grader-throughput-20261024/.tmp/cca-coverage/raw/tmp/model-check-985fjuot/work/resnet50-20261029T085045Z-es9nbhnq/model/image_0/replay.elf",
+            "cached": false
+          }
+        ],
+        "refused": {},
+        "census": {
+          "denominator": 54,
+          "device": 54,
+          "refused": 0,
+          "device_mac_fraction": 1.0
+        },
+        "runs": []
+      }
+    ],
+    "model_metrics": {
+      "source": "int8_reference",
+      "inputs": 1,
+      "per_input": [
+        {
+          "split": "visible",
+          "id": "visible/v00",
+          "rel_rmse": 0.21293673633065535,
+          "worst": 0.07387533792561615,
+          "top1_agree": 1.0,
+          "top5_agree": 1.0,
+          "cosine": 0.9770721197128296
+        }
+      ],
+      "worst": {
+        "cosine": 0.9770721197128296,
+        "rel_rmse": 0.21293673633065535,
+        "top1_agree": 1.0,
+        "top5_agree": 1.0,
+        "worst": 0.07387533792561615
+      },
+      "mean": {
+        "cosine": 0.9770721197128296,
+        "rel_rmse": 0.21293673633065535,
+        "top1_agree": 1.0,
+        "top5_agree": 1.0,
+        "worst": 0.07387533792561615
+      }
+    },
+    "failures": [],
+    "timing": {
+      "total_seconds": 31.986
+    }
+  }
+}

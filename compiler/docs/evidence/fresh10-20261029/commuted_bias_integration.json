@@ -1,0 +1,130 @@
+{
+  "schema": "fresh10-commuted-bias-integration.v1",
+  "parent_commit": "dbe0df7",
+  "hypothesis": "Derive last-axis bias and activation roles from original typed maps so either input order reaches the same existing DMA lowering.",
+  "selected_frontend_sha256": "c390fb9b986297d56df2bfa72110b434da666912b45704bea32e8886e61c33f4",
+  "snapshot_inventory_sha256": "ded0b704082079aac4949ce19119138c9a0521b70f36d23b757da7d08e2347d1",
+  "broker_source_sha256": "4683ec3114ac4c549f56518866825d488de535f3f533e8f377d70548e4d95ede",
+  "behavior": "Normalize rank2-6 reversed input roles; rank1 coincident maps preserve incumbent order. Scalar modular-add legality, source bounds and all output effects unchanged. No new pass ordering.",
+  "focused_results": [
+    {
+      "capsule": "SY_source_coverage_mlp",
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "status": "pass",
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_coverage_mlp/c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b.json",
+        "sha256": "c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b"
+      },
+      "request_id": "3_1793265834909562374_629752ddf553c7dfddce122af84aab66"
+    },
+    {
+      "capsule": "PF02_bias_add_m16k16n16",
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass"
+      },
+      "status": "pass",
+      "failure": null,
+      "detail": {
+        "path": "qa/cases/PF02_bias_add_m16k16n16/266be70eecd72859a204a3d236bfca7cdd958ff887f5ec72da2db0917e814afb.json",
+        "sha256": "266be70eecd72859a204a3d236bfca7cdd958ff887f5ec72da2db0917e814afb"
+      },
+      "request_id": "4_1793265860080871825_968a5ed9569370bb93e9f44c3444d6b9"
+    }
+  ],
+  "native_source_cli": [
+    {
+      "case": "SY_micro_model",
+      "source": "model/SY_micro_model/capsule.interface.mlir",
+      "source_sha256": "160656af280e4b94fc4b9562e22c82c611b7703afb8dc49e7ceadb4df69d6dc8",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 2.8092108169948915,
+      "baseline_product": "artifacts/rank6_integration/SY_micro_model.after.llvm.mlir",
+      "baseline_sha256": "3fa9c3061461f5783cc67269767fbebd00863aa5149fae2c15409e9249f7a8b0",
+      "new_product": "artifacts/commuted_bias/SY_micro_model.llvm.mlir",
+      "new_sha256": "3fa9c3061461f5783cc67269767fbebd00863aa5149fae2c15409e9249f7a8b0",
+      "identical": true
+    },
+    {
+      "case": "SY_source_coverage_mlp",
+      "source": "model/SY_source_coverage_mlp/capsule.interface.mlir",
+      "source_sha256": "0337cf8e1fe8e51a8b9a3bc19f639d96ff072346418c24bc4669ad3ec02b89a3",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 2.950309184991056,
+      "baseline_product": "artifacts/rank6_integration/SY_source_coverage_mlp.after.llvm.mlir",
+      "baseline_sha256": "c56aaf7d528be4fd9f603153841fdf03389f6e8ce19c2b0ebfef8b7779554a4f",
+      "new_product": "artifacts/commuted_bias/SY_source_coverage_mlp.llvm.mlir",
+      "new_sha256": "c56aaf7d528be4fd9f603153841fdf03389f6e8ce19c2b0ebfef8b7779554a4f",
+      "identical": true
+    },
+    {
+      "case": "SY_source_residual_cnn",
+      "source": "model/SY_source_residual_cnn/capsule.interface.mlir",
+      "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 56.57806241601065,
+      "baseline_product": "artifacts/rank6_integration/SY_source_residual_cnn.after.llvm.mlir",
+      "baseline_sha256": "b9bbcb3cff048d99d11cd7b65eeb2335818d0ae5a7c25ca0cb091d21b8de8ffc",
+      "new_product": "artifacts/commuted_bias/SY_source_residual_cnn.llvm.mlir",
+      "new_sha256": "b9bbcb3cff048d99d11cd7b65eeb2335818d0ae5a7c25ca0cb091d21b8de8ffc",
+      "identical": true
+    },
+    {
+      "case": "SY_source_multimodal_policy",
+      "source": "model/SY_source_multimodal_policy/capsule.interface.mlir",
+      "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 12.277945532012382,
+      "baseline_product": "artifacts/rank6_integration/SY_source_multimodal_policy.after.llvm.mlir",
+      "baseline_sha256": "230b3a257697dfe5999f92aa7f3e45251380bd55e44d5c21d733338e4888f58c",
+      "new_product": "artifacts/commuted_bias/SY_source_multimodal_policy.llvm.mlir",
+      "new_sha256": "230b3a257697dfe5999f92aa7f3e45251380bd55e44d5c21d733338e4888f58c",
+      "identical": true
+    },
+    {
+      "case": "SY_source_causal_decoder",
+      "source": "model/SY_source_causal_decoder/capsule.interface.mlir",
+      "source_sha256": "f61c9da62ec2d82595bc8eba1895b74acae5f2d9d8f27aa672f22610b446fb58",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 5.972927675000392,
+      "baseline_product": "artifacts/rank6_integration/SY_source_causal_decoder.after.llvm.mlir",
+      "baseline_sha256": "60581f4832b12cfba9faaed6c10deb511f994882fd7bb110dc0d3aa8adfb4bea",
+      "new_product": "artifacts/commuted_bias/SY_source_causal_decoder.llvm.mlir",
+      "new_sha256": "60581f4832b12cfba9faaed6c10deb511f994882fd7bb110dc0d3aa8adfb4bea",
+      "identical": true
+    },
+    {
+      "case": "SY_source_causal_decoder_decode_step",
+      "source": "model/SY_source_causal_decoder_decode_step/capsule.interface.mlir",
+      "source_sha256": "eb108c358e72144d752f0ec1dfa47b18b0f5f206408cd0f716ec78a31230cb17",
+      "no_z3": true,
+      "returncode": 0,
+      "seconds": 6.054526223000721,
+      "baseline_product": "artifacts/rank6_integration/SY_source_causal_decoder_decode_step.after.llvm.mlir",
+      "baseline_sha256": "ab7601e614f97f4bfd34abfdb55114722449332401261032bc1db4e6ca533d5b",
+      "new_product": "artifacts/commuted_bias/SY_source_causal_decoder_decode_step.llvm.mlir",
+      "new_sha256": "ab7601e614f97f4bfd34abfdb55114722449332401261032bc1db4e6ca533d5b",
+      "identical": true
+    }
+  ],
+  "decision": "keep: newly legal reversed inputs have exact local emitted-LLVM numerics; canonical products and all six native CLI sources remain byte-identical; both affected public development checks pass L2. No new performance claim.",
+  "qualification": "Native full execution/physical tiers are not inferred from L2. Existing unchanged executable certificates retain only their original scopes.",
+  "latest_full_model_gate": "qa/verdict.json at 09:28 still reports SmolVLA prefix build13/refused1; separate fresh kernel replay28/28 and70/70 is not a full-model pass."
+}

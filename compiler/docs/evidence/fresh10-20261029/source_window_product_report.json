@@ -1,0 +1,451 @@
+{
+  "schema": "submission.source_window_product_report.v1",
+  "selected_default": "off",
+  "pass_order": [
+    "original typed source numeric grouping",
+    "optional exact single-use window composition",
+    "original dependency closure/device region extraction",
+    "original-source proof recomputation at extracted callback grouping",
+    "internal typed inference proof recomputation",
+    "checked baseline NCHW/NHWC transpose",
+    "shared counted convolution schedule reduction_epochs with original terminal readout",
+    "verified linked LLVM materialization"
+  ],
+  "pair_settings_differ_only": [
+    "SOURCE_WINDOW_PRODUCTS"
+  ],
+  "common_settings": {
+    "DENSE_FRONTIER_PANEL": "order",
+    "CONV_ROLLING_EPOCHS": "on"
+  },
+  "actual_full_source_pairs": [
+    {
+      "case": "SY_source_residual_cnn",
+      "abi_and_all_declared_live_outputs_identical": true,
+      "disabled_llvm_byte_identical_to_prior_concat_compiler": true,
+      "device_callbacks_off": 315,
+      "device_callbacks_on": 55,
+      "off": {
+        "setting": "off",
+        "label": "cnn",
+        "source": "model/SY_source_residual_cnn/capsule.interface.mlir",
+        "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/off/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/cnn_off.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/model/SY_source_residual_cnn/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 7888487,
+        "llvm_sha256": "67412119443532a62ed2a027aa880991fbe246d219193334a263bb3f07210d25",
+        "seconds": 64.30621589699876
+      },
+      "on": {
+        "setting": "on",
+        "label": "cnn",
+        "source": "model/SY_source_residual_cnn/capsule.interface.mlir",
+        "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/on/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/cnn_on.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/model/SY_source_residual_cnn/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 1645013,
+        "llvm_sha256": "f494935ccb396cfc8a4dc835ca765951e81952a07e435bdeb87dfb64c2869116",
+        "seconds": 16.369246268004645
+      },
+      "windows": [
+        {
+          "source_index": 364,
+          "window_geometry_sha256": "aa1d95802c20c213ab77897c40a1b921f296803dff43c1197c570c28c55e9f6b",
+          "kernel": [
+            7,
+            7,
+            3,
+            12
+          ],
+          "original_nchw_shape": [
+            1,
+            3,
+            26,
+            26
+          ],
+          "original_preparation_ops": 295,
+          "removed_window_bytes": 14700,
+          "new_nhwc_scratch_bytes": 2028,
+          "transpose_actual_kernel_sha256": "8b34687818f07453b28aff2873b37c0f7277e6499dcf778b644e1c7af0481f4c",
+          "shared_schedule_source_sha256": "4e2406e8ffb8f5abb55cc61372bfe4bed39b38bb06febfd666a7ec506708ce8a",
+          "shared_schedule_sha256": "50eb145d975315954687bacfc131ad02d03063729927c72381e8802664983f33",
+          "shared_rhs_residency_sha256": "7d96c43978c3fce147dc2c7f9058aae1c2d371dad926b6c7db607084d7b5b241",
+          "integer_effect_stream_sha256": "a0d03ba0da29d8ffa5b4408babdc7c1049a066addc5eb3134008f5886ace39c6",
+          "effect_counts": {
+            "load_weight": 49,
+            "load_input": 490,
+            "compute": 490,
+            "store": 10
+          },
+          "shared_completion_callbacks": 11,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        },
+        {
+          "source_index": 570,
+          "window_geometry_sha256": "c58d49e751da4a80e3cc1fd380c9df831762c7668379d74c2bd3d042ac2ef6d6",
+          "kernel": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "original_nchw_shape": [
+            1,
+            3,
+            7,
+            7
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 675,
+          "new_nhwc_scratch_bytes": 147,
+          "transpose_actual_kernel_sha256": "66ba913477086baea93e1c91bed0f7e0f9544674782e2a12a2958c2469057fcc",
+          "shared_schedule_source_sha256": "da9e3a9658f078fd75e64ed0ae1ae74004a7180eebe577d4757e6b56b4980d4e",
+          "shared_schedule_sha256": "24acdc95758d1a70946b23512d4cd064511bf6e3a364720a5bae58683bbf1e44",
+          "shared_rhs_residency_sha256": "31dd5d9863646c339be769befbee4f8dead529d4978560ac4e8f2a24cca9f8e3",
+          "integer_effect_stream_sha256": "89ee0c985554f4643567741b4938d6f696c91e21f87b372c51e5a71558157ad2",
+          "effect_counts": {
+            "load_weight": 9,
+            "load_input": 45,
+            "compute": 45,
+            "store": 5
+          },
+          "shared_completion_callbacks": 6,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        },
+        {
+          "source_index": 844,
+          "window_geometry_sha256": "c58d49e751da4a80e3cc1fd380c9df831762c7668379d74c2bd3d042ac2ef6d6",
+          "kernel": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "original_nchw_shape": [
+            1,
+            3,
+            7,
+            7
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 675,
+          "new_nhwc_scratch_bytes": 147,
+          "transpose_actual_kernel_sha256": "66ba913477086baea93e1c91bed0f7e0f9544674782e2a12a2958c2469057fcc",
+          "shared_schedule_source_sha256": "da9e3a9658f078fd75e64ed0ae1ae74004a7180eebe577d4757e6b56b4980d4e",
+          "shared_schedule_sha256": "24acdc95758d1a70946b23512d4cd064511bf6e3a364720a5bae58683bbf1e44",
+          "shared_rhs_residency_sha256": "31dd5d9863646c339be769befbee4f8dead529d4978560ac4e8f2a24cca9f8e3",
+          "integer_effect_stream_sha256": "89ee0c985554f4643567741b4938d6f696c91e21f87b372c51e5a71558157ad2",
+          "effect_counts": {
+            "load_weight": 9,
+            "load_input": 45,
+            "compute": 45,
+            "store": 5
+          },
+          "shared_completion_callbacks": 6,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        },
+        {
+          "source_index": 1048,
+          "window_geometry_sha256": "3fcf6defce25d1df02aabd834ca92598569ec65758d7a75fdfaab11ff85847d1",
+          "kernel": [
+            3,
+            3,
+            12,
+            24
+          ],
+          "original_nchw_shape": [
+            1,
+            12,
+            7,
+            7
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 972,
+          "new_nhwc_scratch_bytes": 588,
+          "transpose_actual_kernel_sha256": "64d7df544014dce4d55eba30f45df411debe4685475ce64c0e4e5c560f6d3747",
+          "shared_schedule_source_sha256": "47c5706160b8d87b3ad7b3b2813017ee8ae1255731a0249c40bbcba0b6cb9d2a",
+          "shared_schedule_sha256": "f7e174d1a01b39122a5e3eea4d1167cdc6f7e9d9bcec9bd3ecdbd3a8b2f6262c",
+          "shared_rhs_residency_sha256": "5bd0b33a401765f533674baf4f2783a3dd91003ceb49032863595c5f3b528711",
+          "integer_effect_stream_sha256": "6db289aaf0b5dcad8539dc9aa02a695c748f9c2ee74949204bfa1981bba3d354",
+          "effect_counts": {
+            "load_weight": 18,
+            "load_input": 27,
+            "compute": 54,
+            "store": 6
+          },
+          "shared_completion_callbacks": 7,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        },
+        {
+          "source_index": 1173,
+          "window_geometry_sha256": "f45098381a8a18b56fd0c29822eb842b0a757db7fa84ccbf2eb5b1184747ddf0",
+          "kernel": [
+            3,
+            3,
+            24,
+            24
+          ],
+          "original_nchw_shape": [
+            1,
+            24,
+            5,
+            5
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 1944,
+          "new_nhwc_scratch_bytes": 600,
+          "transpose_actual_kernel_sha256": "437a40f36385c2ad3640c534c8098fd0aced5ed101b61572607ddd50d48426e4",
+          "shared_schedule_source_sha256": "5d6483ba5aff3c1919261867164700ad8447096f885db45ad412bdc628c9ed37",
+          "shared_schedule_sha256": "1443f7b05e942224c82f780dca4a41c20a4bb001a473c31febc64dbb079dc876",
+          "shared_rhs_residency_sha256": "72115cd5b50a74fd9c42b14e07af21e4afbf84ef77bb1a1de71253b0fc071e95",
+          "integer_effect_stream_sha256": "869dc2a99eff68b3d4a8874ae2eda220f2aa265e09d83637cacb22cd486dbf89",
+          "effect_counts": {
+            "load_weight": 36,
+            "load_input": 54,
+            "compute": 108,
+            "store": 6
+          },
+          "shared_completion_callbacks": 7,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        }
+      ],
+      "removed_final_im2col_bytes": 18966,
+      "new_nhwc_scratch_bytes": 3510
+    },
+    {
+      "case": "SY_source_multimodal_policy",
+      "abi_and_all_declared_live_outputs_identical": true,
+      "disabled_llvm_byte_identical_to_prior_concat_compiler": true,
+      "device_callbacks_off": 69,
+      "device_callbacks_on": 20,
+      "off": {
+        "setting": "off",
+        "label": "multimodal",
+        "source": "model/SY_source_multimodal_policy/capsule.interface.mlir",
+        "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/off/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/multimodal_off.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/model/SY_source_multimodal_policy/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 1706877,
+        "llvm_sha256": "aa7a393da7453012d459c42136b6ce18561d0dc1ecc9ab41d974ac2af522d7da",
+        "seconds": 14.761671756990836
+      },
+      "on": {
+        "setting": "on",
+        "label": "multimodal",
+        "source": "model/SY_source_multimodal_policy/capsule.interface.mlir",
+        "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/on/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/multimodal_on.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/model/SY_source_multimodal_policy/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 692321,
+        "llvm_sha256": "45806c3ff90124bf5cc67cf590075c274cf3f10cafe01a236beb583b4400dce1",
+        "seconds": 8.2578144959989
+      },
+      "windows": [
+        {
+          "source_index": 135,
+          "window_geometry_sha256": "9b3f2621e48d8c175776c9cddc52efe7a9299b940c6b5399b978bbcd7dadab51",
+          "kernel": [
+            4,
+            4,
+            3,
+            16
+          ],
+          "original_nchw_shape": [
+            1,
+            3,
+            8,
+            8
+          ],
+          "original_preparation_ops": 97,
+          "removed_window_bytes": 192,
+          "new_nhwc_scratch_bytes": 192,
+          "transpose_actual_kernel_sha256": "19483aeba97dd205908072259b70b6ff9846788c59c0945a4959376e217ae652",
+          "shared_schedule_source_sha256": "c48c74f8edda72646908b2011dc9dbd75efad602908775ec75b3edfafc1905b2",
+          "shared_schedule_sha256": "4ae64cefd58018fbc5f2e418e2552a68b315ca288e9c3f3d3d85a7fe3650df59",
+          "shared_rhs_residency_sha256": "8b5ad54cca795d707ddd7a5a0d33153e99bfd60acfc460c489b723ffd5a88863",
+          "integer_effect_stream_sha256": "31ece339b677bc6bf09d63d1b4b1f8c5ecaf184ad91271227bd1d59c50873ffd",
+          "effect_counts": {
+            "load_weight": 16,
+            "load_input": 32,
+            "compute": 32,
+            "store": 2
+          },
+          "shared_completion_callbacks": 3,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        }
+      ],
+      "removed_final_im2col_bytes": 192,
+      "new_nhwc_scratch_bytes": 192
+    },
+    {
+      "case": "PG_source_residual_block_medium",
+      "abi_and_all_declared_live_outputs_identical": true,
+      "disabled_llvm_byte_identical_to_prior_concat_compiler": true,
+      "device_callbacks_off": 120,
+      "device_callbacks_on": 64,
+      "off": {
+        "setting": "off",
+        "label": "residual",
+        "source": "public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir",
+        "source_sha256": "b4de3c3663ec71654d404de022983caaf43f008b0d19f50a640b9abf09edcf86",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/off/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/residual_off.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 3114037,
+        "llvm_sha256": "8704014a2ef3e28336aad5756ab01e961347fad9b4b7f57f3a6dfc7567b60446",
+        "seconds": 25.089985143000376
+      },
+      "on": {
+        "setting": "on",
+        "label": "residual",
+        "source": "public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir",
+        "source_sha256": "b4de3c3663ec71654d404de022983caaf43f008b0d19f50a640b9abf09edcf86",
+        "argv": [
+          "/work/merlin/tasks/gemmini-shared-phase1-20261021/.tmp/phase1-runtime-v1/venv/bin/python",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/isolated_no_z3.py",
+          "/tmp/source_window_products_pair/on/compiler.py",
+          "--debug",
+          "--convert-iface-to-gemmini",
+          "--emit-target-artifact",
+          "--emit-command-buffer=/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/artifacts/source_window_product/residual_on.commands.json",
+          "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir"
+        ],
+        "exit_code": 0,
+        "llvm_bytes": 1706706,
+        "llvm_sha256": "dbc75fbfb3327df265b35c2b1cbe476420a6cea9a6a95277b76316fe469a8367",
+        "seconds": 15.395581095988746
+      },
+      "windows": [
+        {
+          "source_index": 147,
+          "window_geometry_sha256": "eb00080c5d145a96f8fb6b639b503f1e0d764ae4077b2201d81b991145341990",
+          "kernel": [
+            3,
+            3,
+            16,
+            16
+          ],
+          "original_nchw_shape": [
+            1,
+            16,
+            30,
+            30
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 28224,
+          "new_nhwc_scratch_bytes": 14400,
+          "transpose_actual_kernel_sha256": "0497707eb881aa2fcae363e8f49afd12ccae61a1b430ec9e62582603a25b4092",
+          "shared_schedule_source_sha256": "4d3a89690a7dfcbe51c1115043e7d3b294a6959fbeac3fc3439439e30ad2f168",
+          "shared_schedule_sha256": "212735e4c8c479c64b30896735b05ec4f53133e29d3bf942fdeedaf27bbd5bbb",
+          "shared_rhs_residency_sha256": "2bacb01f85754f90d4bc8074b376de25b09b849fb1ef56765f19b8e82042423f",
+          "integer_effect_stream_sha256": "b19fe1dcca519f8348cda59743b4bd8f342cdb044b39262594ad3ac82d3e08a1",
+          "effect_counts": {
+            "load_weight": 9,
+            "load_input": 126,
+            "compute": 126,
+            "store": 14
+          },
+          "shared_completion_callbacks": 15,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        },
+        {
+          "source_index": 642,
+          "window_geometry_sha256": "d7abc1eaa6099efa2d9d4356433ef067db293ddb722180c0fb0716d206630bc6",
+          "kernel": [
+            3,
+            3,
+            16,
+            16
+          ],
+          "original_nchw_shape": [
+            1,
+            16,
+            16,
+            16
+          ],
+          "original_preparation_ops": 55,
+          "removed_window_bytes": 28224,
+          "new_nhwc_scratch_bytes": 4096,
+          "transpose_actual_kernel_sha256": "8f69f2b065cd7bc6c06a23f55f0bcce57fc1a4a4e40fe1fe625779f652a4581d",
+          "shared_schedule_source_sha256": "fb5a00f308acc0ad422b3fc64727aafb3126240026d43533571290033b3a6ae9",
+          "shared_schedule_sha256": "717188fd76f65f1cd73fc7e0db85a42a154c0f3f91b22d2a5758f7bbc1473529",
+          "shared_rhs_residency_sha256": "b8649675b2e67a0d5af33b125f40b5a1d967c53af226355d2645ea14a9906dda",
+          "integer_effect_stream_sha256": "d3eed21fbe5146c7b1b17ebcab1be8ed3ccfc5e25c28ef45d94d9936a1951603",
+          "effect_counts": {
+            "load_weight": 9,
+            "load_input": 126,
+            "compute": 126,
+            "store": 14
+          },
+          "shared_completion_callbacks": 15,
+          "completion": "library-owned runtime compute epochs; original store/full-call drains"
+        }
+      ],
+      "removed_final_im2col_bytes": 56448,
+      "new_nhwc_scratch_bytes": 18496
+    }
+  ],
+  "source_numeric_checks": {
+    "actual_sources": 8,
+    "unequal_geometry_cases": 6,
+    "live_observer_refusals": 8,
+    "all_exact": true
+  },
+  "actual_shared_schedule_integer_checks": 14,
+  "actual_public_shared_schedule_integer_checks": 8,
+  "files_sha256": {
+    "submission/backend/source_window_product.py": "d55ee2911c8ee5dbdac419f09c8274065c4816ee4ff13be26dc1e8cdffd809ea",
+    "submission/backend/source_groups.py": "d8f8779314faa31c23e982580b87c3b1f3b464263d3bc4646fd284935ab7d777",
+    "submission/TUNING_KNOBS.json": "f32b3ee8f99f18a95644c118016b011e736e1f5c6826c097cbf66e4bd9456dcd"
+  },
+  "limitations": [
+    "No measured/modelled cycle claim; callback counts/IR sizes are structural diagnostics",
+    "No full LLVM/modelchain numerical execution; source reconstruction and actual shared convolution schedule integer effect streams checked independently",
+    "Runtime matrix initializer, source observers and unrecognized coordinate/layout/numeric chains retain original grouping",
+    "Original padded tensor remains an explicit input boundary; no padding values or weight layouts fabricated"
+  ]
+}

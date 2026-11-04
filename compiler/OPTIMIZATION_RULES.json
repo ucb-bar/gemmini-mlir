@@ -1,0 +1,142 @@
+{
+  "schema": "submission.offline_rule_support.v1",
+  "purpose": "Evidence index only. Runtime rules are shared compiler predicates, never case/model identity lookups.",
+  "identities": "Each referenced trial records input/compiler/library/emitted-program/provider/scope identities; unchanged evidence is reused only for matching artifacts.",
+  "timing_policy": "complete matched Spike timing model preferred, else same-calibration fast_estimate with its band; modeled provisional is not physical speedup; UNKNOWN is not loss or zero",
+  "rules": [
+    {
+      "selection": "DENSE_PIPELINE=frontier_class",
+      "predicate": "ceil(M/16)<=1 and ceil(K/16)>=128 and ceil(N/16)>=128",
+      "legality": "actual typed source, no column-scales, adaptive full-LHS plus two RHS slots, checked finite or symbolic schedule, ACC/output tails admitted independently",
+      "path": "backend/dense_shape_policy.py -> registered dense_frontier -> shared dense pipeline/terminal encoder",
+      "support": "docs/evidence/fresh10-20261029/frontier_class_promotion.json",
+      "uncertainty": "exact dimension threshold timing neighbors UNKNOWN; adjacent source/legal schedule checks passed"
+    },
+    {
+      "selection": "DENSE_FRONTIER_ISSUE_ORDER=aspect",
+      "predicate": "within legal frontier class, exact N/K<=3",
+      "path": "registered dense_frontier_columns; larger aspect keeps K-tile prefetch",
+      "support": "docs/evidence/fresh10-20261029/aspect_promotion.json",
+      "uncertainty": "four complete matched gains; ratio3 timing boundary UNKNOWN; JT highaspect retains K"
+    },
+    {
+      "selection": "CONV_ROLLING_ROWS=on",
+      "predicate": "source-qualified 3x3 unit-stride/unit-dilation NHWC, bounded row-ring interval expansion, hardware capacity",
+      "path": "backend/conv_rolling_rows.py -> common conv spatial/terminal ISA encoder",
+      "support": "docs/evidence/fresh10-20261029/conv_row_ring_evidence.json",
+      "uncertainty": "some larger shapes near-flat; scope is individual convolution call"
+    },
+    {
+      "selection": "POINTWISE_STRIDED_DENSE=on",
+      "predicate": "proved positive-stride 1x1 source gather with admitted row panels and RHS phases",
+      "path": "backend/pointwise.py -> shared conv_spatial_panels",
+      "support": "docs/evidence/fresh10-20261029/stride2_pointwise_evidence.json"
+    },
+    {
+      "selection": "CONV_PATCH_PANELS=on",
+      "predicate": "kernel height/width equal source strides, dilation1, pad0, source K order, capacity admitted",
+      "path": "backend/conv_patch_panels.py -> shared spatial panels",
+      "support": "docs/evidence/fresh10-20261029/conv_patch_panels_evidence.json",
+      "uncertainty": "complete core matched wins; large Smol patch source/effect/resource checks only, runtime timing UNKNOWN"
+    },
+    {
+      "selection": "POINTWISE_RESIDENT_PANELS=on",
+      "predicate": "1x1 NHWC, pad0, unit dilation, positive spatial strides, CI/CO>=16 and hardware capacities",
+      "path": "backend/pointwise_resident.py -> shared conv_spatial_panels and exact readout",
+      "support": "docs/evidence/fresh10-20261029/pointwise_resident_evidence.json",
+      "uncertainty": "two core matched gains, large exact effect and model kernel replay, large complete-call timing UNKNOWN"
+    },
+    {
+      "selection": "ATTENTION_RHS_REUSE=on; RHS_PRODUCTS=reduction",
+      "predicate": "proved shared read-only RHS, row packing reduces primitive row tiles, no lost live outputs, bounded workspace; literal reductions require K>DIM",
+      "path": "backend/shared_rhs_rows.py and resident_rhs.py -> shared lower_dense",
+      "support": "docs/evidence/fresh10-20261029/attention_shared_rhs_evidence.json",
+      "uncertainty": "short-row decode gain; broad all_rows and resident readout epochs lose to incumbent and remain unselected"
+    },
+    {
+      "selection": "POOL_BLOCKS=on; POOL_BLOCK_SCHEDULE=issue",
+      "predicate": "exact bounded signed-i8 rectangular pooling source windows; ACC capacity and padding/source numeric order",
+      "path": "backend/pool_blocks.py",
+      "support": "docs/evidence/fresh10-20261029/pool_schedule_decision.json",
+      "uncertainty": "fast_estimate only, very wide error bands; tiny estimate improvements do not establish measured speedup"
+    },
+    {
+      "selection": "RESIDUAL_EPOCHS=on",
+      "predicate": "equal contiguous signed-i8 source/output boundaries, >256 elements, no explicit aliases, actual counted partition proof within hardware/proof budget",
+      "path": "backend/elementwise_epochs.py -> shared counted program/ISA emitter",
+      "support": "docs/evidence/fresh10-20261029/residual_epochs_evidence.json",
+      "uncertainty": "whole-chain complete model gain0.034%; uncertain physical magnitude; tiny incumbent unchanged; unsupported proof domains decline before emission"
+    },
+    {
+      "selection": "DENSE_FRONTIER_PANEL=order",
+      "predicate": "Existing legal frontier class, independent deep storage capacity, source M>1 and existing selected K-prefetch issue order; wide/columns and M1 retain incumbent",
+      "path": "backend/dense_shape_policy.py -> registered dense_frontier_deep -> common checked dense emitter",
+      "support": "docs/evidence/fresh10-20261029/dense_order_panel.json",
+      "uncertainty": "One positive complete-call geometry:6598830\u21925997143 modeledcycles (-9.12%). Three measured deep regressions structurally avoided by incumbent LLVM identity. Reserved positive geometries prove source/storage/numerics; their timing UNKNOWN. Provisional regional hypothesis, no new aspect cutoff."
+    },
+    {
+      "selection": "CONV_ROLLING_EPOCHS=on",
+      "predicate": "Retained rolling-window source; completed K; disjoint accumulator N panels; exact identical CONFIG_ST instruction words; library ConvolutionReadoutEpochLaw and bounded completion before reuse",
+      "path": "backend/conv_rolling_epochs.py -> actual rolling-row command schedule and common emitter",
+      "support": "docs/evidence/fresh10-20261029/conv_readout_epochs.json",
+      "uncertainty": "Five matched complete modeled cases improve0.54%\u20135.18%; no physical performance speedup claimed. Mixed configuration words fall back to incumbent. Signed zero configuration guard checked separately."
+    },
+    {
+      "selection": "DENSE_PANEL_EPOCHS=on",
+      "predicate": "Actual retained_full_k store-epoch schedule; disjoint accumulator panels; exact common CONFIG_ST words; selected hardware ordering facts and bounded completed readout before reuse",
+      "path": "backend/dense_panel_epochs.py -> typed DensePanelEpochLaw -> actual shared dense kernel -> terminal encoder",
+      "support": "docs/evidence/fresh10-20261029/dense_retained_panel_epochs.json",
+      "uncertainty": "Three matched complete modeled calls improve 1.71%, 1.87%, and 2.76%, including frozen holdout. Physical performance magnitude and full-model impact remain unmeasured. Unsupported schedule/effect domains retain incumbent."
+    },
+    {
+      "selection": "SHARED_RHS_SCATTERED_READOUT=on",
+      "predicate": "Already-admitted exact shared RHS short-row group; distinct original outputs; scalar/raw terminal readout; checked actual finite schedule row partition within explicit proof budgets",
+      "path": "backend/shared_rhs_rows.py -> shared lower_dense mapped terminal -> backend/shared_rhs_scattered_readout.py -> unchanged ISA terminal encoder",
+      "support": "docs/evidence/fresh10-20261029/shared_rhs_direct_readout.json",
+      "uncertainty": "Matched complete provisional model506994\u2192412195 (-18.70%) on one large GQA source; no gSIM for scalability. 80 actual schedule/generated-LLVM packet geometries plus complete149-case admission/LLVM census. Unsupported mapping retains incumbent joined-output path before dense emission."
+    },
+    {
+      "selection": "CONV_INPUT_READY_DEPENDENCIES=on",
+      "predicate": "Already-admitted rolling NHWC convolution with primitive-width staged input rows, disjoint immutable full-fit RHS, selected cross-queue MVIN-to-first-reader completion facts and admitted store epoch law",
+      "legality": "Exact reverse projection of Dependency/Read IR to checked original rolling-window IR; unchanged Complete operations before every slot/image reuse; same primitive encodings, source addresses, CONFIG words and output numerics",
+      "path": "backend/conv_rolling_rows.py -> backend/conv_input_dependencies.py actual typed SCF -> original RHS preparation/compute epoch functions -> same terminal encoder",
+      "support": "docs/evidence/fresh10-20261029/conv_input_dependencies.json",
+      "uncertainty": "Three matched complete provisional modeled whole-call reductions0.85%,0.39%,0.0083%; last effectively neutral. Two changed original kernels pass required gSIM with matched measured complete-call gains1.07%,0.38%. These small correctness-shape observations do not establish large-case or whole-model measured latency."
+    },
+    {
+      "selection": "ATTENTION_STATIC_FRAGMENTS=on",
+      "predicate": "Already-admitted finite shared RHS original-output readout with every actual terminal row=0,rows=joinedM<=DIM, distinct original output partitions and bounded exact complete-coverage proof",
+      "legality": "Actual counted schedule checked before emission; all original ACC lanes, source IDs, columns, CONFIG words and completion edges retained. General row intersections are the fallback.",
+      "path": "backend/shared_rhs_scattered_readout.py bind_schedule -> actual static original-member terminal fragments -> shared ISA encoder",
+      "support": "docs/evidence/fresh10-20261029/attention_static_fragments.json",
+      "uncertainty": "Matched complete provisional model412195\u2192411727 cycles,0.11354%. Small ranking not physically established; no gSIM eligibility for this scalability case.128 actual packet equivalence geometries and one named L2 public execution."
+    },
+    {
+      "selection": "CONV_FUTURE_ROWS=on",
+      "predicate": "Already-admitted original rolling input; immutable full-fit RHS; one complete output column block; >=2 output rows; expanded span+stride ring and relocated RHS disjoint and within selected SPAD; selected execute-reader-to-MVIN disjoint issue and MVIN-to-reader completion laws; admitted readout epoch law",
+      "legality": "Actual typed FutureConsume SCF reverses exactly to verified library lookahead SCF. Future transport issues after all complete-K products of the last spatial panel and before its first readout; original real block drain and every input-last-use edge remain. Capacity refusal before effects.",
+      "path": "backend/conv_rolling_rows.py -> backend/conv_future_rows.py actual typed IR -> original RHS preparation/compute/readout -> common ISA encoder",
+      "support": "docs/evidence/fresh10-20261029/conv_future_rows.json",
+      "uncertainty": "Three complete matched provisional modeled reductions1.04%,2.43%,6.86%; separate two small original gSIM measured reductions0.44%,0.89%. Five independent source geometries check numerics/storage. No large measured or whole-model latency inference; footprint/column legality remains separate from performance."
+    }
+  ],
+  "rejected_or_unselected": [
+    "global adaptive segmented default (large vocabulary regression)",
+    "all-row RHS gather (whole-call regressions)",
+    "resident RHS epoch readout (loses to ordinary incumbent)",
+    "raw accumulator conv/pool horizontal fusion (fast estimate regression)",
+    "pool traffic schedule (no supporting whole-call win)",
+    "custom scalar host fusion/copy recipes (native owner has no candidate-host-code selection hook; local typed LLVM/native exact checks only)",
+    "SOURCE_SLICE_DENSE remains opt-in: actual source/code reduction established, native PG owner does not consume custom source grouping and no matched chain timing supplied",
+    "SOURCE_WINDOW_PRODUCTS=off: authored CLI consumes exact window/transpose/product fusion, but native owner has no admitted custom window route; native on/off final ELF and cycles identical",
+    "WEIGHTED_PACKING_EPOCHS=off: checked source and full CLI consume new packing schedule; matched complete-call timing unavailable",
+    "Vocabulary output-lookahead pipeline: implemented isolated variant and large/ragged source-exact checks; complete timing UNKNOWN and older fast-estimate calibration differs, so no supported promotion."
+  ],
+  "remaining_work": [
+    "complete whole-model timing and execution evidence",
+    "host preparation/submission/wait cycle attribution",
+    "fresh timing at schedule cutoff neighbors",
+    "selected physical trace qualification conflict for identity-scale source"
+  ],
+  "qualification_evidence": "docs/evidence/fresh10-20261029/finite_adapters_physical_ledger.json"
+}

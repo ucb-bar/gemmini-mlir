@@ -1,0 +1,252 @@
+{
+  "selection": "frontier_class",
+  "decision": "explicit offline compiler tuning; strict auto remains incumbent without exact paired cutoff feedback",
+  "rule": "ceil(M/DIM)<=1 and ceil(K/DIM)>=128 and ceil(N/DIM)>=128",
+  "primitive_dim": 16,
+  "source_dimensions_at_boundary": {
+    "max_m": 16,
+    "min_k": 2033,
+    "min_n": 2033
+  },
+  "resources": "full LHS plus two disjoint bounded RHS slots admitted by dense_segmented_blocks; ACC owned and capacity checked; column-scales excluded",
+  "actual_passes": [
+    "select_segmented_partition",
+    "dense_segmented_blocks",
+    "make_dense_schedule_plan",
+    "schedule_dense_pipeline",
+    "interleave_dense_segmented_frontier",
+    "select_store_epochs"
+  ],
+  "options": {
+    "panel_geometry": "skinny",
+    "max_m_blocks": 1,
+    "max_n_blocks": 64,
+    "segment_k_bound": 64,
+    "storage_split": "adaptive",
+    "issue_order": "prefetch_rhs_between_k_tiles"
+  },
+  "pairs": [
+    {
+      "case": "CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048",
+      "role": "training",
+      "retained": 14054840,
+      "frontier": 9208349,
+      "change_pct": -34.48271912024612,
+      "baseline_elf_sha256": "8014acb5846ba4876558e9e2d566231d139a7d636b48116299c3074996884b0a",
+      "frontier_elf_sha256": "8c392d8271795660cd701a8177f44e08527249993438fc1a59b3472d531da1f9",
+      "identity": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "complete_event_accounting": true
+      }
+    },
+    {
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "role": "training",
+      "retained": 19673813,
+      "frontier": 18458713,
+      "change_pct": -6.176230301670548,
+      "baseline_elf_sha256": "a1a57586050973c0def0a4596f94d9bd95ae696ce2222f4c4220567938f43b41",
+      "frontier_elf_sha256": "5576dd9698d248661d4248d9873060c51ff8c41361ed1751e4807e394294ebed",
+      "identity": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "complete_event_accounting": true
+      }
+    },
+    {
+      "case": "TL_mm_down_m16k5632n2048_raw",
+      "role": "training",
+      "retained": 7617813,
+      "frontier": 3273049,
+      "change_pct": -57.034269546915894,
+      "baseline_elf_sha256": "0908ebf123cf6c6a7dcba8dcd9a46c7d9a3563c451c7bbb6276bcd563c665989",
+      "frontier_elf_sha256": "2e83c5203d18258f88e59855c75f656b92919b621e6deb428f8160444db3d2f6",
+      "identity": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "complete_event_accounting": true
+      }
+    },
+    {
+      "case": "JM_tiny_llama_decode_m1k2048n2048_raw",
+      "role": "held_out",
+      "retained": 1307762,
+      "frontier": 1227760,
+      "change_pct": -6.117473974622289,
+      "baseline_elf_sha256": "dcc2cb14dc2d81f5335fddf38bce898a269ad673f2b7cd556c279be99dca9412",
+      "frontier_elf_sha256": "7a6ee8e525bc41acf6292bc68509a9272b3404dbd60f8cb7c5b9f3fc3d8d199a",
+      "identity": {
+        "timing_model_sha256": [
+          null,
+          null
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "timing_selection_sha256": [
+          null,
+          null
+        ],
+        "scope": [
+          "complete kernel-call window; host, device and completion inside that window",
+          "complete kernel-call window; host, device and completion inside that window"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "case": "TL_mm_o_m16k2048n2048_raw",
+      "role": "held_out",
+      "retained": 1322691,
+      "frontier": 1246788,
+      "change_pct": -5.738528499853713,
+      "baseline_elf_sha256": "959d3fb642c47b302660799fbb22d1fd8118dd139c9c56fe20976919f225024b",
+      "frontier_elf_sha256": "d2bad21b84c7484a842b622d32ef5d2f701152ba29435c6722780c3ce9c2a2b2",
+      "identity": {
+        "timing_model_sha256": [
+          null,
+          null
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "timing_selection_sha256": [
+          null,
+          null
+        ],
+        "scope": [
+          "complete kernel-call window; host, device and completion inside that window",
+          "complete kernel-call window; host, device and completion inside that window"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ]
+      }
+    }
+  ],
+  "requests": {
+    "training_retained": "2_1793252974340653392_6a86d2cf0604b196c1f4769492df1ab9",
+    "training_frontier": "2_1793252942641172628_a07ca99b54306001e8007cf16d0dcfca",
+    "holdout_retained": "2_1793253807354954620_e30ac96a8cf6bd0afa35e5597328a06a",
+    "holdout_frontier": "2_1793253812362973449_823b40ab39e830a4825cd04b3303c878",
+    "integrated_class_route": "2_1793254139808108069_9f6a25f89d3133efe21ab2f99c9e4045"
+  },
+  "compiler_files": {
+    "dense.py": "5fd9af72542e15f30999f4882310100d77c1930d5f22aecc5b026b5c6c77bfd5",
+    "dense_pipeline.py": "f452f4b646c8215813683094e212c7a9b20587307d87d5acd6981b80c9fd1263",
+    "dense_storage_partition.py": "f374d3eda730b26b2a1a6fe5fdeb177f6d90b1cfacec1c05cd96ca010846d6ce",
+    "dense_shape_policy.py": "7bea965fcb2691bdbe24712be2fdb9f24b260122419a8efa3d737aaff80d536e",
+    "dense_store_epochs.py": "d7581018badac674674fac6f610017383ca95d6cab0e0539f43117ec06db148e"
+  },
+  "source_schedule_IR_receipts": "large_source_schedule_receipts.json",
+  "source_boundary_receipts": "policy_reserved_shapes.json",
+  "registered_execution_receipts": "policy_execution_receipts.json",
+  "emission_hash_scope": "ELF hashes are executed evidence; large scalability broker does not publish textual LLVM/command buffer artifacts; local source schedule hashes are pre-store-epoch checked IR, not identical to final ELF",
+  "remaining_cycle_coverage": [
+    "Mtiles=2 adjacent outside (M17)",
+    "Ktiles=127 adjacent outside (K2032)",
+    "Ntiles=127 adjacent outside (N2032)",
+    "ragged inside scalar boundary K/N2033",
+    "other long K, N classes and per-column scales"
+  ],
+  "limitations": [
+    "modeled complete call cycles, not gSIM",
+    "old seed baseline entries differ in timing identity; comparisons use matched current retained snapshots",
+    "outside-class controls were observed but do not broaden this promoted rule"
+  ],
+  "source_neighbor_validation": "policy_source_neighbors.json",
+  "source_neighbor_validation_status": "all six actual registered schedules passed source/ownership/continuation validation: M17, K2032/2064, N2032/2064, ragged15x2033x2033; no cycle claim",
+  "unknown_proof_fallback": {
+    "exception": "DenseVerificationUnavailable",
+    "behavior": "before emission run independently checked incumbent registered action; retain actual selected schedule and timeout reason",
+    "validation": "policy_forced_unknown_fallback.json"
+  },
+  "verifier_files": {
+    "dense_finite_certificate.py": "77d1bae3bb3027fb33ae908bdc906c4ca5843b88c6f7ab882a45e51d61cf6529",
+    "dense_segmented_pipeline.py": "2e1e0b619e0f1a9a2559f2174563332931542e0971469c68b26821f8d88b3563",
+    "library_sources.py": "125eb1fed179f78c21afdd0b2cd3d026ae069479ead5c7b7108c6235367c9ba2"
+  },
+  "finite_source_certificate": {
+    "source": "finite_certificate_checks.json",
+    "scope": "complete actual finite command domain; source-coordinate row tokens, increasing K prefixes and unique complete output cover, actual epoch hazards/descriptor domains and selected execution bounds",
+    "command_cap": 2000000,
+    "unsupported": "bias, transformed readout, non-square primitive tiles, beyond-cap: unchanged original SMT checks",
+    "cost_seconds": {
+      "JM": 0.39,
+      "TL_down": 1.29,
+      "JT": 6.29
+    },
+    "mutations": "address, reduction initialization, tail, source coordinate, actual compute/preload issue order rejected",
+    "state_cap": "100,000 output row spans; beyond-cap retains original SMT verifier"
+  },
+  "finite_store_certificate": "store_finite_certificate_checks.json",
+  "no_z3_full_compile": {
+    "record": "no_z3_policy_compile.json",
+    "selected": "segmented",
+    "store_epochs_applied": true,
+    "LLVM_sha256": "33550c70b939954f6b6ff148c76db40252650cc50fa5a0d06413804b0b1da6ba",
+    "byte_identical_to_measured_direct_frontier": true,
+    "receipt": "no_z3_policy_compile.json"
+  },
+  "integrated_class_route_result": {
+    "request": "2_1793254139808108069_9f6a25f89d3133efe21ab2f99c9e4045",
+    "JM": {
+      "status": "pass",
+      "complete_modeled_cycles": 1227760,
+      "equals_direct_frontier": true
+    },
+    "PD_outside": {
+      "status": "pass",
+      "complete_modeled_cycles": 672826,
+      "equals_retained": true
+    }
+  },
+  "optional_column_order": {
+    "knob": "DENSE_FRONTIER_ISSUE_ORDER",
+    "values": [
+      "prefetch_rhs_between_k_tiles",
+      "prefetch_rhs_between_columns",
+      "aspect"
+    ],
+    "default": "aspect parent promoted after frozen TL_o heldout",
+    "aspect_rule": "existing admitted class; exact shared RatioFeature N/K<=3 columns else Ktiles",
+    "development_complete_wins": {
+      "TL_mm_down": -13.8184,
+      "CH_sibling_feed": -15.2553,
+      "JM_decode": -13.6033
+    },
+    "fresh_validation_complete_win": {
+      "TL_mm_o": -13.6964
+    },
+    "trio_evidence": "columns_trio_cycle_comparison.json",
+    "validation_evidence": "aspect_heldout_cycle_comparison.json",
+    "source_neighbors": "aspect_source_neighbors.json",
+    "terminal_equivalence": "aspect_terminal_equivalence.json",
+    "remaining_cycle_coverage": [
+      "exact N/K=3 boundary and both scalar neighbors",
+      "fresh admitted raw highaspect representative absent; existing JT columns completeUNKNOWN, normalizedfasttie"
+    ],
+    "promotion_record": "aspect_promotion.json"
+  }
+}

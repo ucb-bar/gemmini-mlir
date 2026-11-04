@@ -1,0 +1,19 @@
+{
+  "implementation": "General rank1-through-rank6 exact positive-static signed i8/rawi32 permutations using bounded counted accumulator DMA; no tensor arithmetic on the CPU.",
+  "proof": "No-z3 exact canonical stream identity plus affine descriptor equality, mixed-radix axis/cardinality and full/tail Cartesian partition, bounded source/output endpoints and completion before accumulator reuse.",
+  "owned_sources": {
+    "transpose.py": "61273e50f30eb7a45016cffef8768d4ad911187cf0f8903dfed5efc88e801793",
+    "transpose_proof.py": "ca9649dde2bcf0bc45bae8c0bb9caf173f754e6a48dccf1e0c9d5b3db69b806d"
+  },
+  "checks": {
+    "no_z3": true,
+    "interpreted_programs": 1770,
+    "interpreted_elements": 80622,
+    "invalid_sources_rejected": 18,
+    "mutated_streams_rejected": 3
+  },
+  "incumbent_llvm_identities": 112,
+  "incumbent_snapshot": "variants/final_selected/backend/transpose.py (source SHA256 matches saved transpose_before.py)",
+  "integration": "Parent widens source_groups.py::_integer_transpose rank guard from2..4 to1..6. Backend lower_transpose API unchanged. Source examples supplied for ranks1,5,6.",
+  "limitations": "Optional batched schedule retains its existing z3-dependent proof and falls back to canonical baseline when z3 is missing. No broker, numerical hardware execution, or timing claims from these source/program checks."
+}

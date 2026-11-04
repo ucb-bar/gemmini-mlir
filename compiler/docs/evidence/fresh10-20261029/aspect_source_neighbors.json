@@ -1,0 +1,3698 @@
+[
+  {
+    "shape": [
+      16,
+      2048,
+      2048
+    ],
+    "selected": "segmented",
+    "refusal": null,
+    "receipt": {
+      "schema": "merlin.compiler_pipeline_policy.v1",
+      "selected_variant": "frontier_columns",
+      "fallback_selected": false,
+      "decisions": [
+        {
+          "variant": "frontier_columns",
+          "status": "applicable",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 128,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 128,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      ],
+      "policy": {
+        "variants": [
+          {
+            "name": "frontier_columns",
+            "passes": [
+              "dense_frontier_columns"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "frontier",
+            "passes": [
+              "dense_frontier"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              }
+            ]
+          },
+          {
+            "name": "retained",
+            "passes": [
+              "dense_retained"
+            ],
+            "predicates": []
+          }
+        ],
+        "fallback": "retained"
+      },
+      "before": {
+        "source_sha256": "546d6be24fa171790e58808c78a66a585b71e39a9a343fa231c48beb006eeea0",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "after": {
+        "source_sha256": "546d6be24fa171790e58808c78a66a585b71e39a9a343fa231c48beb006eeea0",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "registry": [
+        {
+          "name": "dense_retained",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier_columns",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "name": "dense_frontier_columns",
+          "before": {
+            "source_sha256": "546d6be24fa171790e58808c78a66a585b71e39a9a343fa231c48beb006eeea0",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "546d6be24fa171790e58808c78a66a585b71e39a9a343fa231c48beb006eeea0",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "invalidated": [],
+          "produced": [
+            "dense_checked_schedule"
+          ],
+          "repair_round": 0
+        }
+      ],
+      "output": "dense_checked_schedule",
+      "host_pass_profile": [
+        {
+          "name": "dense_frontier_columns",
+          "status": "completed",
+          "action_invoked": true,
+          "action_wall_ns": 854151131,
+          "framework_wall_ns": 79471,
+          "total_wall_ns": 854230602,
+          "scope": "host_pass_invocation"
+        }
+      ],
+      "facts": {
+        "shapes": [
+          [
+            16,
+            2048
+          ],
+          [
+            2048,
+            2048
+          ]
+        ],
+        "element_types": [
+          "i8",
+          "i8"
+        ],
+        "layouts": [
+          "row-major",
+          "row-major"
+        ],
+        "operations": [
+          "dense"
+        ],
+        "numerical_semantics": null,
+        "capabilities": [],
+        "resources": [
+          [
+            "primitive_dim",
+            16
+          ],
+          [
+            "segmented_placement",
+            1
+          ]
+        ],
+        "graph": []
+      },
+      "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+      "requested_mode": "frontier_class",
+      "actual_selected_schedule": "segmented",
+      "configured_frontier_issue_order": "aspect",
+      "assessment": {
+        "schema": "merlin.shape_schedule_policy.v1",
+        "classes": [
+          {
+            "shape_class": "short_rows_long_reduction_wide_output",
+            "incumbent": "retained",
+            "selected": "retained",
+            "status": "incumbent_retained",
+            "design": {
+              "schema": "merlin.pass_exploration.validation_partition.v1",
+              "training": [
+                {
+                  "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      32000
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      5632
+                    ],
+                    [
+                      5632,
+                      2048
+                    ]
+                  ]
+                }
+              ],
+              "held_out": [
+                {
+                  "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2032
+                    ],
+                    [
+                      2032,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2064
+                    ],
+                    [
+                      2064,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2032
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2064
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      17,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      15,
+                      2033
+                    ],
+                    [
+                      2033,
+                      2033
+                    ]
+                  ]
+                }
+              ],
+              "withheld_families": [],
+              "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+            },
+            "alternatives": [
+              {
+                "alternative": "frontier",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              },
+              {
+                "alternative": "retained",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              }
+            ]
+          }
+        ],
+        "exact_source_winners": [],
+        "max_regression_ratio": 1.0,
+        "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+        "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+        "decision_metric": "complete_same_roi_cycles",
+        "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+        "legality": "original variant predicates and current-IR registered pass checks remain required",
+        "qualification": "provisional empirical panel support, not universal or physical qualification"
+      },
+      "evidence": "explicit class experiment",
+      "automatic_promotion": false
+    },
+    "elapsed_s": 0.9840113499958534
+  },
+  {
+    "shape": [
+      1,
+      2048,
+      6144
+    ],
+    "selected": "segmented",
+    "refusal": null,
+    "receipt": {
+      "schema": "merlin.compiler_pipeline_policy.v1",
+      "selected_variant": "frontier_columns",
+      "fallback_selected": false,
+      "decisions": [
+        {
+          "variant": "frontier_columns",
+          "status": "applicable",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 128,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 384,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      ],
+      "policy": {
+        "variants": [
+          {
+            "name": "frontier_columns",
+            "passes": [
+              "dense_frontier_columns"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "frontier",
+            "passes": [
+              "dense_frontier"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              }
+            ]
+          },
+          {
+            "name": "retained",
+            "passes": [
+              "dense_retained"
+            ],
+            "predicates": []
+          }
+        ],
+        "fallback": "retained"
+      },
+      "before": {
+        "source_sha256": "d89a26e1b1f367df38da76eb16544eeac9d413615d0d3b494d1dd4a2d98882f7",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "after": {
+        "source_sha256": "d89a26e1b1f367df38da76eb16544eeac9d413615d0d3b494d1dd4a2d98882f7",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "registry": [
+        {
+          "name": "dense_retained",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier_columns",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "name": "dense_frontier_columns",
+          "before": {
+            "source_sha256": "d89a26e1b1f367df38da76eb16544eeac9d413615d0d3b494d1dd4a2d98882f7",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "d89a26e1b1f367df38da76eb16544eeac9d413615d0d3b494d1dd4a2d98882f7",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "invalidated": [],
+          "produced": [
+            "dense_checked_schedule"
+          ],
+          "repair_round": 0
+        }
+      ],
+      "output": "dense_checked_schedule",
+      "host_pass_profile": [
+        {
+          "name": "dense_frontier_columns",
+          "status": "completed",
+          "action_invoked": true,
+          "action_wall_ns": 1271491357,
+          "framework_wall_ns": 75411,
+          "total_wall_ns": 1271566768,
+          "scope": "host_pass_invocation"
+        }
+      ],
+      "facts": {
+        "shapes": [
+          [
+            1,
+            2048
+          ],
+          [
+            2048,
+            6144
+          ]
+        ],
+        "element_types": [
+          "i8",
+          "i8"
+        ],
+        "layouts": [
+          "row-major",
+          "row-major"
+        ],
+        "operations": [
+          "dense"
+        ],
+        "numerical_semantics": null,
+        "capabilities": [],
+        "resources": [
+          [
+            "primitive_dim",
+            16
+          ],
+          [
+            "segmented_placement",
+            1
+          ]
+        ],
+        "graph": []
+      },
+      "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+      "requested_mode": "frontier_class",
+      "actual_selected_schedule": "segmented",
+      "configured_frontier_issue_order": "aspect",
+      "assessment": {
+        "schema": "merlin.shape_schedule_policy.v1",
+        "classes": [
+          {
+            "shape_class": "short_rows_long_reduction_wide_output",
+            "incumbent": "retained",
+            "selected": "retained",
+            "status": "incumbent_retained",
+            "design": {
+              "schema": "merlin.pass_exploration.validation_partition.v1",
+              "training": [
+                {
+                  "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      32000
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      5632
+                    ],
+                    [
+                      5632,
+                      2048
+                    ]
+                  ]
+                }
+              ],
+              "held_out": [
+                {
+                  "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2032
+                    ],
+                    [
+                      2032,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2064
+                    ],
+                    [
+                      2064,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2032
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2064
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      17,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      15,
+                      2033
+                    ],
+                    [
+                      2033,
+                      2033
+                    ]
+                  ]
+                }
+              ],
+              "withheld_families": [],
+              "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+            },
+            "alternatives": [
+              {
+                "alternative": "frontier",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              },
+              {
+                "alternative": "retained",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              }
+            ]
+          }
+        ],
+        "exact_source_winners": [],
+        "max_regression_ratio": 1.0,
+        "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+        "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+        "decision_metric": "complete_same_roi_cycles",
+        "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+        "legality": "original variant predicates and current-IR registered pass checks remain required",
+        "qualification": "provisional empirical panel support, not universal or physical qualification"
+      },
+      "evidence": "explicit class experiment",
+      "automatic_promotion": false
+    },
+    "elapsed_s": 1.2794214750028914
+  },
+  {
+    "shape": [
+      1,
+      2048,
+      6145
+    ],
+    "selected": "segmented",
+    "refusal": null,
+    "receipt": {
+      "schema": "merlin.compiler_pipeline_policy.v1",
+      "selected_variant": "frontier",
+      "fallback_selected": false,
+      "decisions": [
+        {
+          "variant": "frontier_columns",
+          "status": "unsupported",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 128,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 385,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              },
+              "match": false,
+              "feature_value": {
+                "numerator": 6145,
+                "denominator": 2048
+              }
+            }
+          ]
+        },
+        {
+          "variant": "frontier",
+          "status": "applicable",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 128,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 385,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            }
+          ]
+        }
+      ],
+      "policy": {
+        "variants": [
+          {
+            "name": "frontier_columns",
+            "passes": [
+              "dense_frontier_columns"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "frontier",
+            "passes": [
+              "dense_frontier"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              }
+            ]
+          },
+          {
+            "name": "retained",
+            "passes": [
+              "dense_retained"
+            ],
+            "predicates": []
+          }
+        ],
+        "fallback": "retained"
+      },
+      "before": {
+        "source_sha256": "627efdfd4cda78ba018dfb8074f2d5a3c52012f6441741b0f1c158694ac688c8",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "after": {
+        "source_sha256": "627efdfd4cda78ba018dfb8074f2d5a3c52012f6441741b0f1c158694ac688c8",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "registry": [
+        {
+          "name": "dense_retained",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier_columns",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "name": "dense_frontier",
+          "before": {
+            "source_sha256": "627efdfd4cda78ba018dfb8074f2d5a3c52012f6441741b0f1c158694ac688c8",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "627efdfd4cda78ba018dfb8074f2d5a3c52012f6441741b0f1c158694ac688c8",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "invalidated": [],
+          "produced": [
+            "dense_checked_schedule"
+          ],
+          "repair_round": 0
+        }
+      ],
+      "output": "dense_checked_schedule",
+      "host_pass_profile": [
+        {
+          "name": "dense_frontier",
+          "status": "completed",
+          "action_invoked": true,
+          "action_wall_ns": 1296886315,
+          "framework_wall_ns": 68010,
+          "total_wall_ns": 1296954325,
+          "scope": "host_pass_invocation"
+        }
+      ],
+      "facts": {
+        "shapes": [
+          [
+            1,
+            2048
+          ],
+          [
+            2048,
+            6145
+          ]
+        ],
+        "element_types": [
+          "i8",
+          "i8"
+        ],
+        "layouts": [
+          "row-major",
+          "row-major"
+        ],
+        "operations": [
+          "dense"
+        ],
+        "numerical_semantics": null,
+        "capabilities": [],
+        "resources": [
+          [
+            "primitive_dim",
+            16
+          ],
+          [
+            "segmented_placement",
+            1
+          ]
+        ],
+        "graph": []
+      },
+      "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+      "requested_mode": "frontier_class",
+      "actual_selected_schedule": "segmented",
+      "configured_frontier_issue_order": "aspect",
+      "assessment": {
+        "schema": "merlin.shape_schedule_policy.v1",
+        "classes": [
+          {
+            "shape_class": "short_rows_long_reduction_wide_output",
+            "incumbent": "retained",
+            "selected": "retained",
+            "status": "incumbent_retained",
+            "design": {
+              "schema": "merlin.pass_exploration.validation_partition.v1",
+              "training": [
+                {
+                  "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      32000
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      5632
+                    ],
+                    [
+                      5632,
+                      2048
+                    ]
+                  ]
+                }
+              ],
+              "held_out": [
+                {
+                  "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2032
+                    ],
+                    [
+                      2032,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2064
+                    ],
+                    [
+                      2064,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2032
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2064
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      17,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      15,
+                      2033
+                    ],
+                    [
+                      2033,
+                      2033
+                    ]
+                  ]
+                }
+              ],
+              "withheld_families": [],
+              "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+            },
+            "alternatives": [
+              {
+                "alternative": "frontier",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              },
+              {
+                "alternative": "retained",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              }
+            ]
+          }
+        ],
+        "exact_source_winners": [],
+        "max_regression_ratio": 1.0,
+        "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+        "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+        "decision_metric": "complete_same_roi_cycles",
+        "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+        "legality": "original variant predicates and current-IR registered pass checks remain required",
+        "qualification": "provisional empirical panel support, not universal or physical qualification"
+      },
+      "evidence": "explicit class experiment",
+      "automatic_promotion": false
+    },
+    "elapsed_s": 1.3043526589899557
+  },
+  {
+    "shape": [
+      1,
+      2049,
+      6147
+    ],
+    "selected": "segmented",
+    "refusal": null,
+    "receipt": {
+      "schema": "merlin.compiler_pipeline_policy.v1",
+      "selected_variant": "frontier_columns",
+      "fallback_selected": false,
+      "decisions": [
+        {
+          "variant": "frontier_columns",
+          "status": "applicable",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 129,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 385,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      ],
+      "policy": {
+        "variants": [
+          {
+            "name": "frontier_columns",
+            "passes": [
+              "dense_frontier_columns"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "frontier",
+            "passes": [
+              "dense_frontier"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              }
+            ]
+          },
+          {
+            "name": "retained",
+            "passes": [
+              "dense_retained"
+            ],
+            "predicates": []
+          }
+        ],
+        "fallback": "retained"
+      },
+      "before": {
+        "source_sha256": "0f81ebfc11aafe8db9105e5be66f5bc8d04bd5c17b2220bd0378fcb4c04e733d",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "after": {
+        "source_sha256": "0f81ebfc11aafe8db9105e5be66f5bc8d04bd5c17b2220bd0378fcb4c04e733d",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "registry": [
+        {
+          "name": "dense_retained",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier_columns",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "name": "dense_frontier_columns",
+          "before": {
+            "source_sha256": "0f81ebfc11aafe8db9105e5be66f5bc8d04bd5c17b2220bd0378fcb4c04e733d",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "0f81ebfc11aafe8db9105e5be66f5bc8d04bd5c17b2220bd0378fcb4c04e733d",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "invalidated": [],
+          "produced": [
+            "dense_checked_schedule"
+          ],
+          "repair_round": 0
+        }
+      ],
+      "output": "dense_checked_schedule",
+      "host_pass_profile": [
+        {
+          "name": "dense_frontier_columns",
+          "status": "completed",
+          "action_invoked": true,
+          "action_wall_ns": 1336250393,
+          "framework_wall_ns": 68850,
+          "total_wall_ns": 1336319243,
+          "scope": "host_pass_invocation"
+        }
+      ],
+      "facts": {
+        "shapes": [
+          [
+            1,
+            2049
+          ],
+          [
+            2049,
+            6147
+          ]
+        ],
+        "element_types": [
+          "i8",
+          "i8"
+        ],
+        "layouts": [
+          "row-major",
+          "row-major"
+        ],
+        "operations": [
+          "dense"
+        ],
+        "numerical_semantics": null,
+        "capabilities": [],
+        "resources": [
+          [
+            "primitive_dim",
+            16
+          ],
+          [
+            "segmented_placement",
+            1
+          ]
+        ],
+        "graph": []
+      },
+      "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+      "requested_mode": "frontier_class",
+      "actual_selected_schedule": "segmented",
+      "configured_frontier_issue_order": "aspect",
+      "assessment": {
+        "schema": "merlin.shape_schedule_policy.v1",
+        "classes": [
+          {
+            "shape_class": "short_rows_long_reduction_wide_output",
+            "incumbent": "retained",
+            "selected": "retained",
+            "status": "incumbent_retained",
+            "design": {
+              "schema": "merlin.pass_exploration.validation_partition.v1",
+              "training": [
+                {
+                  "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      32000
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      5632
+                    ],
+                    [
+                      5632,
+                      2048
+                    ]
+                  ]
+                }
+              ],
+              "held_out": [
+                {
+                  "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2032
+                    ],
+                    [
+                      2032,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2064
+                    ],
+                    [
+                      2064,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2032
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2064
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      17,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      15,
+                      2033
+                    ],
+                    [
+                      2033,
+                      2033
+                    ]
+                  ]
+                }
+              ],
+              "withheld_families": [],
+              "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+            },
+            "alternatives": [
+              {
+                "alternative": "frontier",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              },
+              {
+                "alternative": "retained",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              }
+            ]
+          }
+        ],
+        "exact_source_winners": [],
+        "max_regression_ratio": 1.0,
+        "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+        "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+        "decision_metric": "complete_same_roi_cycles",
+        "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+        "legality": "original variant predicates and current-IR registered pass checks remain required",
+        "qualification": "provisional empirical panel support, not universal or physical qualification"
+      },
+      "evidence": "explicit class experiment",
+      "automatic_promotion": false
+    },
+    "elapsed_s": 1.3438527480029734
+  },
+  {
+    "shape": [
+      1,
+      2049,
+      6148
+    ],
+    "selected": "segmented",
+    "refusal": null,
+    "receipt": {
+      "schema": "merlin.compiler_pipeline_policy.v1",
+      "selected_variant": "frontier",
+      "fallback_selected": false,
+      "decisions": [
+        {
+          "variant": "frontier_columns",
+          "status": "unsupported",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 129,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 385,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              },
+              "match": false,
+              "feature_value": {
+                "numerator": 6148,
+                "denominator": 2049
+              }
+            }
+          ]
+        },
+        {
+          "variant": "frontier",
+          "status": "applicable",
+          "predicates": [
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 129,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              "match": true,
+              "feature_value": {
+                "numerator": 385,
+                "denominator": 1
+              }
+            },
+            {
+              "predicate": {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              "match": true
+            }
+          ]
+        }
+      ],
+      "policy": {
+        "variants": [
+          {
+            "name": "frontier_columns",
+            "passes": [
+              "dense_frontier_columns"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              },
+              {
+                "feature": {
+                  "numerator": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "denominator": {
+                    "operand": 0,
+                    "axis": 1
+                  }
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  3,
+                  1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "frontier",
+            "passes": [
+              "dense_frontier"
+            ],
+            "predicates": [
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 0
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  0,
+                  1
+                ],
+                "at_most": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 0,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "feature": {
+                  "dimension": {
+                    "operand": 1,
+                    "axis": 1
+                  },
+                  "tile": {
+                    "resource": "primitive_dim"
+                  },
+                  "kind": "count"
+                },
+                "at_least": [
+                  128,
+                  1
+                ],
+                "at_most": null
+              },
+              {
+                "resource": "segmented_placement",
+                "at_least": 1
+              }
+            ]
+          },
+          {
+            "name": "retained",
+            "passes": [
+              "dense_retained"
+            ],
+            "predicates": []
+          }
+        ],
+        "fallback": "retained"
+      },
+      "before": {
+        "source_sha256": "067406d1fadc3bebd6a19777313ceac3583939487b2e921f17573750570185d4",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "after": {
+        "source_sha256": "067406d1fadc3bebd6a19777313ceac3583939487b2e921f17573750570185d4",
+        "context": {
+          "hardware": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy": "i8-i8-i32-modular",
+          "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+          "execution": "selected-rtl-ordered-accumulator-commit",
+          "library": "selected-dense-scheduling-library"
+        },
+        "ir_level": "gemmini_dense_capacity_source"
+      },
+      "registry": [
+        {
+          "name": "dense_retained",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        },
+        {
+          "name": "dense_frontier_columns",
+          "stage": 0,
+          "requires": [],
+          "produces": [
+            "dense_checked_schedule"
+          ],
+          "invalidates": [],
+          "mutates_ir": false,
+          "ir_level": "gemmini_dense_capacity_source",
+          "input_ir_kind": "gemmini_dense_capacity_source",
+          "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+          "output_analyses": [
+            "dense_checked_schedule"
+          ]
+        }
+      ],
+      "passes": [
+        {
+          "name": "dense_frontier",
+          "before": {
+            "source_sha256": "067406d1fadc3bebd6a19777313ceac3583939487b2e921f17573750570185d4",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "067406d1fadc3bebd6a19777313ceac3583939487b2e921f17573750570185d4",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "invalidated": [],
+          "produced": [
+            "dense_checked_schedule"
+          ],
+          "repair_round": 0
+        }
+      ],
+      "output": "dense_checked_schedule",
+      "host_pass_profile": [
+        {
+          "name": "dense_frontier",
+          "status": "completed",
+          "action_invoked": true,
+          "action_wall_ns": 1488112715,
+          "framework_wall_ns": 65491,
+          "total_wall_ns": 1488178206,
+          "scope": "host_pass_invocation"
+        }
+      ],
+      "facts": {
+        "shapes": [
+          [
+            1,
+            2049
+          ],
+          [
+            2049,
+            6148
+          ]
+        ],
+        "element_types": [
+          "i8",
+          "i8"
+        ],
+        "layouts": [
+          "row-major",
+          "row-major"
+        ],
+        "operations": [
+          "dense"
+        ],
+        "numerical_semantics": null,
+        "capabilities": [],
+        "resources": [
+          [
+            "primitive_dim",
+            16
+          ],
+          [
+            "segmented_placement",
+            1
+          ]
+        ],
+        "graph": []
+      },
+      "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+      "requested_mode": "frontier_class",
+      "actual_selected_schedule": "segmented",
+      "configured_frontier_issue_order": "aspect",
+      "assessment": {
+        "schema": "merlin.shape_schedule_policy.v1",
+        "classes": [
+          {
+            "shape_class": "short_rows_long_reduction_wide_output",
+            "incumbent": "retained",
+            "selected": "retained",
+            "status": "incumbent_retained",
+            "design": {
+              "schema": "merlin.pass_exploration.validation_partition.v1",
+              "training": [
+                {
+                  "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      32000
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      5632
+                    ],
+                    [
+                      5632,
+                      2048
+                    ]
+                  ]
+                }
+              ],
+              "held_out": [
+                {
+                  "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      1,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2032
+                    ],
+                    [
+                      2032,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2064
+                    ],
+                    [
+                      2064,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2032
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      16,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2064
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      17,
+                      2048
+                    ],
+                    [
+                      2048,
+                      2048
+                    ]
+                  ]
+                },
+                {
+                  "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "family": "dense",
+                  "operand_shapes": [
+                    [
+                      15,
+                      2033
+                    ],
+                    [
+                      2033,
+                      2033
+                    ]
+                  ]
+                }
+              ],
+              "withheld_families": [],
+              "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+            },
+            "alternatives": [
+              {
+                "alternative": "frontier",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              },
+              {
+                "alternative": "retained",
+                "supported": false,
+                "matched_cycle_ratios": [],
+                "training_geometric_mean_ratio": null,
+                "reasons": [],
+                "missing_geometries": [
+                  "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                  "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                  "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                  "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                  "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                  "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                  "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                  "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                  "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                  "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                ],
+                "missing_boundaries": [
+                  [
+                    0,
+                    "upper",
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    "lower",
+                    128,
+                    127
+                  ],
+                  [
+                    2,
+                    "lower",
+                    128,
+                    127
+                  ]
+                ],
+                "mixed_performance_domains": false
+              }
+            ]
+          }
+        ],
+        "exact_source_winners": [],
+        "max_regression_ratio": 1.0,
+        "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+        "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+        "decision_metric": "complete_same_roi_cycles",
+        "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+        "legality": "original variant predicates and current-IR registered pass checks remain required",
+        "qualification": "provisional empirical panel support, not universal or physical qualification"
+      },
+      "evidence": "explicit class experiment",
+      "automatic_promotion": false
+    },
+    "elapsed_s": 1.4956340589997126
+  }
+]

@@ -1,0 +1,1500 @@
+{
+  "schema": "dense.order_panel.portable_evidence.v1",
+  "recorded_utc": "2026-10-29T07:20:00.459308+00:00",
+  "promotion": "Parent explicitly selected DENSE_FRONTIER_PANEL=order provisionally; implementation source default wide and A/B alternatives remain. No global deep promotion.",
+  "selected_options": {
+    "DENSE_PIPELINE": "frontier_class",
+    "DENSE_FRONTIER_ISSUE_ORDER": "aspect",
+    "DENSE_FRONTIER_PANEL": "order",
+    "DENSE_STORE_EPOCHS": "on"
+  },
+  "source_hashes": {
+    "backend/dense.py": "5fd9af72542e15f30999f4882310100d77c1930d5f22aecc5b026b5c6c77bfd5",
+    "backend/dense_pipeline.py": "cbbaac48501a80857a34b3e37dcd862c2431150c7f6b610f16c4934526eea1b7",
+    "backend/dense_shape_policy.py": "5dee0631d9f2c9d2ebf3ea27841bbe6b22ac8e5857cf6ab394aaf9c01b38cbd9",
+    "backend/dense_storage_partition.py": "f374d3eda730b26b2a1a6fe5fdeb177f6d90b1cfacec1c05cd96ca010846d6ce",
+    "backend/dense_store_epochs.py": "d7581018badac674674fac6f610017383ca95d6cab0e0539f43117ec06db148e",
+    "compiler_library/merlin/compile/scheduling/dense_segmented_pipeline.py": "2e1e0b619e0f1a9a2559f2174563332931542e0971469c68b26821f8d88b3563",
+    "compiler_library/merlin/compile/scheduling/dense_finite_certificate.py": "b6fc0f87273f2a0ecdb50b9cdc8444ccb05f4b4738d905335a796a8d7356897a",
+    "compiler_library/merlin/compile/scheduling/copy_pipeline.py": "6861ab7b4d90aad73f67c16dc22eefd16f8b697175c9f67db74bf31f76521dc2",
+    "compiler_library/merlin/transforms/pipeline_policy.py": "85923b554994cafc1302719bb44cd6b723f01784dc3a14dff95c53165911af38"
+  },
+  "rule": "Existing frontier class + legal deep placement + source M>1 + actual existing issue order prefetch_rhs_between_k_tiles chooses deep; every other region retains current wide or incumbent. No new aspect cutoff.",
+  "actual_pass_order": [
+    "registered existing PipelinePolicy selects frontier/columns/deep/retained",
+    "shared make_dense_schedule_plan (block/axes/storage/issue-order decisions consumed)",
+    "shared schedule_dense_pipeline (segmented full-LHS/two-RHS when selected)",
+    "independent exact source/K-prefix/readout/ownership/epoch verification",
+    "dense_store_epochs independently checked ownership and output ordering",
+    "same schedule.emit_llvm and dense terminal instruction encoder"
+  ],
+  "original_admission_preserved": [
+    "selected ordered accumulator commits",
+    "disjoint complete-LHS and two future/current RHS slots",
+    "exact original source/readout and integer accumulation law",
+    "private accumulator ownership and full drains before reuse",
+    "original effect/completion/finite issue limits"
+  ],
+  "actual_products": [
+    {
+      "case": "TL_mm_gu_fused_m16k2048n11264_i8",
+      "compared_tree": "dense_deep_panel",
+      "llvm_byte_identical": true,
+      "llvm_sha256": "8e44b2b50ca9334ddea970a96e8e703d145ad09a03de13f3f1200d379a876622",
+      "source_sha256": "ed7dc5c8080b8cf6bed7c70774333efde2a18411ad8e529705c3c4b098f3568f",
+      "command_buffer_sha256": "ecb54b75ae97c8bcd89678a7a2050f0cf73dda98126d6f4270ca2f1619713f05",
+      "kernel_sha256": "1901a074246a6079f527bdee947d8af7bae3a9b16a52546f1a6cb5dc1ee72191",
+      "selected_variant": "frontier_deep",
+      "selected_panel": "skinny_deep",
+      "block": [
+        1,
+        14,
+        32
+      ],
+      "actual_issue": "prefetch_rhs_between_k_tiles",
+      "before_llvm_sha256": "9d0e43a951fb8f826c04f8628066781fc4418d8d2a1ffb314af0dfe1014d5fbe",
+      "deep_llvm_sha256": "8e44b2b50ca9334ddea970a96e8e703d145ad09a03de13f3f1200d379a876622",
+      "after_llvm_sha256": "8e44b2b50ca9334ddea970a96e8e703d145ad09a03de13f3f1200d379a876622",
+      "registered_pass_order": [
+        "dense_frontier_deep"
+      ],
+      "actual_schedule_options": {
+        "sha256": "e486c2d81a579ab1e50e395aa66748acd627ba7187d77992733acb46add71d60",
+        "pipeline_kind": "retained_lhs_segmented_k",
+        "prefetch": true,
+        "pipeline_issue_order": "prefetch_rhs_between_k_tiles",
+        "decisions_consumed": [
+          "block_tiles",
+          "outer_order",
+          "row_bases",
+          "panel_pipeline",
+          "pipeline_window_offsets",
+          "pipeline_issue_order",
+          "loop_transforms"
+        ]
+      },
+      "store_epoch_option": {
+        "selection": "on",
+        "applied": true,
+        "source_kernel_sha256": "cf5d201cecb110ce8bda27c05f3e4978e765ab482fe25f84fa8450eb7baebf90",
+        "kernel_sha256": "1901a074246a6079f527bdee947d8af7bae3a9b16a52546f1a6cb5dc1ee72191",
+        "uniform_config": [
+          0,
+          2,
+          4323455642275687424
+        ],
+        "regions": [
+          {
+            "dynamic_stores": 32,
+            "checked_outer_local_stores": 704,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          }
+        ],
+        "readiness": "real begin drain after all original producers and seeds",
+        "reuse": "real closing drain before outer loop backedges or any non-store command",
+        "data_projection": "original store operands and loop order unchanged",
+        "admission": {
+          "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+          "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "load_completion": "out_of_order",
+          "store_completion": "in_order",
+          "finite_load_entries": 8,
+          "finite_store_entries": 4,
+          "accumulator_capacity_rows": 1024,
+          "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+        }
+      },
+      "storage_partition": {
+        "selection": "adaptive_segmented",
+        "selected_block_tiles": [
+          1,
+          14,
+          32
+        ],
+        "lhs_window_rows": 2048,
+        "rhs_window_rows": 14336,
+        "rhs_slots": 2,
+        "rhs_slot_rows": 7168,
+        "operand_capacity_rows": 16384,
+        "accumulator_capacity_rows": 1024,
+        "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+      }
+    },
+    {
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "compared_tree": "integrated_phase3",
+      "llvm_byte_identical": true,
+      "llvm_sha256": "15442fb2ccec52b01cf39104b0e5aea4bfe8694604a83a85d16ab646b85e85e6",
+      "source_sha256": "cc76c428e0758f353d85469b2e974137853f1fba03a7576194b84de33aa9eca0",
+      "command_buffer_sha256": "0072a14328517e0beebe459e88356832353a27b61f4ceccdaff2672dcb5f9f29",
+      "kernel_sha256": "5b7fa40f805cc2762187e8d0c141618cc309f25cdaceb8cd5154f4a9511c6657",
+      "selected_variant": "frontier",
+      "selected_panel": "skinny",
+      "block": [
+        1,
+        7,
+        64
+      ],
+      "actual_issue": "prefetch_rhs_between_k_tiles",
+      "before_llvm_sha256": "15442fb2ccec52b01cf39104b0e5aea4bfe8694604a83a85d16ab646b85e85e6",
+      "deep_llvm_sha256": "1cf8dc0e82082f2cb66b416525dcd17cae46de8d519d22491f2b029125be3613",
+      "after_llvm_sha256": "15442fb2ccec52b01cf39104b0e5aea4bfe8694604a83a85d16ab646b85e85e6",
+      "registered_pass_order": [
+        "dense_frontier"
+      ],
+      "actual_schedule_options": {
+        "sha256": "d32e78cb3593390a7e149f4d82c363137979cb3164789c57c5e56b27c06e2f4c",
+        "pipeline_kind": "retained_lhs_segmented_k",
+        "prefetch": true,
+        "pipeline_issue_order": "prefetch_rhs_between_k_tiles",
+        "decisions_consumed": [
+          "block_tiles",
+          "outer_order",
+          "row_bases",
+          "panel_pipeline",
+          "pipeline_window_offsets",
+          "pipeline_issue_order",
+          "loop_transforms"
+        ]
+      },
+      "store_epoch_option": {
+        "selection": "on",
+        "applied": true,
+        "source_kernel_sha256": "2c4693c6399ef2087404c36fb0459af7f51d787bf4600c5a6a9b8fec223db4d3",
+        "kernel_sha256": "5b7fa40f805cc2762187e8d0c141618cc309f25cdaceb8cd5154f4a9511c6657",
+        "uniform_config": [
+          0,
+          2,
+          4575657221408551936
+        ],
+        "regions": [
+          {
+            "dynamic_stores": 64,
+            "checked_outer_local_stores": 1984,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          },
+          {
+            "dynamic_stores": 16,
+            "checked_outer_local_stores": 16,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          }
+        ],
+        "readiness": "real begin drain after all original producers and seeds",
+        "reuse": "real closing drain before outer loop backedges or any non-store command",
+        "data_projection": "original store operands and loop order unchanged",
+        "admission": {
+          "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+          "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "load_completion": "out_of_order",
+          "store_completion": "in_order",
+          "finite_load_entries": 8,
+          "finite_store_entries": 4,
+          "accumulator_capacity_rows": 1024,
+          "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+        }
+      },
+      "storage_partition": {
+        "selection": "adaptive_segmented",
+        "selected_block_tiles": [
+          1,
+          7,
+          64
+        ],
+        "lhs_window_rows": 2048,
+        "rhs_window_rows": 14336,
+        "rhs_slots": 2,
+        "rhs_slot_rows": 7168,
+        "operand_capacity_rows": 16384,
+        "accumulator_capacity_rows": 1024,
+        "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+      }
+    },
+    {
+      "case": "TL_mm_qkv_fused_m16k2048n2560_i8",
+      "compared_tree": "integrated_phase3",
+      "llvm_byte_identical": true,
+      "llvm_sha256": "a883f3b8d2e7a0bf5c5b6e50900fa3cd5c60d582031faa62a107128bb38bd0e4",
+      "source_sha256": "b7360cfeb66a539251416814bde7d2dc26c7664298dd881a2148e40e19de0977",
+      "command_buffer_sha256": "1072e91abc019dc672a08f93ec709b274c649fee3aee04310a318c4a8d3f8c3a",
+      "kernel_sha256": "16d52ce953109412092c6ca8c4723bada9d080c2b5dba76abb3ff86f59b90a07",
+      "selected_variant": "frontier_columns",
+      "selected_panel": "skinny",
+      "block": [
+        1,
+        7,
+        64
+      ],
+      "actual_issue": "prefetch_rhs_between_columns",
+      "before_llvm_sha256": "a883f3b8d2e7a0bf5c5b6e50900fa3cd5c60d582031faa62a107128bb38bd0e4",
+      "deep_llvm_sha256": "72a2c83071725e21f3c22703726d7f356d2c1e93345c9d5a85687b4486720a8b",
+      "after_llvm_sha256": "a883f3b8d2e7a0bf5c5b6e50900fa3cd5c60d582031faa62a107128bb38bd0e4",
+      "registered_pass_order": [
+        "dense_frontier_columns"
+      ],
+      "actual_schedule_options": {
+        "sha256": "80d505b6adfd4904a838d5e79c9ff88737cb90df5df10e83d8279435bfc399bc",
+        "pipeline_kind": "retained_lhs_segmented_k",
+        "prefetch": true,
+        "pipeline_issue_order": "prefetch_rhs_between_columns",
+        "decisions_consumed": [
+          "block_tiles",
+          "outer_order",
+          "row_bases",
+          "panel_pipeline",
+          "pipeline_window_offsets",
+          "pipeline_issue_order",
+          "loop_transforms"
+        ]
+      },
+      "store_epoch_option": {
+        "selection": "on",
+        "applied": true,
+        "source_kernel_sha256": "5b66674193945fea8d99b9eebbaedbdbb28f8487ef6a5261cf4d2f5e38ef6698",
+        "kernel_sha256": "16d52ce953109412092c6ca8c4723bada9d080c2b5dba76abb3ff86f59b90a07",
+        "uniform_config": [
+          0,
+          2,
+          4323455642275678720
+        ],
+        "regions": [
+          {
+            "dynamic_stores": 64,
+            "checked_outer_local_stores": 128,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          },
+          {
+            "dynamic_stores": 32,
+            "checked_outer_local_stores": 32,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          }
+        ],
+        "readiness": "real begin drain after all original producers and seeds",
+        "reuse": "real closing drain before outer loop backedges or any non-store command",
+        "data_projection": "original store operands and loop order unchanged",
+        "admission": {
+          "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+          "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "load_completion": "out_of_order",
+          "store_completion": "in_order",
+          "finite_load_entries": 8,
+          "finite_store_entries": 4,
+          "accumulator_capacity_rows": 1024,
+          "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+        }
+      },
+      "storage_partition": {
+        "selection": "adaptive_segmented",
+        "selected_block_tiles": [
+          1,
+          7,
+          64
+        ],
+        "lhs_window_rows": 2048,
+        "rhs_window_rows": 14336,
+        "rhs_slots": 2,
+        "rhs_slot_rows": 7168,
+        "operand_capacity_rows": 16384,
+        "accumulator_capacity_rows": 1024,
+        "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+      }
+    },
+    {
+      "case": "TL_mm_o_m16k2048n2048_raw",
+      "compared_tree": "integrated_phase3",
+      "llvm_byte_identical": true,
+      "llvm_sha256": "bd9fc0348552287ef5a09dd97e09ff5d7c789ad8be2c35c3416bfb950ea9817d",
+      "source_sha256": "c68412ba202ffd0b7b2d48bc4ad98988542d14fabdf3e4235a098db472dc6b10",
+      "command_buffer_sha256": "f5bee143b74195dce2cd4632961fe9c339c6fb9bb432141a0acbd8d2bc138d97",
+      "kernel_sha256": "b493b0a9ed3abf1764d70b78681f6cffb8a2010e3d7afc5b1bae46d48d85ae07",
+      "selected_variant": "frontier_columns",
+      "selected_panel": "skinny",
+      "block": [
+        1,
+        7,
+        64
+      ],
+      "actual_issue": "prefetch_rhs_between_columns",
+      "before_llvm_sha256": "bd9fc0348552287ef5a09dd97e09ff5d7c789ad8be2c35c3416bfb950ea9817d",
+      "deep_llvm_sha256": "81ac6237498435a0cc7dbec8de3d89fc19d4ad48eba87abcc72e6b3a4a65d203",
+      "after_llvm_sha256": "bd9fc0348552287ef5a09dd97e09ff5d7c789ad8be2c35c3416bfb950ea9817d",
+      "registered_pass_order": [
+        "dense_frontier_columns"
+      ],
+      "actual_schedule_options": {
+        "sha256": "912b9a4fc43d982b97776650019e65e411a6bff7603e22dcc6251a666225fb6e",
+        "pipeline_kind": "retained_lhs_segmented_k",
+        "prefetch": true,
+        "pipeline_issue_order": "prefetch_rhs_between_columns",
+        "decisions_consumed": [
+          "block_tiles",
+          "outer_order",
+          "row_bases",
+          "panel_pipeline",
+          "pipeline_window_offsets",
+          "pipeline_issue_order",
+          "loop_transforms"
+        ]
+      },
+      "store_epoch_option": {
+        "selection": "on",
+        "applied": true,
+        "source_kernel_sha256": "83829ccfa5396c74602a9ac381a2fec8725cf292165f91bb22c696255952db9d",
+        "kernel_sha256": "b493b0a9ed3abf1764d70b78681f6cffb8a2010e3d7afc5b1bae46d48d85ae07",
+        "uniform_config": [
+          0,
+          2,
+          4575657221408432128
+        ],
+        "regions": [
+          {
+            "dynamic_stores": 64,
+            "checked_outer_local_stores": 128,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          }
+        ],
+        "readiness": "real begin drain after all original producers and seeds",
+        "reuse": "real closing drain before outer loop backedges or any non-store command",
+        "data_projection": "original store operands and loop order unchanged",
+        "admission": {
+          "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+          "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "load_completion": "out_of_order",
+          "store_completion": "in_order",
+          "finite_load_entries": 8,
+          "finite_store_entries": 4,
+          "accumulator_capacity_rows": 1024,
+          "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+        }
+      },
+      "storage_partition": {
+        "selection": "adaptive_segmented",
+        "selected_block_tiles": [
+          1,
+          7,
+          64
+        ],
+        "lhs_window_rows": 2048,
+        "rhs_window_rows": 14336,
+        "rhs_slots": 2,
+        "rhs_slot_rows": 7168,
+        "operand_capacity_rows": 16384,
+        "accumulator_capacity_rows": 1024,
+        "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+      }
+    },
+    {
+      "case": "TL_mm_down_m16k5632n2048_raw",
+      "compared_tree": "integrated_phase3",
+      "llvm_byte_identical": true,
+      "llvm_sha256": "b96c1269e63cca558a279d06a2bd9b1c81d13919d3091c5fde34b0047c2db325",
+      "source_sha256": "76481b18366c11b229dbf91a942a62c0a6c429b2bb52f4982ed80e173af56f1e",
+      "command_buffer_sha256": "d898a1c577c0f8e5cf6d308fc0bb53fde914463c15823e3addbf2843682b9fa5",
+      "kernel_sha256": "041fb63bf10c447f29e7a7ea052bdaa7740756eae176bf93844457ae7777cd0c",
+      "selected_variant": "frontier_columns",
+      "selected_panel": "skinny",
+      "block": [
+        1,
+        5,
+        64
+      ],
+      "actual_issue": "prefetch_rhs_between_columns",
+      "before_llvm_sha256": "b96c1269e63cca558a279d06a2bd9b1c81d13919d3091c5fde34b0047c2db325",
+      "deep_llvm_sha256": "ae0200976918f08372b451e29d8c459c312703f2eb97db00dfcbb6140123d7e3",
+      "after_llvm_sha256": "b96c1269e63cca558a279d06a2bd9b1c81d13919d3091c5fde34b0047c2db325",
+      "registered_pass_order": [
+        "dense_frontier_columns"
+      ],
+      "actual_schedule_options": {
+        "sha256": "91b7b627fe65b8d171fb98b42451d183cfe542d153093bfa38f6c1f4323e8b47",
+        "pipeline_kind": "retained_lhs_segmented_k",
+        "prefetch": true,
+        "pipeline_issue_order": "prefetch_rhs_between_columns",
+        "decisions_consumed": [
+          "block_tiles",
+          "outer_order",
+          "row_bases",
+          "panel_pipeline",
+          "pipeline_window_offsets",
+          "pipeline_issue_order",
+          "loop_transforms"
+        ]
+      },
+      "store_epoch_option": {
+        "selection": "on",
+        "applied": true,
+        "source_kernel_sha256": "54cd79249de5d6889f739384fa7a66ff75d7441487e9b0135f405d57c3659123",
+        "kernel_sha256": "041fb63bf10c447f29e7a7ea052bdaa7740756eae176bf93844457ae7777cd0c",
+        "uniform_config": [
+          0,
+          2,
+          4575657221408432128
+        ],
+        "regions": [
+          {
+            "dynamic_stores": 64,
+            "checked_outer_local_stores": 128,
+            "enumeration_bound": 1000000,
+            "solver_queries": 0,
+            "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+          }
+        ],
+        "readiness": "real begin drain after all original producers and seeds",
+        "reuse": "real closing drain before outer loop backedges or any non-store command",
+        "data_projection": "original store operands and loop order unchanged",
+        "admission": {
+          "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+          "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "load_completion": "out_of_order",
+          "store_completion": "in_order",
+          "finite_load_entries": 8,
+          "finite_store_entries": 4,
+          "accumulator_capacity_rows": 1024,
+          "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+        }
+      },
+      "storage_partition": {
+        "selection": "adaptive_segmented",
+        "selected_block_tiles": [
+          1,
+          5,
+          64
+        ],
+        "lhs_window_rows": 5632,
+        "rhs_window_rows": 10752,
+        "rhs_slots": 2,
+        "rhs_slot_rows": 5120,
+        "operand_capacity_rows": 16384,
+        "accumulator_capacity_rows": 1024,
+        "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+      }
+    }
+  ],
+  "native_pairs": [
+    {
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "classification": "high-aspect M1 preservation",
+      "comparison": {
+        "case": "JT_tiny_decode_m1k2048n32000_raw",
+        "complete_identity_matched": false,
+        "complete_status": [
+          "UNKNOWN",
+          "UNKNOWN"
+        ],
+        "fast_estimate_coefficients_matched": true,
+        "fast_estimate_full_calibration_identical": false,
+        "fast_estimate_cycles": [
+          20744917,
+          20749126
+        ],
+        "fast_estimate_intervals": [
+          [
+            10185754,
+            25889656
+          ],
+          [
+            10208570,
+            25894909
+          ]
+        ],
+        "fast_estimate_change_percent": 0.02028930749637947
+      },
+      "runs": {
+        "wide": {
+          "request": "2_1793257208025988045_7da4c944e5abcf056ced1e1bfbea5cb9",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "997df89f49ecf876bbc82a3a6ba8bb56457ba2df2306d282de401d36a34a6d55",
+          "diagnostics": {},
+          "performance": {
+            "status": "UNKNOWN",
+            "complete_event_accounting": false,
+            "estimated_whole_soc_cycles": null,
+            "model_sha256": null,
+            "comparison_domain_sha256": null,
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": null,
+            "elf_sha256": null,
+            "reason": "observation budget too small (needed ~1755 s, 1605 s available here); the background timing lane observes it with a budget that fits",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 26.9087,
+                "cycles_per_fence": 29.3441,
+                "median_abs_log_error": 0.2332,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.491,
+                  "p25": 0.635,
+                  "p50": 0.833,
+                  "p75": 1.038,
+                  "p90": 1.248
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 770164,
+                "complete": true,
+                "fences": 709,
+                "sites": 64,
+                "unproved_sites": 0
+              },
+              "cycles": 20744917,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 25889656,
+              "limited_by": "command issue",
+              "low_cycles": 10185754,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 20724112.0,
+                "fence_drain_cycles": 20805.0,
+                "structural_floor_cycles": 4096128.0
+              }
+            }
+          }
+        },
+        "deep": {
+          "request": "2_1793257198640400220_78d61289b8a6d270901cc1d9e6e8f7db",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "8bda62acb532cd54e29eee29b9d1d7b80afdbd6527d317c2b9aa487749f6ed94",
+          "diagnostics": {},
+          "performance": {
+            "status": "UNKNOWN",
+            "complete_event_accounting": false,
+            "estimated_whole_soc_cycles": null,
+            "model_sha256": null,
+            "comparison_domain_sha256": null,
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": null,
+            "elf_sha256": null,
+            "reason": "observation budget too small (needed ~1755 s, 1606 s available here); the background timing lane observes it with a budget that fits",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 26.9087,
+                "cycles_per_fence": 29.3441,
+                "median_abs_log_error": 0.2332,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.492,
+                  "p25": 0.635,
+                  "p50": 0.833,
+                  "p75": 1.038,
+                  "p90": 1.248
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 770195,
+                "complete": true,
+                "fences": 824,
+                "sites": 72,
+                "unproved_sites": 0
+              },
+              "cycles": 20749126,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 25894909,
+              "limited_by": "command issue",
+              "low_cycles": 10208570,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 20724946.2,
+                "fence_drain_cycles": 24179.5,
+                "structural_floor_cycles": 4096128.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "TL_mm_gu_fused_m16k2048n11264_i8",
+      "classification": "positive training",
+      "comparison": {
+        "case": "TL_mm_gu_fused_m16k2048n11264_i8",
+        "complete_identity_matched": true,
+        "complete_status": [
+          "PROVISIONAL",
+          "PROVISIONAL"
+        ],
+        "fast_estimate_coefficients_matched": true,
+        "fast_estimate_full_calibration_identical": true,
+        "fast_estimate_cycles": [
+          7304430,
+          7306017
+        ],
+        "fast_estimate_intervals": [
+          [
+            3593780,
+            9115929
+          ],
+          [
+            3594560,
+            9117909
+          ]
+        ],
+        "fast_estimate_change_percent": 0.021726541290689738,
+        "complete_cycles": [
+          6598830,
+          5997143
+        ],
+        "complete_change_percent": -9.118086084957488
+      },
+      "runs": {
+        "wide": {
+          "request": "2_1793257208025988045_7da4c944e5abcf056ced1e1bfbea5cb9",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "5f61a88ff69061fcfad1bb293ad50eac1e7f26de7f6d37345eab6de83129f9ab",
+          "diagnostics": {
+            "target.commands": 271183,
+            "target.fences": 247,
+            "target.nominal_padded_macs": 369098752,
+            "target.posted.modeled_raw_source_wait_cycles": 5065978,
+            "target.posted.modeled_target_fence_wait_cycles": 103250,
+            "target.posted.mshr_admission.device_read.wait_cycles": 15322229,
+            "target.requested_read_bytes": 23101440,
+            "target.requested_write_bytes": 180224,
+            "target.useful_shape_macs": 369098752
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 6598830,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "60b9d9c0c6e5da9e95dc3eccb2879497f576df903ecb0e9fcbd64ddeb6cae839",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 26.9087,
+                "cycles_per_fence": 29.3441,
+                "median_abs_log_error": 0.2332,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.492,
+                  "p25": 0.635,
+                  "p50": 0.833,
+                  "p75": 1.038,
+                  "p90": 1.248
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 271183,
+                "complete": true,
+                "fences": 247,
+                "sites": 37,
+                "unproved_sites": 0
+              },
+              "cycles": 7304430,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 9115929,
+              "limited_by": "command issue",
+              "low_cycles": 3593780,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 7297182.0,
+                "fence_drain_cycles": 7248.0,
+                "structural_floor_cycles": 1443840.0
+              }
+            }
+          }
+        },
+        "deep": {
+          "request": "2_1793257198640400220_78d61289b8a6d270901cc1d9e6e8f7db",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "797f5f617d8c24ac3026eecb21cb0a5eb145ddf3a67a6392be664111d6fb6533",
+          "diagnostics": {
+            "target.commands": 271194,
+            "target.fences": 291,
+            "target.nominal_padded_macs": 369098752,
+            "target.posted.modeled_raw_source_wait_cycles": 4427211,
+            "target.posted.modeled_target_fence_wait_cycles": 107468,
+            "target.posted.mshr_admission.device_read.wait_cycles": 15315236,
+            "target.requested_read_bytes": 23101440,
+            "target.requested_write_bytes": 180224,
+            "target.useful_shape_macs": 369098752
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 5997143,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "eab9d2e14bbf34198fa71076554ba16b477c6c47fd30029eb94300b495d23a31",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 26.9087,
+                "cycles_per_fence": 29.3441,
+                "median_abs_log_error": 0.2332,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.492,
+                  "p25": 0.635,
+                  "p50": 0.833,
+                  "p75": 1.038,
+                  "p90": 1.248
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 271194,
+                "complete": true,
+                "fences": 291,
+                "sites": 41,
+                "unproved_sites": 0
+              },
+              "cycles": 7306017,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 9117909,
+              "limited_by": "command issue",
+              "low_cycles": 3594560,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 7297478.0,
+                "fence_drain_cycles": 8539.1,
+                "structural_floor_cycles": 1443840.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "TL_mm_down_m16k5632n2048_raw",
+      "classification": "negative development",
+      "comparison": {
+        "case": "TL_mm_down_m16k5632n2048_raw",
+        "complete_identity_matched": true,
+        "complete_status": [
+          "PROVISIONAL",
+          "PROVISIONAL"
+        ],
+        "fast_estimate_coefficients_matched": true,
+        "fast_estimate_full_calibration_identical": true,
+        "fast_estimate_cycles": [
+          3074393,
+          3074695
+        ],
+        "fast_estimate_intervals": [
+          [
+            1758553,
+            4258035
+          ],
+          [
+            1758725,
+            4258452
+          ]
+        ],
+        "fast_estimate_change_percent": 0.009823077270865177,
+        "complete_cycles": [
+          2820766,
+          2832162
+        ],
+        "complete_change_percent": 0.4040037351556336
+      },
+      "runs": {
+        "wide": {
+          "request": "2_1793257645194081520_1c7628762995e0a8e1b01ba9da781ce4",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "72212483920e4a67ac78d883b4cbbc10afaa29d92535eb4a3fe47e20823952cb",
+          "diagnostics": {
+            "target.commands": 135654,
+            "target.fences": 153,
+            "target.nominal_padded_macs": 184549376,
+            "target.posted.modeled_raw_source_wait_cycles": 2159764,
+            "target.posted.modeled_target_fence_wait_cycles": 70490,
+            "target.posted.mshr_admission.device_read.wait_cycles": 7775939,
+            "target.requested_read_bytes": 11624448,
+            "target.requested_write_bytes": 131072,
+            "target.useful_shape_macs": 184549376
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 2820766,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "2b5466d0dedcc5dff50b6b0a9b7ff262fce05f8cc7a4fb9a54875af8373f0586",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 135654,
+                "complete": true,
+                "fences": 153,
+                "sites": 37,
+                "unproved_sites": 0
+              },
+              "cycles": 3074393,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 4258035,
+              "limited_by": "command issue",
+              "low_cycles": 1758553,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 3069497.3,
+                "fence_drain_cycles": 4896.0,
+                "structural_floor_cycles": 726528.0
+              }
+            }
+          }
+        },
+        "deep": {
+          "request": "2_1793257643803774207_3a9a12d715e4e60afe12cd915f6cc7ae",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "07ab09afb80c70f513484c7486401066dc0fd49b29142d9e02996d982614eadf",
+          "diagnostics": {
+            "target.commands": 135656,
+            "target.fences": 161,
+            "target.nominal_padded_macs": 184549376,
+            "target.posted.modeled_raw_source_wait_cycles": 2156328,
+            "target.posted.modeled_target_fence_wait_cycles": 71387,
+            "target.posted.mshr_admission.device_read.wait_cycles": 7776929,
+            "target.requested_read_bytes": 11624448,
+            "target.requested_write_bytes": 131072,
+            "target.useful_shape_macs": 184549376
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 2832162,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "4f72c0e45a20828eab9d83543877837b930fa69c0111621742377ffa924b1073",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 135656,
+                "complete": true,
+                "fences": 161,
+                "sites": 41,
+                "unproved_sites": 0
+              },
+              "cycles": 3074695,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 4258452,
+              "limited_by": "command issue",
+              "low_cycles": 1758725,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 3069542.6,
+                "fence_drain_cycles": 5152.0,
+                "structural_floor_cycles": 726528.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "TL_mm_o_m16k2048n2048_raw",
+      "classification": "negative development",
+      "comparison": {
+        "case": "TL_mm_o_m16k2048n2048_raw",
+        "complete_identity_matched": true,
+        "complete_status": [
+          "PROVISIONAL",
+          "PROVISIONAL"
+        ],
+        "fast_estimate_coefficients_matched": true,
+        "fast_estimate_full_calibration_identical": true,
+        "fast_estimate_cycles": [
+          1119678,
+          1119980
+        ],
+        "fast_estimate_intervals": [
+          [
+            640456,
+            1550755
+          ],
+          [
+            640628,
+            1551172
+          ]
+        ],
+        "fast_estimate_change_percent": 0.026972040175832213,
+        "complete_cycles": [
+          1076033,
+          1088818
+        ],
+        "complete_change_percent": 1.1881605861530309
+      },
+      "runs": {
+        "wide": {
+          "request": "2_1793257645194081520_1c7628762995e0a8e1b01ba9da781ce4",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "cdc79abd631e34db1a80d1f6efb9861ca0f1cd4a6ada4a595fd6565b2e9d68fb",
+          "diagnostics": {
+            "target.commands": 49414,
+            "target.fences": 49,
+            "target.nominal_padded_macs": 67108864,
+            "target.posted.modeled_raw_source_wait_cycles": 840048,
+            "target.posted.modeled_target_fence_wait_cycles": 20107,
+            "target.posted.mshr_admission.device_read.wait_cycles": 2984979,
+            "target.requested_read_bytes": 4227072,
+            "target.requested_write_bytes": 131072,
+            "target.useful_shape_macs": 67108864
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 1076033,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "d3021de6e9fe687349929fe73caf9061577fbc1b3354fa31b0606366ed1b0724",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 49414,
+                "complete": true,
+                "fences": 49,
+                "sites": 37,
+                "unproved_sites": 0
+              },
+              "cycles": 1119678,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 1550755,
+              "limited_by": "command issue",
+              "low_cycles": 640456,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 1118110.3,
+                "fence_drain_cycles": 1568.0,
+                "structural_floor_cycles": 264192.0
+              }
+            }
+          }
+        },
+        "deep": {
+          "request": "2_1793257643803774207_3a9a12d715e4e60afe12cd915f6cc7ae",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "bdb9a65f388b6d4625fc3ac4664d3bcfd558682826c1ca87d6469a462638a482",
+          "diagnostics": {
+            "target.commands": 49416,
+            "target.fences": 57,
+            "target.nominal_padded_macs": 67108864,
+            "target.posted.modeled_raw_source_wait_cycles": 844458,
+            "target.posted.modeled_target_fence_wait_cycles": 21166,
+            "target.posted.mshr_admission.device_read.wait_cycles": 2983931,
+            "target.requested_read_bytes": 4227072,
+            "target.requested_write_bytes": 131072,
+            "target.useful_shape_macs": 67108864
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 1088818,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "8a6e82aa1ae6313b7f62a7b8e6b729f6f41c5c0b9e89011c9f6f7786e1557e01",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 49416,
+                "complete": true,
+                "fences": 57,
+                "sites": 41,
+                "unproved_sites": 0
+              },
+              "cycles": 1119980,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 1551172,
+              "limited_by": "command issue",
+              "low_cycles": 640628,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 1118155.6,
+                "fence_drain_cycles": 1824.0,
+                "structural_floor_cycles": 264192.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "TL_mm_qkv_fused_m16k2048n2560_i8",
+      "classification": "negative development",
+      "comparison": {
+        "case": "TL_mm_qkv_fused_m16k2048n2560_i8",
+        "complete_identity_matched": true,
+        "complete_status": [
+          "PROVISIONAL",
+          "PROVISIONAL"
+        ],
+        "fast_estimate_coefficients_matched": true,
+        "fast_estimate_full_calibration_identical": true,
+        "fast_estimate_cycles": [
+          1399175,
+          1399188
+        ],
+        "fast_estimate_intervals": [
+          [
+            800328,
+            1937857
+          ],
+          [
+            800335,
+            1937875
+          ]
+        ],
+        "fast_estimate_change_percent": 0.0009291189450921777,
+        "complete_cycles": [
+          1328684,
+          1343051
+        ],
+        "complete_change_percent": 1.081295477329447
+      },
+      "runs": {
+        "wide": {
+          "request": "2_1793257645194081520_1c7628762995e0a8e1b01ba9da781ce4",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "cc74443c390eb0055cb1f523738fa436a16d59f79d87f36147d80fb35a543526",
+          "diagnostics": {
+            "target.commands": 61735,
+            "target.fences": 71,
+            "target.nominal_padded_macs": 83886080,
+            "target.posted.modeled_raw_source_wait_cycles": 1026403,
+            "target.posted.modeled_target_fence_wait_cycles": 29177,
+            "target.posted.mshr_admission.device_read.wait_cycles": 3677053,
+            "target.requested_read_bytes": 5275648,
+            "target.requested_write_bytes": 40960,
+            "target.useful_shape_macs": 83886080
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 1328684,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "c4c68ccb38d64499b31f28ea014556164f915c5640c3b79af7f0b7aa0370daab",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 61735,
+                "complete": true,
+                "fences": 71,
+                "sites": 64,
+                "unproved_sites": 0
+              },
+              "cycles": 1399175,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 1937857,
+              "limited_by": "command issue",
+              "low_cycles": 800328,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 1396902.5,
+                "fence_drain_cycles": 2272.0,
+                "structural_floor_cycles": 329728.0
+              }
+            }
+          }
+        },
+        "deep": {
+          "request": "2_1793257643803774207_3a9a12d715e4e60afe12cd915f6cc7ae",
+          "numerics": "pass",
+          "tiers": {
+            "L0": "skipped",
+            "L1": "skipped",
+            "L2": "pass"
+          },
+          "detail_sha256": "134e7c078d9765b396a0c950afa2013c66bdbf10ade4d4f32141bcd0fd4f8076",
+          "diagnostics": {
+            "target.commands": 61737,
+            "target.fences": 70,
+            "target.nominal_padded_macs": 83886080,
+            "target.posted.modeled_raw_source_wait_cycles": 1040619,
+            "target.posted.modeled_target_fence_wait_cycles": 25608,
+            "target.posted.mshr_admission.device_read.wait_cycles": 3658649,
+            "target.requested_read_bytes": 5275648,
+            "target.requested_write_bytes": 40960,
+            "target.useful_shape_macs": 83886080
+          },
+          "performance": {
+            "status": "PROVISIONAL",
+            "complete_event_accounting": true,
+            "estimated_whole_soc_cycles": 1343051,
+            "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+            "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+            "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+            "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+            "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+            "elf_sha256": "31222c438e25c7522923d327ae9ddf384e4babdbffcc16a95e6d79de9dded382",
+            "reason": "native timing is provisional pending independent qualification",
+            "fast_estimate": {
+              "band": "p10-p90 of complete/estimated over the calibration pairs",
+              "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+              "calibration": {
+                "cycles_per_command": 22.6274,
+                "cycles_per_fence": 32.0,
+                "median_abs_log_error": 0.2257,
+                "pairs": 512,
+                "ratio_quantiles": {
+                  "p10": 0.572,
+                  "p25": 0.736,
+                  "p50": 0.95,
+                  "p75": 1.203,
+                  "p90": 1.385
+                },
+                "source": "this run's complete timing-model estimates"
+              },
+              "census": {
+                "commands": 61737,
+                "complete": true,
+                "fences": 70,
+                "sites": 41,
+                "unproved_sites": 0
+              },
+              "cycles": 1399188,
+              "evidence_kind": "fast_estimate",
+              "high_cycles": 1937875,
+              "limited_by": "command issue",
+              "low_cycles": 800335,
+              "lower_bound": false,
+              "schema": "merlin.phase1.fast_estimate.v1",
+              "status": "ESTIMATED",
+              "terms": {
+                "command_issue_cycles": 1396947.8,
+                "fence_drain_cycles": 2240.0,
+                "structural_floor_cycles": 329728.0
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "source_neighbor_checks": [
+    {
+      "shape": [
+        8,
+        2064,
+        11504
+      ],
+      "actual": "deep",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        13,
+        32
+      ],
+      "kernel_sha256": "9542b59f7ca78c044c4d2508894919193badbbb3f5b08a94c96380ede9150b9b",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        16,
+        2048,
+        12288
+      ],
+      "actual": "deep",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        14,
+        32
+      ],
+      "kernel_sha256": "1e0defbea6a88dd6b95136c0786fad6503ba3702d74a94e0464abef41c01aea5",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        1,
+        2064,
+        11504
+      ],
+      "actual": "wide",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        7,
+        63
+      ],
+      "kernel_sha256": "0dea32cbc7e2941215e09cd94627da18a5c279abe86e07681aa647c728340267",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        12288
+      ],
+      "actual": "wide",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        7,
+        64
+      ],
+      "kernel_sha256": "75e34d6300a8fd9245ab6a54cdd4b9cdb3071d28096df0a281be82e66b80e765",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        16,
+        2048,
+        6144
+      ],
+      "actual": "wide",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        7,
+        64
+      ],
+      "kernel_sha256": "9392a48a92365d9f07c59a91cf0e114a93861a60770ab642826d940db01a9e57",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        16,
+        2048,
+        6145
+      ],
+      "actual": "deep",
+      "selected_pipeline": "segmented",
+      "block": [
+        1,
+        14,
+        32
+      ],
+      "kernel_sha256": "547aadd2127bdd1c2d0032d6d7ff13f6338c6e9bbac7647f781e62d9a125c934",
+      "timing": "UNKNOWN"
+    },
+    {
+      "shape": [
+        17,
+        2048,
+        11264
+      ],
+      "actual": "incumbent",
+      "selected_pipeline": "retained",
+      "block": null,
+      "kernel_sha256": "da407aeedc78473d179d6e5e65c0d079b2ec2b4139a17d03504e6436c5d585e5",
+      "timing": "UNKNOWN"
+    }
+  ],
+  "independent_numerics": {
+    "shape": [
+      2,
+      2051,
+      6154
+    ],
+    "selected": "segmented",
+    "outputs": 12308,
+    "macs": 25243708,
+    "reference": "independent signed integer source functions; exact output periodicity reduces test reference work; never part of compilation"
+  },
+  "issue_override_checks": [
+    {
+      "forced_issue": "prefetch_rhs_between_columns",
+      "selected_panel": "skinny",
+      "selected_variant": "frontier",
+      "kernel_sha256": "89245c5180466b4d6d8fd5ac11ca1c0c8fdd7b6b5feea99600e1d50d0fa48945"
+    },
+    {
+      "forced_issue": "prefetch_rhs_between_k_tiles",
+      "selected_panel": "skinny_deep",
+      "selected_variant": "frontier_deep",
+      "kernel_sha256": "166d871917b0e7e5fa7fb38e2806bfd2e64f2707ecdae862af8b3e039d8fbad9"
+    }
+  ],
+  "copy_pipeline": "n/a for current dense kernel: requires straight-line explicit token-copy/wait Calls; counted loops, arithmetic descriptors and ownership drains do not meet the contract. No fabricated token adapter, no simulated timing and no CPU contraction fallback.",
+  "limitations": [
+    "Only one positive complete-cycle shape supports deep. New M8/K2064/N11504 and M16/K2048/N12288 source geometries have exact source/ownership verification and independent numeric witness, timing UNKNOWN.",
+    "No fresh inside-positive public-cycle holdout exists in current untouched roster. M>1 generalization remains a provisional compiler tuning hypothesis.",
+    "JT complete timing remains UNKNOWN; order preserves its incumbent program. New public capsules/contracts and arbitrary target simulation were not introduced.",
+    "The columns boundary derives from existing issue policy, not a newly fitted aspect threshold. Forced issue overrides retain ordinary meaning.",
+    "No measured gSIM speedup or physical occupancy claimed."
+  ],
+  "correctness_risk": "No known correctness regression for checked supported programs. Geometry changes retain exact per-compilation source/storage/epoch proofs; unknown/unavailable proof preserves checked incumbent. Other unsupported numerical or schedule contracts retain original checker/refusal. Timing generalization has one positive complete-cycle shape and no fresh positive cycle holdout; no physical occupancy or gSIM gain claimed.",
+  "test_sources": {
+    "check_order_policy.py": "7a37cddc2bde974653bc9fe2997e4c00df0d44302fb2980969bdb68f8223b309",
+    "check_emission.py": "e4c2a548d623f0cd79410dafc21e7bf5f5756219e240649daa2324e07b49c348",
+    "check_neighbors.py": "7cd418800a079477be277ee0bce52b9a32fd5174bfe54e81cab317290157c248"
+  }
+}

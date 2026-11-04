@@ -1,0 +1,58 @@
+{
+  "schema": "rank6-dependencies-integration.v1",
+  "parent_snapshot": "variants/final_selected",
+  "functional_snapshot": "variants/integrated_rank6",
+  "selected_snapshot": "variants/integrated_rank6_dependencies",
+  "selected_inventory_sha256": "05e722f63cf0863c9ff3944e97b4c2a5b75cc91081e2b6d39a5f848c979a7f7f",
+  "actual_selections": {
+    "CONV_INPUT_READY_DEPENDENCIES": "on",
+    "ATTENTION_STATIC_FRAGMENTS": "on"
+  },
+  "implementation_files": {
+    "backend/conv_rolling_rows.py": "3538bfb6cf3f92a21a7c021c65a8e199de6d7eeaadcea29b3cdca0f1409de30f",
+    "backend/conv_input_dependencies.py": "ebe7b35379b826e413eebfaf9fc059a3aa81b39b9cbf189a3a7afff84a5dce5a",
+    "backend/shared_rhs_scattered_readout.py": "747a13261ce073aae8889370ade46acf08909421b3f27d1e4b7e6fdee5adf839",
+    "backend/transpose.py": "61273e50f30eb7a45016cffef8768d4ad911187cf0f8903dfed5efc88e801793",
+    "backend/transpose_proof.py": "ca9649dde2bcf0bc45bae8c0bb9caf173f754e6a48dccf1e0c9d5b3db69b806d",
+    "backend/frontend.py": "93f7382a0171dee82fcf0410d3dab96577d04901004e6307c47f618727351c14",
+    "backend/source_groups.py": "6cb134b450f0572a5904efbc844f4696382bb3bccdba901e8c01471717b9c8a6",
+    "backend/elementwise.py": "b4ddc8c9058ca3251d0c7d1b0a974869f70a91cdc2446524ae2ff76c1fcd0a58"
+  },
+  "actual_pass_paths": {
+    "conv": [
+      "Original typed NHWC window/addresses and row-ring capacity admission",
+      "Original RHS phase/residency and exact CONFIG-word readout-epoch admission",
+      "Materialize and verify actual rolling-window SCF",
+      "Await/Consume -> Dependency/Read; all Complete preserved",
+      "Verify exact reverse projection and selected RAW law",
+      "Emit actual transformed SCF using original RHS preparation and compute-epoch functions",
+      "Original terminal encoder and real completion fences"
+    ],
+    "attention": [
+      "Original source shared-RHS packing and dense schedule selection",
+      "Verify actual finite terminal calls, original row/ACC partition, complete unique coverage and store epochs",
+      "Specialize original member fragments only if every actual store has row0 and rows=M<=DIM",
+      "Emit via original CONFIG/MVOUT encoder and closing completion edges"
+    ]
+  },
+  "emission_check": "emission_identities.json",
+  "emission_note": "Four actual CLI pairs are byte-identical between isolated alternatives and combined compiler. Initial attempted comparison to direct compile_buffer products differed by the CLI address-space flush prologue; corrected comparison uses the same CLI and flags in both arms.",
+  "checks": {
+    "rank_extension": "artifacts/rank6_integration/integration_report.json",
+    "affected_core": "2_1793263823404866002_e0ea716f44b934cb86fe53826da71558",
+    "integrated_gqa": "2_1793263823402376671_e2f21b5e96ef77b4766b06bb34bbd16d",
+    "resnet_replay": "2_1793263823397695602_2a316b1d9a365b57",
+    "physical_ledger": "physical_ledger.json",
+    "physical_pairs": "physical_cycle_pairs.json"
+  },
+  "result": {
+    "affected_core_L2_passes": 2,
+    "GQA_L2_pass": true,
+    "GQA_complete_provisional_modeled_cycles": 411727,
+    "resnet_built_kernels": 24,
+    "resnet_exact_calls": 45,
+    "native_required_tier_passes": 6,
+    "changed_gsim_required_tier_passes": 2
+  },
+  "scope": "Modeled complete call, measured correctness-shape gSIM, native verification, authored LLVM equivalence and model kernel replay are distinct. No complete-chain latency/full-model execution inferred. Three historical instruction-trace conflicts remain. No new unlisted synthetic physical checks."
+}

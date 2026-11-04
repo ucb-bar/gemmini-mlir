@@ -1,0 +1,721 @@
+{
+  "hypothesis": "Complete compute epochs already incumbent; use separately proven uniform readout epochs across disjoint N ACC windows",
+  "mechanism": "ConvolutionReadoutEpochLaw consumed by emit_convolution_schedule and unchanged store_tile terminal encoder",
+  "selection": "CONV_ROLLING_EPOCHS=on iff source-bound row-ring/readout admission succeeds; off default pending parent promotion",
+  "incumbent": "variants/integrated_phase3",
+  "variants": {
+    "off": "variants/conv_rolling_epochs_off",
+    "on": "variants/conv_rolling_epochs_on"
+  },
+  "requests": {
+    "off": "3_1793257331187537571_69137e8a58df518bd3383b30a5678174",
+    "on": "3_1793257330027717956_faeadf8ee678898be13d61e1278f7bba"
+  },
+  "evidence": "modeled: Spike timing model; complete kernel-call scope; PROVISIONAL, not gSIM measurement",
+  "rows": [
+    {
+      "off": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 2251808,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "13424141b581c980165a95ce917914082d3ab6035dcb59481be793997ac1df8b",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "6a1bd79ba7b4dd7e8e4ad8d4c083841c1594e8b614f62f48a3beb4e3dc3f40ee",
+        "diagnostic_command_census": {
+          "commands": 155109,
+          "complete": true,
+          "fences": 853,
+          "sites": 860,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 3537009,
+          "low_cycles": 1973651,
+          "high_cycles": 4898758,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "on": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 2239690,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "13424141b581c980165a95ce917914082d3ab6035dcb59481be793997ac1df8b",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "883ebad8a79883f5eeee6fd6c7eae09f2b4fb21dabd353a35402444492f1c853",
+        "diagnostic_command_census": {
+          "commands": 155109,
+          "complete": true,
+          "fences": 258,
+          "sites": 690,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 3517969,
+          "low_cycles": 1963027,
+          "high_cycles": 4872388,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "capsule": "RN_conv3x3_s1p1_c512_h7_i8",
+      "cycle_reduction_pct": 0.5381453480936216,
+      "speedup": 1.005410570212842
+    },
+    {
+      "off": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 841665,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "3e59b7b6d42fb23c2047204436738b3b3483706e3518aa50cce0e40154b737f3",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "88d32f28568e7456aa00084b418ba72b5267e12d1def534f7f85ea56a05975b2",
+        "diagnostic_command_census": {
+          "commands": 71877,
+          "complete": true,
+          "fences": 1406,
+          "sites": 335,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 1975374,
+          "low_cycles": 969909,
+          "high_cycles": 2465267,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "on": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 817432,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "3e59b7b6d42fb23c2047204436738b3b3483706e3518aa50cce0e40154b737f3",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "6e9d2e2d5f8744c3b352ba3294bab03cbfd5ff409a498494ba9624b7507162f2",
+        "diagnostic_command_census": {
+          "commands": 71877,
+          "complete": true,
+          "fences": 118,
+          "sites": 243,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 1937579,
+          "low_cycles": 951351,
+          "high_cycles": 2418099,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "capsule": "RN_conv3x3_s2p1_c128_h56_i8",
+      "cycle_reduction_pct": 2.879174018166375,
+      "speedup": 1.0296452793626871
+    },
+    {
+      "off": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 3079277,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "47a031264ee27854e5747bb4eb5a5bb33f021569783597aae599690dafe0a6c6",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "f0617b156fb9266b0b015c46538340e6c003c1dce81973618a83640d7e4249c7",
+        "diagnostic_command_census": {
+          "commands": 269189,
+          "complete": true,
+          "fences": 3035,
+          "sites": 344,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6188167,
+          "low_cycles": 3452997,
+          "high_cycles": 8570612,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "on": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 3023804,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "47a031264ee27854e5747bb4eb5a5bb33f021569783597aae599690dafe0a6c6",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "ef4119dec953d38f72c3c3bd2ae0af1d7ffec42324db62f7321f36756db74408",
+        "diagnostic_command_census": {
+          "commands": 269189,
+          "complete": true,
+          "fences": 515,
+          "sites": 254,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6107527,
+          "low_cycles": 3456860,
+          "high_cycles": 8458925,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "capsule": "ZA_conv_3x3x14x14x256x256x4_native_i8",
+      "cycle_reduction_pct": 1.8014943118141002,
+      "speedup": 1.018345435087724
+    },
+    {
+      "off": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 3197913,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "ab702f9bbb41c88a748a5d04b7eb739a7d41b587b5bf2ade6558d85e2bb014df",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "94bf8f98b5bd034d82f0a78e71235045dfa3dec23697871a6f24e2b48247e3b5",
+        "diagnostic_command_census": {
+          "commands": 267845,
+          "complete": true,
+          "fences": 5606,
+          "sites": 319,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6240028,
+          "low_cycles": 3519376,
+          "high_cycles": 8642439,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "on": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 3095006,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "ab702f9bbb41c88a748a5d04b7eb739a7d41b587b5bf2ade6558d85e2bb014df",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "75ef6c2245399b69e5410e193a920194aaa9fcd73d59cfb5ed280d5998572a0f",
+        "diagnostic_command_census": {
+          "commands": 267845,
+          "complete": true,
+          "fences": 454,
+          "sites": 227,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6075164,
+          "low_cycles": 3389941,
+          "high_cycles": 8414102,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "capsule": "ZA_conv_3x3x28x28x128x128x4_native_i8",
+      "cycle_reduction_pct": 3.2179424518428146,
+      "speedup": 1.0332493701143066
+    },
+    {
+      "off": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 4929904,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "75f81f3432c33925d68a5fa6bf8f4a0b959384602c17d10103374be62f3c6b75",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "39a1efde8034ec1da3c145a5c440417340b15e46e1c974952101d029d285e24b",
+        "diagnostic_command_census": {
+          "commands": 276373,
+          "complete": true,
+          "fences": 11206,
+          "sites": 171,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6612194,
+          "low_cycles": 3742502,
+          "high_cycles": 9157889,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "on": {
+        "status": "pass",
+        "tiers": {
+          "L0": "skipped",
+          "L1": "skipped",
+          "L2": "pass"
+        },
+        "cycles": 4674733,
+        "complete_event_accounting": true,
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "model_status": "PROVISIONAL",
+        "identities": {
+          "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "capsule_sha256": "75f81f3432c33925d68a5fa6bf8f4a0b959384602c17d10103374be62f3c6b75",
+          "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        },
+        "elf_sha256": "465e9ffc9d19a51dd8fa956c13aae80dd0ff05ee8e8be3449417e285918f6d7f",
+        "diagnostic_command_census": {
+          "commands": 276373,
+          "complete": true,
+          "fences": 1350,
+          "sites": 127,
+          "unproved_sites": 0
+        },
+        "fast_estimate": {
+          "cycles": 6296802,
+          "low_cycles": 3601771,
+          "high_cycles": 8721071,
+          "evidence_kind": "fast_estimate"
+        }
+      },
+      "capsule": "ZA_conv_3x3x56x56x64x64x4_native_i8",
+      "cycle_reduction_pct": 5.175983142876617,
+      "speedup": 1.05458514956897
+    }
+  ],
+  "source_sha256": {
+    "backend/conv.py": "8784caa74251cf7ad1fcb1d3bdc17ef6e981ad2c5af893031a1dca3019c47e31",
+    "backend/conv_rolling_rows.py": "88076a0bad89098aa2ba7574468a78236450cb3e33a97bd5651c314efc7fa227",
+    "backend/conv_rolling_epochs.py": "46f87e14fa0639460df58754be62cb0ef39d8308e01f478f5375b94b8fb2f7bb",
+    "TUNING_KNOBS.json": "c99774711cc2089521a984de403161c64c9fdf9dddc587798602ce961a666301"
+  },
+  "transformed_artifacts": {
+    "ZA_conv_3x3x56x56x64x64x4_native_i8": {
+      "incumbent": {
+        "bytes": 106165,
+        "sha256": "2998a3f11936ca8a9bb862bd0e56a4967c681e493fc2d85d9443bcff54080a12",
+        "blocks": 309,
+        "applied": false
+      },
+      "off": {
+        "bytes": 106165,
+        "sha256": "2998a3f11936ca8a9bb862bd0e56a4967c681e493fc2d85d9443bcff54080a12",
+        "blocks": 309,
+        "applied": false
+      },
+      "on": {
+        "bytes": 104202,
+        "sha256": "7bad79ba0323530dd76286bdb1a40aad5ee90b1be73111cdd499b847a4bc51aa",
+        "blocks": 421,
+        "applied": true
+      }
+    },
+    "ZA_conv_3x3x28x28x128x128x4_native_i8": {
+      "incumbent": {
+        "bytes": 181387,
+        "sha256": "d31998e9da34d20057757dc17dcaa3e311bbc8775e274fb8239189c2a9c51e30",
+        "blocks": 421,
+        "applied": false
+      },
+      "off": {
+        "bytes": 181387,
+        "sha256": "d31998e9da34d20057757dc17dcaa3e311bbc8775e274fb8239189c2a9c51e30",
+        "blocks": 421,
+        "applied": false
+      },
+      "on": {
+        "bytes": 176882,
+        "sha256": "cbf2c01ec71f5ee8eac46c3c4f18a80e2d7ab8f60ca6d119d8e4a95d99fdf550",
+        "blocks": 645,
+        "applied": true
+      }
+    },
+    "ZA_conv_3x3x14x14x256x256x4_native_i8": {
+      "incumbent": {
+        "bytes": 220875,
+        "sha256": "e8c0fa69add4e408953ba4f74136edf2fea78ea0d46d74aae2788a8751c347e9",
+        "blocks": 645,
+        "applied": false
+      },
+      "off": {
+        "bytes": 220875,
+        "sha256": "e8c0fa69add4e408953ba4f74136edf2fea78ea0d46d74aae2788a8751c347e9",
+        "blocks": 645,
+        "applied": false
+      },
+      "on": {
+        "bytes": 216741,
+        "sha256": "1bdbf6626c22056db39bd9a2a12d13273c71b5639fc03ba9086c3c9b5d291e1e",
+        "blocks": 869,
+        "applied": true
+      }
+    },
+    "RN_conv3x3_s1p1_c512_h7_i8": {
+      "incumbent": {
+        "bytes": 636013,
+        "sha256": "097e32c70cdec0c4dfeb8f690eadb9b34cdfbd31ca8349a291026f4c8572873f",
+        "blocks": 2451,
+        "applied": false
+      },
+      "off": {
+        "bytes": 636013,
+        "sha256": "097e32c70cdec0c4dfeb8f690eadb9b34cdfbd31ca8349a291026f4c8572873f",
+        "blocks": 2451,
+        "applied": false
+      },
+      "on": {
+        "bytes": 629478,
+        "sha256": "8e2cfb622d9f22679f26cd406f46ce82985869cedf3cbe10691a4c6fc92b7a76",
+        "blocks": 2899,
+        "applied": true
+      }
+    },
+    "RN_conv3x3_s2p1_c128_h56_i8": {
+      "incumbent": {
+        "bytes": 195007,
+        "sha256": "71048261f0fab72ecf52d68b72438c24d3fe2eacf7fa47c20e1daa17b2cc154a",
+        "blocks": 491,
+        "applied": false
+      },
+      "off": {
+        "bytes": 195007,
+        "sha256": "71048261f0fab72ecf52d68b72438c24d3fe2eacf7fa47c20e1daa17b2cc154a",
+        "blocks": 491,
+        "applied": false
+      },
+      "on": {
+        "bytes": 190506,
+        "sha256": "6e8ba4d6c6eddf6df017c484b07cb5117c1e17ae252faa29a1e620d4fce6e68d",
+        "blocks": 715,
+        "applied": true
+      }
+    }
+  },
+  "fallback_byte_identity": {
+    "n8_uniform": {
+      "incumbent": {
+        "bytes": 98865,
+        "sha256": "b1ea32b5ebea617c6fb23d8f73c45c9351285fdc2a3bcf46eff907a46d6094e4",
+        "applied": false
+      },
+      "off": {
+        "bytes": 98865,
+        "sha256": "b1ea32b5ebea617c6fb23d8f73c45c9351285fdc2a3bcf46eff907a46d6094e4",
+        "applied": false
+      },
+      "on": {
+        "bytes": 98865,
+        "sha256": "b1ea32b5ebea617c6fb23d8f73c45c9351285fdc2a3bcf46eff907a46d6094e4",
+        "applied": false
+      }
+    },
+    "n16_uniform": {
+      "incumbent": {
+        "bytes": 77334,
+        "sha256": "7fae0b1575e50b4142c57c4cda1ccb1c17da1ba552e0e02c3e9438082d8741ae",
+        "applied": false
+      },
+      "off": {
+        "bytes": 77334,
+        "sha256": "7fae0b1575e50b4142c57c4cda1ccb1c17da1ba552e0e02c3e9438082d8741ae",
+        "applied": false
+      },
+      "on": {
+        "bytes": 77334,
+        "sha256": "7fae0b1575e50b4142c57c4cda1ccb1c17da1ba552e0e02c3e9438082d8741ae",
+        "applied": false
+      }
+    },
+    "n32_mixed": {
+      "incumbent": {
+        "bytes": 93384,
+        "sha256": "3b490f8c2b4fc84abf524682be8dc35fa422e9ca41c6b94fe6e521f9979dead4",
+        "applied": false
+      },
+      "off": {
+        "bytes": 93384,
+        "sha256": "3b490f8c2b4fc84abf524682be8dc35fa422e9ca41c6b94fe6e521f9979dead4",
+        "applied": false
+      },
+      "on": {
+        "bytes": 93384,
+        "sha256": "3b490f8c2b4fc84abf524682be8dc35fa422e9ca41c6b94fe6e521f9979dead4",
+        "applied": false
+      }
+    },
+    "n33_mixed": {
+      "incumbent": {
+        "bytes": 110677,
+        "sha256": "6dbaee15c6b39be1f60bfc915df24fc99c2f7f4e38c81ad6d898cf1e786fb04b",
+        "applied": false
+      },
+      "off": {
+        "bytes": 110677,
+        "sha256": "6dbaee15c6b39be1f60bfc915df24fc99c2f7f4e38c81ad6d898cf1e786fb04b",
+        "applied": false
+      },
+      "on": {
+        "bytes": 110677,
+        "sha256": "6dbaee15c6b39be1f60bfc915df24fc99c2f7f4e38c81ad6d898cf1e786fb04b",
+        "applied": false
+      }
+    }
+  },
+  "independent_source_checks": [
+    {
+      "shape": [
+        2,
+        5,
+        19,
+        17,
+        33
+      ],
+      "stride": [
+        1,
+        1
+      ],
+      "padding": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "bias": true,
+      "output_elements": 6270,
+      "source_effect_sha256": "997ca6dc32cdac72ff6b20075e6e01dd6009b84e8d032fbbda7858c8643163d0",
+      "off_on_shared_drains": [
+        81,
+        41
+      ],
+      "effects": {
+        "load_weight": 54,
+        "fill_input_rows": 56,
+        "stage_input_rows": 40,
+        "initialize_bias": 60,
+        "compute": 1080,
+        "store": 60
+      },
+      "numeric": "exact i32; every output once; real completion before any subsequent ACC/input reuse",
+      "mutation": "missing visibility rejected; changing scale refused"
+    },
+    {
+      "shape": [
+        1,
+        9,
+        23,
+        32,
+        48
+      ],
+      "stride": [
+        2,
+        3
+      ],
+      "padding": [
+        0,
+        2,
+        1,
+        0
+      ],
+      "bias": false,
+      "output_elements": 1536,
+      "source_effect_sha256": "395edfcad1b05f6687087645a32076ae847c15166939f5e0ac76f495484b3aed",
+      "off_on_shared_drains": [
+        21,
+        13
+      ],
+      "effects": {
+        "load_weight": 54,
+        "fill_input_rows": 18,
+        "stage_input_rows": 36,
+        "compute": 216,
+        "store": 12
+      },
+      "numeric": "exact i32; every output once; real completion before any subsequent ACC/input reuse",
+      "mutation": "missing visibility rejected; changing scale refused"
+    },
+    {
+      "shape": [
+        2,
+        7,
+        17,
+        16,
+        32
+      ],
+      "stride": [
+        2,
+        1
+      ],
+      "padding": [
+        2,
+        0,
+        0,
+        2
+      ],
+      "bias": true,
+      "output_elements": 4352,
+      "source_effect_sha256": "94df51946783b77e740cb3f49ab7f6cb450387fb817c3c353c19f8252b194fad",
+      "off_on_shared_drains": [
+        49,
+        33
+      ],
+      "effects": {
+        "load_weight": 18,
+        "fill_input_rows": 22,
+        "stage_input_rows": 28,
+        "initialize_bias": 32,
+        "compute": 288,
+        "store": 32
+      },
+      "numeric": "exact i32; every output once; real completion before any subsequent ACC/input reuse",
+      "mutation": "missing visibility rejected; changing scale refused"
+    },
+    {
+      "shape": [
+        1,
+        6,
+        21,
+        33,
+        65
+      ],
+      "stride": [
+        1,
+        2
+      ],
+      "padding": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "bias": false,
+      "output_elements": 4290,
+      "source_effect_sha256": "2faf82719e5ffd09c25223e57dc5ffe57260d193ebc3dc61c92fe9a36880bdb9",
+      "off_on_shared_drains": [
+        43,
+        19
+      ],
+      "effects": {
+        "load_weight": 135,
+        "fill_input_rows": 48,
+        "stage_input_rows": 36,
+        "compute": 810,
+        "store": 30
+      },
+      "numeric": "exact i32; every output once; real completion before any subsequent ACC/input reuse",
+      "mutation": "missing visibility rejected; changing scale refused"
+    }
+  ],
+  "code_diagnostic": {
+    "za56_on": {
+      "canonical_bytes": 47373,
+      "sha256": "35b3ececb7ea067fc1696387b2759715599e50ab176e648711bbe8bdf9611839",
+      "basic_blocks": 180,
+      "object_text_bytes": 2930
+    },
+    "rn512_on": {
+      "canonical_bytes": 323739,
+      "sha256": "d719d81e985d06d1d4bac0c66d48ab404dfe456972dc0bf47b4899f0fd2053ba",
+      "basic_blocks": 1242,
+      "object_text_bytes": 19114
+    }
+  },
+  "decision": "Keep opt-in implementation; five matched whole-call modeled gains with all numerics preserved support geometry-law promotion by parent. No empirical dimension cutoff added.",
+  "remaining": "Parent owns changed-core/gSIM certification; four fresh host-effect geometries are numerical/coverage evidence, not timed holdouts. No gSIM speedup claim. Unchanged no-z3 shared rolling verifier dependency assigned separately to pool helper.",
+  "catalog_delta_note": "Both matched variants additionally contain parent-added DENSE_FRONTIER_PANEL catalog declaration from concurrent work; no setting or implementing backend changed. All five OFF LLVM remain exact fixed-incumbent bytes. Frozen tested snapshots intentionally retained unchanged."
+}

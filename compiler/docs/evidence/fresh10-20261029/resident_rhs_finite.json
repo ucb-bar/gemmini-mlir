@@ -1,0 +1,131 @@
+{
+  "schema": "resident_rhs_finite_v1",
+  "status": "functional fix; no performance claim",
+  "variant": "variants/resident_rhs_finite",
+  "base": "variants/integrated_rank6_dependencies",
+  "changed_files": {
+    "backend/resident_rhs_finite.py": "59293308f32abbc28a94214a5c72a445a4570248b4181166e94be2fe60e34f69",
+    "backend/resident_rhs.py": "1414774ce5374aab04385f146a642fb824aa5def98380fdf22cfd6d742a86eff"
+  },
+  "selected_files_modified": false,
+  "solver_policy": "No optional SMT import in either resident rewrite; exact bounded finite original-member and address proofs; unsupported domains decline before effects",
+  "proof_limits": {
+    "actual_commands": 1000000,
+    "address_points": 1000000,
+    "member_library": "compiler_library/merlin/compile/scheduling/dense_finite_certificate.py",
+    "member_library_sha256": "b6fc0f87273f2a0ecdb50b9cdc8444ccb05f4b4738d905335a796a8d7356897a"
+  },
+  "source_contract": {
+    "original_member": "verify_finite_dense(mode=serial) checks actual source addresses, typed operands, complete ordered reduction/initialization/readout and physical ownership",
+    "rewrites": "Only original weight/LHS loads removed and corresponding operand rows rebound; exact structural MAC/init/readout projection equality",
+    "resources": "Original selected plan and disjoint RHS/LHS row windows; LHS retained bound explicitly checked against selected SPAD_ROWS",
+    "completion": "Existing emitter unchanged, immutable source DMA followed by full drain, selected in-order execute, original full readout drains; source indices/configs/fences identical to incumbent"
+  },
+  "reproduction": {
+    "source_sha256": "fa82272826ab4fdc49fa4353ef4bae57d47c3631a8d41a560ec95ef8f0f5bdd3",
+    "shape": {
+      "lhs": [
+        [
+          17,
+          32
+        ],
+        [
+          19,
+          32
+        ]
+      ],
+      "rhs": [
+        32,
+        16
+      ],
+      "outputs": "raw i32"
+    },
+    "before": "before.stderr: genuine normal-selected CLI ModuleNotFoundError at _rewrite import z3; retain_before.stderr independently reaches _retain_lhs import",
+    "after_llvm_sha256": "43b44288b444e20a95b12dfa020b5acf9b9765d13a1a6b24d15dcd3d659d7672",
+    "normal_and_attention_reuse_off_and_incumbent_z3_llvm_identical": true
+  },
+  "checks": {
+    "actual_packet_integer_cases": 25,
+    "numeric_modes": [
+      "raw",
+      "bias",
+      "initializer",
+      "bias+initializer",
+      "scalar f32 scale + half-even + ReLU + saturation"
+    ],
+    "shapes": [
+      [
+        17,
+        19,
+        32,
+        16
+      ],
+      [
+        1,
+        15,
+        33,
+        19
+      ],
+      [
+        16,
+        17,
+        17,
+        1
+      ],
+      [
+        31,
+        33,
+        48,
+        17
+      ],
+      [
+        2,
+        3,
+        32,
+        5
+      ]
+    ],
+    "all_source_outputs_exact": true,
+    "all_actual_source_indexed_packet_and_llvm_hashes_match_incumbent": true,
+    "mutation_refusals": 17,
+    "refreshed_digest_mutations_reprove_actual_member": true,
+    "budget_and_alias_refusals_before_effects": true
+  },
+  "public_census": {
+    "original_roster_cases": 149,
+    "admitted_core": [
+      {
+        "case": "PC01_k128",
+        "suite": "core",
+        "llvm_sha256": "c973007dd94cb77897b1dd6000e6632b1d960380c332cd26e9c243ff460d0fc5",
+        "identity": true
+      },
+      {
+        "case": "PQ08_j8_k32",
+        "suite": "core",
+        "llvm_sha256": "e4fdb07250df176280cb962fc38e7b6f284368806cb28f8d64d6aa07d5f2f18a",
+        "identity": true
+      },
+      {
+        "case": "SY_carried_relu_i8",
+        "suite": "core",
+        "llvm_sha256": "f1754b728e459613e0b29f83da0a391181d08f3e2c6fff407930205eb7f70ff9",
+        "identity": true
+      }
+    ],
+    "admitted_scalability": [
+      {
+        "case": "TL_att_qk_q32kv4_m16k64n16_raw",
+        "suite": "scalability",
+        "llvm_sha256": "37f753942743698487f976325e1c626927e0a65fa37ae7048e59e3e4c60ee6c8",
+        "identity": true
+      }
+    ],
+    "native_mixed_cases": 11,
+    "native_nested_command_buffers": 442,
+    "native_resident_groups": 0,
+    "emitted_program_changes": []
+  },
+  "new_requests": [],
+  "recommendation": "Integrate functional finite proof replacement. Existing emitted evidence remains applicable where exact source/LLVM/selected identities match; no timing or new performance inference."
+}

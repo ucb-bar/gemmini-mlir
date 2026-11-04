@@ -1,0 +1,273 @@
+{
+  "schema": "dense_vocabulary_trial.v1",
+  "decision": "KEEP_ISOLATED_NO_PROMOTION",
+  "selected_compiler_changed": false,
+  "hypothesis": "Retain complete one-row LHS and alternate two full-K RHS output groups to overlap next-panel loads with current-panel compute",
+  "construction": {
+    "api": "backend.dense_vocabulary_pipeline.vocabulary_schedule(m,k,n,bias,column_scales=False,*,n_tiles=3)",
+    "legality": {
+      "selection": "full_k_output_group_lookahead",
+      "selected_block_tiles": [
+        1,
+        128,
+        3
+      ],
+      "n_tile_bound": 3,
+      "lhs_rows": 2048,
+      "rhs_slot_rows": 6144,
+      "rhs_slots": 2,
+      "acc_rows": 48,
+      "operand_capacity_rows": 16384,
+      "accumulator_capacity_rows": 1024,
+      "source_predicate": "M=1, no initializer/mixed column readout; two full-K RHS slots and multiple N groups physically fit",
+      "completion": "shared full epoch completion before all RHS/ACC reuse; existing store epochs retain closing completion"
+    },
+    "typed_flags": {
+      "valid_call_cached_first": true,
+      "cache_typed": true,
+      "cases": [
+        {
+          "bias": null,
+          "column_scales": false,
+          "rejected": "vocabulary schedule requires explicit boolean initialization/readout flags"
+        },
+        {
+          "bias": 0,
+          "column_scales": false,
+          "rejected": "vocabulary schedule requires explicit boolean initialization/readout flags"
+        },
+        {
+          "bias": false,
+          "column_scales": null,
+          "rejected": "vocabulary schedule requires explicit boolean initialization/readout flags"
+        },
+        {
+          "bias": false,
+          "column_scales": 0,
+          "rejected": "vocabulary schedule requires explicit boolean initialization/readout flags"
+        }
+      ]
+    },
+    "selector": "isolated variant only: existing selected segmented class AND M=1 AND N>3*K; no new empirical crossover",
+    "pass_order": [
+      "ordinary dense frontend and registered incumbent selection",
+      "typed full-K vocabulary schedule plan",
+      "shared schedule_dense_pipeline output-group-prefetch construction",
+      "original exact finite dense source/effect/ownership/prefix/epoch verification",
+      "existing dense_store_epochs transform and independent revalidation",
+      "existing panel epochs selection (no additional removal here)",
+      "common terminal target/LLVM encoder"
+    ],
+    "copy_pipeline_refusal": "Private-copy token contract does not grant compute/load overlap to original counted drains; actual existing segmented output-group pipeline used instead",
+    "schedule_ir": {
+      "sha256": "5cc98d0d7e37cf852a925d7eb91d8b874f82967ea12979a8025626b0453592f0",
+      "source_identity": "5a8e23d8bc70bc5854122a214471edffd705aa90546a75a768e48eb4e63f4b34",
+      "pipeline_kind": "retained_lhs_segmented_k",
+      "prefetch": true,
+      "pipeline_issue_order": "prefetch_rhs_between_output_groups",
+      "decisions_consumed": [
+        "block_tiles",
+        "outer_order",
+        "row_bases",
+        "panel_pipeline",
+        "pipeline_window_offsets",
+        "pipeline_issue_order",
+        "loop_transforms"
+      ]
+    },
+    "proof": {
+      "kernel_sha256": "322adfeac672c195db59caf21cb7d4d4bac480329a7b317ea95ef0f5c451e3ce",
+      "certificate": "all counted commands; exact source row maps and optional bias, ordered K prefixes, complete unique output cover and original completion/ownership laws",
+      "executed_instruction_calls": 772797,
+      "static_instruction_calls": 33,
+      "solver_queries": 0,
+      "enumeration_bound": 2000000,
+      "output_row_span_bound": 100000,
+      "admission": {
+        "overlap": {
+          "hardware_identity": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy_identity": "i8-i8-i32-modular",
+          "qualification_identity": "selected-rtl-ordered-accumulator-commit:3ce83f25443d9bbb72bd6aa0e2bc6d7938aab6f4f17a4f17a62566085792cfd1:disjoint-owned-operand-windows",
+          "max_issued_compute_pairs": 384,
+          "max_issued_loads": 384,
+          "pending_compute_pairs": 2,
+          "pending_loads": 8,
+          "execution": "ordered_issue_disjoint_load_compute_full_drain",
+          "load_configuration": "ordered_snapshot_before_data_issue",
+          "descriptor": "preload_immediately_paired_with_compute",
+          "max_issued_readouts": 1,
+          "pending_readouts": 1,
+          "readout_configuration": "separate_drained_readout"
+        },
+        "reduction": {
+          "hardware_identity": "gemmini-fire-aligned-dim16-ws",
+          "numerical_policy_identity": "i8-i8-i32-modular",
+          "qualification_identity": "selected-rtl-ordered-accumulator-commit:3ce83f25443d9bbb72bd6aa0e2bc6d7938aab6f4f17a4f17a62566085792cfd1",
+          "max_issued_compute_pairs": 384,
+          "max_issued_loads": 384,
+          "pending_compute_pairs": 2,
+          "pending_loads": 8,
+          "execution": "ordered_accumulator_commits_read_only_operands_full_drain",
+          "load_configuration": "ordered_snapshot_before_data_issue",
+          "descriptor": "preload_immediately_paired_with_compute",
+          "max_issued_readouts": 1,
+          "pending_readouts": 1,
+          "readout_configuration": "separate_drained_readout",
+          "max_issued_initializations": 1,
+          "initialization_configuration": "separate_drained_initialization"
+        },
+        "qualification_identity": "selected-rtl-ordered-accumulator-commit:3ce83f25443d9bbb72bd6aa0e2bc6d7938aab6f4f17a4f17a62566085792cfd1:pure-inorder-execute-with-disjoint-future-rhs-loads",
+        "execution": "ordered_accumulator_commits_disjoint_future_loads_full_drain"
+      }
+    }
+  },
+  "identities": {
+    "files": {
+      "submission/backend/dense_vocabulary_pipeline.py": "b5b1ebaeedb2229efea53ce62bbbcb8268fe2bdaaa3a0150c642f4fcf14bec8d",
+      "variants/dense_vocabulary_legal_bound/backend/dense.py": "6133a95ee8130f3d44810f3187a9e6d02a99c79fe005cc507bf8834d5613a4fb",
+      "submission/compiler_library/merlin/compile/scheduling/dense_segmented_pipeline.py": "2e1e0b619e0f1a9a2559f2174563332931542e0971469c68b26821f8d88b3563",
+      "submission/backend/dense_ordering.json": "72c801ab25dca07130cac0392b78732a9af6fec7db6273f29e7aea4612a306ee"
+    },
+    "timed": {
+      "tree": "variants/dense_vocabulary_output_group",
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "source_sha256": "cc76c428e0758f353d85469b2e974137853f1fba03a7576194b84de33aa9eca0",
+      "llvm_sha256": "936b62e7f8ca6fa71d0f3660db64757e9b2c14d211e1b38ab50fc56db0e1caa4",
+      "command_buffer_sha256": "72de0b7c6d6c113feb24ea64657385d578f5f8398886de6413e3e725c31a7bdc"
+    },
+    "current": {
+      "tree": "variants/dense_vocabulary_legal_bound",
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "source_sha256": "cc76c428e0758f353d85469b2e974137853f1fba03a7576194b84de33aa9eca0",
+      "llvm_sha256": "936b62e7f8ca6fa71d0f3660db64757e9b2c14d211e1b38ab50fc56db0e1caa4",
+      "command_buffer_sha256": "6ce3ec9cd50f0292049f0e42e9d24fbb592dc1233ad5815cafe59f654b897710"
+    },
+    "incumbent": {
+      "tree": "variants/integrated_phase5",
+      "case": "JT_tiny_decode_m1k2048n32000_raw",
+      "source_sha256": "cc76c428e0758f353d85469b2e974137853f1fba03a7576194b84de33aa9eca0",
+      "llvm_sha256": "15442fb2ccec52b01cf39104b0e5aea4bfe8694604a83a85d16ab646b85e85e6",
+      "command_buffer_sha256": "5646fa290340d300bac48668a124b9246135ef4d425ee634faf35cd986c71d96"
+    },
+    "timed_current_llvm_identical": true
+  },
+  "validation": {
+    "frozen_panel": "frozen_panel.json",
+    "frozen_ratio3_neighbors": "frozen_legality_neighbors.json",
+    "source_checks": "source_checks.json",
+    "actual_emitted_neighbors": "legal_source_checks.json",
+    "mutation_rejects": [
+      {
+        "mutation": "RHS_overwrites_LHS",
+        "reason": "finite dense local row interval escapes assigned window"
+      },
+      {
+        "mutation": "RHS_source_row",
+        "reason": "finite dense load primitive source tail/coordinates changed"
+      },
+      {
+        "mutation": "compute_tail",
+        "reason": "finite dense compute/descriptor pairing changed"
+      },
+      {
+        "mutation": "readout_tail",
+        "reason": "finite dense primitive extent or tail changed"
+      },
+      {
+        "mutation": "descriptor_order",
+        "reason": "'lhs'"
+      }
+    ],
+    "numeric": "source_checks.json: exact actual primitive interpreter, independent int64 source formula; ragged 1x2051x32013, 65658663 MACs, 32013 outputs",
+    "smaller_n_incumbent_llvm_identical": true
+  },
+  "timing": {
+    "request_id": "3_1793260075518159837_8c3f730b82b5f07606c55b0def4e12b3",
+    "detail": "qa/cases/JT_tiny_decode_m1k2048n32000_raw/15850e6c494a150f8ea3eb9e40be57053c59a0f6f83c11c84ee77ffb893998e1.json",
+    "correctness": "L2 PASS",
+    "complete_status": "UNKNOWN",
+    "reason": "observation budget too small (needed ~1736 s, 1564 s available here); the background timing lane observes it with a budget that fits",
+    "fast_estimate": {
+      "band": "p10-p90 of complete/estimated over the calibration pairs",
+      "basis": "max(structural floor, commands x per-command issue) + fences x per-fence drain, calibrated against complete Spike timing-model estimates; an estimate with a band, not a measurement",
+      "calibration": {
+        "cycles_per_command": 22.6274,
+        "cycles_per_fence": 24.6754,
+        "median_abs_log_error": 0.2143,
+        "pairs": 512,
+        "ratio_quantiles": {
+          "p10": 0.591,
+          "p25": 0.75,
+          "p50": 0.956,
+          "p75": 1.21,
+          "p90": 1.454
+        },
+        "source": "this run's complete timing-model estimates"
+      },
+      "census": {
+        "commands": 770799,
+        "complete": true,
+        "fences": 2007,
+        "sites": 51,
+        "unproved_sites": 0
+      },
+      "cycles": 17490701,
+      "evidence_kind": "fast_estimate",
+      "high_cycles": 25431479,
+      "limited_by": "command issue",
+      "low_cycles": 10337004,
+      "lower_bound": false,
+      "schema": "merlin.phase1.fast_estimate.v1",
+      "status": "ESTIMATED",
+      "terms": {
+        "command_issue_cycles": 17441177.3,
+        "fence_drain_cycles": 49523.5,
+        "structural_floor_cycles": 4096128.0
+      }
+    },
+    "structural_comparison_binding": {
+      "capsule_sha256": "d928b0ab1ca04ef07971cc23067d15e1a140c3e74bf1c617fb0d1abc877ee67f",
+      "comparison_domain_sha256": null,
+      "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+      "model_sha256": null,
+      "scope_sha256": null,
+      "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+    },
+    "prior_comparison": {
+      "detail": "qa/cases/JT_tiny_decode_m1k2048n32000_raw/69224d6dbaffa5b50ce22b34f5e991a90b419eef796fccc1325744b029d47490.json",
+      "complete_cycles": 18458713,
+      "native_fast_cycles": 20741607,
+      "native_calibration": {
+        "cycles_per_command": 26.9087,
+        "cycles_per_fence": 24.6754,
+        "median_abs_log_error": 0.2498,
+        "pairs": 512,
+        "ratio_quantiles": {
+          "p10": 0.555,
+          "p25": 0.705,
+          "p50": 0.971,
+          "p75": 1.196,
+          "p90": 1.425
+        },
+        "source": "this run's complete timing-model estimates"
+      },
+      "warning": "Different native calibration; cannot compare raw native estimates or fast estimate to complete cycles. Prior program identity has not been proven equal to phase5 executed ELF."
+    },
+    "common_coefficients_diagnostic": {
+      "basis": "Apply candidate native calibrated formula to both historical native censuses; no new timing observation or provider match inferred",
+      "incumbent_estimate": 17444304,
+      "candidate_estimate": 17490701,
+      "ratio": 1.0026597220502462,
+      "conclusion": "slight estimated loss; no supported promotion"
+    },
+    "current_baseline_request": "3_1793259539870283785_785444802ef4c357256eaef32e742fc4",
+    "current_baseline_status": "pending response at packaging"
+  },
+  "remaining": [
+    "No matched complete-call candidate timing: observation budget short, no unresolved model events",
+    "No timed fresh source holdout; custom shapes admitted for legality/numerics only",
+    "Ratio3 is existing isolated selector boundary, not a validated new timing crossover",
+    "Descriptor-order mutation rejection is KeyError rather than structured diagnostic; malformed schedule rejected",
+    "No selected integration; optional module remains unused by submission compiler"
+  ]
+}

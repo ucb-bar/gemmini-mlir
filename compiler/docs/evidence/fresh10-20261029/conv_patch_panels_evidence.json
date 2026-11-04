@@ -1,0 +1,154 @@
+{
+  "schema": "author.conv_patch_panels.v1",
+  "files": [
+    "submission/backend/conv_patch_panels.py"
+  ],
+  "applicability": "NHWC signed i8 operands; KH=SH, KW=SW, dilation1, pad0; shared exact uniform i8 or rawi32 terminal contract; no initializer/alias; complete K RHSpanel fits hardware",
+  "mechanism": "Flatten KW*CI contiguous source row into channel chunks; checked same-original-row fragments project virtual gather onto original physical input pitch. Resident RHS phases and common encoder. No payload copy.",
+  "paired_core": [
+    {
+      "capsule": "G_conv2d_c3x8x8_k4x4s4_n16_raw",
+      "identities": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "capsule_sha256": "b9eee4789931f5f4e73e7ebb19caa1f5cb1a20419e5d00317ffe30134d9d5c32"
+      },
+      "arms": {
+        "on": {
+          "request": "2_1793255198214159048_6cded4d9717d13e17a23511bc0a4acb2",
+          "detail": {
+            "path": "qa/cases/G_conv2d_c3x8x8_k4x4s4_n16_raw/473c5d451a1b3a7ced567025145feb9053ea00f16ddc98108ba7679568b9b258.json",
+            "sha256": "473c5d451a1b3a7ced567025145feb9053ea00f16ddc98108ba7679568b9b258"
+          },
+          "cycles": 669,
+          "elf_sha256": "0c4093ca2ef53cd6b61017648f034941d8f33394cb209b1f159f5192614e7974",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": true
+        },
+        "off": {
+          "request": "2_1793255206489725689_e8bac1d45bcde68c803b4ec31d0211f2",
+          "detail": {
+            "path": "qa/cases/G_conv2d_c3x8x8_k4x4s4_n16_raw/6fb900db71730fc7bcb80f27ea4f34398b60f1b51e5f45273c8b41307ebcc493.json",
+            "sha256": "6fb900db71730fc7bcb80f27ea4f34398b60f1b51e5f45273c8b41307ebcc493"
+          },
+          "cycles": 2303,
+          "elf_sha256": "444bd0483200eedef1a81a6886c4520295270c041806b8a3b80f4765be1899b5",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": false
+        }
+      },
+      "speedup": 3.4424514200298955
+    },
+    {
+      "capsule": "SY_conv_k4x4_s4x4_d1x1_pad0x0",
+      "identities": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "capsule_sha256": "f0c95322307cd392e28df6aa203e9fceae1dcae95fea8d5a3e468c931f487a4b"
+      },
+      "arms": {
+        "on": {
+          "request": "2_1793255198214159048_6cded4d9717d13e17a23511bc0a4acb2",
+          "detail": {
+            "path": "qa/cases/SY_conv_k4x4_s4x4_d1x1_pad0x0/7909e4e22a7a7a93225a77f5e430d278ed1254bb2e73099195e3afa5dc3d22a0.json",
+            "sha256": "7909e4e22a7a7a93225a77f5e430d278ed1254bb2e73099195e3afa5dc3d22a0"
+          },
+          "cycles": 1078,
+          "elf_sha256": "a695cb09f83debecfd0a19b33272c816816bd8db511e511536cc9d39e983fbc5",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": true
+        },
+        "off": {
+          "request": "2_1793255206489725689_e8bac1d45bcde68c803b4ec31d0211f2",
+          "detail": {
+            "path": "qa/cases/SY_conv_k4x4_s4x4_d1x1_pad0x0/dbc34181518bd3bea60c134ef1b5f815e1210cf02e5af09175259d2496375705.json",
+            "sha256": "dbc34181518bd3bea60c134ef1b5f815e1210cf02e5af09175259d2496375705"
+          },
+          "cycles": 4699,
+          "elf_sha256": "4afb2a59de0628c7dd47e80eebf1e748a43e5608aa1a7ee0f032a717efb1a3f9",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": false
+        }
+      },
+      "speedup": 4.35899814471243
+    }
+  ],
+  "evidence_scope": "Complete whole-call Spike timing model estimates; not measured RTL timings. Core numerical execution passes; oracle unavailable prevents complete certification.",
+  "independent_integer_checks": "artifacts/author_checks/patch_panels_check.py",
+  "pure_admission_checks": "artifacts/author_checks/patch_panels_admission.py",
+  "no_z3_compile": "artifacts/author_checks/patch_panels_compile.py",
+  "compile_results": [
+    {
+      "shape": [
+        8,
+        8,
+        3,
+        16,
+        4,
+        4
+      ],
+      "mlir_bytes": 19813,
+      "mlir_sha256": "283e4222f36a218a077b6f57b50913ab4d42b97a3da6c181a15b4a447abe3aae",
+      "blocks": 64,
+      "effects": 13
+    },
+    {
+      "shape": [
+        512,
+        512,
+        3,
+        768,
+        16,
+        16
+      ],
+      "mlir_bytes": 142443,
+      "mlir_sha256": "1dabc3ee2ee2ac06b3716d73414c101c295446bb88dd6c28bc6839bf4ac684fc",
+      "blocks": 323,
+      "effects": 196
+    },
+    {
+      "shape": [
+        1024,
+        1024,
+        3,
+        768,
+        16,
+        16
+      ],
+      "mlir_bytes": 142444,
+      "mlir_sha256": "cffdf43459b63e75fdc048883f9ff112e3351b381fd0d26c74271416e1dadf44",
+      "blocks": 323,
+      "effects": 196
+    },
+    {
+      "shape": [
+        513,
+        527,
+        3,
+        769,
+        16,
+        16
+      ],
+      "mlir_bytes": 147055,
+      "mlir_sha256": "bca3f2d2901d172065ef546bebfcde2f4a7688a93c73e0d1f48fd00940bdaeb2",
+      "blocks": 330,
+      "effects": 203
+    }
+  ],
+  "canonical_512": {
+    "mlir_bytes": 77348,
+    "object_text_bytes": 3404,
+    "object_compiler": "llc -mtriple=riscv64 -mattr=+m,+a,+f,+d,+c -O2",
+    "scope": "local standalone construction, not grader resource certification"
+  },
+  "decision": "Keep optional reusable route: core matched wins and exact independent geometry. Root owns default promotion and real large model runtime check.",
+  "remaining": "Mixed column scales, matrix initialization refuse to incumbent. No runtime large patch cycle evidence yet. Large SmolVLA geometry source construction is synthetic from visible reported geometry, not claimed executed model."
+}

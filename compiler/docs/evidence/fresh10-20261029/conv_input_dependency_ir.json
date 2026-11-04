@@ -1,0 +1,83 @@
+{
+  "actual_ir_sha256": "013db3bc1a2803d137c3915590a747331e3833c84af7cd219d6266eaa429e6f0",
+  "source_ir_sha256": "ace8cb930f59a8a4fe4ea2148c2a04541b7f969ee7e0f57a6db3ad9480e277eb",
+  "source_identity": "38a446ba42149d4042f87fb448b4af9dd10d1f46f749642d9c913c0e32a2b86a",
+  "law": {
+    "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+    "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+    "producer_funct": 2,
+    "lhs_reader_funct": 4,
+    "weight_reader_funct": 6,
+    "configuration": "original ordered load-channel capture; no wide transfers or new configuration values",
+    "original_compute_law": {
+      "accumulator_result_visibility": true,
+      "adjacent_descriptor_compute": true,
+      "complete_device_drain": true,
+      "exclusive_private_state": true,
+      "finite_queue_pair_progress": true,
+      "hardware_identity": "gemmini-fire-aligned-b8ff28edc096392c",
+      "local_read_after_write": true,
+      "local_write_after_read": true,
+      "local_write_after_write": true,
+      "max_compute_pairs": 256,
+      "numerical_policy_identity": "signed-i8-products-i32-source-ordered-readout",
+      "operand_consumption_retirement": true,
+      "ordered_configuration_capture": true,
+      "pending_compute_pairs": 8,
+      "qualification_identity": "synchronous-disjoint-lhs-rhs-acc-private-rows-v1",
+      "source_identity": "38a446ba42149d4042f87fb448b4af9dd10d1f46f749642d9c913c0e32a2b86a"
+    },
+    "original_issue_law": {
+      "complete_device_drain": true,
+      "finite_queue_backpressure": true,
+      "hardware_identity": "gemmini-fire-aligned-b8ff28edc096392c",
+      "immutable_mapped_disjoint_buffers": true,
+      "load_issue_budget": 48,
+      "local_range_dependencies": true,
+      "numerical_policy_identity": "signed-i8-products-i32-source-ordered-readout",
+      "ordered_load_configuration": true,
+      "paired_descriptor_compute": true,
+      "qualification_identity": "synchronous-disjoint-lhs-rhs-acc-private-rows-v1",
+      "source_identity": "38a446ba42149d4042f87fb448b4af9dd10d1f46f749642d9c913c0e32a2b86a"
+    },
+    "partition": "disjoint zero/valid/zero X bands; disjoint channel blocks at row_pitch; no duplicate local writes",
+    "primitive_columns": 16,
+    "primitive_rows": 16,
+    "reuse": "every original complete remains a real full drain before slot/image reuse",
+    "selected_first_reader_dependencies": [
+      {
+        "disjoint": "completion",
+        "older": "MVIN.spad_addr",
+        "overlap": "completion",
+        "space": "scratchpad",
+        "tracked": null,
+        "younger": "COMPUTE_PRELOADED.a_spad"
+      },
+      {
+        "disjoint": "none",
+        "older": "MVIN.spad_addr",
+        "overlap": "completion",
+        "space": "scratchpad",
+        "tracked": true,
+        "younger": "PRELOAD.weight_spad"
+      }
+    ]
+  },
+  "library": {
+    "merlin.compile.scheduling.rolling_window": {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/variants/conv_input_ready/compiler_library/merlin/compile/scheduling/rolling_window.py",
+      "sha256": "6a1485f9d801f983401ea4b5b4938e87f93481bd5c221751a60e4e5542dbaddc"
+    },
+    "merlin.compile.scheduling.window_transfer": {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/variants/conv_input_ready/compiler_library/merlin/compile/scheduling/window_transfer.py",
+      "sha256": "3ff4d8843e775d2ee3297c44652d4a2a381b43bbaa507be169a822155e13abdc"
+    },
+    "merlin.compile.scheduling.convolution_exploration": {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-raw/workspace/variants/conv_input_ready/compiler_library/merlin/compile/scheduling/convolution_exploration.py",
+      "sha256": "416dd0abe12bae6bae7da4eb540b74cc107771179be6be9f68e78bc2f1fdf892"
+    }
+  },
+  "transformation": "exact actual Await/Consume -> pending Dependency/Read; every Complete unchanged; reverse projection independently canonical checked",
+  "selected_configuration": "same configLD and configEX original encoded words; no wide MVIN; identical store epoch configuration inherited",
+  "first_reader_provenance": "original source-coordinate column producer always emits PRELOAD funct6 followed by COMPUTE_PRELOADED funct4, with actual lhs row/rows/depth/stride unchanged; original MVIN channel0 funct2 remains unchanged; actual LLVM differs only in two static input-ready fence sites"
+}

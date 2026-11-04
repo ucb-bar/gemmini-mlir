@@ -1,0 +1,411 @@
+{
+  "capsule": "JC_resnet50_prepared_connected",
+  "failure_category": null,
+  "failure_detail": null,
+  "failure_plane": null,
+  "optimization_next": {
+    "action": "Keep the incumbent and explore a legal alternative using traffic, reuse and completion structure; check emitted effects and numerics. Repair timing before claiming a speedup.",
+    "basis": "timing unavailable; no performance ranking",
+    "composition": {
+      "basis": "advisory: routes keep the original form when their premises fail; keep your own lowering where it measures better on the same cases; no speedup is implied",
+      "discover": "python .agents/skills/heavy-pass-recipes/scripts/composition_routes.py --case JC_resnet50_prepared_connected",
+      "line": "composition routes: connected_stages: whole model: every device group is one stage of a connected program -> merlin.compile.connected_regions:plan_connected_region (not imported by submission/; rows connected_source_execution (modules selected); source_fusion_exploration (modules selected)); run: python .agents/skills/scheduling-api/scripts/dense_schedule_example.py contract merlin.compile.connected_regions:plan_connected_region | all routes for this case: python .agents/skills/heavy-pass-recipes/scripts/composition_routes.py --case JC_resnet50_prepared_connected | read: heavy-pass-recipes reference/composition.md",
+      "reference": ".agents/skills/heavy-pass-recipes/reference/composition.md",
+      "routes": [
+        {
+          "catalog_rows": {
+            "connected_source_execution": "modules_selected",
+            "source_fusion_exploration": "modules_selected"
+          },
+          "chain": "several stages with preserved tensor identities (whole program or model)",
+          "evidence": [
+            "whole model: every device group is one stage of a connected program"
+          ],
+          "imported_by_submission": false,
+          "next": "python .agents/skills/scheduling-api/scripts/dense_schedule_example.py contract merlin.compile.connected_regions:plan_connected_region",
+          "route": "connected_stages",
+          "skills": [
+            "compose-pass-pipeline",
+            "fusion"
+          ],
+          "symbol": "merlin.compile.connected_regions:plan_connected_region"
+        }
+      ],
+      "trigger": "declared_or_ir_chain"
+    },
+    "mechanisms": [],
+    "operation": {
+      "also": [
+        "contraction"
+      ],
+      "entry": "connected_chain",
+      "family": "connected_chain",
+      "file": "OPTIMIZATION_BY_OPERATION.json",
+      "focus": "Keep intermediates on the device and resident across adjacent stages; prepare fixed operands once."
+    },
+    "signals": {
+      "array_utilization_pct": null,
+      "basis": "structural evidence; no elapsed-cycle utilization",
+      "timing_status": "unavailable"
+    },
+    "skill": "explore-schedules"
+  },
+  "performance": {
+    "capsule_sha256": "77fd3bafef3722f43a73b39a4a7a996f871bb3f674700d1056031af6a2f14a1e",
+    "comparison_domain_sha256": null,
+    "complete_event_accounting": false,
+    "elf_sha256": null,
+    "estimated_whole_soc_cycles": null,
+    "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+    "fast_estimate": {
+      "cycles": null,
+      "evidence_kind": "fast_estimate",
+      "reason": "no decoded instruction stream with accelerator commands for this case",
+      "schema": "merlin.phase1.fast_estimate.v1",
+      "status": "UNKNOWN"
+    },
+    "feature_counts": {},
+    "feedback_brief": {
+      "experiment_record": {
+        "capsule": "JC_resnet50_prepared_connected",
+        "capsule_sha256": "77fd3bafef3722f43a73b39a4a7a996f871bb3f674700d1056031af6a2f14a1e",
+        "comparison_domain_sha256": null,
+        "compiler_sha256": "5d755398970dc258fc0b428d0c0345c1fce437622a175b697f1c7956d00333e2",
+        "hypothesis": null,
+        "model_sha256": null,
+        "numerical_status": "pass",
+        "observation_sha256": null,
+        "pass_diff": null,
+        "promotion_decision": null,
+        "schema": "merlin.existing_experiment_links.v1",
+        "scope": "Links to this existing native result; no invented author hypothesis or promotion.",
+        "scope_sha256": null,
+        "timing_status": "UNKNOWN"
+      },
+      "outcomes": {
+        "additional_gsim_requested": false,
+        "certification_unchanged": true,
+        "compiler_work_can_continue": true,
+        "formal_status": "UNKNOWN",
+        "missing_rtl_is_numerical_failure": false,
+        "next_action": "Repair the reported timing feedback stage; extra RTL simulations do not repair this failure.",
+        "next_owner": "operator",
+        "next_priority": "timing_infrastructure",
+        "numerical_status": "pass",
+        "parallel_action": "Continue independent capability construction and affected-case execution. Inspect emitted code, traffic, storage and host boundaries while this model or observation gap is repaired.",
+        "rtl_policy": "Unobserved required RTL tiers remain uncertified. Original required gSIM checks remain mandatory; additional calibration gSIM needs an admitted mechanism question.",
+        "rtl_tiers": {},
+        "timing_failure_stage": "same_elf_observation",
+        "timing_reason": "joint performance unavailable: ValueError",
+        "timing_status": "UNKNOWN",
+        "trace_status": "UNKNOWN",
+        "unobserved_rtl_tiers": [],
+        "unresolved_model_events": []
+      },
+      "performance_signals": {
+        "comparison_domain_sha256": null,
+        "estimated_whole_soc_cycles": null,
+        "limits": [
+          "Structural floors are not measured or attainable whole-call performance.",
+          "Counts and requested bytes are not cycles or physical bandwidth.",
+          "Whole-trace totals are excluded. Explicit scoped bookings remain modeled reservations, not physical utilization or stalls."
+        ],
+        "model_sha256": null,
+        "performance_objective": {
+          "diagnostic_only": [
+            "instructions",
+            "commands",
+            "fences"
+          ],
+          "missing_timing": "use the calibrated fast_estimate (labelled, with its band) until a complete estimate exists",
+          "primary": "complete_same_roi_elapsed_cycles",
+          "supporting": [
+            "roofline_gap",
+            "useful_compute_peak_attainment",
+            "padding_efficiency",
+            "scoped_resource_activity",
+            "resource_overlap",
+            "traffic_by_boundary",
+            "queue_pressure",
+            "host_cycle_attribution",
+            "storage_lifetimes"
+          ],
+          "utilization_policy": "Explain latency and headroom; do not maximize busy work or padded work."
+        },
+        "roofline": {
+          "convergence_eligible": false,
+          "status": "partial",
+          "structural_compute_floor_cycles": 511168,
+          "useful_macs": 130859008
+        },
+        "roofline_missing_terms": [
+          "actual compulsory interface traffic and transfer amplification",
+          "sustained bandwidth, contention, translation and arbitration",
+          "command issue, host preparation, layout and readout costs",
+          "array fill/drain and fixed invocation costs",
+          "physical placement, ports, queues, dependencies and legal overlap",
+          "independent complete-cost measurements and timing qualification"
+        ],
+        "same_roi_optimization": {
+          "commands": {},
+          "counts_source_kind": "unknown",
+          "cycles": {
+            "measured_cycles": null,
+            "source_kind": "unknown",
+            "unit": "model_cycles",
+            "value": null
+          },
+          "elf_sha256": null,
+          "host_instruction_counts": {},
+          "model_sha256": null,
+          "overlaps": [],
+          "physical": {
+            "accelerator_queue_pressure": null,
+            "array_occupancy": null,
+            "bandwidth": null,
+            "dependency_stall_cycles": null,
+            "host_dispatch_cycles": null,
+            "host_preparation_cycles": null,
+            "host_synchronization_wait_cycles": null,
+            "source_kind": "unknown",
+            "storage_byte_highwater": null
+          },
+          "qualification_issued": false,
+          "reason": "Matching complete scoped resource feedback and modeled ROI cycles are unavailable; whole-trace and other tier cycles are excluded.",
+          "reservation_status": "UNKNOWN",
+          "reservations": [],
+          "resource_cycles_additive": false,
+          "schema": "merlin.same_roi_optimization_feedback.v1",
+          "scope_sha256": null,
+          "status": "UNKNOWN",
+          "suggestions": [],
+          "traffic": [],
+          "work": {
+            "compute_ceiling_attainment": null,
+            "meaning": "source useful MACs / (structural peak MACs per cycle * modeled ROI cycles); not measured array occupancy",
+            "nominal_padded_macs": null,
+            "observed_shape_macs": null,
+            "source_kind": "unknown",
+            "source_useful_macs": null,
+            "structural_compute_floor_cycles": null,
+            "structural_floor_to_modeled_cycles": null,
+            "structural_peak_macs_per_cycle": null,
+            "useful_fraction_of_nominal_padded_work": null
+          }
+        },
+        "scope": "complete kernel-call window; host, device and completion inside that window",
+        "scope_excludes": [
+          "input staging",
+          "output publication",
+          "metric formatting",
+          "parent readback"
+        ],
+        "scope_sha256": null,
+        "scoped_counts": {},
+        "scoped_counts_status": "UNKNOWN",
+        "scoped_resource_feedback": null,
+        "structural_floor_to_estimate_ratio": null,
+        "timing_mode": "untuned",
+        "timing_qualified": false,
+        "timing_status": "UNKNOWN"
+      }
+    },
+    "model_review": "INACTIVE V90 full-i32 accumulating ACC MVIN through selected separate scaler and finite ACC RMW ports; one original stride-zero broadcast DMA, original row publication; V89 native/hardware/prices/budgets/scope unchanged; no new physical qualification; existing original owned synchronous PG scope exactly reused; V90 provider selected prospectively, not relabeled V89 evidence",
+    "model_sha256": null,
+    "modeled_resource_activity": null,
+    "observation_deferred": false,
+    "observation_need_s": 233,
+    "observation_seconds": 4.1,
+    "performance_target_met": false,
+    "promotion_authority": false,
+    "qualified_attainable_fraction": null,
+    "reason": "joint performance unavailable: ValueError",
+    "request_model_binding": null,
+    "schema": "merlin.phase1.joint_performance.v1",
+    "scope": "complete kernel-call window; host, device and completion inside that window",
+    "scope_excludes": [
+      "input staging",
+      "output publication",
+      "metric formatting",
+      "parent readback"
+    ],
+    "scope_sha256": null,
+    "search_priority": {
+      "additional_gsim_requested": false,
+      "confidence": "unknown",
+      "diagnostic_headroom": null,
+      "gap_ratio": null,
+      "invocation_count": null,
+      "invocation_weight": 1,
+      "promotion_authority": false,
+      "qualified_advisory_score": null,
+      "reason": "complete correctness required",
+      "status": "CORRECTNESS_FIRST",
+      "workload_impact": "unknown; unit invocation weight"
+    },
+    "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+    "staged_capsule_sha256": "77fd3bafef3722f43a73b39a4a7a996f871bb3f674700d1056031af6a2f14a1e",
+    "status": "UNKNOWN",
+    "structural_comparison_binding": {
+      "capsule_sha256": "77fd3bafef3722f43a73b39a4a7a996f871bb3f674700d1056031af6a2f14a1e",
+      "comparison_domain_sha256": null,
+      "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+      "model_sha256": null,
+      "scope_sha256": null,
+      "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+    },
+    "structural_floor_to_estimate_ratio": null,
+    "structural_roofline": {
+      "authority": "none; logical request ideals are not physical DRAM or sustained service",
+      "complete_attainment": null,
+      "convergence_eligible": false,
+      "logical_request_ideal_service": {
+        "read": {
+          "client_peak_bytes_per_cycle": 16,
+          "ideal_requested_service_cycles": 316828,
+          "requested_bytes": 5069248
+        },
+        "write": {
+          "client_peak_bytes_per_cycle": 16,
+          "ideal_requested_service_cycles": 62720,
+          "requested_bytes": 1003520
+        }
+      },
+      "machine_unresolved": {},
+      "missing_terms": [
+        "actual compulsory interface traffic and transfer amplification",
+        "sustained bandwidth, contention, translation and arbitration",
+        "command issue, host preparation, layout and readout costs",
+        "array fill/drain and fixed invocation costs",
+        "physical placement, ports, queues, dependencies and legal overlap",
+        "independent complete-cost measurements and timing qualification"
+      ],
+      "padded_work": {
+        "basis": null,
+        "compulsory_workload_floor": false,
+        "conditional_compute_service_cycles": null,
+        "macs": null
+      },
+      "provided_client_request_ideal_service": null,
+      "schema": "merlin.perf.partial_roofline.v1",
+      "status": "partial",
+      "storage_requests": {},
+      "structural_compute_floor_cycles": 511168,
+      "structural_peak_macs_per_cycle": 256,
+      "useful_macs": 130859008,
+      "whole_call_cycles": null
+    },
+    "timing_epoch": 0,
+    "timing_mode": "untuned",
+    "timing_qualified": false,
+    "unavailability_detail": "owned host has unsupported or indirect completion effects",
+    "unavailability_stage": "same_elf_observation",
+    "unresolved_events": [],
+    "untuned_fallback_permitted": false
+  },
+  "source_composition": {
+    "advisory_only": true,
+    "features": {
+      "dense_input_views": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "group_profile": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "host_bounded_rne": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "host_elementwise_fusion": {
+        "performance_qualified": false,
+        "report_sha256": "5a82b2e3580ae3ba300d6763c45b994ec14f46288ac3cbbc927a152973a210c6",
+        "requested": true,
+        "rewritten_work": "unmeasured",
+        "selected": true,
+        "status": "pipeline_selected"
+      },
+      "host_roundeven": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "independent_heads": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "op_profile": {
+        "observations": {
+          "L2": {
+            "category_counter_ticks": {
+              "alloc": 480,
+              "constant": 42,
+              "elementwise": 11648554,
+              "fill_init": 88852,
+              "layout_copy": 1251332,
+              "layout_view": 147,
+              "quantize_requant": 3050909,
+              "reduction_softmax": 15442327,
+              "unclassified:func.call": 490163
+            },
+            "executions": 1,
+            "performance_ranking_eligible": false,
+            "status": "observed",
+            "timing_qualified": false,
+            "total_counter_ticks": 31972806,
+            "unit": "raw_counter_ticks"
+          }
+        },
+        "requested": true,
+        "selected": true,
+        "status": "observed"
+      },
+      "prepack_weights": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "propagate_layouts": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "reuse_intermediate_storage": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "share_exact_tensor_preparations": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "shared_input_siblings": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "whole_head_batches": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      }
+    },
+    "performance_ranking_eligible": false,
+    "schema": "merlin.source_composition_feedback.v1",
+    "scope": "Pinned source/preparation/emission effects; selection alone is not application. Counts and functional counter ticks are not elapsed cycles or a performance win.",
+    "selected_route": "ordinary",
+    "timing_qualified": false
+  },
+  "status": "pass",
+  "tiers": {
+    "L0": "pass",
+    "L1": "pass",
+    "L2": "pass"
+  }
+}

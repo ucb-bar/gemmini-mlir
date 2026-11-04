@@ -1,0 +1,102 @@
+{
+  "hypothesis": "Allow original primitive input MVIN to flow directly to first original PRELOAD/COMPUTE_PRELOADED readers under selected completion RAW law; retain all input-last-use and readout-block drains",
+  "variant": "variants/conv_input_ready",
+  "variant_identity": "d94b4ab06da736f1125918224b9cb3ea63369e53e81de1ca5fa2afdedff56a76",
+  "requests": {
+    "on": "5_1793263375041342989_3143189b0a8a2bdd44335d4d4be35aa4",
+    "baseline": "3_1793257330027717956_faeadf8ee678898be13d61e1278f7bba"
+  },
+  "evidence": "PROVISIONAL Spike modeled complete kernel-call, not measured RTL",
+  "core_changes": [
+    "G_conv2d_c24x3x3_k3x3s1_n24_raw",
+    "SY_conv_k3x3_s1_ci64_co80_h8_int8"
+  ],
+  "decision": "Small consistent provisional modeled gains on two unit-stride representatives; stride2 essentially neutral. Keep opt-in alternative pending parent certification/promotion decision; no selected-file edits. No blanket promotion or counts-based speedup claim.",
+  "rows": [
+    {
+      "capsule": "RN_conv3x3_s2p1_c128_h56_i8",
+      "cycle_reduction_pct": 0.008318734769374725,
+      "off": {
+        "cycles": 817432,
+        "elf_sha256": "6e9d2e2d5f8744c3b352ba3294bab03cbfd5ff409a498494ba9624b7507162f2",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.5524422826608207,
+        "device_read_bytes": 577536,
+        "device_write_bytes": 100352,
+        "cpu_integer_instructions": 101047,
+        "fences_diagnostic": 118
+      },
+      "on": {
+        "cycles": 817364,
+        "elf_sha256": "81222ae645fe1cb0334287c819a28b3256a14609be5907206941c167c8377cd4",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.5524882426923623,
+        "device_read_bytes": 577536,
+        "device_write_bytes": 100352,
+        "cpu_integer_instructions": 101047,
+        "fences_diagnostic": 90
+      }
+    },
+    {
+      "capsule": "ZA_conv_3x3x28x28x128x128x4_native_i8",
+      "cycle_reduction_pct": 0.38713979875968363,
+      "off": {
+        "cycles": 3095006,
+        "elf_sha256": "75ef6c2245399b69e5410e193a920194aaa9fcd73d59cfb5ed280d5998572a0f",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.5836292401371759,
+        "device_read_bytes": 722944,
+        "device_write_bytes": 401408,
+        "cpu_integer_instructions": 271072,
+        "fences_diagnostic": 454
+      },
+      "on": {
+        "cycles": 3083024,
+        "elf_sha256": "765e9df56652f89691a7e607ba3b42d9b502b9b3f2e0c3dec73e2a80d8c5ff76",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.585897482471755,
+        "device_read_bytes": 722944,
+        "device_write_bytes": 401408,
+        "cpu_integer_instructions": 271072,
+        "fences_diagnostic": 342
+      }
+    },
+    {
+      "capsule": "ZA_conv_3x3x56x56x64x64x4_native_i8",
+      "cycle_reduction_pct": 0.8455456172577147,
+      "off": {
+        "cycles": 4674733,
+        "elf_sha256": "465e9ffc9d19a51dd8fa956c13aae80dd0ff05ee8e8be3449417e285918f6d7f",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.38640410051226454,
+        "device_read_bytes": 1127424,
+        "device_write_bytes": 802816,
+        "cpu_integer_instructions": 435549,
+        "fences_diagnostic": 1350
+      },
+      "on": {
+        "cycles": 4635206,
+        "elf_sha256": "fa99313e0de38c64b36055db34dab8f885b31831b947304f7edeb73979b54cf3",
+        "complete_event_accounting": true,
+        "status_timing": "PROVISIONAL",
+        "compute_ceiling_attainment": 0.389699184890596,
+        "device_read_bytes": 1127424,
+        "device_write_bytes": 802816,
+        "cpu_integer_instructions": 435549,
+        "fences_diagnostic": 1126
+      }
+    }
+  ],
+  "full_evidence": "artifacts/conv_input_ready/comparison.json",
+  "native_sources": "All six original native-source CLI products pass without z3 and are byteidentical to final_selected/rank6 products",
+  "native_model_obligations": [
+    "merlin_dev_gemmini_2",
+    "merlin_dev_gemmini_6",
+    "merlin_dev_gemmini_10"
+  ]
+}

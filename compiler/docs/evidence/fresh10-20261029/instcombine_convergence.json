@@ -1,0 +1,219 @@
+{
+  "schema": "host-instcombine-convergence.v1",
+  "supported_option_evidence": "installed opt --print-passes: instcombine<no-verify-fixpoint;verify-fixpoint;max-iterations=N>",
+  "recipe": "instcombine<max-iterations=100;verify-fixpoint> at every whole-program native optimization and cleanup site",
+  "scope": "exact saved linked host/device/descriptor LLVM inputs; ordinary LLVM optimizer, verifier retained; no source arithmetic flags added",
+  "checks": [
+    {
+      "input": "/tmp/fresh10-authored-compiler/f7979529a83e82d9834fdce22f2dac91e892255c8ad8e86e393683984871edff/mixed/combined/inline.ll",
+      "input_sha256": "da5180969c874c2f4921553cb1f87547ee860e7978ecd5f3b660cdb20813d914",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/f7979529a83e82d9834fdce22f2dac91e892255c8ad8e86e393683984871edff/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/0-original.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "def35e427865d98424869bb9f9fc154f5e7d762edb0301eb35073532e446c874",
+          "output_bytes": 1467378
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/f7979529a83e82d9834fdce22f2dac91e892255c8ad8e86e393683984871edff/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/0-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "def35e427865d98424869bb9f9fc154f5e7d762edb0301eb35073532e446c874",
+          "output_bytes": 1467378
+        }
+      }
+    },
+    {
+      "input": "/tmp/fresh10-authored-compiler/935f288bae67da4760fc6cf7b12edb65851d4cf6ca667f519791e2e831326b90/mixed/combined/inline.ll",
+      "input_sha256": "e1493609382a27263fb5214c4e64098ef357635ecf11e78838ea2864676468d2",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/935f288bae67da4760fc6cf7b12edb65851d4cf6ca667f519791e2e831326b90/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/1-original.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "a66a3446d912194b47661679b96c20d447c1c2610341220016255e7c3d367abd",
+          "output_bytes": 797239
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/935f288bae67da4760fc6cf7b12edb65851d4cf6ca667f519791e2e831326b90/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/1-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "a66a3446d912194b47661679b96c20d447c1c2610341220016255e7c3d367abd",
+          "output_bytes": 797239
+        }
+      }
+    },
+    {
+      "input": "/tmp/fresh10-authored-compiler/b78c79f1d675c5229b98de4ec6b08ad2a26a37e5b500f4bfb3ef3503f28a108b/mixed/combined/inline.ll",
+      "input_sha256": "c69ab8050f5af8736547da76651c0e5c8c4799dcc3fbbc4d559d6f39c9822835",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/b78c79f1d675c5229b98de4ec6b08ad2a26a37e5b500f4bfb3ef3503f28a108b/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/2-original.ll"
+          ],
+          "returncode": 1,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\nLLVM ERROR: Instruction Combining on kernel_entry did not reach a fixpoint after 1 iterations. Use 'instcombine<no-verify-fixpoint>' or function attribute 'instcombine-no-verify-fixpoint' to suppress this error.\n"
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/b78c79f1d675c5229b98de4ec6b08ad2a26a37e5b500f4bfb3ef3503f28a108b/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/2-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "4baafec0e1f6b329eed2fde69652c82fbb9b8bc6b853b2665e09d85a4cf70a56",
+          "output_bytes": 786365
+        }
+      }
+    },
+    {
+      "input": "/tmp/fresh10-authored-compiler/584ce0bcc073d4682c57e3f8192ea3dcb8a17d046c275f13f22765cb30407529/mixed/combined/inline.ll",
+      "input_sha256": "0a3ef2e3571cae1398794ce5d61dc4af68737ad972e1a206f0cb6a116c88eed3",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/584ce0bcc073d4682c57e3f8192ea3dcb8a17d046c275f13f22765cb30407529/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/3-original.ll"
+          ],
+          "returncode": 1,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\nLLVM ERROR: Instruction Combining on kernel_entry did not reach a fixpoint after 1 iterations. Use 'instcombine<no-verify-fixpoint>' or function attribute 'instcombine-no-verify-fixpoint' to suppress this error.\n"
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/584ce0bcc073d4682c57e3f8192ea3dcb8a17d046c275f13f22765cb30407529/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/3-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "d8fa86baf851982977f552267126e7b44454b5a08807c455e5590fefa2b9b86b",
+          "output_bytes": 306724
+        }
+      }
+    },
+    {
+      "input": "/tmp/fresh10-authored-compiler/ded0a08a849d848d47914e6fa00280c50f29679d78082b8562f3083f5ae335b8/mixed/combined/inline.ll",
+      "input_sha256": "ac9cf77ae4076206c96b0f04cb66565008da70c2dc5d62766336e3c2f0c2caca",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/ded0a08a849d848d47914e6fa00280c50f29679d78082b8562f3083f5ae335b8/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/4-original.ll"
+          ],
+          "returncode": 1,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\nLLVM ERROR: Instruction Combining on kernel_entry did not reach a fixpoint after 1 iterations. Use 'instcombine<no-verify-fixpoint>' or function attribute 'instcombine-no-verify-fixpoint' to suppress this error.\n"
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/ded0a08a849d848d47914e6fa00280c50f29679d78082b8562f3083f5ae335b8/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/4-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "949994b2d28d4dea0acecc97b013e698672a9f40c928543a962e3507c4c90990",
+          "output_bytes": 759092
+        }
+      }
+    },
+    {
+      "input": "/tmp/fresh10-authored-compiler/96aa56bc6eb5f75b804eb102a1297d2af3da9a1e62ae6f3f5b59a262d75f9f9c/mixed/combined/inline.ll",
+      "input_sha256": "9c2e9f23a1eae2b841f5172c66f040cc07f22229632e3827f35eb912e7b78f14",
+      "runs": {
+        "original": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/96aa56bc6eb5f75b804eb102a1297d2af3da9a1e62ae6f3f5b59a262d75f9f9c/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/5-original.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "ef959e7c5c1006b3b0c0a4c0e348b90b4fb8da1dae573e3a3d9de16cbeee90e8",
+          "output_bytes": 3826104
+        },
+        "bounded_verified": {
+          "argv": [
+            "install/bin/opt",
+            "-S",
+            "--passes=internalize,always-inline,sroa,instcombine<max-iterations=100;verify-fixpoint>,simplifycfg,globaldce",
+            "--internalize-public-api-list=kernel_entry,kernel_complete",
+            "/tmp/fresh10-authored-compiler/96aa56bc6eb5f75b804eb102a1297d2af3da9a1e62ae6f3f5b59a262d75f9f9c/mixed/combined/inline.ll",
+            "-o",
+            "ab/host-instcombine-convergence/5-bounded_verified.ll"
+          ],
+          "returncode": 0,
+          "stderr": "Hard-float 'd' ABI can't be used for a target that doesn't support the D instruction set extension (ignoring target-abi)\n",
+          "output_sha256": "ef959e7c5c1006b3b0c0a4c0e348b90b4fb8da1dae573e3a3d9de16cbeee90e8",
+          "output_bytes": 3826104
+        }
+      }
+    }
+  ],
+  "timing": "not_measured"
+}

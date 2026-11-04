@@ -1,0 +1,419 @@
+{
+  "schema": "authored.attention_shared_rhs_evidence.v1",
+  "source_files": {
+    "submission/backend/attention.py": "044bb8ef2255be0b23578ba403b97d3768d770cbf9f19712c38bd4e1977cc76c",
+    "submission/backend/attention_grouped_rows.py": "d230cdd26b35a645e8e962eb09902eaf9a8c035d2295b78722868b63af6bbc87",
+    "submission/backend/shared_rhs_rows.py": "be89645c26ee420dde7de8fd3547860654807fbf82861c86d3d755f71d8fd18c",
+    "submission/backend/resident_rhs.py": "b68c5fbdf78562fbbd36ed4b156822357b5a62889fa46f3b5286e1d60e08199d",
+    "submission/backend/compiler.py": "6272bc2ca69d192fd515176cbceaaeb5e9a70d46029924f557e757bddff444ee",
+    "submission/TUNING_KNOBS.json": "ca86861e575eecb45e11ad675a6efda3e591e92b69be379c4df74b2e5f1a9335",
+    "submission/tuning.json": "338be9b6a277cb87aad6c818a738eff53d8865338c26cfa294b34aab138cb172"
+  },
+  "comparisons": [
+    {
+      "experiment": "gathered_rows",
+      "case": "TL_att_decode_q32kv4s1l2048d64_raw",
+      "baseline_request": "2_1793253328935941585_c8311baf54f2138b7022eab439792314",
+      "candidate_request": "2_1793253328930777455_a4124fef6d06eef81b5e69f1db8efea7",
+      "baseline": {
+        "estimated_whole_soc_cycles": 2345322,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "066f9c10ec2dfdc68396f9c5dfa4ada548ef1288579d51d8e9949eb304d181d3",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 547745,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "ea723d63982ab29eacb1c87b23164b98a54890e97721d747d8e33fb9192908bc",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 0.23354788809383104,
+      "baseline_counts": {
+        "target.commands": 107489,
+        "target.fences": 2307,
+        "target.class.load": 36992,
+        "target.class.config": 736,
+        "target.class.compute_ws": 32768,
+        "target.class.store": 4224,
+        "target.posted.modeled_target_fence_wait_cycles": 311323
+      },
+      "candidate_counts": {
+        "target.commands": 14845,
+        "target.fences": 1587,
+        "target.class.load": 5200,
+        "target.class.config": 348,
+        "target.class.compute_ws": 4096,
+        "target.class.store": 1104,
+        "target.posted.modeled_target_fence_wait_cycles": 183473
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 8388608,
+      "nominal_padded_macs": 16777216,
+      "structural_compute_floor": 32768
+    },
+    {
+      "experiment": "gathered_rows",
+      "case": "TL_att_pv_q32kv4_m16k16n64_raw",
+      "baseline_request": "2_1793253328935941585_c8311baf54f2138b7022eab439792314",
+      "candidate_request": "2_1793253328930777455_a4124fef6d06eef81b5e69f1db8efea7",
+      "baseline": {
+        "estimated_whole_soc_cycles": 29741,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d75e3e0dd87779ec470f4e2c5cdfbc8150e4f3c233a4a383c217ff1bf3f91206",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 29741,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d75e3e0dd87779ec470f4e2c5cdfbc8150e4f3c233a4a383c217ff1bf3f91206",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 1.0,
+      "baseline_counts": {
+        "target.commands": 673,
+        "target.fences": 195,
+        "target.class.load": 160,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 128,
+        "target.posted.modeled_target_fence_wait_cycles": 22355
+      },
+      "candidate_counts": {
+        "target.commands": 673,
+        "target.fences": 195,
+        "target.class.load": 160,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 128,
+        "target.posted.modeled_target_fence_wait_cycles": 22355
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 524288,
+      "nominal_padded_macs": 524288,
+      "structural_compute_floor": 2048
+    },
+    {
+      "experiment": "gathered_rows",
+      "case": "TL_att_qk_q32kv4_m16k64n16_raw",
+      "baseline_request": "2_1793253328935941585_c8311baf54f2138b7022eab439792314",
+      "candidate_request": "2_1793253328930777455_a4124fef6d06eef81b5e69f1db8efea7",
+      "baseline": {
+        "estimated_whole_soc_cycles": 27815,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d5aa5efb04d8b0873a043e6283508cc8a9b10af64a6a55af87891ea689a20878",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 27815,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d5aa5efb04d8b0873a043e6283508cc8a9b10af64a6a55af87891ea689a20878",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 1.0,
+      "baseline_counts": {
+        "target.commands": 673,
+        "target.fences": 227,
+        "target.class.load": 256,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 32,
+        "target.posted.modeled_target_fence_wait_cycles": 19977
+      },
+      "candidate_counts": {
+        "target.commands": 673,
+        "target.fences": 227,
+        "target.class.load": 256,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 32,
+        "target.posted.modeled_target_fence_wait_cycles": 19977
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 524288,
+      "nominal_padded_macs": 524288,
+      "structural_compute_floor": 2048
+    },
+    {
+      "experiment": "literal_residency",
+      "case": "CH_kv_heads_decoder_scale_model_q16kv4s96l96d52",
+      "baseline_request": "2_1793253485429486295_e09cbfc275af75c0a1f94cdc19a5575f",
+      "candidate_request": "2_1793253717075124044_9a228208627549cf9b11bf004eff6892",
+      "baseline": {
+        "estimated_whole_soc_cycles": 334547,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "27cfee1f99e35fb850c84760da9a9811c9c5b383e16e6ac5f96f3dbc4805244d",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 334547,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "27cfee1f99e35fb850c84760da9a9811c9c5b383e16e6ac5f96f3dbc4805244d",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 1.0,
+      "baseline_counts": {
+        "target.commands": 12033,
+        "target.fences": 195,
+        "target.class.load": 1728,
+        "target.class.config": 128,
+        "target.class.compute_ws": 4608,
+        "target.class.store": 960,
+        "target.posted.modeled_target_fence_wait_cycles": 56566
+      },
+      "candidate_counts": {
+        "target.commands": 12033,
+        "target.fences": 195,
+        "target.class.load": 1728,
+        "target.class.config": 128,
+        "target.class.compute_ws": 4608,
+        "target.class.store": 960,
+        "target.posted.modeled_target_fence_wait_cycles": 56566
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 15335424,
+      "nominal_padded_macs": 18874368,
+      "structural_compute_floor": 59904
+    },
+    {
+      "experiment": "literal_residency",
+      "case": "TL_att_pv_q32kv4_m16k16n64_raw",
+      "baseline_request": "2_1793253485429486295_e09cbfc275af75c0a1f94cdc19a5575f",
+      "candidate_request": "2_1793253717075124044_9a228208627549cf9b11bf004eff6892",
+      "baseline": {
+        "estimated_whole_soc_cycles": 29741,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d75e3e0dd87779ec470f4e2c5cdfbc8150e4f3c233a4a383c217ff1bf3f91206",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 29825,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "2080f3d0f5653d3b20888d6652e7eef5dbf3bbfebb921e209d3f20541b052a73",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 1.0028243838472142,
+      "baseline_counts": {
+        "target.commands": 673,
+        "target.fences": 195,
+        "target.class.load": 160,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 128,
+        "target.posted.modeled_target_fence_wait_cycles": 22355
+      },
+      "candidate_counts": {
+        "target.commands": 601,
+        "target.fences": 299,
+        "target.class.load": 48,
+        "target.class.config": 168,
+        "target.class.compute_ws": 128,
+        "target.class.store": 128,
+        "target.posted.modeled_target_fence_wait_cycles": 24746
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 524288,
+      "nominal_padded_macs": 524288,
+      "structural_compute_floor": 2048
+    },
+    {
+      "experiment": "literal_residency",
+      "case": "TL_att_qk_q32kv4_m16k64n16_raw",
+      "baseline_request": "2_1793253485429486295_e09cbfc275af75c0a1f94cdc19a5575f",
+      "candidate_request": "2_1793253717075124044_9a228208627549cf9b11bf004eff6892",
+      "baseline": {
+        "estimated_whole_soc_cycles": 27815,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "d5aa5efb04d8b0873a043e6283508cc8a9b10af64a6a55af87891ea689a20878",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "candidate": {
+        "estimated_whole_soc_cycles": 20193,
+        "status": "PROVISIONAL",
+        "complete_event_accounting": true,
+        "elf_sha256": "dd8c1df78a045f1395417129b3337cff68776c6c1731d1bbfa394af9b11a0a78",
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "timing_epoch": 0,
+        "timing_mode": "untuned",
+        "scope": "complete kernel-call window; host, device and completion inside that window"
+      },
+      "cycles_ratio": 0.725975193241057,
+      "baseline_counts": {
+        "target.commands": 673,
+        "target.fences": 227,
+        "target.class.load": 256,
+        "target.class.config": 128,
+        "target.class.compute_ws": 128,
+        "target.class.store": 32,
+        "target.posted.modeled_target_fence_wait_cycles": 19977
+      },
+      "candidate_counts": {
+        "target.commands": 505,
+        "target.fences": 107,
+        "target.class.load": 144,
+        "target.class.config": 72,
+        "target.class.compute_ws": 128,
+        "target.class.store": 32,
+        "target.posted.modeled_target_fence_wait_cycles": 12140
+      },
+      "numerical_tier": "L2 pass for both",
+      "measurement": "modeled Spike complete-call; PROVISIONAL, not gSIM",
+      "source_useful_macs": 524288,
+      "nominal_padded_macs": 524288,
+      "structural_compute_floor": 2048
+    }
+  ],
+  "utilization_meaning": "source useful MACs / (structural peak 256 MACs/cycle * complete modeled call cycles); not physical PE occupancy",
+  "confidence": "Matched provisional complete Spike timing-model scope; complete event accounting; no measured gSIM speedup claim.",
+  "gathered_rows": {
+    "original_dense_calls": 64,
+    "joined_dense_calls": 8,
+    "lhs_preparation_bytes": 67584,
+    "result_scatter_bytes": 270336,
+    "rhs_replication_bytes": 0,
+    "local_llvm_sha256": "67acf3be014b197364f036f793d171322ed9cc507fe94e409b732f05cf7af35c"
+  },
+  "remaining_coverage": [
+    "No gSIM witness yet for newly gathered short rows; assigned large decode is Spike-only development.",
+    "Named ATTENTION grouped pointer view has algebraic mapping checks but no selected public opcode witness.",
+    "Core ragged literal route L2 passes; mandatory physical tier remains unrun."
+  ],
+  "core_literal": {
+    "request": "2_1793253751488183221_a2395320e442109951b441cfdf269a0a",
+    "numerical_execution_passed": true,
+    "modeled_cycles": 4002,
+    "prior_off_modeled_cycles": 4506,
+    "certified_complete": false
+  },
+  "decision": {
+    "gather": "keep; default on by root",
+    "literal": "keep optional; QK wins, PV +84 cycles, reject broad default",
+    "reduction": "keep; QK equals winning literal executable, PV/CH/core equal incumbent executable; root promoted default"
+  },
+  "reduction_identity_proofs": {
+    "QK": {
+      "byte_identical": true,
+      "current_llvm_sha256": "37f753942743698487f976325e1c626927e0a65fa37ae7048e59e3e4c60ee6c8",
+      "reference_llvm_sha256": "37f753942743698487f976325e1c626927e0a65fa37ae7048e59e3e4c60ee6c8",
+      "candidate": "/tmp/attention_reduction_qk.llvm.mlir",
+      "reference": "/tmp/attention_literal_qk.llvm.mlir"
+    },
+    "PV": {
+      "byte_identical": true,
+      "current_llvm_sha256": "a4c958609a4fabea1f0adbad8192a79693f5a8b24fc4422d06b7e0fcfd0af8c8",
+      "reference_llvm_sha256": "a4c958609a4fabea1f0adbad8192a79693f5a8b24fc4422d06b7e0fcfd0af8c8",
+      "candidate": "/tmp/attention_reduction_pv.llvm.mlir",
+      "reference": "/tmp/attention_literal_off_pv.llvm.mlir"
+    },
+    "CH": {
+      "byte_identical": true,
+      "current_llvm_sha256": "76be1c10e09766e60b6d5f934e8c23299ffa435e517669f41f2ca0c4ea2488c7",
+      "reference_llvm_sha256": "76be1c10e09766e60b6d5f934e8c23299ffa435e517669f41f2ca0c4ea2488c7",
+      "candidate": "/tmp/attention_reduction_ch.llvm.mlir",
+      "reference": "/tmp/attention_literal_ch_off.llvm.mlir"
+    },
+    "core_edge": {
+      "byte_identical": true,
+      "current_llvm_sha256": "f1f5640612bd0e8955097f0bd114e7a4ddcb22b4a68e8191f4299424cb676da5",
+      "reference_llvm_sha256": "f1f5640612bd0e8955097f0bd114e7a4ddcb22b4a68e8191f4299424cb676da5",
+      "candidate": "/tmp/attention_reduction_core.llvm.mlir",
+      "reference": "/tmp/attention_off_core.llvm.mlir"
+    }
+  }
+}

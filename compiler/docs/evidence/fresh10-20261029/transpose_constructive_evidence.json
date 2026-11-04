@@ -1,0 +1,249 @@
+{
+  "schema": "author.transpose_constructive_proof.v1",
+  "files": [
+    "submission/backend/transpose.py",
+    "submission/backend/transpose_proof.py"
+  ],
+  "mechanism": "Pure unchanged canonical baseline constructor; exact actualKernel and serializeddigest conformance; independent affine coefficient projection, original axis mixed-radix bounds, complete injective Cartesian full/tail partition, hardware DMA/ACC capacity and actual completion checks.",
+  "optional_batched": "Retains original SMT physical/logical validation when installed. Missing optional z3 refuses candidate before effects and retains already-proved baseline.",
+  "checks": {
+    "actual_kernel_numeric_cases": 140,
+    "canonical_kernel_byte_identity_cases": 140,
+    "mutation_rejections": [
+      "source_address",
+      "destination_address",
+      "tail",
+      "drain",
+      "config_pitch",
+      "ACC",
+      "loop_bound",
+      "extra_config_field",
+      "attributes",
+      "kernel_name",
+      "source_boundary"
+    ],
+    "large_bounded": [
+      {
+        "shape": [
+          1024,
+          1024,
+          1024,
+          2
+        ],
+        "permutation": [
+          2,
+          0,
+          1,
+          3
+        ],
+        "proof": {
+          "schema": "submission.transpose_address_projection.v1",
+          "kernel_sha256": "f8a40e0bc0eb4b76d331c8c15156d26921749c868009efc2d2178e187f1f6358",
+          "solver_queries": 0,
+          "proof_method": "exact canonical Kernel conformance; affine source-axis equality; Cartesian full/tail partition",
+          "source_shape": [
+            1024,
+            1024,
+            1024,
+            2
+          ],
+          "output_shape": [
+            1024,
+            1024,
+            1024,
+            2
+          ],
+          "permutation": [
+            2,
+            0,
+            1,
+            3
+          ],
+          "output_elements": 2147483648,
+          "actual_dma_sites": 1,
+          "dynamic_dma_pairs": 67108864,
+          "requested_load_bytes": 8589934592,
+          "requested_store_bytes": 8589934592,
+          "actual_tile_columns": [
+            2
+          ],
+          "source_row_stride_bytes": 8192,
+          "destination_row_stride_bytes": 8,
+          "contiguous_suffix_start": 3,
+          "contiguous_suffix_elements": 2,
+          "source_address_bounds": [
+            0,
+            2147483647
+          ],
+          "destination_address_bounds": [
+            0,
+            2147483647
+          ],
+          "coverage": "in-bounds injective output addresses with exact source cardinality",
+          "semantics": "raw full-width i32 readout",
+          "ownership": "MVIN then full drain then MVOUT then full drain before row reuse",
+          "alias_contract": "distinct ordinary ABI source/output buffers"
+        }
+      },
+      {
+        "shape": [
+          2,
+          17,
+          1000000
+        ],
+        "permutation": [
+          1,
+          0,
+          2
+        ],
+        "proof": {
+          "schema": "submission.transpose_address_projection.v1",
+          "kernel_sha256": "b351912e94b6d856c679d4274a1cfea7105387ac5e1602fef2d5097acea39e58",
+          "solver_queries": 0,
+          "proof_method": "exact canonical Kernel conformance; affine source-axis equality; Cartesian full/tail partition",
+          "source_shape": [
+            2,
+            17,
+            1000000
+          ],
+          "output_shape": [
+            17,
+            2,
+            1000000
+          ],
+          "permutation": [
+            1,
+            0,
+            2
+          ],
+          "output_elements": 34000000,
+          "actual_dma_sites": 1,
+          "dynamic_dma_pairs": 1062500,
+          "requested_load_bytes": 136000000,
+          "requested_store_bytes": 136000000,
+          "actual_tile_columns": [
+            16
+          ],
+          "source_row_stride_bytes": 68000000,
+          "destination_row_stride_bytes": 4000000,
+          "contiguous_suffix_start": 2,
+          "contiguous_suffix_elements": 1000000,
+          "source_address_bounds": [
+            0,
+            33999999
+          ],
+          "destination_address_bounds": [
+            0,
+            33999999
+          ],
+          "coverage": "in-bounds injective output addresses with exact source cardinality",
+          "semantics": "raw full-width i32 readout",
+          "ownership": "MVIN then full drain then MVOUT then full drain before row reuse",
+          "alias_contract": "distinct ordinary ABI source/output buffers"
+        }
+      }
+    ],
+    "optional_batched_missing_z3": "proved baseline fallback"
+  },
+  "batched_with_z3": {
+    "exact_prior_candidate_cases": 6,
+    "shapes": [
+      {
+        "shape": [
+          17,
+          19
+        ],
+        "permutation": [
+          1,
+          0
+        ]
+      },
+      {
+        "shape": [
+          2,
+          3,
+          17
+        ],
+        "permutation": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "shape": [
+          1,
+          3,
+          17,
+          2
+        ],
+        "permutation": [
+          2,
+          0,
+          1,
+          3
+        ]
+      }
+    ],
+    "dtypes": [
+      "i8",
+      "i32"
+    ]
+  },
+  "full_original_source_no_z3": {
+    "provider": "frontend helper actual original-source CLI runs",
+    "runs": "artifacts/source_weighted_residual/no_z3_fullsource_runs.json",
+    "pairs": [
+      {
+        "case": "cnn",
+        "llvm_byte_identical": true,
+        "solver_llvm_sha256": "3747d0d2fe0cf37b06c9e80a42453229d5ea9dd47ce38e1a858e776a311f1ed5",
+        "no_z3_llvm_sha256": "3747d0d2fe0cf37b06c9e80a42453229d5ea9dd47ce38e1a858e776a311f1ed5",
+        "no_z3_llvm_bytes": 7809042,
+        "kernel_abi_equal": true,
+        "tensors_equal": true,
+        "device_regions": 310,
+        "static_instructions": 52910
+      },
+      {
+        "case": "multimodal",
+        "llvm_byte_identical": true,
+        "solver_llvm_sha256": "076073ffd5b392b36ede98d72e52b37146f85616ed4ed2f9b5182463e713c7b2",
+        "no_z3_llvm_sha256": "076073ffd5b392b36ede98d72e52b37146f85616ed4ed2f9b5182463e713c7b2",
+        "no_z3_llvm_bytes": 1732450,
+        "kernel_abi_equal": true,
+        "tensors_equal": true,
+        "device_regions": 68,
+        "static_instructions": 11804
+      },
+      {
+        "case": "decoder",
+        "llvm_byte_identical": true,
+        "solver_llvm_sha256": "2ac196e92ec1af28ec03fce5ce591279a7c21927f52dc72d2549c40d7bd101c7",
+        "no_z3_llvm_sha256": "2ac196e92ec1af28ec03fce5ce591279a7c21927f52dc72d2549c40d7bd101c7",
+        "no_z3_llvm_bytes": 586941,
+        "kernel_abi_equal": true,
+        "tensors_equal": true,
+        "device_regions": 13,
+        "static_instructions": 4060
+      },
+      {
+        "case": "decode_step",
+        "llvm_byte_identical": true,
+        "solver_llvm_sha256": "72a5f9c23f4eb4f57db7dcd6766089fb6873d4b63b9cd06ac0bca4507affbf9f",
+        "no_z3_llvm_sha256": "72a5f9c23f4eb4f57db7dcd6766089fb6873d4b63b9cd06ac0bca4507affbf9f",
+        "no_z3_llvm_bytes": 610606,
+        "kernel_abi_equal": true,
+        "tensors_equal": true,
+        "device_regions": 13,
+        "static_instructions": 4186
+      }
+    ]
+  },
+  "scope": "Functional compilation/proof improvement only. Baseline command kernels and original full-source LLVM bytes unchanged; no timing or device numerical run claimed for newly constructed source checks.",
+  "decision": "Keep solver-free constructive baseline proof; actual kernel numeric checks and strict mutation rejection pass; full original source CLI now works without z3.",
+  "source_sha256": {
+    "submission/backend/transpose.py": "45bc2c21dedcec5a144bab61a1fb5d50484dd6912a524dd0425948eb1e47fb83",
+    "submission/backend/transpose_proof.py": "427eab1aeb8eea55f713f71a40911c3f0252e8239a8e4f2ce479b04e67a42647"
+  }
+}

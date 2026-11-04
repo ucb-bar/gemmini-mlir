@@ -1,0 +1,2114 @@
+{
+  "all_pass": false,
+  "barrier_tier": "L2",
+  "certified_complete": false,
+  "n_capsules": 51,
+  "n_certified": 0,
+  "n_declined": 0,
+  "n_gated": 0,
+  "n_passed": 50,
+  "n_result_rows": 51,
+  "n_screened_only": 50,
+  "n_structural_unqualified": 3,
+  "n_unchecked": 58,
+  "n_unknown": 58,
+  "next_steps": {
+    "advisory_only": true,
+    "lines": [
+      "next steps (advisory; one choice per case or bundle by value, large and connected headroom first; a passing case's performance step never waits for other cases; detail: optimization_next):",
+      "1. dense: 28/65 correct (36 passed on an older version) -> finish correctness: CH_residual_conv_resnet50_model_m196k256n1024, CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048, PD_resnet50_model_m49k512n2048_raw (+34) (no result yet); build on dense_epoch_recipe.py (Fact-backed epochs: one drain per output block instead of one per K step; each dropped drain mapped to an R...), then dense_readout_recipe.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_residual_conv_resnet50_model_m196k256n1024,CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048,PD_resnet50_model_m49k512n2048_raw",
+      "2. conv: 4/34 correct (30 passed on an older version) -> finish correctness: CH_conv_pool_resnet50_model_c3h224w224k7s2n64_p3s2, RN_conv1x1_s2_c256to512_h56_i8_percol, RN_conv3x3_s1p1_c512_h7_i8 (+27) (no result yet); build on conv_window_recipe.py (Window row runs with retained input and resident weights; hazard check on rows written twice.), then conv_epoch_recipe.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_conv_pool_resnet50_model_c3h224w224k7s2n64_p3s2,RN_conv1x1_s2_c256to512_h56_i8_percol,RN_conv3x3_s1p1_c512_h7_i8",
+      "3. connected_chain: 10/26 correct (13 passed on an older version) -> finish correctness: CH_kv_heads_decoder_scale_model_q16kv4s96l96d52, CH_siblings_decoder_step_scale_model_m1k896n896n448n448, JC_resnet50_prepared_connected (+13) (no result yet); build on spatial_chain_recipe.py (A connected window chain found through the composition catalog.), then composition_routes.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_kv_heads_decoder_scale_model_q16kv4s96l96d52,CH_siblings_decoder_step_scale_model_m1k896n896n448n448,JC_resnet50_prepared_connected",
+      "4. gemv: 8/17 correct (9 passed on an older version) -> finish correctness: CH_residual_linear_tiny_llama_decode_m1k5728n2048, JM_tiny_llama_decode_m1k2048n2048_raw, JT_tiny_decode_m1k2048n32000_raw (+6) (no result yet); build on dense_epoch_recipe.py (Decode projections: one drain per output block instead of one per K step, each dropped drain backed by an o...) | apply: python agent_selfcheck.py --suite scalability --capsules CH_residual_linear_tiny_llama_decode_m1k5728n2048,JM_tiny_llama_decode_m1k2048n2048_raw,JT_tiny_decode_m1k2048n32000_raw",
+      "5. elementwise_map: 0/7 correct (7 passed on an older version) -> finish correctness: G_residual_add_m12n48_b1_raw, G_residual_add_m17n16_b1_raw, G_residual_add_m1n48_b1_raw (+4) (no result yet); build on composition_routes.py (Readout, pool and residual-add routes for an epilogue chain, with the symbol to start from.) | apply: python agent_selfcheck.py --capsules G_residual_add_m12n48_b1_raw,G_residual_add_m17n16_b1_raw,G_residual_add_m1n48_b1_raw",
+      "families (correct/total; informational, no family waits for another): dense 28/65 (24 timed) [0 failed, 37 unchecked] (36 passed on an older version), connected_chain 10/26 (5 timed) [0 failed, 16 unchecked] (13 passed on an older version), conv 4/34 (4 timed) [0 failed, 30 unchecked] (30 passed on an older version), gemv 8/17 (8 timed) [0 failed, 9 unchecked] (9 passed on an older version), elementwise_map 0/7 (0 timed) [0 failed, 7 unchecked] (7 passed on an older version), movement 0/3 (0 timed) [0 failed, 3 unchecked] (3 passed on an older version)"
+    ],
+    "schema": "merlin.selfcheck_next_steps.v1"
+  },
+  "note": "\u26a0 PARTIAL: 51 of 109 public capsule(s) returned results; 0 requested model(s) were gated without execution, and 58 have no status in this request. `all_pass` below covers only what you asked for \u2014 `certified_complete` is the one that means done. A fix can also BREAK a capsule you did not check, so re-run with --capsules all before believing you are finished. Self-check on spike (L2). Candidate whole-program rows show only submitted-artifact numeric status, required-tier status and closed verification codes; the separate runner-owned graph's trace, console, timing and failure are withheld. An incomplete candidate is not a passed screen. Other rows retain their ordinary diagnostic detail.",
+  "oracle_tiers": [
+    "L2"
+  ],
+  "per_capsule": [
+    {
+      "capsule": "CH_residual_conv_edge_m17k17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 382,
+      "numerical_execution_passed": true,
+      "execution_digest": "f8afb5a4edda63f93549bee8351c8f08bbb742b705a7ff1895593d820da4daba",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1080,
+        "array_utilization_pct": 1.78,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_residual_conv_edge_m17k17n17/18638046ee654e5c6adcb6667a34d4bb6c2a5bae1f8c4a93894c60dfea934ac7.json",
+        "sha256": "18638046ee654e5c6adcb6667a34d4bb6c2a5bae1f8c4a93894c60dfea934ac7"
+      }
+    },
+    {
+      "capsule": "CH_residual_linear_edge_m17k17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 382,
+      "numerical_execution_passed": true,
+      "execution_digest": "41d9cb60dc4ffa6745410afa8518184719e0940708209bac60fad73d3951b0a7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1080,
+        "array_utilization_pct": 1.78,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_residual_linear_edge_m17k17n17/79e211d7017acb2225cb8fea8564b3d624300ee1df1ab53aa939db5cab9ad024.json",
+        "sha256": "79e211d7017acb2225cb8fea8564b3d624300ee1df1ab53aa939db5cab9ad024"
+      }
+    },
+    {
+      "capsule": "CH_sibling_feed_edge_m17k17h17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 970,
+      "numerical_execution_passed": true,
+      "execution_digest": "7f70577a6321939a4a854186da77ddc380cb71754db3c76635458bdbaec8c6a3",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2468,
+        "array_utilization_pct": 2.33,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_sibling_feed_edge_m17k17h17n17/5aaf5a83996e2020ee53194ea8dd073a64c8288e19398b2845d3268a4217dea6.json",
+        "sha256": "5aaf5a83996e2020ee53194ea8dd073a64c8288e19398b2845d3268a4217dea6"
+      }
+    },
+    {
+      "capsule": "CH_siblings_edge_m17k17n17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 625,
+      "numerical_execution_passed": true,
+      "execution_digest": "b099861fa4cb35ff236b4e59d349393ce118fa20776c7350a0757efb6e5c4a7a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1577,
+        "array_utilization_pct": 2.43,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_siblings_edge_m17k17n17n17/9cd87d3dc9b009dea67d305134eb81647d1813538a27e1fa842a84b31747cad6.json",
+        "sha256": "9cd87d3dc9b009dea67d305134eb81647d1813538a27e1fa842a84b31747cad6"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c12x5x5_k1x1s1_n3_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 154,
+      "numerical_execution_passed": true,
+      "execution_digest": "1185d90f29ce27f4e3350dd24efeef3b4ff07aec4fb445032f8fae35c5227f7e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 680,
+        "array_utilization_pct": 0.52,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c12x5x5_k1x1s1_n3_raw/2ac0b3c465a5bc9134106594888f9cf3819e8d235c95d78e4ec28a9fee1a1a70.json",
+        "sha256": "2ac0b3c465a5bc9134106594888f9cf3819e8d235c95d78e4ec28a9fee1a1a70"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c3x5x5_k1x1s1_n12_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 155,
+      "numerical_execution_passed": true,
+      "execution_digest": "212b6c32afa5fe870d8f148229d22030ff55aace38ba70f41e9c14bde2ba0e30",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 724,
+        "array_utilization_pct": 0.49,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c3x5x5_k1x1s1_n12_raw/22ed4c45b8f49dd15ef82fad2db2bf8b57794b26ddf4c63b993d096255d58f5a.json",
+        "sha256": "22ed4c45b8f49dd15ef82fad2db2bf8b57794b26ddf4c63b993d096255d58f5a"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 261,
+      "numerical_execution_passed": true,
+      "execution_digest": "c16d2d7e4fddf8e2f31ec85395fc658e8fac378d34b165b30674ff8c8dfab775",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1054,
+        "array_utilization_pct": 10.25,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n48_raw/1e5078fa4c02c54168139b0302fc86d295fe46f677022bdb3b5417468ca71067.json",
+        "sha256": "1e5078fa4c02c54168139b0302fc86d295fe46f677022bdb3b5417468ca71067"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n64_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 306,
+      "numerical_execution_passed": true,
+      "execution_digest": "2e3efa592a601a9a036ff37e634dfec7617cd25c721968c06d6d12246da65562",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1283,
+        "array_utilization_pct": 11.22,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n64_raw/45d5adc85c9de9269b1c39200e39a52d814b3dfeb6f5339435a816de9061b8a7.json",
+        "sha256": "45d5adc85c9de9269b1c39200e39a52d814b3dfeb6f5339435a816de9061b8a7"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n80_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 350,
+      "numerical_execution_passed": true,
+      "execution_digest": "ac97724f9063a48ec47da704e28c34a4901bf77df288b24d88841a08a33e11d7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1552,
+        "array_utilization_pct": 11.6,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n80_raw/9e37dcba977c10311dede6914756ad89db12b151b9de05b37a4ae44ec8e3ef33.json",
+        "sha256": "9e37dcba977c10311dede6914756ad89db12b151b9de05b37a4ae44ec8e3ef33"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k80n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 382,
+      "numerical_execution_passed": true,
+      "execution_digest": "b52de153ec889c1b4c3454b8d1e53266b2f5ad56a329e3ae0d1290f3424e7fbc",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1429,
+        "array_utilization_pct": 12.6,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k80n48_raw/1a031e4702ef8980f24f145959bf8c52cc0466bacc5f716b7f96bcd39e030e77.json",
+        "sha256": "1a031e4702ef8980f24f145959bf8c52cc0466bacc5f716b7f96bcd39e030e77"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k16n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 113,
+      "numerical_execution_passed": true,
+      "execution_digest": "e9bfb7f620cbd3ddd3e9cfda9e48494c687cd4534c341560fd7bdcb76ab306b2",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 526,
+        "array_utilization_pct": 3.23,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k16n16_raw/94427bd1aec03dc235f66b84b5318c15c26fc33a506bd368635b74bc41741513.json",
+        "sha256": "94427bd1aec03dc235f66b84b5318c15c26fc33a506bd368635b74bc41741513"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k16n32_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 160,
+      "numerical_execution_passed": true,
+      "execution_digest": "62a7f0c1db04922f662b42c37a4d88c973ff38f7408bc63dffbea8f0d0fb244f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 721,
+        "array_utilization_pct": 4.72,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k16n32_raw/2cff10ab74c3659e6572fb50071958c4e7185f5b4b3ccecdab5e7b2cf5619bdd.json",
+        "sha256": "2cff10ab74c3659e6572fb50071958c4e7185f5b4b3ccecdab5e7b2cf5619bdd"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k32n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 172,
+      "numerical_execution_passed": true,
+      "execution_digest": "235672a8b28799734d4f2eed9f5498592e9622e46c521b8272921868241b1d88",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 648,
+        "array_utilization_pct": 5.25,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k32n16_raw/e3d6c0c175f72a59fb00927c182e012cf4a682fe1d34ef21b5d9b83d3e50c6fa.json",
+        "sha256": "e3d6c0c175f72a59fb00927c182e012cf4a682fe1d34ef21b5d9b83d3e50c6fa"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 259,
+      "numerical_execution_passed": true,
+      "execution_digest": "44e542a4dc1a821f8e2a001770d52a4bc00e1c3e03bead2cce8fc21ae3e20546",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 692,
+        "array_utilization_pct": 1.3,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n48_raw/7aac2bd824a9bfa5449b5c27ce3cd6fb9cccb4d39e3d18d6bd055a134ebe4ed1.json",
+        "sha256": "7aac2bd824a9bfa5449b5c27ce3cd6fb9cccb4d39e3d18d6bd055a134ebe4ed1"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n64_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 304,
+      "numerical_execution_passed": true,
+      "execution_digest": "1627ccc2821638c538106416a3e28ebdcb1f2c290d21a980dc1d6801d1c3d142",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 852,
+        "array_utilization_pct": 1.41,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n64_raw/b2e107493b8783a4d4b3bf3863b016e0c2ca8a7e7032dbc90476fac7a9e4f143.json",
+        "sha256": "b2e107493b8783a4d4b3bf3863b016e0c2ca8a7e7032dbc90476fac7a9e4f143"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n80_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 348,
+      "numerical_execution_passed": true,
+      "execution_digest": "0b7963ceedb54b3a5625cc3e6dd9eb3af320f5669673be02d36bb554c57e2a3b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 997,
+        "array_utilization_pct": 1.5,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n80_raw/457bc65b88a73cb9ea05a1f06aa4eb55fd479656fbb58aaf85bf8e509947596d.json",
+        "sha256": "457bc65b88a73cb9ea05a1f06aa4eb55fd479656fbb58aaf85bf8e509947596d"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k80n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 380,
+      "numerical_execution_passed": true,
+      "execution_digest": "39563a14393ab7ceed373385a916429e72f3ff3ebede386a8d808dbe4121c6ce",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1003,
+        "array_utilization_pct": 1.5,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k80n48_raw/6276b2d25ecf25c425e1ca6cf84d138f8d855ef7db47bd3daa5acf564aa58949.json",
+        "sha256": "6276b2d25ecf25c425e1ca6cf84d138f8d855ef7db47bd3daa5acf564aa58949"
+      }
+    },
+    {
+      "capsule": "G_matmul_m24k9n1_acc_scale",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 111,
+      "numerical_execution_passed": true,
+      "execution_digest": "2882869e7e2b3019fbda85eb152cef64fa162e5c1f44f1fc20adff4eb838b443",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 523,
+        "array_utilization_pct": 0.16,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m24k9n1_acc_scale/8e1a1a93dbff37e4c2477decd4c68202ad07041e53b9f194ad3be13029747dad.json",
+        "sha256": "8e1a1a93dbff37e4c2477decd4c68202ad07041e53b9f194ad3be13029747dad"
+      }
+    },
+    {
+      "capsule": "G_matmul_m32k32n32_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 201,
+      "numerical_execution_passed": true,
+      "execution_digest": "74d16463d016da72ae9dd632bcda5856817ecf3dbdbd11acd7c9eee393beda7a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1306,
+        "array_utilization_pct": 9.8,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m32k32n32_raw/775438c7058661040c1187008e233fcc227082bb38d101b4ea85e72532f8e9a2.json",
+        "sha256": "775438c7058661040c1187008e233fcc227082bb38d101b4ea85e72532f8e9a2"
+      }
+    },
+    {
+      "capsule": "MF_causal_decoder_matmul_activation_stationary_m1_raw_unscaled",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 242,
+      "numerical_execution_passed": true,
+      "execution_digest": "18a5b117ef22675a1fea9041757e247cf964060ff7418d38391fe36c9671bf0b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 501,
+        "array_utilization_pct": 0.67,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_causal_decoder_matmul_activation_stationary_m1_raw_unscaled/d0c5abccf6bf725c64fa7767999578f448d853632f9c3b9f48618535d33adb24.json",
+        "sha256": "d0c5abccf6bf725c64fa7767999578f448d853632f9c3b9f48618535d33adb24"
+      }
+    },
+    {
+      "capsule": "MF_causal_decoder_matmul_raw_unscaled",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 350,
+      "numerical_execution_passed": true,
+      "execution_digest": "ac8be48fa2e26f9dd49d49a99bf6ff7ca1574ec26975728a0a7531f703087af1",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_causal_decoder_matmul_raw_unscaled/045800623e5c6102c4196867efd9c96192e0f8b1913c8c9bb70aa9e57c9e145d.json",
+        "sha256": "045800623e5c6102c4196867efd9c96192e0f8b1913c8c9bb70aa9e57c9e145d"
+      }
+    },
+    {
+      "capsule": "MF_multimodal_policy_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 116,
+      "numerical_execution_passed": true,
+      "execution_digest": "1831e7e6366e2fcf219b9724d156934b8c694c7834ee49ac78b06b1125e17b0f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 341,
+        "array_utilization_pct": 0.31,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_multimodal_policy_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max/8ff9ca5b623849cb81f0ea8bbb205cba000eef7204f89c0098bf3b65094080ff.json",
+        "sha256": "8ff9ca5b623849cb81f0ea8bbb205cba000eef7204f89c0098bf3b65094080ff"
+      }
+    },
+    {
+      "capsule": "PM10_m48n48",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 253,
+      "numerical_execution_passed": true,
+      "execution_digest": "f9a3321167fd496279e1685ad0d74d88500d2df13a66baa18a9d59778ba2dd15",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PM10_m48n48/e6b999ee16048b9dd385dcef7b0fa128e376db501ad1fe7875abdb7c375f948b.json",
+        "sha256": "e6b999ee16048b9dd385dcef7b0fa128e376db501ad1fe7875abdb7c375f948b"
+      }
+    },
+    {
+      "capsule": "PM15_m64n64",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 361,
+      "numerical_execution_passed": true,
+      "execution_digest": "53b37920018905624f12dca1413b71196c6662da9b60a4d4c57ee7df79a57c14",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3212,
+        "array_utilization_pct": 7.97,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PM15_m64n64/77ae67b97e0876a8d28eebd0c1e52ecc30a39edb193ac3e3bf7d2f897ee02829.json",
+        "sha256": "77ae67b97e0876a8d28eebd0c1e52ecc30a39edb193ac3e3bf7d2f897ee02829"
+      }
+    },
+    {
+      "capsule": "PS00_shared_lhs_m16k32n16n24",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 304,
+      "numerical_execution_passed": true,
+      "execution_digest": "b3ebb77696d713bb3ad572b0ed11c695622bd1d7e747daece3e95bdc112e318f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1492,
+        "array_utilization_pct": 5.36,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PS00_shared_lhs_m16k32n16n24/0fb82203fe4eddfc75196cfb8bc299a5c39ebb4c40d1387e6ab5f0f6a737ac4b.json",
+        "sha256": "0fb82203fe4eddfc75196cfb8bc299a5c39ebb4c40d1387e6ab5f0f6a737ac4b"
+      }
+    },
+    {
+      "capsule": "PS01_shared_lhs_tail_m17k33n15n19",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 878,
+      "numerical_execution_passed": true,
+      "execution_digest": "8dcdba4a2ab25bcd4a17dfd0907a0f5f8192cca656004313bd0ebe3131d13ea8",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2068,
+        "array_utilization_pct": 3.6,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PS01_shared_lhs_tail_m17k33n15n19/f8afd66512028ecb57ccdbe2803b68db16870f7503dcfb18595e71524901a0fa.json",
+        "sha256": "f8afd66512028ecb57ccdbe2803b68db16870f7503dcfb18595e71524901a0fa"
+      }
+    },
+    {
+      "capsule": "SY_accumulator_output_boundary",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1375,
+      "numerical_execution_passed": true,
+      "execution_digest": "46507bcafda45dbd6ec6744e1447b557a4e33468ef78616c36d3dc8c691f9c25",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 4594,
+        "array_utilization_pct": 1.41,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_accumulator_output_boundary/ecd629615ba8af4c354245af4872a8f47c6b498d295d7844806733fc75dbfc19.json",
+        "sha256": "ecd629615ba8af4c354245af4872a8f47c6b498d295d7844806733fc75dbfc19"
+      }
+    },
+    {
+      "capsule": "SY_act_act_i8_decode",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 156,
+      "numerical_execution_passed": true,
+      "execution_digest": "e2a672cd58c01834178d4a477adbe3a3c0ec9043b4d42be699a4e31b74db298b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 451,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_act_act_i8_decode/c65b1fc3af58841c7a641b50f46872d66ffb76d8d928b468ecaae881e22e6aa8.json",
+        "sha256": "c65b1fc3af58841c7a641b50f46872d66ffb76d8d928b468ecaae881e22e6aa8"
+      }
+    },
+    {
+      "capsule": "SY_act_act_i8_k_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 181,
+      "numerical_execution_passed": true,
+      "execution_digest": "edcbfd331cffe6eb1b0f8fe5b2c8716803548691ccf48dd121edc5e75288c4ee",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 924,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_act_act_i8_k_tail/1eda3c1f68f749f57486fe10d11a0c4763cf7cc01e677ad10886ad39919c3f13.json",
+        "sha256": "1eda3c1f68f749f57486fe10d11a0c4763cf7cc01e677ad10886ad39919c3f13"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_matmul_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 486,
+      "numerical_execution_passed": true,
+      "execution_digest": "9b557b33eb82d4c1a25e05031f6c7a1169774bde74d1816f21cbd28e5386650d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3464,
+        "array_utilization_pct": 0.92,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_matmul_int8_aligned/b3cb727bf6225b2db698ec2668dd8d2f028830ab833b029171ca302384e6d054.json",
+        "sha256": "b3cb727bf6225b2db698ec2668dd8d2f028830ab833b029171ca302384e6d054"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_matmul_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 603,
+      "numerical_execution_passed": true,
+      "execution_digest": "f7f3fafbb2ac663cefb96f7229a6f0e38acd534a3fe4c9f6d718e755abecbc02",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3970,
+        "array_utilization_pct": 0.83,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_matmul_int8_tail/25a87e6b0ddececff99897d5d99b29ebae91a390b99deedd2a011f2dce08bc8a.json",
+        "sha256": "25a87e6b0ddececff99897d5d99b29ebae91a390b99deedd2a011f2dce08bc8a"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_gemv_n_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 223,
+      "numerical_execution_passed": true,
+      "execution_digest": "ff666dea6bbcb6187816e4ee5bca1ab34ba2f623982b05852ac9d319f4e483b5",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 632,
+        "array_utilization_pct": 0.61,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_gemv_n_tail/cff1432f23a82243e193b245958cb9a252fca6bc13c05c0b0b8807b19bce191e.json",
+        "sha256": "cff1432f23a82243e193b245958cb9a252fca6bc13c05c0b0b8807b19bce191e"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 504,
+      "numerical_execution_passed": true,
+      "execution_digest": "57968b35b5faa8b5619d3aacd8f03a557c5ae92fd92ddf4567b4b2de060fa53a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3550,
+        "array_utilization_pct": 0.9,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_aligned/7b1489f9bac0cc384b1eb559010d8aa0528262566aee4db820c21a8907df0319.json",
+        "sha256": "7b1489f9bac0cc384b1eb559010d8aa0528262566aee4db820c21a8907df0319"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_distinct_scales_v2",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 6025,
+      "numerical_execution_passed": true,
+      "execution_digest": "0cdaf95df7e270228b3ee272bb009fa9b24d161cef39d13cd51006b19cdefdd7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 13931,
+        "array_utilization_pct": 0.34,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_distinct_scales_v2/d7a3cb6588a5d9ba1dadba0335e0ed746455b2c5045058a1d406327fe7eb934d.json",
+        "sha256": "d7a3cb6588a5d9ba1dadba0335e0ed746455b2c5045058a1d406327fe7eb934d"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 616,
+      "numerical_execution_passed": true,
+      "execution_digest": "ae80f87dcdf0a919417de40d159d67567c6d6c47bd4cf5ac77d04970b9b00e63",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3978,
+        "array_utilization_pct": 0.83,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_tail/15ca21f2d2819d5165127b7c28e282474879d8bf9741599334e5a6e2aee118e6.json",
+        "sha256": "15ca21f2d2819d5165127b7c28e282474879d8bf9741599334e5a6e2aee118e6"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m100_k147_n12_acde4e305f",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2265,
+      "numerical_execution_passed": true,
+      "execution_digest": "55f8c48cac566ae4fa1aaf82f6990a26efece5500d4ec2069843aeee0f86e53d",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m100_k147_n12_acde4e305f/e4615c939c45610af106fd057ac8d0276076b4c00a19521a29259e776d985dd0.json",
+        "sha256": "e4615c939c45610af106fd057ac8d0276076b4c00a19521a29259e776d985dd0"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m25_k12_n3_30f4ad2744",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 119,
+      "numerical_execution_passed": true,
+      "execution_digest": "d9d69265018681d184289a48c5c99b75d1a1aa6b92ae0f7af9eb03499645f392",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m25_k12_n3_30f4ad2744/2f50ac1a815d311e0bb05c2e726f145c2bec536e3411d222e5d0b9130feb5de8.json",
+        "sha256": "2f50ac1a815d311e0bb05c2e726f145c2bec536e3411d222e5d0b9130feb5de8"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m25_k27_n3_10e8258e2e",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 198,
+      "numerical_execution_passed": true,
+      "execution_digest": "a15560eb270a1e8ca3bdff87b31d38fdc7b9e3e9feddf16cc569b2115a0ec9ac",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m25_k27_n3_10e8258e2e/1135804f354044a0a56e93004956b1e152844561b14407cdd8c3fb706ff9597c.json",
+        "sha256": "1135804f354044a0a56e93004956b1e152844561b14407cdd8c3fb706ff9597c"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m9_k216_n24_a50ef4a978",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1050,
+      "numerical_execution_passed": true,
+      "execution_digest": "c29ce495871c97ffe6b6306b8b58b3956491117494acb055ebb0c1e5b83fa4d9",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m9_k216_n24_a50ef4a978/311f9ef2301384eaab68c9f8412eda8fe833f513c7920095baab4b301f223a60.json",
+        "sha256": "311f9ef2301384eaab68c9f8412eda8fe833f513c7920095baab4b301f223a60"
+      }
+    },
+    {
+      "capsule": "SY_micro_model",
+      "pass": false,
+      "screened_only": false,
+      "certified_complete": false,
+      "tiers": {},
+      "barrier_tier": "L2",
+      "barrier_status": null,
+      "execution_digest": null,
+      "failure": {
+        "category": "CANDIDATE_EMISSION_FAILED",
+        "detail": "instruction coordinator needs a fresh disjoint output owner",
+        "plane": "candidate_compilation"
+      },
+      "detail": {
+        "path": "qa/cases/SY_micro_model/5f2c93727fea2ec2583cece290f1866962a23bcfd00b0036591a3ce9be1188b5.json",
+        "sha256": "5f2c93727fea2ec2583cece290f1866962a23bcfd00b0036591a3ce9be1188b5"
+      }
+    },
+    {
+      "capsule": "SY_multi_block_beyond",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 5813,
+      "numerical_execution_passed": true,
+      "execution_digest": "bc007451ace4729fd6c765a185f8082997846f21eabe1c8e4bfad82dbef9cebd",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 25865,
+        "array_utilization_pct": 15.55,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_multi_block_beyond/a956124d507dfe08d1107c942563cb40468b0cba9dd3e7d754854a3c6e39357e.json",
+        "sha256": "a956124d507dfe08d1107c942563cb40468b0cba9dd3e7d754854a3c6e39357e"
+      }
+    },
+    {
+      "capsule": "SY_multi_block_within",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 4570,
+      "numerical_execution_passed": true,
+      "execution_digest": "bf6aa3431567406b7e7db516f95bda556279096ab91186f3eb33212fa3962356",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 13624,
+        "array_utilization_pct": 15.47,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_multi_block_within/77bc72ddade3c057f24bd9ad73e9df9ea947161c00cd48bad17e11fd102d9f33.json",
+        "sha256": "77bc72ddade3c057f24bd9ad73e9df9ea947161c00cd48bad17e11fd102d9f33"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_contraction_partial",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 329,
+      "numerical_execution_passed": true,
+      "execution_digest": "8717e6003fa4e79cdb299cfd1e62f6394dfd697f0d9da0770bef62b54ca89e50",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2107,
+        "array_utilization_pct": 1.38,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_contraction_partial/396aca36c506fdd265dda99391c5b89fcbff8dd51903423f157e2d3a16187383.json",
+        "sha256": "396aca36c506fdd265dda99391c5b89fcbff8dd51903423f157e2d3a16187383"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_conv_k3x3_s2x2_d1x1_pad1x1",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2261,
+      "numerical_execution_passed": true,
+      "execution_digest": "2858b83f35a0370943bde41595e6d1141fc565b639132c405f92ab40d24e0d07",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 5128,
+        "array_utilization_pct": 0.7,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_conv_k3x3_s2x2_d1x1_pad1x1/21f5f53222603aa42d87145af57519e62cde04fb2b1054ff3426b9eb48cb5c6e.json",
+        "sha256": "21f5f53222603aa42d87145af57519e62cde04fb2b1054ff3426b9eb48cb5c6e"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_conv_k7x7_s2x2_d1x1_pad3x3",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 11263,
+      "numerical_execution_passed": true,
+      "execution_digest": "79bd73316b6cc118a34db7d8a811c384f0587024356191c074270ab1ac0e4ccb",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 19071,
+        "array_utilization_pct": 1.03,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_conv_k7x7_s2x2_d1x1_pad3x3/63fe7db23df628aa42d89ac9e0b64601dd0d9a76a296d05526d49151de501797.json",
+        "sha256": "63fe7db23df628aa42d89ac9e0b64601dd0d9a76a296d05526d49151de501797"
+      }
+    },
+    {
+      "capsule": "SY_source_causal_decoder",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_causal_decoder/7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a.json",
+        "sha256": "7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a"
+      }
+    },
+    {
+      "capsule": "SY_source_causal_decoder_decode_step",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_causal_decoder_decode_step/06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4.json",
+        "sha256": "06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4"
+      }
+    },
+    {
+      "capsule": "SY_source_coverage_mlp",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_coverage_mlp/c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b.json",
+        "sha256": "c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b"
+      }
+    },
+    {
+      "capsule": "SY_source_multimodal_policy",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_multimodal_policy/6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac.json",
+        "sha256": "6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac"
+      }
+    },
+    {
+      "capsule": "SY_source_residual_cnn",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_residual_cnn/3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee.json",
+        "sha256": "3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee"
+      }
+    },
+    {
+      "capsule": "SY_wide_move_tails_m17_k80_n144",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1324,
+      "numerical_execution_passed": true,
+      "execution_digest": "44d6fc112eb0baf0b3c337ed13e2027c63e823d355269f5b5e0a3a6ff35089b2",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 5850,
+        "array_utilization_pct": 13.08,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_wide_move_tails_m17_k80_n144/af418c9bb730ed02d97e73c3f749f1c0ede7899f5931176579991f7ba2ae9253.json",
+        "sha256": "af418c9bb730ed02d97e73c3f749f1c0ede7899f5931176579991f7ba2ae9253"
+      }
+    }
+  ],
+  "performance_brief": {
+    "advisory_only": true,
+    "counts": {
+      "passing": 50,
+      "with_evidence": 41,
+      "without_evidence": 9
+    },
+    "diagnostic_control_count": 41,
+    "diagnostic_controls": [
+      {
+        "array_utilization_pct": 1.78,
+        "bound_by": "read requests",
+        "cycles": 1080,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.354,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 8,
+            "fence_wait_share_of_cycles": 0.385,
+            "fences": 10,
+            "loads": 14,
+            "modeled_fence_wait_cycles": 416,
+            "output_stores": 7,
+            "output_stores_per_fence": 0.7
+          },
+          "fence_per_tile": true,
+          "fences": 10,
+          "output_tiles": 7,
+          "reading": "a full-device fence after every output tile (10 fences, 0.7 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 38.5% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 3
+            },
+            "epochs": 7,
+            "loads": 8,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 2.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.7
+        },
+        "gap_ratio": 19.93,
+        "headroom_cycles": 1025.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/CH_residual_conv_edge_m17k17n17/command_buffer.json --capsule CH_residual_conv_edge_m17k17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.78% over 1080 cycles; cpu.issue has 35.4% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (10 fences, 0.7 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 38.5% of cycles waiting on fences",
+        "roofline_bound_cycles": 54.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.1259259259259259,
+            "reader.slot_residency": 0.4212962962962963,
+            "writer.slot_residency": 0.17777777777777778,
+            "writer.state": 0.08425925925925926
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.014814814814814815,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 1582,
+        "test_case": "CH_residual_conv_edge_m17k17n17",
+        "vs_seed": 0.6827,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.78,
+        "bound_by": "read requests",
+        "cycles": 1080,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.354,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 8,
+            "fence_wait_share_of_cycles": 0.385,
+            "fences": 10,
+            "loads": 14,
+            "modeled_fence_wait_cycles": 416,
+            "output_stores": 7,
+            "output_stores_per_fence": 0.7
+          },
+          "fence_per_tile": true,
+          "fences": 10,
+          "output_tiles": 7,
+          "reading": "a full-device fence after every output tile (10 fences, 0.7 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 38.5% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 3
+            },
+            "epochs": 7,
+            "loads": 8,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 2.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.7
+        },
+        "gap_ratio": 19.93,
+        "headroom_cycles": 1025.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/CH_residual_linear_edge_m17k17n17/command_buffer.json --capsule CH_residual_linear_edge_m17k17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.78% over 1080 cycles; cpu.issue has 35.4% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (10 fences, 0.7 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 38.5% of cycles waiting on fences",
+        "roofline_bound_cycles": 54.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.1259259259259259,
+            "reader.slot_residency": 0.4212962962962963,
+            "writer.slot_residency": 0.17777777777777778,
+            "writer.state": 0.08425925925925926
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.014814814814814815,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 1582,
+        "test_case": "CH_residual_linear_edge_m17k17n17",
+        "vs_seed": 0.6827,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 2.33,
+        "bound_by": "read requests",
+        "cycles": 2468,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.393,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 24,
+            "fence_wait_share_of_cycles": 0.373,
+            "fences": 16,
+            "loads": 30,
+            "modeled_fence_wait_cycles": 921,
+            "output_stores": 15,
+            "output_stores_per_fence": 0.94
+          },
+          "fence_per_tile": true,
+          "fences": 16,
+          "output_tiles": 15,
+          "reading": "a full-device fence after every output tile (16 fences, 0.94 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 37.3% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 3
+            },
+            "epochs": 13,
+            "loads": 12,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.94
+        },
+        "gap_ratio": 34.16,
+        "headroom_cycles": 2395.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/CH_sibling_feed_edge_m17k17h17n17/command_buffer.json --capsule CH_sibling_feed_edge_m17k17h17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 2.33% over 2468 cycles; cpu.issue has 39.3% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (16 fences, 0.94 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 37.3% of cycles waiting on fences",
+        "roofline_bound_cycles": 72.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.17585089141004862,
+            "reader.slot_residency": 0.4319286871961102,
+            "writer.slot_residency": 0.1973257698541329,
+            "writer.state": 0.1272285251215559
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.051053484602917344,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 3754,
+        "test_case": "CH_sibling_feed_edge_m17k17h17n17",
+        "vs_seed": 0.6574,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 2.43,
+        "bound_by": "write requests",
+        "cycles": 1577,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.396,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 16,
+            "fence_wait_share_of_cycles": 0.361,
+            "fences": 9,
+            "loads": 16,
+            "modeled_fence_wait_cycles": 569,
+            "output_stores": 8,
+            "output_stores_per_fence": 0.89
+          },
+          "fence_per_tile": true,
+          "fences": 9,
+          "output_tiles": 8,
+          "reading": "a full-device fence after every output tile (9 fences, 0.89 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 36.1% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 3
+            },
+            "epochs": 7,
+            "loads": 4,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.89
+        },
+        "gap_ratio": 10.91,
+        "headroom_cycles": 1432.5,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/CH_siblings_edge_m17k17n17n17/command_buffer.json --capsule CH_siblings_edge_m17k17n17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 2.43% over 1577 cycles; cpu.issue has 39.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (9 fences, 0.89 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 36.1% of cycles waiting on fences",
+        "roofline_bound_cycles": 144.5,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.18452758402029168,
+            "reader.slot_residency": 0.38807863031071654,
+            "writer.slot_residency": 0.25237793278376663,
+            "writer.state": 0.19403931515535827
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.04946100190234623,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 2163,
+        "test_case": "CH_siblings_edge_m17k17n17n17",
+        "vs_seed": 0.7291,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.52,
+        "bound_by": "read requests",
+        "cycles": 680,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.226,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 2,
+            "fence_wait_share_of_cycles": 0.578,
+            "fences": 13,
+            "loads": 5,
+            "modeled_fence_wait_cycles": 393,
+            "output_stores": 2,
+            "output_stores_per_fence": 0.15
+          },
+          "fence_per_tile": true,
+          "fences": 13,
+          "output_tiles": 2,
+          "reading": "a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 57.8% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 1
+            },
+            "epochs": 7,
+            "loads": 3,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.15
+        },
+        "gap_ratio": 32.38,
+        "headroom_cycles": 659,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_conv2d_c12x5x5_k1x1s1_n3_raw/command_buffer.json --capsule G_conv2d_c12x5x5_k1x1s1_n3_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.52% over 680 cycles; cpu.issue has 22.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 57.8% of cycles waiting on fences",
+        "roofline_bound_cycles": 21,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.0838235294117647,
+            "reader.slot_residency": 0.2661764705882353,
+            "writer.slot_residency": 0.125,
+            "writer.state": 0.07352941176470588
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 680,
+        "test_case": "G_conv2d_c12x5x5_k1x1s1_n3_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.49,
+        "bound_by": "write requests",
+        "cycles": 724,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.276,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 2,
+            "fence_wait_share_of_cycles": 0.608,
+            "fences": 13,
+            "loads": 5,
+            "modeled_fence_wait_cycles": 440,
+            "output_stores": 2,
+            "output_stores_per_fence": 0.15
+          },
+          "fence_per_tile": true,
+          "fences": 13,
+          "output_tiles": 2,
+          "reading": "a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.8% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 1
+            },
+            "epochs": 7,
+            "loads": 3,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.15
+        },
+        "gap_ratio": 9.65,
+        "headroom_cycles": 649,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_conv2d_c3x5x5_k1x1s1_n12_raw/command_buffer.json --capsule G_conv2d_c3x5x5_k1x1s1_n12_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.49% over 724 cycles; memory.l1d.probe has 27.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.8% of cycles waiting on fences",
+        "roofline_bound_cycles": 75,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.05662983425414365,
+            "reader.slot_residency": 0.19751381215469613,
+            "writer.slot_residency": 0.27486187845303867,
+            "writer.state": 0.17541436464088397
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 724,
+        "test_case": "G_conv2d_c3x5x5_k1x1s1_n12_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 10.25,
+        "bound_by": "read requests",
+        "cycles": 1054,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.342,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 9,
+            "fence_wait_share_of_cycles": 0.598,
+            "fences": 6,
+            "loads": 12,
+            "modeled_fence_wait_cycles": 630,
+            "output_stores": 3,
+            "output_stores_per_fence": 0.5
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 3,
+          "reading": "a full-device fence after every output tile (6 fences, 0.5 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 59.8% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.5
+        },
+        "gap_ratio": 5.86,
+        "headroom_cycles": 874,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m12k48n48_raw/command_buffer.json --capsule G_matmul_m12k48n48_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 10.25% over 1054 cycles; memory.l1d.probe has 34.2% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.5 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 59.8% of cycles waiting on fences",
+        "roofline_bound_cycles": 180,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.2656546489563567,
+            "reader.slot_residency": 0.5332068311195446,
+            "writer.slot_residency": 0.349146110056926,
+            "writer.state": 0.23055028462998103
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.23055028462998103,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.03320683111954459,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 1427,
+        "test_case": "G_matmul_m12k48n48_raw",
+        "vs_seed": 0.7386,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 11.22,
+        "bound_by": "read requests",
+        "cycles": 1283,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.374,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 12,
+            "fence_wait_share_of_cycles": 0.606,
+            "fences": 6,
+            "loads": 15,
+            "modeled_fence_wait_cycles": 778,
+            "output_stores": 4,
+            "output_stores_per_fence": 0.67
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 4,
+          "reading": "a full-device fence after every output tile (6 fences, 0.67 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.6% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.67
+        },
+        "gap_ratio": 5.63,
+        "headroom_cycles": 1055,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m12k48n64_raw/command_buffer.json --capsule G_matmul_m12k48n64_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 11.22% over 1283 cycles; memory.l1d.probe has 37.4% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.67 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.6% of cycles waiting on fences",
+        "roofline_bound_cycles": 228,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.2735775526110678,
+            "reader.slot_residency": 0.5502727981293842,
+            "writer.slot_residency": 0.3819173811379579,
+            "writer.state": 0.2915042868277475
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.25175370226032734,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.04988308651597818,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.03819173811379579,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 1782,
+        "test_case": "G_matmul_m12k48n64_raw",
+        "vs_seed": 0.72,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 11.6,
+        "bound_by": "read requests",
+        "cycles": 1552,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.387,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 15,
+            "fence_wait_share_of_cycles": 0.456,
+            "fences": 6,
+            "loads": 18,
+            "modeled_fence_wait_cycles": 708,
+            "output_stores": 5,
+            "output_stores_per_fence": 0.83
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 5,
+          "reading": "a full-device fence after every output tile (6 fences, 0.83 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 45.6% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.83
+        },
+        "gap_ratio": 5.62,
+        "headroom_cycles": 1276,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m12k48n80_raw/command_buffer.json --capsule G_matmul_m12k48n80_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 11.6% over 1552 cycles; memory.l1d.probe has 38.7% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.83 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 45.6% of cycles waiting on fences",
+        "roofline_bound_cycles": 276,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.24935567010309279,
+            "reader.slot_residency": 0.5476804123711341,
+            "writer.slot_residency": 0.3917525773195876,
+            "writer.state": 0.3170103092783505
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.23131443298969073,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.041237113402061855,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.027061855670103094,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 2413,
+        "test_case": "G_matmul_m12k48n80_raw",
+        "vs_seed": 0.6432,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 12.6,
+        "bound_by": "read requests",
+        "cycles": 1429,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.336,
+          "name": "accelerator.storage.scratchpad.2"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 15,
+            "fence_wait_share_of_cycles": 0.488,
+            "fences": 6,
+            "loads": 20,
+            "modeled_fence_wait_cycles": 697,
+            "output_stores": 3,
+            "output_stores_per_fence": 0.5
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 3,
+          "reading": "a full-device fence after every output tile (6 fences, 0.5 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 48.8% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.5
+        },
+        "gap_ratio": 4.76,
+        "headroom_cycles": 1129,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m12k80n48_raw/command_buffer.json --capsule G_matmul_m12k80n48_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 12.6% over 1429 cycles; accelerator.storage.scratchpad.2 has 33.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.5 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 48.8% of cycles waiting on fences",
+        "roofline_bound_cycles": 300,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.2708187543736879,
+            "reader.slot_residency": 0.6452064380685795,
+            "writer.slot_residency": 0.2575227431770469,
+            "writer.state": 0.17074877536738978
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.244926522043387,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.023792862141357594,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 1883,
+        "test_case": "G_matmul_m12k80n48_raw",
+        "vs_seed": 0.7589,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 3.23,
+        "bound_by": "write requests",
+        "cycles": 526,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.323,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 2,
+            "fence_wait_share_of_cycles": 0.625,
+            "fences": 6,
+            "loads": 3,
+            "modeled_fence_wait_cycles": 329,
+            "output_stores": 2,
+            "output_stores_per_fence": 0.33
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 2,
+          "reading": "a full-device fence after every output tile (6 fences, 0.33 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 62.5% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.33
+        },
+        "gap_ratio": 7.74,
+        "headroom_cycles": 458,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m17k16n16_raw/command_buffer.json --capsule G_matmul_m17k16n16_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 3.23% over 526 cycles; memory.l1d.probe has 32.3% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.33 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 62.5% of cycles waiting on fences",
+        "roofline_bound_cycles": 68,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.06844106463878327,
+            "reader.slot_residency": 0.2224334600760456,
+            "writer.slot_residency": 0.33840304182509506,
+            "writer.state": 0.12927756653992395
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 625,
+        "test_case": "G_matmul_m17k16n16_raw",
+        "vs_seed": 0.8416,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 4.72,
+        "bound_by": "write requests",
+        "cycles": 721,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.472,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 4,
+            "fence_wait_share_of_cycles": 0.609,
+            "fences": 6,
+            "loads": 4,
+            "modeled_fence_wait_cycles": 439,
+            "output_stores": 4,
+            "output_stores_per_fence": 0.67
+          },
+          "fence_per_tile": true,
+          "fences": 6,
+          "output_tiles": 4,
+          "reading": "a full-device fence after every output tile (6 fences, 0.67 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.9% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 5,
+              "median": 2.0
+            },
+            "epochs": 4,
+            "loads": 2,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.67
+        },
+        "gap_ratio": 5.3,
+        "headroom_cycles": 585,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8/G_matmul_m17k16n32_raw/command_buffer.json --capsule G_matmul_m17k16n32_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 4.72% over 721 cycles; memory.l1d.probe has 47.2% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (6 fences, 0.67 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 60.9% of cycles waiting on fences",
+        "roofline_bound_cycles": 136,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.11095700416088766,
+            "reader.slot_residency": 0.231622746185853,
+            "writer.slot_residency": 0.4826629680998613,
+            "writer.state": 0.3217753120665742
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.04160887656033287,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 979,
+        "test_case": "G_matmul_m17k16n32_raw",
+        "vs_seed": 0.7365,
+        "workload_role": "correctness"
+      }
+    ],
+    "largest_headroom": [],
+    "note": "Primary-role passing cases, largest headroom first; advisory. Per-case advice: each case's detail file (cases[].detail.path -> optimization_next). Ranked list: qa/latest_completed_grade.json -> feedback_brief.performance_priority.development_headroom (qa/verdict.json while current).",
+    "schema": "merlin.selfcheck_performance_brief.v1",
+    "unknown_timing": {
+      "commands": [
+        "python agent_selfcheck.py --capsules SY_int_mm_m100_k147_n12_acde4e305f --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_int_mm_m25_k12_n3_30f4ad2744 --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_int_mm_m25_k27_n3_10e8258e2e --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_int_mm_m9_k216_n24_a50ef4a978 --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_causal_decoder --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_causal_decoder_decode_step --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_coverage_mlp --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_multimodal_policy --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_residual_cnn --sim gsim --wait-budget 5"
+      ],
+      "how_to_measure": "Performance is compared on the Spike cycle model by default (self-checks, --sweep, --panel, variants). Where the model reports UNKNOWN, request gSIM cycles for one named case per request: `python agent_selfcheck.py --capsules NAME --sim gsim --wait-budget 5`, then collect it with `--attach ID`. This admits required correctness cases under their own gSIM budget. To compare a variant, obtain a supported complete-scope observation of the primary workload. Control measurements serve correctness/calibration diagnostics, not routine performance tuning or a substitute performance result for a larger workload.",
+      "meaning": "UNKNOWN timing is missing evidence, not a measured loss or a refusal of the variant. A variant whose timing is UNKNOWN is still a candidate; decide on its calibrated fast estimate (performance.fast_estimate, with its error band) and revert if a complete estimate or measurement later disagrees."
+    },
+    "vs_seed": {
+      "cases_in_seed_baseline": 149,
+      "compared": 39,
+      "faster_than_seed": 32,
+      "geomean_vs_seed": 0.7451,
+      "reading": "vs_seed = this run's cycles / the seed's for the same case (below 1 is faster)",
+      "slower_than_seed": 0
+    },
+    "without_evidence": [
+      "SY_int_mm_m100_k147_n12_acde4e305f",
+      "SY_int_mm_m25_k12_n3_30f4ad2744",
+      "SY_int_mm_m25_k27_n3_10e8258e2e",
+      "SY_int_mm_m9_k216_n24_a50ef4a978",
+      "SY_source_causal_decoder",
+      "SY_source_causal_decoder_decode_step",
+      "SY_source_coverage_mlp",
+      "SY_source_multimodal_policy",
+      "SY_source_residual_cnn"
+    ],
+    "workload_role_summary": {
+      "basis": "Separate workload roles and evidence kinds. Useful compute-ceiling attainment, not physical PE occupancy. Medians describe this sample, not speedup or model accuracy. Timing without usable roofline evidence is unavailable here.",
+      "groups": [
+        {
+          "array_utilization_pct_cases": 1,
+          "evidence_kind": "fast_estimate",
+          "gap_ratio_cases": 1,
+          "median_array_utilization_pct": 14.29,
+          "median_gap_ratio": 1.75,
+          "passing_cases": 1,
+          "workload_role": "calibration"
+        },
+        {
+          "array_utilization_pct_cases": 3,
+          "evidence_kind": "provisional_model",
+          "gap_ratio_cases": 3,
+          "median_array_utilization_pct": 5.36,
+          "median_gap_ratio": 9.32,
+          "passing_cases": 3,
+          "workload_role": "calibration"
+        },
+        {
+          "array_utilization_pct_cases": 1,
+          "evidence_kind": "fast_estimate",
+          "gap_ratio_cases": 1,
+          "median_array_utilization_pct": 12.33,
+          "median_gap_ratio": 5.29,
+          "passing_cases": 1,
+          "workload_role": "correctness"
+        },
+        {
+          "array_utilization_pct_cases": 34,
+          "evidence_kind": "provisional_model",
+          "gap_ratio_cases": 36,
+          "median_array_utilization_pct": 1.46,
+          "median_gap_ratio": 9.59,
+          "passing_cases": 36,
+          "workload_role": "correctness"
+        },
+        {
+          "evidence_kind": "unavailable",
+          "passing_cases": 9,
+          "workload_role": "correctness"
+        }
+      ],
+      "scope": "passing cases in this response; not cumulative campaign coverage"
+    }
+  },
+  "result_index": {
+    "schema": "merlin.phase1.result_index.v1",
+    "namespace": "selfcheck"
+  },
+  "scope": "subset",
+  "sim": "spike",
+  "suite_size": 109,
+  "tier_engines": {
+    "L2": "spike"
+  },
+  "selfcheck_protocol": 3,
+  "selfcheck_request_id": "4_1793259539900366022_d718d2ea3cbf810804af1340dbb458a8",
+  "submission_sha256": "c33960c1e13270d286ac8b72ecfe7a177ef0abdd4039e9c67c6af0b6f4aad703",
+  "requested_submission_sha256": "c33960c1e13270d286ac8b72ecfe7a177ef0abdd4039e9c67c6af0b6f4aad703",
+  "requested_at_unix_ns": 1793259539900368982,
+  "grade_started_at_unix_ns": 1793259543097429237,
+  "graded_at_unix_ns": 1793260578689514757,
+  "selfcheck_submission": "variants/integrated_phase5",
+  "official": false,
+  "variant": {
+    "name": "integrated_phase5",
+    "path": "variants/integrated_phase5",
+    "sha256": "c33960c1e13270d286ac8b72ecfe7a177ef0abdd4039e9c67c6af0b6f4aad703",
+    "official": false,
+    "note": "SELF-CHECK OF A VARIANT, not of submission/. Only submission/ is graded officially: this result is never counted toward convergence, certifies nothing for submission/ and starts no promotion. To adopt this variant, copy its files into submission/ so the official grade grades those bytes."
+  }
+}

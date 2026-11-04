@@ -1,0 +1,323 @@
+{
+  "mechanism": "static_original_member_fragments_for_proven_full_row_terminal_tiles",
+  "variant": "variants/attention_static_fragments",
+  "knob": {
+    "ATTENTION_STATIC_FRAGMENTS": "off/on",
+    "candidate": "on",
+    "library_default": "off"
+  },
+  "owned_changes": [
+    "backend/shared_rhs_scattered_readout.py",
+    "TUNING_KNOBS.json",
+    "tuning.json"
+  ],
+  "module_sha256": "747a13261ce073aae8889370ade46acf08909421b3f27d1e4b7e6fdee5adf839",
+  "snapshot_manifest": "snapshot_hashes.json",
+  "source_sha256": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+  "emission": [
+    {
+      "setting": "off",
+      "exit_code": 0,
+      "source_sha256": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+      "llvm_sha256": "14a61e2b8d96590b9e9c5c317f437c2359fa5ac1cd85e5f9d19c828acee0505a"
+    },
+    {
+      "setting": "on",
+      "exit_code": 0,
+      "source_sha256": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+      "llvm_sha256": "e96b3883c455d35da25a87a07a0cf4da2c6eb698e08e5446508a86f8bcc905e5"
+    }
+  ],
+  "declared_off_identity": {
+    "llvm_sha256": "14a61e2b8d96590b9e9c5c317f437c2359fa5ac1cd85e5f9d19c828acee0505a",
+    "identical_to_incumbent": true
+  },
+  "admission": "Existing finite actual counted schedule proof checks every store; specialization requires every actual dram_row=0,rows=joinedM<=selected DIM. Each original partition becomes localrow0,height=end-begin,ACC=originalacc+begin. Same original columns, terminal encoder, scalar CONFIG_ST words, ordinary fences and closing store epoch drains.",
+  "fallback": "If any terminal tile has partial/crossing row bounds or joinedM>DIM, original dynamic intersection branch is emitted byte-identically; proof refusal keeps original gathered+scatter incumbent via existing typed refusal hook.",
+  "numerics": "No MAC/reduction/scale/rounding changes; identical actual terminal DMA/config/fence/source-ID packets. Existing all-output exact i32/i8 scalarRNE projection retained.",
+  "checks": {
+    "paired_actual_terminal_packets": 128,
+    "specialized_cases": 80,
+    "general_fallback_byte_identical_cases": 48,
+    "original_integer_output_projection": 80,
+    "original_actual_store_partition_mutations_rejected": 7,
+    "additional_bind_mutations": {
+      "rejected_before_emission": [
+        "joined_m",
+        "certificate_kernel",
+        "output_geometry",
+        "attributes",
+        "partition_boundary",
+        "singleton source group refused"
+      ]
+    },
+    "domain": {
+      "member_rows": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3,
+          7
+        ],
+        [
+          15,
+          2
+        ],
+        [
+          17,
+          1,
+          15
+        ],
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          16
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "N": [
+        1,
+        15,
+        16,
+        17
+      ],
+      "dtype": [
+        "i32",
+        "i8 scalar0.25/ReLU"
+      ],
+      "epochs": [
+        false,
+        true
+      ],
+      "duplicate_input": true
+    },
+    "scope": "Independent generated LLVM integer/control interpretation to all terminal packets plus source IDs; no hardware execution claimed for synthetic/local checks."
+  },
+  "public_execution": {
+    "case": "TL_att_decode_q32kv4s1l2048d64_raw",
+    "status": "pass",
+    "tiers": {
+      "L0": "skipped",
+      "L1": "skipped",
+      "L2": "pass"
+    },
+    "request_id": "3_1793263451556492811_a1b1c5a4d94c619e06e0e8f24adcd435",
+    "baseline_request_id": "3_1793260646243843684_5eead21796a50a4779651900b2856bf3",
+    "candidate_detail": "qa/cases/TL_att_decode_q32kv4s1l2048d64_raw/f70238234ccaaf66802489ff99fb3b9de913ae1f0d83dc21fdfd7311a5f0fe3e.json",
+    "matched_bindings": {
+      "capsule_sha256": "6e5dcc0bf282b8fa6b5449b23a0b24ba73f3830dd185b8bed28bda0cfeab63ed",
+      "staged_capsule_sha256": "6e5dcc0bf282b8fa6b5449b23a0b24ba73f3830dd185b8bed28bda0cfeab63ed",
+      "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+      "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+      "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+      "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+      "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+      "scope": "complete kernel-call window; host, device and completion inside that window"
+    },
+    "provider_model_review_identical": true,
+    "baseline": {
+      "complete_modeled_whole_call_cycles": 412195,
+      "elf_sha256": "a129e1305614f0c5fb3832dc985eec245bc5ede8b6172ff863fe8b742fcaba5e",
+      "status": "PROVISIONAL",
+      "complete_event_accounting": true,
+      "timing_qualified": false,
+      "structural_compute_floor": 32768,
+      "floor_over_estimate": 0.07949635488057837,
+      "window": {
+        "begin_pc": 2147486248,
+        "end_pc": 2147487740,
+        "estimated_cycles": 412195,
+        "instructions": 97060
+      },
+      "traffic": [
+        {
+          "boundary": "device_requested_read",
+          "bytes": 1183744,
+          "bytes_per_model_cycle": 2.8718058200608936,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "device_requested_write",
+          "bytes": 337920,
+          "bytes_per_model_cycle": 0.8198061597059644,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_read",
+          "bytes": 14448,
+          "bytes_per_model_cycle": 0.035051371316973765,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_write",
+          "bytes": 2840,
+          "bytes_per_model_cycle": 0.006889942866847002,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_fetch_requested_read",
+          "bytes": 340876,
+          "bytes_per_model_cycle": 0.826977522774415,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_dram_requests",
+          "bytes": 1643712,
+          "bytes_per_model_cycle": 3.987704848433387,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_cache_writebacks",
+          "bytes": 574272,
+          "bytes_per_model_cycle": 1.3932046725457612,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_coherence_writebacks",
+          "bytes": 4992,
+          "bytes_per_model_cycle": 0.01211077281383811,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        }
+      ]
+    },
+    "candidate": {
+      "complete_modeled_whole_call_cycles": 411727,
+      "elf_sha256": "b324afde7e855d0e4c76d043dcfbfe55940fb0a509f3e0d589bdfd6dc2a4605b",
+      "status": "PROVISIONAL",
+      "complete_event_accounting": true,
+      "timing_qualified": false,
+      "structural_compute_floor": 32768,
+      "floor_over_estimate": 0.07958671644074836,
+      "window": {
+        "begin_pc": 2147486248,
+        "end_pc": 2147487740,
+        "estimated_cycles": 411727,
+        "instructions": 96348
+      },
+      "traffic": [
+        {
+          "boundary": "device_requested_read",
+          "bytes": 1183744,
+          "bytes_per_model_cycle": 2.8750701314220346,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "device_requested_write",
+          "bytes": 337920,
+          "bytes_per_model_cycle": 0.8207380132952175,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_read",
+          "bytes": 14568,
+          "bytes_per_model_cycle": 0.03538266861294013,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_write",
+          "bytes": 2840,
+          "bytes_per_model_cycle": 0.006897774496207439,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_fetch_requested_read",
+          "bytes": 335676,
+          "bytes_per_model_cycle": 0.8152877999256789,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_dram_requests",
+          "bytes": 1641856,
+          "bytes_per_model_cycle": 3.9877297335370283,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_cache_writebacks",
+          "bytes": 575872,
+          "bytes_per_model_cycle": 1.398674364323933,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_coherence_writebacks",
+          "bytes": 4672,
+          "bytes_per_model_cycle": 0.011347324805028574,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        }
+      ]
+    },
+    "cycles_saved": 468,
+    "reduction_fraction": 0.0011353849512972802,
+    "speedup": 1.0011366755155722
+  },
+  "recommendation": "KEEP optional reusable simplification. Matched provisional complete model favors it by0.11354%; the small ranking is not independently physically established and alone offers weak default-promotion evidence.",
+  "caveats": [
+    "Both arms PROVISIONAL complete-call model; no gSIM, physical timing qualification or accuracy certificate.",
+    "Same useful MACs and32768 structural compute floor; floor/estimate is not physical array utilization.",
+    "Requested device read/write bytes unchanged; CPUfetch/instruction decrease is diagnostic, not the timing objective.",
+    "Prior149-original-source census establishes only GQA has this shared-readout route; no changedcore/native source cases from this guarded refinement.",
+    "Public candidate L2 exact numerical execution is one original GQA; additional geometry/alias/tail checks are local actual-stream proofs."
+  ],
+  "artifacts": {
+    "llvm_check.py": "e24b3971a5fcbb15211b5d02717833a4f3d7738c4cbcc4150310595d91df7ca2",
+    "full_packets.py": "f7de5c0a6afab8437cf3f8a74967860e7ab6842e738d805996899bcf64567c1d",
+    "bind_mutations.json": "47f655fcc9d61f004e711a0e5c642f8e77f7b963c5204f1406410e16285c2ecb",
+    "check_projection.py": "7c358154e28f758bb4334e8ef9d49bc4fcad73f7ec5011b68284b93a03fa5c49",
+    "checks.json": "c8766e972024e75e41675979f475e342d2960a107616a58c3a8ffb45d1462c40",
+    "pairs.json": "6f89e7f1b1ad2dbe8ebe189e7f4daac0818b9dd57cbf7c4efa81bf32d9dd7d25",
+    "off_cli.py": "9a5218af5fadcd045093579039ce22c678be4a1d650312ba7a4ea35ab0d08c11",
+    "report.py": "ba3d38f14e2c6d537acc4cc800846da0e4afef145c11dbbac859d2e8507a4323",
+    "on.commands.json": "1738f382d614388b272f239caac4fae21878d6e275d216c35959c44de788e4c6",
+    "compile.py": "25da50b7998bd17b40b38ffd50dc81f046583bdd433b5b852df2c32327238fc5",
+    "compile.json": "6e7482b330acccc8033592e52fe30987fbc5bdce788ed9b1fe5c23c96006fab3",
+    "check_pairs.py": "474d3b7e9a3255f09fe64fe51551c3a3bfb9e866f0c0a7965e57c87ec28e1dc1",
+    "declared_off.commands.json": "6c09de2310f99d2aabd93c28070110311aab1862729aa53abdfeea0a24bc3b74",
+    "check_bind_mutations.py": "81688b77cf0654c8373c4388813796bd755e53ad2da108588d6dd432716e06b6",
+    "gqa_certificates.json": "ac248e3a168d2c3c0bedc302e5271e4a659dbbda955ab4ee90ae214fc5d24946",
+    "off.commands.json": "978317d1ac1d32bb0802ba06fb6990692566b7c4968dbacae7a6c79602eab602",
+    "shared_rhs_scattered_readout.py.patch": "83905a1835cd2d6754123ece77a256ef019a3ee1ab3bafd85f64bf1bee0fd9d0"
+  }
+}

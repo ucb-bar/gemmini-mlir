@@ -1,0 +1,320 @@
+{
+  "schema": "author.pointwise_resident_panels.v1",
+  "files": [
+    "submission/backend/pointwise_resident.py",
+    "submission/backend/conv_spatial_panels.py",
+    "submission/backend/pointwise.py"
+  ],
+  "mechanism": "Original positive-stride 1x1 NHWC gather fragments directly stage full-M source panels; complete-K RHS retained per capacity-derived N phase. Common terminal encoder/readout. No SMT dependency or payload copy.",
+  "applicability": "Unpadded unit-dilation original signed-i8 1x1 NHWC, positive static asymmetric strides, CI>=DIM and CO>=DIM; uniformi8/rawi32 or exact mixed-column raw reload; optional original runtime matrix initializer and bias; disjoint output; hardware capacity and existing expansion budgets only.",
+  "before_effects": "Full source, bias, initializer, output, alias, column-readout and storage admission precedes mutation. Unsupported geometry, tinyK/N and source/readout contracts decline to incumbent. Shared initializer support opt-in; existing routes remain disabled for initializers.",
+  "paired_core": [
+    {
+      "capsule": "SY_column_readout_conv2d_int8_aligned",
+      "identities": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "capsule_sha256": "6e18872a063da6c7ea726b91329c3e7bd0bbd340f4041ef3c21fc19f47bf94da"
+      },
+      "arms": {
+        "on": {
+          "request": "2_1793255736628466728_5878b5c923cafdbba9f7c34e5b018b4b",
+          "detail": {
+            "path": "qa/cases/SY_column_readout_conv2d_int8_aligned/725343f81a7c0ab717049c13750c5fee83429250cb2f659a3af42a04fed8e051.json",
+            "sha256": "725343f81a7c0ab717049c13750c5fee83429250cb2f659a3af42a04fed8e051"
+          },
+          "cycles": 1733,
+          "elf_sha256": "ae9e7b905422dbba74626b6043e70ae5cc20c455b100008d45ad6406fcdc578e",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": true
+        },
+        "off": {
+          "request": "2_1793255783658725331_288427c358302a1b36a43b8e8dc2a190",
+          "detail": {
+            "path": "qa/cases/SY_column_readout_conv2d_int8_aligned/fd64cddf688e630129440dd6522d5f53bc0880320ec3b866774ba54e2e427e42.json",
+            "sha256": "fd64cddf688e630129440dd6522d5f53bc0880320ec3b866774ba54e2e427e42"
+          },
+          "cycles": 1789,
+          "elf_sha256": "319c7a8497f3d6f76c69c7d6bc4c078828cf33895c87409b95ea566c210d2aca",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": false
+        }
+      },
+      "speedup": 1.0323139065204847
+    },
+    {
+      "capsule": "SY_column_readout_conv2d_int8_tail",
+      "identities": {
+        "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "capsule_sha256": "8292ab0997c6bd22ff5678dd27c9ed1a8b2f2fa3153a6d3b9950a9104cd4916d"
+      },
+      "arms": {
+        "on": {
+          "request": "2_1793255736628466728_5878b5c923cafdbba9f7c34e5b018b4b",
+          "detail": {
+            "path": "qa/cases/SY_column_readout_conv2d_int8_tail/13c27d75299409207862b4083308f8c1df64ad33299598a820d5083bed3bccd1.json",
+            "sha256": "13c27d75299409207862b4083308f8c1df64ad33299598a820d5083bed3bccd1"
+          },
+          "cycles": 2016,
+          "elf_sha256": "78ba2e5f26376692a585832df6f0b94094196c234848399474b2962821742d48",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": true
+        },
+        "off": {
+          "request": "2_1793255783658725331_288427c358302a1b36a43b8e8dc2a190",
+          "detail": {
+            "path": "qa/cases/SY_column_readout_conv2d_int8_tail/446fd338e044ab46e28e61225d6f5e686654097db219f307e32ba5ecb5a0ddc3.json",
+            "sha256": "446fd338e044ab46e28e61225d6f5e686654097db219f307e32ba5ecb5a0ddc3"
+          },
+          "cycles": 2156,
+          "elf_sha256": "07fa89fbd0b4d89f9958398f131fdb1250b80e27b5f8c42d94da8615dfddfe90",
+          "complete_event_accounting": true,
+          "numerical_execution_passed": true,
+          "numeric_consistency_passed": false
+        }
+      },
+      "speedup": 1.0694444444444444
+    }
+  ],
+  "evidence_scope": "Complete whole-call Spike timing-model estimates; not measured RTL timing. L2 numeric execution and consistency pass. Oracle unavailable means no full certification.",
+  "independent_effects": [
+    "artifacts/author_checks/pointwise_resident_check.py",
+    "artifacts/author_checks/pointwise_resident_large_check.py"
+  ],
+  "large_exact_effects": [
+    {
+      "shape": [
+        1,
+        7,
+        7,
+        512,
+        2048
+      ],
+      "stride": [
+        1,
+        1
+      ],
+      "matrix_seed": true,
+      "bias": true,
+      "checked_output_elements": 100352
+    },
+    {
+      "shape": [
+        1,
+        56,
+        56,
+        64,
+        256
+      ],
+      "stride": [
+        1,
+        1
+      ],
+      "checked_output_elements": 802816
+    },
+    {
+      "shape": [
+        2,
+        9,
+        11,
+        33,
+        513
+      ],
+      "stride": [
+        2,
+        3
+      ],
+      "matrix_seed": true,
+      "bias": true,
+      "checked_output_elements": 20520
+    }
+  ],
+  "full_compiler_no_z3": {
+    "script": "artifacts/author_checks/pointwise_resident_compile.py",
+    "variant": "variants/pointwise_resident_final_on",
+    "results": [
+      {
+        "shape": [
+          1,
+          56,
+          56,
+          64,
+          256,
+          1,
+          1
+        ],
+        "mlir_bytes": 83880,
+        "mlir_sha256": "8f5cdb6e2241f4f7055ed207adb898073d2c9df3027fa84e191098277970349c",
+        "blocks": 183,
+        "effects": 117
+      },
+      {
+        "shape": [
+          1,
+          28,
+          28,
+          128,
+          512,
+          1,
+          1
+        ],
+        "mlir_bytes": 155104,
+        "mlir_sha256": "ba04f97b57b591336bcf6eb47696d898b913cceddd5f57b9d57cd6899dbeaf1a",
+        "blocks": 295,
+        "effects": 229
+      },
+      {
+        "shape": [
+          1,
+          14,
+          14,
+          256,
+          1024,
+          1,
+          1
+        ],
+        "mlir_bytes": 269195,
+        "mlir_sha256": "1b6834a7935b6b33a3967f5705bd0c76bf0206245a28bbcd8d6926266228d5e8",
+        "blocks": 561,
+        "effects": 424
+      },
+      {
+        "shape": [
+          1,
+          7,
+          7,
+          512,
+          2048,
+          1,
+          1
+        ],
+        "mlir_bytes": 310386,
+        "mlir_sha256": "7ada3206e7366d6bb2e7d540a43aa693d0cd9ac4c1275d7637693aa73d03a108",
+        "blocks": 708,
+        "effects": 468
+      },
+      {
+        "shape": [
+          2,
+          57,
+          63,
+          65,
+          257,
+          2,
+          3
+        ],
+        "mlir_bytes": 233329,
+        "mlir_sha256": "e05e48efde90dcde617cd19e7a5ba65523818d872ef675349f38f8057a71ae93",
+        "blocks": 603,
+        "effects": 385
+      },
+      {
+        "shape": [
+          1,
+          448,
+          448,
+          256,
+          1024,
+          1,
+          1
+        ],
+        "mlir_bytes": 155186,
+        "mlir_sha256": "c7fce198e11e60b2cddcaaaea3e8b8b8b7784e04187639602d734c83c8201e2d",
+        "blocks": 295,
+        "effects": 229
+      }
+    ],
+    "seed_script": "artifacts/author_checks/pointwise_resident_seed_compile.py",
+    "seed_results": [
+      {
+        "h": 7,
+        "w": 7,
+        "ci": 512,
+        "co": 2048,
+        "mlir_bytes": 380237,
+        "sha256": "44f69f4113aeb561b5336bf1e6de13525676ade2b19ddc620ce212bab4dbb5fc",
+        "column_readout": false
+      },
+      {
+        "h": 57,
+        "w": 63,
+        "ci": 65,
+        "co": 257,
+        "mlir_bytes": 268125,
+        "sha256": "e93c36e1eb964d418dc0bc3b77c1ce5bbb9ee9649bb60f2de1432e4863643474",
+        "column_readout": true
+      }
+    ]
+  },
+  "byte_identity": {
+    "stride2": {
+      "off": {
+        "bytes": 165390,
+        "sha256": "72d5c451cd0ca4ce949ee2fe5049673d4932a7fc63110724397e6b8f7c230a8b"
+      },
+      "on": {
+        "bytes": 165390,
+        "sha256": "72d5c451cd0ca4ce949ee2fe5049673d4932a7fc63110724397e6b8f7c230a8b"
+      },
+      "before_dispatch_move": {
+        "bytes": 165390,
+        "sha256": "72d5c451cd0ca4ce949ee2fe5049673d4932a7fc63110724397e6b8f7c230a8b"
+      },
+      "prior_stride2": {
+        "bytes": 165390,
+        "sha256": "72d5c451cd0ca4ce949ee2fe5049673d4932a7fc63110724397e6b8f7c230a8b"
+      }
+    },
+    "tiny_unit": {
+      "off": {
+        "bytes": 23465,
+        "sha256": "3109af2d54b365aae47ce5270840e163ef7d9d08171e793c8eccf02e5daa4e72"
+      },
+      "on": {
+        "bytes": 23465,
+        "sha256": "3109af2d54b365aae47ce5270840e163ef7d9d08171e793c8eccf02e5daa4e72"
+      },
+      "before_dispatch_move": {
+        "bytes": 23465,
+        "sha256": "3109af2d54b365aae47ce5270840e163ef7d9d08171e793c8eccf02e5daa4e72"
+      }
+    },
+    "changed_tail": {
+      "off": {
+        "bytes": 39598,
+        "sha256": "f5efb162023e1b4b6fba3c8402cf55bfdfd540356271c5a28cf62be07dccd1b3"
+      },
+      "on": {
+        "bytes": 39445,
+        "sha256": "809580d7b3164fb2ef368c4f992a827d2239ad2194dace15ce2d73e9e57d91d6"
+      },
+      "before_dispatch_move": {
+        "bytes": 39445,
+        "sha256": "809580d7b3164fb2ef368c4f992a827d2239ad2194dace15ce2d73e9e57d91d6"
+      }
+    }
+  },
+  "largest_unseeded_object": {
+    "shape": [
+      1,
+      7,
+      7,
+      512,
+      2048
+    ],
+    "mlir_bytes": 310386,
+    "canonical_mlir_bytes": 170191,
+    "object_text_bytes": 8634,
+    "scope": "Local RISC-V llc -O2 object construction; not grader resource certification"
+  },
+  "decision": "Keep; matched core wins and source/geometry/large code checks pass. Root promoted option on and owns actual ResNet model validation.",
+  "remaining": "No newly timed unitstride large-model kernel; only actual source construction and exact host-integer effect checks. Seed ISA stream constructed and logical effect numerics validated, no public seed kernel available. No claims of large runtime or RTL speedup."
+}

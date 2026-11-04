@@ -1,0 +1,71 @@
+{
+  "scope": "Two changed original convolution correctness kernels; matched complete kernel-call gSIM observations, not large-shape/whole-model speedup",
+  "pairs": [
+    {
+      "capsule": "G_conv2d_c24x3x3_k3x3s1_n24_raw",
+      "before": 5515,
+      "after": 5456,
+      "reduction_pct": 1.0698096101541252,
+      "evidence_kind": "measured: gSIM",
+      "before_request": "7_1793258972133117855_1a7efe1de7fa172f5d6fdd3228e4b234",
+      "after_request": "3_1793263870892402928_204bb65e6718ede4a777f8054d5fc682",
+      "timing_identity": {
+        "engine": "gsim",
+        "simulator_path_sha256": "6667da986f860848236418725dfb2ee38c78476462c01afdf529a191f7f7d3fc",
+        "simulator_sha256": "76ddbfdc5b3beadef6b6b37768a08522122327057b92d71d3539a9529e4ea651"
+      },
+      "timing_identity_matches": true,
+      "paired_identity_checks": {
+        "capsule_sha256": true,
+        "facts_sha256": true,
+        "comparison_domain_sha256": true,
+        "scope_sha256": true,
+        "scope": true
+      },
+      "accepted": true,
+      "before_elf_sha256": "e9e09e3f6ef7e848397b6958f6b18ea10a4e140e1d4de2d4d76692d29deca9e0",
+      "after_elf_sha256": "fef7bd701946bc3ef8073926a3f4b33f3a32d75357f7b305e676c4e0a98a1c38",
+      "scope": "complete kernel-call window; host, device and completion inside that window",
+      "scope_excludes": [
+        "input staging",
+        "output publication",
+        "metric formatting",
+        "parent readback"
+      ],
+      "structurally_qualified_both": true
+    },
+    {
+      "capsule": "SY_conv_k3x3_s1_ci64_co80_h8_int8",
+      "before": 52382,
+      "after": 52185,
+      "reduction_pct": 0.3760833874231606,
+      "evidence_kind": "measured: gSIM",
+      "before_request": "8_1793258972136570754_32a37246dd315662f4f1780ae013803c",
+      "after_request": "3_1793263870895154521_25edabfad6590bf16318aa6a68bc3203",
+      "timing_identity": {
+        "engine": "gsim",
+        "simulator_path_sha256": "6667da986f860848236418725dfb2ee38c78476462c01afdf529a191f7f7d3fc",
+        "simulator_sha256": "76ddbfdc5b3beadef6b6b37768a08522122327057b92d71d3539a9529e4ea651"
+      },
+      "timing_identity_matches": true,
+      "paired_identity_checks": {
+        "capsule_sha256": true,
+        "facts_sha256": true,
+        "comparison_domain_sha256": true,
+        "scope_sha256": true,
+        "scope": true
+      },
+      "accepted": true,
+      "before_elf_sha256": "aba6f8f52a3094cacdd305a90961e60fbd7083ec8fe08bbd6f8a7002ad066d79",
+      "after_elf_sha256": "3277a40db9d8b565bc6a7d226f7de7596f3afbfe33647beb74df7d718397e7df",
+      "scope": "complete kernel-call window; host, device and completion inside that window",
+      "scope_excludes": [
+        "input staging",
+        "output publication",
+        "metric formatting",
+        "parent readback"
+      ],
+      "structurally_qualified_both": true
+    }
+  ]
+}

@@ -1,0 +1,551 @@
+{
+  "mechanism": "original_row_partition_terminal_dense_readout",
+  "policy": "optional SHARED_RHS_SCATTERED_READOUT off/on; parent-owned declaration and integration; selected existing files untouched by helper",
+  "module_sha256": "8fbabef836b844305eedaa8e2300610311a757bf2aa4c57f163278d958c79f6b",
+  "patches": [
+    "artifacts/shared_rhs_scattered_readout/dense.py.patch",
+    "artifacts/shared_rhs_scattered_readout/shared_rhs_rows.py.patch"
+  ],
+  "source_and_emission": [
+    {
+      "setting": "off",
+      "exit_code": 0,
+      "source_sha256": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+      "llvm_sha256": "3ca0adc38a49d5904e173e9aaf6bbd10e8ea7d1409c97b67dd92488c28204acb"
+    },
+    {
+      "setting": "on",
+      "exit_code": 0,
+      "source_sha256": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+      "llvm_sha256": "14a61e2b8d96590b9e9c5c317f437c2359fa5ac1cd85e5f9d19c828acee0505a"
+    }
+  ],
+  "optional_hook_identity": [
+    {
+      "setting": "off",
+      "identical_to_isolated_arm": true,
+      "llvm_sha256": "3ca0adc38a49d5904e173e9aaf6bbd10e8ea7d1409c97b67dd92488c28204acb"
+    },
+    {
+      "setting": "on",
+      "identical_to_isolated_arm": true,
+      "llvm_sha256": "14a61e2b8d96590b9e9c5c317f437c2359fa5ac1cd85e5f9d19c828acee0505a"
+    }
+  ],
+  "ABI_equal": true,
+  "source_tensors_equal": true,
+  "shared_groups": 8,
+  "candidate_request_id": "3_1793260646243843684_5eead21796a50a4779651900b2856bf3",
+  "baseline_request_id": "3_1793259539870283785_785444802ef4c357256eaef32e742fc4",
+  "candidate_detail_path": "qa/cases/TL_att_decode_q32kv4s1l2048d64_raw/4df726cd0ae59adc738e779e1b3af6dfe6fdd5b35580588ce56b45130761b701.json",
+  "comparison_status": "Matched complete provisional model506994\u2192412195, saved94799cycles(18.6982%);KEEP, no measured/gSIM claim.",
+  "resource_and_completion": "Actual finite source schedule source/output coverage and exact row intersections checked; same library terminal encoder; configured fragments share exact original configuration and retained closing drain; ordinary fragments retain store_tile readiness and completion fences",
+  "remaining_coverage": "One public GQA numerical execution; unequal/tail/duplicate/scalar epilogue cases verified through actual schedule projection and exact generated LLVM integer/control-to-DMA interpretation, not additional public device execution.",
+  "files": {
+    "checks.json": "a46b5caf2f37f3bfa92b29bf867153bfd9bf071ca40de46ee56065dd33873bcd",
+    "check.py": "c41c145a13e1bf11dfa33eddd8d64aefaa84ce76c3317b828b34110adac4c23b",
+    "llvm_check.py": "e24b3971a5fcbb15211b5d02717833a4f3d7738c4cbcc4150310595d91df7ca2",
+    "gqa.input.mlir": "60d1763bf4814b61de062f7112525b6319548b6a498b0209633ed7c08da577a2",
+    "optional_hook_identity.json": "f5e982c1275775aeb7e8bdc7bb14df44cde3c162a66ea6bcf2825fb5ccf996aa",
+    "on_result.json": "6dec1f87a98ca67b54c1db31c737fa64e7ba019f3700762267cfeba8564a851f",
+    "dense.py.patch": "55fb4490ce35e5dd13ab93c224d56e349a8991edca5a607c6cff77cf2d8a55ae",
+    "shared_rhs_rows.py.patch": "580867e2ca7378683b6f8dbcf4a93dcc537902bb91fb4d7f578f3fa78d278b67",
+    "matched_comparison.json": "64ef76525b9b652afa1338b5e303e266625145c17cf3348fd312b0018bd00a84",
+    "source_census.json": "acbfc6d72da8f216438cab69e7d957197c54e0c9b7c450354b6f364ddd7916fe",
+    "mixed_route_llvm_census.json": "f07c19b7111677f80eb72a0555cd833984e28cdbc88516537ff0719436211976",
+    "census.py": "27214da25cd3e75f1b38f1bbd0001bb15497c83c543d77951bf468ac27eb37b6",
+    "census_compile.py": "4235a7de110289df78dcb805666e655163a8b44014d6ea44f1ab7c94f848f52c",
+    "check_fallback.py": "f65a290c3d5e713fdf50861fd12d96a7bd1c6b0eebf5b834f741db7d19cd8fd4",
+    "full_packets.py": "b67ab665c97d701b34ea1c5737eefdc7825b757d9dfe6d0c0381ee6145522ac5",
+    "fallback_check.json": "fbfffd2c090bc51dd6597d2321acd0d53f46ff651cd0e664ea8feb61edd05f52"
+  },
+  "independent_checks": {
+    "checked_variants": 80,
+    "actual_store_or_partition_mutations_rejected": 7,
+    "source_indices": "per-member source IDs verified on actual emitted MVOUT LLVM packets",
+    "proof_scope": "actual schedule operand projection and independent interpretation of generated LLVM integer/control instructions to exact terminal DMA packets; no hardware execution claimed",
+    "refusals_before_emission": [
+      "aliases",
+      "per-column/readout-reload",
+      "overlapping outputs",
+      "wrong output shape"
+    ]
+  },
+  "test_domain": {
+    "member_rows": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        3,
+        7
+      ],
+      [
+        15,
+        2
+      ],
+      [
+        17,
+        1,
+        15
+      ],
+      [
+        3,
+        3,
+        3
+      ]
+    ],
+    "columns": [
+      1,
+      15,
+      16,
+      17
+    ],
+    "readouts": [
+      "raw i32",
+      "scalar i8 scale0.25/ReLU"
+    ],
+    "schedule_variants": [
+      "baseline",
+      "library store/panel epochs"
+    ],
+    "duplicate_input": true,
+    "execution": "actual schedule + independent actual emitted LLVM integer/control/packet interpretation; not hardware execution"
+  },
+  "group_effects": [
+    {
+      "binding_sha256": "1887d4c12e81ef274bd51d646e6e5a02a31a73f3f844157e5c6d361d2d3f3e7f",
+      "kernel_sha256": "94447ee94128248a20ffa4c57830d160b66628392d5085544c34c70272063488",
+      "checked_actual_calls": 1701,
+      "original_terminal_stores": 128,
+      "split_terminal_stores": 1024,
+      "output_elements": 16384,
+      "eliminated_joined_result_bytes": 65536
+    },
+    {
+      "binding_sha256": "55dddf0fe8bee9850e275f9727902ceb79704fbcb34bb6759a8b1f719e29c63d",
+      "kernel_sha256": "f45d7bd3c1687dc5248a77f47704572be9c215e47b30810b7351c42bc5b78646",
+      "checked_actual_calls": 1671,
+      "original_terminal_stores": 4,
+      "split_terminal_stores": 32,
+      "output_elements": 512,
+      "eliminated_joined_result_bytes": 2048
+    },
+    {
+      "binding_sha256": "e93e727c8dbff46adf6ca710e5d518217be18e2b5d0f3d3b915914d7c629daf1",
+      "kernel_sha256": "94447ee94128248a20ffa4c57830d160b66628392d5085544c34c70272063488",
+      "checked_actual_calls": 1701,
+      "original_terminal_stores": 128,
+      "split_terminal_stores": 1024,
+      "output_elements": 16384,
+      "eliminated_joined_result_bytes": 65536
+    },
+    {
+      "binding_sha256": "69464f6a0455f5ba6904ab68c5865ebaa58129ce253a423b5ed04c6155d439e2",
+      "kernel_sha256": "f45d7bd3c1687dc5248a77f47704572be9c215e47b30810b7351c42bc5b78646",
+      "checked_actual_calls": 1671,
+      "original_terminal_stores": 4,
+      "split_terminal_stores": 32,
+      "output_elements": 512,
+      "eliminated_joined_result_bytes": 2048
+    },
+    {
+      "binding_sha256": "3dd86b95db748cfbf3b83abae8ef7664663c10b45a94f930a2e8f0f0c40f83c1",
+      "kernel_sha256": "94447ee94128248a20ffa4c57830d160b66628392d5085544c34c70272063488",
+      "checked_actual_calls": 1701,
+      "original_terminal_stores": 128,
+      "split_terminal_stores": 1024,
+      "output_elements": 16384,
+      "eliminated_joined_result_bytes": 65536
+    },
+    {
+      "binding_sha256": "8fb60e78ad4c6e84993c74261212f3ce18204bc985561886cfced20925143991",
+      "kernel_sha256": "f45d7bd3c1687dc5248a77f47704572be9c215e47b30810b7351c42bc5b78646",
+      "checked_actual_calls": 1671,
+      "original_terminal_stores": 4,
+      "split_terminal_stores": 32,
+      "output_elements": 512,
+      "eliminated_joined_result_bytes": 2048
+    },
+    {
+      "binding_sha256": "d6771955d7264753981f98a0879f92563e0bb91a3aea1a5038aca1baafbe840d",
+      "kernel_sha256": "94447ee94128248a20ffa4c57830d160b66628392d5085544c34c70272063488",
+      "checked_actual_calls": 1701,
+      "original_terminal_stores": 128,
+      "split_terminal_stores": 1024,
+      "output_elements": 16384,
+      "eliminated_joined_result_bytes": 65536
+    },
+    {
+      "binding_sha256": "d119c0a5ad5b38c489759a8885a795b7dce7cc7110cf4aa71be2fc44e2395bf8",
+      "kernel_sha256": "f45d7bd3c1687dc5248a77f47704572be9c215e47b30810b7351c42bc5b78646",
+      "checked_actual_calls": 1671,
+      "original_terminal_stores": 4,
+      "split_terminal_stores": 32,
+      "output_elements": 512,
+      "eliminated_joined_result_bytes": 2048
+    }
+  ],
+  "public_execution": {
+    "case": "TL_att_decode_q32kv4s1l2048d64_raw",
+    "status": "PROVISIONAL",
+    "tiers": {
+      "L0": "skipped",
+      "L1": "skipped",
+      "L2": "pass"
+    },
+    "estimated_whole_soc_cycles": 412195,
+    "elf_sha256": "a129e1305614f0c5fb3832dc985eec245bc5ede8b6172ff863fe8b742fcaba5e",
+    "reason": "native timing is provisional pending independent qualification",
+    "scope": "complete kernel-call window; host, device and completion inside that window",
+    "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+    "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+    "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+    "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+    "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+    "staged_capsule_sha256": "6e5dcc0bf282b8fa6b5449b23a0b24ba73f3830dd185b8bed28bda0cfeab63ed",
+    "complete_event_accounting": true,
+    "timing_qualified": false,
+    "promotion_authority": false,
+    "model_review": "INACTIVE V90 full-i32 accumulating ACC MVIN through selected separate scaler and finite ACC RMW ports; one original stride-zero broadcast DMA, original row publication; V89 native/hardware/prices/budgets/scope unchanged; no new physical qualification",
+    "request_model_binding": {
+      "accepted_record_sha256": null,
+      "activation_warning": null,
+      "channel": "grade",
+      "request_id": "grade-3e367abdb9a238f3f539bdd32ccedf9a157002a1d201d5acf0dc1b7e06625b54",
+      "request_sha256": "3e367abdb9a238f3f539bdd32ccedf9a157002a1d201d5acf0dc1b7e06625b54",
+      "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+    },
+    "modeled_resource_activity": {
+      "additive": false,
+      "queue_scope": "generic resource waiting queues; not accelerator reservation-station occupancy",
+      "resources": [],
+      "scope": "whole_trace",
+      "unavailable": [
+        "reservation_station_highwater",
+        "admission_wait_cycles",
+        "dependency_wait_cycles",
+        "ready_stall_cycles"
+      ],
+      "usable_as_kernel_decomposition": false
+    },
+    "structural_bound_cycles": 32768,
+    "useful_macs": 8388608,
+    "activity_denominator": "whole-call modeled 412195 cycles; no physical utilization claim",
+    "structural_floor_to_estimate_ratio": 0.07949635488057837,
+    "gsim": "not requested/not measured"
+  },
+  "integration_note": "Parent integrates selected hooks with additional early raw_reload bias/initializer/per_column refusal and make_readout ValueError preserving original joined-result grouping. No selected existing file modified by helper.",
+  "checked_module_identity": {
+    "path": "variants/shared_rhs_scattered_optional/backend/shared_rhs_scattered_readout.py",
+    "sha256": "fc4d796c8d9892ef18ad4309d86d247fb0d7e7a967cc05540f8a79ab518758bd",
+    "matches_selected_module": true
+  },
+  "matched_comparison": {
+    "baseline_request_id": "3_1793259539870283785_785444802ef4c357256eaef32e742fc4",
+    "candidate_request_id": "3_1793260646243843684_5eead21796a50a4779651900b2856bf3",
+    "case": "TL_att_decode_q32kv4s1l2048d64_raw",
+    "baseline_detail": "qa/cases/TL_att_decode_q32kv4s1l2048d64_raw/543eb54613acf4e781705a722d13b618a61d4a71d210523ad86fb62bb95a2e14.json",
+    "candidate_detail": "artifacts/shared_rhs_scattered_readout/on_result.json",
+    "matched_bindings": {
+      "capsule_sha256": "6e5dcc0bf282b8fa6b5449b23a0b24ba73f3830dd185b8bed28bda0cfeab63ed",
+      "staged_capsule_sha256": "6e5dcc0bf282b8fa6b5449b23a0b24ba73f3830dd185b8bed28bda0cfeab63ed",
+      "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+      "model_sha256": "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+      "facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+      "scope_sha256": "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+      "comparison_domain_sha256": "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+      "scope": "complete kernel-call window; host, device and completion inside that window"
+    },
+    "both_L2_pass": true,
+    "provider": {
+      "evidence": "complete modeled whole-call estimate; not fast-estimate band",
+      "same_model_and_facts": true,
+      "model_review_identical": true,
+      "model_review": "INACTIVE V90 full-i32 accumulating ACC MVIN through selected separate scaler and finite ACC RMW ports; one original stride-zero broadcast DMA, original row publication; V89 native/hardware/prices/budgets/scope unchanged; no new physical qualification",
+      "scope": "host+device+completion complete kernel-call window",
+      "complete_event_accounting": [
+        true,
+        true
+      ]
+    },
+    "baseline": {
+      "cycles": 506994,
+      "elf_sha256": "a6761e4a0fffeba5b7021c312cfd9ed03bdf2ecbfbb594ea01be714fa519615f",
+      "status": "PROVISIONAL",
+      "scope": "complete kernel-call window; host, device and completion inside that window",
+      "structural_bound_cycles": 32768,
+      "compute": {
+        "nominal_padded_macs": 16777216,
+        "ratio_kind": "structural bound / modeled cycles; not physical utilization",
+        "structural_floor_to_estimate_ratio": 0.06463192858298125,
+        "useful_fraction_of_padded_work": 0.5,
+        "useful_macs": 8388608
+      },
+      "traffic": [
+        {
+          "boundary": "device_requested_read",
+          "bytes": 1454080,
+          "bytes_per_model_cycle": 2.8680418308697933,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "device_requested_write",
+          "bytes": 608256,
+          "bytes_per_model_cycle": 1.1997301743215896,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_read",
+          "bytes": 1448,
+          "bytes_per_model_cycle": 0.002856049578495998,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_write",
+          "bytes": 1208,
+          "bytes_per_model_cycle": 0.0023826711953198656,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_fetch_requested_read",
+          "bytes": 298436,
+          "bytes_per_model_cycle": 0.5886381298398009,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_dram_requests",
+          "bytes": 2018496,
+          "bytes_per_model_cycle": 3.981301553864543,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_cache_writebacks",
+          "bytes": 811776,
+          "bytes_per_model_cycle": 1.6011550432549497,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_coherence_writebacks",
+          "bytes": 1856,
+          "bytes_per_model_cycle": 0.0036607928298954227,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        }
+      ],
+      "resource_view": {
+        "status": "UNKNOWN",
+        "resource_count": 0,
+        "resource_availability": "UNKNOWN",
+        "resource_reason": "scoped interval capture incomplete, unknown or bounded buffer exhausted",
+        "additive": false
+      },
+      "actor_lifetimes": [
+        {
+          "active_cycles": 370926,
+          "active_fraction": 0.7316181256582918,
+          "availability": "modeled",
+          "meaning": "load-lane RS allocation through original command completion, including configuration; envelope",
+          "name": "load.command_inflight",
+          "starts_in_scope": 5344
+        },
+        {
+          "active_cycles": 39702,
+          "active_fraction": 0.07830861903691168,
+          "availability": "modeled",
+          "meaning": "store-lane RS allocation through original command completion, including configuration; envelope",
+          "name": "store.command_inflight",
+          "starts_in_scope": 1300
+        },
+        {
+          "active_cycles": 77128,
+          "active_fraction": 0.1521280330733697,
+          "availability": "modeled",
+          "meaning": "execute-lane RS allocation through original result tag completion, including configuration; envelope",
+          "name": "execute.command_inflight",
+          "starts_in_scope": 8200
+        }
+      ]
+    },
+    "candidate": {
+      "cycles": 412195,
+      "elf_sha256": "a129e1305614f0c5fb3832dc985eec245bc5ede8b6172ff863fe8b742fcaba5e",
+      "status": "PROVISIONAL",
+      "scope": "complete kernel-call window; host, device and completion inside that window",
+      "structural_bound_cycles": 32768,
+      "compute": {
+        "nominal_padded_macs": 16777216,
+        "ratio_kind": "structural bound / modeled cycles; not physical utilization",
+        "structural_floor_to_estimate_ratio": 0.07949635488057837,
+        "useful_fraction_of_padded_work": 0.5,
+        "useful_macs": 8388608
+      },
+      "traffic": [
+        {
+          "boundary": "device_requested_read",
+          "bytes": 1183744,
+          "bytes_per_model_cycle": 2.8718058200608936,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "device_requested_write",
+          "bytes": 337920,
+          "bytes_per_model_cycle": 0.8198061597059644,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_read",
+          "bytes": 14448,
+          "bytes_per_model_cycle": 0.035051371316973765,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_data_requested_write",
+          "bytes": 2840,
+          "bytes_per_model_cycle": 0.006889942866847002,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "cpu_fetch_requested_read",
+          "bytes": 340876,
+          "bytes_per_model_cycle": 0.826977522774415,
+          "physical_bandwidth": false,
+          "source_kind": "observed_requests_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_dram_requests",
+          "bytes": 1643712,
+          "bytes_per_model_cycle": 3.987704848433387,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_cache_writebacks",
+          "bytes": 574272,
+          "bytes_per_model_cycle": 1.3932046725457612,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        },
+        {
+          "boundary": "modeled_coherence_writebacks",
+          "bytes": 4992,
+          "bytes_per_model_cycle": 0.01211077281383811,
+          "physical_bandwidth": false,
+          "source_kind": "modeled_boundary_bytes_over_modeled_cycles"
+        }
+      ],
+      "resource_view": {
+        "status": "modeled",
+        "resource_count": 29,
+        "resource_availability": "available",
+        "resource_reason": null,
+        "additive": false
+      },
+      "actor_lifetimes": [
+        {
+          "active_cycles": 318831,
+          "active_fraction": 0.7734955542886255,
+          "availability": "modeled",
+          "meaning": "load-lane RS allocation through original command completion, including configuration; envelope",
+          "name": "load.command_inflight",
+          "starts_in_scope": 4992
+        },
+        {
+          "active_cycles": 25063,
+          "active_fraction": 0.06080374579992479,
+          "availability": "modeled",
+          "meaning": "store-lane RS allocation through original command completion, including configuration; envelope",
+          "name": "store.command_inflight",
+          "starts_in_scope": 4644
+        },
+        {
+          "active_cycles": 76775,
+          "active_fraction": 0.18625893084583753,
+          "availability": "modeled",
+          "meaning": "execute-lane RS allocation through original result tag completion, including configuration; envelope",
+          "name": "execute.command_inflight",
+          "starts_in_scope": 8200
+        }
+      ]
+    },
+    "cycles_saved": 94799,
+    "reduction_fraction": 0.1869824889446423,
+    "speedup": 1.2299858076881087,
+    "recommendation": "KEEP reusable opt-in path; select on based on matched provisional model decrease and L2 exact execution, pending renewal of changed original source cases",
+    "caveats": [
+      "Neither arm is independently timing-qualified; both PROVISIONAL, no gSIM measurement or physical speedup claim.",
+      "Structural compute floor / whole-call modeled cycles rises from6.463% to7.950%; this is not physical array utilization.",
+      "Baseline scoped resource capture is unavailable/incomplete; candidate modeled reservations cannot be compared to missing baseline intervals.",
+      "Actor lifetimes are RS allocation-to-completion envelopes; overlapping fractions are not additive or physical engine busy fractions.",
+      "Traffic is requested bytes, not physical DRAM bandwidth."
+    ]
+  },
+  "renewal_census": {
+    "roster": 149,
+    "core": 109,
+    "scalability": 40,
+    "counts": {
+      "source_rejected": 137,
+      "frontend_refusal": 11,
+      "eligible": 1
+    },
+    "method": "All149 exact original public sources parsed; actual rhs_product_groups + strictshortrow tile-saving admission + original typed make_readout.137 reject before knob-dependent emission.11 mixed routes additionally compiled through own CLI with fixed phase6 source/config off/on; all22 compilations success and paired LLVM byte-identical. One eligible GQA has existing exact on/off LLVM proof and public on L2 execution.",
+    "changed_core_cases": [],
+    "changed_scalability_cases": [
+      "TL_att_decode_q32kv4s1l2048d64_raw"
+    ],
+    "mixed_routes_byte_identical": [
+      "JC_resnet50_prepared_connected",
+      "JC_tiny_llama_prepared_connected",
+      "JH_resnet_bias_scale_relu_h8",
+      "JH_resnet_dequant_scale_h16",
+      "PB00_island_m16k32h16n16",
+      "SY_micro_model",
+      "SY_source_causal_decoder",
+      "SY_source_causal_decoder_decode_step",
+      "SY_source_coverage_mlp",
+      "SY_source_multimodal_policy",
+      "SY_source_residual_cnn"
+    ],
+    "renewals": "Only changed GQA original case; existing candidate public L2 proof reusable if final admitted GQA LLVM matches. No native-source/full-model ELF renewal caused by this knob.",
+    "artifacts": [
+      "source_census.json",
+      "mixed_route_llvm_census.json",
+      "census.py",
+      "census_compile.py"
+    ]
+  },
+  "forced_proof_refusal": {
+    "actual_schedule_budget": {
+      "max_calls": 1,
+      "max_cells": 1
+    },
+    "geometry": "two independent original[1,3]i8 lhs, common[3,2]i8 rhs, original[1,2]i32 outputs",
+    "selected_hook": "MappedReadoutRefusal before dense emission; original prepared lhs reused, ordinary joined dst and scatter restored",
+    "bind_zero_llvm_mutation": true,
+    "entire_generated_llvm_identical_to_off": true,
+    "llvm_sha256": "ea9108a2725d89ff346c5c51e1ecb70301bbd072ff21792047ee160d20fb451e",
+    "all_actual_command_packets_and_fences_equal": 43,
+    "mapped_receipt_absent": true,
+    "interpreter": "Independent actual LLVM integer/control execution through counted loops to exact all RoCC packet operands; includes CONFIG/MVIN/compute/MVOUT/fence; no hardware execution claim.",
+    "artifacts": [
+      "check_fallback.py",
+      "full_packets.py",
+      "fallback_check.json"
+    ]
+  },
+  "module_sha256_before_parent_typed_refusal": "fc4d796c8d9892ef18ad4309d86d247fb0d7e7a967cc05540f8a79ab518758bd"
+}

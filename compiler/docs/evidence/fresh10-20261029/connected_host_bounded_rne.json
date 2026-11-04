@@ -1,0 +1,179 @@
+{
+  "request": "2_1793265979966618051_6cfaf1a1f14c941cf6b59512daab38e4",
+  "source_detail": "qa/cases/JC_resnet50_prepared_connected/09e98367b53288d2364e4e6df126e18c86bfcc6784b661253e6b954d73f47916.json",
+  "tiers": {
+    "L0": "pass",
+    "L1": "pass",
+    "L2": "pass"
+  },
+  "source_interface_sha256": "21f80dbbfb6fe1047d1c432aa145369713c4a56a2b67c9971b1e1fd94829474c",
+  "input_sha256": "742ef1cececb32d169be39f12fdcd1f6e336ccf37dfb658bee9f867f053807d3",
+  "capture_tree": {
+    "sha256": "3c65b9e457579dad9e857ccd4cd41a1e0535fa5ca2ca4e92a16e31a57ee091ec",
+    "n_files": 8
+  },
+  "provider": {
+    "package_sha256": "89e00e39c929ec0310b0a60d1860d2d8fa833b7ef1a57af5775092c24d5ebb9a",
+    "host_isa": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+    "dtype_strategy": "int8_w8a8"
+  },
+  "candidate_package_tree": {
+    "sha256": "8b4c6b277b35b03123164c843b4e96459147a41f78094a020a23a65b4a3e0bf6",
+    "n_files": 1346
+  },
+  "output_elf_sha256": "a4dbc0f432a3404c5bd7801e4ed1ad4f5d18fb79c54f3ca3f6637a62c763e13f",
+  "build_hash": "da0b116b3176",
+  "selected_recipe": {
+    "host_isa": "rv64gc",
+    "combine_clamp": true
+  },
+  "source_composition": {
+    "advisory_only": true,
+    "features": {
+      "dense_input_views": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "group_profile": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "host_bounded_rne": {
+        "effects": {
+          "historical_observer_permissions_imported": false,
+          "proven_original_chains": 1
+        },
+        "report_sha256": "22e115399c4cddb67ca8f18bd6fd758ac837c9ba93b637dc6bfd8526e3d47fb2",
+        "requested": true,
+        "selected": true,
+        "status": "applied"
+      },
+      "host_elementwise_fusion": {
+        "performance_qualified": false,
+        "report_sha256": "5a82b2e3580ae3ba300d6763c45b994ec14f46288ac3cbbc927a152973a210c6",
+        "requested": true,
+        "rewritten_work": "unmeasured",
+        "selected": true,
+        "status": "pipeline_selected"
+      },
+      "host_roundeven": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "independent_heads": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "op_profile": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "prepack_weights": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "propagate_layouts": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "reuse_intermediate_storage": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "share_exact_tensor_preparations": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "shared_input_siblings": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      },
+      "whole_head_batches": {
+        "requested": false,
+        "selected": false,
+        "status": "not_requested"
+      }
+    },
+    "performance_ranking_eligible": false,
+    "schema": "merlin.source_composition_feedback.v1",
+    "scope": "Pinned source/preparation/emission effects; selection alone is not application. Counts and functional counter ticks are not elapsed cycles or a performance win.",
+    "selected_route": "ordinary",
+    "timing_qualified": false
+  },
+  "llvm_products": [
+    {
+      "path": "artifacts/connected_host_route_product/owned_host_cfg.generic.mlir",
+      "sha256": "c1872aa87d99cab20d1533a16030fa7c6b1973502496e175f453c1a29bff7277",
+      "size": 69624
+    },
+    {
+      "path": "artifacts/connected_host_route_product/owned_host_cfg.mlir",
+      "sha256": "55282b1c74c2f5142d0436fbf86762bcdb8dbb323012a108d7e6c9ae39e89bb4",
+      "size": 42470
+    }
+  ],
+  "observed_lowering": "owned_host_cfg.generic.mlir line401: llvm.inline_asm fmax.s/fmin.s/fcvt.w.s rne; same one proven chain",
+  "performance": {
+    "status": "UNKNOWN",
+    "estimated_whole_soc_cycles": null,
+    "fast_estimate": {
+      "cycles": null,
+      "evidence_kind": "fast_estimate",
+      "reason": "no decoded instruction stream with accelerator commands for this case",
+      "schema": "merlin.phase1.fast_estimate.v1",
+      "status": "UNKNOWN"
+    },
+    "unavailability_stage": "same_elf_observation",
+    "unavailability_detail": "owned host has opaque completion effects",
+    "selection_sha256": "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+    "observation_seconds": 3.6,
+    "observation_need_s": 233
+  },
+  "decision": "Preserve incumbent. Functional/applied but performance unrankable. No matched baseline request: no candidate speedup evidence, and baseline cannot repair opaque-completion observation. No source/CPU authority expanded.",
+  "library_identities": {
+    "unchanged_candidate_sources": {
+      "variants/connected_host_route/compiler_library/merlin/llvmlower/late_quant_rne.py": "6726697ae185415c0006ac1dcf04853363fcbe87a5187b3aa322ed9e87a9aab9",
+      "variants/connected_host_route/compiler_library/merlin/compile/owned_host_model.py": "de5db6e62ef78e6468d229fc15a05df92ad8d5bc4ce8363a296416c7fa5ce876"
+    },
+    "selected_public_manifest_sha256": "b8851bd5e11207bf3cc70f7909d9ec2ddb28a1ffb520b358b7cdbb813847393f",
+    "source_composition_sha256": "a36eb7a9ebead7a6262942cd4d1b6fdc86de659f28ff212f82d485a8bc090d7a"
+  },
+  "applied_chain_count": 1,
+  "separate_prior_roundeven_comparison": {
+    "option": "host_roundeven=true, host_bounded_rne=false; existing fusiontrue both",
+    "numerics": "L0/L1/L2 pass",
+    "candidate": {
+      "estimated_whole_soc_cycles": 97649530,
+      "complete_event_accounting": true,
+      "model_sha256": "132c41bd1da3636fa298becd0c4387f711b35c9e314ae2dbf7d1125fec971044",
+      "scope_sha256": "796b4225a8b8da2c751dd7a7f904e096f08f2b7291a1d543bed2778ea7932241",
+      "comparison_domain_sha256": "ae496e2de2bfd2a9a4b8df7843443864fae46888d83be7fa1f16e40be4e00b8c",
+      "elf_sha256": "b94093911dcf5dbbb544de2a976908a23485a65d7c9c818cd06b843c46eab1be",
+      "fast_estimate": {
+        "cycles": null,
+        "evidence_kind": "fast_estimate",
+        "reason": "no decoded instruction stream with accelerator commands for this case",
+        "schema": "merlin.phase1.fast_estimate.v1",
+        "status": "UNKNOWN"
+      }
+    },
+    "baseline": {
+      "elf_sha256": "6d82c798926820056aa99dfa127a26d59e1788188d76afe89d73903f2f3736d9",
+      "estimated_whole_soc_cycles": 97627861,
+      "complete_event_accounting": true
+    },
+    "relative_percent": 0.022195508308842093,
+    "interpretation": "Complete same-scope/model provisional modeled comparison; +0.0222% regression, not physical timing. Separate compiler snapshot, not a matched baseline for new bounded-RNE candidate."
+  },
+  "promotion": "Not supported: bounded-RNE applied and numeric pass; owner refuses same-ELF timing because opaque completion effects. Preserve incumbent. No new baseline request."
+}

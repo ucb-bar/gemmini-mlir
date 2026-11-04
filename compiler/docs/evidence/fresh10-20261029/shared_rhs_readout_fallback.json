@@ -1,0 +1,3024 @@
+[
+  {
+    "setting": "off",
+    "llvm_sha256": "ea9108a2725d89ff346c5c51e1ecb70301bbd072ff21792047ee160d20fb451e",
+    "receipt": {
+      "mechanism": "shared_rhs_gathered_rows",
+      "applied": true,
+      "rhs": "w",
+      "products": 2,
+      "source_shape": [
+        1,
+        3,
+        2
+      ],
+      "source_shapes": [
+        [
+          1,
+          3,
+          2
+        ],
+        [
+          1,
+          3,
+          2
+        ]
+      ],
+      "joined_shape": [
+        2,
+        3,
+        2
+      ],
+      "selection": "on",
+      "workspace_bytes": 22,
+      "workspace_limit_bytes": null,
+      "row_partitions": [
+        {
+          "lhs": "a",
+          "dst": "x",
+          "joined_rows": [
+            0,
+            1
+          ],
+          "lhs_element_interval": [
+            0,
+            3
+          ],
+          "result_element_interval": [
+            0,
+            2
+          ]
+        },
+        {
+          "lhs": "b",
+          "dst": "y",
+          "joined_rows": [
+            1,
+            2
+          ],
+          "lhs_element_interval": [
+            3,
+            6
+          ],
+          "result_element_interval": [
+            2,
+            4
+          ]
+        }
+      ],
+      "source_members": [
+        {
+          "command_index": null,
+          "lhs": "a",
+          "rhs": "w",
+          "dst": "x"
+        },
+        {
+          "command_index": null,
+          "lhs": "b",
+          "rhs": "w",
+          "dst": "y"
+        }
+      ],
+      "source_op_indices": [
+        null,
+        null
+      ],
+      "dense_leaf_schedule": {
+        "schema": "merlin.compact_dense_realization.v1",
+        "completion_mode": "serial",
+        "kernel_sha256": "2ca711892329e4aef27aabee465e1724f14e3e23068876b5132400de268c1c4b",
+        "certificate": "all counted commands; exact source row maps and optional bias, ordered K prefixes, complete unique output cover and original completion/ownership laws",
+        "executed_instruction_calls": 5,
+        "static_instruction_calls": 5,
+        "epochs": [],
+        "counts": {
+          "lhs_loads": 1,
+          "rhs_loads": 1,
+          "compute_pairs": 1,
+          "stores": 1,
+          "initializations": 0
+        },
+        "padded_high_water_bytes": {
+          "lhs": 32,
+          "rhs": 48,
+          "acc": 128
+        },
+        "lhs_loads": 1,
+        "rhs_loads": 1,
+        "bias_initializations": 0,
+        "output_tiles": 1,
+        "bias_source": null,
+        "requested_lhs_bytes": 6,
+        "requested_rhs_bytes": 6,
+        "requested_bias_load_bytes": 0,
+        "requested_load_bytes": 12,
+        "requested_store_bytes": 16,
+        "solver_queries": 0,
+        "enumeration_bound": 2000000,
+        "output_row_span_bound": 100000,
+        "checking_seconds": 0.0001592210028320551,
+        "configuration_identity": "gemmini-fire-aligned-dim16-ws",
+        "numerical_policy_identity": "i8-i8-i32-modular",
+        "c_index_bits": 64,
+        "machine_emission": "not_established",
+        "timing": "UNKNOWN",
+        "source_certificate": "merlin.dense_finite_source_epochs.v1",
+        "completion": "declared synchronous",
+        "repairs": [],
+        "pipeline": {
+          "schema": "merlin.compact_dense_pipeline.v1",
+          "context": {
+            "hardware": "gemmini-fire-aligned-dim16-ws",
+            "numerical_policy": "i8-i8-i32-modular",
+            "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+            "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+            "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+          },
+          "kernel_sha256": "2ca711892329e4aef27aabee465e1724f14e3e23068876b5132400de268c1c4b",
+          "library_sources_sha256": {
+            "merlin": "469a9d94cb84365f192f23c63a47e695ba8758a7f3005451f33a66152f143086",
+            "merlin.common": "5158ded00a221c254ffb32e1c4e3960bcea0a6542909d6331005d2a5f3783f3e",
+            "merlin.common.dense_float_ir": "7ac691a75dd946bff139f68f2943ab31da48480b63d3547dbadb10c638d4e575",
+            "merlin.compile": "92721d5b005b1f6bdb33fb81918f2b1001c9368056bca02172b507fe69eeccce",
+            "merlin.compile.scheduling": "0811ba56924f50f4ef550de4dce72c481bccd30a932f0963e82a1151b8783669",
+            "merlin.compile.scheduling.block_schedule": "fd4997d265ec4d61c28e8b3bf2c06ad2985a1d83cd205072ac748ac777e8526c",
+            "merlin.compile.scheduling.compact_dense": "e3f1fe75d7cab4b18009940d0f89065a05fcdcde943b55595526c39b5e907f97",
+            "merlin.compile.scheduling.compact_verification": "73f151ee8887a6e7d6d13c3622ddb20e401d30b55087970954c069e34a231a8a",
+            "merlin.compile.scheduling.configuration": "3dd17bdbc6a08de8ccf2913e4687ca352d5a118017e41dd9e1b1a9edeb8527b8",
+            "merlin.compile.scheduling.configuration_ir": "64eca6d38dd7c557c7a340f8faa77790fe692b6bdc3db895d756ff4b9cb3782d",
+            "merlin.compile.scheduling.copy_elimination": "31d66c0ec4872cc06561fada87f0bcc210babb4629eabd9235d968bff3c48566",
+            "merlin.compile.scheduling.dense_contracts": "d30a68ebe3b927b480c9dea3eaf667353979f295ef607be288064bca7b0d717a",
+            "merlin.compile.scheduling.dense_source": "e2bbbc74ccbd014efb1b7e512940efba42c9f5d1f25d328debbd55c7b77c45b5",
+            "merlin.compile.scheduling.device_spills": "668bdc114224b68db6e26128238501954d37bda756d9806cb9d819a063a5103d",
+            "merlin.compile.scheduling.fusion": "144298845e4fff2134dc3506466c210fb60ed8aba03208e73a49f53392b3e9e3",
+            "merlin.compile.scheduling.fusion_contracts": "0a54500cd8e92df596e0732ba9ab2b21e2277fbddbc710a141cc71bff6478d3b",
+            "merlin.compile.scheduling.fusion_semantics": "d857358fc81e9f04636ce83242278844f2cd56d7d1c4a0f094ec24e5801a9757",
+            "merlin.compile.scheduling.library_sources": "556908f90820927033bf49ad92f11810ec1e6e90b3777d7f0ba9ba60c3af1a25",
+            "merlin.compile.scheduling.pointwise_source": "b5078dbd3519a5b54147fa11325d819fdda4badd78c4ee8e7d5b59d31605698d",
+            "merlin.compile.scheduling.program_contracts": "1b386d67b46b2211b44171620227ee9f2360ddc52f9b3c177a2483f28b2108c0",
+            "merlin.compile.scheduling.program_limits": "0eaa03348cf16bebcef2ec5dd2658059dbc4a0399f789af741b615f57d0f16e0",
+            "merlin.compile.scheduling.row_contracts": "fdac6f442489cfa1a7577279716124230ec99b742154d2335bf8c38f865b87be",
+            "merlin.compile.scheduling.row_softmax": "57d53dbad821ed37c0000f585043dcf1310b91bb6153f46f8fc5c5155f347bf9",
+            "merlin.compile.scheduling.row_softmax_verification": "c520304653a3b788b32b59707f978620428eef519e5af8d8141f03c8ad4731ce",
+            "merlin.compile.scheduling.schedule_pipeline": "3bbb7a5be0ef5e5485e298ea8f3e75ae3897923f9fd16e6f33b82642937126a5",
+            "merlin.compile.scheduling.selected_contracts": "463bd1db9c33bbbff0139819b426ec6f68aaf60b335246fc9bad0dd2d624003d",
+            "merlin.compile.scheduling.spill_conformance": "62c4d210966f7846b047ec4ec3338f84d0285e1cf148676779e73db0b0425f5b",
+            "merlin.compile.scheduling.spill_contracts": "7aeff5b6e27de83a15a4f40fde0246d2b027a9fac9202ba9430ab192d5d96b84",
+            "merlin.compile.scheduling.storage_contracts": "9d3f5a0df073a0a2325fa392da6d28fa3bc3cb5ae00290c4b8d99dac46962814",
+            "merlin.compile.scheduling.temporary_storage": "6041a26d852d8468192648355b05f508ac0a7b5aea6ead36401d8e72f9ba628c",
+            "merlin.llvmlower": "8a2a6206e74b555f98b42b04c78f8ad19b96807442e9a54e98a0baaf72bcbf6d",
+            "merlin.llvmlower.cpu_softmax": "3370f42d1f8563530af38ddb1ee91d6f44c197bae351d191e4959aa7b9ab7527",
+            "merlin.sched": "b84e4c42421f5277d338c12ae9726ba256befa5c1491d4928c2da994fc1ee7a0",
+            "merlin.sched.codegen": "24b29e7a2c3f276d67aebeef37cc482f1c621d09e7d421e9f2197a8b7469bd35",
+            "merlin.sched.ir": "7783c6bfc27bde3f32164ca70803d6d4d21dde9e812363da2c05693a46fedfd9",
+            "merlin.sched.ir.expr": "45e311e72c194a679349334e2baa16078c623a39b83ac50c3759116ad5225e76",
+            "merlin.sched.ir.integer_domain": "975f54c1607fe7db57425834bf71e2cd3b47cdac7956bbf9223f6c5c18dcbd65",
+            "merlin.sched.ir.kernel": "8603fb041e7033f5ca83798bdc49745bcae8eb03bc3be0f94fad8619c0448fe7",
+            "merlin.sched.ir.parse": "3b405cadcc670893fd76472de38812481061a49f02d06777e8a8ea42fd241af0",
+            "merlin.sched.isa": "b6cd8226548aaa1edfd17bc464b75578ebdbb55d4e12613ed661ecd897bb2310",
+            "merlin.sched.isa.types": "d36576f047352f0b1230e17e26fcc675f08feb4770ea509dbac919db709cb91b",
+            "merlin.semantic_compiler": "f2103ce7e4638a4f655c80f62c61acda55ef8135a293503d0e036bc53724d18b",
+            "merlin.semantic_compiler.allocate": "d680d5bcd3b8d63de40a5be7e0571ad9909e17b23fbb9bc5491ab093b5011673",
+            "merlin.semantic_compiler.allocation_types": "08ca15534bc4e1704613712270d356b40f86bd6e2155c3d3c781acdb37cc7c4a",
+            "merlin.semantic_compiler.egg_bridge": "4a017658944366a2b4a2f31e35095ecda126c5694798b80f8b67d8b20f362afc",
+            "merlin.semantic_compiler.extract": "315a4a545020fe910c151618f6826cc1c8ee628afc345ef5eaa29efe51b390cf",
+            "merlin.semantic_compiler.model": "5f784c7b26e458236004bd7e11e058dcf87dd7d5ab66afc969aa1bd4fda8f6b6",
+            "merlin.semantic_compiler.rules": "378c156c6c79a89254f67a62e7b1021ab5f78e99ffc213389d90da5cad91bfc5",
+            "merlin.targetgen": "7dae9fca1d8a5a860c76b424adfe208304bf12642774611599e78f7148210c70",
+            "merlin.targetgen.isa_dialect_gen": "a87f11dcbb7d6a4caf942514d6b677839149ebe56e0d9aae4bd45fe69de7c497",
+            "merlin.targetgen.isa_spec": "c7504461b20154ad2678d7a0b4e534c6705f76792ee4c49641b05b3ec2c4a5e2",
+            "merlin.transforms": "b13dba76f50bf5666daac971dcef7305172807f22ecc96046333efd219e77b39",
+            "merlin.transforms.certificates": "c2d9d3fd12c869863d60587ea98c73708217f03af9bfcea9b7ba6e94a1ddef9b",
+            "merlin.transforms.dense_ir": "87582d8d4eaeef6734c26e62349a4e25dc41e919bf24e6ebf807e8ddc24cea51",
+            "merlin.transforms.dense_planning": "6602f9ba078da2fe307aac490bb920e9544ec41244286ddbcc0b97b29b3db3ac",
+            "merlin.transforms.normalization": "2150598f0b0da52cf4cf7c3c8c2b54af22e7b7440af7600411fac87f0fc0df84",
+            "merlin.transforms.pipeline_state": "2430a63e7cbb9e27b5724fa713aa7b3465bb005baeac858a96b18138357c6652",
+            "merlin.transforms.pure_scalar": "bec764097889938b36a0138c56f52433549c4fd26c6f449142d4c8634243cd06",
+            "merlin.transforms.scalar_witness": "44e4d53e6f4c1017bd60b103ca72908ad090d48616a30088eb2b51171cdc3b31",
+            "merlin.transforms.unrolling": "04e286ddce1132f6609a30f3a7ff0764db53197a520078f0c952e6b4a8fc535f",
+            "merlin.verify": "efa25d1ea886cb3005f0239a7e8570c13724c9b1d852b31254058c2f0f5b1298",
+            "merlin.verify.epilogue_applicability": "98bdd5789a9ffef705a74ecf621be41fbc15f8e80a83a976c3261e5422e9e65f"
+          },
+          "selected_contracts": null,
+          "passes": [
+            {
+              "name": "admission",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "legality"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "blocking",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "choice"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "emission",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [
+                "choice",
+                "legality"
+              ],
+              "produced": [
+                "emitted"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "realization",
+              "before": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "realization"
+              ],
+              "repair_round": 0
+            }
+          ],
+          "repair_rounds": 0
+        },
+        "shape_policy": {
+          "schema": "merlin.compiler_pipeline_policy.v1",
+          "selected_variant": "retained",
+          "fallback_selected": true,
+          "decisions": [
+            {
+              "variant": "frontier_columns",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "numerator": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "denominator": {
+                        "operand": 0,
+                        "axis": 1
+                      }
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      3,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 2,
+                    "denominator": 3
+                  }
+                }
+              ]
+            },
+            {
+              "variant": "frontier_deep",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_deep_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                },
+                {
+                  "predicate": {
+                    "operand": 0,
+                    "axis": 0,
+                    "at_least": 2,
+                    "at_most": null,
+                    "multiple_of": 1
+                  },
+                  "match": true
+                }
+              ]
+            },
+            {
+              "variant": "frontier",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                }
+              ]
+            }
+          ],
+          "policy": {
+            "variants": [
+              {
+                "name": "frontier_columns",
+                "passes": [
+                  "dense_frontier_columns"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  {
+                    "feature": {
+                      "numerator": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "denominator": {
+                        "operand": 0,
+                        "axis": 1
+                      }
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      3,
+                      1
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "frontier_deep",
+                "passes": [
+                  "dense_frontier_deep"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_deep_placement",
+                    "at_least": 1
+                  },
+                  {
+                    "operand": 0,
+                    "axis": 0,
+                    "at_least": 2,
+                    "at_most": null,
+                    "multiple_of": 1
+                  }
+                ]
+              },
+              {
+                "name": "frontier",
+                "passes": [
+                  "dense_frontier"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  }
+                ]
+              },
+              {
+                "name": "retained",
+                "passes": [
+                  "dense_retained"
+                ],
+                "predicates": []
+              }
+            ],
+            "fallback": "retained"
+          },
+          "before": {
+            "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "registry": [
+            {
+              "name": "dense_retained",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier_columns",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier_deep",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            }
+          ],
+          "passes": [
+            {
+              "name": "dense_retained",
+              "before": {
+                "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+                  "execution": "selected-rtl-ordered-accumulator-commit",
+                  "library": "selected-dense-scheduling-library"
+                },
+                "ir_level": "gemmini_dense_capacity_source"
+              },
+              "after": {
+                "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+                  "execution": "selected-rtl-ordered-accumulator-commit",
+                  "library": "selected-dense-scheduling-library"
+                },
+                "ir_level": "gemmini_dense_capacity_source"
+              },
+              "invalidated": [],
+              "produced": [
+                "dense_checked_schedule"
+              ],
+              "repair_round": 0
+            }
+          ],
+          "output": "dense_checked_schedule",
+          "host_pass_profile": [
+            {
+              "name": "dense_retained",
+              "status": "completed",
+              "action_invoked": true,
+              "action_wall_ns": 135405076,
+              "framework_wall_ns": 38911,
+              "total_wall_ns": 135443987,
+              "scope": "host_pass_invocation"
+            }
+          ],
+          "facts": {
+            "shapes": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ]
+            ],
+            "element_types": [
+              "i8",
+              "i8"
+            ],
+            "layouts": [
+              "row-major",
+              "row-major"
+            ],
+            "operations": [
+              "dense"
+            ],
+            "numerical_semantics": null,
+            "capabilities": [],
+            "resources": [
+              [
+                "primitive_dim",
+                16
+              ],
+              [
+                "segmented_placement",
+                0
+              ],
+              [
+                "segmented_deep_placement",
+                0
+              ]
+            ],
+            "graph": []
+          },
+          "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+          "requested_mode": "frontier_class",
+          "actual_selected_schedule": "compact",
+          "configured_frontier_issue_order": "aspect",
+          "configured_frontier_panel": "order",
+          "assessment": {
+            "schema": "merlin.shape_schedule_policy.v1",
+            "classes": [
+              {
+                "shape_class": "short_rows_long_reduction_wide_output",
+                "incumbent": "retained",
+                "selected": "retained",
+                "status": "incumbent_retained",
+                "design": {
+                  "schema": "merlin.pass_exploration.validation_partition.v1",
+                  "training": [
+                    {
+                      "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          1,
+                          2048
+                        ],
+                        [
+                          2048,
+                          32000
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          5632
+                        ],
+                        [
+                          5632,
+                          2048
+                        ]
+                      ]
+                    }
+                  ],
+                  "held_out": [
+                    {
+                      "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          1,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2032
+                        ],
+                        [
+                          2032,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2064
+                        ],
+                        [
+                          2064,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2032
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2064
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          17,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          15,
+                          2033
+                        ],
+                        [
+                          2033,
+                          2033
+                        ]
+                      ]
+                    }
+                  ],
+                  "withheld_families": [],
+                  "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+                },
+                "alternatives": [
+                  {
+                    "alternative": "frontier",
+                    "supported": false,
+                    "matched_cycle_ratios": [],
+                    "training_geometric_mean_ratio": null,
+                    "reasons": [],
+                    "missing_geometries": [
+                      "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                    ],
+                    "missing_boundaries": [
+                      [
+                        0,
+                        "upper",
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        "lower",
+                        128,
+                        127
+                      ],
+                      [
+                        2,
+                        "lower",
+                        128,
+                        127
+                      ]
+                    ],
+                    "mixed_performance_domains": false
+                  },
+                  {
+                    "alternative": "retained",
+                    "supported": false,
+                    "matched_cycle_ratios": [],
+                    "training_geometric_mean_ratio": null,
+                    "reasons": [],
+                    "missing_geometries": [
+                      "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                    ],
+                    "missing_boundaries": [
+                      [
+                        0,
+                        "upper",
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        "lower",
+                        128,
+                        127
+                      ],
+                      [
+                        2,
+                        "lower",
+                        128,
+                        127
+                      ]
+                    ],
+                    "mixed_performance_domains": false
+                  }
+                ]
+              }
+            ],
+            "exact_source_winners": [],
+            "max_regression_ratio": 1.0,
+            "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+            "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+            "decision_metric": "complete_same_roi_cycles",
+            "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+            "legality": "original variant predicates and current-IR registered pass checks remain required",
+            "qualification": "provisional empirical panel support, not universal or physical qualification"
+          },
+          "evidence": "explicit class experiment",
+          "automatic_promotion": false
+        },
+        "store_epochs": {
+          "selection": "on",
+          "applied": false,
+          "refusal": "no multi-store ACC region"
+        },
+        "panel_epochs": {
+          "selection": "on",
+          "applied": false,
+          "refusal": "requires an independently checked uniform disjoint-ACC store epoch"
+        },
+        "requested_pipeline": "frontier_class",
+        "selected_pipeline": "compact",
+        "pipeline_refusal": "single primitive product has no retained operand reuse or reduction overlap"
+      },
+      "baseline_m_tiles": 2,
+      "joined_m_tiles": 1,
+      "preparation_bytes": 6,
+      "scatter_bytes": 16,
+      "rhs_replication_bytes": 0,
+      "row_mapping": "joined_row = sum(previous member row counts) + original_row; RHS source identity unchanged",
+      "coverage": "all original source LHS and result intervals partition joined storage exactly once",
+      "numeric": "exact signed-i8 LHS copy; unchanged dense contraction/readout; identity i8 or raw i32 result copy",
+      "completion": "full accelerator completion after movement tiles and dense result before buffer reuse"
+    },
+    "bind_checks": [],
+    "actual_packets": [
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472773,
+        16
+      ],
+      [
+        0,
+        2,
+        4575657221408423952
+      ],
+      [
+        2,
+        268435456,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        4294967296,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472773,
+        16
+      ],
+      [
+        0,
+        2,
+        4575657221408423952
+      ],
+      [
+        2,
+        536870912,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        4294967299,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221408489476,
+        281474976710656
+      ],
+      [
+        0,
+        4575657221409472769,
+        3
+      ],
+      [
+        0,
+        4575657221409472777,
+        2
+      ],
+      [
+        2,
+        4294967296,
+        562962838323200
+      ],
+      [
+        1,
+        805306368,
+        844433520074752
+      ],
+      [
+        6,
+        844433520074752,
+        562960690839552
+      ],
+      [
+        4,
+        562962838323200,
+        844437815033855
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        2,
+        4575657221408423944
+      ],
+      [
+        3,
+        4563402752,
+        562961227710464
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472769,
+        64
+      ],
+      [
+        0,
+        2,
+        4575657221408424000
+      ],
+      [
+        2,
+        4563402752,
+        281485714128896
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        1073741824,
+        281486250999808
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472769,
+        64
+      ],
+      [
+        0,
+        2,
+        4575657221408424000
+      ],
+      [
+        2,
+        4563402760,
+        281485714128896
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        1342177280,
+        281486250999808
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ]
+    ]
+  },
+  {
+    "setting": "forced_refusal",
+    "llvm_sha256": "ea9108a2725d89ff346c5c51e1ecb70301bbd072ff21792047ee160d20fb451e",
+    "receipt": {
+      "mechanism": "shared_rhs_gathered_rows",
+      "applied": true,
+      "rhs": "w",
+      "products": 2,
+      "source_shape": [
+        1,
+        3,
+        2
+      ],
+      "source_shapes": [
+        [
+          1,
+          3,
+          2
+        ],
+        [
+          1,
+          3,
+          2
+        ]
+      ],
+      "joined_shape": [
+        2,
+        3,
+        2
+      ],
+      "selection": "on",
+      "workspace_bytes": 22,
+      "workspace_limit_bytes": null,
+      "row_partitions": [
+        {
+          "lhs": "a",
+          "dst": "x",
+          "joined_rows": [
+            0,
+            1
+          ],
+          "lhs_element_interval": [
+            0,
+            3
+          ],
+          "result_element_interval": [
+            0,
+            2
+          ]
+        },
+        {
+          "lhs": "b",
+          "dst": "y",
+          "joined_rows": [
+            1,
+            2
+          ],
+          "lhs_element_interval": [
+            3,
+            6
+          ],
+          "result_element_interval": [
+            2,
+            4
+          ]
+        }
+      ],
+      "source_members": [
+        {
+          "command_index": null,
+          "lhs": "a",
+          "rhs": "w",
+          "dst": "x"
+        },
+        {
+          "command_index": null,
+          "lhs": "b",
+          "rhs": "w",
+          "dst": "y"
+        }
+      ],
+      "source_op_indices": [
+        null,
+        null
+      ],
+      "dense_leaf_schedule": {
+        "schema": "merlin.compact_dense_realization.v1",
+        "completion_mode": "serial",
+        "kernel_sha256": "2ca711892329e4aef27aabee465e1724f14e3e23068876b5132400de268c1c4b",
+        "certificate": "all counted commands; exact source row maps and optional bias, ordered K prefixes, complete unique output cover and original completion/ownership laws",
+        "executed_instruction_calls": 5,
+        "static_instruction_calls": 5,
+        "epochs": [],
+        "counts": {
+          "lhs_loads": 1,
+          "rhs_loads": 1,
+          "compute_pairs": 1,
+          "stores": 1,
+          "initializations": 0
+        },
+        "padded_high_water_bytes": {
+          "lhs": 32,
+          "rhs": 48,
+          "acc": 128
+        },
+        "lhs_loads": 1,
+        "rhs_loads": 1,
+        "bias_initializations": 0,
+        "output_tiles": 1,
+        "bias_source": null,
+        "requested_lhs_bytes": 6,
+        "requested_rhs_bytes": 6,
+        "requested_bias_load_bytes": 0,
+        "requested_load_bytes": 12,
+        "requested_store_bytes": 16,
+        "solver_queries": 0,
+        "enumeration_bound": 2000000,
+        "output_row_span_bound": 100000,
+        "checking_seconds": 0.0001592210028320551,
+        "configuration_identity": "gemmini-fire-aligned-dim16-ws",
+        "numerical_policy_identity": "i8-i8-i32-modular",
+        "c_index_bits": 64,
+        "machine_emission": "not_established",
+        "timing": "UNKNOWN",
+        "source_certificate": "merlin.dense_finite_source_epochs.v1",
+        "completion": "declared synchronous",
+        "repairs": [],
+        "pipeline": {
+          "schema": "merlin.compact_dense_pipeline.v1",
+          "context": {
+            "hardware": "gemmini-fire-aligned-dim16-ws",
+            "numerical_policy": "i8-i8-i32-modular",
+            "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+            "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+            "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+          },
+          "kernel_sha256": "2ca711892329e4aef27aabee465e1724f14e3e23068876b5132400de268c1c4b",
+          "library_sources_sha256": {
+            "merlin": "469a9d94cb84365f192f23c63a47e695ba8758a7f3005451f33a66152f143086",
+            "merlin.common": "5158ded00a221c254ffb32e1c4e3960bcea0a6542909d6331005d2a5f3783f3e",
+            "merlin.common.dense_float_ir": "7ac691a75dd946bff139f68f2943ab31da48480b63d3547dbadb10c638d4e575",
+            "merlin.compile": "92721d5b005b1f6bdb33fb81918f2b1001c9368056bca02172b507fe69eeccce",
+            "merlin.compile.scheduling": "0811ba56924f50f4ef550de4dce72c481bccd30a932f0963e82a1151b8783669",
+            "merlin.compile.scheduling.block_schedule": "fd4997d265ec4d61c28e8b3bf2c06ad2985a1d83cd205072ac748ac777e8526c",
+            "merlin.compile.scheduling.compact_dense": "e3f1fe75d7cab4b18009940d0f89065a05fcdcde943b55595526c39b5e907f97",
+            "merlin.compile.scheduling.compact_verification": "73f151ee8887a6e7d6d13c3622ddb20e401d30b55087970954c069e34a231a8a",
+            "merlin.compile.scheduling.configuration": "3dd17bdbc6a08de8ccf2913e4687ca352d5a118017e41dd9e1b1a9edeb8527b8",
+            "merlin.compile.scheduling.configuration_ir": "64eca6d38dd7c557c7a340f8faa77790fe692b6bdc3db895d756ff4b9cb3782d",
+            "merlin.compile.scheduling.copy_elimination": "31d66c0ec4872cc06561fada87f0bcc210babb4629eabd9235d968bff3c48566",
+            "merlin.compile.scheduling.dense_contracts": "d30a68ebe3b927b480c9dea3eaf667353979f295ef607be288064bca7b0d717a",
+            "merlin.compile.scheduling.dense_source": "e2bbbc74ccbd014efb1b7e512940efba42c9f5d1f25d328debbd55c7b77c45b5",
+            "merlin.compile.scheduling.device_spills": "668bdc114224b68db6e26128238501954d37bda756d9806cb9d819a063a5103d",
+            "merlin.compile.scheduling.fusion": "144298845e4fff2134dc3506466c210fb60ed8aba03208e73a49f53392b3e9e3",
+            "merlin.compile.scheduling.fusion_contracts": "0a54500cd8e92df596e0732ba9ab2b21e2277fbddbc710a141cc71bff6478d3b",
+            "merlin.compile.scheduling.fusion_semantics": "d857358fc81e9f04636ce83242278844f2cd56d7d1c4a0f094ec24e5801a9757",
+            "merlin.compile.scheduling.library_sources": "556908f90820927033bf49ad92f11810ec1e6e90b3777d7f0ba9ba60c3af1a25",
+            "merlin.compile.scheduling.pointwise_source": "b5078dbd3519a5b54147fa11325d819fdda4badd78c4ee8e7d5b59d31605698d",
+            "merlin.compile.scheduling.program_contracts": "1b386d67b46b2211b44171620227ee9f2360ddc52f9b3c177a2483f28b2108c0",
+            "merlin.compile.scheduling.program_limits": "0eaa03348cf16bebcef2ec5dd2658059dbc4a0399f789af741b615f57d0f16e0",
+            "merlin.compile.scheduling.row_contracts": "fdac6f442489cfa1a7577279716124230ec99b742154d2335bf8c38f865b87be",
+            "merlin.compile.scheduling.row_softmax": "57d53dbad821ed37c0000f585043dcf1310b91bb6153f46f8fc5c5155f347bf9",
+            "merlin.compile.scheduling.row_softmax_verification": "c520304653a3b788b32b59707f978620428eef519e5af8d8141f03c8ad4731ce",
+            "merlin.compile.scheduling.schedule_pipeline": "3bbb7a5be0ef5e5485e298ea8f3e75ae3897923f9fd16e6f33b82642937126a5",
+            "merlin.compile.scheduling.selected_contracts": "463bd1db9c33bbbff0139819b426ec6f68aaf60b335246fc9bad0dd2d624003d",
+            "merlin.compile.scheduling.spill_conformance": "62c4d210966f7846b047ec4ec3338f84d0285e1cf148676779e73db0b0425f5b",
+            "merlin.compile.scheduling.spill_contracts": "7aeff5b6e27de83a15a4f40fde0246d2b027a9fac9202ba9430ab192d5d96b84",
+            "merlin.compile.scheduling.storage_contracts": "9d3f5a0df073a0a2325fa392da6d28fa3bc3cb5ae00290c4b8d99dac46962814",
+            "merlin.compile.scheduling.temporary_storage": "6041a26d852d8468192648355b05f508ac0a7b5aea6ead36401d8e72f9ba628c",
+            "merlin.llvmlower": "8a2a6206e74b555f98b42b04c78f8ad19b96807442e9a54e98a0baaf72bcbf6d",
+            "merlin.llvmlower.cpu_softmax": "3370f42d1f8563530af38ddb1ee91d6f44c197bae351d191e4959aa7b9ab7527",
+            "merlin.sched": "b84e4c42421f5277d338c12ae9726ba256befa5c1491d4928c2da994fc1ee7a0",
+            "merlin.sched.codegen": "24b29e7a2c3f276d67aebeef37cc482f1c621d09e7d421e9f2197a8b7469bd35",
+            "merlin.sched.ir": "7783c6bfc27bde3f32164ca70803d6d4d21dde9e812363da2c05693a46fedfd9",
+            "merlin.sched.ir.expr": "45e311e72c194a679349334e2baa16078c623a39b83ac50c3759116ad5225e76",
+            "merlin.sched.ir.integer_domain": "975f54c1607fe7db57425834bf71e2cd3b47cdac7956bbf9223f6c5c18dcbd65",
+            "merlin.sched.ir.kernel": "8603fb041e7033f5ca83798bdc49745bcae8eb03bc3be0f94fad8619c0448fe7",
+            "merlin.sched.ir.parse": "3b405cadcc670893fd76472de38812481061a49f02d06777e8a8ea42fd241af0",
+            "merlin.sched.isa": "b6cd8226548aaa1edfd17bc464b75578ebdbb55d4e12613ed661ecd897bb2310",
+            "merlin.sched.isa.types": "d36576f047352f0b1230e17e26fcc675f08feb4770ea509dbac919db709cb91b",
+            "merlin.semantic_compiler": "f2103ce7e4638a4f655c80f62c61acda55ef8135a293503d0e036bc53724d18b",
+            "merlin.semantic_compiler.allocate": "d680d5bcd3b8d63de40a5be7e0571ad9909e17b23fbb9bc5491ab093b5011673",
+            "merlin.semantic_compiler.allocation_types": "08ca15534bc4e1704613712270d356b40f86bd6e2155c3d3c781acdb37cc7c4a",
+            "merlin.semantic_compiler.egg_bridge": "4a017658944366a2b4a2f31e35095ecda126c5694798b80f8b67d8b20f362afc",
+            "merlin.semantic_compiler.extract": "315a4a545020fe910c151618f6826cc1c8ee628afc345ef5eaa29efe51b390cf",
+            "merlin.semantic_compiler.model": "5f784c7b26e458236004bd7e11e058dcf87dd7d5ab66afc969aa1bd4fda8f6b6",
+            "merlin.semantic_compiler.rules": "378c156c6c79a89254f67a62e7b1021ab5f78e99ffc213389d90da5cad91bfc5",
+            "merlin.targetgen": "7dae9fca1d8a5a860c76b424adfe208304bf12642774611599e78f7148210c70",
+            "merlin.targetgen.isa_dialect_gen": "a87f11dcbb7d6a4caf942514d6b677839149ebe56e0d9aae4bd45fe69de7c497",
+            "merlin.targetgen.isa_spec": "c7504461b20154ad2678d7a0b4e534c6705f76792ee4c49641b05b3ec2c4a5e2",
+            "merlin.transforms": "b13dba76f50bf5666daac971dcef7305172807f22ecc96046333efd219e77b39",
+            "merlin.transforms.certificates": "c2d9d3fd12c869863d60587ea98c73708217f03af9bfcea9b7ba6e94a1ddef9b",
+            "merlin.transforms.dense_ir": "87582d8d4eaeef6734c26e62349a4e25dc41e919bf24e6ebf807e8ddc24cea51",
+            "merlin.transforms.dense_planning": "6602f9ba078da2fe307aac490bb920e9544ec41244286ddbcc0b97b29b3db3ac",
+            "merlin.transforms.normalization": "2150598f0b0da52cf4cf7c3c8c2b54af22e7b7440af7600411fac87f0fc0df84",
+            "merlin.transforms.pipeline_state": "2430a63e7cbb9e27b5724fa713aa7b3465bb005baeac858a96b18138357c6652",
+            "merlin.transforms.pure_scalar": "bec764097889938b36a0138c56f52433549c4fd26c6f449142d4c8634243cd06",
+            "merlin.transforms.scalar_witness": "44e4d53e6f4c1017bd60b103ca72908ad090d48616a30088eb2b51171cdc3b31",
+            "merlin.transforms.unrolling": "04e286ddce1132f6609a30f3a7ff0764db53197a520078f0c952e6b4a8fc535f",
+            "merlin.verify": "efa25d1ea886cb3005f0239a7e8570c13724c9b1d852b31254058c2f0f5b1298",
+            "merlin.verify.epilogue_applicability": "98bdd5789a9ffef705a74ecf621be41fbc15f8e80a83a976c3261e5422e9e65f"
+          },
+          "selected_contracts": null,
+          "passes": [
+            {
+              "name": "admission",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "legality"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "blocking",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "choice"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "emission",
+              "before": {
+                "source_sha256": "eef11d4aa662a6f5fc530b447d092be1fc790eae808d9344443d815f73914c77",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [
+                "choice",
+                "legality"
+              ],
+              "produced": [
+                "emitted"
+              ],
+              "repair_round": 0
+            },
+            {
+              "name": "realization",
+              "before": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "after": {
+                "source_sha256": "8e8556472c28e1ad0f8aac4fb83807cb1ed328395d647ba53590e0112edfd186",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "3335d1d978e96f30f9a97975497684c6fa40f4b8ef5e8354cb4bfb709f27ff23",
+                  "execution": "dense.execution.v3:4d88449ccef9a14c74cf1431a10c83397a6f330bbd378d706dc4919c761d51bf:selection=unselected:index_bits=64",
+                  "library": "2636d06bd78861f24dd01b713bd8254891f0fcf0820eaa096c77fb9c04fa3c55"
+                },
+                "ir_level": "compact_dense"
+              },
+              "invalidated": [],
+              "produced": [
+                "realization"
+              ],
+              "repair_round": 0
+            }
+          ],
+          "repair_rounds": 0
+        },
+        "shape_policy": {
+          "schema": "merlin.compiler_pipeline_policy.v1",
+          "selected_variant": "retained",
+          "fallback_selected": true,
+          "decisions": [
+            {
+              "variant": "frontier_columns",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "numerator": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "denominator": {
+                        "operand": 0,
+                        "axis": 1
+                      }
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      3,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 2,
+                    "denominator": 3
+                  }
+                }
+              ]
+            },
+            {
+              "variant": "frontier_deep",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_deep_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                },
+                {
+                  "predicate": {
+                    "operand": 0,
+                    "axis": 0,
+                    "at_least": 2,
+                    "at_most": null,
+                    "multiple_of": 1
+                  },
+                  "match": true
+                }
+              ]
+            },
+            {
+              "variant": "frontier",
+              "status": "unsupported",
+              "predicates": [
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  "match": true,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  "match": false,
+                  "feature_value": {
+                    "numerator": 1,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "predicate": {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  "match": false
+                }
+              ]
+            }
+          ],
+          "policy": {
+            "variants": [
+              {
+                "name": "frontier_columns",
+                "passes": [
+                  "dense_frontier_columns"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  },
+                  {
+                    "feature": {
+                      "numerator": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "denominator": {
+                        "operand": 0,
+                        "axis": 1
+                      }
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      3,
+                      1
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "frontier_deep",
+                "passes": [
+                  "dense_frontier_deep"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_deep_placement",
+                    "at_least": 1
+                  },
+                  {
+                    "operand": 0,
+                    "axis": 0,
+                    "at_least": 2,
+                    "at_most": null,
+                    "multiple_of": 1
+                  }
+                ]
+              },
+              {
+                "name": "frontier",
+                "passes": [
+                  "dense_frontier"
+                ],
+                "predicates": [
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 0
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      0,
+                      1
+                    ],
+                    "at_most": [
+                      1,
+                      1
+                    ]
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 0,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "feature": {
+                      "dimension": {
+                        "operand": 1,
+                        "axis": 1
+                      },
+                      "tile": {
+                        "resource": "primitive_dim"
+                      },
+                      "kind": "count"
+                    },
+                    "at_least": [
+                      128,
+                      1
+                    ],
+                    "at_most": null
+                  },
+                  {
+                    "resource": "segmented_placement",
+                    "at_least": 1
+                  }
+                ]
+              },
+              {
+                "name": "retained",
+                "passes": [
+                  "dense_retained"
+                ],
+                "predicates": []
+              }
+            ],
+            "fallback": "retained"
+          },
+          "before": {
+            "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "after": {
+            "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+            "context": {
+              "hardware": "gemmini-fire-aligned-dim16-ws",
+              "numerical_policy": "i8-i8-i32-modular",
+              "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+              "execution": "selected-rtl-ordered-accumulator-commit",
+              "library": "selected-dense-scheduling-library"
+            },
+            "ir_level": "gemmini_dense_capacity_source"
+          },
+          "registry": [
+            {
+              "name": "dense_retained",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier_columns",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            },
+            {
+              "name": "dense_frontier_deep",
+              "stage": 0,
+              "requires": [],
+              "produces": [
+                "dense_checked_schedule"
+              ],
+              "invalidates": [],
+              "mutates_ir": false,
+              "ir_level": "gemmini_dense_capacity_source",
+              "input_ir_kind": "gemmini_dense_capacity_source",
+              "current_ir_kind_after_pass": "gemmini_dense_capacity_source",
+              "output_analyses": [
+                "dense_checked_schedule"
+              ]
+            }
+          ],
+          "passes": [
+            {
+              "name": "dense_retained",
+              "before": {
+                "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+                  "execution": "selected-rtl-ordered-accumulator-commit",
+                  "library": "selected-dense-scheduling-library"
+                },
+                "ir_level": "gemmini_dense_capacity_source"
+              },
+              "after": {
+                "source_sha256": "054e61ea912d47834e6b3421a6babe3b4ef1d6907ec94b8cb7a58d6046bbc990",
+                "context": {
+                  "hardware": "gemmini-fire-aligned-dim16-ws",
+                  "numerical_policy": "i8-i8-i32-modular",
+                  "resources": "9ca12f76acdbf840808c0a42668766fc65cfc800859757199ff6e3daf0413a0b",
+                  "execution": "selected-rtl-ordered-accumulator-commit",
+                  "library": "selected-dense-scheduling-library"
+                },
+                "ir_level": "gemmini_dense_capacity_source"
+              },
+              "invalidated": [],
+              "produced": [
+                "dense_checked_schedule"
+              ],
+              "repair_round": 0
+            }
+          ],
+          "output": "dense_checked_schedule",
+          "host_pass_profile": [
+            {
+              "name": "dense_retained",
+              "status": "completed",
+              "action_invoked": true,
+              "action_wall_ns": 1190,
+              "framework_wall_ns": 24070,
+              "total_wall_ns": 25260,
+              "scope": "host_pass_invocation"
+            }
+          ],
+          "facts": {
+            "shapes": [
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ]
+            ],
+            "element_types": [
+              "i8",
+              "i8"
+            ],
+            "layouts": [
+              "row-major",
+              "row-major"
+            ],
+            "operations": [
+              "dense"
+            ],
+            "numerical_semantics": null,
+            "capabilities": [],
+            "resources": [
+              [
+                "primitive_dim",
+                16
+              ],
+              [
+                "segmented_placement",
+                0
+              ],
+              [
+                "segmented_deep_placement",
+                0
+              ]
+            ],
+            "graph": []
+          },
+          "qualification": "pass execution and current-IR custody only; no semantic or hardware proof",
+          "requested_mode": "frontier_class",
+          "actual_selected_schedule": "compact",
+          "configured_frontier_issue_order": "aspect",
+          "configured_frontier_panel": "order",
+          "assessment": {
+            "schema": "merlin.shape_schedule_policy.v1",
+            "classes": [
+              {
+                "shape_class": "short_rows_long_reduction_wide_output",
+                "incumbent": "retained",
+                "selected": "retained",
+                "status": "incumbent_retained",
+                "design": {
+                  "schema": "merlin.pass_exploration.validation_partition.v1",
+                  "training": [
+                    {
+                      "geometry_sha256": "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          1,
+                          2048
+                        ],
+                        [
+                          2048,
+                          32000
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          5632
+                        ],
+                        [
+                          5632,
+                          2048
+                        ]
+                      ]
+                    }
+                  ],
+                  "held_out": [
+                    {
+                      "geometry_sha256": "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          1,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2032
+                        ],
+                        [
+                          2032,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2064
+                        ],
+                        [
+                          2064,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2032
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          16,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2064
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          17,
+                          2048
+                        ],
+                        [
+                          2048,
+                          2048
+                        ]
+                      ]
+                    },
+                    {
+                      "geometry_sha256": "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "family": "dense",
+                      "operand_shapes": [
+                        [
+                          15,
+                          2033
+                        ],
+                        [
+                          2033,
+                          2033
+                        ]
+                      ]
+                    }
+                  ],
+                  "withheld_families": [],
+                  "sha256": "407fa87f817bb948b33bd40145dfac76a97bafd63b9de2db0f17b5bd4def8c11"
+                },
+                "alternatives": [
+                  {
+                    "alternative": "frontier",
+                    "supported": false,
+                    "matched_cycle_ratios": [],
+                    "training_geometric_mean_ratio": null,
+                    "reasons": [],
+                    "missing_geometries": [
+                      "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                    ],
+                    "missing_boundaries": [
+                      [
+                        0,
+                        "upper",
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        "lower",
+                        128,
+                        127
+                      ],
+                      [
+                        2,
+                        "lower",
+                        128,
+                        127
+                      ]
+                    ],
+                    "mixed_performance_domains": false
+                  },
+                  {
+                    "alternative": "retained",
+                    "supported": false,
+                    "matched_cycle_ratios": [],
+                    "training_geometric_mean_ratio": null,
+                    "reasons": [],
+                    "missing_geometries": [
+                      "36ed2cd19ff243d042a7f10544761eada03a8012821f0b6c98bc172da7890249",
+                      "386fa1bc83f66d4af7b8bbcad89090364fa39f7801fedb0c243fe14ae9678d59",
+                      "4c8f95dc76eeeedb999b49728939f4325aa087c38e31aab3db41646f0ba5be2a",
+                      "7243674b5b400e7530b2962ec12858f3bf94d60cf56b9005a8dac00057f9a9c7",
+                      "a8d84938eb951aefaa9177f50400665a4b5ddebc397dbc590acef1ef133d4129",
+                      "ae0b9341d7af47c4fee1283f92cd0c83406aa9b215dca6360550b84ccca5f40b",
+                      "b7579afdb8b5f4512599be81cef9b809057cc8dc6510673447d01672aa0243a2",
+                      "c45ce0a89c98abc6c99c1b6b609daf1772368529cadfd1e8cf91f09451b0991a",
+                      "c9753dcb99d3a7795d96ce7f8ee08da75c4f059ee700f129834d79a533a615ce",
+                      "e60afe7e6cf04b3adfde53edf262fd3071f2ad7e3955294e8c1ceb709841df7b"
+                    ],
+                    "missing_boundaries": [
+                      [
+                        0,
+                        "upper",
+                        1,
+                        2
+                      ],
+                      [
+                        1,
+                        "lower",
+                        128,
+                        127
+                      ],
+                      [
+                        2,
+                        "lower",
+                        128,
+                        127
+                      ]
+                    ],
+                    "mixed_performance_domains": false
+                  }
+                ]
+              }
+            ],
+            "exact_source_winners": [],
+            "max_regression_ratio": 1.0,
+            "policy_sha256": "56d2dad30db00281e54954487504d8603b2eaae5d179173d4513ac1e84329530",
+            "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+            "decision_metric": "complete_same_roi_cycles",
+            "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+            "legality": "original variant predicates and current-IR registered pass checks remain required",
+            "qualification": "provisional empirical panel support, not universal or physical qualification"
+          },
+          "evidence": "explicit class experiment",
+          "automatic_promotion": false
+        },
+        "store_epochs": {
+          "selection": "on",
+          "applied": false,
+          "refusal": "no multi-store ACC region"
+        },
+        "panel_epochs": {
+          "selection": "on",
+          "applied": false,
+          "refusal": "requires an independently checked uniform disjoint-ACC store epoch"
+        },
+        "requested_pipeline": "frontier_class",
+        "selected_pipeline": "compact",
+        "pipeline_refusal": "single primitive product has no retained operand reuse or reduction overlap"
+      },
+      "baseline_m_tiles": 2,
+      "joined_m_tiles": 1,
+      "preparation_bytes": 6,
+      "scatter_bytes": 16,
+      "rhs_replication_bytes": 0,
+      "row_mapping": "joined_row = sum(previous member row counts) + original_row; RHS source identity unchanged",
+      "coverage": "all original source LHS and result intervals partition joined storage exactly once",
+      "numeric": "exact signed-i8 LHS copy; unchanged dense contraction/readout; identity i8 or raw i32 result copy",
+      "completion": "full accelerator completion after movement tiles and dense result before buffer reuse"
+    },
+    "bind_checks": [
+      "refused exact actual schedule with budgets1/1, zero LLVM mutation inside bind"
+    ],
+    "actual_packets": [
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472773,
+        16
+      ],
+      [
+        0,
+        2,
+        4575657221408423952
+      ],
+      [
+        2,
+        268435456,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        4294967296,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472773,
+        16
+      ],
+      [
+        0,
+        2,
+        4575657221408423952
+      ],
+      [
+        2,
+        536870912,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        4294967299,
+        281490009096192
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221408489476,
+        281474976710656
+      ],
+      [
+        0,
+        4575657221409472769,
+        3
+      ],
+      [
+        0,
+        4575657221409472777,
+        2
+      ],
+      [
+        2,
+        4294967296,
+        562962838323200
+      ],
+      [
+        1,
+        805306368,
+        844433520074752
+      ],
+      [
+        6,
+        844433520074752,
+        562960690839552
+      ],
+      [
+        4,
+        562962838323200,
+        844437815033855
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        2,
+        4575657221408423944
+      ],
+      [
+        3,
+        4563402752,
+        562961227710464
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472769,
+        64
+      ],
+      [
+        0,
+        2,
+        4575657221408424000
+      ],
+      [
+        2,
+        4563402752,
+        281485714128896
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        1073741824,
+        281486250999808
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ],
+      [
+        0,
+        4575657221409472769,
+        64
+      ],
+      [
+        0,
+        2,
+        4575657221408424000
+      ],
+      [
+        2,
+        4563402760,
+        281485714128896
+      ],
+      [
+        "fence"
+      ],
+      [
+        3,
+        1342177280,
+        281486250999808
+      ],
+      [
+        "fence"
+      ],
+      [
+        "fence"
+      ]
+    ]
+  }
+]

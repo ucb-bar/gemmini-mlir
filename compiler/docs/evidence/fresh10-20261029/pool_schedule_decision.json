@@ -1,0 +1,52 @@
+{
+  "schema": "author.pool_schedule_screen.v1",
+  "training": "224x224 CI3 CO64 conv->112x112 i8->56x56 pool",
+  "held_out": [
+    "13x9 CI3 CO13",
+    "20x20 CI3 CO12",
+    "30x34 CI3 CO19"
+  ],
+  "options": {
+    "baseline": "incumbent DMA-call geometry and per-block configuration/drain",
+    "issue": "exact ISA-command geometry; hoist invariant ConfigST; prior store drain establishes next block ownership",
+    "traffic": "minimum exact staged i8 cells; same legal hoisted lifetime"
+  },
+  "rejected": {
+    "traffic": "19x12 replaces56x4, staged cells911232->861120 but commands4104->4744; worse emitted issue work"
+  },
+  "baseline_llvm_sha256": "8a4eac06635213fda6f1f8a07d5c743d5fd1665c1001baf214dad869b585b9f4",
+  "baseline_byte_identical_to": "variants/pool_blocks_final/backend/pool_blocks.py emitted on same input",
+  "performance_qualification": false,
+  "default": "baseline",
+  "result": "retain baseline; issue alternative is numerically correct but estimated gain is too small for promotion",
+  "timing": {
+    "evidence": "fast estimate only; complete modeled cycles UNKNOWN",
+    "common_coefficients": {
+      "command": 29.3441,
+      "fence": 22.6274
+    },
+    "large": {
+      "baseline_recomputed": 4655599,
+      "issue": 4654901,
+      "issue_band": [
+        2266937,
+        5911724
+      ],
+      "estimated_fractional_gain": 0.00014992700187451712
+    },
+    "edge": {
+      "baseline_recomputed": 114843,
+      "issue": 114821
+    },
+    "residual": {
+      "baseline_recomputed": 252817,
+      "issue": 252795
+    }
+  },
+  "requests": {
+    "issue_large": "2_1793255124839857321_dc90b8cbbc59735f25e7af8e4380f3b4",
+    "issue_core": "2_1793255134168648717_ce272bd89a7f1e84760a917373044df6"
+  },
+  "large_elf_sha256": "fa1a4e754af1cda27874070dc8c7e10cb4b6d3ed291acf8ed3429073f08614a8",
+  "numerics": "all3 L2 numerical PASS; no L3 certification"
+}

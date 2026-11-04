@@ -1,0 +1,188 @@
+{
+  "schema": "submission.remaining_unary_quantizer_census.v1",
+  "result": "No remaining actual public quantizer has the requested single-i8-input constant-only affine f32 source domain.",
+  "coverage": {
+    "public_sources": 9,
+    "remaining_quantizers": 50,
+    "unary_admissions": 0
+  },
+  "cnn": {
+    "runtime_f32_input": [
+      6
+    ],
+    "runtime_channel_epilogue": [
+      492,
+      617,
+      675,
+      766,
+      891,
+      949,
+      1095,
+      1213,
+      1276
+    ],
+    "runtime_channel_epilogue_then_float_padding_maxpool": [
+      422
+    ],
+    "dequantized_i8_ordered_spatial_mean": [
+      1318
+    ]
+  },
+  "disposition": "No compiler code changed or opcode invented; original host seams and frozen phase3 candidate preserved.",
+  "precise_numeric_limits": [
+    "Runtime f32 inputs/channel parameters are unconstrained source arguments, not source-derived constants. Sampling or substituting values would not prove a 256-entry input domain.",
+    "Channel epilogues begin at an i32 contraction frontier. Any exact accelerator affine/readout composition must prove the full i32 domain or independently prove accumulator bounds from the source; a 256-entry i8 proof is insufficient.",
+    "The CNN final mean has nine independent signed-i8 source elements per output and ordered binary32 dequantization/addition/division. It requires a multivariate reduction proof, plus exact initializer/order/readout and live-output retention; treating its sum as one original i8 value is invalid.",
+    "The selected readout provides integer accumulation, one binary32 scale/round/clamp and optional activation. It does not provide the original runtime f32 bias stage, arbitrary floating reductions or nonlinear stages as standalone DMA arithmetic. This is a selected-path limitation, not a claim that every composite is mathematically impossible."
+  ],
+  "next_proof_mechanisms": [
+    "Source-bound full-i32 channel affine+bias proof with exact float stage order and runtime parameter domains; alternatively an explicitly admitted target floating epilogue stage.",
+    "Finite-state or symbolic proof of the actual nine-element dequantize/ordered-sum/divide/quantize reduction; then shared integer reduction schedule with complete source/address/effect proof.",
+    "For floating maxpool after runtime channel work, first prove the producer numeric stage, padding sentinel/NaN semantics and order-preserving max correspondence."
+  ],
+  "sources": [
+    {
+      "source": "model/SY_micro_model/capsule.interface.mlir",
+      "source_sha256": "160656af280e4b94fc4b9562e22c82c611b7703afb8dc49e7ceadb4df69d6dc8",
+      "remaining_quantizers": 2,
+      "source_indices": [
+        6,
+        115
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_micro_model.json"
+    },
+    {
+      "source": "model/SY_source_causal_decoder/capsule.interface.mlir",
+      "source_sha256": "f61c9da62ec2d82595bc8eba1895b74acae5f2d9d8f27aa672f22610b446fb58",
+      "remaining_quantizers": 6,
+      "source_indices": [
+        47,
+        237,
+        281,
+        326,
+        417,
+        457
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_source_causal_decoder.json"
+    },
+    {
+      "source": "model/SY_source_causal_decoder_decode_step/capsule.interface.mlir",
+      "source_sha256": "eb108c358e72144d752f0ec1dfa47b18b0f5f206408cd0f716ec78a31230cb17",
+      "remaining_quantizers": 6,
+      "source_indices": [
+        47,
+        235,
+        279,
+        324,
+        415,
+        455
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_source_causal_decoder_decode_step.json"
+    },
+    {
+      "source": "model/SY_source_coverage_mlp/capsule.interface.mlir",
+      "source_sha256": "0337cf8e1fe8e51a8b9a3bc19f639d96ff072346418c24bc4669ad3ec02b89a3",
+      "remaining_quantizers": 2,
+      "source_indices": [
+        6,
+        107
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_source_coverage_mlp.json"
+    },
+    {
+      "source": "model/SY_source_multimodal_policy/capsule.interface.mlir",
+      "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+      "remaining_quantizers": 8,
+      "source_indices": [
+        6,
+        11,
+        243,
+        308,
+        352,
+        424,
+        474,
+        655
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_source_multimodal_policy.json"
+    },
+    {
+      "source": "model/SY_source_residual_cnn/capsule.interface.mlir",
+      "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+      "remaining_quantizers": 12,
+      "source_indices": [
+        6,
+        422,
+        492,
+        617,
+        675,
+        766,
+        891,
+        949,
+        1095,
+        1213,
+        1276,
+        1318
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/SY_source_residual_cnn.json"
+    },
+    {
+      "source": "public_program_sources/PG_source_attention_cache_representative/capsule.interface.mlir",
+      "source_sha256": "17a5ee5867165f8effb06015895246dcc7a6d0f16d36df0bf3c07a63a9e09a1e",
+      "remaining_quantizers": 6,
+      "source_indices": [
+        41,
+        85,
+        1037,
+        1116,
+        1160,
+        1193
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/PG_source_attention_cache_representative.json"
+    },
+    {
+      "source": "public_program_sources/PG_source_repeated_inference_representative/capsule.interface.mlir",
+      "source_sha256": "487fd32a639254913755f01fe8ea7ca7ef0fe2506035c5606ea13af5656efcad",
+      "remaining_quantizers": 0,
+      "source_indices": [],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/PG_source_repeated_inference_representative.json"
+    },
+    {
+      "source": "public_program_sources/PG_source_residual_block_medium/capsule.interface.mlir",
+      "source_sha256": "b4de3c3663ec71654d404de022983caaf43f008b0d19f50a640b9abf09edcf86",
+      "remaining_quantizers": 8,
+      "source_indices": [
+        6,
+        69,
+        192,
+        250,
+        496,
+        564,
+        687,
+        745
+      ],
+      "unary256_candidates": 0,
+      "report": "artifacts/source_quantized_unary/PG_source_residual_block_medium.json"
+    }
+  ],
+  "compiler_files_sha256": {
+    "submission/backend/source_groups.py": "056fde0a043d1eb6862f0a3d7af7e11419b21021f3d12ed258d4aa4a806ce3cb",
+    "submission/backend/quantized_boundary.py": "bf96abd9fea061b6362ffe5ced964b5949416ef6f4999474585828be81fe9ae3"
+  },
+  "checks": "Successful census asserts every remaining boundary has runtime f32 ancestry, reduction, full-i32 frontier, nonlinear stages or multiple quantized frontiers; no public boundary is the requested single-i8 constant-only affine chain. No hidden expected values or source substitution used.",
+  "timings": "UNKNOWN; no queue checks submitted because no new compiler path was introduced",
+  "additional_source_gap": {
+    "source": "PG_source_attention_cache_representative",
+    "source_index": 1193,
+    "expression": "ordered dequantized(a) * sigmoid(dequantized(a)) * dequantized(b), then quantize",
+    "domain": "two independent signed-i8 inputs; nonlinear source stages; not a unary constant-only affine chain",
+    "remaining_proof": "full65536pair nonlinear source equivalence plus a target integer product/readout realization and intermediate observer preservation"
+  }
+}

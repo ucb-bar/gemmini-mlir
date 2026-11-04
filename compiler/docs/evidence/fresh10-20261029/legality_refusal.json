@@ -1,0 +1,442 @@
+{
+  "schema": "submission.weighted_wide_dma_legality.v1",
+  "decision": "REFUSED_SELECTED_HARDWARE_DOES_NOT_PROVE_FULL_WIDTH_LOAD_SCALING",
+  "compiler_changed": false,
+  "new_backend_module_created": false,
+  "requests_submitted": [],
+  "hypothesis": "Widen each original i8 operand by identity ACC load and full-width readout to private i32 buffers, then scaled full-width accumulating ACC MVINs compute x*lhs+y*rhs before exact existing readout.",
+  "authoritative_fact": {
+    "file": "target_contract.yaml",
+    "field": "output_epilogue.bias_preload",
+    "value": {
+      "bits": 32,
+      "dtype": "i32",
+      "evidence": [
+        {
+          "observed": "a load writes the accumulator when its accumulate bit is clear, and vsm_1 (VectorScalarMultiplier_1) copies 16 32-bit lanes of in.bits.in with no arithmetic: a full-width value is preloaded exactly",
+          "rung": "firrtl_structural"
+        }
+      ],
+      "lanes": {
+        "bits": 32,
+        "firrtl_line": 159007,
+        "lanes": 16,
+        "module": "VectorScalarMultiplier_1",
+        "store_writes": "pipelined_writes[1].bits.data",
+        "through": "vsm_1",
+        "vector": "in.bits.in"
+      },
+      "range": [
+        -2147483648,
+        2147483647
+      ],
+      "rounding": "none",
+      "status": "derived"
+    },
+    "file_sha256": "903d81f792da1701e60c09083a9ab89203017bd8327fb1741429439e8b5f4c34"
+  },
+  "selected_source_identity": {
+    "rtl_facts_file": "rtl_facts/facts.json",
+    "rtl_facts_file_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+    "facts_source_consistency": {
+      "status": "verified",
+      "basis": "recorded FIRRTL-to-HW execution; exact HW closure and FIRRTL/hierarchy structural correspondence",
+      "config": "FireSimGemminiRocketConfig",
+      "sources": [
+        {
+          "role": "core_hw",
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/core.hw.mlir",
+          "sha256": "042bdccfd29e8cafd43fe1d4fa76dc6a9013ed0865cb2eb48d4b1c0f512c6e8d"
+        },
+        {
+          "role": "firrtl",
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+          "sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0"
+        },
+        {
+          "role": "hierarchy",
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/hierarchy.json",
+          "sha256": "96b149f7e60bf9f6171eddfbafa58d59dc7302560c77ae044e9084f250d572cb"
+        },
+        {
+          "role": "soc_hw",
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/soc.hw.mlir",
+          "sha256": "0a616adc136b724393abb1ab69c198e436952dac278b22200667ffe42166b812"
+        },
+        {
+          "role": "core_hw_generic",
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/input/core.hw.firesim-v6.generic.mlir",
+          "sha256": "4fdde3d0b8dd5791552439ccd538af013e0d26945c77c05f9132245114fe6e5b"
+        }
+      ],
+      "production": {
+        "command": [
+          "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/.conda-env/riscv-tools/bin/firtool",
+          "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/firtool-input.fir",
+          "--ir-hw",
+          "--disable-annotation-unknown",
+          "-o",
+          "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/soc.hw.mlir"
+        ],
+        "core_hw_sha256": "042bdccfd29e8cafd43fe1d4fa76dc6a9013ed0865cb2eb48d4b1c0f512c6e8d",
+        "core_root": "Gemmini",
+        "extractor_sha256": "5d2068c4f37546bffd7ab2eeb2abb30ba4f2f2c921be5fdcff6eea7adc75f7ca",
+        "firrtl_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0",
+        "generator_scope": {
+          "basis": "core root FIRRTL module locator; the scoped census unit must be the core root",
+          "core_root": "Gemmini",
+          "core_root_locator": "@[generators/gemmini/src/main/scala/gemmini/Controller.scala 96:7]",
+          "generator": "gemmini",
+          "scoped_modules": 1105,
+          "status": "verified",
+          "unit_instances": 1,
+          "unit_roots": [
+            "Gemmini"
+          ]
+        },
+        "hierarchy_derivation": "selected_circuit_root",
+        "hierarchy_root": "FireSim",
+        "included_modules": [
+          "Gemmini",
+          "StoreController",
+          "Queue2_GemminiCmd",
+          "DMACommandTracker_1",
+          "Scratchpad",
+          "ZeroWriter",
+          "VectorScalarMultiplier_1",
+          "Pipeline",
+          "VectorScalarMultiplier",
+          "ScalePipe",
+          "RecFNToIN_e8_s24_i8",
+          "MulAddRecFN_e8_s24",
+          "RoundRawFNToRecFN_e8_s24",
+          "RoundAnyRawFNToRecFN_ie8_is26_oe8_os24",
+          "MulAddRecFNToRaw_preMul_e8_s24",
+          "MulAddRecFNToRaw_postMul_e8_s24",
+          "INToRecFN_i8_e8_s24",
+          "RoundAnyRawFNToRecFN_ie4_is8_oe8_os24",
+          "RRArbiter",
+          "TLXbar_i2_o1_a35d128s5k4z4u",
+          "TLBuffer_a35d128s5k4z4u",
+          "Queue2_TLBundleD_a35d128s5k4z4u",
+          "Queue2_TLBundleA_a35d128s5k4z4u",
+          "TLBuffer_a35d128s4k4z4u",
+          "Queue2_TLBundleD_a35d128s4k4z4u",
+          "Queue2_TLBundleA_a35d128s4k4z4u",
+          "StreamWriter",
+          "Queue1_TLBundleAWithInfo_3",
+          "Queue1_TLBundleAWithInfo_2",
+          "Arbiter3_TLBundleAWithInfo",
+          "StreamReader",
+          "XactTracker",
+          "StreamReaderCore",
+          "Queue1_TLBundleAWithInfo",
+          "Arbiter2_TLBundleAWithInfo",
+          "BeatMerger",
+          "ScratchpadBank",
+          "Queue1_ScratchpadReadResp",
+          "Queue6_ScratchpadMemWriteRequest",
+          "Queue5_ScratchpadMemWriteRequest",
+          "Queue5_ScratchpadMemReadRequest",
+          "Queue4_ScratchpadReadResp",
+          "Queue2_VectorScalarMultiplierReq_1",
+          "Queue2_VectorScalarMultiplierReq",
+          "Queue2_ScratchpadMemWriteRequest",
+          "Queue2_NormalizedInput",
+          "PixelRepeater_1",
+          "PixelRepeater",
+          "AccumulatorScale",
+          "RecFNToIN_e8_s24_i32",
+          "Pipeline_1",
+          "INToRecFN_i32_e8_s24",
+          "RoundAnyRawFNToRecFN_ie6_is32_oe8_os24",
+          "AccumulatorMem",
+          "TwoPortSyncMem",
+          "Queue1_AccumulatorReadResp",
+          "AccPipeShared",
+          "AccPipe",
+          "ReservationStation",
+          "plusarg_reader",
+          "LoopMatmul",
+          "WeightedArbiter",
+          "LoopMatmulStCSpad",
+          "LoopMatmulStC",
+          "LoopMatmulLdD",
+          "LoopMatmulLdB",
+          "LoopMatmulLdA",
+          "LoopMatmulExecute",
+          "Arbiter5_RoCCCommand",
+          "LoopConv",
+          "LoopConvSt",
+          "Pipeline_6",
+          "LoopConvLdWeight",
+          "Pipeline_4",
+          "LoopConvLdInput",
+          "Pipeline_3",
+          "LoopConvLdBias",
+          "Pipeline_2",
+          "LoopConvExecute",
+          "Pipeline_5",
+          "LoadController",
+          "Queue8_GemminiCmd",
+          "DMACommandTracker",
+          "Im2Col",
+          "Queue5_im2colRowSignals",
+          "FrontendTLB",
+          "RRArbiter_4",
+          "DecoupledTLB",
+          "DTLB_2",
+          "PMPChecker_s6",
+          "PMAChecker",
+          "OptimizationBarrier_TLBEntryData",
+          "ExecuteController",
+          "TransposePreloadUnroller",
+          "MultiHeadedQueue",
+          "Queue5_ComputeCntlSignals",
+          "MultiHeadedQueue_1",
+          "MeshWithDelays",
+          "TagQueue",
+          "Queue6_TagWithIdAndTotalRows",
+          "Mesh",
+          "Tile",
+          "PE_256",
+          "MacUnit",
+          "AlwaysOutTransposer",
+          "PE",
+          "CounterController",
+          "CounterFile",
+          "Arbiter3_UInt6",
+          "Arbiter2_ScratchpadReadReq"
+        ],
+        "input_preparation": {
+          "drop_annotation_classes": [],
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/firtool-input.fir",
+          "removed_annotations": 0,
+          "sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0"
+        },
+        "kind": "firrtl_to_hw_then_exact_module_closure",
+        "producer_source": {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/source_selection.py",
+          "sha256": "57f8aabe9c7944b135cb6cb8992385dbc03554a8d7a972d01d87a68a0569073f"
+        },
+        "returncode": 0,
+        "soc_hw_sha256": "0a616adc136b724393abb1ab69c198e436952dac278b22200667ffe42166b812",
+        "tool": {
+          "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/.conda-env/riscv-tools/bin/firtool",
+          "sha256": "cd4a5be2461207f2d1261f8cfba7ddb8c74648ddc3f2bf64a4a1a23abe11726a"
+        }
+      },
+      "hierarchy_correspondence": {
+        "status": "verified",
+        "basis": "exact FIRRTL declaration/instance names compared to every hierarchy node",
+        "firrtl_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0",
+        "hierarchy_sha256": "96b149f7e60bf9f6171eddfbafa58d59dc7302560c77ae044e9084f250d572cb",
+        "compared_instances": 2700,
+        "declared_modules": 2700,
+        "errors": [],
+        "qualification": "structural correspondence; not a claim of common historical generation"
+      },
+      "generator_scope": {
+        "status": "verified",
+        "generator": "gemmini",
+        "basis": "core root FIRRTL module locator; the scoped census unit must be the core root",
+        "core_root": "Gemmini",
+        "core_root_locator": "@[generators/gemmini/src/main/scala/gemmini/Controller.scala 96:7]",
+        "scoped_modules": 1105,
+        "unit_roots": [
+          "Gemmini"
+        ],
+        "unit_instances": 1,
+        "declared_generator": "gemmini"
+      },
+      "errors": [],
+      "qualification": "source consistency only; numerics and compiler conformance require separate receipts",
+      "genericization": {
+        "kind": "circt_generic_serialization",
+        "command": [
+          "/work/merlin/hw/chipyard-1.14.0/.conda-env/riscv-tools/bin/circt-opt",
+          "--mlir-print-op-generic",
+          "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/core.hw.mlir",
+          "-o",
+          "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/input/core.hw.firesim-v6.generic.mlir"
+        ],
+        "returncode": 0,
+        "input": {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/core.hw.mlir",
+          "sha256": "042bdccfd29e8cafd43fe1d4fa76dc6a9013ed0865cb2eb48d4b1c0f512c6e8d"
+        },
+        "output": {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/input/core.hw.firesim-v6.generic.mlir",
+          "sha256": "4fdde3d0b8dd5791552439ccd538af013e0d26945c77c05f9132245114fe6e5b"
+        },
+        "tool": {
+          "path": "/work/merlin/hw/chipyard-1.14.0/.conda-env/riscv-tools/bin/circt-opt",
+          "sha256": "41512929e7c37de1c25190dbc0e3888b2f230cf6a9ee8eeaa6ca68c5258883b3"
+        }
+      }
+    },
+    "facts_inputs": {
+      "target": "gemmini",
+      "hw_mlir": "soc.hw.mlir",
+      "hw_sha": "0a616adc136b7243",
+      "hw_sha256": "0a616adc136b724393abb1ab69c198e436952dac278b22200667ffe42166b812",
+      "hw_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/soc.hw.mlir",
+      "core_hw_mlir": "core.hw.mlir",
+      "core_hw_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/core.hw.mlir",
+      "core_hw_sha": "042bdccfd29e8caf",
+      "core_hw_sha256": "042bdccfd29e8cafd43fe1d4fa76dc6a9013ed0865cb2eb48d4b1c0f512c6e8d",
+      "fir_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+      "hierarchy_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/hierarchy.json",
+      "hierarchy_sha256": "96b149f7e60bf9f6171eddfbafa58d59dc7302560c77ae044e9084f250d572cb",
+      "firrtl_inputs": [
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+          "sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0"
+        }
+      ],
+      "isa_path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/GemminiISA.scala",
+      "isa_sha256": "812cba090cf85b2b66f6e820dbce8e67454376832fdd459af63cc571e788297b",
+      "reader_sources": [
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/introspect.py",
+          "sha256": "3c8f1bbd117216e7355e405f35bb3d19dcbfafa917ef93081b5c1e39f13aae87"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/extraction_contract.py",
+          "sha256": "93fd1341b2f18a324ddfd5d1ea6286c05a165e7994651e6cff86bf13b3a94204"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/datapaths.py",
+          "sha256": "e59660e487b322df139cfc8ad27c56bd157127d4fe2166105b6f74748fece19b"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/feature_gates.py",
+          "sha256": "a5c7f174b63f6bdf83f18d18b2b667a73260236a172d1520abf6e8637909cedf"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/source_selection.py",
+          "sha256": "57f8aabe9c7944b135cb6cb8992385dbc03554a8d7a972d01d87a68a0569073f"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/hw_graph.py",
+          "sha256": "31b93c34dce72c5a85d028ac127ccb18147fd85bdff187d95a2638e7309dd6ef"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/mlc_bridge.py",
+          "sha256": "35be0010da14e9b708197edf42b06198c57f5dabc6c155b10c5833029c3b2a25"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/timing.py",
+          "sha256": "5f59e06a8712199e2074a99c0d81a5d72f4af11f0d27b55626e83e8b89ca119f"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/memory_roles.py",
+          "sha256": "62f1487c0c1a417ccc3a99461b2be118807478cbecd715c89a58ca44e5443bbe"
+        },
+        {
+          "path": "/work/merlin/tasks/phase1-harness-v2/merlin/src/merlin/targetgen/rtl/timing_structure.py",
+          "sha256": "a463826853fe2e0fd4dc0be78f03ed1395af8b38fcdedb6eecac244665c56690"
+        }
+      ],
+      "fir_sha": "b7d9826b1c9f16fd",
+      "fir_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0",
+      "isa_sha": "n/a",
+      "extractor_sha": "1d15e0688bafa637",
+      "extractor_sha256": "1d15e0688bafa6372600d6a5f545b3c8c901dbda9866768958e5f227409579b9",
+      "extraction_contract_sha256": "11e20c914fac80a500302027f747af321482c5e6b744cff6251c6f82542838f3",
+      "extraction_reader_sha256": "93fd1341b2f18a324ddfd5d1ea6286c05a165e7994651e6cff86bf13b3a94204",
+      "source_bundle_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/source-bundle/source-selection.json",
+      "source_bundle_sha256": "3ebe7fc9bf757a0a66f82e629a722099131431342b520b77537137df4d22ed2c",
+      "generic_hw_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/input/core.hw.firesim-v6.generic.mlir",
+      "generic_hw_sha256": "4fdde3d0b8dd5791552439ccd538af013e0d26945c77c05f9132245114fe6e5b"
+    },
+    "contract_firrtl": {
+      "fir_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+      "fir_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0"
+    }
+  },
+  "corroborating_semantics": {
+    "field": "output_epilogue.accumulate",
+    "value": {
+      "evidence": [
+        {
+          "observed": "accumulate_on_load is derived: a load adds into the accumulator, selected per command",
+          "rung": "firrtl_structural"
+        }
+      ],
+      "fact": "accumulate_on_load",
+      "status": "derived",
+      "value": {
+        "accumulates_on_load": true,
+        "instructions": {
+          "operand_load": [
+            "LOAD2_CMD",
+            "LOAD3_CMD",
+            "LOAD_CMD"
+          ]
+        },
+        "load_path": {
+          "between": "the request field enters the load path and the path's output drives the bank; the queues in between are crossed by their declared field names, not traced per submodule",
+          "carried_by": [
+            "mvin_scale_pixel_repeater.io.resp.bits.tag.accumulate",
+            "vsm_1.io.resp.bits.tag.accumulate"
+          ],
+          "cite": {
+            "firrtl_line": 188800,
+            "module": "Scratchpad",
+            "scala_file": "generators/gemmini/src/main/scala/gemmini/Scratchpad.scala",
+            "scala_line": 828
+          },
+          "reading": "the bank's accumulate bit is the load's address-metadata accumulate field",
+          "request": "io.dma.read.req.bits.laddr.accumulate",
+          "request_cite": {
+            "firrtl_line": 186138,
+            "module": "Scratchpad",
+            "scala_file": "generators/gemmini/src/main/scala/gemmini/Scratchpad.scala",
+            "scala_line": 368
+          },
+          "write_select": "bank_ios_1[*].write.bits.acc"
+        },
+        "roles": [
+          "operand_load"
+        ],
+        "selected_per_command": true,
+        "store": {
+          "cite": {
+            "firrtl_line": 184725,
+            "module": "AccumulatorMem",
+            "scala_file": "generators/gemmini/src/main/scala/gemmini/AccumulatorMem.scala",
+            "scala_line": 183
+          },
+          "reading": "the store writes the adder's sum when the write's accumulate bit is set",
+          "select": "pipelined_writes[*].bits.acc",
+          "sum": "io.adder.sum",
+          "write_data": "mem.io.wdata"
+        },
+        "summary": "a load (operand_load) can add into the accumulator: the store writes the adder's sum when the write's accumulate bit is set, and that bit is the load address's own accumulate field"
+      }
+    },
+    "full_width_readout": {
+      "copied_into": "in.bits.full_data",
+      "dtype": "i32",
+      "evidence": [
+        {
+          "observed": "io.in.bits.acc_read_resp.data is copied unmodified into in.bits.full_data and io.out.bits.full_data leaves the readout with no arithmetic in its fan-in",
+          "rung": "firrtl_structural"
+        }
+      ],
+      "lanes": 16,
+      "leaves_as": "io.out.bits.full_data",
+      "status": "derived"
+    }
+  },
+  "why_model_review_does_not_admit": "V90 model_review says full-i32 accumulating ACC MVIN through selected separate scaler; provider timing language is not an arithmetic hardware fact and cannot override the selected exact i32 preload fact.",
+  "conditional_integer_argument": {
+    "assumptions": "Positive integer x,y exactly representable as f32;128*(x+y)<2^24;original all65536 signed-i8 pair proof remains unchanged.",
+    "result": "Each signed-i8 value and coefficient product is an integer of magnitude<2^24, exactly representable in f32; correctly rounded multiplication therefore yields the exact integer, int32 conversion is exact, and i32 sum stays bounded. This only proves arithmetic if the hardware applies the scale, which is not admitted.",
+    "not_sampling": true
+  },
+  "concrete_failure": "For a nonunit coefficient x and original lhs=1,rhs=0, identity full-width loads yield raw1 instead of rawx. The final all-pair-proven readout contract cannot replace the missing weighted sum.",
+  "completion_and_typed_effects": "Not realized: no emitted adapter or private allocation is safe until the required arithmetic is supported. Existing i8-pack plus exact dense route retained.",
+  "future_separate_hypothesis": "Coefficient construction by repeated exact accumulating i32 loads/doubling would need a new bounded schedule and complete-call cost study; not implemented in this task."
+}

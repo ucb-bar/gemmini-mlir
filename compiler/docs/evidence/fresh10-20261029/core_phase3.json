@@ -1,0 +1,3804 @@
+{
+  "all_pass": false,
+  "barrier_tier": "L2",
+  "certified_complete": false,
+  "n_capsules": 109,
+  "n_certified": 1,
+  "n_declined": 1,
+  "n_gated": 0,
+  "n_passed": 109,
+  "n_result_rows": 109,
+  "n_screened_only": 108,
+  "n_structural_unqualified": 3,
+  "n_unchecked": 0,
+  "n_unknown": 0,
+  "next_steps": {
+    "advisory_only": true,
+    "lines": [
+      "next steps (advisory; one choice per case or bundle by value, large and connected headroom first; a passing case's performance step never waits for other cases; detail: optimization_next):",
+      "1. dense: 48/65 correct (17 passed on an older version) -> finish correctness: CH_residual_conv_resnet50_model_m196k256n1024, CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048, PD_resnet50_model_m49k512n2048_raw (+14) (no result yet); build on dense_epoch_recipe.py (Fact-backed epochs: one drain per output block instead of one per K step; each dropped drain mapped to an R...), then dense_readout_recipe.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_residual_conv_resnet50_model_m196k256n1024,CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048,PD_resnet50_model_m49k512n2048_raw",
+      "2. connected_chain: 12/26 correct (11 passed on an older version) -> finish correctness: CH_kv_heads_decoder_scale_model_q16kv4s96l96d52, CH_siblings_decoder_step_scale_model_m1k896n896n448n448, JC_resnet50_prepared_connected (+11) (no result yet); build on spatial_chain_recipe.py (A connected window chain found through the composition catalog.), then composition_routes.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_kv_heads_decoder_scale_model_q16kv4s96l96d52,CH_siblings_decoder_step_scale_model_m1k896n896n448n448,JC_resnet50_prepared_connected",
+      "3. conv: 27/34 correct (7 passed on an older version) -> finish correctness: CH_conv_pool_resnet50_model_c3h224w224k7s2n64_p3s2, RN_conv1x1_s2_c256to512_h56_i8_percol, RN_conv3x3_s1p1_c512_h7_i8 (+4) (no result yet); build on conv_window_recipe.py (Window row runs with retained input and resident weights; hazard check on rows written twice.), then conv_epoch_recipe.py | apply: python agent_selfcheck.py --suite scalability --capsules CH_conv_pool_resnet50_model_c3h224w224k7s2n64_p3s2,RN_conv1x1_s2_c256to512_h56_i8_percol,RN_conv3x3_s1p1_c512_h7_i8",
+      "4. gemv: 13/17 correct (4 passed on an older version) -> finish correctness: CH_residual_linear_tiny_llama_decode_m1k5728n2048, JM_tiny_llama_decode_m1k2048n2048_raw, JT_tiny_decode_m1k2048n32000_raw (+1) (no result yet); build on dense_epoch_recipe.py (Decode projections: one drain per output block instead of one per K step, each dropped drain backed by an o...) | apply: python agent_selfcheck.py --suite scalability --capsules CH_residual_linear_tiny_llama_decode_m1k5728n2048,JM_tiny_llama_decode_m1k2048n2048_raw,JT_tiny_decode_m1k2048n32000_raw",
+      "5. elementwise_map: 6/7 correct (1 passed on an older version) -> finish correctness: PF02_bias_add_m16k16n16 (no result yet); build on composition_routes.py (Readout, pool and residual-add routes for an epilogue chain, with the symbol to start from.) | apply: python agent_selfcheck.py --suite scalability --capsules PF02_bias_add_m16k16n16",
+      "families (correct/total; informational, no family waits for another): dense 48/65 (47 timed) [0 failed, 17 unchecked] (17 passed on an older version), connected_chain 12/26 (6 timed) [0 failed, 14 unchecked] (11 passed on an older version), conv 27/34 (27 timed) [0 failed, 7 unchecked] (7 passed on an older version), gemv 13/17 (13 timed) [0 failed, 4 unchecked] (4 passed on an older version), elementwise_map 6/7 (6 timed) [0 failed, 1 unchecked] (1 passed on an older version), movement 3/3 (3 timed)"
+    ],
+    "schema": "merlin.selfcheck_next_steps.v1"
+  },
+  "note": "Self-check on spike (L2). Candidate whole-program rows show only submitted-artifact numeric status, required-tier status and closed verification codes; the separate runner-owned graph's trace, console, timing and failure are withheld. An incomplete candidate is not a passed screen. Other rows retain their ordinary diagnostic detail. 1 capsule(s) were DECLINED by your backend -- see 'declined' on those rows. A decline is a shape/op you never lowered, NOT wrong arithmetic.",
+  "offload_census": {
+    "all_accounted": false,
+    "execution": {
+      "emitted_artifacts": 0,
+      "mode": "same_grade_artifacts",
+      "model_capsules_separate_gate": [
+        "SY_micro_model",
+        "SY_source_causal_decoder",
+        "SY_source_causal_decoder_decode_step",
+        "SY_source_coverage_mlp",
+        "SY_source_multimodal_policy",
+        "SY_source_residual_cnn"
+      ],
+      "programs_observed": 1,
+      "programs_requested": 103
+    },
+    "host_compute": [],
+    "host_compute_vetoed": [],
+    "instruction_use": {
+      "declared_count": 26,
+      "licence": "an unused declared instruction is an OPPORTUNITY, not a defect -- the program may be correct without it. It says the compiler never reaches for a capability the hardware offers, which is where a structural lever hides.",
+      "schema": "isa_capability_utilization_v1",
+      "status": "measured",
+      "undeclared_emitted": [],
+      "unused": [
+        {
+          "funct": 0,
+          "name": "CONFIG_CMD"
+        },
+        {
+          "funct": 1,
+          "name": "LOAD2_CMD"
+        },
+        {
+          "funct": 2,
+          "name": "LOAD_CMD"
+        },
+        {
+          "funct": 3,
+          "name": "STORE_CMD"
+        },
+        {
+          "funct": 4,
+          "name": "COMPUTE_AND_FLIP_CMD"
+        },
+        {
+          "funct": 5,
+          "name": "COMPUTE_AND_STAY_CMD"
+        },
+        {
+          "funct": 6,
+          "name": "PRELOAD_CMD"
+        },
+        {
+          "funct": 7,
+          "name": "FLUSH_CMD"
+        },
+        {
+          "funct": 8,
+          "name": "LOOP_WS"
+        },
+        {
+          "funct": 9,
+          "name": "LOOP_WS_CONFIG_BOUNDS"
+        },
+        {
+          "funct": 10,
+          "name": "LOOP_WS_CONFIG_ADDRS_AB"
+        },
+        {
+          "funct": 11,
+          "name": "LOOP_WS_CONFIG_ADDRS_DC"
+        },
+        {
+          "funct": 12,
+          "name": "LOOP_WS_CONFIG_STRIDES_AB"
+        },
+        {
+          "funct": 13,
+          "name": "LOOP_WS_CONFIG_STRIDES_DC"
+        },
+        {
+          "funct": 14,
+          "name": "LOAD3_CMD"
+        },
+        {
+          "funct": 15,
+          "name": "LOOP_CONV_WS"
+        },
+        {
+          "funct": 16,
+          "name": "LOOP_CONV_WS_CONFIG_1"
+        },
+        {
+          "funct": 17,
+          "name": "LOOP_CONV_WS_CONFIG_2"
+        },
+        {
+          "funct": 18,
+          "name": "LOOP_CONV_WS_CONFIG_3"
+        },
+        {
+          "funct": 19,
+          "name": "LOOP_CONV_WS_CONFIG_4"
+        },
+        {
+          "funct": 20,
+          "name": "LOOP_CONV_WS_CONFIG_5"
+        },
+        {
+          "funct": 21,
+          "name": "LOOP_CONV_WS_CONFIG_6"
+        },
+        {
+          "funct": 22,
+          "name": "CLKGATE_EN"
+        },
+        {
+          "funct": 23,
+          "name": "STORE_SPAD_CMD"
+        },
+        {
+          "funct": 24,
+          "name": "LOOP_WS_CONFIG_SPAD_AB"
+        },
+        {
+          "funct": 126,
+          "name": "COUNTER_OP"
+        }
+      ],
+      "used": {},
+      "used_count": 0
+    },
+    "outcomes": {
+      "declined": 1,
+      "error": 102
+    },
+    "placement_undeclared": [],
+    "programs": [
+      {
+        "outcome": "error",
+        "program": "CH_conv_pool_edge_c3h13w9k7s2n13_p3s2",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_kv_heads_edge_q6kv2s13l13d9",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_residual_conv_edge_m17k17n17",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_residual_linear_edge_m17k17n17",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_sibling_feed_edge_m17k17h17n17",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "CH_siblings_edge_m17k17n17n17",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c12x5x5_k1x1s1_n3_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c12x5x5_k1x1s2_n24_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c12x5x5_k3x3s2_n24_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c24x3x3_k3x3s1_n24_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c3x20x20_k7x7s2_n12_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c3x5x5_k1x1s1_n12_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c3x5x5_k3x3s1_n3_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_conv2d_c3x8x8_k4x4s4_n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m12k48n48_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m12k48n64_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m12k48n80_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m12k80n48_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m17k16n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m17k16n32_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m17k32n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k16n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k24n4_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k48n48_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k48n64_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k48n80_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k4n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m1k80n48_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m24k9n1_acc_scale",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m2k8n4_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m2k8n8_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m32k32n32_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m3k16n16_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_matmul_m3k16n4_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m12n48_b1_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m17n16_b1_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m1n48_b1_raw",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m25n12_b1_relu",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m25n12_b1_relu_qed4a8588554b",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "G_residual_add_m9n24_b2_relu",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "MF_causal_decoder_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "MF_causal_decoder_matmul_activation_stationary_m1_raw_unscaled",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "MF_causal_decoder_matmul_raw_unscaled",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "MF_multimodal_policy_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "MF_residual_cnn_conv2d_k3x3s2p1_raw_unscaled",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PC01_k128",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PM00_m16n16",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PM10_m48n48",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PM15_m64n64",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PQ08_j8_k32",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PS00_shared_lhs_m16k32n16n24",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PS01_shared_lhs_tail_m17k33n15n19",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "PV03_c64",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_accumulator_output_boundary",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_act_act_i8_decode",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_act_act_i8_k_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_carried_relu_i8",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_column_readout_conv2d_int8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_column_readout_conv2d_int8_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_column_readout_matmul_int8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_column_readout_matmul_int8_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_contraction_i8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_contraction_i8_gemv_n_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_contraction_i8_k_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_contraction_i8_partial",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_contraction_i8_sub_tile",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k1x1_s1x1_d1x1_pad0x0",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k1x1_s2x2_d1x1_pad0x0",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k3x3_s1_ci64_co80_h8_int8",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k3x3_s1x1_d1x1_pad1x1",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k3x3_s2x2_d1x1_pad1x1",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k4x4_s4x4_d1x1_pad0x0",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_k7x7_s2x2_d1x1_pad3x3",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_conv_operand_capacity_boundary",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_epilogue_acc_scale",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_epilogue_bias_add",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_epilogue_relu",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_group_bias_add_acc_scale_relu_int8",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_group_bias_add_acc_scale_relu_maxpool_int8",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_independent_column_readout_conv2d_int8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_independent_column_readout_conv2d_int8_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_independent_column_readout_matmul_int8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_independent_column_readout_matmul_int8_distinct_scales_v2",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_independent_column_readout_matmul_int8_tail",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_int_mm_m100_k147_n12_acde4e305f",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_int_mm_m25_k12_n3_30f4ad2744",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_int_mm_m25_k27_n3_10e8258e2e",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_int_mm_m9_k216_n24_a50ef4a978",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_kdepth_fits_double",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_movement_i8_aligned",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_movement_i8_partial",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_movement_i8_sub_tile",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_multi_block_beyond",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_multi_block_within",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_rank_contraction_batched",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_reduction_i8_partial",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "commands": 0,
+        "contraction_offload_fraction": null,
+        "declined": true,
+        "host_regions": 0,
+        "outcome": "declined",
+        "placement_declared": false,
+        "program": "SY_refuse_requant",
+        "reason": "selected target has no exact integer-shift requant readout or contraction-scoped route",
+        "routed_is_lower_bound": false,
+        "routed_macs": 0,
+        "unit_regions": 0
+      },
+      {
+        "outcome": "error",
+        "program": "SY_residual_state_contraction_partial",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_residual_state_conv_k3x3_s1x1_d1x1_pad1x1",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_residual_state_conv_k3x3_s2x2_d1x1_pad1x1",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_residual_state_conv_k7x7_s2x2_d1x1_pad3x3",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      },
+      {
+        "outcome": "error",
+        "program": "SY_wide_move_tails_m17_k80_n144",
+        "reason": "graded emission unavailable: ValueError: graded capsule result does not prove a passing matching capsule"
+      }
+    ],
+    "routed_macs": 0,
+    "schema": "offload_census_v1",
+    "silent": [],
+    "target": "gemmini"
+  },
+  "oracle_tiers": [
+    "L2"
+  ],
+  "per_capsule": [
+    {
+      "capsule": "CH_conv_pool_edge_c3h13w9k7s2n13_p3s2",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 48261,
+      "numerical_execution_passed": true,
+      "execution_digest": "c22f4163d676d41ba1148b030df6b6f87f0385fb0cdccc12ddbffd14b9edccdc",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/CH_conv_pool_edge_c3h13w9k7s2n13_p3s2/7b52ab0c74ab50e9f8ce43810106ad1dd44f2508c30a00a0b83bcbb4b4d64248.json",
+        "sha256": "7b52ab0c74ab50e9f8ce43810106ad1dd44f2508c30a00a0b83bcbb4b4d64248"
+      }
+    },
+    {
+      "capsule": "CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 125686,
+      "numerical_execution_passed": true,
+      "execution_digest": "337be337cabaf272e3770e73be0c015c1d7330ea0ad4c17601ad9898d6e674ca",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2/b03a52628c7aece93c60521278cd8171aeda8b028b7ecf1f179e3a5c40eb36ac.json",
+        "sha256": "b03a52628c7aece93c60521278cd8171aeda8b028b7ecf1f179e3a5c40eb36ac"
+      }
+    },
+    {
+      "capsule": "CH_kv_heads_edge_q6kv2s13l13d9",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 339,
+      "numerical_execution_passed": true,
+      "execution_digest": "6e3351481db5c7296a37fea943ae07acda4a3bee2333ee515967eb55fc33e4af",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 4506,
+        "array_utilization_pct": 1.58,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_kv_heads_edge_q6kv2s13l13d9/6475d1dce5dba1d6ab2114cf197297c541a90f0611648923f165aaba9fd97406.json",
+        "sha256": "6475d1dce5dba1d6ab2114cf197297c541a90f0611648923f165aaba9fd97406"
+      }
+    },
+    {
+      "capsule": "CH_residual_conv_edge_m17k17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 385,
+      "numerical_execution_passed": true,
+      "execution_digest": "6653177742890dd5e91cf2addc1ac05706b8370c8541ce82283520e3aec8f467",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1237,
+        "array_utilization_pct": 1.55,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_residual_conv_edge_m17k17n17/27edfde19bf2d4b99be056d056b7145854cb71b4fc69e2102ff98b86fad96bc2.json",
+        "sha256": "27edfde19bf2d4b99be056d056b7145854cb71b4fc69e2102ff98b86fad96bc2"
+      }
+    },
+    {
+      "capsule": "CH_residual_linear_edge_m17k17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 385,
+      "numerical_execution_passed": true,
+      "execution_digest": "2c0003fadd4f89c5bfb594b941a5002574d08ecaebda29e7236a2020cf0addfa",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1237,
+        "array_utilization_pct": 1.55,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_residual_linear_edge_m17k17n17/95e919ded2ef3519db7d42afba347f1fec0af4cad1e1ab651c64e22a4e8e2310.json",
+        "sha256": "95e919ded2ef3519db7d42afba347f1fec0af4cad1e1ab651c64e22a4e8e2310"
+      }
+    },
+    {
+      "capsule": "CH_sibling_feed_edge_m17k17h17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 979,
+      "numerical_execution_passed": true,
+      "execution_digest": "f9aa41bbd98e6607b3860c2b560aaba134b4c38e5124552b0938c7c63f815b06",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3048,
+        "array_utilization_pct": 1.89,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_sibling_feed_edge_m17k17h17n17/3bacc6482e78a4f15a8cd6913268ce8712f9d0d7b8401dacfa424ab2dd41a58d.json",
+        "sha256": "3bacc6482e78a4f15a8cd6913268ce8712f9d0d7b8401dacfa424ab2dd41a58d"
+      }
+    },
+    {
+      "capsule": "CH_siblings_edge_m17k17n17n17",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 631,
+      "numerical_execution_passed": true,
+      "execution_digest": "cdd53ecf873b6f3c94420e81dd58bb5db297d637b1421b98c020f145d57dd195",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1961,
+        "array_utilization_pct": 1.96,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/CH_siblings_edge_m17k17n17n17/b2173f7bc6b0a32cf580cae103258f058f0336837c091d0bf8638a030767b4ac.json",
+        "sha256": "b2173f7bc6b0a32cf580cae103258f058f0336837c091d0bf8638a030767b4ac"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c12x5x5_k1x1s1_n3_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 154,
+      "numerical_execution_passed": true,
+      "execution_digest": "1185d90f29ce27f4e3350dd24efeef3b4ff07aec4fb445032f8fae35c5227f7e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 680,
+        "array_utilization_pct": 0.52,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c12x5x5_k1x1s1_n3_raw/a3a20f4aa752b4e492335a98d3110a971757509179709028bda6c3f983a4f27a.json",
+        "sha256": "a3a20f4aa752b4e492335a98d3110a971757509179709028bda6c3f983a4f27a"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c12x5x5_k1x1s2_n24_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 169,
+      "numerical_execution_passed": true,
+      "execution_digest": "fb73d8fe3bc022e0e20eb37a2d359ad3bf1d931b6c0e2884d867e4aa5929111a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1114,
+        "array_utilization_pct": 0.91,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c12x5x5_k1x1s2_n24_raw/416fbc3b276b13e7041d70a3db356a745b13f857ff24676186327fec38dde46f.json",
+        "sha256": "416fbc3b276b13e7041d70a3db356a745b13f857ff24676186327fec38dde46f"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c12x5x5_k3x3s2_n24_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2853,
+      "numerical_execution_passed": true,
+      "execution_digest": "c53d5f17e2be5461fb5869e0a1ec2321425713f518627931b81425a960816546",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 5578,
+        "array_utilization_pct": 1.63,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c12x5x5_k3x3s2_n24_raw/91d90bceba325b73d6b3f75d45c25a9e1d4eddc60f6b821a78a9d68185e772f9.json",
+        "sha256": "91d90bceba325b73d6b3f75d45c25a9e1d4eddc60f6b821a78a9d68185e772f9"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c24x3x3_k3x3s1_n24_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1607,
+      "numerical_execution_passed": true,
+      "execution_digest": "5d1effdce71778bf2d162fc3802f381b13c2089d6b21b0a7a07ff2d811fc6e13",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 6438,
+        "array_utilization_pct": 2.83,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c24x3x3_k3x3s1_n24_raw/42940fbee131918342ebdca0f6932f756e46932fd594cd2564a47e15239f7e76.json",
+        "sha256": "42940fbee131918342ebdca0f6932f756e46932fd594cd2564a47e15239f7e76"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c3x20x20_k7x7s2_n12_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 128021,
+      "numerical_execution_passed": true,
+      "execution_digest": "a3cd36933a42a66b179f2f70f941d976d5307cdb794f43c00c60d8cea4501662",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 200432,
+        "array_utilization_pct": 0.34,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c3x20x20_k7x7s2_n12_raw/b0135123899593672289390409eeeaa1d75eb422ef3b6629a3ba98e53a17b9a4.json",
+        "sha256": "b0135123899593672289390409eeeaa1d75eb422ef3b6629a3ba98e53a17b9a4"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c3x5x5_k1x1s1_n12_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 155,
+      "numerical_execution_passed": true,
+      "execution_digest": "212b6c32afa5fe870d8f148229d22030ff55aace38ba70f41e9c14bde2ba0e30",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 724,
+        "array_utilization_pct": 0.49,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c3x5x5_k1x1s1_n12_raw/a7b27452ec3e9e174633539197544cf1488a7ed842cf1c99bddc69a169a6948a.json",
+        "sha256": "a7b27452ec3e9e174633539197544cf1488a7ed842cf1c99bddc69a169a6948a"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c3x5x5_k3x3s1_n3_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 5456,
+      "numerical_execution_passed": true,
+      "execution_digest": "8cd4e962240a4f3a85ed32c4aea7719c8428572c98354927462cfdbe26ae628f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 9515,
+        "array_utilization_pct": 0.08,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c3x5x5_k3x3s1_n3_raw/1b5de27c5db9d837d6a4965f4558b8de9c746afd94c6d811ec3165e6243326f8.json",
+        "sha256": "1b5de27c5db9d837d6a4965f4558b8de9c746afd94c6d811ec3165e6243326f8"
+      }
+    },
+    {
+      "capsule": "G_conv2d_c3x8x8_k4x4s4_n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 149,
+      "numerical_execution_passed": true,
+      "execution_digest": "b3fad83147b2579abf7e2149df984c3b3eb60003796cd2a19ff6021c3f934b6e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 669,
+        "array_utilization_pct": 1.79,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_conv2d_c3x8x8_k4x4s4_n16_raw/ddb0ddf0fd1fc7e9717ed0c8f9c536f7a550f58b9a19a0add9fba32f42736bd6.json",
+        "sha256": "ddb0ddf0fd1fc7e9717ed0c8f9c536f7a550f58b9a19a0add9fba32f42736bd6"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 264,
+      "numerical_execution_passed": true,
+      "execution_digest": "692c9f4cf34d0603404503331781db6ec6990af683138640a79e67783b7f17fb",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1336,
+        "array_utilization_pct": 8.08,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n48_raw/760b0446311cd0a91e9cbb24ad30eec60814ddd6f2ba1e2338c0e605dd4eb046.json",
+        "sha256": "760b0446311cd0a91e9cbb24ad30eec60814ddd6f2ba1e2338c0e605dd4eb046"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n64_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 309,
+      "numerical_execution_passed": true,
+      "execution_digest": "29cefd20c37770042bee284f49f54a2d798c684fd024b985dca4a518e68ee70b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1662,
+        "array_utilization_pct": 8.66,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n64_raw/d00dd6eafa8f8024549ffbce9904e41cbac8d90b9702d55e02a4c693895b7c0d.json",
+        "sha256": "d00dd6eafa8f8024549ffbce9904e41cbac8d90b9702d55e02a4c693895b7c0d"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k48n80_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 353,
+      "numerical_execution_passed": true,
+      "execution_digest": "1cdb8d049b5f089fe0fc02657b584aa89c482ca268ca61317fb37ac4b411690f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1974,
+        "array_utilization_pct": 9.12,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k48n80_raw/b48c2baf1a08ada48da9032d2f1cba1618b203358cd8ebac5a3ba586ce3539eb.json",
+        "sha256": "b48c2baf1a08ada48da9032d2f1cba1618b203358cd8ebac5a3ba586ce3539eb"
+      }
+    },
+    {
+      "capsule": "G_matmul_m12k80n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 385,
+      "numerical_execution_passed": true,
+      "execution_digest": "695e1085ab8b9f51de8132815947dfe1f372d53a5ed7a5134d92faca022cef49",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1806,
+        "array_utilization_pct": 9.97,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m12k80n48_raw/25d9fb17dbbdb6188477660b0f3f331eec1e847d6b18a4ef7d5668425af3e7af.json",
+        "sha256": "25d9fb17dbbdb6188477660b0f3f331eec1e847d6b18a4ef7d5668425af3e7af"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k16n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 116,
+      "numerical_execution_passed": true,
+      "execution_digest": "b774c0767fcfa64669f38c80f73580f7605e7c225076c654e7727ed6666224fd",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 589,
+        "array_utilization_pct": 2.89,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k16n16_raw/41da900919b054ddcd779931c9176e5a530fa80b1d58e70992fc15c080cd450d.json",
+        "sha256": "41da900919b054ddcd779931c9176e5a530fa80b1d58e70992fc15c080cd450d"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k16n32_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 163,
+      "numerical_execution_passed": true,
+      "execution_digest": "ff44d4885a036ab67e33a9a8d5ac05d63e8027486c2bcd255e915093bd2cabef",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 844,
+        "array_utilization_pct": 4.03,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k16n32_raw/66c0cb326a96295b0e7ab19e8bca63fbda45938849db0cc8595dbcc89a21e0bd.json",
+        "sha256": "66c0cb326a96295b0e7ab19e8bca63fbda45938849db0cc8595dbcc89a21e0bd"
+      }
+    },
+    {
+      "capsule": "G_matmul_m17k32n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 175,
+      "numerical_execution_passed": true,
+      "execution_digest": "ca390b83448cfdacd75fdf5083259c3b680a79ac0cdd4f987afe1c8ae1703c05",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 758,
+        "array_utilization_pct": 4.49,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m17k32n16_raw/929f183da5f0c40bf5ee48d0d60c53a891bee2a7ccb25b70fd49b895cf13f19e.json",
+        "sha256": "929f183da5f0c40bf5ee48d0d60c53a891bee2a7ccb25b70fd49b895cf13f19e"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k16n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 62,
+      "numerical_execution_passed": true,
+      "execution_digest": "aa73bedb8a8dbb36917133b589fd23065d53cac289015924a17eec3428c5002a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 255,
+        "array_utilization_pct": 0.39,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k16n16_raw/22fe483a0d1a6ed563d23de84dcf8d2b693b17d1aeb50f8bea0b8cc044228798.json",
+        "sha256": "22fe483a0d1a6ed563d23de84dcf8d2b693b17d1aeb50f8bea0b8cc044228798"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k24n4_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 132,
+      "numerical_execution_passed": true,
+      "execution_digest": "da7b88b31648da61dfbefcffd26cc2bb4c6bfa29bd8383a367207708863a7718",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 423,
+        "array_utilization_pct": 0.09,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k24n4_raw/6fe5cff2ba113cb8e6cfac315ce8ff9afd72e208946315226ad573fa18332659.json",
+        "sha256": "6fe5cff2ba113cb8e6cfac315ce8ff9afd72e208946315226ad573fa18332659"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 262,
+      "numerical_execution_passed": true,
+      "execution_digest": "9cd994159c88e3bd807f58e82dca14ddf169e9a95e5d634b18a8f0faab0d5de9",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 898,
+        "array_utilization_pct": 1.0,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n48_raw/bc5f7e3ee81c50350e8f49e936aba7eff2bf0a74feb417c0ea210fd270ae51ba.json",
+        "sha256": "bc5f7e3ee81c50350e8f49e936aba7eff2bf0a74feb417c0ea210fd270ae51ba"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n64_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 307,
+      "numerical_execution_passed": true,
+      "execution_digest": "7fd6d494bd16b04ed764e4b6b2da9cb4e70ada94907e056161d1461f35a7f68b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1114,
+        "array_utilization_pct": 1.08,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n64_raw/9889d7b8cfa609eedc4373c17c8355bf7e90e665a1f9a977dce9919213b87304.json",
+        "sha256": "9889d7b8cfa609eedc4373c17c8355bf7e90e665a1f9a977dce9919213b87304"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k48n80_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 351,
+      "numerical_execution_passed": true,
+      "execution_digest": "3963cefe05f23b0b9c9d2dfb8d7f11be4929ed074278a82620068298f5b32f6d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1316,
+        "array_utilization_pct": 1.14,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k48n80_raw/703ddd4824bc997267d7f70a84771054c6091673b588ca60f7601469b968e0b7.json",
+        "sha256": "703ddd4824bc997267d7f70a84771054c6091673b588ca60f7601469b968e0b7"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k4n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 61,
+      "numerical_execution_passed": true,
+      "execution_digest": "f4dac829cf7a042627d6809168f03540bbf4ad6449a3f63414c5b94b8a4eed00",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 219,
+        "array_utilization_pct": 0.11,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k4n16_raw/48dfc4ce138b9708a18b223b5c793bb236af8d2dd9ec71bc769812b9bf7af625.json",
+        "sha256": "48dfc4ce138b9708a18b223b5c793bb236af8d2dd9ec71bc769812b9bf7af625"
+      }
+    },
+    {
+      "capsule": "G_matmul_m1k80n48_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 383,
+      "numerical_execution_passed": true,
+      "execution_digest": "18edfe22ab1f4b83653beaf26c40dc219701e2a78cf3b4ca901e2cc7f6a7260f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1308,
+        "array_utilization_pct": 1.15,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m1k80n48_raw/0abac8159bbc3c09e94ee98579f0141136578aa6a3fee9497389f82a1de65b37.json",
+        "sha256": "0abac8159bbc3c09e94ee98579f0141136578aa6a3fee9497389f82a1de65b37"
+      }
+    },
+    {
+      "capsule": "G_matmul_m24k9n1_acc_scale",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 114,
+      "numerical_execution_passed": true,
+      "execution_digest": "2266e2be72c40b407b8d6f49953d5c9b6b84040c380feeff1ae7052708a30de5",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 577,
+        "array_utilization_pct": 0.15,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m24k9n1_acc_scale/a959814c31d2e0416b53b3bb5a995bd21e248f2ad86aed990c01640e27d94175.json",
+        "sha256": "a959814c31d2e0416b53b3bb5a995bd21e248f2ad86aed990c01640e27d94175"
+      }
+    },
+    {
+      "capsule": "G_matmul_m2k8n4_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 61,
+      "numerical_execution_passed": true,
+      "execution_digest": "bf64592a56ce2b340995baa29ab2f9bdb5695d43d1215875934e0b9e75f742c4",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 258,
+        "array_utilization_pct": 0.1,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m2k8n4_raw/0f245f53c1389bd20ef865d5600c479274c244b25496b0a865eb0f692f9f2c77.json",
+        "sha256": "0f245f53c1389bd20ef865d5600c479274c244b25496b0a865eb0f692f9f2c77"
+      }
+    },
+    {
+      "capsule": "G_matmul_m2k8n8_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 62,
+      "numerical_execution_passed": true,
+      "execution_digest": "3c57c60f28a0b9433c7b9b6c51efbdd56ba85b443b9b586ddb9bbd054b3315db",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 237,
+        "array_utilization_pct": 0.21,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m2k8n8_raw/0ab13a65d3fdb9be41397e92f3a6f86b46a444c2cd4939c53de584b44a161839.json",
+        "sha256": "0ab13a65d3fdb9be41397e92f3a6f86b46a444c2cd4939c53de584b44a161839"
+      }
+    },
+    {
+      "capsule": "G_matmul_m32k32n32_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 204,
+      "numerical_execution_passed": true,
+      "execution_digest": "708ea88a5d617dec9658a34d0ca8da500ecb5f165ebf27deee71b8282b2603fe",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1451,
+        "array_utilization_pct": 8.82,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m32k32n32_raw/14050bc0adee1ea6cd477f7167b24c43d8773c6ebe70d84d48500ada196ff926.json",
+        "sha256": "14050bc0adee1ea6cd477f7167b24c43d8773c6ebe70d84d48500ada196ff926"
+      }
+    },
+    {
+      "capsule": "G_matmul_m3k16n16_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 62,
+      "numerical_execution_passed": true,
+      "execution_digest": "d500e88ba0ce2d43c370faeb5acd8011b267260b2b2bf5636c7636bfb0ecb446",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 280,
+        "array_utilization_pct": 1.07,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m3k16n16_raw/a04d783ac7ab05c54d2e0c09dd854cdbf9191ff73cb3bd234d019f143af603a7.json",
+        "sha256": "a04d783ac7ab05c54d2e0c09dd854cdbf9191ff73cb3bd234d019f143af603a7"
+      }
+    },
+    {
+      "capsule": "G_matmul_m3k16n4_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 63,
+      "numerical_execution_passed": true,
+      "execution_digest": "73e54a1744d400f67982d705991955bfcbe539de3fac98fc1860a74ffbd6bd15",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 268,
+        "array_utilization_pct": 0.28,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_matmul_m3k16n4_raw/2c5ed9ea412b3db3146a551c565a4db6aa5273e40a8f075c16c3e8bea5e024b7.json",
+        "sha256": "2c5ed9ea412b3db3146a551c565a4db6aa5273e40a8f075c16c3e8bea5e024b7"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m12n48_b1_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 65,
+      "numerical_execution_passed": true,
+      "execution_digest": "f7b25e7baa0a42a89fbe399c63ff7fa38638996a1982e6eab2483a26d1b84bfb",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m12n48_b1_raw/b0ce69da3d7f3d3222789070ddf51376dbf9586958547f9e06bb3ab392af5ded.json",
+        "sha256": "b0ce69da3d7f3d3222789070ddf51376dbf9586958547f9e06bb3ab392af5ded"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m17n16_b1_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 55,
+      "numerical_execution_passed": true,
+      "execution_digest": "abe82aab593f377c6b0c7a2dbfd4d6ca529c432713989ffb102c25eec2d803b1",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m17n16_b1_raw/185dcc469d93a73ddac838f3c39b310aef97963e9a5786cd9d413d86e4ff0d65.json",
+        "sha256": "185dcc469d93a73ddac838f3c39b310aef97963e9a5786cd9d413d86e4ff0d65"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m1n48_b1_raw",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 42,
+      "numerical_execution_passed": true,
+      "execution_digest": "bfe45e6e5e447a35951b787757cb70c6f1badeaa5b813d8f9374f10c8d89dbef",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m1n48_b1_raw/0a40590a7220e7858f243be7af4a48dfed23224920a1bca63d954b29ff0c7985.json",
+        "sha256": "0a40590a7220e7858f243be7af4a48dfed23224920a1bca63d954b29ff0c7985"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m25n12_b1_relu",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 68,
+      "numerical_execution_passed": true,
+      "execution_digest": "d4af71ed38ddc3ecea413e254f9965095859bc1fbac1d7bdb68bae9cac232e4b",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m25n12_b1_relu/d95eb5d0a141b03242dd96bbe4848434e284ef2e0f7b05814c603514ecbc5de4.json",
+        "sha256": "d95eb5d0a141b03242dd96bbe4848434e284ef2e0f7b05814c603514ecbc5de4"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m25n12_b1_relu_qed4a8588554b",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 68,
+      "numerical_execution_passed": true,
+      "execution_digest": "188a9e93bd187b9ff6968a570d28d9361ccc8d9bb9cfe4d750746bbf4111658a",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m25n12_b1_relu_qed4a8588554b/9f21c9fcd74f99ba7f52c7b5a392f58137466a57416f254e15f5eccfca427020.json",
+        "sha256": "9f21c9fcd74f99ba7f52c7b5a392f58137466a57416f254e15f5eccfca427020"
+      }
+    },
+    {
+      "capsule": "G_residual_add_m9n24_b2_relu",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 60,
+      "numerical_execution_passed": true,
+      "execution_digest": "8c380876a4f1a1ddce41e73c3f3ded8702a217931c42a17dc65d040d41864294",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/G_residual_add_m9n24_b2_relu/b766459e28c97c443ebfe0057f21e7d6aa914c9389acf5d2263b5fd8adc9aeba.json",
+        "sha256": "b766459e28c97c443ebfe0057f21e7d6aa914c9389acf5d2263b5fd8adc9aeba"
+      }
+    },
+    {
+      "capsule": "MF_causal_decoder_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 131,
+      "numerical_execution_passed": true,
+      "execution_digest": "ca7780b92c4eeb7084e158a974a590564e2b0c09b0479681000a5c5f2f3164c7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 535,
+        "array_utilization_pct": 0.42,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_causal_decoder_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max/e78a478bf4e0c7c511c2d8f8b141a3ac5c2f23fa2538ac94ae9636f1bde14dce.json",
+        "sha256": "e78a478bf4e0c7c511c2d8f8b141a3ac5c2f23fa2538ac94ae9636f1bde14dce"
+      }
+    },
+    {
+      "capsule": "MF_causal_decoder_matmul_activation_stationary_m1_raw_unscaled",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 245,
+      "numerical_execution_passed": true,
+      "execution_digest": "a0fd5bab4e9226531c498522c9b68d905eab42296ca80adb3841831cc3165ffc",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 693,
+        "array_utilization_pct": 0.49,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_causal_decoder_matmul_activation_stationary_m1_raw_unscaled/38fec986eaf483471f6345e66cc926da166f97426608461cc19919e9cb9e084c.json",
+        "sha256": "38fec986eaf483471f6345e66cc926da166f97426608461cc19919e9cb9e084c"
+      }
+    },
+    {
+      "capsule": "MF_causal_decoder_matmul_raw_unscaled",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 353,
+      "numerical_execution_passed": true,
+      "execution_digest": "6f6e5233b50df74b327908b588c5d447573ea435e7a737824bfab9b2037bdd19",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1974,
+        "array_utilization_pct": 9.12,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_causal_decoder_matmul_raw_unscaled/3c92f1fdd56f7d22e0b9585022ad6dfbf453598a4557bb14d29ef33923121f7a.json",
+        "sha256": "3c92f1fdd56f7d22e0b9585022ad6dfbf453598a4557bb14d29ef33923121f7a"
+      }
+    },
+    {
+      "capsule": "MF_multimodal_policy_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 119,
+      "numerical_execution_passed": true,
+      "execution_digest": "7a248597815d555e4e4ea0150ff45021d72ec82ac7c7cce7ce6d767773e81295",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 435,
+        "array_utilization_pct": 0.24,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_multimodal_policy_matmul_activation_stationary_m1_acc_scale_gain_lt_1_max/6ec6ea2e739ae94660873c1ccf37857e6df7637f5d63f34d7fa615bdd483380e.json",
+        "sha256": "6ec6ea2e739ae94660873c1ccf37857e6df7637f5d63f34d7fa615bdd483380e"
+      }
+    },
+    {
+      "capsule": "MF_residual_cnn_conv2d_k3x3s2p1_raw_unscaled",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2853,
+      "numerical_execution_passed": true,
+      "execution_digest": "96ca90842ad1f70fa05a9eb53c45053f6f0c080d827ed21a03f79d24892d086b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 5578,
+        "array_utilization_pct": 1.63,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/MF_residual_cnn_conv2d_k3x3s2p1_raw_unscaled/c06abd0a8b1b0158701c94ee783471fef16e18b94d0ea48a0ba0e2918c3e04d2.json",
+        "sha256": "c06abd0a8b1b0158701c94ee783471fef16e18b94d0ea48a0ba0e2918c3e04d2"
+      }
+    },
+    {
+      "capsule": "PC01_k128",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 525,
+      "numerical_execution_passed": true,
+      "execution_digest": "827c698ecf31d175441723ceca2feafb1f277e79c37026f6e231de697208fe9d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 6702,
+        "array_utilization_pct": 15.28,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/PC01_k128/455348116f74259a26df1750171f51c7fd9076f008c4f7fa85f8076b83964892.json",
+        "sha256": "455348116f74259a26df1750171f51c7fd9076f008c4f7fa85f8076b83964892"
+      }
+    },
+    {
+      "capsule": "PM00_m16n16",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 62,
+      "numerical_execution_passed": true,
+      "execution_digest": "4ee65ea8ebb6ece05b00aa3d7ba5e16dac7862fde4e4aa3cb016c2a38271c86a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 472,
+        "array_utilization_pct": 3.39,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PM00_m16n16/3111e7320760c5ba7cce8a0a8e80ffad1c6a360c7497572f069638735bc982fa.json",
+        "sha256": "3111e7320760c5ba7cce8a0a8e80ffad1c6a360c7497572f069638735bc982fa"
+      }
+    },
+    {
+      "capsule": "PM10_m48n48",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 256,
+      "numerical_execution_passed": true,
+      "execution_digest": "4f9b02c968766360b6b18ba18a7f6c81886800a0d88eff3c9c1d128f0f0fd080",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2163,
+        "array_utilization_pct": 6.66,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PM10_m48n48/7cb592fb45e29386f6e96fdd18c00c178df54dad90dc4ff6c0cda25fcc1b372a.json",
+        "sha256": "7cb592fb45e29386f6e96fdd18c00c178df54dad90dc4ff6c0cda25fcc1b372a"
+      }
+    },
+    {
+      "capsule": "PM15_m64n64",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 364,
+      "numerical_execution_passed": true,
+      "execution_digest": "549bd3f305be06f82d019a624dd0020ac036e8c37d738ed60ce1eb0ecf03e19d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3506,
+        "array_utilization_pct": 7.3,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PM15_m64n64/5d70213066477178003c0ec69a2f94e49513a29b15bfff74fb32ec6a3dec4198.json",
+        "sha256": "5d70213066477178003c0ec69a2f94e49513a29b15bfff74fb32ec6a3dec4198"
+      }
+    },
+    {
+      "capsule": "PQ08_j8_k32",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 255,
+      "numerical_execution_passed": true,
+      "execution_digest": "ef5f196726a0d3fda0dd551f2433823fc3ca0cff9e2d75013ef14834dd980688",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3696,
+        "array_utilization_pct": 6.93,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PQ08_j8_k32/6cf0a84dbb52028796b1edcff99b6937bf008f6dc8a236100dcaeec319b191cb.json",
+        "sha256": "6cf0a84dbb52028796b1edcff99b6937bf008f6dc8a236100dcaeec319b191cb"
+      }
+    },
+    {
+      "capsule": "PS00_shared_lhs_m16k32n16n24",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 307,
+      "numerical_execution_passed": true,
+      "execution_digest": "da477d1125d71a9acb354871b699fee6b443b800290c143d176a65d215da56c0",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1676,
+        "array_utilization_pct": 4.77,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PS00_shared_lhs_m16k32n16n24/a31c80cfd596a29b18dfd46646585deec760953de51b27ec817a5437d40ed17a.json",
+        "sha256": "a31c80cfd596a29b18dfd46646585deec760953de51b27ec817a5437d40ed17a"
+      }
+    },
+    {
+      "capsule": "PS01_shared_lhs_tail_m17k33n15n19",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 884,
+      "numerical_execution_passed": true,
+      "execution_digest": "a5bf9e4a563d558a1374bee57858c12c4f27cfdda5c91fa671e6d369481d820d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2493,
+        "array_utilization_pct": 2.99,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/PS01_shared_lhs_tail_m17k33n15n19/bef0da34887b29c1855f7f81f78a7e49780d9f7285a4c7f31ddc880231fd7d2c.json",
+        "sha256": "bef0da34887b29c1855f7f81f78a7e49780d9f7285a4c7f31ddc880231fd7d2c"
+      }
+    },
+    {
+      "capsule": "PV03_c64",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 5099,
+      "numerical_execution_passed": true,
+      "execution_digest": "1aa39012f0ce368f7423f22d660c1cfacf914317c9d69bd6486704b7d99c4ee7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 11086,
+        "array_utilization_pct": 11.69,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/PV03_c64/0fa20fa2eac6012f51678828c358a143c3ddb194c941f4d66ba0c53cd85660ac.json",
+        "sha256": "0fa20fa2eac6012f51678828c358a143c3ddb194c941f4d66ba0c53cd85660ac"
+      }
+    },
+    {
+      "capsule": "SY_accumulator_output_boundary",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1399,
+      "numerical_execution_passed": true,
+      "execution_digest": "44f1f1b4a3cbeb982c98983c97bf0a32de517ae398d739673aff3767d136b73f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 6181,
+        "array_utilization_pct": 1.05,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_accumulator_output_boundary/e16f9f52ac90ce76a0344198534914634731c524c7abb85c864ed5bee9c16e1f.json",
+        "sha256": "e16f9f52ac90ce76a0344198534914634731c524c7abb85c864ed5bee9c16e1f"
+      }
+    },
+    {
+      "capsule": "SY_act_act_i8_decode",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 159,
+      "numerical_execution_passed": true,
+      "execution_digest": "ff4ff25f9db8f6c28b7045c5643c61e9661d52d32540050e94b36f62fb39c707",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 574,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_act_act_i8_decode/71d9bc822d26059c28a5fe675cc0bce7a32c6f24c210f859d0fa09a58a4ca801.json",
+        "sha256": "71d9bc822d26059c28a5fe675cc0bce7a32c6f24c210f859d0fa09a58a4ca801"
+      }
+    },
+    {
+      "capsule": "SY_act_act_i8_k_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 184,
+      "numerical_execution_passed": true,
+      "execution_digest": "a0c51632960526d64511fed3e8f3f58c1a25be7fde0f7d9b21b216006d90f8df",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1081,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_act_act_i8_k_tail/ebf4d1bed41a9b975b77f732ca7e0141a372dd4ceff45234e81bb3699851305c.json",
+        "sha256": "ebf4d1bed41a9b975b77f732ca7e0141a372dd4ceff45234e81bb3699851305c"
+      }
+    },
+    {
+      "capsule": "SY_carried_relu_i8",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 103,
+      "numerical_execution_passed": true,
+      "execution_digest": "abb7fe2ca9b72d1a97f1b5d271e1e19d5ced29085587ac7eb3b646ac87e68037",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 948,
+        "array_utilization_pct": 6.75,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_carried_relu_i8/2b3bd505bdd2b0394a31dabcc54d84d43abb44676611527f0a06f008f8c04b1e.json",
+        "sha256": "2b3bd505bdd2b0394a31dabcc54d84d43abb44676611527f0a06f008f8c04b1e"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_conv2d_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 457,
+      "numerical_execution_passed": true,
+      "execution_digest": "9fff3c704523ee26dddaa0eded4be51d0c76ea11e25457816203949e746e184e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1733,
+        "array_utilization_pct": 0.69,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_conv2d_int8_aligned/a09ad8dc919cb0b6505e1b27fb28de1866dabf0323a7a82edc94aa5143e2af2f.json",
+        "sha256": "a09ad8dc919cb0b6505e1b27fb28de1866dabf0323a7a82edc94aa5143e2af2f"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_conv2d_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 498,
+      "numerical_execution_passed": true,
+      "execution_digest": "023adb61c3c9c0c44de33caf0c00f72a7c790bc547f6cbb543dc8424e1e779c2",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2016,
+        "array_utilization_pct": 0.61,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_conv2d_int8_tail/52fd52f128dc7e6dc2b953d34d86edba8d8731cf2bf61b08dc2a6ec15878f72b.json",
+        "sha256": "52fd52f128dc7e6dc2b953d34d86edba8d8731cf2bf61b08dc2a6ec15878f72b"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_matmul_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 486,
+      "numerical_execution_passed": true,
+      "execution_digest": "9b557b33eb82d4c1a25e05031f6c7a1169774bde74d1816f21cbd28e5386650d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3464,
+        "array_utilization_pct": 0.92,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_matmul_int8_aligned/ccfc6d312345141d22ec6c05c7e09a642b08a07306bf9845cf6e99863958a39e.json",
+        "sha256": "ccfc6d312345141d22ec6c05c7e09a642b08a07306bf9845cf6e99863958a39e"
+      }
+    },
+    {
+      "capsule": "SY_column_readout_matmul_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 603,
+      "numerical_execution_passed": true,
+      "execution_digest": "f7f3fafbb2ac663cefb96f7229a6f0e38acd534a3fe4c9f6d718e755abecbc02",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3970,
+        "array_utilization_pct": 0.83,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_column_readout_matmul_int8_tail/5e18b1ce2a0136b9231a281dd5eb85e9a1ad2d1429c3b3ef88dfabaa04e82394.json",
+        "sha256": "5e18b1ce2a0136b9231a281dd5eb85e9a1ad2d1429c3b3ef88dfabaa04e82394"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 105,
+      "numerical_execution_passed": true,
+      "execution_digest": "14e4e897281b850dd18a6e7b124465a78a49725f81457cfa183685caf077837b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 661,
+        "array_utilization_pct": 4.84,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_aligned/180a1e8d6178ba4cd7ccbac0073430dd712cf763905837d51d27b124f8a26966.json",
+        "sha256": "180a1e8d6178ba4cd7ccbac0073430dd712cf763905837d51d27b124f8a26966"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_gemv_n_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 226,
+      "numerical_execution_passed": true,
+      "execution_digest": "0225164cd969c336a1dda7c86a453196fe13cfd91703b60e580cec110cb82ada",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 815,
+        "array_utilization_pct": 0.48,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_gemv_n_tail/0c793b0dea8ff1bb32b68153314e468f48a568902a9d08d8ca8493be9b6395b9.json",
+        "sha256": "0c793b0dea8ff1bb32b68153314e468f48a568902a9d08d8ca8493be9b6395b9"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_k_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 138,
+      "numerical_execution_passed": true,
+      "execution_digest": "3d5e35b629cc774cb4fd1ac8534d03ec1abffc3adda64ad75043e4d8a2b11146",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 769,
+        "array_utilization_pct": 4.03,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_k_tail/1924c39787d9fc61f83c6c8c5b4146d91d6be8c745e94f76a2a42a11e2da4301.json",
+        "sha256": "1924c39787d9fc61f83c6c8c5b4146d91d6be8c745e94f76a2a42a11e2da4301"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_partial",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 136,
+      "numerical_execution_passed": true,
+      "execution_digest": "f07f3bbdb4447d23c87d070c1e7222bee5451a511173239e38197dc389bbde4f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 837,
+        "array_utilization_pct": 3.47,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_partial/672aea1d6ad5dda0e19941116990c2bef900db055e147b06d83173a71dce2354.json",
+        "sha256": "672aea1d6ad5dda0e19941116990c2bef900db055e147b06d83173a71dce2354"
+      }
+    },
+    {
+      "capsule": "SY_contraction_i8_sub_tile",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 59,
+      "numerical_execution_passed": true,
+      "execution_digest": "bf8ce061d13323e6d32d48b92af23636583dd0d32989d6bdef542c28568e8bb0",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 245,
+        "array_utilization_pct": 0.05,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_contraction_i8_sub_tile/075cbd72111c7739f50e531baf15e77ac94c052fbfb2732ee1bf480f12a8d832.json",
+        "sha256": "075cbd72111c7739f50e531baf15e77ac94c052fbfb2732ee1bf480f12a8d832"
+      }
+    },
+    {
+      "capsule": "SY_conv_k1x1_s1x1_d1x1_pad0x0",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 72,
+      "numerical_execution_passed": true,
+      "execution_digest": "ae7ea5d72cf805de9dad03edfd9dbbe8f3c155c549ae31fe1ad49a8ded6ec2bc",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 501,
+        "array_utilization_pct": 0.8,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k1x1_s1x1_d1x1_pad0x0/4d973d66af41f927e231d1d4fcf62bac5d351e7bea51cf30307dfab7c9e8af77.json",
+        "sha256": "4d973d66af41f927e231d1d4fcf62bac5d351e7bea51cf30307dfab7c9e8af77"
+      }
+    },
+    {
+      "capsule": "SY_conv_k1x1_s2x2_d1x1_pad0x0",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 117,
+      "numerical_execution_passed": true,
+      "execution_digest": "a85c77932e9903d373ba8a3c86fb58e3f12475537d67245e5115596183c795f0",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 893,
+        "array_utilization_pct": 0.45,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k1x1_s2x2_d1x1_pad0x0/9551dadcd4f9a91b2d94c2d7d27c9e953ac0dbbbac5b8194ab855a9eb9aa44c1.json",
+        "sha256": "9551dadcd4f9a91b2d94c2d7d27c9e953ac0dbbbac5b8194ab855a9eb9aa44c1"
+      }
+    },
+    {
+      "capsule": "SY_conv_k3x3_s1_ci64_co80_h8_int8",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 11066,
+      "numerical_execution_passed": true,
+      "execution_digest": "87b602433f356aa0fdbda778c61482c279ea1d352f41e2edca84f4a3fb9b89d7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 60536,
+        "array_utilization_pct": 19.03,
+        "bound_by": "compute"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k3x3_s1_ci64_co80_h8_int8/945a549e74ee407bb2743653456b5b74a2e4b123211463a5999edb91ba06a88a.json",
+        "sha256": "945a549e74ee407bb2743653456b5b74a2e4b123211463a5999edb91ba06a88a"
+      }
+    },
+    {
+      "capsule": "SY_conv_k3x3_s1x1_d1x1_pad1x1",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1951,
+      "numerical_execution_passed": true,
+      "execution_digest": "ba9325b968e7bad3db0658caaa1a776d9a685cafd83f13d8332c3be0b802f204",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3398,
+        "array_utilization_pct": 1.06,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k3x3_s1x1_d1x1_pad1x1/dead70d71a16a6e420bffc072e9c5b9eae1e1cf918ae63986a5cdf260208a21b.json",
+        "sha256": "dead70d71a16a6e420bffc072e9c5b9eae1e1cf918ae63986a5cdf260208a21b"
+      }
+    },
+    {
+      "capsule": "SY_conv_k3x3_s2x2_d1x1_pad1x1",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1952,
+      "numerical_execution_passed": true,
+      "execution_digest": "4637426fa32108a281e984de861f0ea8e14bd7f635e4f42467947743294282e4",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3502,
+        "array_utilization_pct": 1.03,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k3x3_s2x2_d1x1_pad1x1/2e64a399a117638cf8227974f9024d97fe66396f0e046d6bcefba010de6fb85f.json",
+        "sha256": "2e64a399a117638cf8227974f9024d97fe66396f0e046d6bcefba010de6fb85f"
+      }
+    },
+    {
+      "capsule": "SY_conv_k4x4_s4x4_d1x1_pad0x0",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 173,
+      "numerical_execution_passed": true,
+      "execution_digest": "024503f87e88f45b9251783e445574d66ac54f1f7d8d6c41ddd1b9a060b81c90",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1078,
+        "array_utilization_pct": 5.94,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k4x4_s4x4_d1x1_pad0x0/4babdab1551647b7d0a09dc180313b5da72babdeaa5aaa21b7f01684ce09117e.json",
+        "sha256": "4babdab1551647b7d0a09dc180313b5da72babdeaa5aaa21b7f01684ce09117e"
+      }
+    },
+    {
+      "capsule": "SY_conv_k7x7_s2x2_d1x1_pad3x3",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 10260,
+      "numerical_execution_passed": true,
+      "execution_digest": "f95085673059f19e337c5ce6025db97eec0f3d32e313e4145aab9d8a171346d6",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 14536,
+        "array_utilization_pct": 1.35,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_k7x7_s2x2_d1x1_pad3x3/cc40f88ca1f5602afd003b114828c06740508f5add7f77cb8ade43b7fe187983.json",
+        "sha256": "cc40f88ca1f5602afd003b114828c06740508f5add7f77cb8ade43b7fe187983"
+      }
+    },
+    {
+      "capsule": "SY_conv_operand_capacity_boundary",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 59878,
+      "numerical_execution_passed": true,
+      "execution_digest": "6febc5889fc8fd12613bb369ca9fffaa2802288b18ae9db61cfb59cbae900260",
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_conv_operand_capacity_boundary/91545e080c7a57f7209bd3747ebf7d30c8c0d0a15bc48da095bce1543bedee92.json",
+        "sha256": "91545e080c7a57f7209bd3747ebf7d30c8c0d0a15bc48da095bce1543bedee92"
+      }
+    },
+    {
+      "capsule": "SY_epilogue_acc_scale",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 105,
+      "numerical_execution_passed": true,
+      "execution_digest": "79728066922cbb5783c9acdddc123814acfab69d4bffbe6beec3521d07acb714",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 555,
+        "array_utilization_pct": 5.77,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_epilogue_acc_scale/1b88149bbd5cf0e0ecc5792209e13f88b8b6cb9bad50b1eae829148e7e571639.json",
+        "sha256": "1b88149bbd5cf0e0ecc5792209e13f88b8b6cb9bad50b1eae829148e7e571639"
+      }
+    },
+    {
+      "capsule": "SY_epilogue_bias_add",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 105,
+      "numerical_execution_passed": true,
+      "execution_digest": "c2ab3b23e40b6fee036bf926dc67ccdba625fd732340b7105f50cb5f37c2ea81",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 603,
+        "array_utilization_pct": 5.31,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_epilogue_bias_add/e77be84cb12f60dbfce1814d24d4bdd03c8ccbc6891f6d7f44071323970f0a4b.json",
+        "sha256": "e77be84cb12f60dbfce1814d24d4bdd03c8ccbc6891f6d7f44071323970f0a4b"
+      }
+    },
+    {
+      "capsule": "SY_epilogue_relu",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 105,
+      "numerical_execution_passed": true,
+      "execution_digest": "ab33225feeb9ea5b944c585dc1ef1c935243939db4ca41335f469a53679b87f0",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 555,
+        "array_utilization_pct": 5.77,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_epilogue_relu/8778511de4ec7540a1897e1dc6f520df64f2db6bd7361e3c8a1ce23618120196.json",
+        "sha256": "8778511de4ec7540a1897e1dc6f520df64f2db6bd7361e3c8a1ce23618120196"
+      }
+    },
+    {
+      "capsule": "SY_group_bias_add_acc_scale_relu_int8",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 105,
+      "numerical_execution_passed": true,
+      "execution_digest": "e14d9f57932baf319aae4d8ad4913b789771a94b5c88811bd0053f89568aa944",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 603,
+        "array_utilization_pct": 5.31,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_group_bias_add_acc_scale_relu_int8/b0b8e9df924ce217a5d1658adbe1598b6aacca97b932874085d0f6ae8bacb64e.json",
+        "sha256": "b0b8e9df924ce217a5d1658adbe1598b6aacca97b932874085d0f6ae8bacb64e"
+      }
+    },
+    {
+      "capsule": "SY_group_bias_add_acc_scale_relu_maxpool_int8",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 153,
+      "numerical_execution_passed": true,
+      "execution_digest": "e50f79504f5ac4580cfbfa9716908815a65c26407ead447ed661a4a0456fefb8",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 805,
+        "array_utilization_pct": 3.98,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_group_bias_add_acc_scale_relu_maxpool_int8/2cb4eed2f987431eafd384024fb0a9c219d396e405e5015230e75e5e99795a9b.json",
+        "sha256": "2cb4eed2f987431eafd384024fb0a9c219d396e405e5015230e75e5e99795a9b"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_conv2d_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 476,
+      "numerical_execution_passed": true,
+      "execution_digest": "ee7a4c7ff9216eeae9f45e02e53e1c6ebde0edd9d3e29a4fce5556f89408efc7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1822,
+        "array_utilization_pct": 0.66,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_conv2d_int8_aligned/d4800f14e9ef6ae42e3188c6b7ec0f41f618c014c7ad5f78c4fee7e8a3e8b144.json",
+        "sha256": "d4800f14e9ef6ae42e3188c6b7ec0f41f618c014c7ad5f78c4fee7e8a3e8b144"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_conv2d_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 512,
+      "numerical_execution_passed": true,
+      "execution_digest": "87f7a642b4182866225db22fae41016ba42038da11371ccbc310f5666bc93bca",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2037,
+        "array_utilization_pct": 0.61,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_conv2d_int8_tail/7f24bb86071739414c6b6067d11e99e58521801e55d9dc2cfac8a1d3ba94068b.json",
+        "sha256": "7f24bb86071739414c6b6067d11e99e58521801e55d9dc2cfac8a1d3ba94068b"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 504,
+      "numerical_execution_passed": true,
+      "execution_digest": "57968b35b5faa8b5619d3aacd8f03a557c5ae92fd92ddf4567b4b2de060fa53a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3550,
+        "array_utilization_pct": 0.9,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_aligned/0ec13e1576734a9f36c8c65d674cbc692351d5ba2cedf42e67105a6cfcab61ae.json",
+        "sha256": "0ec13e1576734a9f36c8c65d674cbc692351d5ba2cedf42e67105a6cfcab61ae"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_distinct_scales_v2",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 6025,
+      "numerical_execution_passed": true,
+      "execution_digest": "0cdaf95df7e270228b3ee272bb009fa9b24d161cef39d13cd51006b19cdefdd7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 13931,
+        "array_utilization_pct": 0.34,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_distinct_scales_v2/b232fc46521a7da6f622caec41c8d3974a51e5de6ebd4931d5248928b30b43b6.json",
+        "sha256": "b232fc46521a7da6f622caec41c8d3974a51e5de6ebd4931d5248928b30b43b6"
+      }
+    },
+    {
+      "capsule": "SY_independent_column_readout_matmul_int8_tail",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 616,
+      "numerical_execution_passed": true,
+      "execution_digest": "ae80f87dcdf0a919417de40d159d67567c6d6c47bd4cf5ac77d04970b9b00e63",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3978,
+        "array_utilization_pct": 0.83,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_independent_column_readout_matmul_int8_tail/d801651cf7675f32985a870b9a19b9d79eae7916e76155dfeba484583a729b4c.json",
+        "sha256": "d801651cf7675f32985a870b9a19b9d79eae7916e76155dfeba484583a729b4c"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m100_k147_n12_acde4e305f",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2268,
+      "numerical_execution_passed": true,
+      "execution_digest": "9040461c25374435419a21242f5d0646fcddfb211df562bcb27cb9acf6d0ce8e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 7855,
+        "array_utilization_pct": 8.77,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m100_k147_n12_acde4e305f/eecbc437fb4497a0095071c617c5e3db763a0bce213fc2e56013998eec2f1d54.json",
+        "sha256": "eecbc437fb4497a0095071c617c5e3db763a0bce213fc2e56013998eec2f1d54"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m25_k12_n3_30f4ad2744",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 122,
+      "numerical_execution_passed": true,
+      "execution_digest": "469cf2efbe3ddb70e7d3c6042dc4806a5d801bb8257802cdf8d7cd16a1f3a999",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 534,
+        "array_utilization_pct": 0.66,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m25_k12_n3_30f4ad2744/11a14dc3e4b98b2f5f2671a00b39b605af7f06e8fe19919bfcd6b0f0c0493a26.json",
+        "sha256": "11a14dc3e4b98b2f5f2671a00b39b605af7f06e8fe19919bfcd6b0f0c0493a26"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m25_k27_n3_10e8258e2e",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 201,
+      "numerical_execution_passed": true,
+      "execution_digest": "11bb48e12cd071a9206c5ed9bf9c07be2879301957005a7cc2a4746e580e4771",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 834,
+        "array_utilization_pct": 0.95,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m25_k27_n3_10e8258e2e/e8d7bc47c5ed16620e0659cb67d027816e65729eb2908f60810264082b3b8b96.json",
+        "sha256": "e8d7bc47c5ed16620e0659cb67d027816e65729eb2908f60810264082b3b8b96"
+      }
+    },
+    {
+      "capsule": "SY_int_mm_m9_k216_n24_a50ef4a978",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1053,
+      "numerical_execution_passed": true,
+      "execution_digest": "67e017415b2fcd62133df5a85695dbe3efbf377e9e216835a9597f56e44cb627",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 3313,
+        "array_utilization_pct": 5.5,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_int_mm_m9_k216_n24_a50ef4a978/5f7044cd85011da413d43c29695815debd8b80de431daa74c51b9b8c274cf83b.json",
+        "sha256": "5f7044cd85011da413d43c29695815debd8b80de431daa74c51b9b8c274cf83b"
+      }
+    },
+    {
+      "capsule": "SY_kdepth_fits_double",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 6212,
+      "numerical_execution_passed": true,
+      "execution_digest": "4a11242a1584a8eaa7480e2e837ae0c4f173460210ad02b24aeefc1ada656433",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 29120,
+        "array_utilization_pct": 14.07,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_kdepth_fits_double/00dc067a00340f94b9a1301e1c8d67649a4aec1b4fa642bb0cf6706376939430.json",
+        "sha256": "00dc067a00340f94b9a1301e1c8d67649a4aec1b4fa642bb0cf6706376939430"
+      }
+    },
+    {
+      "capsule": "SY_micro_model",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_micro_model/09b0d7f22069dab7428c1eedeb5605b7bf47f62bdff70e2d99a929bfa6947ffa.json",
+        "sha256": "09b0d7f22069dab7428c1eedeb5605b7bf47f62bdff70e2d99a929bfa6947ffa"
+      }
+    },
+    {
+      "capsule": "SY_movement_i8_aligned",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 38,
+      "numerical_execution_passed": true,
+      "execution_digest": "036ffe2a05da4a3d060282837657af50d463804428516f89a19502680a51559d",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 332,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_movement_i8_aligned/51fee9b173b8073a09d8927d34205dcb0ccebe80ed24112fdca95fe0ac2edd66.json",
+        "sha256": "51fee9b173b8073a09d8927d34205dcb0ccebe80ed24112fdca95fe0ac2edd66"
+      }
+    },
+    {
+      "capsule": "SY_movement_i8_partial",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 38,
+      "numerical_execution_passed": true,
+      "execution_digest": "56b22604f62be0fdf45ca3f5c7d4c041988407546db76f3d8c15cf1243c0fdaa",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 319,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_movement_i8_partial/645ac740463875c4d653a458dae4d386706989745b121e7ce093beeb78229387.json",
+        "sha256": "645ac740463875c4d653a458dae4d386706989745b121e7ce093beeb78229387"
+      }
+    },
+    {
+      "capsule": "SY_movement_i8_sub_tile",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 35,
+      "numerical_execution_passed": true,
+      "execution_digest": "ae4f4b700ca020737c14234a0c83d3c95461b48dbab4190919ea11b4003926b6",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 133,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_movement_i8_sub_tile/4c1b62592588915afdb0baeb8ea43cde66c0befadd76644d6656670c76d8655c.json",
+        "sha256": "4c1b62592588915afdb0baeb8ea43cde66c0befadd76644d6656670c76d8655c"
+      }
+    },
+    {
+      "capsule": "SY_multi_block_beyond",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 5819,
+      "numerical_execution_passed": true,
+      "execution_digest": "65416694feceeebe3e3edb24799a84eecc15e40b06c2540d533db465796a488f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 26414,
+        "array_utilization_pct": 15.22,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_multi_block_beyond/0e16d27996472c92a78f674fe5ef9f768f308bafcaa0b59e83bca8f1eb2a341e.json",
+        "sha256": "0e16d27996472c92a78f674fe5ef9f768f308bafcaa0b59e83bca8f1eb2a341e"
+      }
+    },
+    {
+      "capsule": "SY_multi_block_within",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 4573,
+      "numerical_execution_passed": true,
+      "execution_digest": "a8acad9cfb80102c144e9de484f91e72926f1cab90ca659d1d0a1815560a5654",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 14010,
+        "array_utilization_pct": 15.04,
+        "bound_by": "write requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_multi_block_within/fb77528409727392518fce30a741a4941c05cce31356ad472e2514ae61e2dc52.json",
+        "sha256": "fb77528409727392518fce30a741a4941c05cce31356ad472e2514ae61e2dc52"
+      }
+    },
+    {
+      "capsule": "SY_rank_contraction_batched",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 197,
+      "numerical_execution_passed": true,
+      "execution_digest": "21ea75678afe5a16020fe4f18978eb58120836c5ac008d6c08811faf3650f88b",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 1329,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_rank_contraction_batched/767a1cc09a539635b34d78ce87440dde099c6e303cec81277a8c43255992c119.json",
+        "sha256": "767a1cc09a539635b34d78ce87440dde099c6e303cec81277a8c43255992c119"
+      }
+    },
+    {
+      "capsule": "SY_reduction_i8_partial",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 181,
+      "numerical_execution_passed": true,
+      "execution_digest": "9bde093613477a3b337a415d3e971ec00b5dad2ee1b6d352997f20c9d2de6c5f",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 945,
+        "array_utilization_pct": 3.08,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_reduction_i8_partial/05c8e69afa1c58be62ce4b2e55c8fcaedeb501da7e846c818407f4bd1782d0e0.json",
+        "sha256": "05c8e69afa1c58be62ce4b2e55c8fcaedeb501da7e846c818407f4bd1782d0e0"
+      }
+    },
+    {
+      "capsule": "SY_refuse_requant",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": null,
+      "numerical_execution_passed": false,
+      "execution_digest": null,
+      "performance": {
+        "status": "UNKNOWN",
+        "estimated_whole_soc_cycles": null,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_refuse_requant/5612e5c5aac8927bb68f9355bce217778800f10932920dcd35bea6d7e688be50.json",
+        "sha256": "5612e5c5aac8927bb68f9355bce217778800f10932920dcd35bea6d7e688be50"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_contraction_partial",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 332,
+      "numerical_execution_passed": true,
+      "execution_digest": "f75fa9163594843463819a8ac97018b4309e9e91a030ed61cce1e83ec6ed154e",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 2251,
+        "array_utilization_pct": 1.29,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_contraction_partial/aa0596a20b417c07998b8699c402d557e7b205b06f122ce909ee297eaa155da6.json",
+        "sha256": "aa0596a20b417c07998b8699c402d557e7b205b06f122ce909ee297eaa155da6"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_conv_k3x3_s1x1_d1x1_pad1x1",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2070,
+      "numerical_execution_passed": true,
+      "execution_digest": "cb391433b5c68973524a420a54cfebf16eb0fa1b575f49dff73f3a2bd589d499",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 4108,
+        "array_utilization_pct": 0.88,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_conv_k3x3_s1x1_d1x1_pad1x1/1e65bbb315ab950e31db9658366b00d735c39bff3e78e25cdda1b6f186829eab.json",
+        "sha256": "1e65bbb315ab950e31db9658366b00d735c39bff3e78e25cdda1b6f186829eab"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_conv_k3x3_s2x2_d1x1_pad1x1",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 2264,
+      "numerical_execution_passed": true,
+      "execution_digest": "1006c611a8eafee95ef2c4f3475ef8bcdf986e588da8e998e6f4dbc091a3f1a7",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 5258,
+        "array_utilization_pct": 0.68,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_conv_k3x3_s2x2_d1x1_pad1x1/3f98f5f3fa0ecb20844582f231202028b07c6f2ca2ec14ad2ac5d00c2e629c97.json",
+        "sha256": "3f98f5f3fa0ecb20844582f231202028b07c6f2ca2ec14ad2ac5d00c2e629c97"
+      }
+    },
+    {
+      "capsule": "SY_residual_state_conv_k7x7_s2x2_d1x1_pad3x3",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 11266,
+      "numerical_execution_passed": true,
+      "execution_digest": "0efd10dcbd14fd721b41308b1b8c2f9695f045185e39aaaf040b724343e7b23a",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 19412,
+        "array_utilization_pct": 1.01,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_residual_state_conv_k7x7_s2x2_d1x1_pad3x3/64c9bba8bd0d311387b64c95d28f06dab412fd7f6803c987346da9955c91f21f.json",
+        "sha256": "64c9bba8bd0d311387b64c95d28f06dab412fd7f6803c987346da9955c91f21f"
+      }
+    },
+    {
+      "capsule": "SY_source_causal_decoder",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_causal_decoder/7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a.json",
+        "sha256": "7a9e9f557308beb9b53471fb2be784a5e95814d9b6cdc3ee3c6f83641ea42e9a"
+      }
+    },
+    {
+      "capsule": "SY_source_causal_decoder_decode_step",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_causal_decoder_decode_step/06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4.json",
+        "sha256": "06159e60a424cc1e7436ab60fd09fa31c890e976da28350a0db67ad8a75efcd4"
+      }
+    },
+    {
+      "capsule": "SY_source_coverage_mlp",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_coverage_mlp/c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b.json",
+        "sha256": "c3dbf5f3cd89e914da3c5cedb6b949009696d620cbc5095f3ec59559fa25a44b"
+      }
+    },
+    {
+      "capsule": "SY_source_multimodal_policy",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_multimodal_policy/6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac.json",
+        "sha256": "6bfffe13b98fd94116876f01f106d546dc736f5396f0f47ff9e5ed08e5c7d9ac"
+      }
+    },
+    {
+      "capsule": "SY_source_residual_cnn",
+      "pass": true,
+      "screened_only": true,
+      "certified_complete": false,
+      "tiers": {
+        "L0": "pass",
+        "L1": "pass",
+        "L2": "pass",
+        "L3": "unverified"
+      },
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "execution_digest": null,
+      "failure": {
+        "category": "NOT_RUN_IS_NOT_PASS",
+        "detail": "None",
+        "plane": "model_execution",
+        "tier": "L3"
+      },
+      "detail": {
+        "path": "qa/cases/SY_source_residual_cnn/3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee.json",
+        "sha256": "3f97a70d48d47c33b7767eff869bea4936e480399840103d98e3642a73aaa6ee"
+      }
+    },
+    {
+      "capsule": "SY_wide_move_tails_m17_k80_n144",
+      "pass": true,
+      "barrier_tier": "L2",
+      "barrier_status": "pass",
+      "barrier_cycles": 1327,
+      "numerical_execution_passed": true,
+      "execution_digest": "14f8ec9c006a7a3f9c9a16bc7dfa5bbfd3ccf1aa9b2ccdb4eaefaf15c09106ef",
+      "performance": {
+        "status": "PROVISIONAL",
+        "estimated_whole_soc_cycles": 6352,
+        "array_utilization_pct": 12.04,
+        "bound_by": "read requests"
+      },
+      "detail": {
+        "path": "qa/cases/SY_wide_move_tails_m17_k80_n144/61a01bd042cd83eebe042e3a7eddbb0012b7728fa57faf58a0588002ef8690d6.json",
+        "sha256": "61a01bd042cd83eebe042e3a7eddbb0012b7728fa57faf58a0588002ef8690d6"
+      }
+    }
+  ],
+  "performance_brief": {
+    "advisory_only": true,
+    "counts": {
+      "passing": 109,
+      "with_evidence": 102,
+      "without_evidence": 7
+    },
+    "diagnostic_control_count": 102,
+    "diagnostic_controls": [
+      {
+        "array_utilization_pct": 0.23,
+        "bound_by": "compute",
+        "cycles": 114821,
+        "evidence": "estimated: fast census estimate; band 54655-141804",
+        "evidence_kind": "fast_estimate",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 343,
+            "fences": 31,
+            "loads": 1630,
+            "modeled_fence_wait_cycles": 854,
+            "output_stores": 8,
+            "output_stores_per_fence": 0.26
+          },
+          "fence_per_tile": true,
+          "fences": 31,
+          "output_tiles": 8,
+          "reading": "a full-device fence after every output tile (31 fences, 0.26 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 22% of loads issue while compute is outstanding in the same epoch (static order)",
+          "static": {
+            "commands_per_epoch": {
+              "max": 8,
+              "median": 2
+            },
+            "epochs": 9,
+            "loads": 9,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 2,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.222,
+          "tiles_per_fence": 0.26
+        },
+        "gap_ratio": 438.25,
+        "headroom_cycles": 114559,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_conv_pool_edge_c3h13w9k7s2n13_p3s2/command_buffer.json --capsule CH_conv_pool_edge_c3h13w9k7s2n13_p3s2",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.23% over 114821 cycles; structural compute lower bound is 262 cycles; a full-device fence after every output tile (31 fences, 0.26 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 22% of loads issue while compute is outstanding in the same epoch (static order)",
+        "roofline_bound_cycles": 262,
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 152521,
+        "test_case": "CH_conv_pool_edge_c3h13w9k7s2n13_p3s2",
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.27,
+        "bound_by": "compute",
+        "cycles": 252795,
+        "evidence": "estimated: fast census estimate; band 120330-312202",
+        "evidence_kind": "fast_estimate",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 490,
+            "fences": 40,
+            "loads": 3828,
+            "modeled_fence_wait_cycles": 1393,
+            "output_stores": 11,
+            "output_stores_per_fence": 0.28
+          },
+          "fence_per_tile": true,
+          "fences": 40,
+          "output_tiles": 11,
+          "reading": "a full-device fence after every output tile (40 fences, 0.28 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 25% of loads issue while compute is outstanding in the same epoch (static order)",
+          "static": {
+            "commands_per_epoch": {
+              "max": 8,
+              "median": 2
+            },
+            "epochs": 9,
+            "loads": 8,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 2,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.25,
+          "tiles_per_fence": 0.28
+        },
+        "gap_ratio": 366.37,
+        "headroom_cycles": 252105,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2/command_buffer.json --capsule CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.27% over 252795 cycles; structural compute lower bound is 690 cycles; a full-device fence after every output tile (40 fences, 0.28 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 25% of loads issue while compute is outstanding in the same epoch (static order)",
+        "roofline_bound_cycles": 690,
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 350470,
+        "test_case": "CH_conv_pool_residual_cnn_c3h20w20k7s2n12_p3s2",
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.58,
+        "bound_by": "write requests",
+        "cycles": 4506,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.255,
+          "name": "memory.l1d.probe"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 12,
+            "fence_wait_share_of_cycles": 0.809,
+            "fences": 51,
+            "loads": 24,
+            "modeled_fence_wait_cycles": 3646,
+            "output_stores": 12,
+            "output_stores_per_fence": 0.24
+          },
+          "fence_per_tile": true,
+          "fences": 51,
+          "output_tiles": 12,
+          "reading": "a full-device fence after every output tile (51 fences, 0.24 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 80.9% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 7,
+              "median": 2.5
+            },
+            "epochs": 26,
+            "loads": 24,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.24
+        },
+        "gap_ratio": 10.5,
+        "headroom_cycles": 4077,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_kv_heads_edge_q6kv2s13l13d9/command_buffer.json --capsule CH_kv_heads_edge_q6kv2s13l13d9",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.58% over 4506 cycles; memory.l1d.probe has 25.5% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (51 fences, 0.24 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 80.9% of cycles waiting on fences",
+        "roofline_bound_cycles": 429,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.07723035952063914,
+            "reader.slot_residency": 0.2947181535730138,
+            "writer.slot_residency": 0.28894806924101196,
+            "writer.state": 0.1384820239680426
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 4506,
+        "test_case": "CH_kv_heads_edge_q6kv2s13l13d9",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.55,
+        "bound_by": "read requests",
+        "cycles": 1237,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.311,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 8,
+            "fence_wait_share_of_cycles": 0.494,
+            "fences": 13,
+            "loads": 14,
+            "modeled_fence_wait_cycles": 611,
+            "output_stores": 7,
+            "output_stores_per_fence": 0.54
+          },
+          "fence_per_tile": true,
+          "fences": 13,
+          "output_tiles": 7,
+          "reading": "a full-device fence after every output tile (13 fences, 0.54 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 49.4% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 2.5
+            },
+            "epochs": 10,
+            "loads": 8,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 2.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.54
+        },
+        "gap_ratio": 22.83,
+        "headroom_cycles": 1182.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_residual_conv_edge_m17k17n17/command_buffer.json --capsule CH_residual_conv_edge_m17k17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.55% over 1237 cycles; cpu.issue has 31.1% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (13 fences, 0.54 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 49.4% of cycles waiting on fences",
+        "roofline_bound_cycles": 54.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.10670978172999192,
+            "reader.slot_residency": 0.36620856911883587,
+            "writer.slot_residency": 0.14147130153597412,
+            "writer.state": 0.07599029911075182
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 1582,
+        "test_case": "CH_residual_conv_edge_m17k17n17",
+        "vs_seed": 0.7819,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.55,
+        "bound_by": "read requests",
+        "cycles": 1237,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.311,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 8,
+            "fence_wait_share_of_cycles": 0.494,
+            "fences": 13,
+            "loads": 14,
+            "modeled_fence_wait_cycles": 611,
+            "output_stores": 7,
+            "output_stores_per_fence": 0.54
+          },
+          "fence_per_tile": true,
+          "fences": 13,
+          "output_tiles": 7,
+          "reading": "a full-device fence after every output tile (13 fences, 0.54 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 49.4% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 2.5
+            },
+            "epochs": 10,
+            "loads": 8,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 2.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.54
+        },
+        "gap_ratio": 22.83,
+        "headroom_cycles": 1182.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_residual_linear_edge_m17k17n17/command_buffer.json --capsule CH_residual_linear_edge_m17k17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.55% over 1237 cycles; cpu.issue has 31.1% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (13 fences, 0.54 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 49.4% of cycles waiting on fences",
+        "roofline_bound_cycles": 54.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.10670978172999192,
+            "reader.slot_residency": 0.36620856911883587,
+            "writer.slot_residency": 0.14147130153597412,
+            "writer.state": 0.07599029911075182
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 1582,
+        "test_case": "CH_residual_linear_edge_m17k17n17",
+        "vs_seed": 0.7819,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.89,
+        "bound_by": "read requests",
+        "cycles": 3048,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.321,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 24,
+            "fence_wait_share_of_cycles": 0.512,
+            "fences": 25,
+            "loads": 30,
+            "modeled_fence_wait_cycles": 1561,
+            "output_stores": 15,
+            "output_stores_per_fence": 0.6
+          },
+          "fence_per_tile": true,
+          "fences": 25,
+          "output_tiles": 15,
+          "reading": "a full-device fence after every output tile (25 fences, 0.6 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 51.2% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 1.0
+            },
+            "epochs": 22,
+            "loads": 12,
+            "loads_after_earlier_readout_in_epoch": 3,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.6
+        },
+        "gap_ratio": 42.19,
+        "headroom_cycles": 2975.8,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_sibling_feed_edge_m17k17h17n17/command_buffer.json --capsule CH_sibling_feed_edge_m17k17h17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.89% over 3048 cycles; cpu.issue has 32.1% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (25 fences, 0.6 tile/fence, executed): loads cannot overlap compute across tiles; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 51.2% of cycles waiting on fences",
+        "roofline_bound_cycles": 72.2,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.13123359580052493,
+            "reader.slot_residency": 0.3467847769028871,
+            "writer.slot_residency": 0.1571522309711286,
+            "writer.state": 0.10728346456692914
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 3754,
+        "test_case": "CH_sibling_feed_edge_m17k17h17n17",
+        "vs_seed": 0.8119,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.96,
+        "bound_by": "write requests",
+        "cycles": 1961,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.322,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 16,
+            "fence_wait_share_of_cycles": 0.519,
+            "fences": 15,
+            "loads": 16,
+            "modeled_fence_wait_cycles": 1018,
+            "output_stores": 8,
+            "output_stores_per_fence": 0.53
+          },
+          "fence_per_tile": true,
+          "fences": 15,
+          "output_tiles": 8,
+          "reading": "a full-device fence after every output tile (15 fences, 0.53 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 51.9% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 3,
+              "median": 1
+            },
+            "epochs": 13,
+            "loads": 4,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.53
+        },
+        "gap_ratio": 13.57,
+        "headroom_cycles": 1816.5,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/CH_siblings_edge_m17k17n17n17/command_buffer.json --capsule CH_siblings_edge_m17k17n17n17",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.96% over 1961 cycles; cpu.issue has 32.2% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (15 fences, 0.53 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 51.9% of cycles waiting on fences",
+        "roofline_bound_cycles": 144.5,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.1366649668536461,
+            "reader.slot_residency": 0.30800611932687405,
+            "writer.slot_residency": 0.20295767465578787,
+            "writer.state": 0.1611422743498215
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade",
+        "seed_cycles": 2163,
+        "test_case": "CH_siblings_edge_m17k17n17n17",
+        "vs_seed": 0.9066,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.52,
+        "bound_by": "read requests",
+        "cycles": 680,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.226,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 2,
+            "fence_wait_share_of_cycles": 0.578,
+            "fences": 13,
+            "loads": 5,
+            "modeled_fence_wait_cycles": 393,
+            "output_stores": 2,
+            "output_stores_per_fence": 0.15
+          },
+          "fence_per_tile": true,
+          "fences": 13,
+          "output_tiles": 2,
+          "reading": "a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 57.8% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 4,
+              "median": 1
+            },
+            "epochs": 7,
+            "loads": 3,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.15
+        },
+        "gap_ratio": 32.38,
+        "headroom_cycles": 659,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/G_conv2d_c12x5x5_k1x1s1_n3_raw/command_buffer.json --capsule G_conv2d_c12x5x5_k1x1s1_n3_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.52% over 680 cycles; cpu.issue has 22.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (13 fences, 0.15 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 57.8% of cycles waiting on fences",
+        "roofline_bound_cycles": 21,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.0838235294117647,
+            "reader.slot_residency": 0.2661764705882353,
+            "writer.slot_residency": 0.125,
+            "writer.state": 0.07352941176470588
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 680,
+        "test_case": "G_conv2d_c12x5x5_k1x1s1_n3_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.91,
+        "bound_by": "write requests",
+        "cycles": 1114,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.152,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 6,
+            "fence_wait_share_of_cycles": 0.671,
+            "fences": 24,
+            "loads": 11,
+            "modeled_fence_wait_cycles": 747,
+            "output_stores": 6,
+            "output_stores_per_fence": 0.25
+          },
+          "fence_per_tile": true,
+          "fences": 24,
+          "output_tiles": 6,
+          "reading": "a full-device fence after every output tile (24 fences, 0.25 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 29% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 67.1% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 8,
+              "median": 2.0
+            },
+            "epochs": 8,
+            "loads": 7,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 2,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.286,
+          "tiles_per_fence": 0.25
+        },
+        "gap_ratio": 20.63,
+        "headroom_cycles": 1060,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/G_conv2d_c12x5x5_k1x1s2_n24_raw/command_buffer.json --capsule G_conv2d_c12x5x5_k1x1s2_n24_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.91% over 1114 cycles; cpu.issue has 15.2% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (24 fences, 0.25 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 29% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 67.1% of cycles waiting on fences",
+        "roofline_bound_cycles": 54,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.1400359066427289,
+            "reader.slot_residency": 0.14721723518850988,
+            "writer.slot_residency": 0.18491921005385997,
+            "writer.state": 0.04847396768402154
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 1114,
+        "test_case": "G_conv2d_c12x5x5_k1x1s2_n24_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 1.63,
+        "bound_by": "read requests",
+        "cycles": 5578,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.511,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 54,
+            "fence_wait_share_of_cycles": 0.156,
+            "fences": 24,
+            "loads": 85,
+            "modeled_fence_wait_cycles": 870,
+            "output_stores": 6,
+            "output_stores_per_fence": 0.25
+          },
+          "fence_per_tile": true,
+          "fences": 24,
+          "output_tiles": 6,
+          "reading": "a full-device fence after every output tile (24 fences, 0.25 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 15.6% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 10,
+              "median": 2
+            },
+            "epochs": 7,
+            "loads": 5,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.25
+        },
+        "gap_ratio": 30.86,
+        "headroom_cycles": 5397.2,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/G_conv2d_c12x5x5_k3x3s2_n24_raw/command_buffer.json --capsule G_conv2d_c12x5x5_k3x3s2_n24_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 1.63% over 5578 cycles; cpu.issue has 51.1% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (24 fences, 0.25 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 15.6% of cycles waiting on fences",
+        "roofline_bound_cycles": 180.8,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.25170311939763357,
+            "reader.slot_residency": 0.22929365363929724,
+            "writer.slot_residency": 0.03693079956973826,
+            "writer.state": 0.00968088920760129
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 5578,
+        "test_case": "G_conv2d_c12x5x5_k3x3s2_n24_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 2.83,
+        "bound_by": "read requests",
+        "cycles": 6438,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.532,
+          "name": "accelerator.controller.execute"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 108,
+            "fence_wait_share_of_cycles": 0.216,
+            "fences": 30,
+            "loads": 58,
+            "modeled_fence_wait_cycles": 1393,
+            "output_stores": 6,
+            "output_stores_per_fence": 0.2
+          },
+          "fence_per_tile": true,
+          "fences": 30,
+          "output_tiles": 6,
+          "reading": "a full-device fence after every output tile (30 fences, 0.2 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 21.6% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 16,
+              "median": 4.0
+            },
+            "epochs": 18,
+            "loads": 20,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1.0,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.2
+        },
+        "gap_ratio": 19.08,
+        "headroom_cycles": 6100.5,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/G_conv2d_c24x3x3_k3x3s1_n24_raw/command_buffer.json --capsule G_conv2d_c24x3x3_k3x3s1_n24_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 2.83% over 6438 cycles; accelerator.controller.execute has 53.2% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (30 fences, 0.2 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 21.6% of cycles waiting on fences",
+        "roofline_bound_cycles": 337.5,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.5312208760484622,
+            "reader.slot_residency": 0.25054364709537125,
+            "writer.slot_residency": 0.031997514756135444,
+            "writer.state": 0.008387698042870456
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the seed's last completed grade (an earlier seed version)",
+        "seed_cycles": 33641,
+        "test_case": "G_conv2d_c24x3x3_k3x3s1_n24_raw",
+        "vs_seed": 0.1914,
+        "workload_role": "correctness"
+      },
+      {
+        "array_utilization_pct": 0.34,
+        "bound_by": "compute",
+        "cycles": 200432,
+        "dominant_modeled_resource": {
+          "modeled_activity": 0.639,
+          "name": "cpu.issue"
+        },
+        "evidence": "modeled: Spike timing model (provisional)",
+        "evidence_kind": "provisional_model",
+        "fence_overlap": {
+          "count_kind": "executed",
+          "dynamic": {
+            "basis": "timing model command census (executed commands)",
+            "computes": 490,
+            "fence_wait_share_of_cycles": 0.009,
+            "fences": 36,
+            "loads": 3797,
+            "modeled_fence_wait_cycles": 1717,
+            "output_stores": 10,
+            "output_stores_per_fence": 0.28
+          },
+          "fence_per_tile": true,
+          "fences": 36,
+          "output_tiles": 10,
+          "reading": "a full-device fence after every output tile (36 fences, 0.28 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 0.9% of cycles waiting on fences",
+          "static": {
+            "commands_per_epoch": {
+              "max": 10,
+              "median": 2
+            },
+            "epochs": 5,
+            "loads": 4,
+            "loads_after_earlier_readout_in_epoch": 0,
+            "loads_while_compute_outstanding": 0,
+            "median_tiles_per_readout_epoch": 1,
+            "multiplicity": "executions_per_kernel_call"
+          },
+          "static_overlap_ratio": 0.0,
+          "tiles_per_fence": 0.28
+        },
+        "gap_ratio": 290.48,
+        "headroom_cycles": 199742,
+        "inspect": "python isa_tools.py debug selfcheck_out/requests/3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139/G_conv2d_c3x20x20_k7x7s2_n12_raw/command_buffer.json --capsule G_conv2d_c3x20x20_k7x7s2_n12_raw",
+        "optimization_status": "diagnostic_only",
+        "reading": "useful compute-ceiling attainment is 0.34% over 200432 cycles; cpu.issue has 63.9% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck; a full-device fence after every output tile (36 fences, 0.28 tile/fence, executed): loads cannot overlap compute across tiles; no load follows an earlier tile's readout inside an epoch; 0% of loads issue while compute is outstanding in the same epoch (static order); the timing model spends 0.9% of cycles waiting on fences",
+        "roofline_bound_cycles": 690,
+        "schedule_activity": {
+          "active_fraction": {
+            "execute.feed": 0.06356270455815438,
+            "reader.slot_residency": 0.19953400654586095,
+            "writer.slot_residency": 0.00439051648439371,
+            "writer.state": 0.0017462281472020436
+          },
+          "additive": false,
+          "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+          "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+          "overlap_fraction": [
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "writer.state",
+              "right": "execute.feed"
+            },
+            {
+              "fraction_of_window": 0.0,
+              "left": "reader.slot_residency",
+              "right": "writer.state"
+            }
+          ]
+        },
+        "seed_basis": "the same executable the seed timed",
+        "seed_cycles": 200432,
+        "test_case": "G_conv2d_c3x20x20_k7x7s2_n12_raw",
+        "vs_seed": 1.0,
+        "workload_role": "correctness"
+      }
+    ],
+    "largest_headroom": [],
+    "note": "Primary-role passing cases, largest headroom first; advisory. Per-case advice: each case's detail file (cases[].detail.path -> optimization_next). Ranked list: qa/latest_completed_grade.json -> feedback_brief.performance_priority.development_headroom (qa/verdict.json while current).",
+    "schema": "merlin.selfcheck_performance_brief.v1",
+    "unknown_timing": {
+      "commands": [
+        "python agent_selfcheck.py --capsules SY_micro_model --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_refuse_requant --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_causal_decoder --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_causal_decoder_decode_step --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_coverage_mlp --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_multimodal_policy --sim gsim --wait-budget 5",
+        "python agent_selfcheck.py --capsules SY_source_residual_cnn --sim gsim --wait-budget 5"
+      ],
+      "how_to_measure": "Performance is compared on the Spike cycle model by default (self-checks, --sweep, --panel, variants). Where the model reports UNKNOWN, request gSIM cycles for one named case per request: `python agent_selfcheck.py --capsules NAME --sim gsim --wait-budget 5`, then collect it with `--attach ID`. This admits required correctness cases under their own gSIM budget. To compare a variant, obtain a supported complete-scope observation of the primary workload. Control measurements serve correctness/calibration diagnostics, not routine performance tuning or a substitute performance result for a larger workload.",
+      "meaning": "UNKNOWN timing is missing evidence, not a measured loss or a refusal of the variant. A variant whose timing is UNKNOWN is still a candidate; decide on its calibrated fast estimate (performance.fast_estimate, with its error band) and revert if a complete estimate or measurement later disagrees."
+    },
+    "vs_seed": {
+      "cases_in_seed_baseline": 149,
+      "compared": 93,
+      "faster_than_seed": 17,
+      "geomean_vs_seed": 0.8068,
+      "reading": "vs_seed = this run's cycles / the seed's for the same case (below 1 is faster)",
+      "slower_than_seed": 0
+    },
+    "without_evidence": [
+      "SY_micro_model",
+      "SY_refuse_requant",
+      "SY_source_causal_decoder",
+      "SY_source_causal_decoder_decode_step",
+      "SY_source_coverage_mlp",
+      "SY_source_multimodal_policy",
+      "SY_source_residual_cnn"
+    ],
+    "workload_role_summary": {
+      "basis": "Separate workload roles and evidence kinds. Useful compute-ceiling attainment, not physical PE occupancy. Medians describe this sample, not speedup or model accuracy. Timing without usable roofline evidence is unavailable here.",
+      "groups": [
+        {
+          "array_utilization_pct_cases": 8,
+          "evidence_kind": "provisional_model",
+          "gap_ratio_cases": 8,
+          "median_array_utilization_pct": 6.79,
+          "median_gap_ratio": 7.3,
+          "passing_cases": 8,
+          "workload_role": "calibration"
+        },
+        {
+          "array_utilization_pct_cases": 3,
+          "evidence_kind": "fast_estimate",
+          "gap_ratio_cases": 9,
+          "median_array_utilization_pct": 0.27,
+          "median_gap_ratio": 13.81,
+          "passing_cases": 9,
+          "workload_role": "correctness"
+        },
+        {
+          "array_utilization_pct_cases": 79,
+          "evidence_kind": "provisional_model",
+          "gap_ratio_cases": 85,
+          "median_array_utilization_pct": 1.14,
+          "median_gap_ratio": 13.94,
+          "passing_cases": 85,
+          "workload_role": "correctness"
+        },
+        {
+          "evidence_kind": "unavailable",
+          "passing_cases": 7,
+          "workload_role": "correctness"
+        }
+      ],
+      "scope": "passing cases in this response; not cumulative campaign coverage"
+    }
+  },
+  "result_index": {
+    "schema": "merlin.phase1.result_index.v1",
+    "namespace": "selfcheck"
+  },
+  "scope": "all",
+  "sim": "spike",
+  "suite_size": 109,
+  "tier_engines": {
+    "L2": "spike"
+  },
+  "selfcheck_protocol": 3,
+  "selfcheck_request_id": "3_1793256668354146868_a9489b46b0e6aa8abe8c70e19fe16139",
+  "submission_sha256": "71576f1bc7ce2b3516b38248c4c824c0b775927f4a3518bcbf424f3d3bfe0ea0",
+  "requested_submission_sha256": "71576f1bc7ce2b3516b38248c4c824c0b775927f4a3518bcbf424f3d3bfe0ea0",
+  "requested_at_unix_ns": 1793256668354150118,
+  "grade_started_at_unix_ns": 1793256670671789279,
+  "graded_at_unix_ns": 1793257137454515156,
+  "selfcheck_submission": "variants/integrated_phase3",
+  "official": false,
+  "variant": {
+    "name": "integrated_phase3",
+    "path": "variants/integrated_phase3",
+    "sha256": "71576f1bc7ce2b3516b38248c4c824c0b775927f4a3518bcbf424f3d3bfe0ea0",
+    "official": false,
+    "note": "SELF-CHECK OF A VARIANT, not of submission/. Only submission/ is graded officially: this result is never counted toward convergence, certifies nothing for submission/ and starts no promotion. To adopt this variant, copy its files into submission/ so the official grade grades those bytes."
+  }
+}

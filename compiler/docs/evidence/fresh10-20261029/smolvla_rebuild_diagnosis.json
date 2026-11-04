@@ -1,0 +1,178 @@
+{
+  "purpose": "Diagnose public SmolVLA prefix gate13built1refused without speculation",
+  "gate_source_sha256": "78aa628a346b01c58f7ac483c3ac2cf4daa887e78c9a77a6d4aa6b7fad7430fb",
+  "exact_refused_kernel": "unknown: public gate has no diagnostic; no detailed failed model check response staged",
+  "scope": "Two public report geometries each with12sourcecalls; count compatibility is hypothesis only",
+  "probes": [
+    {
+      "fixture": "artifacts/smolvla_gate_fix/matmul_101.mlir",
+      "source_identity": "generated semantic fixture from public reported geometry; not model source",
+      "source_sha256": "d9f9d8b995a2191da7c9b790189f6e6370e660122590a702ebb7531e09d192de",
+      "lowered_llvm": "artifacts/smolvla_gate_fix/matmul_101.llvm.mlir",
+      "lowered_sha256": "0d36132fe916d23f90e5a947800378aea4dbb14dde08087a913997e22c14358e",
+      "stderr_bytes": 0,
+      "compile_status": "pass"
+    },
+    {
+      "fixture": "artifacts/smolvla_gate_fix/matmul_101.interface.mlir",
+      "source_identity": "generated semantic fixture from public reported geometry; not model source",
+      "source_sha256": "947b4dc51bf981c0b2f9bfdc0d9fae48e0e0b4ff6a6ee5ebd43312eab1e84e5b",
+      "lowered_llvm": "artifacts/smolvla_gate_fix/matmul_101.interface.llvm.mlir",
+      "lowered_sha256": "3452d1a8ccaf5996701806dcedbf6176dc55f93b6ad528799cc5e57b1b00b2a2",
+      "stderr_bytes": 0,
+      "compile_status": "pass"
+    },
+    {
+      "fixture": "artifacts/smolvla_gate_fix/matmul_102.mlir",
+      "source_identity": "generated semantic fixture from public reported geometry; not model source",
+      "source_sha256": "012cd0be855dfeea1eeb9575e283f0f7d132638fa79ea492daea81a4dcf9856a",
+      "lowered_llvm": "artifacts/smolvla_gate_fix/matmul_102.llvm.mlir",
+      "lowered_sha256": "3eb1bfd14fb6c28ceca02daad07aa6b100a21d4efdef2124e10e3a25b13cce44",
+      "stderr_bytes": 0,
+      "compile_status": "pass"
+    },
+    {
+      "fixture": "artifacts/smolvla_gate_fix/matmul_102.interface.mlir",
+      "source_identity": "generated semantic fixture from public reported geometry; not model source",
+      "source_sha256": "d41416c601fa99f7c6e1497324f6105d12814c5748a606041271d9d209cb685b",
+      "lowered_llvm": "artifacts/smolvla_gate_fix/matmul_102.interface.llvm.mlir",
+      "lowered_sha256": "9b4dcf29fad6c71dc6db4c0e6db5b9fde519cd0f11d624e7eaded591a3375997",
+      "stderr_bytes": 0,
+      "compile_status": "pass"
+    }
+  ],
+  "objects": {
+    "matmul_101": {
+      "entry": "kernel_entry",
+      "frame_bytes": 144,
+      "max_static_bytes": 8192,
+      "headroom_bytes": 8048,
+      "rows": [
+        {
+          "source": "kernel.ll",
+          "function": "kernel_entry",
+          "bytes": 144,
+          "allocation": "static"
+        },
+        {
+          "source": "kernel.ll",
+          "function": "kernel_complete",
+          "bytes": 0,
+          "allocation": "static"
+        }
+      ],
+      "refusals": []
+    },
+    "matmul_102": {
+      "entry": "kernel_entry",
+      "frame_bytes": 128,
+      "max_static_bytes": 8192,
+      "headroom_bytes": 8064,
+      "rows": [
+        {
+          "source": "kernel.ll",
+          "function": "kernel_entry",
+          "bytes": 128,
+          "allocation": "static"
+        },
+        {
+          "source": "kernel.ll",
+          "function": "kernel_complete",
+          "bytes": 0,
+          "allocation": "static"
+        }
+      ],
+      "refusals": []
+    }
+  },
+  "compiler_changes": [],
+  "model_check_variant": "wrapper refuses variants; root owns integrated targeted check",
+  "fresh_integrated_model_check": {
+    "public_response": ".model_check_channel/resp_3_1793265144550808432_3cfcf43b50974fcb.json",
+    "source_sha256": "5feba061bf15af85ab1fddb5175d6f97aadd53e4acfb92390d0b15371d678028",
+    "status": "pass",
+    "gates": {
+      "build": {
+        "status": "pass",
+        "detail": "28/28 kernels built"
+      },
+      "kernel_exact": {
+        "status": "pass",
+        "partial": false,
+        "detail": "70/70 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+      },
+      "model_numerics": {
+        "status": "pass",
+        "detail": "every kernel exact, so the model computes its INT8 reference"
+      }
+    },
+    "programs": [
+      {
+        "program": "prefix_encode",
+        "build": {
+          "seconds": 38.1,
+          "built": 14,
+          "refused": 0,
+          "cache": {
+            "enabled": true,
+            "hits": 0,
+            "misses": 14,
+            "stored": 14
+          }
+        },
+        "census": {
+          "denominator": 3259,
+          "device": 3259,
+          "refused": 0,
+          "device_mac_fraction": 1.0
+        },
+        "refused": {}
+      },
+      {
+        "program": "flow_denoise",
+        "build": {
+          "seconds": 8.7,
+          "built": 14,
+          "refused": 0,
+          "cache": {
+            "enabled": true,
+            "hits": 0,
+            "misses": 14,
+            "stored": 14
+          }
+        },
+        "census": {
+          "denominator": 2036,
+          "device": 2036,
+          "refused": 0,
+          "device_mac_fraction": 1.0
+        },
+        "refused": {}
+      },
+      {
+        "program": "action_decode",
+        "build": {
+          "seconds": 0.1,
+          "built": 0,
+          "refused": 0,
+          "cache": {
+            "enabled": true,
+            "hits": 0,
+            "misses": 0,
+            "stored": 0
+          }
+        },
+        "census": {
+          "denominator": 0,
+          "device": 0,
+          "refused": 0,
+          "device_mac_fraction": null
+        },
+        "refused": {}
+      }
+    ],
+    "failures": [],
+    "total_seconds": 48.777
+  },
+  "conclusion": "The prior gate failure is not reproduced by a fresh complete check of current integrated source. No helper compiler mutation justified. The prior exact refusal cause remains unknown."
+}

@@ -1,0 +1,299 @@
+{
+  "decision": "parent promoted DENSE_FRONTIER_ISSUE_ORDER=aspect in tuning.json after consuming fresh heldout TL_o matched complete timing",
+  "selection": "existing registered shared pipeline_policy; no workload identity dispatch",
+  "class_predicate": "ceil(M/16)<=1 and ceil(K/16)>=128 and ceil(N/16)>=128",
+  "issue_order_predicate": "within admitted class: exact RatioFeature(N,K)<=3 -> frontier_columns; otherwise frontier Ktiles",
+  "high_aspect_incumbent": "prefetch_rhs_between_k_tiles unchanged for N/K>3",
+  "outside_class_incumbent": "retained wide/half, capacity fallback streaming then compact; original terminal encoder",
+  "resource_legality": "source-derived adaptive partition admits complete LHS plus two disjoint bounded RHS slots and ACC panel; no column-scale frontier; actual finite source/ownership/epoch proof remains required",
+  "knob_overrides": [
+    "prefetch_rhs_between_k_tiles",
+    "prefetch_rhs_between_columns",
+    "aspect"
+  ],
+  "pairs": [
+    {
+      "case": "TL_mm_down_m16k5632n2048_raw",
+      "baseline_k_cycles": 3273049,
+      "columns_cycles": 2820766,
+      "change_pct": -13.818399907853507,
+      "request": "2_1793254244848812319_e0847130bf31fc31ed7465e4291061f2",
+      "identity": {
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ],
+        "model_sha256": [
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11"
+        ],
+        "selection_sha256": [
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        ]
+      }
+    },
+    {
+      "case": "CH_sibling_feed_tiny_llama_decode_m1k2048h5728n2048",
+      "baseline_k_cycles": 9208349,
+      "columns_cycles": 7803585,
+      "change_pct": -15.255329701339516,
+      "request": "2_1793255176898407784_e50e2d9ae11ee1457b766a32bbe1557a",
+      "identity": {
+        "model_sha256": [
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11"
+        ],
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "scope_sha256": [
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525"
+        ],
+        "selection_sha256": [
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ]
+      },
+      "baseline_elf_sha256": "8c392d8271795660cd701a8177f44e08527249993438fc1a59b3472d531da1f9",
+      "columns_elf_sha256": "d712ae9a0a8f39bb5f2e96e1f3e5e42d4aad3110d0d9bd0e9321fcfe0c834ddc"
+    },
+    {
+      "case": "JM_tiny_llama_decode_m1k2048n2048_raw",
+      "baseline_k_cycles": 1227760,
+      "columns_cycles": 1060744,
+      "change_pct": -13.603310093177823,
+      "request": "2_1793255176898407784_e50e2d9ae11ee1457b766a32bbe1557a",
+      "identity": {
+        "model_sha256": [
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11"
+        ],
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "scope_sha256": [
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525"
+        ],
+        "selection_sha256": [
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ]
+      },
+      "baseline_elf_sha256": "7a6ee8e525bc41acf6292bc68509a9272b3404dbd60f8cb7c5b9f3fc3d8d199a",
+      "columns_elf_sha256": "eb2cb2deeb5118a2306328c81334bd066e8c773d091e7b22daed03fc0bfa0d07"
+    },
+    {
+      "case": "TL_mm_o_m16k2048n2048_raw",
+      "baseline_k_cycles": 1246788,
+      "columns_cycles": 1076033,
+      "change_pct": -13.695592193700934,
+      "request": "2_1793255740770844394_3d6509c5b0e957cf336b8c1a3b626c04",
+      "identity": {
+        "model_sha256": [
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+          "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11"
+        ],
+        "facts_sha256": [
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+          "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+        ],
+        "comparison_domain_sha256": [
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+          "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f"
+        ],
+        "scope_sha256": [
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+          "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525"
+        ],
+        "selection_sha256": [
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6",
+          "f25f562f289c6cc3240af2740e4037975a03f99f3589d604661c70ed550e37f6"
+        ],
+        "complete_event_accounting": [
+          true,
+          true
+        ]
+      },
+      "baseline_elf_sha256": "d2bad21b84c7484a842b622d32ef5d2f701152ba29435c6722780c3ce9c2a2b2",
+      "columns_elf_sha256": "d3021de6e9fe687349929fe73caf9061577fbc1b3354fa31b0606366ed1b0724"
+    }
+  ],
+  "heldout_after_rule_frozen": "TL_mm_o_m16k2048n2048_raw",
+  "pass_order": [
+    "source DenseProblem + hardware DenseResources",
+    "capacity-admitted adaptive partition",
+    "make_dense_schedule_plan segmented K + exact double-buffer assignment",
+    "registered segmented frontier issue-order transform",
+    "exact finite source/ownership/reduction/epoch certificate (unsupported domains original SMT)",
+    "independent checked uniform store epochs",
+    "same dense terminal LLVM/command encoder"
+  ],
+  "actual_TL_o_receipt": {
+    "kernel_sha256": "b493b0a9ed3abf1764d70b78681f6cffb8a2010e3d7afc5b1bae46d48d85ae07",
+    "selected_pipeline": "segmented",
+    "panel_geometry": {
+      "selection": "skinny",
+      "max_m_blocks": 1,
+      "max_n_blocks": 64,
+      "selected_block_tiles": [
+        1,
+        7,
+        64
+      ],
+      "accumulator_rows": 1024,
+      "accumulator_capacity_rows": 1024,
+      "lhs_window_rows": 2048,
+      "rhs_window_rows": 14336
+    },
+    "segment_k_bound": 64,
+    "segment_k_tiles": 7,
+    "segment_issue_order": "prefetch_rhs_between_columns",
+    "storage_partition": {
+      "selection": "adaptive_segmented",
+      "selected_block_tiles": [
+        1,
+        7,
+        64
+      ],
+      "lhs_window_rows": 2048,
+      "rhs_window_rows": 14336,
+      "rhs_slots": 2,
+      "rhs_slot_rows": 7168,
+      "operand_capacity_rows": 16384,
+      "accumulator_capacity_rows": 1024,
+      "legality": "complete LHS plus two disjoint bounded RHS slots checked by dense_segmented_blocks"
+    },
+    "store_epochs": {
+      "selection": "on",
+      "applied": true,
+      "source_kernel_sha256": "83829ccfa5396c74602a9ac381a2fec8725cf292165f91bb22c696255952db9d",
+      "kernel_sha256": "b493b0a9ed3abf1764d70b78681f6cffb8a2010e3d7afc5b1bae46d48d85ae07",
+      "uniform_config": [
+        0,
+        2,
+        4575657221408432128
+      ],
+      "regions": [
+        {
+          "dynamic_stores": 64,
+          "checked_outer_local_stores": 128,
+          "enumeration_bound": 1000000,
+          "solver_queries": 0,
+          "proof": "exact finite outer/local integer domains; disjoint owned ACC rows"
+        }
+      ],
+      "readiness": "real begin drain after all original producers and seeds",
+      "reuse": "real closing drain before outer loop backedges or any non-store command",
+      "data_projection": "original store operands and loop order unchanged",
+      "admission": {
+        "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+        "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "load_completion": "out_of_order",
+        "store_completion": "in_order",
+        "finite_load_entries": 8,
+        "finite_store_entries": 4,
+        "accumulator_capacity_rows": 1024,
+        "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+      }
+    }
+  },
+  "compiler_sha256": {
+    "submission/backend/dense.py": "5fd9af72542e15f30999f4882310100d77c1930d5f22aecc5b026b5c6c77bfd5",
+    "submission/backend/dense_shape_policy.py": "b79ffc4600abf90dac33d95190c9b598faedcba1a297ef10731713dc689c6ed1",
+    "submission/backend/dense_pipeline.py": "f452f4b646c8215813683094e212c7a9b20587307d87d5acd6981b80c9fd1263",
+    "submission/backend/dense_storage_partition.py": "f374d3eda730b26b2a1a6fe5fdeb177f6d90b1cfacec1c05cd96ca010846d6ce",
+    "submission/backend/dense_store_epochs.py": "d7581018badac674674fac6f610017383ca95d6cab0e0539f43117ec06db148e",
+    "submission/compiler_library/merlin/compile/scheduling/dense_finite_certificate.py": "a632603530170a29005b5888632570b4623996120920295728aa241d41ce57e5",
+    "submission/compiler_library/merlin/compile/scheduling/dense_segmented_pipeline.py": "2e1e0b619e0f1a9a2559f2174563332931542e0971469c68b26821f8d88b3563"
+  },
+  "source_terminal_evidence": {
+    "path": "aspect_terminal_equivalence.json",
+    "source_sha256": "c68412ba202ffd0b7b2d48bc4ad98988542d14fabdf3e4235a098db472dc6b10",
+    "llvm_sha256": {
+      "prefetch_rhs_between_k_tiles": "36f2f662b6979ca03aa2d4f019b40d99e26980983cccb823b06cd4862f925f91",
+      "prefetch_rhs_between_columns": "bd9fc0348552287ef5a09dd97e09ff5d7c789ad8be2c35c3416bfb950ea9817d",
+      "aspect": "bd9fc0348552287ef5a09dd97e09ff5d7c789ad8be2c35c3416bfb950ea9817d"
+    },
+    "meaning": "same public TL_o source compiled independently without z3; aspect emits forcedcolumns bytes and differs K"
+  },
+  "exact_source_boundary_validation": {
+    "path": "aspect_source_neighbors.json",
+    "shapes": [
+      [
+        1,
+        2048,
+        6144
+      ],
+      [
+        1,
+        2048,
+        6145
+      ],
+      [
+        1,
+        2049,
+        6147
+      ],
+      [
+        1,
+        2049,
+        6148
+      ]
+    ],
+    "status": "all actual source schedules checked without solver, exact inclusive rational cutoff; ragged neighbor legality verified"
+  },
+  "timing_kind": "complete same kernel-call window provisional Spike timing model; no measured gSIM claims",
+  "remaining_coverage": [
+    "N/K3 exact timing boundary and both scalar neighbors UNKNOWN",
+    "No fresh admitted raw highaspect standalone beyond priorJT; highaspect keeps measured K incumbent",
+    "M17/K127/N127 cutoff neighbor cycles UNKNOWN, exact source legality checked",
+    "Physical array occupancy and required RTL certification unchanged"
+  ],
+  "JT_columns_UNKNOWN": {
+    "reason": "observation budget too small ~1839s needed /1552s available",
+    "normalized_fast_estimate": "ties K under shared calibration (same770164commands/709fences); no complete timing ordering claim",
+    "estimate_cycles": 22615812,
+    "band": [
+      11013901,
+      28970856
+    ]
+  },
+  "padding": "all issue alternatives preserve useful/nominal MACs and transfer commands; m1 useful fraction6.25%, m16 fraction100%",
+  "evidence_files": [
+    "columns_cycle_comparison.json",
+    "columns_trio_cycle_comparison.json",
+    "aspect_heldout_cycle_comparison.json",
+    "aspect_frozen_panel.json",
+    "aspect_source_neighbors.json",
+    "aspect_terminal_equivalence.json"
+  ]
+}
