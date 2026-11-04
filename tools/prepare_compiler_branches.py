@@ -587,9 +587,9 @@ def refresh_metrics():
     print('Refreshed recorded metrics without running an experiment', flush=True)
 
 
-def create_index(published, base):
+def create_index(published, base, previous=None):
     branch = 'paper/index'
-    if git('for-each-ref', '--format=%(refname)', 'refs/heads/' + branch).strip():
+    if not previous and git('for-each-ref', '--format=%(refname)', 'refs/heads/' + branch).strip():
         raise ValueError('Index branch already exists. Inspect it before creating a replacement.')
     folder = OUT / 'index'
     folder.mkdir(exist_ok=True)
@@ -627,9 +627,112 @@ def create_index(published, base):
             blob = git('hash-object', '-w', '--stdin', data=path.read_bytes()).decode().strip()
             indexed('update-index', '--add', '--cacheinfo', '100644,' + blob + ',' + path.relative_to(folder).as_posix())
     tree = indexed('write-tree').decode().strip()
-    commit = git('commit-tree', tree, '-p', base, data=b'docs(artifacts): index paper compiler versions and recorded experiments\n').decode().strip()
-    git('update-ref', 'refs/heads/' + branch, commit, '0' * 40)
+    commit = git('commit-tree', tree, '-p', previous or base, data=b'docs(artifacts): index paper compiler versions and recorded experiments\n').decode().strip()
+    git('update-ref', 'refs/heads/' + branch, commit, previous or '0' * 40)
     return {'branch': branch, 'commit': commit, 'url': REMOTE + '/tree/' + branch}
+
+
+def attach_current_validation():
+    """Keep the later current-library controls distinct from historical rows."""
+    import statistics
+    plan = read(OUT / 'publication-plan.json')
+    package = next(p for p in plan['packages'] if p['label'] == 'CCA-EXO-R3')
+    local = TASK / '.tmp'
+    root = local / 'fsm-rerun'
+    declaration = read(root / 'rerun-manifest.json')
+    observed = read(root / 'hardware-validation-summary.json')
+    rows = read(root / 'verified-rerun-results.json')
+    assert declaration['merlin_objects_unchanged'] == 89
+    assert observed['status'] == 'verified_hardware_execution'
+    assert observed['elf_sha256'] == declaration['elf_sha256']
+    assert all(observed[k] == 0 for k in ['numerical_mismatches', 'guard_failures', 'input_failures', 'done_code'])
+    groups = {}
+    for row in rows:
+        assert len(row['fsm_samples']) == len(row['merlin_samples']) == 20
+        assert statistics.median(row['fsm_samples']) == row['fsm_median']
+        assert statistics.median(row['merlin_samples']) == row['merlin_median']
+        assert math.isclose(row['fsm_over_merlin'], row['fsm_median'] / row['merlin_median'], rel_tol=1e-12)
+        groups.setdefault(row['case_id'], []).append(row)
+    assert len(groups) == 89 and len(rows) == 178
+    combined = []
+    for case, values in sorted(groups.items()):
+        assert sorted(r['pass_id'] for r in values) == [0, 1]
+        fsm = math.sqrt(math.prod(r['fsm_median'] for r in values))
+        compiler = math.sqrt(math.prod(r['merlin_median'] for r in values))
+        combined.append({'case_id': case, 'fsm_cycles': fsm, 'compiler_cycles': compiler, 'fsm_over_compiler': fsm / compiler})
+    for subdir, names in [
+        ('fsm-rerun', ['rerun-manifest.json', 'hardware-validation-summary.json', 'verified-rerun-results.json', 'verified-order-and-trend.json', 'current-upstream-comparison.json']),
+        ('fsm-counterfactual-execution', ['manifest.json', 'hardware-validation-summary.json', 'verified-results.json']),
+        ('fsm-decode-strides', ['manifest.json', 'hardware-validation-summary.json', 'verified-results.json']),
+        ('fsm-fresh-inputs', ['manifest.json', 'hardware-validation-summary.json', 'verified-results.json']),
+        ('gu-hardware-ablation', ['manifest.json', 'hardware-validation-summary.json', 'verified-results.json']),
+    ]:
+        for name in names:
+            source = local / subdir / name
+            add_metadata(package, 'experiment/later-validation/' + subdir + '/' + name, source.read_bytes())
+    latest = {'schema': 'merlin.recorded-current-library-validation.v1',
+              'new_execution_performed': False,
+              'recorded_fsm_commit': declaration['fsm_upstream_commit'],
+              'warmups_per_implementation_per_order': 20,
+              'measurements_per_implementation_per_order': 20,
+              'opposite_orders_in_one_boot': 2,
+              'compiler_objects_unchanged': 89,
+              'case_count': 89, 'order_records': 178,
+              'geometric_mean_fsm_over_compiler': math.exp(sum(math.log(r['fsm_over_compiler']) for r in combined) / len(combined)),
+              'cases': combined, 'saved_execution_summary': observed,
+              'source_records': [record(root / n) for n in ['rerun-manifest.json', 'hardware-validation-summary.json', 'verified-rerun-results.json']],
+              'scope': 'Later validation. Keep separate from the five-call historical/common-reference results and from manual adapted FSM policies.',
+              'record_phase_note': 'Build manifests retain their original built_not_executed status. The separate hardware-validation summaries record the subsequent execution.'}
+    metrics_path = 'experiment/metrics.json'
+    m = read(package['payload'][metrics_path])
+    m['later_current_library_validation'] = latest
+    replace_metadata(package, metrics_path, m)
+    manifest_path = 'experiment/manifest.json'
+    m = read(package['payload'][manifest_path])
+    m['results']['later_validation_records'] = 'experiment/later-validation'
+    replace_metadata(package, manifest_path, m)
+    (OUT / 'publication-plan.json').write_bytes(encoded(plan))
+    print('Attached later recorded validation, exact arithmetic checked on 178 order records', flush=True)
+
+
+def update_metadata(push=False):
+    """Advance metadata only. Refuse any compiler-subtree change."""
+    registry = read(OUT / 'branches.json')
+    plan = read(OUT / 'publication-plan.json')
+    packages = {p['label']: p for p in plan['packages']}
+    index_file = TASK / '.tmp/artifact-metadata-index'
+    env = dict(os.environ, GIT_INDEX_FILE=str(index_file))
+    changed = []
+    for item in registry['branches']:
+        parent = item['commit']
+        assert git('rev-parse', item['branch']).decode().strip() == parent
+        subprocess.run(['git', '-C', str(REPO), 'read-tree', parent], env=env, check=True)
+        for rel, filename in packages[item['label']]['payload'].items():
+            if not (rel.startswith('experiment/') or rel == 'README.md'):
+                continue
+            blob = git('hash-object', '-w', '--stdin', data=Path(filename).read_bytes()).decode().strip()
+            subprocess.run(['git', '-C', str(REPO), 'update-index', '--add', '--cacheinfo', '100644,' + blob + ',' + rel], env=env, check=True)
+        tree = subprocess.check_output(['git', '-C', str(REPO), 'write-tree'], env=env).decode().strip()
+        if tree == git('rev-parse', parent + '^{tree}').decode().strip():
+            continue
+        commit = git('commit-tree', tree, '-p', parent, data=b'docs(experiment): retain later recorded validation alongside historical measurements\n').decode().strip()
+        assert git('rev-parse', parent + ':compiler') == git('rev-parse', commit + ':compiler')
+        git('update-ref', 'refs/heads/' + item['branch'], commit, parent)
+        item.update(commit=commit, url=REMOTE + '/tree/' + commit)
+        changed.append(item)
+    if changed:
+        old_index = registry['index']['commit']
+        registry['index'] = create_index(registry['branches'], git('rev-parse', 'origin/main').decode().strip(), previous=old_index)
+    registry['pushed'] = False if changed else registry['pushed']
+    registry['backup_covers_current_refs'] = not changed
+    (OUT / 'branches.json').write_bytes(encoded(registry))
+    if push and changed:
+        names = [p['branch'] for p in changed] + [registry['index']['branch']]
+        subprocess.run(['git', '-C', str(REPO), 'push', '--atomic', 'origin',
+                        *['refs/heads/' + n + ':refs/heads/' + n for n in names]], check=True)
+        registry['pushed'] = True
+        (OUT / 'branches.json').write_bytes(encoded(registry))
+    print('Updated metadata branches:', len(changed), flush=True)
 
 
 def create_commits(push=False):
@@ -728,7 +831,7 @@ def verify_created(push=False, base=None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'extend-studies', 'refresh-metrics', 'create', 'verify-created'])
+    parser.add_argument('action', choices=['prepare', 'extend-studies', 'refresh-metrics', 'attach-current-validation', 'update-metadata', 'create', 'verify-created'])
     parser.add_argument('--push', action='store_true')
     args = parser.parse_args()
     if args.action == 'prepare':
@@ -745,5 +848,11 @@ if __name__ == '__main__':
         refresh_metrics()
     elif args.action == 'verify-created':
         verify_created(push=args.push)
+    elif args.action == 'attach-current-validation':
+        if args.push:
+            parser.error('--push requires a publication action')
+        attach_current_validation()
+    elif args.action == 'update-metadata':
+        update_metadata(push=args.push)
     else:
         create_commits(push=args.push)
