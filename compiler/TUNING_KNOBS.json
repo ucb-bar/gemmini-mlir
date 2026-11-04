@@ -1,0 +1,291 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "dense_block_profile": {
+      "values": [
+        "primitive1",
+        "panel2",
+        "panel4",
+        "wide_panel4"
+      ],
+      "mechanism": "compact_dense capacity-checked panels with optional output-width predicate",
+      "note": "primitive1 remains incumbent; wide_panel4 is an unassessed opt-in N >= 4*array_edge hypothesis requiring boundary and held-out paired cycles."
+    },
+    "dense_m_blocks": {
+      "values": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "note": "0 inherits profile; explicit M maximum controls RHS reuse across output rows."
+    },
+    "dense_k_blocks": {
+      "values": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "note": "0 inherits profile; explicit K maximum controls resident reduction panel depth."
+    },
+    "dense_n_blocks": {
+      "values": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "note": "0 inherits profile; explicit N maximum controls LHS reuse across output columns."
+    },
+    "dense_outer_order": {
+      "values": [
+        "mn",
+        "nm"
+      ],
+      "note": "Order of independent output groups; complete ordered K reduction stays inside each group."
+    },
+    "conv_schedule": {
+      "values": [
+        "synchronous",
+        "retained_input",
+        "resident_weights"
+      ],
+      "mechanism": "convolution input retention and invocation-local RHS residency",
+      "note": "Incumbent synchronous; alternatives require paired complete-call cycles and numerics."
+    },
+    "dense_completion_epochs": {
+      "values": [
+        "off",
+        "two_window_drained",
+        "two_window_epochs"
+      ],
+      "mechanism": "dense_panel_epochs with selected RTL dependency ordering"
+    },
+    "conv_completion_epochs": {
+      "values": [
+        "off",
+        "load_issue",
+        "pairs16",
+        "pairs64"
+      ],
+      "mechanism": "fact-backed convolution load issue and bounded compute epochs",
+      "note": "Off preserves synchronous incumbent. Actual shared-library epoch consumer removes only fact-ordered drains; compare complete-call numerics/cycles."
+    },
+    "dense_readout_schedule": {
+      "values": [
+        "off",
+        "segmented_drained",
+        "segmented_ready"
+      ],
+      "mechanism": "dense_segmented_pipeline and dense_ready_readout",
+      "note": "Same full-LHS/two-RHS plan; ready consumes causal ACC completion and store snapshot facts. Capacity or unsupported numerical boundaries retain incumbent. off remains default."
+    },
+    "source_layout_reuse": {
+      "values": [
+        "off",
+        "cse"
+      ],
+      "mechanism": "exact immutable source layout common subexpression reuse",
+      "note": "Off incumbent; consumes reviewed source_preparation pass with original source ownership and protected returned identities."
+    },
+    "dense_schedule_policy": {
+      "values": [
+        "off",
+        "geometry_epochs",
+        "geometry_panel4_epochs",
+        "validated_panel_epochs"
+      ],
+      "mechanism": "source geometry predicates over dense_panel_epochs and checked panel capacity",
+      "note": "validated_panel_epochs is selected for K>edge and N<=2048 on scalar nontransposed layouts, supported by paired complete-call training/held-out evidence and an RTL witness. Width2048 is a coverage guard, not an inferred crossover. Explicit options take precedence."
+    },
+    "address_simplification": {
+      "values": [
+        "off",
+        "local_cse"
+      ],
+      "mechanism": "block-local pure integer and pointer expression simplification",
+      "note": "Off incumbent; no loads, stores, commands or fences cached. Compare complete-call cycles."
+    },
+    "source_epilogue_fusion": {
+      "values": [
+        "off",
+        "exact"
+      ],
+      "mechanism": "proof-admitted exact source epilogue readout fusion",
+      "note": "Off incumbent; exact requires literal source initialization and a proven integer bias / f32 scale path under declared target stages. Runtime float operands retain source execution."
+    },
+    "dense_resident_reuse": {
+      "values": [
+        "off",
+        "retained",
+        "retained_tiny"
+      ],
+      "mechanism": "complete RHS placement and invocation-local live private-cell retention",
+      "note": "Off incumbent after isolated complete-call regressions versus selected epochs (resident020). Retained alternatives remain available for explicit RHS lifetime experiments; physical legality and performance admission are separate."
+    },
+    "conv_accumulator_init": {
+      "values": [
+        "overwrite",
+        "zero_accumulate",
+        "zero_single_slice"
+      ],
+      "mechanism": "explicit source-zero accumulator DMA initialization before real products",
+      "note": "zero_single_slice is selected to make source-zero initialization explicit before real single-slice products without bias. Multi-slice and original bias paths retain their source initialization. This is a correctness/evidence choice; added initialization cost is recorded."
+    },
+    "host_optimization": {
+      "values": [
+        "off",
+        "guarded_fusion"
+      ],
+      "mechanism": "stock transport of Merlin CPU broadcast fusion guard",
+      "note": "Off incumbent; guarded_fusion pins typed broadcast producers around the existing upstream fusion pass and erases barriers before original bufferization. Preserves source arithmetic."
+    },
+    "dense_index_unroll": {
+      "values": [
+        "off",
+        "tiny"
+      ],
+      "mechanism": "ascending literal emission of constant dense index axes of extent at most two",
+      "note": "off preserves counted emission; tiny expands singleton/two-trip axes with at most 15 extra iteration callbacks per kernel, bounding each original effect to at most 16 copies. Checked schedule and completion order remain unchanged."
+    },
+    "literal_dispatch_policy": {
+      "values": [
+        "off",
+        "periodic"
+      ],
+      "mechanism": "exact minimal-period compression of literal configuration dispatch",
+      "note": "periodic selected on matched complete RN percolumn pair -20.77%; exact literal uint32 periods preserve ragged repetition. Original block, distinct scales and physical witness pass."
+    },
+    "dense_wide_schedule": {
+      "values": [
+        "off",
+        "retained_lhs_wide",
+        "supported_geometry"
+      ],
+      "mechanism": "checked retained LHS two RHS segment ready readout; optional source/resource geometry policy",
+      "note": "off remains default; QKV complete paired modeled win, GU complete timing UNKNOWN; heldout geometry timing pending"
+    },
+    "host_numeric_optimization": {
+      "values": [
+        "off",
+        "bounded_rne"
+      ],
+      "mechanism": "Merlin independently checked bounded host quantization and roundeven intrinsic selection",
+      "note": "Off incumbent; bounded_rne consumes automatic_host and automatic_rounding source-preserving contracts before original bufferization. Exact native bitwise checks pass; complete program timing pending."
+    },
+    "configuration_cse": {
+      "values": [
+        "off",
+        "block",
+        "across_fence"
+      ],
+      "mechanism": "shared independently checked configuration CSE on exact block-local terminal effects",
+      "note": "Off incumbent; across_fence also preserves full controller configurations across the exact ordinary CPU fence, which orders completion without writing RoCC configuration. Unknown asm, task/CFG changes and flush still invalidate. Requires actual paired complete-call checks."
+    },
+    "conv_selection": {
+      "values": [
+        "off",
+        "validated_epochs",
+        "supported_geometry"
+      ],
+      "mechanism": "shared paired-evidence convolution shape policy",
+      "note": "Off preserves explicit schedules. Strict validated_epochs needs typed pins; supported_geometry uses frozen completed pairs and reviewed geometry guards. Both emit shared routes."
+    },
+    "conv_pool_schedule": {
+      "values": [
+        "off",
+        "retained_input",
+        "retained_input_pairs16"
+      ],
+      "mechanism": "pooled convolution private-patch input retention and fact-backed epochs",
+      "note": "Off preserves incumbent. Alternatives share input runs across channel tiles, retain original pooling/readout fences, and require paired complete-cycle validation."
+    },
+    "column_producer_schedule": {
+      "values": [
+        "off",
+        "raw_then_readout",
+        "raw_then_grouped_readout",
+        "supported_geometry"
+      ],
+      "mechanism": "full-width raw i32 contraction followed by checked per-column hardware readout",
+      "note": "supported_geometry selects full-width raw producer plus exact grouped readout for dense positive per-column scales; convolution selects only single-column numerical partitions. Complete paired timings support large RN13.47M vs106.60M, dense and independent conv witnesses; full-channel small conv preserves incumbent. Required native tail witness passes."
+    },
+    "dense_sibling_schedule": {
+      "values": [
+        "off",
+        "shared_lhs"
+      ],
+      "mechanism": "checked compact_dense_group with full-K shared activation and independent member windows",
+      "note": "Opt-in independent source SSA siblings, exact zero-seeded raw i32 exits. Capacity/alias/dependency/epilogue refusal preserves each original product. No cycle qualification; off incumbent."
+    },
+    "host_completion_optimization": {
+      "values": [
+        "off",
+        "static_copy"
+      ],
+      "mechanism": "stock Merlin static ranked memref copy expansion before existing CPU loop lowering",
+      "note": "Off incumbent; consumes existing source/CPU copy transport with unchanged arithmetic. Real attention copies expand; no complete cycle gain established."
+    },
+    "dense_shared_rhs_schedule": {
+      "values": [
+        "off",
+        "drained",
+        "epochs",
+        "supported_geometry"
+      ],
+      "mechanism": "source-bound dense_shared_rhs full-K LHS and complete RHS with checked member completion epochs",
+      "note": "Off incumbent. Explicit drained/epochs retained; supported_geometry adds opt-in raw independent-group coverage guards M<=edge,K/N<=4edge and resource predicates. Existing checked source grouping, schedule and common emission remain authoritative. Two complete training pairs improve; tail/boundary integer proofs do not establish heldout timing."
+    },
+    "conv_pool_materialization": {
+      "values": [
+        "off",
+        "quantized_once"
+      ],
+      "mechanism": "complete quantized convolution once followed by library spatial-max strips",
+      "note": "Requires an externally mapped full prepool i8 workspace. No default promotion or timing claim."
+    },
+    "residual_identity_readout": {
+      "values": [
+        "off",
+        "double_accumulator"
+      ],
+      "mechanism": "exhaustively proven doubled integer representation of an identity-scale signed-byte residual followed by consumed half-scale readout",
+      "note": "Selected doubled integer representation preserves source identity scaling exactly with two extra accumulating loads per rectangle. Three affected original source cases pass required gSIM qualification in identity024; this is a correctness choice with added cost."
+    },
+    "pointwise_convolution": {
+      "values": [
+        "off",
+        "dense_view"
+      ],
+      "mechanism": "source-proven zero-copy NHWC 1x1 view consumed by shared dense scheduling",
+      "note": "Selected source-proven zero-copy 1x1 NHWC view; seven affected public geometries pass exact numerics and matched complete modeled pairs, all improve (pointwise026). One required original gSIM witness passes. Explicit source-zero initialization remains consumed; required physical refresh runs separately."
+    },
+    "dense_sibling_materialized_readout": {
+      "values": [
+        "off",
+        "raw_then_grouped_readout"
+      ],
+      "mechanism": "checked shared-LHS raw i32 sibling producers followed by exact grouped scalar hardware readouts",
+      "note": "Optional actual private spill/reload; complete-call comparison required."
+    },
+    "conv_pool_selection": {
+      "values": [
+        "off",
+        "supported_geometry"
+      ],
+      "mechanism": "source geometry and hardware capacity select existing compute epochs or quantized-once pooled convolution",
+      "note": "Selected bounded 7x7 stride2 family: actual epochs for small prepool rows, quantized-once for larger legal mapped workspace. Complete matched pairs support two small regions and one large region; resource-relative crossover has limited neighbor coverage. Original quantization before max is preserved."
+    },
+    "raw_convolution_schedule": {
+      "values": [
+        "off",
+        "retained_input_pairs16",
+        "supported_geometry"
+      ],
+      "mechanism": "existing full-width raw 1x1 convolution retained-input compute epochs",
+      "note": "Off incumbent. Supported geometry restricts original retained-input epochs to aligned CI/CO>=2edge and spatial rows>=edge^2, with original capacity/ordering checks. One large source complete modeled pair improves13.47M\u21929.56M; neighboring cycle coverage remains open, so no default promotion."
+    }
+  }
+}

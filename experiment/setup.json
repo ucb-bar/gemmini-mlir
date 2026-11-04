@@ -1,0 +1,163 @@
+{
+  "author_profile": {
+    "capabilities": {
+      "automatic_kernel_learning": false,
+      "catalog_advice": true,
+      "compiler_integration": true,
+      "performance_diagnostics": true,
+      "raw_kernel_references": true,
+      "reference_analysis": true,
+      "scheduling_semantics": true,
+      "transform_library": true
+    },
+    "cca_bank_service": "precomputed_selected_units_only",
+    "cca_bank_sha256": "8c5ce71524744c4e0c6236a21462f7b196acf82de362d2087d7367ca15d1265a",
+    "level": 4,
+    "live_cca": false,
+    "name": "fresh10-tooling-v1/full-ref-bank-all",
+    "optimization_guidance": true,
+    "prior_reference_tasks": false,
+    "raw_reference_grant": "cca_bank_raw_list_only",
+    "seeded": null,
+    "tools": [
+      "merlin_infra",
+      "xdsl_kit",
+      "isa_tools",
+      "rtl_generators",
+      "rtl_facts"
+    ]
+  },
+  "authoring_model": "gpt-6.1-sol",
+  "intake": {
+    "author_capabilities": {
+      "automatic_kernel_learning": false,
+      "catalog_advice": true,
+      "compiler_integration": true,
+      "performance_diagnostics": true,
+      "raw_kernel_references": true,
+      "reference_analysis": true,
+      "scheduling_semantics": true,
+      "transform_library": true
+    },
+    "author_profile_name": "fresh10-tooling-v1/full-ref-bank-all",
+    "build_source": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/sources/FULL-REF-4H",
+    "campaign_duration_s": 43200,
+    "campaign_run": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca",
+    "cca_bank_sha256": "8c5ce71524744c4e0c6236a21462f7b196acf82de362d2087d7367ca15d1265a",
+    "copied_source": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/sources/FULL-REF-4H",
+    "display_name": "full-ref-cca (operator_graded_snapshot; 12 h scratch campaign, 23 raw expert files, no map, CCA declared off)",
+    "drain_s": 900,
+    "expected": "19600bacf59c4d8bb689011c08a636075a89764de31ade4412b73f8659d3af9f",
+    "framework": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/run-frameworks/14338d1b578b",
+    "generic_library": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/compiler-libraries/FULL-REF-4H/generic-library",
+    "graded_at": "2026-10-29T14:12:08.218984+00:00",
+    "label": "FULL-REF-4H",
+    "live_cca": false,
+    "snapshot_correctness": "148/149 cases pass numerics (L2) (by cohort: calibration 8/8, functional 100/101, scalability 40/40); L3 certified 93/97 tracked (4 being re-proven after an edit); originals' physical correctness 5/101 (0 failed, 96 pending).",
+    "snapshot_kind": "operator_graded_snapshot",
+    "snapshot_offset_s": 14400.0,
+    "snapshot_utc": "2026-10-29T14:18:29.336401+00:00",
+    "source": "/work/merlin/tasks/el4-grader-throughput-20261024/.tmp/next-batch/snapshots/full-ref-cca/240min/graded-submission"
+  },
+  "interpretation": [
+    "Native campaign completion flags describe the construction test suite, not the separate 89-case frozen-kernel panel.",
+    "Configured duration, final-model reservation, drain and observed wall time are separate fields. Do not infer author time from a single duration field.",
+    "reference_analysis can use a precomputed expert corpus even when live_cca is false."
+  ],
+  "reasoning_effort": "high",
+  "recorded_completion": {
+    "compiler_sha256": "a854ff36c7821d4678e7fdfd24d41b257023cd6a3345c55547ea0390417d131e",
+    "completion_reason": "freeze_drain",
+    "converged": false,
+    "elapsed_wall_s": 42905.42144918442,
+    "formal_complete": false,
+    "frozen_compiler": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca/joint_frozen_submission",
+    "legacy_certificate_issued": false,
+    "numeric_all_pass": false,
+    "performance_qualification": "reported separately by versioned timing evidence",
+    "policy_sha256": "abe7a0863a10326b92d811c9b7bf510c638331aa534084097940f3454a47a782",
+    "schema": "merlin.joint_campaign_completion.v1",
+    "workflow_conformant": true
+  },
+  "recorded_policy": {
+    "compiler_execution_mode": "snapshot_external_v1",
+    "compiler_origin": null,
+    "drain_s": 900,
+    "duration_s": 43200,
+    "final_model_s": 2700,
+    "operator_measurement_policy": {
+      "automatic_sweep": false,
+      "bootstrap_observations_max": 8,
+      "configuration_rule": "Derive model structure from pinned RTL facts and selected configuration. Calibrate uncertain timing parameters against matched cycle-accurate gSIM observations; do not fit around configuration contradictions.",
+      "facts": {
+        "path": "/work/merlin/tasks/el4-joint-campaign-20261021/merlin/out/artifacts/protocols/gemmini/joint-corpus-intake-v1/payload/experiment/rtl_facts/facts.json",
+        "sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+      },
+      "fit_rule": "Diagnostics do not qualify a fit. Use the existing calibration planner for identifiability and independent point requirements; hold validation source groups out of fitting. Missing source groups remain unknown. Use at least the independent points needed for each fitted parameter, and separate schedule/source groups for held-out validation. Neither six candidates nor eight bootstrap jobs are a qualification claim.",
+      "initial_diagnostics_max": 2,
+      "later_batch_max": 4,
+      "new_model_rule": "Freeze a new immutable model/runtime selection, preserve prior observations, and compare compiler candidates under the same new evaluator. Never silently change prices during a request.",
+      "queue_model_rule": "Model Gemmini ROB admission, dependencies, finite capacity, service and resource-specific release; scalar in-order Rocket. Inspect actual interleaving and asynchronous buffer ownership. Current execute-overlap restrictions must not be interpreted as performance regressions.",
+      "selection_rule": "Run only after complete numerical correctness and emitted-mechanism review; reuse exact matching evidence first. A whitelist is permission, not a queue of tests.",
+      "stop_rule": "Do not request another gSIM run when matching evidence resolves the question, when the relevant schedule ranking is insensitive to the remaining uncertainty, or when the remaining budget cannot produce an identifiable update.",
+      "witness_questions": {
+        "G_conv2d_c3x20x20_k7x7s2_n12_raw": "Conditional larger host packing diagnostic if its actual cache/traffic regime is missing from smaller observations.",
+        "JH_resnet_bias_scale_relu_h8": "Merlin-owned host fusion diagnostic; use native provided-host ELF, full numerical checks and a separately pinned operator L3 bridge. No candidate CPU compiler.",
+        "JH_resnet_dequant_scale_h16": "Merlin-owned integer-to-FP conversion and scale diagnostic; same ELF/scope across Spike and gSIM, independent complete-output check.",
+        "JH_resnet_quant_h16": "Pending exact host admission: medium quantization working set crosses L1; establish actual cache accesses, not logical size alone.",
+        "JH_resnet_quant_h48": "Pending exact host admission: quantization working set crosses Rocket L2; only measure if smaller cases cannot resolve memory regime. Logical footprint is not measured traffic.",
+        "JH_resnet_quant_h8": "Pending exact host admission: small quantization chain isolates FP conversion/rounding and host service. Do not execute before admission.",
+        "PC00_k64": "Capacity/reuse control: verify actual buffer residency and dependence pattern. Candidate only; run when this distinction changes a decision.",
+        "PC01_k128": "Capacity/reuse control: verify actual buffer residency and dependence pattern. Candidate only; run when this distinction changes a decision.",
+        "PK00_k16": "Reduction depth: separate fixed command overhead from compute service. Candidate only; run when this distinction changes a decision.",
+        "PK01_k32": "Reduction depth: separate fixed command overhead from compute service. Candidate only; run when this distinction changes a decision.",
+        "PK02_k64": "Reduction depth: separate fixed command overhead from compute service. Candidate only; run when this distinction changes a decision.",
+        "PK03_k128": "Reduction depth: separate fixed command overhead from compute service. Candidate only; run when this distinction changes a decision.",
+        "PL00_k16": "Layout/transfer alternatives: inspect emitted commands before fitting service costs. Candidate only; run when this distinction changes a decision.",
+        "PL01_k16": "Layout/transfer alternatives: inspect emitted commands before fitting service costs. Candidate only; run when this distinction changes a decision.",
+        "PL02_k32": "Layout/transfer alternatives: inspect emitted commands before fitting service costs. Candidate only; run when this distinction changes a decision.",
+        "PL03_k32": "Layout/transfer alternatives: inspect emitted commands before fitting service costs. Candidate only; run when this distinction changes a decision.",
+        "PM00_m16n16": "Tile extent: distinguish useful compute growth from command/transfer costs. Candidate only; run when this distinction changes a decision.",
+        "PM05_m32n32": "Tile extent: distinguish useful compute growth from command/transfer costs. Candidate only; run when this distinction changes a decision.",
+        "PM10_m48n48": "Tile extent: distinguish useful compute growth from command/transfer costs. Candidate only; run when this distinction changes a decision.",
+        "PM15_m64n64": "Tile extent: distinguish useful compute growth from command/transfer costs. Candidate only; run when this distinction changes a decision.",
+        "PQ02_j4_k16": "Multi-command queue/reuse: compare serialized and legal interleaved schedules, inspect queue pressure. Candidate only; run when this distinction changes a decision.",
+        "PQ08_j8_k32": "Multi-command queue/reuse: compare serialized and legal interleaved schedules, inspect queue pressure. Candidate only; run when this distinction changes a decision.",
+        "PV00_c16": "Convolution/host packing: isolate host work, transfer and accelerator service. Candidate only; run when this distinction changes a decision.",
+        "PV01_c32": "Convolution/host packing: isolate host work, transfer and accelerator service. Candidate only; run when this distinction changes a decision.",
+        "PV02_c48": "Convolution/host packing: isolate host work, transfer and accelerator service. Candidate only; run when this distinction changes a decision.",
+        "PV03_c64": "Convolution/host packing: isolate host work, transfer and accelerator service. Candidate only; run when this distinction changes a decision.",
+        "SY_contraction_i8_aligned": "Initial integer compute/command/completion diagnostic after the first correct emitted accelerator program.",
+        "SY_contraction_i8_partial": "Conditional tail diagnostic if padded work or partial-tile handling changes predicted ranking.",
+        "SY_conv_k3x3_s1x1_d1x1_pad1x1": "Initial host packing plus accelerator diagnostic, only if emitted packing/host work adds a mechanism absent from the first case.",
+        "SY_kdepth_fits_double": "Conditional capacity/overlap diagnostic only after emitted schedule inspection establishes the relevant residency and buffering regime.",
+        "SY_movement_i8_aligned": "Conditional transfer diagnostic if DMA price uncertainty affects the next schedule choice; it is not a sustained-bandwidth sweep."
+      }
+    },
+    "prohibited_instruction_roles": [
+      "loop_descriptor"
+    ]
+  },
+  "records": [
+    {
+      "bytes": 868417,
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca/environment.yaml",
+      "sha256": "a274571c14f18a3420794cc5dd903cdb03b6cf7d179fa1c456fbbf56d60aa333"
+    },
+    {
+      "bytes": 21502,
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca/joint_campaign.json",
+      "sha256": "f8bed68d70811e72604a763df88f1da792da870e84d06be9c4d2af5093cc6fb6"
+    },
+    {
+      "bytes": 96083694,
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca/joint_campaign_summary.json",
+      "sha256": "ed715789e40723490e13987a244402ed355c8ec8bf2b591aaea72a757ca341ad"
+    },
+    {
+      "bytes": 5000,
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/next-batch-20261029-full-ref-cca/AUTHOR_PROFILE.json",
+      "sha256": "d7fcdcae0c3e307830176e6ae90de53df2bd5b7c9ca8c14fa2c487fcd3a8a012"
+    }
+  ]
+}
