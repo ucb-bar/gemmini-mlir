@@ -1,0 +1,2433 @@
+{
+  "layouts": {
+    "command_acceptance_and_semantic_roles": "unproven",
+    "fields": [
+      {
+        "bundle": "PreloadRs",
+        "field": "c_address_rs2",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "local_addr",
+        "offset": 0,
+        "packing_context": {
+          "dynamic_input": true,
+          "truncate_aliases": true
+        },
+        "source_lines": [
+          318782,
+          318783,
+          318784,
+          318785,
+          318786,
+          318787,
+          318788,
+          318789,
+          318791,
+          318793,
+          318794,
+          318795,
+          318796,
+          318797,
+          318798,
+          318799,
+          318800
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "data",
+            "offset": 0,
+            "width": 14
+          },
+          {
+            "field": "garbage_bit",
+            "offset": 14,
+            "width": 1
+          },
+          {
+            "field": "garbage",
+            "offset": 15,
+            "width": 11
+          },
+          {
+            "field": "norm_cmd",
+            "offset": 26,
+            "width": 3
+          },
+          {
+            "field": "read_full_acc_row",
+            "offset": 29,
+            "width": 1
+          },
+          {
+            "field": "accumulate",
+            "offset": 30,
+            "width": 1
+          },
+          {
+            "field": "is_acc_addr",
+            "offset": 31,
+            "width": 1
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "PreloadRs",
+        "field": "c_cols",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "num_cols",
+        "offset": 32,
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        },
+        "source_lines": [
+          318839
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "PreloadRs",
+        "field": "c_rows",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "num_rows",
+        "offset": 48,
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        },
+        "source_lines": [
+          318840
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_address_rs1",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "local_addr",
+        "offset": 0,
+        "packing_context": {
+          "dynamic_input": true,
+          "truncate_aliases": true
+        },
+        "source_lines": [
+          318719,
+          318720,
+          318721,
+          318722,
+          318723,
+          318724,
+          318725,
+          318726,
+          318728,
+          318730,
+          318731,
+          318732,
+          318733,
+          318734,
+          318735,
+          318736,
+          318737
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "data",
+            "offset": 0,
+            "width": 14
+          },
+          {
+            "field": "garbage_bit",
+            "offset": 14,
+            "width": 1
+          },
+          {
+            "field": "garbage",
+            "offset": 15,
+            "width": 11
+          },
+          {
+            "field": "norm_cmd",
+            "offset": 26,
+            "width": 3
+          },
+          {
+            "field": "read_full_acc_row",
+            "offset": 29,
+            "width": 1
+          },
+          {
+            "field": "accumulate",
+            "offset": 30,
+            "width": 1
+          },
+          {
+            "field": "is_acc_addr",
+            "offset": 31,
+            "width": 1
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_cols_default",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "num_cols",
+        "offset": 32,
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        },
+        "source_lines": [
+          318819
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_rows_default",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "num_rows",
+        "offset": 48,
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        },
+        "source_lines": [
+          318820
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.local_addr",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "local_addr",
+        "offset": 0,
+        "source_lines": [
+          229173,
+          229174,
+          229175,
+          229176,
+          229177,
+          229178,
+          229179,
+          229180,
+          229182,
+          229184,
+          229185,
+          229186,
+          229187,
+          229188,
+          229189,
+          229190,
+          229191
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "data",
+            "offset": 0,
+            "width": 14
+          },
+          {
+            "field": "garbage_bit",
+            "offset": 14,
+            "width": 1
+          },
+          {
+            "field": "garbage",
+            "offset": 15,
+            "width": 11
+          },
+          {
+            "field": "norm_cmd",
+            "offset": 26,
+            "width": 3
+          },
+          {
+            "field": "read_full_acc_row",
+            "offset": 29,
+            "width": 1
+          },
+          {
+            "field": "accumulate",
+            "offset": 30,
+            "width": 1
+          },
+          {
+            "field": "is_acc_addr",
+            "offset": 31,
+            "width": 1
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.num_cols",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "num_cols",
+        "offset": 32,
+        "source_lines": [
+          229173,
+          229193,
+          229194
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 7
+          }
+        ],
+        "width": 7
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.num_rows",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "num_rows",
+        "offset": 48,
+        "source_lines": [
+          229173,
+          229197,
+          229198
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.shrink",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "shrink",
+        "offset": 2,
+        "source_lines": [
+          229203,
+          229206,
+          229207
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 2,
+            "width": 1
+          }
+        ],
+        "width": 1
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.state_id",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "state_id",
+        "offset": 3,
+        "source_lines": [
+          229203,
+          229208,
+          229209
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 3,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.pixel_repeats",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "pixel_repeats",
+        "offset": 8,
+        "source_lines": [
+          229203,
+          229212,
+          229213
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 8,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "stride",
+        "offset": 16,
+        "source_lines": [
+          229203,
+          229216,
+          229217
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 16,
+            "width": 14
+          }
+        ],
+        "width": 14
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.scale",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "scale",
+        "offset": 32,
+        "source_lines": [
+          229203,
+          229220,
+          229221
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 32
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.local_addr",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "local_addr",
+        "offset": 0,
+        "source_lines": [
+          229726,
+          229727,
+          229728,
+          229729,
+          229730,
+          229731,
+          229732,
+          229733,
+          229735,
+          229737,
+          229738,
+          229739,
+          229740,
+          229741,
+          229742,
+          229743,
+          229744
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "data",
+            "offset": 0,
+            "width": 14
+          },
+          {
+            "field": "garbage_bit",
+            "offset": 14,
+            "width": 1
+          },
+          {
+            "field": "garbage",
+            "offset": 15,
+            "width": 11
+          },
+          {
+            "field": "norm_cmd",
+            "offset": 26,
+            "width": 3
+          },
+          {
+            "field": "read_full_acc_row",
+            "offset": 29,
+            "width": 1
+          },
+          {
+            "field": "accumulate",
+            "offset": 30,
+            "width": 1
+          },
+          {
+            "field": "is_acc_addr",
+            "offset": 31,
+            "width": 1
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.num_cols",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "num_cols",
+        "offset": 32,
+        "source_lines": [
+          229726,
+          229746,
+          229747
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 7
+          }
+        ],
+        "width": 7
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.num_rows",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "num_rows",
+        "offset": 48,
+        "source_lines": [
+          229726,
+          229750,
+          229751
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 5
+          }
+        ],
+        "width": 5
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.cmd_type",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "cmd_type",
+        "offset": 0,
+        "source_lines": [
+          229761,
+          229762,
+          229763
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 0,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.activation",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "activation",
+        "offset": 2,
+        "source_lines": [
+          229761,
+          229764,
+          229765
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 2,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_stride",
+        "offset": 4,
+        "source_lines": [
+          229761,
+          229766,
+          229767
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 4,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_size",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_size",
+        "offset": 6,
+        "source_lines": [
+          229761,
+          229768,
+          229769
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 6,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.upad",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "upad",
+        "offset": 8,
+        "source_lines": [
+          229761,
+          229770,
+          229771
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 8,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.lpad",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "lpad",
+        "offset": 10,
+        "source_lines": [
+          229761,
+          229772,
+          229773
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 10,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_out_dim",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_out_dim",
+        "offset": 24,
+        "source_lines": [
+          229761,
+          229776,
+          229777
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 24,
+            "width": 8
+          }
+        ],
+        "width": 8
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.porows",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "porows",
+        "offset": 32,
+        "source_lines": [
+          229761,
+          229778,
+          229779
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 8
+          }
+        ],
+        "width": 8
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pocols",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pocols",
+        "offset": 40,
+        "source_lines": [
+          229761,
+          229780,
+          229781
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 40,
+            "width": 8
+          }
+        ],
+        "width": 8
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.orows",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "orows",
+        "offset": 48,
+        "source_lines": [
+          229761,
+          229782,
+          229783
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 8
+          }
+        ],
+        "width": 8
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.ocols",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "ocols",
+        "offset": 56,
+        "source_lines": [
+          229761,
+          229784,
+          229785
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 56,
+            "width": 8
+          }
+        ],
+        "width": 8
+      },
+      {
+        "bundle": "ConfigMvoutRs2",
+        "field": "config_mvout_rs2.stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "stride",
+        "offset": 0,
+        "source_lines": [
+          229788,
+          229789,
+          229790
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 0,
+            "width": 32
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "ConfigMvoutRs2",
+        "field": "config_mvout_rs2.acc_scale",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "acc_scale",
+        "offset": 32,
+        "source_lines": [
+          229788,
+          229792,
+          229793
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 32
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.cmd_type",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "cmd_type",
+        "offset": 0,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321134,
+          321135
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 0,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.dataflow",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "dataflow",
+        "offset": 2,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321136,
+          321137
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 2,
+            "width": 1
+          }
+        ],
+        "width": 1
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.activation",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "activation",
+        "offset": 3,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321138,
+          321139
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 3,
+            "width": 2
+          }
+        ],
+        "width": 2
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.set_only_strides",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "set_only_strides",
+        "offset": 7,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321142,
+          321143
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 7,
+            "width": 1
+          }
+        ],
+        "width": 1
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.a_transpose",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "a_transpose",
+        "offset": 8,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321144,
+          321145
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 8,
+            "width": 1
+          }
+        ],
+        "width": 1
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.b_transpose",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "b_transpose",
+        "offset": 9,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321146,
+          321147
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 9,
+            "width": 1
+          }
+        ],
+        "width": 1
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.a_stride",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "a_stride",
+        "offset": 16,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321150,
+          321151
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 16,
+            "width": 16
+          }
+        ],
+        "width": 16
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.acc_scale",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "acc_scale",
+        "offset": 32,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321133,
+          321152,
+          321153
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 32
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.in_shift",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "in_shift",
+        "offset": 0,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321157,
+          321158,
+          321159
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 0,
+            "width": 32
+          }
+        ],
+        "width": 32
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.relu6_shift",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "relu6_shift",
+        "offset": 32,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321157,
+          321160,
+          321161
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 32,
+            "width": 16
+          }
+        ],
+        "width": 16
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.c_stride",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "c_stride",
+        "offset": 48,
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        },
+        "source_lines": [
+          321157,
+          321162,
+          321163
+        ],
+        "status": "derived",
+        "subfields": [
+          {
+            "field": "",
+            "offset": 48,
+            "width": 16
+          }
+        ],
+        "width": 16
+      }
+    ],
+    "schema": "merlin.firrtl_operand_layouts.v2",
+    "scope": "original elaborated combinational field packing only",
+    "selections": [
+      {
+        "bundle": "PreloadRs",
+        "field": "c_address_rs2",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "local_addr",
+        "packing_context": {
+          "dynamic_input": true,
+          "truncate_aliases": true
+        }
+      },
+      {
+        "bundle": "PreloadRs",
+        "field": "c_cols",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "num_cols",
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        }
+      },
+      {
+        "bundle": "PreloadRs",
+        "field": "c_rows",
+        "input": "rs2s[preload_cmd_place]",
+        "module": "ExecuteController",
+        "name": "num_rows",
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        }
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_address_rs1",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "local_addr",
+        "packing_context": {
+          "dynamic_input": true,
+          "truncate_aliases": true
+        }
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_cols_default",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "num_cols",
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        }
+      },
+      {
+        "bundle": "ComputeRs",
+        "field": "a_rows_default",
+        "input": "rs1s[a_address_place]",
+        "module": "ExecuteController",
+        "name": "num_rows",
+        "packing_context": {
+          "dynamic_input": true,
+          "node_field": true
+        }
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.local_addr",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "local_addr"
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.num_cols",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "num_cols"
+      },
+      {
+        "bundle": "MvinRs2",
+        "field": "mvin_rs2.num_rows",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "LoadController",
+        "name": "num_rows"
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.shrink",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "shrink"
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.state_id",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "state_id"
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.pixel_repeats",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "pixel_repeats"
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "stride"
+      },
+      {
+        "bundle": "ConfigMvinRs1",
+        "field": "config_mvin_rs1.scale",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "LoadController",
+        "name": "scale"
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.local_addr",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "local_addr"
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.num_cols",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "num_cols"
+      },
+      {
+        "bundle": "MvoutRs2",
+        "field": "mvout_rs2.num_rows",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "num_rows"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.cmd_type",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "cmd_type"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.activation",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "activation"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_stride"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_size",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_size"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.upad",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "upad"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.lpad",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "lpad"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pool_out_dim",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pool_out_dim"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.porows",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "porows"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.pocols",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "pocols"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.orows",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "orows"
+      },
+      {
+        "bundle": "ConfigMvoutRs1",
+        "field": "config_mvout_rs1.ocols",
+        "input": "cmd_q.io.deq.bits.cmd.rs1",
+        "module": "StoreController",
+        "name": "ocols"
+      },
+      {
+        "bundle": "ConfigMvoutRs2",
+        "field": "config_mvout_rs2.stride",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "stride"
+      },
+      {
+        "bundle": "ConfigMvoutRs2",
+        "field": "config_mvout_rs2.acc_scale",
+        "input": "cmd_q.io.deq.bits.cmd.rs2",
+        "module": "StoreController",
+        "name": "acc_scale"
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.cmd_type",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "cmd_type",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.dataflow",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "dataflow",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.activation",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "activation",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.set_only_strides",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "set_only_strides",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.a_transpose",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "a_transpose",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.b_transpose",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "b_transpose",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.a_stride",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "a_stride",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs1",
+        "field": "config_ex_rs1.acc_scale",
+        "input": "rs1s[0]",
+        "module": "ExecuteController",
+        "name": "acc_scale",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.in_shift",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "in_shift",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.relu6_shift",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "relu6_shift",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      },
+      {
+        "bundle": "ConfigExRs2",
+        "field": "config_ex_rs2.c_stride",
+        "input": "rs2s[0]",
+        "module": "ExecuteController",
+        "name": "c_stride",
+        "packing_context": {
+          "guards": [
+            "_T_102",
+            "cmd_q.io.deq.valid[0]",
+            "_T_107"
+          ]
+        }
+      }
+    ],
+    "source": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+    "source_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0",
+    "word_bits": 64
+  },
+  "load_state_selection": {
+    "command": "cmd_q.io.deq.bits.cmd.inst.funct",
+    "config_class": "CONFIG_LD",
+    "config_field": {
+      "bundle": "ConfigMvinRs1",
+      "name": "state_id"
+    },
+    "config_state": "config_mvin_rs1.state_id",
+    "dram_address": "cmd_q.io.deq.bits.cmd.rs1",
+    "load_classes": [
+      "MVIN",
+      "MVIN2",
+      "MVIN3"
+    ],
+    "module": "LoadController",
+    "row_index": "row_counter",
+    "state": "state_id",
+    "stride_input": "cmd_q.io.deq.bits.cmd.rs2",
+    "stride_register": "strides",
+    "stride_sink": "io.dma.req.bits.vaddr",
+    "transfer_bound": {
+      "byte_count": "cmd_tracker.io.alloc.bits.bytes_to_read",
+      "cols": {
+        "bundle": "MvinRs2",
+        "name": "num_cols"
+      },
+      "rows": {
+        "bundle": "MvinRs2",
+        "name": "num_rows"
+      }
+    }
+  },
+  "operand_field_kind_sources": [
+    {
+      "bundle": "ConfigExRs1",
+      "field": "a_stride",
+      "firrtl_lines": [
+        321181
+      ],
+      "kind": "stride",
+      "label": "CONFIG_EX.a_stride",
+      "module": "ExecuteController",
+      "sink": "a_addr_stride",
+      "sink_declaration": {
+        "keyword": "reg",
+        "line": 319970
+      },
+      "source": "config_ex_rs1.a_stride"
+    },
+    {
+      "bundle": "ConfigExRs2",
+      "field": "c_stride",
+      "firrtl_lines": [
+        321182
+      ],
+      "kind": "stride",
+      "label": "CONFIG_EX.c_stride",
+      "module": "ExecuteController",
+      "sink": "c_addr_stride",
+      "sink_declaration": {
+        "keyword": "reg",
+        "line": 319971
+      },
+      "source": "config_ex_rs2.c_stride"
+    },
+    {
+      "bundle": "ConfigExRs1",
+      "field": "activation",
+      "firrtl_lines": [
+        321169
+      ],
+      "kind": "activation",
+      "label": "CONFIG_EX.activation",
+      "module": "ExecuteController",
+      "sink": "activation",
+      "sink_declaration": {
+        "keyword": "reg",
+        "line": 318686
+      },
+      "source": "config_ex_rs1.activation"
+    },
+    {
+      "bundle": "ConfigMvinRs1",
+      "field": "scale",
+      "firrtl_lines": [
+        229345
+      ],
+      "kind": "scale",
+      "label": "CONFIG_LD.scale",
+      "module": "LoadController",
+      "sink": "scales[state_id]",
+      "sink_declaration": {
+        "keyword": "reg",
+        "line": 229110
+      },
+      "source": "config_mvin_rs1.scale"
+    },
+    {
+      "bundle": "ConfigMvinRs1",
+      "field": "stride",
+      "firrtl_lines": [
+        229347
+      ],
+      "kind": "stride",
+      "label": "CONFIG_LD.rs1_stride",
+      "module": "LoadController",
+      "sink": "block_strides[state_id]",
+      "sink_declaration": {
+        "keyword": "reg",
+        "line": 229112
+      },
+      "source": "config_mvin_rs1.stride"
+    },
+    {
+      "bundle": "ConfigMvoutRs2",
+      "field": "stride",
+      "firrtl_lines": [
+        230368
+      ],
+      "kind": "stride",
+      "label": "CONFIG_ST.out_stride_bytes",
+      "module": "StoreController",
+      "sink": "stride",
+      "sink_declaration": {
+        "keyword": "regreset",
+        "line": 229587
+      },
+      "source": "config_mvout_rs2.stride"
+    },
+    {
+      "bundle": "ConfigMvoutRs1",
+      "field": "activation",
+      "firrtl_lines": [
+        230369
+      ],
+      "kind": "activation",
+      "label": "CONFIG_ST.acc_act",
+      "module": "StoreController",
+      "sink": "activation",
+      "sink_declaration": {
+        "keyword": "regreset",
+        "line": 229588
+      },
+      "source": "config_mvout_rs1.activation"
+    },
+    {
+      "bundle": "MvinRs2",
+      "field": "num_cols",
+      "firrtl_lines": [
+        229263
+      ],
+      "kind": "extent",
+      "label": "MVIN.cols",
+      "module": "LoadController",
+      "sink": "io.dma.req.bits.cols",
+      "sink_declaration": {
+        "keyword": "output",
+        "line": 229106
+      },
+      "source": "mvin_rs2.num_cols"
+    },
+    {
+      "bundle": "MvinRs2",
+      "field": "num_cols",
+      "firrtl_lines": [
+        229263
+      ],
+      "kind": "extent",
+      "label": "MVIN2.cols",
+      "module": "LoadController",
+      "sink": "io.dma.req.bits.cols",
+      "sink_declaration": {
+        "keyword": "output",
+        "line": 229106
+      },
+      "source": "mvin_rs2.num_cols"
+    },
+    {
+      "bundle": "MvinRs2",
+      "field": "num_cols",
+      "firrtl_lines": [
+        229263
+      ],
+      "kind": "extent",
+      "label": "MVIN3.cols",
+      "module": "LoadController",
+      "sink": "io.dma.req.bits.cols",
+      "sink_declaration": {
+        "keyword": "output",
+        "line": 229106
+      },
+      "source": "mvin_rs2.num_cols"
+    }
+  ],
+  "operand_field_kinds": {
+    "CONFIG_EX.a_stride": "stride",
+    "CONFIG_EX.activation": "activation",
+    "CONFIG_EX.c_stride": "stride",
+    "CONFIG_LD.rs1_stride": "stride",
+    "CONFIG_LD.scale": "scale",
+    "CONFIG_ST.acc_act": "activation",
+    "CONFIG_ST.out_stride_bytes": "stride",
+    "MVIN.cols": "extent",
+    "MVIN2.cols": "extent",
+    "MVIN3.cols": "extent"
+  },
+  "operand_layout_roster": {
+    "derived_fields": 41,
+    "status": "complete",
+    "unprojected_fields": []
+  },
+  "original_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+  "protocol": {
+    "address_field": {
+      "bundle": "MvoutRs2",
+      "field": "local_addr"
+    },
+    "encoding": {
+      "config_subtype": {
+        "0": "CONFIG_EX",
+        "1": "CONFIG_LD",
+        "2": "CONFIG_ST"
+      },
+      "semantic_class": {
+        "0": "CONFIG",
+        "1": "MVIN2",
+        "2": "MVIN",
+        "3": "MVOUT",
+        "4": "COMPUTE_PRELOADED",
+        "5": "COMPUTE_ACCUMULATE",
+        "6": "PRELOAD",
+        "7": "FLUSH",
+        "8": "LOOP_WS",
+        "9": "LOOP_WS_CONFIG_BOUNDS",
+        "10": "LOOP_WS_CONFIG_ADDRS_AB",
+        "11": "LOOP_WS_CONFIG_ADDRS_DC",
+        "12": "LOOP_WS_CONFIG_STRIDES_AB",
+        "13": "LOOP_WS_CONFIG_STRIDES_DC",
+        "14": "MVIN3",
+        "15": "LOOP_CONV",
+        "16": "LOOP_CONV_WS_CONFIG_1",
+        "17": "LOOP_CONV_WS_CONFIG_2",
+        "18": "LOOP_CONV_WS_CONFIG_3",
+        "19": "LOOP_CONV_WS_CONFIG_4",
+        "20": "LOOP_CONV_WS_CONFIG_5",
+        "21": "LOOP_CONV_WS_CONFIG_6",
+        "22": "CLKGATE_EN",
+        "23": "STORE_SPAD_CMD",
+        "24": "LOOP_WS_CONFIG_SPAD_AB",
+        "126": "COUNTER_OP"
+      }
+    },
+    "roles": {
+      "classes": {
+        "COMPUTE_ACCUMULATE": {
+          "fields": [
+            {
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "a_spad",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "bd",
+              "operand": "rs2"
+            },
+            {
+              "as": "all_ones",
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "garbage",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_cols",
+              "name": "rs1_num_cols",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_rows",
+              "name": "rs1_num_rows",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_cols",
+              "name": "rs2_num_cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_rows",
+              "name": "rs2_num_rows",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "COMPUTE_PRELOADED": {
+          "fields": [
+            {
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "a_spad",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "bd",
+              "operand": "rs2"
+            },
+            {
+              "as": "all_ones",
+              "bundle": "ComputeRs",
+              "field": "local_addr",
+              "name": "garbage",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_cols",
+              "name": "rs1_num_cols",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_rows",
+              "name": "rs1_num_rows",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_cols",
+              "name": "rs2_num_cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ComputeRs",
+              "field": "num_rows",
+              "name": "rs2_num_rows",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "CONFIG_EX": {
+          "fields": [
+            {
+              "const": "EX",
+              "name": "subtype"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "cmd_type",
+              "name": "cmd_type",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "dataflow",
+              "name": "dataflow",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "activation",
+              "name": "activation",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "set_only_strides",
+              "name": "set_only_strides",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "a_transpose",
+              "name": "a_transpose",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "b_transpose",
+              "name": "b_transpose",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "a_stride",
+              "name": "a_stride",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs1",
+              "field": "acc_scale",
+              "name": "acc_scale",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigExRs2",
+              "field": "in_shift",
+              "name": "in_shift",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ConfigExRs2",
+              "field": "relu6_shift",
+              "name": "relu6_shift",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ConfigExRs2",
+              "field": "c_stride",
+              "name": "c_stride",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "CONFIG_LD": {
+          "fields": [
+            {
+              "const": "LD",
+              "name": "subtype"
+            },
+            {
+              "as": "raw",
+              "name": "stride",
+              "operand": "rs2"
+            },
+            {
+              "as": "f32",
+              "bundle": "ConfigMvinRs1",
+              "field": "scale",
+              "name": "scale",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvinRs1",
+              "field": "scale",
+              "name": "scale_bits",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvinRs1",
+              "field": "state_id",
+              "name": "state_id",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvinRs1",
+              "field": "shrink",
+              "name": "shrink",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvinRs1",
+              "field": "pixel_repeats",
+              "name": "pixel_repeats",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvinRs1",
+              "field": "stride",
+              "name": "rs1_stride",
+              "operand": "rs1"
+            }
+          ],
+          "unresolved": "null"
+        },
+        "CONFIG_ST": {
+          "fields": [
+            {
+              "const": "ST",
+              "name": "subtype"
+            },
+            {
+              "bundle": "ConfigMvoutRs1",
+              "field": "activation",
+              "name": "acc_act",
+              "operand": "rs1"
+            },
+            {
+              "equals": 1,
+              "from": "acc_act",
+              "name": "relu"
+            },
+            {
+              "as": "f32",
+              "bundle": "ConfigMvoutRs2",
+              "field": "acc_scale",
+              "name": "acc_scale",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ConfigMvoutRs2",
+              "field": "acc_scale",
+              "name": "acc_scale_bits",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ConfigMvoutRs2",
+              "field": "stride",
+              "name": "out_stride_bytes",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "ConfigMvoutRs1",
+              "names": [
+                "pool_stride",
+                "pool_size",
+                "pool_out_dim",
+                "porows",
+                "pocols",
+                "orows",
+                "ocols",
+                "upad",
+                "lpad"
+              ],
+              "operand": "rs1"
+            },
+            {
+              "bundle": "ConfigMvoutRs1",
+              "field": "cmd_type",
+              "name": "cmd_type",
+              "operand": "rs1"
+            }
+          ],
+          "unresolved": "null"
+        },
+        "MVIN": {
+          "fields": [
+            {
+              "as": "flag",
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "flag": "accumulator_select",
+              "name": "is_acc_addr",
+              "operand": "rs2"
+            },
+            {
+              "as": "operand",
+              "name": "dram",
+              "operand": "rs1"
+            },
+            {
+              "as": "raw",
+              "name": "dram_raw",
+              "operand": "rs1"
+            },
+            {
+              "all": [
+                {
+                  "equals": 0,
+                  "from": "dram_raw"
+                }
+              ],
+              "clear": "memory",
+              "name": "dram_source",
+              "set": "zero_fill"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_rows",
+              "name": "rows",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_cols",
+              "name": "cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "addr",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "spad_addr",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "MVIN2": {
+          "fields": [
+            {
+              "as": "flag",
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "flag": "accumulator_select",
+              "name": "is_acc_addr",
+              "operand": "rs2"
+            },
+            {
+              "as": "operand",
+              "name": "dram",
+              "operand": "rs1"
+            },
+            {
+              "as": "raw",
+              "name": "dram_raw",
+              "operand": "rs1"
+            },
+            {
+              "all": [
+                {
+                  "equals": 0,
+                  "from": "dram_raw"
+                }
+              ],
+              "clear": "memory",
+              "name": "dram_source",
+              "set": "zero_fill"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_rows",
+              "name": "rows",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_cols",
+              "name": "cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "addr",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "spad_addr",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "MVIN3": {
+          "fields": [
+            {
+              "as": "flag",
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "flag": "accumulator_select",
+              "name": "is_acc_addr",
+              "operand": "rs2"
+            },
+            {
+              "as": "operand",
+              "name": "dram",
+              "operand": "rs1"
+            },
+            {
+              "as": "raw",
+              "name": "dram_raw",
+              "operand": "rs1"
+            },
+            {
+              "all": [
+                {
+                  "equals": 0,
+                  "from": "dram_raw"
+                }
+              ],
+              "clear": "memory",
+              "name": "dram_source",
+              "set": "zero_fill"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_rows",
+              "name": "rows",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "num_cols",
+              "name": "cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "addr",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvinRs2",
+              "field": "local_addr",
+              "name": "spad_addr",
+              "operand": "rs2"
+            }
+          ]
+        },
+        "MVOUT": {
+          "fields": [
+            {
+              "as": "operand",
+              "name": "dram",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "MvoutRs2",
+              "field": "num_rows",
+              "name": "rows",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvoutRs2",
+              "field": "num_cols",
+              "name": "cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvoutRs2",
+              "field": "local_addr",
+              "name": "addr",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "MvoutRs2",
+              "field": "local_addr",
+              "name": "acc_addr",
+              "operand": "rs2"
+            },
+            {
+              "as": "flag_choice",
+              "bundle": "MvoutRs2",
+              "clear": "i8",
+              "field": "local_addr",
+              "flag": "full_width_readout",
+              "name": "readout",
+              "operand": "rs2",
+              "set": "i32"
+            }
+          ]
+        },
+        "PRELOAD": {
+          "fields": [
+            {
+              "bundle": "PreloadRs",
+              "field": "local_addr",
+              "name": "weight_spad",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "PreloadRs",
+              "field": "local_addr",
+              "name": "c_addr",
+              "operand": "rs2"
+            },
+            {
+              "as": "flag",
+              "bundle": "PreloadRs",
+              "field": "local_addr",
+              "flag": "accumulate",
+              "name": "accumulate",
+              "operand": "rs2"
+            },
+            {
+              "as": "flag_choice",
+              "bundle": "PreloadRs",
+              "clear": "i8",
+              "field": "local_addr",
+              "flag": "full_width_readout",
+              "name": "readout",
+              "operand": "rs2",
+              "set": "i32"
+            },
+            {
+              "bundle": "PreloadRs",
+              "field": "num_cols",
+              "name": "rs1_num_cols",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "PreloadRs",
+              "field": "num_rows",
+              "name": "rs1_num_rows",
+              "operand": "rs1"
+            },
+            {
+              "bundle": "PreloadRs",
+              "field": "num_cols",
+              "name": "rs2_num_cols",
+              "operand": "rs2"
+            },
+            {
+              "bundle": "PreloadRs",
+              "field": "num_rows",
+              "name": "rs2_num_rows",
+              "operand": "rs2"
+            }
+          ]
+        }
+      },
+      "config": {
+        "class": "CONFIG",
+        "selector": {
+          "bundle": "ConfigMvoutRs1",
+          "field": "cmd_type",
+          "operand": "rs1"
+        }
+      },
+      "local_address_flags": {
+        "accumulate": {
+          "msb_offset": 1
+        },
+        "accumulator_select": {
+          "msb_offset": 0
+        },
+        "full_width_readout": {
+          "msb_offset": 2
+        }
+      }
+    },
+    "version": 1
+  },
+  "schema": "merlin.selected_operand_protocol.v1",
+  "source_pins": [
+    {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/artifacts/kernel-mining/gemmini/v3/kernel-mining_gemmini_v3_20261029T043143Z_07d055f/recipe/operand_selection_recipe.yaml",
+      "sha256": "2e8204e1176cac8d6719c6fdf6192c39409aa48bb49a2eccf19b76e620f788fa"
+    },
+    {
+      "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/artifacts/kernel-mining/gemmini/v3/kernel-mining_gemmini_v3_20261029T043143Z_07d055f/recipe/target_contract.yaml",
+      "sha256": "974602fafadcd9ac6c62fb39cc7ec16b334ee1b288b16c6ec170825a85255abe"
+    },
+    {
+      "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/GemminiISA.scala",
+      "sha256": "812cba090cf85b2b66f6e820dbce8e67454376832fdd459af63cc571e788297b"
+    },
+    {
+      "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/LoadController.scala",
+      "sha256": "780ee0a292d8653fa8a822aee28e2fb2cffbc25301431b4332182008d34fcf6a"
+    },
+    {
+      "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/StoreController.scala",
+      "sha256": "a0b556d109196c3c9d9ac5ed4dffc1bcad334c0f1f87780d948b84bde7402c6d"
+    },
+    {
+      "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/ExecuteController.scala",
+      "sha256": "59b068a79d6063d283561813f7fb65c3503e94d5923334e553ab5d42e2692e8c"
+    },
+    {
+      "path": "/work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/gemmini/src/main/scala/gemmini/LocalAddr.scala",
+      "sha256": "cb1d7de3d0f04c77f79044fb53c560409743962cd82d2a86b8ae95898231ac61"
+    }
+  ],
+  "target": "gemmini"
+}

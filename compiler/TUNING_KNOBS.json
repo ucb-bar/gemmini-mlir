@@ -1,0 +1,49 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked full-K LHS retention including single-M-tile blocks",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "projection_schedule": {
+      "values": [
+        "seed",
+        "segmented",
+        "epochs",
+        "wide",
+        "hybrid"
+      ],
+      "mechanism": "checked retained-LHS K segments or selected-ordering completion epochs",
+      "note": "All geometry from owned storage and primitive tiles; preserves incumbent M/N grouping. Refusals use original retained/streaming path."
+    },
+    "projection_n_policy": {
+      "values": [
+        "seed",
+        "capacity"
+      ],
+      "mechanism": "capacity-bounded output panel width",
+      "note": "N tiles admitted up to the accumulator tile capacity; dense_blocks proves M*N footprint and operand windows, no exact-shape guards."
+    },
+    "projection_issue_order": {
+      "values": [
+        "compute_then_prefetch",
+        "prefetch_rhs_between_k_tiles"
+      ],
+      "mechanism": "typed frontier fusion of current compute and next RHS loads",
+      "note": "Independent source/epoch/final-band checks follow; preserves complete ragged suffixes."
+    }
+  }
+}
