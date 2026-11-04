@@ -1,0 +1,117 @@
+{
+  "coverage_caveats": [
+    "host memory ordering of inputs and outputs (the closing drain covers them)",
+    "operand fields other than local address, rows and columns",
+    "a pair the facts mark 'tracked: None' is treated as ordered and listed under uncertain",
+    "cycles: drains and commands are counts; time both routes before keeping one"
+  ],
+  "inputs": {
+    "facts": {
+      "path": "rtl_facts/facts.json",
+      "sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af"
+    },
+    "ordering": {
+      "path": "COMMAND_ORDERING_SELECTION.json",
+      "sha256": "f941f5e2199b59f1d6649739682b66081958cbb0e3b35dabc839913c86a80970"
+    }
+  },
+  "mapper": {
+    "sha256": "a17908cb1beb84bcd5ad19b5dc4ed79a1f27604ac029bb90e5185aba7a480bfc",
+    "source": "generic dense_epoch_recipe.law_flags; no kernel-derived flags"
+  },
+  "not_relied_on": {
+    "basis": [
+      "load queue completion order: out_of_order; two writes of one row are ordered through the step that reads it (read after write, then write after read), which the library proves per merged step"
+    ],
+    "status": "note"
+  },
+  "ordering_identity": "c748df87467af8854923ec9d40f241ac6d15331937fd95e4c2fd24d62d170add",
+  "premises": {
+    "accumulator_result_visibility": {
+      "basis": [
+        "cross_queue[PRELOAD.c_addr -> MVOUT.acc_addr, accumulator]: younger waits for completion when overlapping (disjoint: issue, tracked: True)"
+      ],
+      "status": "fact",
+      "value": true
+    },
+    "complete_device_drain": {
+      "basis": [
+        "the completion callback is the same full drain the drained route uses"
+      ],
+      "status": "requires_program_proof",
+      "value": null
+    },
+    "exclusive_private_state": {
+      "basis": [
+        "the plan owns its two operand windows and accumulator rows for the invocation"
+      ],
+      "status": "requires_program_proof",
+      "value": null
+    },
+    "finite_queue_progress": {
+      "basis": [
+        "timing_structure.command_classes.load.entries = 8 (derived, finite, >= 1)",
+        "timing_structure.command_classes.execute.entries = 16 (derived, finite, >= 2)"
+      ],
+      "status": "fact",
+      "value": true
+    },
+    "local_read_after_write": {
+      "basis": [
+        "cross_queue[MVIN2.spad_addr -> COMPUTE_PRELOADED.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN2.spad_addr -> COMPUTE_ACCUMULATE.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN2.spad_addr -> PRELOAD.weight_spad, scratchpad]: younger waits for completion when overlapping (disjoint: none, tracked: True)",
+        "cross_queue[MVIN.spad_addr -> COMPUTE_PRELOADED.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN.spad_addr -> COMPUTE_ACCUMULATE.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN.spad_addr -> PRELOAD.weight_spad, scratchpad]: younger waits for completion when overlapping (disjoint: none, tracked: True)",
+        "cross_queue[MVIN3.spad_addr -> COMPUTE_PRELOADED.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN3.spad_addr -> COMPUTE_ACCUMULATE.a_spad, scratchpad]: younger waits for completion when overlapping (disjoint: completion, tracked: None)",
+        "cross_queue[MVIN3.spad_addr -> PRELOAD.weight_spad, scratchpad]: younger waits for completion when overlapping (disjoint: none, tracked: True)"
+      ],
+      "status": "fact",
+      "value": true
+    },
+    "local_write_after_read": {
+      "basis": [
+        "cross_queue[COMPUTE_PRELOADED.a_spad -> MVIN2.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[COMPUTE_ACCUMULATE.a_spad -> MVIN2.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[PRELOAD.weight_spad -> MVIN2.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[COMPUTE_PRELOADED.a_spad -> MVIN.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[COMPUTE_ACCUMULATE.a_spad -> MVIN.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[PRELOAD.weight_spad -> MVIN.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[COMPUTE_PRELOADED.a_spad -> MVIN3.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[COMPUTE_ACCUMULATE.a_spad -> MVIN3.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)",
+        "cross_queue[PRELOAD.weight_spad -> MVIN3.spad_addr, scratchpad]: younger waits for completion when overlapping (disjoint: issue, tracked: True)"
+      ],
+      "status": "fact",
+      "value": true
+    },
+    "ordered_accumulator_writes": {
+      "basis": [
+        "queue execute: completion_order in_order, same_queue release issue"
+      ],
+      "status": "fact",
+      "value": true
+    },
+    "ordered_configuration_capture": {
+      "basis": [
+        "configuration code 0 enters queue execute (funct_queue), issued in order",
+        "configuration code 0 enters queue execute (funct_queue), issued in order"
+      ],
+      "status": "fact",
+      "value": true
+    }
+  },
+  "schema": "merlin.public_completion_premises.v1",
+  "scope": "selected target ordering premises only; no candidate implementation, qualification or timing",
+  "target": "gemmini",
+  "task_scope": {
+    "change": "K-stream completion placement only",
+    "preserve_algorithm": true,
+    "preserve_data_issue_order": true,
+    "preserve_output_block_and_final_completion": true,
+    "preserve_readout_boundaries": true,
+    "preserve_relative_addresses_and_storage": true,
+    "preserve_tiling": true
+  }
+}

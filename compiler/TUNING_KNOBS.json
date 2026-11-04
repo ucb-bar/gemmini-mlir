@@ -1,0 +1,46 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked full-K LHS retention for multi-M-tile blocks",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "merge_k_completion_streams": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "schedule_dense_panel_epochs: checked K-stream completion placement",
+      "goals": [
+        "reduce redundant full-device K-step completions",
+        "preserve data issue order, addresses and every readout/block/final completion"
+      ],
+      "note": "Two-window, bias-free, private invocation only. Selected ordering plus checked load-reader chains; pending queue bounds unchanged. Retained/resident/unknown routes keep original completions."
+    },
+    "k_completion_epoch_scope": {
+      "values": [
+        "period",
+        "output_block"
+      ],
+      "mechanism": "checked issued scope for schedule_dense_panel_epochs",
+      "goals": [
+        "compare two-step epochs with a whole output block K stream",
+        "preserve physical pending capacities and two-window live allocation"
+      ],
+      "note": "Consumed when merge_k_completion_streams=true. period bounds two adjacent K slices; output_block bounds the full K stream. This changes completion grouping only."
+    }
+  }
+}
