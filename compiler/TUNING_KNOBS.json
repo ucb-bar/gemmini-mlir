@@ -1,0 +1,78 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked full-K LHS retention for multi-M-tile blocks",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "conv_operand_cache": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "source-exact rolling blocked operand row reuse",
+      "note": "Uses general program/storage predicates; missing premises retain the prior valid route."
+    },
+    "conv_resident_compute_epochs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "source-selected bounded convolution compute epochs",
+      "note": "Uses general program/storage predicates; missing premises retain the prior valid route."
+    },
+    "conv_coalesced_rhs_preparation": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "disjoint resident RHS transfer coalescing and preparation completion",
+      "note": "Uses general program/storage predicates; missing premises retain the prior valid route."
+    },
+    "conv_spatial_accumulation": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "capacity-guarded multi-spatial-tile accumulator lifetime",
+      "note": "Interleave independent spatial tiles through full reduction; retain every output and drain before readout."
+    },
+    "conv_persistent_zero_bands": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "initialize disjoint physical padding bands once per invocation",
+      "note": "Source and disjoint storage predicates; no changed output/readout semantics."
+    },
+    "conv_zero_row_elision": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "eliminate exact additive-zero padding rows after original bias initialization",
+      "note": "Source and disjoint storage predicates; no changed output/readout semantics."
+    },
+    "conv_readout_batch": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "complete disjoint constant-configuration readout batch before accumulator reuse",
+      "note": "Only equal f32 readout scales and fixed activation; all stores retained and final batch drain is mandatory."
+    }
+  }
+}
