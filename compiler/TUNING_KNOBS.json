@@ -1,0 +1,378 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "adaptive"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "DENSE_SEGMENTED_FRONTIER": {
+      "values": [
+        "off",
+        "k_tiles",
+        "output_groups"
+      ],
+      "mechanism": "segmented_k_retained_operand_pipeline"
+    },
+    "CONV_GATHER_HOIST": {
+      "values": [
+        "off",
+        "on",
+        "auto"
+      ],
+      "mechanism": "source_exact_spatial_matrix_gathers"
+    },
+    "HOST_TENSOR_VIEWS": {
+      "values": [
+        "off",
+        "fold_slices",
+        "fold_slices_im2col",
+        "fold_slices_im2col_affine"
+      ],
+      "mechanism": "source_tensor_view_preparation"
+    },
+    "CONV_REDUCTION_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "auto"
+      ],
+      "mechanism": "capacity_phased_convolution_rhs_residency"
+    },
+    "DENSE_PRIMITIVE_LOAD_RUNS": {
+      "values": [
+        "off",
+        "unroll4"
+      ],
+      "mechanism": "bounded_primitive_load_unroll"
+    },
+    "ELEMENTWISE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "CONV_POOL_FUSION": {
+      "values": [
+        "off",
+        "on",
+        "auto"
+      ],
+      "mechanism": "spatial_producer_pool_composition"
+    },
+    "DENSE_RETAINED_OPERAND": {
+      "values": [
+        "lhs",
+        "weight",
+        "capacity"
+      ],
+      "mechanism": "invariant_weight_residency"
+    },
+    "POOL_ROW_CACHE": {
+      "values": [
+        "off",
+        "on",
+        "auto"
+      ],
+      "mechanism": "source_exact_spatial_row_retention"
+    },
+    "CONV_READOUT_CONFIG_REUSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "persistent_readout_configuration"
+    },
+    "CONV_REDUCTION_GEOMETRY": {
+      "values": [
+        "n_wide",
+        "balanced",
+        "m_tall"
+      ],
+      "mechanism": "capacity_admitted_convolution_panels"
+    },
+    "POOL_ROW_GEOMETRY": {
+      "values": [
+        "incumbent",
+        "dma_row",
+        "half_width"
+      ],
+      "mechanism": "joint_pool_stripe_row_retention"
+    },
+    "BIAS_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_column_broadcast_loaded_sum_epochs"
+    },
+    "DENSE_SEGMENT_K_LIMIT": {
+      "values": [
+        "8",
+        "16",
+        "32",
+        "64"
+      ],
+      "mechanism": "segmented_k_capacity_frontier"
+    },
+    "DENSE_SEGMENT_PANEL": {
+      "values": [
+        "inherit",
+        "wide_16"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INTERIOR_RUNS": {
+      "values": [
+        "off",
+        "on",
+        "auto"
+      ],
+      "mechanism": "source_proved_interior_convolution_runs"
+    },
+    "ATTENTION_RHS_PANELS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_grouped_attention_rhs_panels"
+    },
+    "ATTENTION_RHS_REUSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "grouped_query_attention_rhs_residency"
+    },
+    "RHS_PRODUCT_PANELS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "capacity_phased_independent_rhs_products"
+    },
+    "POOL_COLUMN_READOUT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_exact_per_column_spatial_readout"
+    },
+    "DENSE_SEGMENT_PARTITION": {
+      "values": [
+        "legacy",
+        "balanced_short"
+      ],
+      "mechanism": "segmented_k_retained_operand_pipeline"
+    },
+    "CONV_SPATIAL_GROUPS": {
+      "values": [
+        "off",
+        "two",
+        "four"
+      ],
+      "mechanism": "capacity_checked_complete_K_spatial_groups"
+    },
+    "DENSE_CROSSOVER_POLICY": {
+      "values": [
+        "expansion",
+        "equal_loads"
+      ],
+      "mechanism": "checked_segmented_vs_actual_capacity_incumbent"
+    },
+    "CONV_GROUP_INTERIOR_BRANCH": {
+      "values": [
+        "per_tile",
+        "group_once"
+      ],
+      "mechanism": "source_proved_group_interior_control_hoist"
+    },
+    "CONV_SPATIAL_REDUCTION_ORDER": {
+      "values": [
+        "km",
+        "mk"
+      ],
+      "mechanism": "source_ordered_disjoint_spatial_reduction_traversal"
+    },
+    "DENSE_SEGMENT_RHS_RESIDENCY": {
+      "values": [
+        "off",
+        "boundary"
+      ],
+      "mechanism": "source_bound_serpentine_live_boundary_rhs_retention"
+    },
+    "CONV_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "uniform"
+      ],
+      "mechanism": "source_bound_uniform_complete_K_group_readout_epochs"
+    },
+    "POINTWISE_STRIDED_PRODUCER": {
+      "values": [
+        "incumbent",
+        "rhs_panels",
+        "rhs_capacity"
+      ],
+      "mechanism": "source_bound_strided_pointwise_rhs_panels"
+    },
+    "POINTWISE_STRIDED_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_strided_pointwise_dense_view"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "bounded_rne",
+        "bounded_rne_fused"
+      ],
+      "mechanism": "selected_shared_scalar_host_pipeline_and_checked_RNE"
+    },
+    "POINTWISE_STRIDED_CAPACITY_N_LIMIT": {
+      "values": [
+        "auto",
+        "8",
+        "16"
+      ],
+      "mechanism": "shared_strided_complete_K_capacity_geometry_bound",
+      "note": "Optional N search bound; shared capacity legality and exact prepared product remain authoritative."
+    },
+    "CONV_GROUP_POLICY": {
+      "values": [
+        "fixed",
+        "large_spatial"
+      ],
+      "mechanism": "shape_class_spatial_group",
+      "description": "Optional shared two/four output-group geometry hypothesis, default fixed; actual shared capacity and ordering checks remain authoritative."
+    }
+  }
+}

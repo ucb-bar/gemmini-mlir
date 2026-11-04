@@ -1,0 +1,36 @@
+{
+  "status": "source_only_core_bootstrap",
+  "core_dependencies": [
+    "xdsl IR/LLVM",
+    "jsonschema Draft202012Validator"
+  ],
+  "optional_proof_dependency": "z3 is imported only by consumers; unavailable proof is not a proof pass",
+  "selected_runtime": "disclosed phase1 runtime fallback or explicit MERLIN_COMPILER_PYTHON",
+  "rejected_vendoring": {
+    "reason": "non-source metadata and source outside public namespace",
+    "removed": true,
+    "evidence": "artifacts/model-packaged-resnet50-no-metadata-initial.log"
+  },
+  "validation": "artifacts/compiler-dependencies-core/receipt.json",
+  "serial_dense_repair": {
+    "implementation": "backend/dense_compact_verification.py",
+    "proof": "actual projected serial primitive source partition, ordered K induction, disjoint windows, exact tails/output cover and i64 bounds",
+    "parent_validation": "artifacts/dense-static-proof/parent-check.log",
+    "numeric_cases": 20,
+    "mutation_rejections": 760,
+    "absent_z3_cli": 4,
+    "healthy_llvm_unchanged": true,
+    "native_refresh": "pending"
+  },
+  "optional_products": "resident/shared proofs unchanged; missing z3 declines before effects, preserves standalone accelerator outputs",
+  "transpose": "existing exact radix proof runs before solver import;128 plans+3 CLI products",
+  "final_repair": {
+    "stage": "M15",
+    "dense_sha256": "520eb6d3e9c291a5fb651faad3e37ea968b814ba1bc4fdc291b8a01f07a45acc",
+    "trigger": "DenseVerificationUnavailable only, including missing SMT dependency or unavailable bounded residency proof",
+    "fallback": "independently verified primitive accelerator schedule",
+    "invariant_failure": "propagates; no result emitted",
+    "validation": "artifacts/dense-static-proof/parent-m15-{check,unavailable}.log",
+    "native": "pending final frozen candidate"
+  }
+}
