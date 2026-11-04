@@ -1,0 +1,122 @@
+{
+  "schema": "gu-saved-object-timing.v1",
+  "status": "built_not_executed",
+  "study": "gu-saved-objects-w20-n20-v1",
+  "case": "TL_mm_gu_fused_m16k2048n11264_i8",
+  "abi": [
+    "W",
+    "A0",
+    "Y0"
+  ],
+  "contract": "Y0=saturate_i8(round_ties_even(float32(A0@W)*float32(1/128))), no bias, no activation",
+  "shape": [
+    16,
+    2048,
+    11264
+  ],
+  "inputs": [
+    {
+      "name": "W",
+      "seed": 16102184289280172828,
+      "shape": [
+        2048,
+        11264
+      ],
+      "digest": 2263176810744721894,
+      "sha256": "3b2d219e438b9d7aafb55bf97194e832672afac144cc9f1311e0aa3e09bd477c",
+      "address": 2684358656,
+      "bytes": 23068672
+    },
+    {
+      "name": "A0",
+      "seed": 15604048200900935818,
+      "shape": [
+        16,
+        2048
+      ],
+      "digest": 11494380934551523755,
+      "sha256": "fbeefd1cc85f145bf412422c17fc76848e905345901e3f191ea40c318096c46e",
+      "address": 2717913088,
+      "bytes": 32768
+    }
+  ],
+  "output": {
+    "address": 2835353600,
+    "bytes": 180224,
+    "sha256": "d294ee2759ae91aa615c1d098a413d1a2dbd44d1429ccf768ea46821d0f78bb7",
+    "elements": 180224
+  },
+  "objects": [
+    {
+      "slot": 0,
+      "arm": "incumbent",
+      "original": {
+        "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-cca-exo-r3/workspace/artifacts/dense-family-build-before/GU/kernel.o",
+        "sha256": "52fb32494361e883ba5b46b7f9e6669f823a7408e7d57da6d25d6aff9b81f9a9"
+      },
+      "linked_object": "/work/merlin/tasks/mlsys-paper-20261024/.tmp/gu-hardware-ablation/k0.o",
+      "linked_sha256": "92e4d6ecc27898aa409df7aca6e792ef789943cd68a5b1b8c600b1887284c548"
+    },
+    {
+      "slot": 1,
+      "arm": "segmented_if_legal",
+      "original": {
+        "path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/cca-coverage-20261029-cca-exo-r3/workspace/artifacts/dense-family-build-after/GU/kernel.o",
+        "sha256": "ecfb7440335373aebd98b90dfe1796f14fd2831d08f1b5f40967a20e1425be8d"
+      },
+      "linked_object": "/work/merlin/tasks/mlsys-paper-20261024/.tmp/gu-hardware-ablation/k1.o",
+      "linked_sha256": "e921a0abf120ad16996f034a0cf28fcbfcd411e518c74deff94d18b65c0bb322"
+    }
+  ],
+  "kernel_recompilations": 0,
+  "orders": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      1
+    ]
+  ],
+  "warmups_per_block": 20,
+  "measured_calls_per_block": 20,
+  "measured_calls_total": 80,
+  "warmup_calls_total": 80,
+  "exact_output_checks": 8,
+  "checks": "full output after warmup and measurement blocks, guards after every call, input digests after every block",
+  "timing": "entry + complete + accelerator/CPU fences; input initialization, poison, guards, checks and reporting excluded",
+  "input_domain": [
+    -4,
+    3
+  ],
+  "input_policy": "fresh independent per-element counter streams, identical across implementations and both order passes",
+  "partial_sum_bound": 32768,
+  "mac_positive_limit": 524287,
+  "native_C_generator_matches_numpy": true,
+  "elf": "/work/merlin/tasks/mlsys-paper-20261024/.tmp/gu-hardware-ablation/gu-saved-objects-w20-n20-v1.elf",
+  "elf_sha256": "2f83ad77c003e1a3ef6890c73a708269e52069004e2b0cc19a1e79416aed4aee",
+  "harness_sha256": "ae8414f74909bc0ad2e92a117ed0974926f565b8ed45b6595891991bd8600c43",
+  "source_handoff": "/work/merlin/tasks/mlsys-paper-20261024/.tmp/cca-attribution-audit/GU-ablation-artifacts.json",
+  "source_handoff_sha256": "abb9f801adc3df28886a8c76d93360e9cbfffa4717f1f141129402118fdac40b",
+  "limitations": [
+    "saved full-K[1,128,4] versus segmented[1,16,8] bundles schedule and geometry changes",
+    "not an overlap-only or CCA-discovery ablation",
+    "fresh stimulus differs from historical modeled timing stimulus",
+    "full output checked after each block, not each repeated call",
+    "single FPGA boot with reversed implementation orders",
+    "current test uses the historical qualified [-4,3] domain, not all int8"
+  ]
+}

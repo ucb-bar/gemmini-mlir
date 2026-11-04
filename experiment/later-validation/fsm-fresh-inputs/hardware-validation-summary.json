@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "ssm_command": "8c49ae99-88a7-423a-9197-c07cb672c05c",
+  "archive": "s3://mb-artifacts-366258938248-usw2/firesim-runs/20261030T051712Z/2026-10-30--05-11-03-elf-run/elf-run0/",
+  "elf_sha256": "4638725af1ae620da3d72907e872c74097a3e6e95ab9d874e5610cab7acf7cb4",
+  "cases": [
+    "G01",
+    "GS_m24k2048n2048",
+    "T01",
+    "QK_q1c16",
+    "T02",
+    "PV_q1c16",
+    "CS_SAME_b1h28ci128co128",
+    "CS_VALID_b1h28ci128co128"
+  ],
+  "calls_checked": 64,
+  "full_output_checks": 1056,
+  "output_elements_checked": 4444160,
+  "input_and_guard_checks_after_each_call": true,
+  "done": 0,
+  "script_exit": 0,
+  "emulation_wallclock_s": 350.3,
+  "target_cycles": 38407287872,
+  "limitations": [
+    "Numerical stress only, no warmed performance comparison",
+    "Two seeds and eight cases do not establish all-input correctness",
+    "Reference bytes remain in final ELF and no adversarial runtime confidentiality boundary is claimed",
+    "References share case declarations with the historical oracle, but do not use historical fixture values",
+    "Input domain remains signed nibble, not full int8",
+    "Native C generator verified against NumPy generator for every input tensor, target generator bytes checked by input digests on hardware",
+    "This test cannot establish author-time confidentiality. Shared golden files were separately found accessible in earlier authoring workspaces.",
+    "G01 and convolution results saturate frequently, reducing sensitivity to small arithmetic errors. Raw i32 M24 and QK cases provide complementary checks."
+  ],
+  "stale_watchdog_marker": "The 2026-10-29T13:28:32Z marker is unrelated to this successfully completed workload.",
+  "files": {
+    "manifest.json": "0b3a65ff2cd7a9bc06c68ebc7759690e1b31b268422c892fa225ba01aadd4b46",
+    "verified-results.json": "fe607c5732dd7c585087ba3d92b5fe2a29df4e763f5e3861d7cbd7c627eff9f1",
+    "observed/uartlog": "0b5ccc2ee46241422be0e3c727dbb24321eda0ee58bc898c164845feee94d741",
+    "observed/sim-run.sh": "67f35c57c8a371eef7a3f92d4eaf78f582a003580ae677e9f6458172e2650e39",
+    "current-command-invocation.json": "eaa35579ca525e6caa09104cd0ff7551a538b2824ffc825c776933f53d7e3244"
+  }
+}
