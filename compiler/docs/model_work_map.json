@@ -1,0 +1,3519 @@
+{
+  "schema": "authored.public_model_work_map.v1",
+  "scope": "Public source declarations and latest available endpoint kernel replay report per model; no whole-chain elapsed timing.",
+  "timing": "UNKNOWN: functional replay ticks are not elapsed-cycle measurements or modeled reservations.",
+  "captured_graphs": [
+    {
+      "name": "SY_micro_model",
+      "source_sha256": "160656af280e4b94fc4b9562e22c82c611b7703afb8dc49e7ceadb4df69d6dc8",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 2,
+        "activation_granularity": {
+          "tensor": 2
+        },
+        "weight_granularity": {
+          "channel": 2
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 2
+        },
+        "precision_decisions": 2,
+        "remaining_dequant_count": 0
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 1,
+          "host": 16
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.native_layer_norm.default",
+            "classification": "host_required",
+            "count": 11
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 5
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mean.dim",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            1,
+            6
+          ],
+          "count": 2,
+          "capsule": "layers/G_matmul_m32k32n32_raw",
+          "partial_sum_bound": 288,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                32,
+                32
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                32,
+                32
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              32,
+              32
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 32,
+          "output_elements": 1024,
+          "macs": 32768,
+          "semantic": "contraction",
+          "total_macs": 65536,
+          "share": 1.0
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.matmul.default": 2,
+          "aten.permute.default": 2,
+          "aten.add.Tensor": 1,
+          "aten.contiguous.default": 1,
+          "aten.layer_norm.default": 1,
+          "aten.mean.dim": 1,
+          "aten.mul.Tensor": 1
+        },
+        "prepared": {
+          "aten.mul.Tensor": 5,
+          "aten._to_copy.default": 4,
+          "aten._int_mm.default": 2,
+          "aten.permute.default": 2,
+          "quantized_decomposed.quantize_per_tensor.default": 2,
+          "<built-in function getitem>": 1,
+          "aten.add.Tensor": 1,
+          "aten.clone.default": 1,
+          "aten.mean.dim": 1,
+          "aten.native_layer_norm.default": 1
+        },
+        "quantized": {
+          "aten.mul.Tensor": 5,
+          "aten._to_copy.default": 4,
+          "aten._int_mm.default": 2,
+          "aten.permute.default": 2,
+          "quantized_decomposed.quantize_per_tensor.default": 2,
+          "aten.add.Tensor": 1,
+          "aten.contiguous.default": 1,
+          "aten.layer_norm.default": 1,
+          "aten.mean.dim": 1
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 2,
+        "covered_groups": 2,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    },
+    {
+      "name": "SY_source_causal_decoder",
+      "source_sha256": "f61c9da62ec2d82595bc8eba1895b74acae5f2d9d8f27aa672f22610b446fb58",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 6,
+        "activation_granularity": {
+          "tensor": 6
+        },
+        "weight_granularity": {
+          "tensor": 6
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 6
+        },
+        "precision_decisions": 6,
+        "remaining_dequant_count": 2
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 4,
+          "host": 36
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 28
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 7
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 6
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 6
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 5
+          },
+          {
+            "placement": "host",
+            "operation": "aten._softmax.default",
+            "classification": "host_required",
+            "count": 5
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mean.dim",
+            "classification": "host_required",
+            "count": 4
+          },
+          {
+            "placement": "host",
+            "operation": "aten.pow.Tensor_Scalar",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Scalar",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.rsqrt.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.neg.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.bmm.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.dequantize_per_tensor.default",
+            "classification": "unresolved",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.embedding.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.div.Tensor",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.sigmoid.default",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            4,
+            25,
+            29
+          ],
+          "count": 3,
+          "capsule": "layers/G_matmul_m12k48n80_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                80
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                12,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              12,
+              80
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 960,
+          "macs": 46080,
+          "semantic": "contraction",
+          "total_macs": 138240,
+          "share": 0.5556
+        },
+        {
+          "groups": [
+            33
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m12k80n48_raw",
+          "partial_sum_bound": 720,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                80,
+                48
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                12,
+                80
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              12,
+              48
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 80,
+          "output_elements": 576,
+          "macs": 46080,
+          "semantic": "contraction",
+          "total_macs": 46080,
+          "share": 0.1852
+        },
+        {
+          "groups": [
+            38
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m12k48n64_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                64
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                12,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              12,
+              64
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 768,
+          "macs": 36864,
+          "semantic": "contraction",
+          "total_macs": 36864,
+          "share": 0.1481
+        },
+        {
+          "groups": [
+            19
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m12k48n48_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                48
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                12,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              12,
+              48
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 576,
+          "macs": 27648,
+          "semantic": "contraction",
+          "total_macs": 27648,
+          "share": 0.1111
+        },
+        {
+          "groups": [
+            35
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m12n48_b1_raw",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                12,
+                48
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                12,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              12,
+              48
+            ],
+            "i8"
+          ],
+          "epilogue": [],
+          "reduction_extent": null,
+          "output_elements": 576,
+          "macs": null,
+          "semantic": "elementwise_map"
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.linear.default": 6,
+          "aten.reshape.default": 6,
+          "aten.add.Tensor": 5,
+          "aten.mul.Tensor": 5,
+          "aten.transpose.int": 5,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.cat.default": 2,
+          "aten.expand.default": 2,
+          "aten.matmul.default": 2,
+          "aten.neg.default": 2,
+          "aten.rms_norm.default": 2,
+          "aten.unsqueeze.default": 2,
+          "aten.div.Tensor": 1,
+          "aten.embedding.default": 1
+        },
+        "prepared": {
+          "aten.mul.Tensor": 28,
+          "aten.view.default": 24,
+          "aten.permute.default": 11,
+          "quantized_decomposed.quantize_per_tensor.default": 7,
+          "aten._int_mm.default": 6,
+          "aten._to_copy.default": 6,
+          "aten.expand.default": 6,
+          "aten.add.Tensor": 5,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.clone.default": 3,
+          "aten.add.Scalar": 2,
+          "aten.bmm.default": 2,
+          "aten.cat.default": 2,
+          "aten.mean.dim": 2
+        },
+        "quantized": {
+          "aten.mul.Tensor": 23,
+          "aten.reshape.default": 18,
+          "aten.transpose.int": 11,
+          "quantized_decomposed.quantize_per_tensor.default": 7,
+          "aten._int_mm.default": 6,
+          "aten._to_copy.default": 6,
+          "aten.add.Tensor": 5,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.cat.default": 2,
+          "aten.expand.default": 2,
+          "aten.matmul.default": 2,
+          "aten.neg.default": 2,
+          "aten.rms_norm.default": 2,
+          "aten.unsqueeze.default": 2
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 7,
+        "covered_groups": 7,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    },
+    {
+      "name": "SY_source_causal_decoder_decode_step",
+      "source_sha256": "eb108c358e72144d752f0ec1dfa47b18b0f5f206408cd0f716ec78a31230cb17",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 6,
+        "activation_granularity": {
+          "tensor": 6
+        },
+        "weight_granularity": {
+          "tensor": 6
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 6
+        },
+        "precision_decisions": 6,
+        "remaining_dequant_count": 2
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 4,
+          "host": 35
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 28
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 7
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 6
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 6
+          },
+          {
+            "placement": "host",
+            "operation": "aten._softmax.default",
+            "classification": "host_required",
+            "count": 5
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mean.dim",
+            "classification": "host_required",
+            "count": 4
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 4
+          },
+          {
+            "placement": "host",
+            "operation": "aten.pow.Tensor_Scalar",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Scalar",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.rsqrt.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.neg.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.bmm.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.dequantize_per_tensor.default",
+            "classification": "unresolved",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.embedding.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.div.Tensor",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.sigmoid.default",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            4,
+            25,
+            29
+          ],
+          "count": 3,
+          "capsule": "layers/G_matmul_m1k48n80_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                80
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              80
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 80,
+          "macs": 3840,
+          "semantic": "contraction",
+          "total_macs": 11520,
+          "share": 0.5556
+        },
+        {
+          "groups": [
+            33
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k80n48_raw",
+          "partial_sum_bound": 720,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                80,
+                48
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                80
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              48
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 80,
+          "output_elements": 48,
+          "macs": 3840,
+          "semantic": "contraction",
+          "total_macs": 3840,
+          "share": 0.1852
+        },
+        {
+          "groups": [
+            38
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k48n64_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                64
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              64
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 64,
+          "macs": 3072,
+          "semantic": "contraction",
+          "total_macs": 3072,
+          "share": 0.1481
+        },
+        {
+          "groups": [
+            19
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k48n48_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                48,
+                48
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              48
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 48,
+          "macs": 2304,
+          "semantic": "contraction",
+          "total_macs": 2304,
+          "share": 0.1111
+        },
+        {
+          "groups": [
+            35
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m1n48_b1_raw",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                1,
+                48
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                1,
+                48
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              48
+            ],
+            "i8"
+          ],
+          "epilogue": [],
+          "reduction_extent": null,
+          "output_elements": 48,
+          "macs": null,
+          "semantic": "elementwise_map"
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.linear.default": 6,
+          "aten.reshape.default": 6,
+          "aten.mul.Tensor": 5,
+          "aten.transpose.int": 5,
+          "aten.add.Tensor": 4,
+          "aten.cat.default": 4,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.expand.default": 2,
+          "aten.matmul.default": 2,
+          "aten.neg.default": 2,
+          "aten.rms_norm.default": 2,
+          "aten.unsqueeze.default": 2,
+          "aten.div.Tensor": 1,
+          "aten.embedding.default": 1
+        },
+        "prepared": {
+          "aten.mul.Tensor": 28,
+          "aten.view.default": 24,
+          "aten.permute.default": 11,
+          "quantized_decomposed.quantize_per_tensor.default": 7,
+          "aten._int_mm.default": 6,
+          "aten._to_copy.default": 6,
+          "aten.expand.default": 6,
+          "aten.add.Tensor": 4,
+          "aten.cat.default": 4,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.add.Scalar": 2,
+          "aten.bmm.default": 2,
+          "aten.clone.default": 2,
+          "aten.mean.dim": 2
+        },
+        "quantized": {
+          "aten.mul.Tensor": 23,
+          "aten.reshape.default": 18,
+          "aten.transpose.int": 11,
+          "quantized_decomposed.quantize_per_tensor.default": 7,
+          "aten._int_mm.default": 6,
+          "aten._to_copy.default": 6,
+          "aten.add.Tensor": 4,
+          "aten.cat.default": 4,
+          "aten.slice.Tensor": 4,
+          "<built-in function getitem>": 3,
+          "aten.expand.default": 2,
+          "aten.matmul.default": 2,
+          "aten.neg.default": 2,
+          "aten.rms_norm.default": 2,
+          "aten.unsqueeze.default": 2
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 7,
+        "covered_groups": 7,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    },
+    {
+      "name": "SY_source_coverage_mlp",
+      "source_sha256": "0337cf8e1fe8e51a8b9a3bc19f639d96ff072346418c24bc4669ad3ec02b89a3",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 2,
+        "activation_granularity": {
+          "tensor": 2
+        },
+        "weight_granularity": {
+          "tensor": 2
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 2
+        },
+        "precision_decisions": 2,
+        "remaining_dequant_count": 0
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 2,
+          "host": 19
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.native_layer_norm.default",
+            "classification": "host_required",
+            "count": 11
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 6
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.relu.default",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            2
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m2k8n8_raw",
+          "partial_sum_bound": 72,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                8,
+                8
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                2,
+                8
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              2,
+              8
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 8,
+          "output_elements": 16,
+          "macs": 128,
+          "semantic": "contraction",
+          "total_macs": 128,
+          "share": 0.6667
+        },
+        {
+          "groups": [
+            7
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m2k8n4_raw",
+          "partial_sum_bound": 72,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                8,
+                4
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                2,
+                8
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              2,
+              4
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 8,
+          "output_elements": 8,
+          "macs": 64,
+          "semantic": "contraction",
+          "total_macs": 64,
+          "share": 0.3333
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.linear.default": 2,
+          "aten.layer_norm.default": 1,
+          "aten.relu.default": 1
+        },
+        "prepared": {
+          "aten.mul.Tensor": 6,
+          "aten.view.default": 4,
+          "aten._int_mm.default": 2,
+          "aten._to_copy.default": 2,
+          "aten.add.Tensor": 2,
+          "aten.permute.default": 2,
+          "quantized_decomposed.quantize_per_tensor.default": 2,
+          "<built-in function getitem>": 1,
+          "aten.native_layer_norm.default": 1,
+          "aten.relu.default": 1
+        },
+        "quantized": {
+          "aten.mul.Tensor": 6,
+          "aten.reshape.default": 4,
+          "aten._int_mm.default": 2,
+          "aten._to_copy.default": 2,
+          "aten.add.Tensor": 2,
+          "aten.transpose.int": 2,
+          "quantized_decomposed.quantize_per_tensor.default": 2,
+          "aten.layer_norm.default": 1,
+          "aten.relu.default": 1
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 2,
+        "covered_groups": 2,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    },
+    {
+      "name": "SY_source_multimodal_policy",
+      "source_sha256": "d4a4f2dd3002806efe63353a4497fc4b6893a751941ec1a3700e7d6cd257826a",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 9,
+        "activation_granularity": {
+          "tensor": 9
+        },
+        "weight_granularity": {
+          "tensor": 9
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 9
+        },
+        "precision_decisions": 9,
+        "remaining_dequant_count": 2
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 8,
+          "host": 57
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 28
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 13
+          },
+          {
+            "placement": "host",
+            "operation": "aten.native_layer_norm.default",
+            "classification": "host_required",
+            "count": 11
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 9
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 9
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 9
+          },
+          {
+            "placement": "host",
+            "operation": "aten._softmax.default",
+            "classification": "host_required",
+            "count": 5
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.dequantize_per_tensor.default",
+            "classification": "unresolved",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.bmm.default",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.embedding.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.gelu.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.exp.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.sin.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.cos.default",
+            "classification": "host_required",
+            "count": 1
+          },
+          {
+            "placement": "host",
+            "operation": "aten.div.Tensor",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            29,
+            37
+          ],
+          "count": 2,
+          "capsule": "layers/G_matmul_m17k16n16_raw",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                16,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                17,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              17,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 16,
+          "output_elements": 272,
+          "macs": 4352,
+          "semantic": "contraction",
+          "total_macs": 8704,
+          "share": 0.2857
+        },
+        {
+          "groups": [
+            10
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m17k16n32_raw",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                16,
+                32
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                17,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              17,
+              32
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 16,
+          "output_elements": 544,
+          "macs": 8704,
+          "semantic": "contraction",
+          "total_macs": 8704,
+          "share": 0.2857
+        },
+        {
+          "groups": [
+            14
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m17k32n16_raw",
+          "partial_sum_bound": 288,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                32,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                17,
+                32
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              17,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 32,
+          "output_elements": 272,
+          "macs": 8704,
+          "semantic": "contraction",
+          "total_macs": 8704,
+          "share": 0.2857
+        },
+        {
+          "groups": [
+            4
+          ],
+          "count": 1,
+          "capsule": "layers/G_conv2d_c3x8x8_k4x4s4_n16_raw",
+          "partial_sum_bound": 432,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                48,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                8,
+                8,
+                3
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              4,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 48,
+          "output_elements": 64,
+          "macs": 3072,
+          "semantic": "contraction",
+          "total_macs": 3072,
+          "share": 0.1008
+        },
+        {
+          "groups": [
+            26
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m3k16n16_raw",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                16,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                3,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              3,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 16,
+          "output_elements": 48,
+          "macs": 768,
+          "semantic": "contraction",
+          "total_macs": 768,
+          "share": 0.0252
+        },
+        {
+          "groups": [
+            22
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k16n16_raw",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                16,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 16,
+          "output_elements": 16,
+          "macs": 256,
+          "semantic": "contraction",
+          "total_macs": 256,
+          "share": 0.0084
+        },
+        {
+          "groups": [
+            44
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m3k16n4_raw",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                16,
+                4
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                3,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              3,
+              4
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 16,
+          "output_elements": 12,
+          "macs": 192,
+          "semantic": "contraction",
+          "total_macs": 192,
+          "share": 0.0063
+        },
+        {
+          "groups": [
+            18
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k4n16_raw",
+          "partial_sum_bound": 36,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                4,
+                16
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                4
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              16
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 4,
+          "output_elements": 16,
+          "macs": 64,
+          "semantic": "contraction",
+          "total_macs": 64,
+          "share": 0.0021
+        },
+        {
+          "groups": [
+            16
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m17n16_b1_raw",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                17,
+                16
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                17,
+                16
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              17,
+              16
+            ],
+            "i8"
+          ],
+          "epilogue": [],
+          "reduction_extent": null,
+          "output_elements": 272,
+          "macs": null,
+          "semantic": "elementwise_map"
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.linear.default": 8,
+          "aten.add.Tensor": 4,
+          "aten.cat.default": 2,
+          "aten.matmul.default": 2,
+          "aten.transpose.int": 2,
+          "aten.unsqueeze.default": 2,
+          "aten.conv2d.default": 1,
+          "aten.cos.default": 1,
+          "aten.div.Tensor": 1,
+          "aten.embedding.default": 1,
+          "aten.exp.default": 1,
+          "aten.flatten.using_ints": 1,
+          "aten.gelu.default": 1,
+          "aten.layer_norm.default": 1,
+          "aten.mul.Tensor": 1
+        },
+        "prepared": {
+          "aten.view.default": 43,
+          "aten.slice.Tensor": 32,
+          "aten.permute.default": 29,
+          "aten.mul.Tensor": 28,
+          "aten.clone.default": 17,
+          "aten.add.Tensor": 13,
+          "aten._int_mm.default": 9,
+          "aten._to_copy.default": 9,
+          "quantized_decomposed.quantize_per_tensor.default": 9,
+          "aten.expand.default": 4,
+          "aten.cat.default": 3,
+          "aten.bmm.default": 2,
+          "aten.unsqueeze.default": 2,
+          "quantized_decomposed.dequantize_per_tensor.default": 2,
+          "<built-in function getitem>": 1
+        },
+        "quantized": {
+          "aten.reshape.default": 36,
+          "aten.slice.Tensor": 32,
+          "aten.mul.Tensor": 28,
+          "aten.permute.default": 18,
+          "aten.add.Tensor": 13,
+          "aten.transpose.int": 11,
+          "aten._int_mm.default": 9,
+          "aten._to_copy.default": 9,
+          "quantized_decomposed.quantize_per_tensor.default": 9,
+          "aten.cat.default": 3,
+          "aten.matmul.default": 2,
+          "aten.unsqueeze.default": 2,
+          "quantized_decomposed.dequantize_per_tensor.default": 2,
+          "aten.cos.default": 1,
+          "aten.div.Tensor": 1
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 10,
+        "covered_groups": 10,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    },
+    {
+      "name": "SY_source_residual_cnn",
+      "source_sha256": "46e7cab000e4f346c5326fcf37851ccf35eee28a7445e2568095b1fcedcf24d7",
+      "numeric_policy": {
+        "compare": "tolerance_float",
+        "dtype": "f32",
+        "atol": 0.03125,
+        "rtol": 0.02
+      },
+      "quantization": {
+        "scheme": "int8_static_act_int8_weight",
+        "receipt_schema": "m2m.pt2e-integerize.v1",
+        "qparams": 11,
+        "activation_granularity": {
+          "tensor": 11
+        },
+        "weight_granularity": {
+          "tensor": 11
+        },
+        "accumulator_dtypes": {
+          "torch.int32": 11
+        },
+        "precision_decisions": 11,
+        "remaining_dequant_count": 7
+      },
+      "declared_placement": {
+        "status": "admitted",
+        "totals": {
+          "accelerator": 8,
+          "host": 36
+        },
+        "by_operation": [
+          {
+            "placement": "host",
+            "operation": "aten.mul.Tensor",
+            "classification": "host_required",
+            "count": 33
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.quantize_per_tensor.default",
+            "classification": "host_required",
+            "count": 15
+          },
+          {
+            "placement": "host",
+            "operation": "aten.add.Tensor",
+            "classification": "host_required",
+            "count": 14
+          },
+          {
+            "placement": "accelerator",
+            "operation": "aten._int_mm.default",
+            "classification": "accelerator_candidate",
+            "count": 11
+          },
+          {
+            "placement": "host",
+            "operation": "aten._to_copy.default",
+            "classification": "host_required",
+            "count": 11
+          },
+          {
+            "placement": "host",
+            "operation": "aten.relu.default",
+            "classification": "host_required",
+            "count": 9
+          },
+          {
+            "placement": "host",
+            "operation": "quantized_decomposed.dequantize_per_tensor.default",
+            "classification": "unresolved",
+            "count": 7
+          },
+          {
+            "placement": "host",
+            "operation": "aten.mean.dim",
+            "classification": "host_required",
+            "count": 2
+          },
+          {
+            "placement": "host",
+            "operation": "aten.max_pool2d_with_indices.default",
+            "classification": "host_required",
+            "count": 1
+          }
+        ]
+      },
+      "operator_groups_by_macs": [
+        {
+          "groups": [
+            4
+          ],
+          "count": 1,
+          "capsule": "layers/G_conv2d_c3x20x20_k7x7s2_n12_raw",
+          "partial_sum_bound": 1323,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                147,
+                12
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                20,
+                20,
+                3
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              100,
+              12
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 147,
+          "output_elements": 1200,
+          "macs": 176400,
+          "semantic": "contraction",
+          "total_macs": 176400,
+          "share": 0.6865
+        },
+        {
+          "groups": [
+            42
+          ],
+          "count": 1,
+          "capsule": "layers/G_conv2d_c24x3x3_k3x3s1_n24_raw",
+          "partial_sum_bound": 1944,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                216,
+                24
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                3,
+                3,
+                24
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              9,
+              24
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 216,
+          "output_elements": 216,
+          "macs": 46656,
+          "semantic": "contraction",
+          "total_macs": 46656,
+          "share": 0.1816
+        },
+        {
+          "groups": [
+            37
+          ],
+          "count": 1,
+          "capsule": "layers/G_conv2d_c12x5x5_k3x3s2_n24_raw",
+          "partial_sum_bound": 972,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                108,
+                24
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                5,
+                5,
+                12
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              9,
+              24
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 108,
+          "output_elements": 216,
+          "macs": 23328,
+          "semantic": "contraction",
+          "total_macs": 23328,
+          "share": 0.0908
+        },
+        {
+          "groups": [
+            13,
+            27
+          ],
+          "count": 2,
+          "capsule": "layers/G_conv2d_c3x5x5_k3x3s1_n3_raw",
+          "partial_sum_bound": 243,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                27,
+                3
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                5,
+                5,
+                3
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              25,
+              3
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 27,
+          "output_elements": 75,
+          "macs": 2025,
+          "semantic": "contraction",
+          "total_macs": 4050,
+          "share": 0.0158
+        },
+        {
+          "groups": [
+            46
+          ],
+          "count": 1,
+          "capsule": "layers/G_conv2d_c12x5x5_k1x1s2_n24_raw",
+          "partial_sum_bound": 108,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                12,
+                24
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                5,
+                5,
+                12
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              9,
+              24
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 12,
+          "output_elements": 216,
+          "macs": 2592,
+          "semantic": "contraction",
+          "total_macs": 2592,
+          "share": 0.0101
+        },
+        {
+          "groups": [
+            8,
+            22
+          ],
+          "count": 2,
+          "capsule": "layers/G_conv2d_c12x5x5_k1x1s1_n3_raw",
+          "partial_sum_bound": 108,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                12,
+                3
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                5,
+                5,
+                12
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              25,
+              3
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 12,
+          "output_elements": 75,
+          "macs": 900,
+          "semantic": "contraction",
+          "total_macs": 1800,
+          "share": 0.007
+        },
+        {
+          "groups": [
+            17,
+            31
+          ],
+          "count": 2,
+          "capsule": "layers/G_conv2d_c3x5x5_k1x1s1_n12_raw",
+          "partial_sum_bound": 27,
+          "mac_result_bits": 20,
+          "op": "conv2d",
+          "inputs": {
+            "W": [
+              [
+                3,
+                12
+              ],
+              "i8",
+              "weight"
+            ],
+            "IFM": [
+              [
+                1,
+                5,
+                5,
+                3
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              25,
+              12
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 3,
+          "output_elements": 300,
+          "macs": 900,
+          "semantic": "contraction",
+          "total_macs": 1800,
+          "share": 0.007
+        },
+        {
+          "groups": [
+            49
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m24k9n1_acc_scale",
+          "partial_sum_bound": 144,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                9,
+                1
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                24,
+                9
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              24,
+              1
+            ],
+            "i8"
+          ],
+          "epilogue": [
+            "acc_scale"
+          ],
+          "reduction_extent": 9,
+          "output_elements": 24,
+          "macs": 216,
+          "semantic": "contraction",
+          "total_macs": 216,
+          "share": 0.0008
+        },
+        {
+          "groups": [
+            51
+          ],
+          "count": 1,
+          "capsule": "layers/G_matmul_m1k24n4_raw",
+          "partial_sum_bound": 216,
+          "mac_result_bits": 20,
+          "op": "matmul",
+          "inputs": {
+            "W": [
+              [
+                24,
+                4
+              ],
+              "i8",
+              "weight"
+            ],
+            "A0": [
+              [
+                1,
+                24
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              1,
+              4
+            ],
+            "i32"
+          ],
+          "epilogue": [],
+          "reduction_extent": 24,
+          "output_elements": 4,
+          "macs": 96,
+          "semantic": "contraction",
+          "total_macs": 96,
+          "share": 0.0004
+        },
+        {
+          "groups": [
+            19
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m25n12_b1_relu",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                25,
+                12
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                25,
+                12
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              25,
+              12
+            ],
+            "i8"
+          ],
+          "epilogue": [
+            "relu"
+          ],
+          "reduction_extent": null,
+          "output_elements": 300,
+          "macs": null,
+          "semantic": "elementwise_map"
+        },
+        {
+          "groups": [
+            33
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m25n12_b1_relu_qed4a8588554b",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                25,
+                12
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                25,
+                12
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              25,
+              12
+            ],
+            "i8"
+          ],
+          "epilogue": [
+            "relu"
+          ],
+          "reduction_extent": null,
+          "output_elements": 300,
+          "macs": null,
+          "semantic": "elementwise_map"
+        },
+        {
+          "groups": [
+            48
+          ],
+          "count": 1,
+          "capsule": "layers/G_residual_add_m9n24_b2_relu",
+          "op": "residual_add",
+          "inputs": {
+            "X0": [
+              [
+                9,
+                24
+              ],
+              "i8",
+              "input"
+            ],
+            "X1": [
+              [
+                9,
+                24
+              ],
+              "i8",
+              "input"
+            ]
+          },
+          "output": [
+            "Y0",
+            [
+              9,
+              24
+            ],
+            "i8"
+          ],
+          "epilogue": [
+            "relu"
+          ],
+          "reduction_extent": null,
+          "output_elements": 216,
+          "macs": null,
+          "semantic": "elementwise_map"
+        }
+      ],
+      "frontend_op_counts": {
+        "original": {
+          "aten.batch_norm.default": 10,
+          "aten.conv2d.default": 10,
+          "aten.relu.default": 9,
+          "aten.add.Tensor": 3,
+          "aten.linear.default": 1,
+          "aten.max_pool2d.default": 1,
+          "aten.mean.dim": 1
+        },
+        "prepared": {
+          "aten.slice.Tensor": 180,
+          "aten.view.default": 122,
+          "aten.permute.default": 121,
+          "aten.clone.default": 91,
+          "aten.mul.Tensor": 33,
+          "quantized_decomposed.quantize_per_tensor.default": 15,
+          "aten.add.Tensor": 14,
+          "aten._int_mm.default": 11,
+          "aten._to_copy.default": 11,
+          "aten.relu.default": 9,
+          "quantized_decomposed.dequantize_per_tensor.default": 7,
+          "aten.cat.default": 5,
+          "aten.constant_pad_nd.default": 5,
+          "<built-in function getitem>": 1,
+          "aten.max_pool2d_with_indices.default": 1
+        },
+        "quantized": {
+          "aten.slice.Tensor": 180,
+          "aten.reshape.default": 122,
+          "aten.permute.default": 110,
+          "aten.mul.Tensor": 33,
+          "quantized_decomposed.quantize_per_tensor.default": 15,
+          "aten.add.Tensor": 14,
+          "aten._int_mm.default": 11,
+          "aten._to_copy.default": 11,
+          "aten.transpose.int": 11,
+          "aten.relu.default": 9,
+          "quantized_decomposed.dequantize_per_tensor.default": 7,
+          "aten.cat.default": 5,
+          "aten.constant_pad_nd.default": 5,
+          "aten.max_pool2d.default": 1,
+          "aten.mean.dim": 1
+        }
+      },
+      "coverage_declaration": {
+        "status": "qualified",
+        "device_groups": 15,
+        "covered_groups": 15,
+        "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+      },
+      "host_time_cycles": null
+    }
+  ],
+  "endpoint_programs": [
+    {
+      "model": "resnet50",
+      "program": "model",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/resnet50_milestone7.json",
+      "report_sha256": "802b0a202cb9c68599bfc200c19d2ef317b7cd9132209138030a15e4d51d2584",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "24/24 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "45/45 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 54,
+        "device": 54,
+        "refused": 0,
+        "device_mac_fraction": 1.0
+      },
+      "kernel_groups": [
+        {
+          "symbol": "merlin_dev_gemmini_16",
+          "form": "conv2d 3x3/s1 Cin=256 Cout=256 on 14x14 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 5,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "2f28bf58f5d93e8a1050c867400a7c64c34780ce69a0d80935eaffcf6fd68b79",
+          "shape_sha256": "23ef9272a6181bb4416557b8bffeda1d6b8a38c27baa7643644c1fd0b14e38b0",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 578027520,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_10",
+          "form": "conv2d 3x3/s1 Cin=128 Cout=128 on 28x28 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "f616be23af9c178662cb1e2d44a9940f6195ed157dcae6201d416cfff4461c53",
+          "shape_sha256": "44800faf8c619c2570c95c76ad8a59dbfce0e4e2635106e45cd92f4c9f241313",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 346816512,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_2",
+          "form": "conv2d 3x3/s1 Cin=64 Cout=64 on 56x56 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "e12593f84bce8168b43f646abf78f359b3a8fc8292c1b33b0077c5e244dab510",
+          "shape_sha256": "24305b8b4a56e2442f28132b709ec4b1051ddbf409c6a94397b8f003b66e11c5",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 346816512,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_13",
+          "form": "conv2d 1x1/s1 Cin=256 Cout=1024 on 14x14 -> i32",
+          "source_region_occurrences": 6,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "4a38701dc4a029f358a8a1afe39bde920a7ce6b550b9cbf1aecc3368d6421628",
+          "shape_sha256": "2cb8fc7c4cc4a2e16088175d7243ba0c8ba74ad4baab7677090ef256c84e11e2",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 308281344,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_15",
+          "form": "conv2d 1x1/s1 Cin=1024 Cout=256 on 14x14 -> i32",
+          "source_region_occurrences": 5,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "cb90dda23ba649a401ac94225636269ce5bb8dbb0d12a9eef0159b960fdc8a5c",
+          "shape_sha256": "4dea55fbea10926f0342592e24b57e636a5fc798aa67faa20f26c9d21ac11176",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 256901120,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_22",
+          "form": "conv2d 3x3/s1 Cin=512 Cout=512 on 7x7 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 2,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "b582d84f47f50a3de0d41fc2d1b6e3304dd4f2a8e194747da0381157020d292e",
+          "shape_sha256": "362df62d5719a996cd698300ee757c51636be1e70b4fd1b980f34f12358c541b",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 231211008,
+          "replays": 2,
+          "exact_replays": 2,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_3",
+          "form": "conv2d 1x1/s1 Cin=64 Cout=256 on 56x56 -> i32",
+          "source_region_occurrences": 4,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "999bc7fe951e9d73cedcf5bbdd38e8dd1545f410da5cc91ed6f0a0d559607376",
+          "shape_sha256": "ff1bbe4f5d68bca76022d361dc922ba7b42ec617b1154c0eda1145de4008c10e",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 205520896,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_7",
+          "form": "conv2d 1x1/s1 Cin=128 Cout=512 on 28x28 -> i32",
+          "source_region_occurrences": 4,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "07d078ba59a2613a1bef3ec3c95b6895d62d86044ecae0a831635e15496d4415",
+          "shape_sha256": "23e83c9539aea518a58404df32a5dadca11f7a85ddd081990f33178bcd0a6f08",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 205520896,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_19",
+          "form": "conv2d 1x1/s1 Cin=512 Cout=2048 on 7x7 -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "6c68314713f5e25e08e54881b23260a369c224963e6d20e49d646b7a9f18f794",
+          "shape_sha256": "2eab65c1f0463d4f9034b0eb2cc652bbbac3f164132f6f2baa6686a4350d54c6",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 154140672,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_9",
+          "form": "conv2d 1x1/s1 Cin=512 Cout=128 on 28x28 -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "409410adbebae4941931ce219387bdfbb070a9cb88c288a090698b5a561f5369",
+          "shape_sha256": "be72d7782dcf520456ac58587e4b661a1baa55b69bbffbbf2183b534fbbb776a",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 154140672,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_0",
+          "form": "conv2d 7x7/s2 Cin=3 Cout=64 on 224x224 pad [3, 3, 3, 3] -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "5464b484f704711ec92dbe3f1173278f7edbbeccfad99187007812891fd64cb3",
+          "shape_sha256": "f80d139f97eb8e911ccec5e00d0f1c989ec31dc9471a67f42b18a4dde5883892",
+          "macs_per_occurrence": 118013952,
+          "static_macs": 118013952,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_12",
+          "form": "conv2d 3x3/s2 Cin=256 Cout=256 on 28x28 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "da3e28f01bd3aa54e18026f6fb1e0f74eebabc67c79d6b3604a1302df2fa05fb",
+          "shape_sha256": "0067007c7acfeb79308b4622d97afcd154a7b64041911e14821ba18168f677b9",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 115605504,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_18",
+          "form": "conv2d 3x3/s2 Cin=512 Cout=512 on 14x14 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "a648071590722c32bd15a3f245155f11a694a65447084eca95cb989950f33e7f",
+          "shape_sha256": "f6c67f65e86862e4cadbe43a435df5da093bd7822f87fee37eb4d12d8654a6ee",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 115605504,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_6",
+          "form": "conv2d 3x3/s2 Cin=128 Cout=128 on 56x56 pad [1, 1, 1, 1] -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "18609bbb27635f9bead9609653275b08478aa8068c2b2090812b4c24fe93d5e9",
+          "shape_sha256": "aaad0e55eb26d5b212ff84a1f3df26125ed04660bf06dbb759374b38a57eaaea",
+          "macs_per_occurrence": 115605504,
+          "static_macs": 115605504,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_11",
+          "form": "conv2d 1x1/s1 Cin=512 Cout=256 on 28x28 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "48d09bb3847a632085291609b80da2a52069347feb89a037e2a87a1393c8a821",
+          "shape_sha256": "9022ef72d21c029aa38ce9d310a5584f63c896604293d1cb0931584539bac61c",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_14",
+          "form": "conv2d 1x1/s2 Cin=512 Cout=1024 on 28x28 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "8e6213a392a4855bcb70098aa584fcf6e40369f0d61ea39d4ece4546c2c40caf",
+          "shape_sha256": "c957572f8858511dca3e270f1d98113b407f38b453c7691cdc64d639ee524baf",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_17",
+          "form": "conv2d 1x1/s1 Cin=1024 Cout=512 on 14x14 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "9ba7711d9e816e877b9099908221787413a59f31c26d48b78384548c44d8d7a7",
+          "shape_sha256": "eb98b78539eda71ee1fc95fc2c1cc941ac4ce6515ad57bd8ce6228bc709afad3",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_20",
+          "form": "conv2d 1x1/s2 Cin=1024 Cout=2048 on 14x14 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "79ebd7e0c8c51b19c53dafb5ff338e4584afd59b24d3320a143b6a63ca639e85",
+          "shape_sha256": "8093c27701cee3c920a0808e7c8d3b9fab09578d5e3272fe3db66fea81e906dc",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_21",
+          "form": "conv2d 1x1/s1 Cin=2048 Cout=512 on 7x7 -> i32",
+          "source_region_occurrences": 2,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "167a167261a05f47efc21e7d6e621d695e4a393adcad5d28270550ac1fa17bab",
+          "shape_sha256": "ac036e946bd356036a24e4641a62a843bfb8340569f62d4ff18a20a7789edff4",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 102760448,
+          "replays": 2,
+          "exact_replays": 2,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_4",
+          "form": "conv2d 1x1/s1 Cin=256 Cout=64 on 56x56 -> i32",
+          "source_region_occurrences": 2,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "eebd27a1cc27b77f931ba6ab7e667c3c4376155f6390ba414c31b6d34e5dff6c",
+          "shape_sha256": "41ae0a3793cead36d8e1a087f1d4d7c0f56f760936c3b5007cc05b9e1651924e",
+          "macs_per_occurrence": 51380224,
+          "static_macs": 102760448,
+          "replays": 2,
+          "exact_replays": 2,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_5",
+          "form": "conv2d 1x1/s1 Cin=256 Cout=128 on 56x56 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "554826cdaa30f73b4fbcc10d7d961a28ec5bea0c386d48b0d49ed937c96102d0",
+          "shape_sha256": "173f35decd7bfbd0a6f8f7d2fb6c529c4ed75e43091ed027898e85a4aa7312c2",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_8",
+          "form": "conv2d 1x1/s2 Cin=256 Cout=512 on 56x56 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "6d123eb74f8c8dbd097acd15cdd5a887f684a12befb6aabaf7a8b38305e3541e",
+          "shape_sha256": "3f0f16a9235234e88276201259ecb93869665740296b1b37c816d8df4029be8c",
+          "macs_per_occurrence": 102760448,
+          "static_macs": 102760448,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_1",
+          "form": "conv2d 1x1/s1 Cin=64 Cout=64 on 56x56 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "a4ae32f9c263e82776783e041825a3c7d91343672a7ea90eec502d199ef173db",
+          "shape_sha256": "bcdcae4cab0f8c248af525c14bf2729800476c05af64ff16385dc0dd61924b34",
+          "macs_per_occurrence": 12845056,
+          "static_macs": 12845056,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_23",
+          "form": "matmul M=1 K=2048 N=1000 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "173d6c6567640be7b2c51e9576bc3aa7bab38ad8db3f0946e896a333fdad8366",
+          "shape_sha256": "df7cfd612c6fbd24945594ba3dc62eb630e68e192bb8f3e4407c362711a7fee0",
+          "macs_per_occurrence": 2048000,
+          "static_macs": 2048000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        }
+      ],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    },
+    {
+      "model": "smolvla",
+      "program": "prefix_encode",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/smolvla_milestone7.json",
+      "report_sha256": "476d86c7fee4c5f3a58d29f06755cabce03a30fb78962e5813bb5edcb9383361",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "28/28 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "70/70 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 3259,
+        "device": 3259,
+        "refused": 0,
+        "device_mac_fraction": 1.0
+      },
+      "kernel_groups": [
+        {
+          "symbol": "merlin_dev_gemmini_2",
+          "form": "activation-stationary matmul M=1024 K=64 N=1024 -> i32",
+          "source_region_occurrences": 576,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "9cc73df002d7a12a8a9cf55fd0d08a2d32a95af89f4fcf94523e836c2ab5aa51",
+          "shape_sha256": "5037fd9e551c780580bcb2727fa7b842faf494707c78563ce36f1927253b648d",
+          "macs_per_occurrence": 67108864,
+          "static_macs": 38654705664,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_3",
+          "form": "activation-stationary matmul M=1024 K=1024 N=64 -> i32",
+          "source_region_occurrences": 576,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "1b065993f2946fda4a24ef7a37fca5d09e904a24031e22f92fc822caacacdeda",
+          "shape_sha256": "05713cc5bb4374bdefdaf8ce310fd67b9193ee60af71390d19b7f16e8954af5b",
+          "macs_per_occurrence": 67108864,
+          "static_macs": 38654705664,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_1",
+          "form": "matmul M=1024 K=768 N=768 -> i32",
+          "source_region_occurrences": 48,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "b75922d91b5da3643f7d8c3125e792b329cfe0982094b3eb278bd3eb72deb8d4",
+          "shape_sha256": "fab95a73a9a5b70fe01f81849c730f036d462e025a9126fc36a113dfa791673f",
+          "macs_per_occurrence": 603979776,
+          "static_macs": 28991029248,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_4",
+          "form": "matmul M=1024 K=768 N=3072 -> i32",
+          "source_region_occurrences": 12,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "947b4dc51bf981c0b2f9bfdc0d9fae48e0e0b4ff6a6ee5ebd43312eab1e84e5b",
+          "shape_sha256": "aa7b5bbf0b952a598892a97a668baf7df887bee9e3fb3af2485b4d92e7643805",
+          "macs_per_occurrence": 2415919104,
+          "static_macs": 28991029248,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_5",
+          "form": "matmul M=1024 K=3072 N=768 -> i32",
+          "source_region_occurrences": 12,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "d41416c601fa99f7c6e1497324f6105d12814c5748a606041271d9d209cb685b",
+          "shape_sha256": "63379ef36637f59135927191d030a9ed2e4f0dc70a047dc5e750fca9e3a4211c",
+          "macs_per_occurrence": 2415919104,
+          "static_macs": 28991029248,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_12",
+          "form": "matmul M=113 K=960 N=2560 -> i32",
+          "source_region_occurrences": 32,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "67edf1be148fbd965a1344ca778a6b2d6a74f4eb200890839ba247449036beb9",
+          "shape_sha256": "64173d2b6eba0375335fa72d2b9cd3ba37bbd60ce4537c84b75cade015a12c35",
+          "macs_per_occurrence": 277708800,
+          "static_macs": 8886681600,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_13",
+          "form": "matmul M=113 K=2560 N=960 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "28603c33defef95465632bf7aad5b2bd79cb82af72b82efc25896dc735aa4a37",
+          "shape_sha256": "7c71a6038b6dd3ac09113c6b8544d86e78fb0d2258749565262ac45dc4f9939a",
+          "macs_per_occurrence": 277708800,
+          "static_macs": 4443340800,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_8",
+          "form": "matmul M=113 K=960 N=960 -> i32",
+          "source_region_occurrences": 32,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "eeee03d4b39725a4a773e0428cff257418c2fad040f2c33527bb9de244424a6f",
+          "shape_sha256": "1d4a1e5f184ba553bc813276298a99d3ced4f8e219cbca35abfd04f42b8bd8ab",
+          "macs_per_occurrence": 104140800,
+          "static_macs": 3332505600,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_9",
+          "form": "matmul M=113 K=960 N=320 -> i32",
+          "source_region_occurrences": 32,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "0fdb22bcbb9b9b1202fcd8c614663a5ceaf54bdc4c602d372b7a3d14a019caed",
+          "shape_sha256": "ab0310805b47afacbb0aaf971567cd3fef2f142b79537b948e67e760c9c68ed5",
+          "macs_per_occurrence": 34713600,
+          "static_macs": 1110835200,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_10",
+          "form": "activation-stationary matmul M=113 K=64 N=113 -> i32",
+          "source_region_occurrences": 960,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4",
+          "shape_sha256": "7b7b8567a7327cc5cd573d97cdd285d5ee91f860a8437500888cee861f4d117b",
+          "macs_per_occurrence": 817216,
+          "static_macs": 784527360,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_11",
+          "form": "activation-stationary matmul M=113 K=113 N=64 -> i32",
+          "source_region_occurrences": 960,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "97ddef97f8a4d32dbd7527414a27bedf5ceddf6aa650021f0c97c2b218c0d238",
+          "shape_sha256": "01c7c00eaeff8a370c4b5a9139d8f66bafb0879bc1f5f458a2b1054d57263bf5",
+          "macs_per_occurrence": 817216,
+          "static_macs": 784527360,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_6",
+          "form": "matmul M=64 K=12288 N=960 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "35b690a4483ee88df9f4ae2aade68909ba4fb48b10cb842c3b9247bdfa2a0186",
+          "shape_sha256": "2d104ebb7946a85b94c8b4a26dfb4da91b719ce804531950872902cea284d5d8",
+          "macs_per_occurrence": 754974720,
+          "static_macs": 754974720,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_0",
+          "form": "conv2d 16x16/s16 Cin=3 Cout=768 on 512x512 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "e49974eda1c4dc6dbde03b1d83ed9925a4337ee9461137323fb420099e5d2917",
+          "shape_sha256": "e1eb5b99cffd5d1b652786cf60aff251efa414204c788327838f01549216c415",
+          "macs_per_occurrence": 603979776,
+          "static_macs": 603979776,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_7",
+          "form": "matmul M=1 K=32 N=960 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "be0301c6188a7c5b33a2f6320a5f0e88bcbb6ecfb55c60972ad293f50c101232",
+          "shape_sha256": "07d8415d831a85bfd6c176388868235c0dde41a4a2e31528a8ee87c571e0810d",
+          "macs_per_occurrence": 30720,
+          "static_macs": 30720,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        }
+      ],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    },
+    {
+      "model": "smolvla",
+      "program": "flow_denoise",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/smolvla_milestone7.json",
+      "report_sha256": "476d86c7fee4c5f3a58d29f06755cabce03a30fb78962e5813bb5edcb9383361",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "28/28 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "70/70 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 2036,
+        "device": 2036,
+        "refused": 0,
+        "device_mac_fraction": 1.0
+      },
+      "kernel_groups": [
+        {
+          "symbol": "merlin_dev_gemmini_8",
+          "form": "matmul M=50 K=720 N=2048 -> i32",
+          "source_region_occurrences": 32,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "0aee82c0cebb13d585f22bad6a00fadbae878caded3ec097693271d545ea0564",
+          "shape_sha256": "4ac6dbd1f1b3529d14359d1de03d67aa9ae873ba733b61c624c52cb1d879b9ca",
+          "macs_per_occurrence": 73728000,
+          "static_macs": 2359296000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_9",
+          "form": "matmul M=50 K=2048 N=720 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "178565c406cb93ad07eb5dcdd23d1cf5b4b92e39270147aab4e0ba399a83b71e",
+          "shape_sha256": "de0a14aa96c944956e4ddf4bca267746052b8c304e79b3b564e4a5bbe65e953d",
+          "macs_per_occurrence": 73728000,
+          "static_macs": 1179648000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_3",
+          "form": "matmul M=50 K=720 N=960 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "880b2e199994c1338fedd27e6da724ce92c31ae4be8474dffe23a5e80090f2d7",
+          "shape_sha256": "52f4fc131b8b2008e974cba1c6efbdb90787278eafa3a162bb3569367fb9f1d4",
+          "macs_per_occurrence": 34560000,
+          "static_macs": 552960000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_7",
+          "form": "matmul M=50 K=960 N=720 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "611d009d5ec089fa6d110b9556d44932ec6a6eabe32570bc7123462d6107247d",
+          "shape_sha256": "df71815b6ea59fdb05c7886f54404e6cd21e0107f4c96c772f8f169b2d33c9ec",
+          "macs_per_occurrence": 34560000,
+          "static_macs": 552960000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_5",
+          "form": "activation-stationary matmul M=50 K=64 N=163 -> i32",
+          "source_region_occurrences": 480,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "086010455f2381f27a778d87ef87da6b529f11df4dec36116be0720f3c088928",
+          "shape_sha256": "7557881cbe113c15d7c2f5925e7ffd58ace5136504df41514c278669df2c382d",
+          "macs_per_occurrence": 521600,
+          "static_macs": 250368000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_6",
+          "form": "activation-stationary matmul M=50 K=163 N=64 -> i32",
+          "source_region_occurrences": 480,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "8e65375ff023c88953c6a1d2490800a472268f24e72001eafcb33eb575c5140c",
+          "shape_sha256": "cc79cd0e280b74342b35f8468476938363130abc22cf858cfe403df9cd4c7d11",
+          "macs_per_occurrence": 521600,
+          "static_macs": 250368000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_10",
+          "form": "matmul M=113 K=320 N=320 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "ce01b3569445118b472eaae3eed23ebf3ca0d90f9193028aa67873a65b086055",
+          "shape_sha256": "721d236761c826eb6f73783c41c90bebca4e19bd24cf2de2bd5fac2404abe4b1",
+          "macs_per_occurrence": 11571200,
+          "static_macs": 185139200,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_4",
+          "form": "matmul M=50 K=720 N=320 -> i32",
+          "source_region_occurrences": 16,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "eb2624aad32ff310445e63fc85de607732da90bac18f7e4ff6f55a05aab8d848",
+          "shape_sha256": "aaeb2ae7d1dcf940bff98f48314a680faec8816f17ea01027fe561e22880be87",
+          "macs_per_occurrence": 11520000,
+          "static_macs": 184320000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_11",
+          "form": "activation-stationary matmul M=50 K=64 N=113 -> i32",
+          "source_region_occurrences": 480,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "8cb7e1010f7ee7f73eb512f84d83e947985f36aa47ea2558df549af2faf686ca",
+          "shape_sha256": "915de7f3b6af0c7ed3d210f7a8adf3540f74d6914e95ac3fedb32c1079356409",
+          "macs_per_occurrence": 361600,
+          "static_macs": 173568000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_12",
+          "form": "activation-stationary matmul M=50 K=113 N=64 -> i32",
+          "source_region_occurrences": 480,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "d3fcdbf4bab9bd41167759debe1d38e4b37c864e8e1a97e2bb202998eb82e448",
+          "shape_sha256": "edafff1e4f46462cc5a3249d3ae6bb2795f6aa52e088a28a51e690504e1049eb",
+          "macs_per_occurrence": 361600,
+          "static_macs": 173568000,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_1",
+          "form": "matmul M=50 K=1440 N=720 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "5bf42e2a745639bcf9d26c839760b017c3e76e373e4ec7f7159f504792fdf3e3",
+          "shape_sha256": "77879fc23e364efdfa8241af605e285c77fcb0fca7c51cd38d260ade61c79173",
+          "macs_per_occurrence": 51840000,
+          "static_macs": 51840000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_2",
+          "form": "matmul M=50 K=720 N=720 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "c751e32435e9e23e104a3d3e5e9d82e2e55a62607206fabff13bf61184d2b896",
+          "shape_sha256": "3ed4ca50ded1abd4a1569d017d7c352726e6ca6448abb5599491ca5ace835ef0",
+          "macs_per_occurrence": 25920000,
+          "static_macs": 25920000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_0",
+          "form": "matmul M=50 K=32 N=720 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "09b8904fefc936027683fb6945022b1da55c68c72db18ffd1ebf9826c2567768",
+          "shape_sha256": "12271e25662234429d1fbf20f55838e2796243ea1a40981dd0293946a54b1cc4",
+          "macs_per_occurrence": 1152000,
+          "static_macs": 1152000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_13",
+          "form": "matmul M=50 K=720 N=32 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "4406524bb27bda412b4d86418aa1667f91882f4734e73324063bd881a063eb6d",
+          "shape_sha256": "61406836517b9d3518011ac1abc972f22bfa75c7ddd4d2a5e607c9bbb77184a7",
+          "macs_per_occurrence": 1152000,
+          "static_macs": 1152000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        }
+      ],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    },
+    {
+      "model": "smolvla",
+      "program": "action_decode",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/smolvla_milestone7.json",
+      "report_sha256": "476d86c7fee4c5f3a58d29f06755cabce03a30fb78962e5813bb5edcb9383361",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "28/28 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "70/70 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 0,
+        "device": 0,
+        "refused": 0,
+        "device_mac_fraction": null
+      },
+      "kernel_groups": [],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    },
+    {
+      "model": "tiny_llama",
+      "program": "prefill",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/tiny_llama_milestone7.json",
+      "report_sha256": "83559f7ea268b58f68c9e9eb50b337f5e281f48a2009b61e1fd96b75d9bc4b9c",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "16/16 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "44/44 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 3675,
+        "device": 3675,
+        "refused": 0,
+        "device_mac_fraction": 1.0
+      },
+      "kernel_groups": [
+        {
+          "symbol": "merlin_dev_gemmini_5",
+          "form": "matmul M=32 K=2048 N=5728 -> i32",
+          "source_region_occurrences": 38,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "c62c776b09b623829c0c3d0b54ee609db892f5a212bd99d44772a6f5adec2b72",
+          "shape_sha256": "daff73bf4018760e1f6acfdf6ace42916310894ae475b3f83b7c33921270f4c4",
+          "macs_per_occurrence": 375390208,
+          "static_macs": 14264827904,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_6",
+          "form": "matmul M=32 K=5728 N=2048 -> i32",
+          "source_region_occurrences": 19,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "f6d29b85acadaeebaad5f23579c1376c494e55871840a51a9909bc0dc203eb65",
+          "shape_sha256": "9d48bc01290fb8acdf33d846cd65e8fa55d4a6315a14c8cc761c8c92ce6b6368",
+          "macs_per_occurrence": 375390208,
+          "static_macs": 7132413952,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_0",
+          "form": "matmul M=32 K=2048 N=2048 -> i32",
+          "source_region_occurrences": 44,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "4a0c5ba554de80e1db6b8d9aa308930db63a6e043ece6956a03e3f7a647709e6",
+          "shape_sha256": "8b82ad304807a8fed287e24ca21ae26b657c8a02e67140637de2f343b4da2e9d",
+          "macs_per_occurrence": 134217728,
+          "static_macs": 5905580032,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_3",
+          "form": "matmul M=32 K=2048 N=6096 -> i32",
+          "source_region_occurrences": 6,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "6d604a393f70e43f98f702c4f14bc9487b7e38160f78fea8df8a1556ab248672",
+          "shape_sha256": "97c28c2cda68e477d41abbf7e34d44339c32b509c701c92e75f8c43561b942a1",
+          "macs_per_occurrence": 399507456,
+          "static_macs": 2397044736,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_7",
+          "form": "matmul M=32 K=2048 N=32000 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "8505bc0658d787b89f63f1ba0437bb74f2e0a56070c2bbe02bbbfc78d65b51d1",
+          "shape_sha256": "1e1a96f87cf91cfbc0904839d891c6ad89db942a4b79aa04372244e2745e9cf4",
+          "macs_per_occurrence": 2097152000,
+          "static_macs": 2097152000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_4",
+          "form": "matmul M=32 K=6096 N=2048 -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "64cf781177580c7b203621f460e59b57277496d599b3432b2034e44bef0a3dec",
+          "shape_sha256": "8958d730f768124d4531f28fb86dc26573d0395e7b7b65dcee2f41c51eeb106b",
+          "macs_per_occurrence": 399507456,
+          "static_macs": 1198522368,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_1",
+          "form": "matmul M=32 K=2048 N=256 -> i32",
+          "source_region_occurrences": 44,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "ebfbec16cd8ba8fa3eaf479a267be43e71d80c0a8eb2d289e75ace7b235ae597",
+          "shape_sha256": "abd821b1f695e49c789950d324bc99a165af92bfa09bd9f77af5d1b10a60fb0f",
+          "macs_per_occurrence": 16777216,
+          "static_macs": 738197504,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_2",
+          "form": "activation-stationary matmul M=32 K=64 N=64 -> i32",
+          "source_region_occurrences": 3520,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "7bb94e524f94b27ce3f8e459c18328cd2ea942276280bdb61bf290e72f5f624b",
+          "shape_sha256": "c977c19f5e726e3d9d53fef0897a840d6fdc28f63e8387e500776d18d72dbee9",
+          "macs_per_occurrence": 131072,
+          "static_macs": 461373440,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        }
+      ],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    },
+    {
+      "model": "tiny_llama",
+      "program": "decode",
+      "compiler_source_sha256": "dfcc2e79df28975490af296ff2645c687e3bfd5c46df0ec51a17b37027831a7f",
+      "report_path": "model_reports/tiny_llama_milestone7.json",
+      "report_sha256": "83559f7ea268b58f68c9e9eb50b337f5e281f48a2009b61e1fd96b75d9bc4b9c",
+      "report_status": "pass",
+      "gates": {
+        "build": {
+          "status": "pass",
+          "detail": "16/16 kernels built"
+        },
+        "kernel_exact": {
+          "status": "pass",
+          "partial": false,
+          "detail": "44/44 calls bit-exact on 1 input(s) and 0 shape variant(s); 0 kernel(s) differ or did not finish"
+        },
+        "model_numerics": {
+          "status": "pass",
+          "detail": "every kernel exact, so the model computes its INT8 reference"
+        }
+      },
+      "census": {
+        "denominator": 3675,
+        "device": 3675,
+        "refused": 0,
+        "device_mac_fraction": 1.0
+      },
+      "kernel_groups": [
+        {
+          "symbol": "merlin_dev_gemmini_5",
+          "form": "matmul M=1 K=2048 N=5728 -> i32",
+          "source_region_occurrences": 38,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "c524382d496133d420719e42dfd57061eba13e0a8f06ed7a92b48f691581df39",
+          "shape_sha256": "c445a041eda1c7966b421e3f03448c17c389e8d35d0de54b4fa4e3759a492869",
+          "macs_per_occurrence": 11730944,
+          "static_macs": 445775872,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_6",
+          "form": "matmul M=1 K=5728 N=2048 -> i32",
+          "source_region_occurrences": 19,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "a33fb1c1ff8c2d8bf3869ef36eebf512dd62adbbefe16db2b5f6934f6d5d14c5",
+          "shape_sha256": "8adf9671fa0df28ff0d88d3aa7a7822a6f60ae928597a6428ade3f6629a0299d",
+          "macs_per_occurrence": 11730944,
+          "static_macs": 222887936,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_0",
+          "form": "matmul M=1 K=2048 N=2048 -> i32",
+          "source_region_occurrences": 44,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "9499f32b50d1886aec4171289ad4795ae40d946799456a53d6d074ae17c22362",
+          "shape_sha256": "4d97a720187bd15251083fc7085f6a8eb29a30c9787e21ba188d7ba1462ebdf3",
+          "macs_per_occurrence": 4194304,
+          "static_macs": 184549376,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_3",
+          "form": "matmul M=1 K=2048 N=6096 -> i32",
+          "source_region_occurrences": 6,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "a79c039fd5f77c71a3c51446321df79881caf8cbbd8ef407306acd542febabb2",
+          "shape_sha256": "7d733d6b943a247cc1934b5186b11ca4fee2e6d91ff43d58a015cee46ff0f110",
+          "macs_per_occurrence": 12484608,
+          "static_macs": 74907648,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_7",
+          "form": "matmul M=1 K=2048 N=32000 -> i32",
+          "source_region_occurrences": 1,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "cc76c428e0758f353d85469b2e974137853f1fba03a7576194b84de33aa9eca0",
+          "shape_sha256": "e4c93462c6f9d7f731ed772c239286674c8b44d336ceec8dfe0f85eb69cd1abe",
+          "macs_per_occurrence": 65536000,
+          "static_macs": 65536000,
+          "replays": 1,
+          "exact_replays": 1,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_4",
+          "form": "matmul M=1 K=6096 N=2048 -> i32",
+          "source_region_occurrences": 3,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "1294949a9a91599e7558745fb1597e3804d7052277fe02e5768ed10778d8fa72",
+          "shape_sha256": "768c30a558d251c65b5e4f94019f924fa0b5e2559e9a5c4332d63b315b99790e",
+          "macs_per_occurrence": 12484608,
+          "static_macs": 37453824,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_1",
+          "form": "matmul M=1 K=2048 N=256 -> i32",
+          "source_region_occurrences": 44,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "ab94e1baa4495de31e3195b6be376ce0de0ec0e4a63b97c7af5e3d07fca0b641",
+          "shape_sha256": "67e7a872fbd290c00fe3ab29c9f201618810eccd271866bc0423dae76d898549",
+          "macs_per_occurrence": 524288,
+          "static_macs": 23068672,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        },
+        {
+          "symbol": "merlin_dev_gemmini_2",
+          "form": "activation-stationary matmul M=1 K=64 N=64 -> i32",
+          "source_region_occurrences": 3520,
+          "occurrence_basis": "distinct source_region_ids in public endpoint census; not replay count",
+          "interface_sha256": "b7eadaa37dc7025a017244c5471978a34746fb65efbb9c24a66bf8107ac95caf",
+          "shape_sha256": "7dbee4468879e3a934bb908e4326bb06cc355ba07c250b1698aabb4f5fbbb3ba",
+          "macs_per_occurrence": 4096,
+          "static_macs": 14417920,
+          "replays": 3,
+          "exact_replays": 3,
+          "complete_region_elapsed_cycles": null
+        }
+      ],
+      "host_regions": "UNKNOWN: endpoint kernel replay census does not enumerate complete host graph execution",
+      "preparation_and_intermediate_lifetimes": "UNKNOWN outside independently compiled connected public regions",
+      "whole_program_elapsed_cycles": null
+    }
+  ]
+}

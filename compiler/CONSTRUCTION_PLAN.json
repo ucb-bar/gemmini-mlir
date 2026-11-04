@@ -1,0 +1,116 @@
+{
+  "schema": "compiler_construction_plan.v1",
+  "inventory_sha256": "9ee5009779b350ebe64cc9f53fdb46f3ad433d055e6c61e5e70523a9ade405fd",
+  "family_roster": [
+    "component_program",
+    "contraction",
+    "elementwise_map",
+    "host_island_seam",
+    "movement"
+  ],
+  "nodes": [
+    {
+      "id": "component_program",
+      "owner": "mixed_graph",
+      "module": "submission/backend.py",
+      "input": "typed semantic graph with source layouts and numerical order",
+      "output": "LLVM-dialect logical pointer kernel, all live outputs",
+      "depends_on": [
+        "isa_lowering"
+      ],
+      "implementation_modules": [
+        "submission/graph.py",
+        "submission/graph_control.py",
+        "submission/graph_quant.py",
+        "submission/graph_products.py",
+        "submission/graph_device.py"
+      ]
+    },
+    {
+      "id": "contraction",
+      "owner": "dense_lowering/convolution/structured_products",
+      "module": "submission/backend.py",
+      "input": "typed semantic graph with source layouts and numerical order",
+      "output": "LLVM-dialect logical pointer kernel, all live outputs",
+      "depends_on": [
+        "isa_lowering"
+      ],
+      "implementation_modules": [
+        "submission/dense.py",
+        "submission/resident.py",
+        "submission/segmented_k.py",
+        "submission/conv.py",
+        "submission/products.py",
+        "submission/readout_helpers.py",
+        "submission/completion_adapter.py"
+      ],
+      "completion_composition": "original checked schedule -> exact issued/output-block scope -> selected schedule.completion_epochs -> unchanged target emitter"
+    },
+    {
+      "id": "elementwise_map",
+      "owner": "elementwise",
+      "module": "submission/backend.py",
+      "input": "typed semantic graph with source layouts and numerical order",
+      "output": "LLVM-dialect logical pointer kernel, all live outputs",
+      "depends_on": [
+        "isa_lowering"
+      ],
+      "implementation_modules": [
+        "submission/elementwise.py",
+        "submission/vector.py"
+      ]
+    },
+    {
+      "id": "host_island_seam",
+      "owner": "mixed_graph",
+      "module": "submission/backend.py",
+      "input": "typed semantic graph with source layouts and numerical order",
+      "output": "LLVM-dialect logical pointer kernel, all live outputs",
+      "depends_on": [
+        "isa_lowering"
+      ],
+      "implementation_modules": [
+        "submission/graph.py",
+        "submission/graph_device.py"
+      ]
+    },
+    {
+      "id": "movement",
+      "owner": "elementwise",
+      "module": "submission/backend.py",
+      "input": "typed semantic graph with source layouts and numerical order",
+      "output": "LLVM-dialect logical pointer kernel, all live outputs",
+      "depends_on": [
+        "isa_lowering"
+      ],
+      "implementation_modules": [
+        "submission/elementwise.py"
+      ]
+    },
+    {
+      "id": "isa_lowering",
+      "owner": "target_encoding",
+      "module": "submission/target.py",
+      "depends_on": []
+    },
+    {
+      "id": "integration",
+      "owner": "root",
+      "module": "submission/compiler.py",
+      "depends_on": [
+        "component_program",
+        "contraction",
+        "elementwise_map",
+        "host_island_seam",
+        "movement"
+      ]
+    }
+  ],
+  "status": "Implemented; evidence is in REPORT.md and immutable execution receipts, not this component map.",
+  "known_gaps": [
+    "Three original source-identity preflights",
+    "Two original decoder numerical execution failures",
+    "Mandatory scale-emission ladder incomplete after aggregate timeout",
+    "Most complete connected-chain timing UNKNOWN"
+  ]
+}
