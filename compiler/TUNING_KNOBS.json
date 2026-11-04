@@ -1,0 +1,152 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "matmul_row_tiles": {
+      "values": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "mechanism": "reuse_b_dma_across_output_rows",
+      "note": "Maximum row tiles sharing B DMA. Up to32 tiles occupy512 accumulator rows, within selected i9 per-bank address window. 1 preserves original baseline."
+    },
+    "conv_prepare": {
+      "values": [
+        "generic",
+        "auto",
+        "structured",
+        "auto_pool"
+      ],
+      "mechanism": "convolution_input_preparation",
+      "note": "Generic, automatic or structured convolution input preparation; auto_pool adds exact explicit padded-plane device pooling to auto."
+    },
+    "sibling_fusion": {
+      "values": [
+        false,
+        true,
+        "auto",
+        "rhs",
+        "rhs_auto",
+        "rhs_rows"
+      ],
+      "mechanism": "reuse_source_operands_across_independent_products",
+      "note": "Explicit true/auto shares LHS across exact siblings; rhs shares immutable RHS across 2..8 exact one-M-tile products. rhs_auto accepts the pinned eight-member shape predicate and internal column schedule, otherwise retains the incumbent. Source effects, aliases and capacity are proven independently. Explicit rhs_rows combines independent short A slices in device scratchpad when total rows<=16; original buffers remain exposed. Within accepted rhs_auto groups, M=1 combines eight physical A rows. Prior rhs+columns4 remains available as the incumbent."
+    },
+    "storage_reuse": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "reuse_scratch_allocations_by_static_lifetime",
+      "note": "Share internal allocation slots with disjoint static lifetimes; false retains independent allocation incumbent."
+    },
+    "attention_key_prepare": {
+      "values": [
+        "cpu",
+        "device"
+      ],
+      "mechanism": "attention_key_transpose_dma",
+      "note": "Row-per-key attention preparation: CPU incumbent or exact device DMA transpose; pretransposed inputs unchanged."
+    },
+    "row_policy": {
+      "values": [
+        "fixed",
+        "reuse_large",
+        "unroll_reuse"
+      ],
+      "mechanism": "select_row_residency_from_contraction_dimensions",
+      "note": "fixed retains chosen maximum. reuse_large caps to16 when M>128 and K>=128, otherwise8; maximum matmul_row_tiles remains a cap. Provisional model choice with limited boundary holdouts. Optional unroll_reuse preserves the reuse_large residency and statically issues full groups of at most16 row tiles; tail groups retain loops. This is an experimental alternative; default remains reuse_large pending complete-call cycles."
+    },
+    "resident_weights": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "retain_small_rhs_across_adjacent_consumers",
+      "note": "Retain bounded full-K i8 RHS in a disjoint scratchpad window for repeated packed-generation consumers; otherwise common streaming lowering."
+    },
+    "conv_pack": {
+      "values": [
+        "scratchpad",
+        "accumulator"
+      ],
+      "mechanism": "convolution_dma_pack_storage",
+      "note": "Exact byte packing through raw scratchpad readout or sign-extended accumulator identity readout."
+    },
+    "activation_residency": {
+      "values": [
+        false,
+        true,
+        "auto"
+      ],
+      "mechanism": "retain_small_m_activation_across_output_columns",
+      "note": "Retain full contiguous A in disjoint bounded scratchpad. Auto selects 2<=M<=16,N>=32; pinned GEMV M=1,K>=128,N>=128; or M>16,N>=128. Semantic/layout/capacity legality remains separate. Explicit true/false retain alternatives. Multirow profitability supported by paired M49K512N2048 development and M196K256N1024 holdout; other geometries remain extrapolation."
+    },
+    "conv_pointwise_source": {
+      "values": [
+        "packed",
+        "strided"
+      ],
+      "mechanism": "direct_strided_pointwise_activation_dma",
+      "note": "For unpadded nonunit-stride 1x1 convolution, use common matmul with physical lhs row stride instead of im2col roundtrip. Packed is the tested incumbent."
+    },
+    "activation_rows": {
+      "values": [
+        256,
+        1024,
+        8192
+      ],
+      "mechanism": "bounded_activation_scratchpad_capacity",
+      "note": "Full-A retained row budget beginning at256, within selected16384-row scratchpad and disjoint other windows. Default8192 follows paired provisional complete-model holdouts;256 retains small-capacity incumbent."
+    },
+    "matmul_column_tiles": {
+      "values": [
+        1,
+        2,
+        4,
+        "auto",
+        "permute"
+      ],
+      "mechanism": "reuse_activation_dma_across_adjacent_output_columns",
+      "note": "Auto uses shared dimension policy, pinned GEMV M1 K,N>=128, and exact-bit repeated-scale layout for M,K,N>=128 with all scale groups>=16; legality separate. Explicit1/2/4/permute remain alternatives."
+    },
+    "column_dma": {
+      "values": [
+        "tile",
+        "wide"
+      ],
+      "mechanism": "coalesce_adjacent_rhs_dma_tiles",
+      "note": "In shared multi-column lowering, one wide state1 MVIN uses block_stride16 for up to64 adjacent i8 columns. Tile retains separate loads. Uses the common terminal encoder; maximum64byte read requests are a hardware bound, not a promised transfer size."
+    },
+    "tiled_bias": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "tiled_bias_accumulator_initialization",
+      "note": "Initialize each tiled accumulator from signed i32 bias before reduction using state2 DMA; false retains incumbent bias lowering."
+    },
+    "conv_pack_dma": {
+      "values": [
+        "tile",
+        "wide",
+        "rows",
+        "padded_rows"
+      ],
+      "mechanism": "wide_convolution_pack_load",
+      "note": "Tile, wide channels, scanline rows, or guarded padded scanline rows; all use shared DMA encoding."
+    },
+    "peel_reduction": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "explicit_first_reduction_tile",
+      "note": "Peel the real first K tile and use constant subsequent accumulation flags; false retains the incumbent reduction loop."
+    }
+  }
+}

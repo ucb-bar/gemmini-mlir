@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""The four fresh10 compiler entrypoints share one parser and lowering path."""
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "compiler_library"))
+sys.path.insert(0, str(ROOT))
+
+from merlin.targetgen.oot_starterkit.iface import parse_interface, parse_linalg
+
+from backend.source_kind import classify_source
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--verify-diagnostics", action="store_true")
+    p.add_argument("--convert-iface-to-gemmini", action="store_true")
+    p.add_argument("--emit-command-buffer")
+    p.add_argument("--emit-target-artifact", action="store_true")
+    p.add_argument("--emit-llvm", action="store_true")
+    p.add_argument("input")
+    args = p.parse_args()
+    text = Path(args.input).read_text()
+    source_kind = classify_source(text)
+    if args.verify_diagnostics:
+        (parse_linalg if source_kind == "linalg-on-tensors" else parse_interface)(text)
+        return
+    if source_kind == "linalg-on-tensors":
+        from backend.frontend import lower_linalg
+        cb = lower_linalg(text)
+    else:
+        cb = parse_interface(text)
+    from backend.compiler import compile_buffer
+    cb, lowered = compile_buffer(cb)
+    if args.emit_command_buffer:
+        Path(args.emit_command_buffer).write_text(json.dumps(cb, indent=2) + "\n")
+    if args.emit_target_artifact or args.emit_llvm or not args.emit_command_buffer:
+        print(lowered, end="")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
