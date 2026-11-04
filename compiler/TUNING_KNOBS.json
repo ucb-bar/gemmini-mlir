@@ -1,0 +1,287 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "dense_schedule": {
+      "values": [
+        "auto",
+        "compact",
+        "panel_drained",
+        "panel_epochs",
+        "ready_readout",
+        "segmented_ready",
+        "auto_ready",
+        "array_epochs"
+      ],
+      "mechanism": "dense_segmented_pipeline"
+    },
+    "conv_epoch_pairs": {
+      "values": [
+        1,
+        4,
+        8,
+        16
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_retention": {
+      "values": [
+        "off",
+        "input",
+        "input_rhs",
+        "rolling_rhs"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "pool_route": {
+      "values": [
+        "spill",
+        "producer",
+        "producer_striped",
+        "readout_cache",
+        "auto",
+        "strip_epochs"
+      ],
+      "mechanism": "bounded_spatial_packing_and_rolling"
+    },
+    "graph_shared_inputs": {
+      "values": [
+        "off",
+        "on",
+        "counted"
+      ],
+      "mechanism": "shared_input_products"
+    },
+    "host_pointwise_fusion": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "host_pointwise_fusion"
+    },
+    "conv_policy": {
+      "values": [
+        "off",
+        "regional"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "residual_schedule": {
+      "values": [
+        "serial",
+        "epochs",
+        "auto"
+      ],
+      "mechanism": "loaded_sum_epochs"
+    },
+    "graph_preparation_reuse": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "tensor_view_canonicalization"
+    },
+    "host_tensor_views": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "tensor_view_canonicalization"
+    },
+    "pool_producer_epoch_pairs": {
+      "values": [
+        1,
+        8
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_array_retention": {
+      "values": [
+        "off",
+        "on",
+        "auto",
+        "multirow"
+      ],
+      "mechanism": "convolution_output_groups"
+    },
+    "command_small_loop_unroll": {
+      "values": [
+        "off",
+        "on",
+        "deep16",
+        "auto"
+      ],
+      "mechanism": "source_axis_loop_transforms"
+    },
+    "command_pack_bounds": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "host_address_arithmetic"
+    },
+    "gemv_column_blocks": {
+      "values": [
+        "off",
+        16,
+        32,
+        64
+      ],
+      "mechanism": "source_axis_output_blocking"
+    },
+    "segmented_readout_overlap": {
+      "values": [
+        "off",
+        "disjoint",
+        "coalesced"
+      ],
+      "mechanism": "accumulator_readout_compute_overlap"
+    },
+    "dense_rhs_reuse": {
+      "values": [
+        "off",
+        "ready",
+        "wide"
+      ],
+      "mechanism": "dense_rhs_retention_ready_readout"
+    },
+    "dense_longk_columns": {
+      "values": [
+        "off",
+        16,
+        32
+      ],
+      "mechanism": "retained_lhs_segmented_bounded_output"
+    },
+    "conv_column_reuse": {
+      "values": [
+        "off",
+        4,
+        8,
+        16
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "conv_column_grouping": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_axis_layout_preparation_and_column_readout"
+    },
+    "conv_column_copy": {
+      "values": [
+        "indexed",
+        "affine"
+      ],
+      "mechanism": "affine_host_copy"
+    },
+    "conv_grouped_pointwise": {
+      "values": [
+        "off",
+        "resident",
+        "array"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "dense_scalar_longk": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "segmented_k_retained_operand_pipeline"
+    },
+    "graph_shared_rhs": {
+      "values": [
+        "off",
+        8
+      ],
+      "mechanism": "dense_shared_rhs_retained_reduction"
+    },
+    "conv_pointwise_tiles": {
+      "values": [
+        "off",
+        "stage64",
+        "stage64_balanced"
+      ],
+      "mechanism": "window_row_dma_tiling"
+    },
+    "conv_column_direct": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "direct_strided_column_readout"
+    },
+    "graph_row_batch": {
+      "values": [
+        "off",
+        8
+      ],
+      "mechanism": "row_batching",
+      "description": "Assemble independent common-RHS source products into a checked shared dense row batch; original shared-RHS fallback when one primitive M tile or bounded private storage cannot admit the group."
+    },
+    "dense_longk_wide": {
+      "values": [
+        "off",
+        64,
+        "auto_fullrow"
+      ],
+      "mechanism": "dense_segmented_pipeline"
+    },
+    "conv_spatial_epochs": {
+      "values": [
+        "off",
+        "pairs32",
+        "readout8",
+        "combined32"
+      ],
+      "mechanism": "convolution_readout_epochs"
+    },
+    "conv_pointwise_compute_pairs": {
+      "values": [
+        8,
+        32,
+        128
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_column_copy_factor": {
+      "values": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "description": "Bounded lane expansion of checked affine private-buffer copy; shared HostBuilder memory semantics and exact scalar tails. Factor1 retains the incumbent traversal."
+    },
+    "conv_column_copy_short": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "description": "Bound each proven-disjoint affine copy region lane factor by its inner extent; retains shared host arithmetic and exact scalar tails."
+    },
+    "dense_short_panels": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "description": "Opt-in bounded-output raw thin-M panel-epoch hypothesis before automatic long-K planning; exact ordinary fallback and explicit schedule/GEMV/N16 choices retained."
+    },
+    "graph_layout_copy": {
+      "values": [
+        "linear",
+        "nested"
+      ],
+      "mechanism": "bounded_affine_layout_preparation"
+    },
+    "conv_column_copy_outer": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "bounded_affine_column_copy"
+    }
+  }
+}

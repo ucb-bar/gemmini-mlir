@@ -1,0 +1,939 @@
+{
+  "schema": "gemmini.dense.ready_policy.v1",
+  "design_sha256": "0f010c10efccbec52cfd4444c616e62ccda5fb54a66dec9fde5a16d565fc28a7",
+  "selected_facts_sha256": "dd5542ff85dd8d186e088af63423662557c1242321e4acecfba6a6ae1b114965",
+  "assessment": {
+    "schema": "merlin.shape_schedule_policy.v1",
+    "classes": [
+      {
+        "shape_class": "light_full_k_staging",
+        "incumbent": "panel_epochs",
+        "selected": "ready_readout",
+        "status": "empirically_supported_declared_panel",
+        "design": {
+          "schema": "merlin.pass_exploration.validation_partition.v1",
+          "training": [
+            {
+              "geometry_sha256": "3807a4d8cae8a24c17d76fd40cba9135d8f6130082aa8490ee4353a7f1edffce",
+              "family": "dense",
+              "operand_shapes": [
+                [
+                  3136,
+                  64
+                ],
+                [
+                  64,
+                  256
+                ]
+              ]
+            },
+            {
+              "geometry_sha256": "1db087b17c685627379980d1ad477d0ea4557ac3fed5a3bc699264977afeb233",
+              "family": "dense",
+              "operand_shapes": [
+                [
+                  3136,
+                  128
+                ],
+                [
+                  128,
+                  512
+                ]
+              ]
+            }
+          ],
+          "held_out": [
+            {
+              "geometry_sha256": "12497135e28613f68766729f56b4889a1dd95961b0287485777fca6181801a98",
+              "family": "dense",
+              "operand_shapes": [
+                [
+                  784,
+                  256
+                ],
+                [
+                  256,
+                  1024
+                ]
+              ]
+            },
+            {
+              "geometry_sha256": "f41ac6f6bf5ee0bef24483eb80d90db3813932b7d7e3dbb03413865e416a8d64",
+              "family": "dense",
+              "operand_shapes": [
+                [
+                  3136,
+                  64
+                ],
+                [
+                  64,
+                  64
+                ]
+              ]
+            }
+          ],
+          "withheld_families": [],
+          "sha256": "580444bbaf5a9205129a10c66391d26fcc7e5856cb35e7b6f709d93061671fbb"
+        },
+        "alternatives": [
+          {
+            "alternative": "panel_epochs",
+            "supported": true,
+            "matched_cycle_ratios": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "training_geometric_mean_ratio": 1.0,
+            "reasons": [],
+            "missing_geometries": [],
+            "missing_boundaries": [],
+            "mixed_performance_domains": false
+          },
+          {
+            "alternative": "ready_readout",
+            "supported": true,
+            "matched_cycle_ratios": [
+              0.9090858863986498,
+              0.8093876204635053,
+              0.787512228242662
+            ],
+            "training_geometric_mean_ratio": 0.8577895210301649,
+            "reasons": [],
+            "missing_geometries": [],
+            "missing_boundaries": [],
+            "mixed_performance_domains": false
+          }
+        ]
+      }
+    ],
+    "exact_source_winners": [
+      {
+        "geometry_sha256": "3807a4d8cae8a24c17d76fd40cba9135d8f6130082aa8490ee4353a7f1edffce",
+        "paired_identity_sha256": "20f706a4c124f4b7d5e94c25a3c183878677b2971264fc96455c65478c157ac3",
+        "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+        "observations": [
+          {
+            "alternative": "panel_epochs",
+            "program_sha256": "ae27eabd6fcae575a399960f6f0de618ec67d32e849ad432de86cc0a95218896",
+            "feedback_sha256": "d4ad057167ac3ca9d1a2e8a3d16d5fa22dc04d468e9c8e78cba0bffbef0d090c",
+            "eligible": true,
+            "cycles": 873086,
+            "diagnostics": null
+          },
+          {
+            "alternative": "ready_readout",
+            "program_sha256": "5204e3e2ee5581136bb22ecc528299ce08aae47e77f8acf729319232f757133d",
+            "feedback_sha256": "e91c2fdafdea04914111b61c76c23e822cc8caa4ca87e77adb012355fd1d9c5e",
+            "eligible": true,
+            "cycles": 706665,
+            "diagnostics": null
+          }
+        ],
+        "winner": "ready_readout"
+      },
+      {
+        "geometry_sha256": "1db087b17c685627379980d1ad477d0ea4557ac3fed5a3bc699264977afeb233",
+        "paired_identity_sha256": "39329a031fe305184297d7c6cba0cc134a66ff2b84dc43a89d98e8b4a0d05f0f",
+        "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+        "observations": [
+          {
+            "alternative": "panel_epochs",
+            "program_sha256": "6a7ee083530686f2708ae538b4ca8ec7148d5dcc62735cff38ba43b70c7f2923",
+            "feedback_sha256": "c90d323f85c7767e4c0b1df9b71127a7a45ad5ae4f10b8127fad050a0f80c529",
+            "eligible": true,
+            "cycles": 1719469,
+            "diagnostics": null
+          },
+          {
+            "alternative": "ready_readout",
+            "program_sha256": "04e9e391492afc2b1c4bd0e01f48390952ff59daab17cdd246187faddc50108a",
+            "feedback_sha256": "b5318b24e27d242f6ebf20b87fc439f0c71544008be15d893c191f7904d094b4",
+            "eligible": true,
+            "cycles": 1563145,
+            "diagnostics": null
+          }
+        ],
+        "winner": "ready_readout"
+      },
+      {
+        "geometry_sha256": "12497135e28613f68766729f56b4889a1dd95961b0287485777fca6181801a98",
+        "paired_identity_sha256": "6194bd2e6d71b12dba0b87306ab5acc8c23f63c48d8b554d90e2936d9f98a7c4",
+        "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+        "observations": [
+          {
+            "alternative": "panel_epochs",
+            "program_sha256": "b5c4c2ef8247a3552cebd92a94642b5e53699efac5c04c099a9efe3796c4a437",
+            "feedback_sha256": "c90d323f85c7767e4c0b1df9b71127a7a45ad5ae4f10b8127fad050a0f80c529",
+            "eligible": true,
+            "cycles": 1514656,
+            "diagnostics": null
+          },
+          {
+            "alternative": "ready_readout",
+            "program_sha256": "0c30ecec3fd27a09a38c4c986c2e6169af662a7ef790e8a036d590906f5bbcd0",
+            "feedback_sha256": "b5318b24e27d242f6ebf20b87fc439f0c71544008be15d893c191f7904d094b4",
+            "eligible": true,
+            "cycles": 1555752,
+            "diagnostics": null
+          }
+        ],
+        "winner": "panel_epochs"
+      },
+      {
+        "geometry_sha256": "f41ac6f6bf5ee0bef24483eb80d90db3813932b7d7e3dbb03413865e416a8d64",
+        "paired_identity_sha256": "e6a82e1cb1f0ca0030215af694a4efd4ec655f18ca12b5b8b780f9b1b5bf9d17",
+        "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+        "observations": [
+          {
+            "alternative": "panel_epochs",
+            "program_sha256": "9c367cc5336286f84a44d9356a1b2820db3f861ee2f46082efc4700eea93efe8",
+            "feedback_sha256": "245a9f4725f53a8b6ae5342d31e492a5c267a25671aa92befaacc3d012bd7962",
+            "eligible": true,
+            "cycles": 223867,
+            "diagnostics": null
+          },
+          {
+            "alternative": "ready_readout",
+            "program_sha256": "8b254966a19be45751b5ad0b194bdfb68ddbf2ce9d38b15ec5e5f6915f66877d",
+            "feedback_sha256": "5bfbda58d5ad88c8d88c508baf4ffa377abf4129bacd968e2698cf52cf8752db",
+            "eligible": true,
+            "cycles": 176298,
+            "diagnostics": null
+          }
+        ],
+        "winner": "ready_readout"
+      }
+    ],
+    "max_regression_ratio": 1.0,
+    "policy_sha256": "3c99143c08d7e7588ac34ddcd0868ff6e260db6d84e84b093f2cb90b8663b279",
+    "decision": "complete paired cycles, per-class regression retention; no static score fallback",
+    "decision_metric": "complete_same_roi_cycles",
+    "diagnostic_metrics_policy": "exact observation domain; explanations only; UNKNOWN stays unknown",
+    "legality": "original variant predicates and current-IR registered pass checks remain required",
+    "qualification": "provisional empirical panel support, not universal or physical qualification"
+  },
+  "panel": [
+    {
+      "shape": [
+        3136,
+        64,
+        256
+      ],
+      "split": "training",
+      "source_sha256": "d7f123905472a43a7b9a1a6c065a235e7eea659d42749ae33b91d68b834c015d",
+      "resources": {
+        "array_edge": 16,
+        "output_accumulator_stores": 49,
+        "epochs_admitted": 1,
+        "ready_admitted": 1,
+        "full_k_staging_quarter_stores": 1,
+        "full_k_quarter_reduction_extent": 256,
+        "full_k_staging_eighth_stores": 1,
+        "full_k_eighth_reduction_extent": 128,
+        "accumulator_block_halves": 2
+      },
+      "products": {
+        "panel_epochs": {
+          "program_sha256": "ae27eabd6fcae575a399960f6f0de618ec67d32e849ad432de86cc0a95218896",
+          "request_id": "4_1793143608741516074_356da248e8b088b6c11974a99593259f",
+          "feedback_sha256": "d4ad057167ac3ca9d1a2e8a3d16d5fa22dc04d468e9c8e78cba0bffbef0d090c",
+          "cycles": 873086,
+          "roofline_signals": {
+            "array_utilization_pct": 22.99,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 217088,
+                "device_read_bytes": 811008,
+                "ratio": 3.74
+              },
+              "reading": "reads 3.74x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 873086,
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 4.35,
+            "reading": "useful compute-ceiling attainment is 22.99% over 873086 cycles; structural compute lower bound is 200704 cycles",
+            "roofline_bound_cycles": 200704,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.2750267442153465,
+                "reader.slot_residency": 0.22784009822629156,
+                "writer.slot_residency": 0.5821602911969725,
+                "writer.state": 0.575861942580685
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.08464572791225607,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.005112898385726034,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "d7f123905472a43a7b9a1a6c065a235e7eea659d42749ae33b91d68b834c015d",
+            "mode": "panel_epochs",
+            "program_sha256": "ae27eabd6fcae575a399960f6f0de618ec67d32e849ad432de86cc0a95218896",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-short/checked-emissions/panel_epochs-d7f123905472a43a7b9a1a6c065a235e7eea659d42749ae33b91d68b834c015d.json",
+            "receipt_sha256": "fa784dc8c019737bb3c0dd3e91541812afac88f409e671cc3f95a7d1579284d6",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        },
+        "ready_readout": {
+          "program_sha256": "5204e3e2ee5581136bb22ecc528299ce08aae47e77f8acf729319232f757133d",
+          "request_id": "5_1793143614140945371_7513f1161499f76dc26511cbd5eb0751",
+          "feedback_sha256": "e91c2fdafdea04914111b61c76c23e822cc8caa4ca87e77adb012355fd1d9c5e",
+          "cycles": 706665,
+          "roofline_signals": {
+            "array_utilization_pct": 28.4,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 217088,
+                "device_read_bytes": 811008,
+                "ratio": 3.74
+              },
+              "reading": "reads 3.74x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 706665,
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 3.52,
+            "reading": "useful compute-ceiling attainment is 28.4% over 706665 cycles; structural compute lower bound is 200704 cycles",
+            "roofline_bound_cycles": 200704,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.3527555489517664,
+                "reader.slot_residency": 0.2646020391557527,
+                "writer.slot_residency": 0.7197427352423001,
+                "writer.state": 0.7081361040945852
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.33989655635980276,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "d7f123905472a43a7b9a1a6c065a235e7eea659d42749ae33b91d68b834c015d",
+            "mode": "ready_readout",
+            "program_sha256": "5204e3e2ee5581136bb22ecc528299ce08aae47e77f8acf729319232f757133d",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-short/checked-emissions/ready_readout-d7f123905472a43a7b9a1a6c065a235e7eea659d42749ae33b91d68b834c015d.json",
+            "receipt_sha256": "5e4db8720f4ca473ebdfb5adbad4443018ee2e77390112e98b7ad399ce870704",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        }
+      },
+      "comparison_identity": [
+        "614cc6ab19b2b3ab49734245bb579539fce681c9a86f224c0af621d903a9a4b8",
+        "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "4d0b8af9e76c184dc8d712ca66fea87c7804f0d86ffaef8bd1e5eb46be5e9767",
+        "untuned",
+        0
+      ],
+      "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+      "validation_role": "training",
+      "prior_geometry_observation": null,
+      "diagnostic_only": false,
+      "original_ready_eligible": true
+    },
+    {
+      "shape": [
+        113,
+        64,
+        113
+      ],
+      "split": "held_out",
+      "source_sha256": "a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4",
+      "resources": {
+        "array_edge": 16,
+        "output_accumulator_stores": 1,
+        "epochs_admitted": 1,
+        "ready_admitted": 1,
+        "full_k_staging_quarter_stores": 1,
+        "full_k_quarter_reduction_extent": 256,
+        "full_k_staging_eighth_stores": 1,
+        "full_k_eighth_reduction_extent": 128,
+        "accumulator_block_halves": 2
+      },
+      "products": {
+        "panel_epochs": {
+          "program_sha256": "7639b4f39d82ce0983e56e4f63158bcf16ab17f274f124cdd5530a4224ef51f0",
+          "request_id": "4_1793143608741516074_356da248e8b088b6c11974a99593259f",
+          "feedback_sha256": "d4ad057167ac3ca9d1a2e8a3d16d5fa22dc04d468e9c8e78cba0bffbef0d090c",
+          "cycles": 14110,
+          "roofline_signals": {},
+          "checked_emission": {
+            "source_sha256": "a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4",
+            "mode": "panel_epochs",
+            "program_sha256": "7639b4f39d82ce0983e56e4f63158bcf16ab17f274f124cdd5530a4224ef51f0",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-short/checked-emissions/panel_epochs-a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4.json",
+            "receipt_sha256": "66f88f881ff274a043d278b271a78c9d88e7c7dde3dcf77951b394b0ef077234",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        },
+        "ready_readout": {
+          "program_sha256": "1ed48fd8e2700d1f3a428830e0f47f26ba4e08473640ac1453abaf695efb4e9d",
+          "request_id": "5_1793143614140945371_7513f1161499f76dc26511cbd5eb0751",
+          "feedback_sha256": "e91c2fdafdea04914111b61c76c23e822cc8caa4ca87e77adb012355fd1d9c5e",
+          "cycles": 11740,
+          "roofline_signals": {},
+          "checked_emission": {
+            "source_sha256": "a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4",
+            "mode": "ready_readout",
+            "program_sha256": "1ed48fd8e2700d1f3a428830e0f47f26ba4e08473640ac1453abaf695efb4e9d",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-short/checked-emissions/ready_readout-a69d718dc9b1eec88f8f75483bd8d4f77ea2e7c8f97542bc41500892235917f4.json",
+            "receipt_sha256": "2495a4dfa4dbb6c4a855c8349a4b27761be61766e76e86c38cbc15c581e96094",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        }
+      },
+      "comparison_identity": [
+        "614cc6ab19b2b3ab49734245bb579539fce681c9a86f224c0af621d903a9a4b8",
+        "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "40a7a138c7321f6bcbd917e139b86957eecea7ffa4b87bfcb7b43da80112228f",
+        "untuned",
+        0
+      ],
+      "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+      "validation_role": "held_out",
+      "prior_geometry_observation": null,
+      "diagnostic_only": true,
+      "original_ready_eligible": false
+    },
+    {
+      "shape": [
+        3136,
+        128,
+        512
+      ],
+      "split": "training",
+      "source_sha256": "d2076341fe42f899dfd75a6912e1ad64e8c60fbb7d05dbd3f266e4e5b900b908",
+      "resources": {
+        "array_edge": 16,
+        "output_accumulator_stores": 98,
+        "epochs_admitted": 1,
+        "ready_admitted": 1,
+        "full_k_staging_quarter_stores": 1,
+        "full_k_quarter_reduction_extent": 256,
+        "full_k_staging_eighth_stores": 1,
+        "full_k_eighth_reduction_extent": 128,
+        "accumulator_block_halves": 2
+      },
+      "products": {
+        "panel_epochs": {
+          "program_sha256": "6a7ee083530686f2708ae538b4ca8ec7148d5dcc62735cff38ba43b70c7f2923",
+          "request_id": "4_1793144187190520817_86cec543cec10d38d71b36b11d898008",
+          "feedback_sha256": "c90d323f85c7767e4c0b1df9b71127a7a45ad5ae4f10b8127fad050a0f80c529",
+          "cycles": 1719469,
+          "roofline_signals": {
+            "array_utilization_pct": 46.69,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 466944,
+                "device_read_bytes": 3244032,
+                "ratio": 6.95
+              },
+              "reading": "reads 6.95x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 1719469,
+            "dominant_modeled_resource": {
+              "modeled_activity": 0.566,
+              "name": "accelerator.controller.execute"
+            },
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 2.14,
+            "reading": "useful compute-ceiling attainment is 46.69% over 1719469 cycles; accelerator.controller.execute has 56.6% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck",
+            "roofline_bound_cycles": 802816,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.5658967972089057,
+                "reader.slot_residency": 0.4064731611910421,
+                "writer.slot_residency": 0.2112524273482104,
+                "writer.state": 0.2000210530111331
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.18539269972299588,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.004689819938597323,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "d2076341fe42f899dfd75a6912e1ad64e8c60fbb7d05dbd3f266e4e5b900b908",
+            "mode": "panel_epochs",
+            "program_sha256": "6a7ee083530686f2708ae538b4ca8ec7148d5dcc62735cff38ba43b70c7f2923",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-boundary-current/checked-emissions/panel_epochs-d2076341fe42f899dfd75a6912e1ad64e8c60fbb7d05dbd3f266e4e5b900b908.json",
+            "receipt_sha256": "e4767e4294cba65dc3908e2c02187e2e4b98a04588a2a748ca1fc029bc1dacd2",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        },
+        "ready_readout": {
+          "program_sha256": "04e9e391492afc2b1c4bd0e01f48390952ff59daab17cdd246187faddc50108a",
+          "request_id": "5_1793144192994934557_8dd014f335e4118fad566cdece71c61d",
+          "feedback_sha256": "b5318b24e27d242f6ebf20b87fc439f0c71544008be15d893c191f7904d094b4",
+          "cycles": 1563145,
+          "roofline_signals": {
+            "array_utilization_pct": 51.36,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 466944,
+                "device_read_bytes": 3244032,
+                "ratio": 6.95
+              },
+              "reading": "reads 6.95x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 1563145,
+            "dominant_modeled_resource": {
+              "modeled_activity": 0.579,
+              "name": "accelerator.storage.scratchpad.2"
+            },
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 1.95,
+            "reading": "useful compute-ceiling attainment is 51.36% over 1563145 cycles; accelerator.storage.scratchpad.2 has 57.9% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck",
+            "roofline_bound_cycles": 802816,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.5266613142094944,
+                "reader.slot_residency": 0.429617853749972,
+                "writer.slot_residency": 0.3201615972926376,
+                "writer.state": 0.09338353127828833
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.09184816507745602,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "d2076341fe42f899dfd75a6912e1ad64e8c60fbb7d05dbd3f266e4e5b900b908",
+            "mode": "ready_readout",
+            "program_sha256": "04e9e391492afc2b1c4bd0e01f48390952ff59daab17cdd246187faddc50108a",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-boundary-current/checked-emissions/ready_readout-d2076341fe42f899dfd75a6912e1ad64e8c60fbb7d05dbd3f266e4e5b900b908.json",
+            "receipt_sha256": "747973324c4e6d592d650a1e1e43d25d409e7458dd62539ca00ce407d2b0ebde",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        }
+      },
+      "comparison_identity": [
+        "614cc6ab19b2b3ab49734245bb579539fce681c9a86f224c0af621d903a9a4b8",
+        "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "caff11a2efcf92235f96f1fbd9227859d40986f5db6adf04bed72f3e6208efa4",
+        "untuned",
+        0
+      ],
+      "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+      "validation_role": "inside cutoff training boundary",
+      "prior_geometry_observation": "ab/dense-ready-boundary/report.json (different emitted products; timing not reused)",
+      "diagnostic_only": false,
+      "original_ready_eligible": true
+    },
+    {
+      "shape": [
+        784,
+        256,
+        1024
+      ],
+      "split": "held_out",
+      "source_sha256": "75faf7c598349c7c38b2add8a486ef0d10a62fd8317c41812dca91d0e67b0545",
+      "resources": {
+        "array_edge": 16,
+        "output_accumulator_stores": 49,
+        "epochs_admitted": 1,
+        "ready_admitted": 1,
+        "full_k_staging_quarter_stores": 1,
+        "full_k_quarter_reduction_extent": 272,
+        "full_k_staging_eighth_stores": 2,
+        "full_k_eighth_reduction_extent": 128,
+        "accumulator_block_halves": 1
+      },
+      "products": {
+        "panel_epochs": {
+          "program_sha256": "b5c4c2ef8247a3552cebd92a94642b5e53699efac5c04c099a9efe3796c4a437",
+          "request_id": "4_1793144187190520817_86cec543cec10d38d71b36b11d898008",
+          "feedback_sha256": "c90d323f85c7767e4c0b1df9b71127a7a45ad5ae4f10b8127fad050a0f80c529",
+          "cycles": 1514656,
+          "roofline_signals": {
+            "array_utilization_pct": 53.0,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 462848,
+                "device_read_bytes": 3440640,
+                "ratio": 7.43
+              },
+              "reading": "reads 7.43x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 1514656,
+            "dominant_modeled_resource": {
+              "modeled_activity": 0.647,
+              "name": "accelerator.controller.execute"
+            },
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 1.89,
+            "reading": "useful compute-ceiling attainment is 53.0% over 1514656 cycles; accelerator.controller.execute has 64.7% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck",
+            "roofline_bound_cycles": 802816,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.6466108476116029,
+                "reader.slot_residency": 0.4798891629518518,
+                "writer.slot_residency": 0.10091532334734751,
+                "writer.state": 0.09225263030021338
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.23014598694357002,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0030977330826273426,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "75faf7c598349c7c38b2add8a486ef0d10a62fd8317c41812dca91d0e67b0545",
+            "mode": "panel_epochs",
+            "program_sha256": "b5c4c2ef8247a3552cebd92a94642b5e53699efac5c04c099a9efe3796c4a437",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-boundary-current/checked-emissions/panel_epochs-75faf7c598349c7c38b2add8a486ef0d10a62fd8317c41812dca91d0e67b0545.json",
+            "receipt_sha256": "3e4ea4b8d7531094a43ef46b7cbefc75df2a02d2fed361339c2154a811c352a5",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        },
+        "ready_readout": {
+          "program_sha256": "0c30ecec3fd27a09a38c4c986c2e6169af662a7ef790e8a036d590906f5bbcd0",
+          "request_id": "5_1793144192994934557_8dd014f335e4118fad566cdece71c61d",
+          "feedback_sha256": "b5318b24e27d242f6ebf20b87fc439f0c71544008be15d893c191f7904d094b4",
+          "cycles": 1555752,
+          "roofline_signals": {
+            "array_utilization_pct": 51.6,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 462848,
+                "device_read_bytes": 3440640,
+                "ratio": 7.43
+              },
+              "reading": "reads 7.43x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 1555752,
+            "dominant_modeled_resource": {
+              "modeled_activity": 0.59,
+              "name": "accelerator.storage.scratchpad.2"
+            },
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 1.94,
+            "reading": "useful compute-ceiling attainment is 51.6% over 1555752 cycles; accelerator.storage.scratchpad.2 has 59.0% modeled reservation activity; inspect dependencies and stalls before attributing a bottleneck",
+            "roofline_bound_cycles": 802816,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.5223763170479614,
+                "reader.slot_residency": 0.4551091690706488,
+                "writer.slot_residency": 0.14915359260344838,
+                "writer.state": 0.040290483316106934
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.03913862877887993,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "source_sha256": "75faf7c598349c7c38b2add8a486ef0d10a62fd8317c41812dca91d0e67b0545",
+            "mode": "ready_readout",
+            "program_sha256": "0c30ecec3fd27a09a38c4c986c2e6169af662a7ef790e8a036d590906f5bbcd0",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-boundary-current/checked-emissions/ready_readout-75faf7c598349c7c38b2add8a486ef0d10a62fd8317c41812dca91d0e67b0545.json",
+            "receipt_sha256": "311fc2cba88a070c031a8e1b8779b811616ac372f0f3e2c209adbad3a9289c2e",
+            "observer": "compile_source evidence_sink, ordinary emitted LLVM exact SHA asserted"
+          }
+        }
+      },
+      "comparison_identity": [
+        "614cc6ab19b2b3ab49734245bb579539fce681c9a86f224c0af621d903a9a4b8",
+        "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "a68575b517dfab701655dde7907e65f98c0027974bb31b257349175466c3d8b3",
+        "untuned",
+        0
+      ],
+      "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+      "validation_role": "adjacent outside control; previously observed development geometry",
+      "prior_geometry_observation": "ab/dense-ready-boundary/report.json (different emitted products; timing not reused)",
+      "diagnostic_only": false,
+      "original_ready_eligible": true
+    },
+    {
+      "shape": [
+        3136,
+        64,
+        64
+      ],
+      "split": "held_out",
+      "source_sha256": "af918ac3d0de7af5349b31d9c44ce78cf0ad9d14ec5eb3d0d4d1a100ce84e968",
+      "resources": {
+        "array_edge": 16,
+        "output_accumulator_stores": 13,
+        "epochs_admitted": 1,
+        "ready_admitted": 1,
+        "full_k_staging_quarter_stores": 1,
+        "full_k_quarter_reduction_extent": 336,
+        "full_k_staging_eighth_stores": 1,
+        "full_k_eighth_reduction_extent": 160,
+        "accumulator_block_halves": 1
+      },
+      "products": {
+        "panel_epochs": {
+          "program_sha256": "9c367cc5336286f84a44d9356a1b2820db3f861ee2f46082efc4700eea93efe8",
+          "request_id": "4_1793145270156304604_81b69245ef9f6f7b3808c8a00c483664",
+          "feedback_sha256": "245a9f4725f53a8b6ae5342d31e492a5c267a25671aa92befaacc3d012bd7962",
+          "cycles": 223867,
+          "roofline_signals": {
+            "array_utilization_pct": 22.41,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 204800,
+                "device_read_bytes": 303104,
+                "ratio": 1.48
+              },
+              "reading": "reads 1.48x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 223867,
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 4.46,
+            "reading": "useful compute-ceiling attainment is 22.41% over 223867 cycles; structural compute lower bound is 50176 cycles",
+            "roofline_bound_cycles": 50176,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.2762265094900097,
+                "reader.slot_residency": 0.43196630142003956,
+                "writer.slot_residency": 0.3783273104119857,
+                "writer.state": 0.36884400112566834
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.10074285178253159,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "mode": "panel_epochs",
+            "source_sha256": "af918ac3d0de7af5349b31d9c44ce78cf0ad9d14ec5eb3d0d4d1a100ce84e968",
+            "program_sha256": "9c367cc5336286f84a44d9356a1b2820db3f861ee2f46082efc4700eea93efe8",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-holdout-current/checked-emissions/panel_epochs-af918ac3d0de7af5349b31d9c44ce78cf0ad9d14ec5eb3d0d4d1a100ce84e968.json",
+            "receipt_sha256": "a28578d434c9d278d5e655d03378d1f86f5ed5ec9f0f233f39e03c30125a9360"
+          }
+        },
+        "ready_readout": {
+          "program_sha256": "8b254966a19be45751b5ad0b194bdfb68ddbf2ce9d38b15ec5e5f6915f66877d",
+          "request_id": "5_1793145275551067152_6e866cfdee264ba29837709dda6ae733",
+          "feedback_sha256": "5bfbda58d5ad88c8d88c508baf4ffa377abf4129bacd968e2698cf52cf8752db",
+          "cycles": 176298,
+          "roofline_signals": {
+            "array_utilization_pct": 28.46,
+            "capacity_use": {
+              "operand_reads": {
+                "capacity_bound_ratio": 1.0,
+                "compulsory_bytes": 204800,
+                "device_read_bytes": 303104,
+                "ratio": 1.48
+              },
+              "reading": "reads 1.48x the compulsory operand bytes; capacity allows ~1.00x",
+              "schema": "merlin.capacity_use.v1"
+            },
+            "cycles": 176298,
+            "evidence": "modeled: Spike timing model (provisional)",
+            "evidence_kind": "provisional_model",
+            "gap_ratio": 3.51,
+            "reading": "useful compute-ceiling attainment is 28.46% over 176298 cycles; structural compute lower bound is 50176 cycles",
+            "roofline_bound_cycles": 50176,
+            "schedule_activity": {
+              "active_fraction": {
+                "execute.feed": 0.3386992478644114,
+                "reader.slot_residency": 0.4913215124391655,
+                "writer.slot_residency": 0.47740189905727803,
+                "writer.state": 0.4264767609388649
+              },
+              "additive": false,
+              "basis": "same-ROI modeled source service and finite-credit residency; not physical PE occupancy",
+              "next_action": "Inspect legal storage/completion boundaries when active phases do not overlap; compare complete cycles after an actual shared-pass alternative. Zero overlap alone establishes neither legality nor profitability.",
+              "overlap_fraction": [
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.29728641277836393,
+                  "left": "writer.state",
+                  "right": "execute.feed"
+                },
+                {
+                  "fraction_of_window": 0.0,
+                  "left": "reader.slot_residency",
+                  "right": "writer.state"
+                }
+              ]
+            }
+          },
+          "checked_emission": {
+            "mode": "ready_readout",
+            "source_sha256": "af918ac3d0de7af5349b31d9c44ce78cf0ad9d14ec5eb3d0d4d1a100ce84e968",
+            "program_sha256": "8b254966a19be45751b5ad0b194bdfb68ddbf2ce9d38b15ec5e5f6915f66877d",
+            "receipt_path": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/agent-workspaces/phase1/gemmini/merlin_assisted/gemmini-open-compiler-20261027-fresh9cca/workspace/ab/dense-ready-holdout-current/checked-emissions/ready_readout-af918ac3d0de7af5349b31d9c44ce78cf0ad9d14ec5eb3d0d4d1a100ce84e968.json",
+            "receipt_sha256": "3ece8d99e683fcb5244f2fca3795f4fd15fcdb486aedf864bfeab733f2d2bc0b"
+          }
+        }
+      },
+      "comparison_identity": [
+        "614cc6ab19b2b3ab49734245bb579539fce681c9a86f224c0af621d903a9a4b8",
+        "b3ce9aaf7e8e2227e781f5d0bb3bd597f73ab12cd8c67aff64a5cd7f54347b11",
+        "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+        "fa29a9f347bf945f37d95839668cb70a8a190f1669709cf310ee8ca93de0301f",
+        "82dae761bda30488a6760c9ae51764069a6ed9e60544661e90f883477d273525",
+        "8880a99a85e44b5a880b2d52d5cbcf8dd615c1b71b9e51025db8f5d7d7c15bb6",
+        "untuned",
+        0
+      ],
+      "implementation_sha256": "65f826c39364a4820db9ee666ce59e2e85a9508ee6281ba1ef67e33f8ed17dc0",
+      "validation_role": "fresh narrower-N heldout, original eligibility checked before timing",
+      "prior_geometry_observation": null,
+      "diagnostic_only": false,
+      "original_ready_eligible": true
+    }
+  ],
+  "custody": "immutable ordinary producer tree + exact manifest emitted bytes + original request-specific hydrated native feedback; no independently exported executed LLVM custody claimed",
+  "qualification": "L2 numerics and complete provisional modeled whole-call timing; physical execution/timing qualification remains external",
+  "migration": "explicit candidate only; current-source checked pass revalidation and affected execution checks required before default changes",
+  "validation_domain": "unchanged original ready variant eligibility; excluded rows retained as diagnostics"
+}
