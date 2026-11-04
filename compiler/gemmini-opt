@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Public four-entrypoint xDSL Gemmini compiler driver."""
+from pathlib import Path
+import argparse
+import copy
+import hashlib
+import json
+import os
+import sys
+
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / 'compiler_library'))
+sys.path.insert(0, str(ROOT))
+os.environ['MERLIN_CONTRACT_DIR'] = str(ROOT / 'data')
+
+
+def public_buffer(program):
+    """Serialize semantic commands while retaining source linkage in params."""
+    from merlin.compile.logical_abi import kernel_arg_order
+    allowed = {'abi_version', 'target', 'backend', 'host_optimization_request',
+               'compiler_pointer_abi', 'kernel_abi', 'tensors', 'commands', 'params',
+               'metrics_requested', 'resources', 'declined', 'outputs'}
+    cb = {k: copy.deepcopy(v) for k, v in program.items() if k in allowed}
+    cb['backend'] = 'authored_gemmini_xdsl'
+    tkeys = {'shape', 'dtype', 'role', 'base', 'physical', 'preload_b64', 'scale_of', 'block'}
+    for name, tensor in cb['tensors'].items():
+        cb['tensors'][name] = {k: v for k, v in tensor.items() if k in tkeys}
+    cb['commands'] = [{k: copy.deepcopy(v) for k, v in cmd.items()
+                       if k in {'opcode', 'operands', 'attributes'}} for cmd in program['commands']]
+    cb.setdefault('params', {})['compiler_source_sha256'] = hashlib.sha256(program['source_text'].encode()).hexdigest()
+    cb['params']['command_sources'] = [
+        {'command_index': i, 'source_index': c.get('source_index', i)}
+        for i, c in enumerate(program['commands'])]
+    cb['compiler_pointer_abi'] = {'version': 1, 'arguments': kernel_arg_order(cb)}
+    from jsonschema import Draft202012Validator
+    schema = json.loads((ROOT / 'data/schemas/command_buffer.schema.json').read_text())
+    Draft202012Validator(schema).validate(cb)
+    return cb
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--verify-diagnostics', action='store_true')
+    parser.add_argument('--convert-iface-to-gemmini', action='store_true')
+    parser.add_argument('--emit-command-buffer')
+    parser.add_argument('--emit-target-artifact', action='store_true')
+    parser.add_argument('--emit-llvm', action='store_true')
+    parser.add_argument('input_mlir')
+    args = parser.parse_args(argv)
+    from frontend import parse_source
+    source = Path(args.input_mlir).read_text()
+    program = parse_source(source)
+    if args.verify_diagnostics and not args.convert_iface_to_gemmini:
+        return 0
+    from schedule import compile_kernel
+    from numeric_policy import analyze_admission
+    admission = analyze_admission(program)
+    program.setdefault('params', {})['numeric_admission'] = admission
+    from legacy_abi import bind_explicit_legacy_abi
+    explicit_abi = bind_explicit_legacy_abi(program)
+    if explicit_abi is not None:
+        program['kernel_abi'] = explicit_abi
+    from host_requests import build_host_request
+    host_request = build_host_request(program)
+    if host_request is not None:
+        program['host_optimization_request'] = host_request
+    refused = admission['route'] == 'refuse'
+    if refused:
+        program['declined'] = {'reason': '; '.join(d['reason'] for d in admission['refusals']),
+                               'op': next((c['opcode'] for c in admission['commands'] if c['route'] == 'refuse'), 'unsupported_numeric_domain')}
+        program['params']['refusal_reasons'] = admission['refusals']
+        program['commands'] = []
+    if refused:
+        from llvm_emitter import LLVMEmitter
+        from merlin.compile.logical_abi import kernel_arg_order
+        lowered = LLVMEmitter(kernel_arg_order(program)).finish()
+    elif program.get('source_format') == 'linalg-on-tensors':
+        from graph_lowering import compile_graph
+        lowered = compile_graph(program)
+    else:
+        lowered = None
+    if args.emit_command_buffer:
+        cb = public_buffer(program)
+        Path(args.emit_command_buffer).write_text(json.dumps(cb, indent=2, allow_nan=False) + '\n')
+    if args.emit_target_artifact or args.emit_llvm or not args.emit_command_buffer:
+        print(lowered if lowered is not None else compile_kernel(program), end='')
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print(f'gemmini compiler: {type(exc).__name__}: {exc}', file=sys.stderr)
+        if '--debug' in sys.argv:
+            raise
+        raise SystemExit(1)

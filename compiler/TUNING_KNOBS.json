@@ -1,0 +1,152 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "rhs_residency": {
+      "values": [
+        "full",
+        "stream"
+      ],
+      "mechanism": "ordinary-command RHS scratchpad residency",
+      "note": "Full packs fitting resident RHS tensors once; stream reloads the active weight tile for each output tile. Oversized tensors always stream."
+    },
+    "matmul_order": {
+      "values": [
+        "output_tile",
+        "m_panel"
+      ],
+      "mechanism": "WS weights reused across accumulator M panel",
+      "note": "Output_tile retains the incumbent M/N/K tile order. M_panel retains up to1024 accumulator rows and reuses each K/N weight tile across M using COMPUTE_AND_STAY; pooling keeps its own schedule."
+    },
+    "host_pointwise_fusion": {
+      "values": [
+        "retained",
+        "fuse"
+      ],
+      "mechanism": "single-use f32 pointwise chain loop fusion",
+      "note": "Requires pure all-parallel generics, identity full output maps, same f32 result shape, unused destination args, identity internal edge maps; preserves scalar DAG order and source attribution."
+    },
+    "lhs_residency": {
+      "values": [
+        "stream",
+        "panel"
+      ],
+      "mechanism": "retain a full K panel of LHS across N output tiles",
+      "note": "Retain full K activation panels across N; M-panel path bounds retained M rows by free scratch after live RHS and accumulator capacity. Pooling keeps its own schedule."
+    },
+    "conv_preparation": {
+      "values": [
+        "gather",
+        "device_im2col",
+        "spad_panel",
+        "spad_vector",
+        "device_im2col_pool",
+        "spad_m_panel",
+        "spad_m_runs",
+        "regional_runs"
+      ],
+      "mechanism": "device gather, DRAM im2col, or scratchpad activation panel reuse",
+      "note": "Bounded device DRAM preparation, scratch activation reuse, or aligned-CI scratch preparation feeding the shared M-panel consumer. Source and storage legality independently select fallback. spad_m_runs additionally splits logical M tiles into maximal row/image/padding-bounded DMA runs sharing source address geometry across channels; optional explicit choice. Regional_runs selects spad_m_runs for alignedCI,M>16,N>16,MAC>=2^20,nonpool/nonpercolumn,oneKpanel fits liveSP; otherwise retain device_im2col_pool. Regional selected provisionally from matched complete-census fast estimates on four shapes and one original physical witness; wide error bands and missing incumbent complete timing remain visible."
+    },
+    "graph_storage_reuse": {
+      "values": [
+        "retained",
+        "reuse"
+      ],
+      "mechanism": "reuse compatible dead graph scratch buffers",
+      "note": "Exact dtype/count/alignment slots; full source liveness including nested uses and delayed fused uses; excludes inputs/returns/alias views and tensor.empty; reuse after serialized completion boundary."
+    },
+    "elementwise_order": {
+      "values": [
+        "tile",
+        "acc_panel"
+      ],
+      "mechanism": "batch accumulator operand sums over independent local tiles",
+      "note": "For two-source sums initialize a bounded panel of distinct accumulator rows, fence before accumulating B, read out, and fence before panel reuse; tile remains incumbent."
+    },
+    "entry_context": {
+      "values": [
+        "retained",
+        "flush0"
+      ],
+      "mechanism": "once-per-device-entry reference context sequence",
+      "note": "Optional FLUSH(0,0) immediately after opening fence, matching selected public resnet50 disassembly at PC0x8010b7ba; detailed TLB semantics remain unknown."
+    },
+    "schedule_policy": {
+      "values": [
+        "incumbent",
+        "regional"
+      ],
+      "mechanism": "geometry and storage based matrix schedule selection",
+      "note": "Regional policy selects actual joint activation-panel/M-panel paths for large contractions, preserving small incumbents and explicit nonincumbent knob pairs; scratch/ACC legality remains independent."
+    },
+    "movement_order": {
+      "values": [
+        "tile",
+        "panel"
+      ],
+      "mechanism": "batch graph movement DMA into disjoint local vectors",
+      "note": "Proof planner preserves exact movement and alias legality; panel loads distinct local slots, fences before stores and before slot reuse. i8 stays below resident RHS scratch rows; i32 bounded by accumulator capacity."
+    },
+    "elementwise_policy": {
+      "values": [
+        "incumbent",
+        "regional"
+      ],
+      "mechanism": "geometry selects real accumulator-panel sum schedule",
+      "note": "Two-source sums spanning at least two logical tiles select bounded accumulator panel; one-source and one-tile work remain tile, output/broadcast-bias alias stays incumbent; explicit acc_panel wins."
+    },
+    "qk_preparation": {
+      "values": [
+        "direct",
+        "device_transpose"
+      ],
+      "mechanism": "prepare K transpose with device DMA before shared matmul",
+      "note": "True source QK only; unique K batch/head preparation <=64MiB shared across grouped query heads; independent axes/scales preserved; pretransposed source MATMUL unchanged."
+    },
+    "sibling_order": {
+      "values": [
+        "retained",
+        "pack",
+        "pack_rows"
+      ],
+      "mechanism": "pack independent one-row contractions sharing exact RHS into a matrix",
+      "note": "Typed zero-init i8 MACs with raw i32 results, exact SSA RHS, no crossed use/effect; pack uses M1, pack_rows extends to M<=16; all rows DMA packed/scattered, all results retained, private storage bounded."
+    },
+    "thin_matmul_order": {
+      "values": [
+        "incumbent",
+        "n_panel",
+        "regional",
+        "compact_n_panel",
+        "cached_n_panel",
+        "cached_compact_n_panel",
+        "wide_n_panel",
+        "wide_cached_n_panel"
+      ],
+      "mechanism": "K-major streamed RHS with bounded independent N accumulators",
+      "note": "N-panel admission independently checks integer semantics, scalar readout, M<=16, strides and live storage. Regional cost rule requires positive K,N>16,MAC>=2^20: rawi32 admits N<=4096, or K>=2048 and N<=32768; scalar i8 admits M16,N<=16384. K>=2048,N>=1024 selects bounded64column RHS panels plus fullK A retention when SP fits. Other regional rawN>1024 may retain A without wide RHS. Smaller and other-scaled calls retain incumbents. Compact options pack accumulator rows by M; cached options retain A; wide options prepare actual disjoint scratch panels consumed by PRELOAD. Thresholds are conservative heuristics with limited boundary timing support, not learned optima. Additional independently validated scalar-i8 M1 region: K>=2048,2048<=N<=16384,MAC>=2^20 selects same actual wide RHS plus legal A retention. M2..15 scaled remain incumbent. Native below/at/above cutoff checks establish legality, not cost-optimal thresholds."
+    },
+    "column_readout": {
+      "values": [
+        "grouped",
+        "staged",
+        "grouped_loops",
+        "staged_loops",
+        "regional",
+        "staged_panel"
+      ],
+      "mechanism": "device raw matrix contraction followed by independent column scaled DMA readout",
+      "note": "Grouped contracts each equal-gain column group directly. Staged computes the raw i32 matrix once, then gathers its columns through accumulator DMA and exact f32 CONFIG_ST; private raw storage is bounded to64MiB. Both preserve all source columns, bias and activation order. Loop choices compact only adjacent full16-column tiles with bit-identical relative gain groups, preserving actual device command order and payload semantics. Regional selects staged_loops for K>=16 and more gain groups than physical N tiles, within64MiB raw storage; other geometry retains grouped. Supported by one large fully priced fast comparison and small physical witnesses; no large heldout timing or optimal-cutoff claim. Staged_panel batches independent raw M tiles into at most1024 disjoint ACC rows with one completion fence per panel; real optional lifetime/overlap alternative, defaults unchanged. Within staged regional geometry, M>16 uses accumulator panel provisionally from matched fast estimate3790794->3773416 (wide error bands, complete timing UNKNOWN); M<=16 retains the five physically checked staged_loops programs."
+    },
+    "control_unroll": {
+      "values": [
+        "incumbent",
+        4,
+        8
+      ],
+      "mechanism": "bounded upstream unrolling of innermost runtime device command loops",
+      "note": "Actual upstream count metadata consumed by LLVM O2. Body<=256 operations, trip>=factor and shared predicted extra-operation budget4096; literal resident bounded-unroll paths preserved. Optional, incumbent default; command order and changing-input native numerics checked."
+    }
+  }
+}
