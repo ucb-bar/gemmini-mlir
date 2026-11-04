@@ -1,0 +1,451 @@
+{
+  "abi_version": "0.1",
+  "target": "gemmini",
+  "tensors": {
+    "A": {
+      "shape": [
+        17,
+        19
+      ],
+      "dtype": "i8",
+      "role": "input"
+    },
+    "B": {
+      "shape": [
+        13,
+        19
+      ],
+      "dtype": "i8",
+      "role": "input"
+    },
+    "Y": {
+      "shape": [
+        17,
+        13
+      ],
+      "dtype": "i32",
+      "role": "output"
+    }
+  },
+  "commands": [
+    {
+      "opcode": "ATTENTION_QK",
+      "operands": {
+        "q": "A",
+        "k": "B",
+        "dst": "Y"
+      },
+      "attributes": {
+        "output_dtype": "i32",
+        "epilogue": []
+      }
+    }
+  ],
+  "params": {
+    "address_space_boundary": true,
+    "compiler_lowering": {
+      "attention_device_key_transpose": [
+        {
+          "mechanism": "attention_device_key_transpose",
+          "source_shape": [
+            13,
+            19
+          ],
+          "destination_shape": [
+            1,
+            19,
+            13
+          ],
+          "logical_permuted_shape": [
+            19,
+            13
+          ],
+          "head_count": 1,
+          "prepared_bytes": 247,
+          "head_mapping": "original batch-major KV head; leading axes unchanged",
+          "flattened_view": "pointer preserving; original complete element cardinality",
+          "numeric": "exact signed-i8 identity movement; scale=1, activation=0",
+          "completion": "checked staging drains and real full completion before consumer",
+          "transpose": {
+            "proof": {
+              "schema": "submission.transpose_address_projection.v1",
+              "kernel_sha256": "ef8f87af06f9382fbeeb80e297c89ce6369d3c60b62cf68523fea35b49ed447b",
+              "solver_queries": 2,
+              "source_shape": [
+                13,
+                19
+              ],
+              "output_shape": [
+                19,
+                13
+              ],
+              "permutation": [
+                1,
+                0
+              ],
+              "output_elements": 247,
+              "actual_dma_sites": 1,
+              "dynamic_dma_pairs": 19,
+              "requested_load_bytes": 247,
+              "requested_store_bytes": 247,
+              "actual_tile_columns": [
+                1
+              ],
+              "source_row_stride_bytes": 19,
+              "destination_row_stride_bytes": 1,
+              "coverage": "in-bounds injective output addresses with exact source cardinality",
+              "semantics": "signed i8 identity narrowing",
+              "ownership": "pairwise disjoint staging rows; full drain; matched readouts; full drain before reuse",
+              "alias_contract": "distinct ordinary ABI source/output buffers",
+              "logical_projection_sha256": "1587141f372bf3d5dacb9cc5a911b509f7e9bd65cfac5027f4e90c65e0c5feac",
+              "schedule": "batched",
+              "physical_ownership_solver_queries": 2,
+              "static_batch_epochs": 1,
+              "max_simultaneous_accumulator_rows": 247,
+              "selected_accumulator_rows": 1024,
+              "dynamic_completion_drains": 3
+            },
+            "emission": {
+              "kernel_sha256": "ef8f87af06f9382fbeeb80e297c89ce6369d3c60b62cf68523fea35b49ed447b",
+              "index_bits": 64,
+              "scope": "actual counted-loop/index emission; target effects and machine conformance remain separate"
+            },
+            "kernel_sha256": "ef8f87af06f9382fbeeb80e297c89ce6369d3c60b62cf68523fea35b49ed447b",
+            "requested_schedule": "batched",
+            "consumed_schedule": "batched"
+          }
+        }
+      ],
+      "attention_layout_preparation": [
+        {
+          "operation": "key_transpose",
+          "bytes": 247,
+          "numeric_arithmetic": false,
+          "route": "device"
+        }
+      ],
+      "dense_schedules": [
+        {
+          "schema": "merlin.dense_retained_reduction.v1",
+          "kernel_sha256": "18b7886aab5759152c5e2c874c5ec763f0ad9b584492d42cb6085e2b8ab07eb1",
+          "source": {
+            "schema": "merlin.compact_dense_realization.v1",
+            "kernel_sha256": "6576ccadb0ff5a3852a4f76de9289e8a39ec1416a38ef30796cb6ee91b8bb8ba",
+            "configuration_identity": "gemmini-fire-aligned-dim16-ws",
+            "numerical_policy_identity": "i8-i8-i32-modular",
+            "c_index_bits": 64,
+            "static_instruction_calls": 5,
+            "executed_instruction_calls": 16,
+            "lhs_loads": 4,
+            "rhs_loads": 2,
+            "bias_initializations": 0,
+            "bias_source": null,
+            "requested_bias_load_bytes": 0,
+            "requested_lhs_bytes": 323,
+            "requested_rhs_bytes": 247,
+            "requested_load_bytes": 570,
+            "requested_store_bytes": 884,
+            "padded_high_water_bytes": {
+              "lhs": 784,
+              "rhs": 304,
+              "acc": 1088
+            },
+            "output_tiles": 2,
+            "solver_queries": 10,
+            "completion": "declared synchronous",
+            "machine_emission": "not_established",
+            "timing": "UNKNOWN"
+          },
+          "epochs": [
+            {
+              "compute_pairs": 0,
+              "future_or_initial_loads": 4,
+              "initialization": false,
+              "readout": false,
+              "readout_commands": 0,
+              "issue_order": [
+                "Load"
+              ],
+              "completion": "merlin_dense_panel_drain"
+            },
+            {
+              "compute_pairs": 0,
+              "future_or_initial_loads": 2,
+              "initialization": false,
+              "readout": false,
+              "readout_commands": 0,
+              "issue_order": [
+                "Load"
+              ],
+              "completion": "merlin_dense_panel_drain"
+            },
+            {
+              "compute_pairs": 4,
+              "future_or_initial_loads": 0,
+              "initialization": false,
+              "readout": false,
+              "readout_commands": 0,
+              "issue_order": [
+                "Preload",
+                "Compute"
+              ],
+              "completion": "merlin_dense_panel_drain"
+            },
+            {
+              "compute_pairs": 0,
+              "future_or_initial_loads": 0,
+              "initialization": false,
+              "readout": true,
+              "readout_commands": 1,
+              "issue_order": [
+                "Store"
+              ],
+              "completion": "merlin_dense_panel_drain"
+            }
+          ],
+          "admission": {
+            "hardware_identity": "gemmini-fire-aligned-dim16-ws",
+            "numerical_policy_identity": "i8-i8-i32-modular",
+            "qualification_identity": "selected-rtl-ordered-accumulator-commit:3ce83f25443d9bbb72bd6aa0e2bc6d7938aab6f4f17a4f17a62566085792cfd1",
+            "max_issued_compute_pairs": 4,
+            "max_issued_loads": 6,
+            "pending_compute_pairs": 2,
+            "pending_loads": 8,
+            "execution": "ordered_accumulator_commits_read_only_operands_full_drain",
+            "load_configuration": "ordered_snapshot_before_data_issue",
+            "descriptor": "preload_immediately_paired_with_compute",
+            "max_issued_readouts": 1,
+            "pending_readouts": 1,
+            "readout_configuration": "separate_drained_readout",
+            "max_issued_initializations": 1,
+            "initialization_configuration": "separate_drained_initialization"
+          },
+          "dynamic_epoch_drains": 5,
+          "overlapped_compute_pairs": 0,
+          "qualification": "conditional independent ordered accumulator commits; physical execution not established",
+          "target_execution": "not_established",
+          "schedule_ir": {
+            "sha256": "da36ff1f11e1dc09089d0de15b7e663fb40a5854ae0d423c2a599c45bee6a288",
+            "text": "\"builtin.module\"() ({\n  \"schedule.plan\"() <{sym_name = \"dense\"}> ({\n    %0 = \"schedule.bind\"() <{target = \"dense:6badcd5c13829f531d7c26a9019d5009f9aa640dfdeac3ff6649ff92f5360879:5c2e8a1243ece2f40cb7117bbd4ac5f053ca81c2037d2dd13006ed51dd1baa51\"}> : () -> !schedule.handle\n    \"schedule.block_contraction\"() {problem = array<i64: 17, 19, 13>, primitive_tile = array<i64: 16, 16, 16>, block_tiles = array<i64: 2, 2, 1>, element_bytes = array<i64: 1, 1, 4>, storage_bytes = array<i64: 1536, 2048>, storage_capacity = array<i64: 262144, 65536>, static_commands = 9 : i64, command_budget = 128 : i64, outer_order = [\"m\", \"n\"], row_bases = array<i64: 0, 8192, 0>} : () -> ()\n    \"schedule.loop_transform\"(%0) <{action = \"hoist\", path = [\"outer_m\", \"outer_n\", \"panel1\"], index = 0 : i64}> : (!schedule.handle) -> ()\n    \"schedule.loop_transform\"(%0) <{action = \"hoist\", path = [\"outer_m\", \"outer_n\"], index = 0 : i64}> : (!schedule.handle) -> ()\n    \"schedule.loop_transform\"(%0) <{action = \"reorder\", path = [\"outer_m\", \"outer_n\", \"panel1\", \"tile6\", \"tile7\"]}> : (!schedule.handle) -> ()\n    \"schedule.panel_pipeline\"(%0) <{prefetch = false, kind = \"retained_full_k\"}> : (!schedule.handle) -> ()\n  }) : () -> ()\n}) : () -> ()",
+            "source_identity": "6badcd5c13829f531d7c26a9019d5009f9aa640dfdeac3ff6649ff92f5360879",
+            "pipeline_issue_order": null,
+            "pipeline_kind": "retained_full_k",
+            "prefetch": false,
+            "pipeline_window_offsets": null,
+            "loop_transforms": [
+              {
+                "action": "hoist",
+                "path": [
+                  "outer_m",
+                  "outer_n",
+                  "panel1"
+                ],
+                "factor": null,
+                "cut": null,
+                "names": [],
+                "index": 0,
+                "cuts": []
+              },
+              {
+                "action": "hoist",
+                "path": [
+                  "outer_m",
+                  "outer_n"
+                ],
+                "factor": null,
+                "cut": null,
+                "names": [],
+                "index": 0,
+                "cuts": []
+              },
+              {
+                "action": "reorder",
+                "path": [
+                  "outer_m",
+                  "outer_n",
+                  "panel1",
+                  "tile6",
+                  "tile7"
+                ],
+                "factor": null,
+                "cut": null,
+                "names": [],
+                "index": null,
+                "cuts": []
+              }
+            ],
+            "decisions_consumed": [
+              "block_tiles",
+              "outer_order",
+              "row_bases",
+              "panel_pipeline",
+              "loop_transforms"
+            ]
+          },
+          "panel_geometry": {
+            "selection": "wide",
+            "max_m_blocks": 8,
+            "max_n_blocks": 8,
+            "selected_block_tiles": [
+              2,
+              2,
+              1
+            ],
+            "accumulator_rows": 32,
+            "accumulator_capacity_rows": 1024,
+            "lhs_window_rows": 8192,
+            "rhs_window_rows": 8192
+          },
+          "panel_facts": {
+            "m": {
+              "extent": 17,
+              "primitive": 16,
+              "primitive_tiles": 2,
+              "block_tiles": 2,
+              "panel_extent": 32,
+              "panels": 1,
+              "complete_panels": 0,
+              "tail_panels": 1,
+              "tile_complete_panels": 1,
+              "tile_tail_panels": 0,
+              "tile_tail_extent": 0,
+              "last_panel_extent": 17,
+              "last_panel_tiles": 2,
+              "primitive_tail_extent": 1
+            },
+            "k": {
+              "extent": 19,
+              "primitive": 16,
+              "primitive_tiles": 2,
+              "block_tiles": 2,
+              "panel_extent": 32,
+              "panels": 1,
+              "complete_panels": 0,
+              "tail_panels": 1,
+              "tile_complete_panels": 1,
+              "tile_tail_panels": 0,
+              "tile_tail_extent": 0,
+              "last_panel_extent": 19,
+              "last_panel_tiles": 2,
+              "primitive_tail_extent": 3
+            },
+            "n": {
+              "extent": 13,
+              "primitive": 16,
+              "primitive_tiles": 1,
+              "block_tiles": 1,
+              "panel_extent": 16,
+              "panels": 1,
+              "complete_panels": 0,
+              "tail_panels": 1,
+              "tile_complete_panels": 1,
+              "tile_tail_panels": 0,
+              "tile_tail_extent": 0,
+              "last_panel_extent": 13,
+              "last_panel_tiles": 1,
+              "primitive_tail_extent": 13
+            },
+            "lhs": {
+              "base": 0,
+              "live": 64,
+              "assigned": 8192,
+              "unit_bytes": 16
+            },
+            "rhs": {
+              "base": 8192,
+              "live": 32,
+              "assigned": 8192,
+              "unit_bytes": 16
+            },
+            "accumulator": {
+              "base": 0,
+              "live": 32,
+              "assigned": 1024,
+              "unit_bytes": 64
+            },
+            "full_k": true,
+            "bias": false,
+            "output_panels": 1,
+            "complete_output_panels": 0,
+            "m_tail_only_output_panels": 0,
+            "n_tail_only_output_panels": 0,
+            "both_tail_output_panels": 1,
+            "source_macs": 4199,
+            "primitive_padded_macs": 16384,
+            "panel_padded_macs": 16384,
+            "source_output_elements": 221,
+            "primitive_padded_output_elements": 512,
+            "panel_padded_output_elements": 512,
+            "logical_lhs_loads": 4,
+            "logical_rhs_loads": 2,
+            "logical_bias_loads": 0,
+            "logical_output_tiles": 2,
+            "primitive_aligned": false,
+            "output_panels_aligned": false,
+            "simultaneous_operand_rows": 96,
+            "work_units": "MACs; padded counts describe rectangular envelopes only",
+            "load_counts": "DenseBlock logical counts before schedule hoisting; not emitted DMA counts"
+          },
+          "storage_partition": {
+            "selection": "half",
+            "lhs_window_rows": 8192,
+            "rhs_window_rows": 8192
+          },
+          "store_epochs": {
+            "selection": "on",
+            "applied": true,
+            "source_kernel_sha256": "64b4d86d198f2c10892d06608c689ca7f7e2436d7e3c44ddd4cf4d51421d9671",
+            "kernel_sha256": "18b7886aab5759152c5e2c874c5ec763f0ad9b584492d42cb6085e2b8ab07eb1",
+            "uniform_config": [
+              0,
+              2,
+              4575657221408423988
+            ],
+            "regions": [
+              {
+                "dynamic_stores": 2,
+                "solver_queries": 2,
+                "proof": "all outer/local loop values; disjoint owned ACC rows"
+              }
+            ],
+            "readiness": "real begin drain after all original producers and seeds",
+            "reuse": "real closing drain before outer loop backedges or any non-store command",
+            "data_projection": "original store operands and loop order unchanged",
+            "admission": {
+              "ordering_sha256": "ce5fade2537a00f0fca7a56a3e80b19391da5b35c87621dd878773195a540780",
+              "base_facts_sha256": "b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af",
+              "load_completion": "out_of_order",
+              "store_completion": "in_order",
+              "finite_load_entries": 8,
+              "finite_store_entries": 4,
+              "accumulator_capacity_rows": 1024,
+              "store_configuration_snapshot": "not assumed; one uniform complete CONFIG_ST per region"
+            }
+          },
+          "requested_pipeline": "retained",
+          "selected_pipeline": "retained"
+        }
+      ]
+    }
+  },
+  "kernel_abi": {
+    "kind": "whole_program",
+    "args": [
+      {
+        "tensor": "A",
+        "access": "read"
+      },
+      {
+        "tensor": "B",
+        "access": "read"
+      },
+      {
+        "tensor": "Y",
+        "access": "write"
+      }
+    ],
+    "outputs": [
+      "Y"
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+[
+  {
+    "elf_sha256": "2fc53a1b6dee4dcea6810d398c7f48b1286037b77902bf05f9edbc5dfa940b84",
+    "execution_observed": true,
+    "hardware": {
+      "accelerator": {
+        "accumulator": "int32",
+        "accumulator_bytes": 65536,
+        "cols": 16,
+        "dataflows": [
+          "OS",
+          "WS"
+        ],
+        "evidence": "Archived selected Gemmini source default config; matched copied software header",
+        "input": "signed_int8",
+        "rows": 16,
+        "scratchpad_bytes": 262144
+      },
+      "afi": "afi-07e1e0eedf1d9560f",
+      "agfi": "agfi-09268e63eac5f1c08",
+      "autocounter_readrate": 0,
+      "driver_sha256": null,
+      "memory": {
+        "backend_latency": 2,
+        "bandwidth_bytes_per_cycle": null,
+        "identity_source": "Archived build.log joined to observed AGFI, no explicit +mm_* overrides in actual sim-run.sh",
+        "llc_block_bytes": 128,
+        "llc_capacity_bytes": 4194304,
+        "llc_mshrs": 8,
+        "llc_sets": 4096,
+        "llc_ways": 8,
+        "model": "FASED First-Ready FCFS DDR3",
+        "open_page": true,
+        "scheduler_window": 8,
+        "tCAS": 14,
+        "tRCD": 14,
+        "tRP": 14,
+        "transaction_queue_depth": 8
+      },
+      "physical_pe_busy_counter": null,
+      "platform_config": "WithAutoILA_FRFCFS16GBQuadRankLLC4MB_BaseF2Config",
+      "runtime_arguments": "#!/usr/bin/env bash\nscreen -S fsim0 -d -m bash -c \"script -f -c 'stty intr ^] && sudo ./FireSim-f2 +permissive   +macaddr0=00:12:6D:00:00:02 +blkdev0=elf-run0-br-base.img +niclog0=niclog0 +blkdev-log0=blkdev-log0  +trace-select=1 +trace-start=0 +trace-end=-1 +trace-output-format=0 +dwarf-file-name=elf-run0-cca-resnet50-full-v1.elf-20261029160511-0.elf-dwarf +autocounter-readrate=0 +autocounter-filename-base=AUTOCOUNTERFILE  +print-start=0 +print-end=-1 +linklatency0=6405 +netbw0=200 +shmemportname0=default  +slotid=0 +permissive-off +prog0=elf-run0-cca-resnet50-full-v1.elf-20261029160511-0.elf   && stty intr ^c' uartlog\"; sleep 1\n",
+      "runtime_hw_config": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3",
+      "runtime_hw_config_summary": {
+        "AGFI": "agfi-09268e63eac5f1c08",
+        "Bitstream tar": "None",
+        "CustomRuntimeConf": "None",
+        "DeployMakefrag": "None",
+        "DeployQuintuplet": "None",
+        "RuntimeHWConfig": "firesim_rocket_singlecore_gemmini_no_nic_l2_llc4mb_ddr3"
+      },
+      "runtime_mm_overrides_present": false,
+      "source_limitations": "Archived source gitlinks/build log do not prove complete nested clean source bytes or deployed driver hash",
+      "source_revisions": {
+        "chipyard": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "0acc1e1de2d3284bcd4d876956932a013ffe1949"
+        },
+        "firesim": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "da2a1cbcebbb96e21c551ebef513fd95a9d73403"
+        },
+        "gemmini": {
+          "evidence": "Archived build summary short revision resolved by retained git object",
+          "revision": "8c3f9923a44a2fe2c7930587be297d6d4f8c09ca"
+        },
+        "rocket": {
+          "evidence": "Recorded Chipyard gitlink; independent builder HEAD/clean source not witnessed",
+          "revision": "55bcad0f59436de98ea510334121de8546b9e9d7"
+        }
+      },
+      "target_isa": {
+        "archived_generated_dts": "rv64imafdcbzicsr_zifencei_zihpm_zfh_zba_zbb_zbs_xrocket",
+        "evidence": "Archived build.log:445; not newly read target CSR",
+        "vector": false
+      }
+    },
+    "harness": {
+      "cache_profiles": [
+        "historical_2MiB_sweep",
+        "warm_repeat"
+      ],
+      "cold_policy": "2MiB Gemmini mvin sweep before each invocation; not verified cold for4MiB LLC",
+      "correctness_phases": {
+        "0": "complete reference after first measured call",
+        "1": "complete reference after final measured sweep call",
+        "2": "complete reference after final warm repeat"
+      },
+      "harness_sha256": "0e8582322c3294bf1e1ccf322324e2bab3a6289eeae15745035a35100e78f44c",
+      "harness_version": "v3-watchdog-per-case-report-caller-intermediates",
+      "measurement": "entry + compiler complete + Gemmini fence + CPU fence; rd_mcycle counters outside; each case reported after its last timing window and input re-digest",
+      "preparation_scope": "none; all public required movement and layout conversions inside kernel_entry; mutable inputs not prepared outside call",
+      "runtime_provenance_sha256": "e5366c029d928cf21b838355f5a746a2e4aa4f47d8fa74f53f20c66ca0ecd158",
+      "samples": {
+        "first": 0,
+        "historical_2MiB_sweep": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "warm_repeat": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "warm_policy": "consecutive calls after one untimed warmup; complement poison before each call; no scans or formatting between repeats"
+    },
+    "image": "cca-resnet50-full-v1",
+    "records": [
+      {
+        "bytes": 6638,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/cca-resnet50-full-v1/hardware.json",
+        "sha256": "ec4fb20f439fcf2a0b5e5c1ebb072a4f5af74320f343526957150d9d8d9376b2"
+      },
+      {
+        "bytes": 2223498,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/cca-resnet50-full-v1/image-manifest.json",
+        "sha256": "06441edf2431c53b05d0fd249f011e09566b54d7aece71dafdc0599f50c7da10"
+      },
+      {
+        "bytes": 159005,
+        "path": "/work/merlin/tasks/disk-reclamation-20261021/merlin/out/artifacts/perf-studies/gemmini/v4/perf-studies_gemmini_v4_20261028T232951Z_744bcbb/measurements/cca-resnet50-full-v1/receipt.json",
+        "sha256": "2ab9a82876cc705a6f98e40e0532d80abedb704c8e5f9508a3dc66e51bb6ada5"
+      }
+    ]
+  }
+]

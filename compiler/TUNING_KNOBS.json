@@ -1,0 +1,261 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "regional",
+        "regional_amortized",
+        "weight_panels",
+        "weight_panels_amortized",
+        "rhs_panels",
+        "rhs_panels_wide",
+        "regional_traffic",
+        "rhs_bursts",
+        "lhs_panels",
+        "regional_traffic_wide"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette",
+        "spatial"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "row_bundle",
+        "row_bundle_retained",
+        "row_bundle_epochs",
+        "matrix_bundle"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial",
+        "full_spatial_stores",
+        "regional_affine",
+        "transfer_runs",
+        "transfer_regional",
+        "transfer_affine_all",
+        "transfer_affine_no_stores",
+        "prepared_taps"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "DENSE_STORAGE_SPLIT": {
+      "values": [
+        "half",
+        "adaptive"
+      ],
+      "mechanism": "capacity_admitted_full_k_operand_partition"
+    },
+    "DENSE_RHS_N_TILES": {
+      "values": [
+        "2",
+        "3"
+      ],
+      "mechanism": "disjoint_full_k_rhs_lookahead_slots"
+    },
+    "DENSE_RHS_K_CHUNK": {
+      "values": [
+        "1",
+        "2",
+        "4"
+      ],
+      "mechanism": "counted_rhs_load_first_k_bursts"
+    },
+    "POINTWISE_STRIDED_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_stride2_nhwc_pointwise_dense_view"
+    },
+    "STRIDED_POINTWISE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_stride2_pointwise_store_epochs"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "bounded_rne",
+        "bounded_rne_fused",
+        "source_preparation"
+      ],
+      "mechanism": "realized_shared_host_source_cpu_recipe"
+    },
+    "DENSE_LHS_M_TILES": {
+      "values": [
+        "4",
+        "8"
+      ],
+      "mechanism": "lhs_panel_lookahead"
+    },
+    "DENSE_LHS_N_TILES": {
+      "values": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "mechanism": "lhs_panel_lookahead"
+    },
+    "DENSE_LHS_COMPUTE_UNROLL": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "ordered_compute_loop_unroll"
+    },
+    "CONV_POOL_FUSION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_convolution_readout_pool_composition"
+    },
+    "CONV_POOL_SCHEDULE": {
+      "values": [
+        "seed",
+        "resident_clipped"
+      ],
+      "mechanism": "resident_weights_clipped_convolution_pool_producer"
+    },
+    "CONV_M_GROUPS": {
+      "values": [
+        "off",
+        "on",
+        "regional",
+        "regional_stride1"
+      ],
+      "mechanism": "checked_complete_rhs_across_m_store_epochs"
+    },
+    "DENSE_WEIGHT_PANEL_GEOMETRY": {
+      "values": [
+        "8x8",
+        "8x32"
+      ],
+      "mechanism": "capacity_admitted_full_k_rhs_panel_geometry"
+    },
+    "DENSE_ADDRESS_HOISTING": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "dense_address_invariants"
+    }
+  }
+}
