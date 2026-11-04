@@ -1,0 +1,21 @@
+artifact_type: mlir_oot_target_backend
+target: gemmini
+language: python
+authoring:
+  mode: agent_generated_from_rtl_facts
+  author: Codex
+  generated_by_agent: true
+integrity_exempt: false
+entrypoints:
+  tool: gemmini-opt
+commands:
+  parse:
+    argv: ["{tool}", "--verify-diagnostics", "{input_mlir}"]
+  lower_interface_to_target:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "{input_mlir}"]
+  emit_command_buffer:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-command-buffer={output_json}", "{input_mlir}"]
+  lower_target_to_llvm:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-target-artifact", "{input_mlir}"]
+  emit_analysis_bundle:
+    argv: ["{tool}", "--convert-iface-to-gemmini", "--emit-command-buffer={output_json}", "--emit-analysis-bundle={output_json}.analysis.json", "--emit-target-artifact", "{input_mlir}"]

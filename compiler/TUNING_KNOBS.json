@@ -1,0 +1,424 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "dense_schedule": {
+      "values": [
+        "auto",
+        "compact",
+        "panel_drained",
+        "panel_epochs",
+        "ready_readout",
+        "segmented_ready",
+        "auto_ready",
+        "array_epochs"
+      ],
+      "mechanism": "dense_segmented_pipeline"
+    },
+    "conv_epoch_pairs": {
+      "values": [
+        1,
+        4,
+        8,
+        16
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_retention": {
+      "values": [
+        "off",
+        "input",
+        "input_rhs",
+        "rolling_rhs"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "pool_route": {
+      "values": [
+        "spill",
+        "producer",
+        "producer_striped",
+        "readout_cache",
+        "auto",
+        "strip_epochs",
+        "auto_epochs"
+      ],
+      "mechanism": "bounded_spatial_packing_and_rolling"
+    },
+    "graph_shared_inputs": {
+      "values": [
+        "off",
+        "on",
+        "counted"
+      ],
+      "mechanism": "shared_input_products"
+    },
+    "host_pointwise_fusion": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "host_pointwise_fusion"
+    },
+    "conv_policy": {
+      "values": [
+        "off",
+        "regional"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "residual_schedule": {
+      "values": [
+        "serial",
+        "epochs",
+        "auto"
+      ],
+      "mechanism": "loaded_sum_epochs"
+    },
+    "graph_preparation_reuse": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "tensor_view_canonicalization"
+    },
+    "host_tensor_views": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "tensor_view_canonicalization"
+    },
+    "pool_producer_epoch_pairs": {
+      "values": [
+        1,
+        8
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_array_retention": {
+      "values": [
+        "off",
+        "on",
+        "auto",
+        "multirow"
+      ],
+      "mechanism": "convolution_output_groups"
+    },
+    "command_small_loop_unroll": {
+      "values": [
+        "off",
+        "on",
+        "deep16",
+        "auto"
+      ],
+      "mechanism": "source_axis_loop_transforms"
+    },
+    "command_pack_bounds": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "host_address_arithmetic"
+    },
+    "gemv_column_blocks": {
+      "values": [
+        "off",
+        16,
+        32,
+        64
+      ],
+      "mechanism": "source_axis_output_blocking"
+    },
+    "segmented_readout_overlap": {
+      "values": [
+        "off",
+        "disjoint",
+        "coalesced"
+      ],
+      "mechanism": "accumulator_readout_compute_overlap"
+    },
+    "dense_rhs_reuse": {
+      "values": [
+        "off",
+        "ready",
+        "wide"
+      ],
+      "mechanism": "dense_rhs_retention_ready_readout"
+    },
+    "dense_longk_columns": {
+      "values": [
+        "off",
+        8,
+        16,
+        32
+      ],
+      "mechanism": "retained_lhs_segmented_bounded_output"
+    },
+    "conv_column_reuse": {
+      "values": [
+        "off",
+        4,
+        8,
+        16
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "conv_column_grouping": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_axis_layout_preparation_and_column_readout"
+    },
+    "conv_column_copy": {
+      "values": [
+        "indexed",
+        "affine"
+      ],
+      "mechanism": "affine_host_copy"
+    },
+    "conv_grouped_pointwise": {
+      "values": [
+        "off",
+        "resident",
+        "array"
+      ],
+      "mechanism": "convolution_input_rhs_retention"
+    },
+    "dense_scalar_longk": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "segmented_k_retained_operand_pipeline"
+    },
+    "graph_shared_rhs": {
+      "values": [
+        "off",
+        8
+      ],
+      "mechanism": "dense_shared_rhs_retained_reduction"
+    },
+    "conv_pointwise_tiles": {
+      "values": [
+        "off",
+        "stage64",
+        "stage64_balanced"
+      ],
+      "mechanism": "window_row_dma_tiling"
+    },
+    "conv_column_direct": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "direct_strided_column_readout"
+    },
+    "graph_row_batch": {
+      "values": [
+        "off",
+        8
+      ],
+      "mechanism": "row_batching",
+      "description": "Assemble independent common-RHS source products into a checked shared dense row batch; original shared-RHS fallback when one primitive M tile or bounded private storage cannot admit the group."
+    },
+    "dense_longk_wide": {
+      "values": [
+        "off",
+        48,
+        64,
+        "auto_fullrow"
+      ],
+      "mechanism": "dense_segmented_pipeline"
+    },
+    "conv_spatial_epochs": {
+      "values": [
+        "off",
+        "pairs32",
+        "readout8",
+        "combined32",
+        "combined64",
+        "combined128",
+        "combined256",
+        "combined512",
+        "combined_all256"
+      ],
+      "mechanism": "convolution_readout_epochs"
+    },
+    "conv_pointwise_compute_pairs": {
+      "values": [
+        8,
+        32,
+        128
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_column_copy_factor": {
+      "values": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "description": "Bounded lane expansion of checked affine private-buffer copy; shared HostBuilder memory semantics and exact scalar tails. Factor1 retains the incumbent traversal."
+    },
+    "conv_column_copy_short": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "description": "Bound each proven-disjoint affine copy region lane factor by its inner extent; retains shared host arithmetic and exact scalar tails."
+    },
+    "dense_short_panels": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "description": "Opt-in bounded-output raw thin-M panel-epoch hypothesis before automatic long-K planning; exact ordinary fallback and explicit schedule/GEMV/N16 choices retained."
+    },
+    "graph_layout_copy": {
+      "values": [
+        "linear",
+        "nested"
+      ],
+      "mechanism": "bounded_affine_layout_preparation"
+    },
+    "conv_column_copy_outer": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "bounded_affine_column_copy"
+    },
+    "dense_transfer_width": {
+      "values": [
+        "transaction",
+        "decoded"
+      ],
+      "mechanism": "tile_load_coalescing",
+      "description": "Selected transaction-width RHS aggregation; decoded-width trial refuses when selected command splitter legality is UNKNOWN."
+    },
+    "conv_column_device": {
+      "values": [
+        "off",
+        "raw_reload",
+        "epochs64",
+        "blocked8",
+        "blocked16",
+        "classes8"
+      ],
+      "description": "Original-order raw i32 product followed by device-only per-column accumulator reload and exact hardware readout; no CPU payload layout copies."
+    },
+    "dense_segmented_k_tiles": {
+      "values": [
+        "capacity",
+        4,
+        8,
+        16
+      ],
+      "mechanism": "dense_segmented_pipeline"
+    },
+    "conv_large_window_compute_pairs": {
+      "values": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "mechanism": "convolution_compute_epochs"
+    },
+    "conv_horizontal_panels": {
+      "values": [
+        "off",
+        "row1",
+        "row1_epochs",
+        "row1_split",
+        "row1_epochs_split",
+        "row2_epochs",
+        "row2_epochs_split",
+        "row4_epochs",
+        "row4_epochs_split",
+        "row8_epochs",
+        "row8_epochs_split"
+      ],
+      "mechanism": "bounded_horizontal_convolution_panels"
+    },
+    "conv_horizontal_input": {
+      "values": [
+        "padded",
+        "boundary",
+        "device"
+      ],
+      "mechanism": "source_bound_horizontal_input_addressing"
+    },
+    "conv_horizontal_readout": {
+      "values": [
+        "off",
+        "group"
+      ],
+      "mechanism": "horizontal_private_readout_epochs"
+    },
+    "conv_horizontal_loads": {
+      "values": [
+        "off",
+        "group"
+      ],
+      "mechanism": "convolution_load_issue_epochs"
+    },
+    "conv_horizontal_phases": {
+      "values": [
+        "off",
+        "capacity8"
+      ],
+      "mechanism": "capacity_bounded_horizontal_column_phases"
+    },
+    "conv_wide_complete_rows": {
+      "values": [
+        "off",
+        "capacity"
+      ],
+      "mechanism": "convolution_output_groups"
+    },
+    "conv_array_compute_pairs": {
+      "values": [
+        "inherit",
+        8,
+        32,
+        128,
+        256
+      ],
+      "mechanism": "group_nested_compute_epochs",
+      "note": "Software compute epoch for checked original 3x3 ARRAY groups; physical queue and group/phase drains unchanged."
+    },
+    "conv_pointwise_output_rows": {
+      "values": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "default": 1,
+      "description": "Original pointwise row grouping with complete-K RHS N phases, bounded by joint operand/accumulator capacity",
+      "mechanism": "convolution_output_groups"
+    },
+    "conv_array_epoch_scope": {
+      "values": [
+        "3x3",
+        "eligible_windows"
+      ],
+      "mechanism": "group_nested_compute_epochs",
+      "note": "Default retains3x3-only epochs; explicit eligible windows reuse checked original-K ARRAY consumer."
+    },
+    "conv_array_window_compute_pairs": {
+      "values": [
+        "inherit",
+        128,
+        256,
+        512
+      ],
+      "mechanism": "group_nested_compute_epochs",
+      "note": "Software epoch for eligible non3x3 ARRAY windows; physical pending capacity and terminal drains unchanged."
+    }
+  }
+}
