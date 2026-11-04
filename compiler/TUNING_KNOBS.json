@@ -1,0 +1,30 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning_settings.json",
+  "knobs": {
+    "retain_full_lhs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "checked full-K LHS retention for multi-M-tile blocks",
+      "note": "Raw i32 or scalar native i8, no bias; original-view capacity and repeated-load guards; other classes preserve the incumbent."
+    },
+    "pipeline_max_m_blocks": {
+      "values": [
+        8,
+        16
+      ],
+      "mechanism": "checked dense K=1 capacity-limited M block alternative",
+      "note": "Incumbent8; opt-in16 reuses the selected ACC/operand capacity checks and per-K drains. No shape class promoted."
+    },
+    "projection_epochs": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "fact-backed dense K-stream epochs and exact wide load bands",
+      "note": "Raw bias-free i32 only; false restores original seed scheduling admission and buffers. Full source/hazard, selected ordering and address-band proofs required; refusals retain checked earlier route."
+    }
+  }
+}
