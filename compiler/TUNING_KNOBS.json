@@ -1,0 +1,261 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16",
+        "wide_32_frontier",
+        "wide_64_frontier",
+        "resident_axis",
+        "regional"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "CONV_SPATIAL_READOUT_EPOCH": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_spatial_convolution_readout_epochs"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "bounded_rne",
+        "bounded_rne_fused",
+        "scalar_fused",
+        "integer_preparations"
+      ],
+      "mechanism": "source_qualified_host_tensor_fusion_scalar_loops"
+    },
+    "RHS_ROW_BATCHING": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_independent_products_scratchpad_row_batching"
+    },
+    "CONV_SPATIAL_COORDINATES": {
+      "values": [
+        "baseline",
+        "hoisted",
+        "regional"
+      ],
+      "mechanism": "source_bound_hoisted_affine_spatial_gather_coordinates"
+    },
+    "DENSE_WIDE_LOADS": {
+      "values": [
+        "off",
+        "on",
+        "regional"
+      ],
+      "mechanism": "selected_rtl_addressed_checked_tile_load_coalescing",
+      "note": "regional selects checked wide loads for M>=128 or K>=512, preserving the small-call incumbent after mixed matched RTL results; empirical boundary is conservative, not a capacity law."
+    },
+    "CONV_WEIGHT_WIDE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_checked_resident_convolution_weight_tile_load_coalescing"
+    },
+    "POINTWISE_STRIDED_WIDE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source-qualified RHS tile-load coalescing in strided pointwise retained epochs"
+    },
+    "POINTWISE_STRIDED_N_BLOCKS": {
+      "values": [
+        4,
+        8,
+        16,
+        32
+      ],
+      "mechanism": "bounded retained full-K output-channel panel extent"
+    },
+    "POINTWISE_STRIDED_DENSE": {
+      "values": [
+        "off",
+        "on",
+        "regional"
+      ],
+      "mechanism": "source-qualified sampled NHWC 1x1 dense view",
+      "note": "regional selects M>=128; preserves measured small-call incumbent. Public support one large geometry, crossover uncertainty remains."
+    },
+    "SHARED_PRODUCT_WIDE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked wide loads under original shared product source and lifetime owner"
+    },
+    "SHARED_PRODUCT_SCALED": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source-bound exact scaled shared-LHS readout with original producer ownership",
+      "note": "Opt-in only; tested complete-call cycles exceed independent incumbent."
+    },
+    "CONV_SPATIAL_PIPELINE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "capacity-checked two-slot convolution windows with invariant readout and selected tracked completion",
+      "note": "Default on after paired complete modeled gains in four geometries including two fresh holdouts, and an exact required-original gSIM two-slot witness. Pre-emission semantic/capacity/ordering admission retains incumbent on refusal."
+    },
+    "CONV_ROW_RESIDENT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "default": "off",
+      "mechanism": "retained_input_row_planes",
+      "note": "Default on after three complete modeled gains (41.75%,25.98%,9.55%), two fresh shapes, and original required gSIM 34325->29474 cycles. Unit stride/dilation and private row-plane capacity are semantic/resource admissions; refusal retains incumbent. Large timing remains provisional model."
+    },
+    "CONV_ROW_STRIDED": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "default": "off",
+      "mechanism": "retained_strided_input_residue_planes",
+      "notes": "Positive-stride unit-dilation input row ring with horizontal residue planes, narrow MVIN and unit execute A stride. Original source order/readout/completion and ring/RHS disjointness retained. Complete provisional RN model888593->682343; neighboring effect/object checks pass, cycle generalization UNKNOWN. API fallback off; selected tuning on."
+    },
+    "CONV_PACKED_ROWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "default": "off",
+      "mechanism": "retained_kx_trimmed_image_planes",
+      "note": "Variant only; capacity-bound full source planes permit contiguous flat M across output row boundaries. Same source reduction, fresh PRELOAD and original readout. Profitability unqualified."
+    }
+  }
+}
