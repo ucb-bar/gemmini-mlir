@@ -1,0 +1,306 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "tuning.json",
+  "knobs": {
+    "DENSE_PIPELINE": {
+      "values": [
+        "compact",
+        "retained",
+        "segmented",
+        "streaming",
+        "resource_policy",
+        "decode_policy"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_INPUT_RETENTION": {
+      "values": [
+        "off",
+        "on",
+        "resident",
+        "compute_epochs",
+        "reduction_epochs"
+      ],
+      "mechanism": "retained_input_convolution"
+    },
+    "SHARED_PRODUCTS": {
+      "values": [
+        "off",
+        "on",
+        "single_panel",
+        "equal_partitions",
+        "serial_panels"
+      ],
+      "mechanism": "shared_input_group"
+    },
+    "DENSE_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "CONV_COLUMN_READOUT": {
+      "values": [
+        "recompute",
+        "raw_reload"
+      ],
+      "mechanism": "accumulator_readout"
+    },
+    "POINTWISE_DENSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "pointwise_convolution_dense_view"
+    },
+    "COLUMN_READOUT_BATCHING": {
+      "values": [
+        "off",
+        "on",
+        "palette"
+      ],
+      "mechanism": "checked_disjoint_loaded_sum_epochs"
+    },
+    "RHS_PRODUCTS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "resident_rhs_independent_products"
+    },
+    "TRANSPOSE_TRANSFERS": {
+      "values": [
+        "off",
+        "on",
+        "device_keys"
+      ],
+      "mechanism": "strided_accumulator_movement"
+    },
+    "RESIDENT_COMPUTE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "retained_lhs_rhs_compute_epochs"
+    },
+    "DENSE_PANEL_GEOMETRY": {
+      "values": [
+        "balanced",
+        "wide",
+        "tall",
+        "wide_n",
+        "wide_16",
+        "tall_16"
+      ],
+      "mechanism": "capacity_admitted_dense_panel_geometry"
+    },
+    "DENSE_STORE_EPOCHS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_uniform_dense_store_regions"
+    },
+    "CONV_HORIZONTAL_REDUCTION": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_convolution_panels"
+    },
+    "CONV_CHANNEL_PHASES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_source_nhwc_rhs_channel_phases"
+    },
+    "CONV_SPATIAL_PANELS": {
+      "values": [
+        "off",
+        "on",
+        "full_channels",
+        "full_spatial"
+      ],
+      "mechanism": "checked_flattened_spatial_convolution_panels"
+    },
+    "POOL_STRIPES": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "checked_horizontal_store_pool_stripes"
+    },
+    "DENSE_STORAGE_SPLIT": {
+      "values": [
+        "half",
+        "adaptive"
+      ],
+      "mechanism": "capacity_bound_dense_operand_partition"
+    },
+    "HOST_OPTIMIZATIONS": {
+      "values": [
+        "baseline",
+        "scalar_loops",
+        "bounded_rne",
+        "bounded_rne_fused",
+        "scalar_fused",
+        "bounded_rne_loops"
+      ],
+      "mechanism": "source_selected_shared_host_fusion"
+    },
+    "CONV_SPATIAL_GATHER": {
+      "values": [
+        "baseline",
+        "hoisted",
+        "fragments",
+        "combined",
+        "periodic",
+        "geometry",
+        "periodic_geometry"
+      ],
+      "mechanism": "source_interior_rectangular_window_transfer"
+    },
+    "COLUMN_READOUT_ROUTE": {
+      "values": [
+        "raw_reload",
+        "palette_producer",
+        "raw_pipeline"
+      ],
+      "mechanism": "factored_immutable_tensor_layouts"
+    },
+    "DENSE_SEGMENTED_ISSUE_ORDER": {
+      "values": [
+        "grouped",
+        "interleaved"
+      ],
+      "mechanism": "segmented_rhs_prefetch_issue_interleave"
+    },
+    "DENSE_LOAD_RUNS": {
+      "values": [
+        "baseline",
+        "canonical"
+      ],
+      "mechanism": "counted_dense_load_loop_canonicalization"
+    },
+    "SOURCE_QUANTIZED_READOUT": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_exact_quantized_readout_fusion"
+    },
+    "HOST_STORAGE": {
+      "values": [
+        "baseline",
+        "post_inline_arena"
+      ],
+      "mechanism": "host_intermediate_lifetime_arena"
+    },
+    "DENSE_RETAINED_OPERAND": {
+      "values": [
+        "lhs",
+        "weight",
+        "traffic"
+      ],
+      "mechanism": "source_proven_resident_rhs_retained_panels"
+    },
+    "ATTENTION_RHS_REUSE": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "shared_rhs_epochs"
+    },
+    "ATTENTION_HEAD_FOLD": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "attention_grouped_head_row_fold"
+    },
+    "SOURCE_SHARED_RHS_ROWS": {
+      "values": [
+        "off",
+        "on"
+      ],
+      "mechanism": "source_shared_rhs_packed_rows"
+    },
+    "CONV_POOL_SCHEDULE": {
+      "values": [
+        "blocks",
+        "quantized_bands"
+      ],
+      "mechanism": "source_exact_bounded_quantized_pool_bands"
+    },
+    "CONV_DENSE_WINDOWS": {
+      "values": [
+        "off",
+        "on",
+        "row_runs"
+      ],
+      "mechanism": "source_proven_nonoverlapping_dense_window_view"
+    },
+    "CONV_SMALL_CHANNELS": {
+      "values": [
+        "off",
+        "row_bands"
+      ],
+      "mechanism": "source_checked_row_contained_horizontal_convolution_panels"
+    },
+    "DENSE_COMPLETION_EPOCHS": {
+      "values": [
+        "off",
+        "empty_boundaries"
+      ],
+      "mechanism": "dense_completion_boundaries"
+    },
+    "DENSE_OUTPUT_PREFETCH": {
+      "values": [
+        "off",
+        "full_k_groups",
+        "column_groups"
+      ],
+      "mechanism": "checked shared RHS prefetch alternatives; full-K two-slot lookahead or column-frontier issue preserving incumbent tile geometry"
+    },
+    "DENSE_STORAGE_POLICY": {
+      "values": [
+        "off",
+        "wide_output"
+      ],
+      "mechanism": "segmented_k_pipeline"
+    },
+    "CONV_COLUMN_POLICY": {
+      "values": [
+        "off",
+        "resource_pipeline"
+      ],
+      "mechanism": "readout_overlap"
+    },
+    "DENSE_NARROW_LONG_K": {
+      "values": [
+        "off",
+        "resource_fit"
+      ],
+      "mechanism": "checked_resource_relative_single_output_tile_segmented_k_policy"
+    },
+    "DENSE_STREAMING_ISSUE_ORDER": {
+      "values": [
+        "grouped",
+        "interleaved"
+      ],
+      "mechanism": "checked_disjoint_future_rhs_issue_interleave_in_capacity_streaming"
+    },
+    "DENSE_NARROW_K_TILES": {
+      "values": [
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "mechanism": "checked_single_output_tile_segmented_k_epoch_geometry"
+    }
+  }
+}
