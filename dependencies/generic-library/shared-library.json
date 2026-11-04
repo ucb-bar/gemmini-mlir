@@ -1,0 +1,2704 @@
+{
+  "schema": "merlin.shared_scheduling_library.v18",
+  "public_modules": [
+    "merlin.compile.scheduling.block_schedule",
+    "merlin.compile.scheduling.shared_input_verification",
+    "merlin.compile.scheduling.shared_input_schedule",
+    "merlin.compile.scheduling.shared_input_groups",
+    "merlin.compile.scheduling.panel_transfers",
+    "merlin.compile.scheduling.copy_pipeline",
+    "merlin.compile.scheduling.configuration_loops",
+    "merlin.compile.scheduling.command_compaction",
+    "merlin.compile.scheduling.compact_dense",
+    "merlin.compile.scheduling.compact_loaded_sum",
+    "merlin.compile.scheduling.spatial_gather",
+    "merlin.compile.scheduling.dense_source",
+    "merlin.compile.scheduling.configuration",
+    "merlin.compile.scheduling.configuration_ir",
+    "merlin.compile.scheduling.device_spills",
+    "merlin.compile.scheduling.fusion",
+    "merlin.compile.scheduling.fusion_semantics",
+    "merlin.compile.scheduling.library_sources",
+    "merlin.compile.scheduling.llvm_program",
+    "merlin.compile.scheduling.pointwise_source",
+    "merlin.compile.scheduling.program_limits",
+    "merlin.compile.scheduling.row_softmax",
+    "merlin.compile.scheduling.schedule_pipeline",
+    "merlin.compile.scheduling.staged_dense",
+    "merlin.compile.scheduling.selected_contracts",
+    "merlin.compile.scheduling.spill_conformance",
+    "merlin.compile.scheduling.temporary_storage",
+    "merlin.compile.scheduling.window_transfer",
+    "merlin.llvmlower.cpu_softmax",
+    "merlin.sched.ir.expr",
+    "merlin.sched.ir.integer_domain",
+    "merlin.sched.ir.kernel",
+    "merlin.sched.ir.parse",
+    "merlin.sched.isa.types",
+    "merlin.semantic_compiler.allocation_types",
+    "merlin.targetgen.isa_dialect_gen",
+    "merlin.targetgen.isa_spec",
+    "merlin.transforms.dense_ir",
+    "merlin.transforms.dense_planning",
+    "merlin.transforms.pipeline_state",
+    "merlin.compile.scheduling.periodic_dense",
+    "merlin.compile.scheduling.spatial_producer",
+    "merlin.compile.scheduling.spatial_readout",
+    "merlin.llvmlower.spatial_scratch_abi",
+    "merlin.llvmlower.fresh_tensor_writer",
+    "merlin.llvmlower.private_workspace_pool",
+    "merlin.llvmlower.borrowed_effects",
+    "merlin.compile.scheduling.schedule_ir",
+    "merlin.xdsl_dialects.schedule",
+    "merlin.compile.scheduling.loop_schedule",
+    "merlin.compile.scheduling.dense_panel_pipeline",
+    "merlin.compile.scheduling.scf_commands",
+    "merlin.compile.scheduling.configuration_contexts",
+    "merlin.compile.scheduling.configuration_loop_cleanup",
+    "merlin.compile.scheduling.dense_panel_readout",
+    "merlin.compile.scheduling.tile_load_coalescing",
+    "merlin.compile.scheduling.panel_tile_loads",
+    "merlin.compile.scheduling.dense_segmented_pipeline",
+    "merlin.compile.scheduling.dense_array_retention",
+    "merlin.compile.scheduling.api_catalog",
+    "merlin.compile.scheduling.rolling_window",
+    "merlin.compile.scheduling.rolling_spatial",
+    "merlin.xdsl_dialects.rolling_window",
+    "merlin.compile.scheduling.spatial_readout_cache",
+    "merlin.compile.scheduling.dense_readout_overlap",
+    "merlin.llvmlower.host_builder",
+    "merlin.compile.scheduling.projection_views",
+    "merlin.transforms.tensor_views",
+    "merlin.llvmlower.source_region",
+    "merlin.llvmlower.source_region_host",
+    "merlin.compile.composition_catalog",
+    "merlin.compile.scheduling.dense_ready_readout",
+    "merlin.sched.ir.events",
+    "merlin.compile.scheduling.scf_carried_events",
+    "merlin.sched.primitives.event_loops",
+    "merlin.llvmlower.passes_xdsl",
+    "merlin.xdsl_dialects.lowering.outline",
+    "merlin.sched.primitives.loop_handles",
+    "merlin.compile.scheduling.completion_streams",
+    "merlin.compile.scheduling.configuration_motion",
+    "merlin.compile.scheduling.spatial_max_stripes",
+    "merlin.compile.logical_abi",
+    "merlin.compile.scheduling.convolution_exploration",
+    "merlin.compile.scheduling.dense_rhs_residency",
+    "merlin.transforms.pipeline_policy",
+    "merlin.transforms.pass_exploration",
+    "merlin.transforms.evaluated_exploration",
+    "merlin.transforms.shape_policy",
+    "merlin.compile.scheduling.dense_panel_epochs",
+    "merlin.compile.scheduling.pointwise_convolution",
+    "merlin.compile.scheduling.batched_dense",
+    "merlin.compile.scheduling.convolution_output_groups",
+    "merlin.compile.scheduling.loaded_sum_epochs",
+    "merlin.compile.tuning_knobs",
+    "merlin.transforms.tuning_selection",
+    "merlin.llvmlower.late_quant_rne",
+    "merlin.llvmlower.source_expression_interval",
+    "merlin.llvmlower.source_expression_interval_llvm",
+    "merlin.llvmlower.bounded_rne_word_cells",
+    "merlin.llvmlower.scaled_integer_finite",
+    "merlin.llvmlower.scaled_integer_finite_llvm",
+    "merlin.compile.scheduling.projection_dense",
+    "merlin.compile.scheduling.rolling_lookahead",
+    "merlin.compile.scheduling.operand_slots",
+    "merlin.compile.scheduling.dense_shared_rhs",
+    "merlin.compile.scheduling.horizontal_convolution",
+    "merlin.llvmlower.repeated_pointwise",
+    "merlin.llvmlower.contraction_row_slice",
+    "merlin.llvmlower.weight_prepack_runtime",
+    "merlin.transforms.dense_row_batching",
+    "merlin.transforms.shared_rhs_views",
+    "merlin.compile.scheduling.direct_source",
+    "merlin.compile.scheduling.source_tokens"
+  ],
+  "members": [
+    {
+      "module": "merlin",
+      "path": "merlin/__init__.py",
+      "sha256": "469a9d94cb84365f192f23c63a47e695ba8758a7f3005451f33a66152f143086"
+    },
+    {
+      "module": "merlin.common",
+      "path": "merlin/common/__init__.py",
+      "sha256": "5158ded00a221c254ffb32e1c4e3960bcea0a6542909d6331005d2a5f3783f3e"
+    },
+    {
+      "module": "merlin.common.dense_float_ir",
+      "path": "merlin/common/dense_float_ir.py",
+      "sha256": "1e0b9ca12ee5011a8dfb09a3070837f16c6c8d8bd79bbe2ca46d34e5f3bcc505"
+    },
+    {
+      "module": "merlin.compile",
+      "path": "merlin/compile/__init__.py",
+      "sha256": "92721d5b005b1f6bdb33fb81918f2b1001c9368056bca02172b507fe69eeccce"
+    },
+    {
+      "module": "merlin.compile.scheduling",
+      "path": "merlin/compile/scheduling/__init__.py",
+      "sha256": "b6d65648d4d61746321fe4270b20370935f8e7ba1cde5a8f42cecea940b99128"
+    },
+    {
+      "module": "merlin.compile.scheduling.block_schedule",
+      "path": "merlin/compile/scheduling/block_schedule.py",
+      "sha256": "fd4997d265ec4d61c28e8b3bf2c06ad2985a1d83cd205072ac748ac777e8526c"
+    },
+    {
+      "module": "merlin.compile.scheduling.zero_initializer_groups",
+      "path": "merlin/compile/scheduling/zero_initializer_groups.py",
+      "sha256": "23fab11a5556ae8ca2089f27e3b83b33780f52322d22d3a9b79180e9f2d880db"
+    },
+    {
+      "module": "merlin.compile.scheduling.shared_input_verification",
+      "path": "merlin/compile/scheduling/shared_input_verification.py",
+      "sha256": "b4ebd462c6e73ea9d939a203b4b4d80cc2c9aaf00c391f3bcfd0d551e75481be"
+    },
+    {
+      "module": "merlin.compile.scheduling.shared_input_schedule",
+      "path": "merlin/compile/scheduling/shared_input_schedule.py",
+      "sha256": "bb9b50076e2a60192cbc70b5b8f4afdb1a20bb86774c72cbce2d10bb38714336"
+    },
+    {
+      "module": "merlin.compile.scheduling.shared_input_groups",
+      "path": "merlin/compile/scheduling/shared_input_groups.py",
+      "sha256": "1d814cd3f9b0da007cf3b4257b896e59e6314d0474255e3b73badfaeb39060d6"
+    },
+    {
+      "module": "merlin.compile.scheduling.panel_transfers",
+      "path": "merlin/compile/scheduling/panel_transfers.py",
+      "sha256": "64d15ff0b04fe2b82412259d8f62bf3db5ae6c7aeeabca48e07fbbeea1604282"
+    },
+    {
+      "module": "merlin.compile.scheduling.copy_pipeline",
+      "path": "merlin/compile/scheduling/copy_pipeline.py",
+      "sha256": "6861ab7b4d90aad73f67c16dc22eefd16f8b697175c9f67db74bf31f76521dc2"
+    },
+    {
+      "module": "merlin.compile.scheduling.periodic_effects",
+      "path": "merlin/compile/scheduling/periodic_effects.py",
+      "sha256": "dcd85bf77cd56972c80b7d8f813fdf36455f683a4296c7d4e88cd95ec04c9373"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration_loops",
+      "path": "merlin/compile/scheduling/configuration_loops.py",
+      "sha256": "e97af1770621177176be95db72a610ae8355da75418902fa4be4d9c59c576f62"
+    },
+    {
+      "module": "merlin.compile.scheduling.command_compaction",
+      "path": "merlin/compile/scheduling/command_compaction.py",
+      "sha256": "6c7c528f6c44db3dc9ba8654ca04295ab5ff304b1570937ddd0000bf610817c4"
+    },
+    {
+      "module": "merlin.compile.scheduling.compact_dense",
+      "path": "merlin/compile/scheduling/compact_dense.py",
+      "sha256": "e3f1fe75d7cab4b18009940d0f89065a05fcdcde943b55595526c39b5e907f97"
+    },
+    {
+      "module": "merlin.compile.scheduling.compact_loaded_sum",
+      "path": "merlin/compile/scheduling/compact_loaded_sum.py",
+      "sha256": "8cb995db78dd2aee9a24baae5ea7e071c64bbf6b2629d720c7eec6de96d35c48"
+    },
+    {
+      "module": "merlin.compile.scheduling.spatial_gather",
+      "path": "merlin/compile/scheduling/spatial_gather.py",
+      "sha256": "f2ce33d499ef57abfd8ab9060c7c43de52d88e00bed4159688a6b3ea91ea492f"
+    },
+    {
+      "module": "merlin.compile.scheduling.compact_verification",
+      "path": "merlin/compile/scheduling/compact_verification.py",
+      "sha256": "96147c524edd77c1c343182ac57fe757d6d217886a70542fbc223bdb19a0f5c7"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration",
+      "path": "merlin/compile/scheduling/configuration.py",
+      "sha256": "3dd17bdbc6a08de8ccf2913e4687ca352d5a118017e41dd9e1b1a9edeb8527b8"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration_ir",
+      "path": "merlin/compile/scheduling/configuration_ir.py",
+      "sha256": "64eca6d38dd7c557c7a340f8faa77790fe692b6bdc3db895d756ff4b9cb3782d"
+    },
+    {
+      "module": "merlin.compile.scheduling.copy_elimination",
+      "path": "merlin/compile/scheduling/copy_elimination.py",
+      "sha256": "31d66c0ec4872cc06561fada87f0bcc210babb4629eabd9235d968bff3c48566"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_contracts",
+      "path": "merlin/compile/scheduling/dense_contracts.py",
+      "sha256": "d30a68ebe3b927b480c9dea3eaf667353979f295ef607be288064bca7b0d717a"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_source",
+      "path": "merlin/compile/scheduling/dense_source.py",
+      "sha256": "e2bbbc74ccbd014efb1b7e512940efba42c9f5d1f25d328debbd55c7b77c45b5"
+    },
+    {
+      "module": "merlin.compile.scheduling.device_spills",
+      "path": "merlin/compile/scheduling/device_spills.py",
+      "sha256": "668bdc114224b68db6e26128238501954d37bda756d9806cb9d819a063a5103d"
+    },
+    {
+      "module": "merlin.compile.scheduling.fusion",
+      "path": "merlin/compile/scheduling/fusion.py",
+      "sha256": "144298845e4fff2134dc3506466c210fb60ed8aba03208e73a49f53392b3e9e3"
+    },
+    {
+      "module": "merlin.compile.scheduling.fusion_contracts",
+      "path": "merlin/compile/scheduling/fusion_contracts.py",
+      "sha256": "0a54500cd8e92df596e0732ba9ab2b21e2277fbddbc710a141cc71bff6478d3b"
+    },
+    {
+      "module": "merlin.compile.scheduling.fusion_semantics",
+      "path": "merlin/compile/scheduling/fusion_semantics.py",
+      "sha256": "d857358fc81e9f04636ce83242278844f2cd56d7d1c4a0f094ec24e5801a9757"
+    },
+    {
+      "module": "merlin.compile.scheduling.library_sources",
+      "path": "merlin/compile/scheduling/library_sources.py",
+      "sha256": "77b466e1af461407d78deaca4487aab466fbe0716a1204d9acd1a30a3e66e606"
+    },
+    {
+      "module": "merlin.compile.scheduling.llvm_program",
+      "path": "merlin/compile/scheduling/llvm_program.py",
+      "sha256": "22b7942585a3a2742ac8b4a38084b3908522330124f301ed2b4a7da87f368fb5"
+    },
+    {
+      "module": "merlin.compile.scheduling.pointwise_source",
+      "path": "merlin/compile/scheduling/pointwise_source.py",
+      "sha256": "b5078dbd3519a5b54147fa11325d819fdda4badd78c4ee8e7d5b59d31605698d"
+    },
+    {
+      "module": "merlin.compile.scheduling.program_contracts",
+      "path": "merlin/compile/scheduling/program_contracts.py",
+      "sha256": "1b386d67b46b2211b44171620227ee9f2360ddc52f9b3c177a2483f28b2108c0"
+    },
+    {
+      "module": "merlin.compile.scheduling.program_limits",
+      "path": "merlin/compile/scheduling/program_limits.py",
+      "sha256": "0eaa03348cf16bebcef2ec5dd2658059dbc4a0399f789af741b615f57d0f16e0"
+    },
+    {
+      "module": "merlin.compile.scheduling.row_contracts",
+      "path": "merlin/compile/scheduling/row_contracts.py",
+      "sha256": "fdac6f442489cfa1a7577279716124230ec99b742154d2335bf8c38f865b87be"
+    },
+    {
+      "module": "merlin.compile.scheduling.row_softmax",
+      "path": "merlin/compile/scheduling/row_softmax.py",
+      "sha256": "57d53dbad821ed37c0000f585043dcf1310b91bb6153f46f8fc5c5155f347bf9"
+    },
+    {
+      "module": "merlin.compile.scheduling.row_softmax_verification",
+      "path": "merlin/compile/scheduling/row_softmax_verification.py",
+      "sha256": "c520304653a3b788b32b59707f978620428eef519e5af8d8141f03c8ad4731ce"
+    },
+    {
+      "module": "merlin.compile.scheduling.schedule_pipeline",
+      "path": "merlin/compile/scheduling/schedule_pipeline.py",
+      "sha256": "3bbb7a5be0ef5e5485e298ea8f3e75ae3897923f9fd16e6f33b82642937126a5"
+    },
+    {
+      "module": "merlin.compile.scheduling.selected_contracts",
+      "path": "merlin/compile/scheduling/selected_contracts.py",
+      "sha256": "463bd1db9c33bbbff0139819b426ec6f68aaf60b335246fc9bad0dd2d624003d"
+    },
+    {
+      "module": "merlin.compile.scheduling.spill_conformance",
+      "path": "merlin/compile/scheduling/spill_conformance.py",
+      "sha256": "62c4d210966f7846b047ec4ec3338f84d0285e1cf148676779e73db0b0425f5b"
+    },
+    {
+      "module": "merlin.compile.scheduling.spill_contracts",
+      "path": "merlin/compile/scheduling/spill_contracts.py",
+      "sha256": "7aeff5b6e27de83a15a4f40fde0246d2b027a9fac9202ba9430ab192d5d96b84"
+    },
+    {
+      "module": "merlin.compile.scheduling.storage_contracts",
+      "path": "merlin/compile/scheduling/storage_contracts.py",
+      "sha256": "9d3f5a0df073a0a2325fa392da6d28fa3bc3cb5ae00290c4b8d99dac46962814"
+    },
+    {
+      "module": "merlin.compile.scheduling.staged_dense",
+      "path": "merlin/compile/scheduling/staged_dense.py",
+      "sha256": "8da96f0fca86456fc9b6e6818e5dde19f2098fac3db481a4fc50601e46e79724"
+    },
+    {
+      "module": "merlin.compile.scheduling.staged_dense_verification",
+      "path": "merlin/compile/scheduling/staged_dense_verification.py",
+      "sha256": "ff10f2352a112cb4fee2ab2f9c33280202956221a60f429d71c794ac8e8058e6"
+    },
+    {
+      "module": "merlin.compile.scheduling.temporary_storage",
+      "path": "merlin/compile/scheduling/temporary_storage.py",
+      "sha256": "6041a26d852d8468192648355b05f508ac0a7b5aea6ead36401d8e72f9ba628c"
+    },
+    {
+      "module": "merlin.compile.scheduling.window_transfer",
+      "path": "merlin/compile/scheduling/window_transfer.py",
+      "sha256": "3d95c33224e004ea614537b741d0578a14843745c8a5229df1b08d71a807de8a"
+    },
+    {
+      "module": "merlin.llvmlower",
+      "path": "merlin/llvmlower/__init__.py",
+      "sha256": "8a2a6206e74b555f98b42b04c78f8ad19b96807442e9a54e98a0baaf72bcbf6d"
+    },
+    {
+      "module": "merlin.llvmlower.cpu_softmax",
+      "path": "merlin/llvmlower/cpu_softmax.py",
+      "sha256": "3370f42d1f8563530af38ddb1ee91d6f44c197bae351d191e4959aa7b9ab7527"
+    },
+    {
+      "module": "merlin.sched",
+      "path": "merlin/sched/__init__.py",
+      "sha256": "b84e4c42421f5277d338c12ae9726ba256befa5c1491d4928c2da994fc1ee7a0"
+    },
+    {
+      "module": "merlin.sched.codegen",
+      "path": "merlin/sched/codegen/__init__.py",
+      "sha256": "24b29e7a2c3f276d67aebeef37cc482f1c621d09e7d421e9f2197a8b7469bd35"
+    },
+    {
+      "module": "merlin.sched.ir",
+      "path": "merlin/sched/ir/__init__.py",
+      "sha256": "7783c6bfc27bde3f32164ca70803d6d4d21dde9e812363da2c05693a46fedfd9"
+    },
+    {
+      "module": "merlin.sched.ir.expr",
+      "path": "merlin/sched/ir/expr.py",
+      "sha256": "45e311e72c194a679349334e2baa16078c623a39b83ac50c3759116ad5225e76"
+    },
+    {
+      "module": "merlin.sched.ir.integer_domain",
+      "path": "merlin/sched/ir/integer_domain.py",
+      "sha256": "975f54c1607fe7db57425834bf71e2cd3b47cdac7956bbf9223f6c5c18dcbd65"
+    },
+    {
+      "module": "merlin.sched.ir.kernel",
+      "path": "merlin/sched/ir/kernel.py",
+      "sha256": "8603fb041e7033f5ca83798bdc49745bcae8eb03bc3be0f94fad8619c0448fe7"
+    },
+    {
+      "module": "merlin.sched.ir.parse",
+      "path": "merlin/sched/ir/parse.py",
+      "sha256": "3b405cadcc670893fd76472de38812481061a49f02d06777e8a8ea42fd241af0"
+    },
+    {
+      "module": "merlin.sched.isa",
+      "path": "merlin/sched/isa/__init__.py",
+      "sha256": "48c49deb2e0303b979e869059011adf3745770f4bbbfdabba2b02031c46b74c1"
+    },
+    {
+      "module": "merlin.sched.isa.types",
+      "path": "merlin/sched/isa/types.py",
+      "sha256": "d36576f047352f0b1230e17e26fcc675f08feb4770ea509dbac919db709cb91b"
+    },
+    {
+      "module": "merlin.semantic_compiler",
+      "path": "merlin/semantic_compiler/__init__.py",
+      "sha256": "f2103ce7e4638a4f655c80f62c61acda55ef8135a293503d0e036bc53724d18b"
+    },
+    {
+      "module": "merlin.semantic_compiler.allocate",
+      "path": "merlin/semantic_compiler/allocate.py",
+      "sha256": "d680d5bcd3b8d63de40a5be7e0571ad9909e17b23fbb9bc5491ab093b5011673"
+    },
+    {
+      "module": "merlin.semantic_compiler.allocation_types",
+      "path": "merlin/semantic_compiler/allocation_types.py",
+      "sha256": "08ca15534bc4e1704613712270d356b40f86bd6e2155c3d3c781acdb37cc7c4a"
+    },
+    {
+      "module": "merlin.semantic_compiler.egg_bridge",
+      "path": "merlin/semantic_compiler/egg_bridge.py",
+      "sha256": "4a017658944366a2b4a2f31e35095ecda126c5694798b80f8b67d8b20f362afc"
+    },
+    {
+      "module": "merlin.semantic_compiler.extract",
+      "path": "merlin/semantic_compiler/extract.py",
+      "sha256": "315a4a545020fe910c151618f6826cc1c8ee628afc345ef5eaa29efe51b390cf"
+    },
+    {
+      "module": "merlin.semantic_compiler.model",
+      "path": "merlin/semantic_compiler/model.py",
+      "sha256": "5f784c7b26e458236004bd7e11e058dcf87dd7d5ab66afc969aa1bd4fda8f6b6"
+    },
+    {
+      "module": "merlin.semantic_compiler.rules",
+      "path": "merlin/semantic_compiler/rules.py",
+      "sha256": "378c156c6c79a89254f67a62e7b1021ab5f78e99ffc213389d90da5cad91bfc5"
+    },
+    {
+      "module": "merlin.targetgen",
+      "path": "merlin/targetgen/__init__.py",
+      "sha256": "7dae9fca1d8a5a860c76b424adfe208304bf12642774611599e78f7148210c70"
+    },
+    {
+      "module": "merlin.targetgen.isa_dialect_gen",
+      "path": "merlin/targetgen/isa_dialect_gen.py",
+      "sha256": "a87f11dcbb7d6a4caf942514d6b677839149ebe56e0d9aae4bd45fe69de7c497"
+    },
+    {
+      "module": "merlin.targetgen.isa_spec",
+      "path": "merlin/targetgen/isa_spec.py",
+      "sha256": "c7504461b20154ad2678d7a0b4e534c6705f76792ee4c49641b05b3ec2c4a5e2"
+    },
+    {
+      "module": "merlin.transforms",
+      "path": "merlin/transforms/__init__.py",
+      "sha256": "f52034285c61b48ce16d82c0b60f9e7bf0abc210d2d5faa2b6caa5c5d2c7c9b2"
+    },
+    {
+      "module": "merlin.transforms.certificates",
+      "path": "merlin/transforms/certificates.py",
+      "sha256": "c2d9d3fd12c869863d60587ea98c73708217f03af9bfcea9b7ba6e94a1ddef9b"
+    },
+    {
+      "module": "merlin.transforms.dense_ir",
+      "path": "merlin/transforms/dense_ir.py",
+      "sha256": "1fe3301c7a87c57d172090f6f24fe5cf1414b86f3d179b2b598b22e9e187c47a"
+    },
+    {
+      "module": "merlin.transforms.dense_planning",
+      "path": "merlin/transforms/dense_planning.py",
+      "sha256": "da2816b33ae94e1b57cd1126c6d19c5db42cab9322121aab0c0a379720dcb283"
+    },
+    {
+      "module": "merlin.transforms.normalization",
+      "path": "merlin/transforms/normalization.py",
+      "sha256": "2150598f0b0da52cf4cf7c3c8c2b54af22e7b7440af7600411fac87f0fc0df84"
+    },
+    {
+      "module": "merlin.transforms.pipeline_state",
+      "path": "merlin/transforms/pipeline_state.py",
+      "sha256": "2430a63e7cbb9e27b5724fa713aa7b3465bb005baeac858a96b18138357c6652"
+    },
+    {
+      "module": "merlin.transforms.pure_scalar",
+      "path": "merlin/transforms/pure_scalar.py",
+      "sha256": "bec764097889938b36a0138c56f52433549c4fd26c6f449142d4c8634243cd06"
+    },
+    {
+      "module": "merlin.transforms.scalar_witness",
+      "path": "merlin/transforms/scalar_witness.py",
+      "sha256": "44e4d53e6f4c1017bd60b103ca72908ad090d48616a30088eb2b51171cdc3b31"
+    },
+    {
+      "module": "merlin.transforms.unrolling",
+      "path": "merlin/transforms/unrolling.py",
+      "sha256": "04e286ddce1132f6609a30f3a7ff0764db53197a520078f0c952e6b4a8fc535f"
+    },
+    {
+      "module": "merlin.verify",
+      "path": "merlin/verify/__init__.py",
+      "sha256": "efa25d1ea886cb3005f0239a7e8570c13724c9b1d852b31254058c2f0f5b1298"
+    },
+    {
+      "module": "merlin.verify.epilogue_applicability",
+      "path": "merlin/verify/epilogue_applicability.py",
+      "sha256": "98bdd5789a9ffef705a74ecf621be41fbc15f8e80a83a976c3261e5422e9e65f"
+    },
+    {
+      "module": "merlin.compile.scheduling.periodic_dense",
+      "path": "merlin/compile/scheduling/periodic_dense.py",
+      "sha256": "29330d312cc23c29190370ee6ad4e586a838ca6fe7ab555dfe48b3ce83f2f419"
+    },
+    {
+      "module": "merlin.compile.scheduling.spatial_producer",
+      "path": "merlin/compile/scheduling/spatial_producer.py",
+      "sha256": "b69d97816f1c2829127655bb5b6991c04693d73f7dc3f564751449ff9912e2fa"
+    },
+    {
+      "module": "merlin.compile.scheduling.spatial_readout",
+      "path": "merlin/compile/scheduling/spatial_readout.py",
+      "sha256": "5ef5b86bbe07e824e6ca2f58528641a2a22f0abd041e84aca996b86c8f4b534b"
+    },
+    {
+      "module": "merlin.llvmlower.integer_readout",
+      "path": "merlin/llvmlower/integer_readout.py",
+      "sha256": "3554b53c120ba12945c0d40678f750ce90af684c7a04611bdffa6e80ed1bb858"
+    },
+    {
+      "module": "merlin.llvmlower.integer_producer_range",
+      "path": "merlin/llvmlower/integer_producer_range.py",
+      "sha256": "525bd206f5ee6d194ddfd5292852ec18c9169a7c1a7a7f70fd53b620ac914060"
+    },
+    {
+      "module": "merlin.llvmlower.requantization",
+      "path": "merlin/llvmlower/requantization.py",
+      "sha256": "f580ff26c26fb4004b16b10496f4b0c6dae0f805d72586a7f459ec19639fa1c9"
+    },
+    {
+      "module": "merlin.llvmlower.spatial_scratch_abi",
+      "path": "merlin/llvmlower/spatial_scratch_abi.py",
+      "sha256": "70482c34c1a51bd7405b2d9efa37f9083f4052aabe184d687a0e3fb50ac46a85"
+    },
+    {
+      "module": "merlin.llvmlower.fresh_tensor_writer",
+      "path": "merlin/llvmlower/fresh_tensor_writer.py",
+      "sha256": "60228354f522da49930c7ac394cdc5ef57e49ecc2e1d1b6946302739295a5ab5"
+    },
+    {
+      "module": "merlin.llvmlower.private_workspace_pool",
+      "path": "merlin/llvmlower/private_workspace_pool.py",
+      "sha256": "9349cdfdbe4d89e7a59183c88f517dbf5b77273dccb44659ae68c5163d7a1f9d"
+    },
+    {
+      "module": "merlin.llvmlower.borrowed_effects",
+      "path": "merlin/llvmlower/borrowed_effects.py",
+      "sha256": "2c875e877a9cc0b9296dbc8321485117f4c1b5a2d000e90673b8ff0002bd31fb"
+    },
+    {
+      "module": "merlin.xdsl_dialects",
+      "path": "merlin/xdsl_dialects/__init__.py",
+      "sha256": "8cb05f081a65edb490594f6eca043e24abe5656e3d2b0322db47572706759cee"
+    },
+    {
+      "module": "merlin.xdsl_dialects._common",
+      "path": "merlin/xdsl_dialects/_common.py",
+      "sha256": "557e2516de71b6e8b7a169257a53cfdfaf8f6650b513954c1b084f85d6bb1566"
+    },
+    {
+      "module": "merlin.xdsl_dialects.fp8",
+      "path": "merlin/xdsl_dialects/fp8.py",
+      "sha256": "f6d9e6ef85b56bdb148e776562a80306e366cde6924d3842213cd719f367e86f"
+    },
+    {
+      "module": "merlin.compile.scheduling.schedule_ir",
+      "path": "merlin/compile/scheduling/schedule_ir.py",
+      "sha256": "cfae2f017ec5f29d5846ff661c84abd5868b5a523798347a9c234fc5ec8fc304"
+    },
+    {
+      "module": "merlin.xdsl_dialects.schedule",
+      "path": "merlin/xdsl_dialects/schedule.py",
+      "sha256": "6bdf535d5b37b863418070a74af2ece031b2b168293875f0594a61106bddbfba"
+    },
+    {
+      "module": "merlin.xdsl_dialects.contract",
+      "path": "merlin/xdsl_dialects/contract.py",
+      "sha256": "1eb44b7b058a32ddc0c998a0b9a463c701f72260286d7660af68d2f8643ffa4e"
+    },
+    {
+      "module": "merlin.compile.scheduling.loop_schedule",
+      "path": "merlin/compile/scheduling/loop_schedule.py",
+      "sha256": "5c122e607874529018c4cfe82a2ea86bcd2baf688a59884ba4e920e9a59e949f"
+    },
+    {
+      "module": "merlin.sched.primitives",
+      "path": "merlin/sched/primitives/__init__.py",
+      "sha256": "d0749cf297864d8f681689e446655d4378e5a37f862a31e50fc32d4caac9baf1"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_panel_pipeline",
+      "path": "merlin/compile/scheduling/dense_panel_pipeline.py",
+      "sha256": "8a84d85fdd8b1e82b65cd6b6fe82bda4001d4a60f286e3817eac21c39fe79e7b"
+    },
+    {
+      "module": "merlin.compile.scheduling.scf_commands",
+      "path": "merlin/compile/scheduling/scf_commands.py",
+      "sha256": "c798828ac3c7ef944fcc86637b4ce2d8a6a446a5a5666b8e82f7fa8c4ed7fd5e"
+    },
+    {
+      "module": "merlin.xdsl_dialects.runtime",
+      "path": "merlin/xdsl_dialects/runtime.py",
+      "sha256": "5a51db2f7942511957ff01297f3f6e970927a6efe4de81900b262af9a97276a9"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration_contexts",
+      "path": "merlin/compile/scheduling/configuration_contexts.py",
+      "sha256": "f0fd09b94f49189ed2954ec413a7aec242d491f494ac532b2337adcfbf7e9df1"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration_loop_cleanup",
+      "path": "merlin/compile/scheduling/configuration_loop_cleanup.py",
+      "sha256": "59aa2b91e85d73196e5190935b12d5446e7b917e12af7d9503c3b4ffb424f1f7"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_panel_readout",
+      "path": "merlin/compile/scheduling/dense_panel_readout.py",
+      "sha256": "ec625d2602abeca7869b0cca9f3c77d604e8dc8b81dbca48b16c89d9c363319e"
+    },
+    {
+      "module": "merlin.compile.scheduling.tile_load_coalescing",
+      "path": "merlin/compile/scheduling/tile_load_coalescing.py",
+      "sha256": "f4ea63479be1408c23b2e0d941f78193d89e68ac18b501c943149ebfa5d1130b"
+    },
+    {
+      "module": "merlin.compile.scheduling.panel_tile_loads",
+      "path": "merlin/compile/scheduling/panel_tile_loads.py",
+      "sha256": "a1c852b85b71b2a31aeeca85865cbcbcf079333fd964a033a2c9162bfd644209"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_segmented_pipeline",
+      "path": "merlin/compile/scheduling/dense_segmented_pipeline.py",
+      "sha256": "ebee9c353c2a72ff7f72c2f265a044c747af84d30bd4ba9ff3f744d95db11ff9"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_array_retention",
+      "path": "merlin/compile/scheduling/dense_array_retention.py",
+      "sha256": "1c1f5561372c118ddb231cc53b55a7eb85147d5a734d9460fb51386371c6efeb"
+    },
+    {
+      "module": "merlin.compile.scheduling.api_catalog",
+      "path": "merlin/compile/scheduling/api_catalog.py",
+      "sha256": "e87f67991a20d444998f9cf423f16c2ae736803d629f20eedf4f261b543bc344"
+    },
+    {
+      "module": "merlin.compile.scheduling.rolling_window",
+      "path": "merlin/compile/scheduling/rolling_window.py",
+      "sha256": "53db020df371dc88d676e4f7deaaae739978e33f5a6965c9c2ff715234e4faa5"
+    },
+    {
+      "module": "merlin.compile.scheduling.rolling_spatial",
+      "path": "merlin/compile/scheduling/rolling_spatial.py",
+      "sha256": "6866b7cc4708bb8bd81609eb2081648c649a6b02e348dd6f630bc60632f5f0e9"
+    },
+    {
+      "module": "merlin.xdsl_dialects.rolling_window",
+      "path": "merlin/xdsl_dialects/rolling_window.py",
+      "sha256": "4049d3fc744aba96aa02eeecda9005293c8e022124aeaed57604c4791af600f4"
+    },
+    {
+      "module": "merlin.compile.scheduling.spatial_readout_cache",
+      "path": "merlin/compile/scheduling/spatial_readout_cache.py",
+      "sha256": "9d47537c35a182e55d9def98fd9095ab35e182b29d7f36094a26d3aeec1d4a5c"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_readout_overlap",
+      "path": "merlin/compile/scheduling/dense_readout_overlap.py",
+      "sha256": "9e68ec68f645b058e06b05a45dff1c7632f20ea2d63d41dc12df3779079da688"
+    },
+    {
+      "module": "merlin.llvmlower.host_builder",
+      "path": "merlin/llvmlower/host_builder.py",
+      "sha256": "af8a2690e90a26e9514cec674ae2f971c63715b99a0f71e30629e4adcec8e9ed"
+    },
+    {
+      "module": "merlin.llvmlower.llvm_loop_metadata",
+      "path": "merlin/llvmlower/llvm_loop_metadata.py",
+      "sha256": "3c98b4610d6e9b1b2c4f693a1643ef5a441c3a1ed9734a78524976f75e6bc1be"
+    },
+    {
+      "module": "merlin.compile.scheduling.projection_views",
+      "path": "merlin/compile/scheduling/projection_views.py",
+      "sha256": "b6a18bb6878ce560ab5cad08931ddf64d30cf38b3f9c4cec2589ec08b02f3dc5"
+    },
+    {
+      "module": "merlin.transforms.tensor_views",
+      "path": "merlin/transforms/tensor_views.py",
+      "sha256": "46c5ce11af35b2681779a0e9cf072b0d3bc88f9e41a4580d7283aa49efa74c41"
+    },
+    {
+      "module": "merlin.llvmlower.source_region",
+      "path": "merlin/llvmlower/source_region.py",
+      "sha256": "76477a43bc4e63bd0c8ceb9382da5d8e104f0e5ae47f768e0966bd85f4c927ab"
+    },
+    {
+      "module": "merlin.llvmlower.source_region_host",
+      "path": "merlin/llvmlower/source_region_host.py",
+      "sha256": "88edcbf0eaca2134e7579d296351608a81825972b5aac2526648960a2b6d9e2c"
+    },
+    {
+      "module": "merlin.compile.composition_catalog",
+      "path": "merlin/compile/composition_catalog.py",
+      "sha256": "5d56fd083b17c75b2bdf3de04d888d93a257d844361343abd31c21f5cbc392e0"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_ready_readout",
+      "path": "merlin/compile/scheduling/dense_ready_readout.py",
+      "sha256": "6a026ffa5b65c28a68fe462dfd61bad92b5184f3dc9ecceacdd8434cb2fefd9d"
+    },
+    {
+      "module": "merlin.sched.ir.events",
+      "path": "merlin/sched/ir/events.py",
+      "sha256": "59357460f6fe54766c81bc076b988ba9b8d6c51537ea652a5e1390377fb60b6f"
+    },
+    {
+      "module": "merlin.compile.scheduling.scf_carried_events",
+      "path": "merlin/compile/scheduling/scf_carried_events.py",
+      "sha256": "523a542b180394dfaf52dfda1d16c0fd4ae42f8470ec9cbb0d6d08e4c6d17bc3"
+    },
+    {
+      "module": "merlin.sched.primitives.event_loops",
+      "path": "merlin/sched/primitives/event_loops.py",
+      "sha256": "42ba72f6e9d6dc5d8f90bbe95171fd95a5021954c234b1a648f7bb89d6a2261f"
+    },
+    {
+      "module": "merlin.common.access",
+      "path": "merlin/common/access.py",
+      "sha256": "49a8cf9f0f16bd6baf8e921a3ea7049f2bd0794b9fc4f34b6d32cf8df9f2be10"
+    },
+    {
+      "module": "merlin.common.compile_trace",
+      "path": "merlin/common/compile_trace.py",
+      "sha256": "db5ea2d5a3b4b59628747007cbe755142a8402b4cd2e21d99d4f52a5ac7fbd70"
+    },
+    {
+      "module": "merlin.common.ir_audit",
+      "path": "merlin/common/ir_audit.py",
+      "sha256": "7489faae39a64ecf02ffa1849a5235136dcb6b50a099b833c7b5220e3763e698"
+    },
+    {
+      "module": "merlin.common.ir_lock",
+      "path": "merlin/common/ir_lock.py",
+      "sha256": "f6450a205f3984824ae4abe02b005e4aa88364289f84fbc6ec458e8eeacf04ff"
+    },
+    {
+      "module": "merlin.common.paths",
+      "path": "merlin/common/paths.py",
+      "sha256": "ce9238694f7622d92ffb0e4bdae09839604f4c625092b2cef8f286773dca85b9"
+    },
+    {
+      "module": "merlin.common.provenance",
+      "path": "merlin/common/provenance.py",
+      "sha256": "ca7bc7145e5fdf7b9a002875b94ecf3a1f3edd5b4555d44cc251ad9a56c61da5"
+    },
+    {
+      "module": "merlin.common.provenance_lost",
+      "path": "merlin/common/provenance_lost.py",
+      "sha256": "1ca1bc7fe4fd51fe14a25edbf0863652dc021e4bd71cadddbe66937d9cf478d4"
+    },
+    {
+      "module": "merlin.common.tree_hash",
+      "path": "merlin/common/tree_hash.py",
+      "sha256": "81b1b0f053c109f0a29842f337118b7070b1354dcd6985600121c0c61633be65"
+    },
+    {
+      "module": "merlin.frontends",
+      "path": "merlin/frontends/__init__.py",
+      "sha256": "c8685b3ce4e99890bbce99edf32bea9cee5cde243425d383e7bf81db29d87198"
+    },
+    {
+      "module": "merlin.frontends.linalg_mlir",
+      "path": "merlin/frontends/linalg_mlir.py",
+      "sha256": "66209ae3262daabc4e4e38414c18c858222f2681dc51a11c8bea902504fbc630"
+    },
+    {
+      "module": "merlin.integrations",
+      "path": "merlin/integrations/__init__.py",
+      "sha256": "4a858e20ec5edb9c978c1d13bfdd3b647c715362c0ba498f3ad298ff04954ee9"
+    },
+    {
+      "module": "merlin.integrations.model2mlir",
+      "path": "merlin/integrations/model2mlir.py",
+      "sha256": "8a2f9747f4d59764b676e7c9ebe43c2b8607fcf322f711865a3e450b468fc460"
+    },
+    {
+      "module": "merlin.llvmlower.generic_form",
+      "path": "merlin/llvmlower/generic_form.py",
+      "sha256": "734bdc29b0e26cc56104c04148ae298b633b312080651d55950a640c9d51660e"
+    },
+    {
+      "module": "merlin.llvmlower.normalization_reassociation",
+      "path": "merlin/llvmlower/normalization_reassociation.py",
+      "sha256": "3b29dc04d05870b2e73a53bc239a5d2af3f04fa509390492fa00b8b52b959b57"
+    },
+    {
+      "module": "merlin.llvmlower.optional_passes",
+      "path": "merlin/llvmlower/optional_passes.py",
+      "sha256": "cdd84f7eb956602235e8d24f6b708f442de7226d6eec8ab7eceb85de613a456e"
+    },
+    {
+      "module": "merlin.llvmlower.passes_xdsl",
+      "path": "merlin/llvmlower/passes_xdsl.py",
+      "sha256": "530d66b3ae9390cfdd6d16c9385059dbada2291e4dd5aba7918a63dae7358391"
+    },
+    {
+      "module": "merlin.llvmlower.source_fma_batch",
+      "path": "merlin/llvmlower/source_fma_batch.py",
+      "sha256": "0019c4a75e0ca836a3f22b7d07cd666cc9a3be7ce7c66bb0a3e3234644372759"
+    },
+    {
+      "module": "merlin.llvmlower.toolchain",
+      "path": "merlin/llvmlower/toolchain.py",
+      "sha256": "dfa6d51f6fd52966ebb566ac98606b708d3838b1e74373a68c6f4dd455edc132"
+    },
+    {
+      "module": "merlin.runtime",
+      "path": "merlin/runtime/__init__.py",
+      "sha256": "0d4b59f19a128d78b4acc3288a2b0d34a0dc344ab9fa9dc17fda80f65db57cfa"
+    },
+    {
+      "module": "merlin.runtime.host_arithmetic",
+      "path": "merlin/runtime/host_arithmetic.py",
+      "sha256": "15955278bec194317711b76450beb5038f28c0242c869613f0331c25804dcd1b"
+    },
+    {
+      "module": "merlin.xdsl_dialects.ir_inspection",
+      "path": "merlin/xdsl_dialects/ir_inspection.py",
+      "sha256": "98c7422d62d26ef412effcb3873b51a20e72e18f491966b0ff032d3d666dd261"
+    },
+    {
+      "module": "merlin.xdsl_dialects.lowering",
+      "path": "merlin/xdsl_dialects/lowering/__init__.py",
+      "sha256": "9ed93467c8291146d42f6cf963e4fd9e90e41c9c86af55ab01e910b2f421b168"
+    },
+    {
+      "module": "merlin.xdsl_dialects.lowering.outline",
+      "path": "merlin/xdsl_dialects/lowering/outline.py",
+      "sha256": "75d6d0a5347fee2bd61ef1f1a39a14651b64216d48c066a000e0943dc4792efd"
+    },
+    {
+      "module": "merlin.common.stat_memo",
+      "path": "merlin/common/stat_memo.py",
+      "sha256": "ed2ac7e0de572ca74d49d0d5f6c12f71f7393aa461c480b1502a6067ca954f12"
+    },
+    {
+      "module": "merlin.sched.primitives.loop_handles",
+      "path": "merlin/sched/primitives/loop_handles.py",
+      "sha256": "e2dc89d868b23e1f3abfde552c7230676fabdfec48e06dc19b06a8eeb40cfaa8"
+    },
+    {
+      "module": "merlin.compile.scheduling.completion_streams",
+      "path": "merlin/compile/scheduling/completion_streams.py",
+      "sha256": "5bfb4d48995c78171cea749b87335753951a4c966cc3da65b7e2a73b4b3ee9de"
+    },
+    {
+      "module": "merlin.compile.scheduling.configuration_motion",
+      "path": "merlin/compile/scheduling/configuration_motion.py",
+      "sha256": "c8cd0693d90b8f444292305a06ad086e37abc6bdfb1467af30c6521a20a0f4a1"
+    },
+    {
+      "module": "merlin.compile.scheduling.spatial_max_stripes",
+      "path": "merlin/compile/scheduling/spatial_max_stripes.py",
+      "sha256": "9dc03e04d3cf42d098377b7c7e3548227d3fb650868c86c3f5539fe3f05fdd30"
+    },
+    {
+      "module": "merlin.compile.logical_abi",
+      "path": "merlin/compile/logical_abi.py",
+      "sha256": "930cbc4cb96154b1a0038d9028c1cb8a6445c15e18b0b1130272d8bfe309997e"
+    },
+    {
+      "module": "merlin.compile.scheduling.convolution_exploration",
+      "path": "merlin/compile/scheduling/convolution_exploration.py",
+      "sha256": "b7f9d9a21febc29e0cd58c68b78fe7fbabe460e96b7dac73ec9cd4993fa8fb2e"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_rhs_residency",
+      "path": "merlin/compile/scheduling/dense_rhs_residency.py",
+      "sha256": "20dc1007f8eb3b5998fed9e4d136806769d1f5c5160a35f3644abf6cdfdc4518"
+    },
+    {
+      "module": "merlin.transforms.pipeline_policy",
+      "path": "merlin/transforms/pipeline_policy.py",
+      "sha256": "85923b554994cafc1302719bb44cd6b723f01784dc3a14dff95c53165911af38"
+    },
+    {
+      "module": "merlin.transforms.pass_exploration",
+      "path": "merlin/transforms/pass_exploration.py",
+      "sha256": "60a540b1ef2281abbf6bd4c6b209327e83ae466142b3651f968d0774d3c75fc3"
+    },
+    {
+      "module": "merlin.transforms.evaluated_exploration",
+      "path": "merlin/transforms/evaluated_exploration.py",
+      "sha256": "ff119869c5472403f6e7b64075eba57a6d4f6df078fe6cc6661ba0ca7842a2dd"
+    },
+    {
+      "module": "merlin.transforms.shape_policy",
+      "path": "merlin/transforms/shape_policy.py",
+      "sha256": "43657eaa5a86403752a573c5b3bc5c412d3ed4b857f263ee0075da229bbd0a24"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_panel_epochs",
+      "path": "merlin/compile/scheduling/dense_panel_epochs.py",
+      "sha256": "9d528464cc91f916bf80bf2ccfdbcb8629f7525efcb271de2924ff1b2411bafe"
+    },
+    {
+      "module": "merlin.compile.scheduling.pointwise_convolution",
+      "path": "merlin/compile/scheduling/pointwise_convolution.py",
+      "sha256": "3c0a9675ba639a82574d6aba53cb4f78b2dd9c0ac74627de04a49b3c4ff47056"
+    },
+    {
+      "module": "merlin.compile.scheduling.affine_gather_runs",
+      "path": "merlin/compile/scheduling/affine_gather_runs.py",
+      "sha256": "725804400887341bce89b13c30d1d1770041aa243de62a7f661168b2745a91cd"
+    },
+    {
+      "module": "merlin.compile.scheduling.batched_dense",
+      "path": "merlin/compile/scheduling/batched_dense.py",
+      "sha256": "f41e4d2eed5006d4bcf70f4f48a46e42f2ef7b212185621a839664d4cf8c08bb"
+    },
+    {
+      "module": "merlin.compile.scheduling.convolution_output_groups",
+      "path": "merlin/compile/scheduling/convolution_output_groups.py",
+      "sha256": "17d26f1548f966445fcfb0aa5bb2d3c351f7d4062d8009cd8bc35a30d67eb3c1"
+    },
+    {
+      "module": "merlin.compile.scheduling.loaded_sum_epochs",
+      "path": "merlin/compile/scheduling/loaded_sum_epochs.py",
+      "sha256": "af6498d3d312e3b4bcf777af4b076529a964d1ab6f64686550cf9d52d9ba9f81"
+    },
+    {
+      "module": "merlin.compile.tuning_knobs",
+      "path": "merlin/compile/tuning_knobs.py",
+      "sha256": "7627f46e23b01edcfcbc161cdf3fa3a749b41d40bb99850e65cdb56e89615410"
+    },
+    {
+      "module": "merlin.transforms.tuning_selection",
+      "path": "merlin/transforms/tuning_selection.py",
+      "sha256": "1fd58709068a82c798955562f60bcaef897f2581ba1ba5d1610780c7b2f4dff9"
+    },
+    {
+      "module": "merlin.llvmlower.late_quant_rne",
+      "path": "merlin/llvmlower/late_quant_rne.py",
+      "sha256": "c7a5de97e0f1d1cf07e0fcf2a52804094e57925a01758a5223796d264d526977"
+    },
+    {
+      "module": "merlin.llvmlower.source_expression_interval",
+      "path": "merlin/llvmlower/source_expression_interval.py",
+      "sha256": "44cf25eddf605c340b406ae0e382921f611e28ffc32c081fd034ef8610ef166d"
+    },
+    {
+      "module": "merlin.llvmlower.source_expression_interval_llvm",
+      "path": "merlin/llvmlower/source_expression_interval_llvm.py",
+      "sha256": "0d828c752a5d8657caf2b495547d89b2ec680dc29fe443b3a019bff567a14ade"
+    },
+    {
+      "module": "merlin.llvmlower.bounded_rne_word_cells",
+      "path": "merlin/llvmlower/bounded_rne_word_cells.py",
+      "sha256": "8d592a3477cf0f1bf98eadfc07ebb2399898a0bb8fd63a87be2d7e305e0961f4"
+    },
+    {
+      "module": "merlin.llvmlower.scaled_integer_finite",
+      "path": "merlin/llvmlower/scaled_integer_finite.py",
+      "sha256": "151bf4ab35e6f80ef2c51ff7fda03bf3412eeff8de30723393db87f882cc32c5"
+    },
+    {
+      "module": "merlin.llvmlower.scaled_integer_finite_llvm",
+      "path": "merlin/llvmlower/scaled_integer_finite_llvm.py",
+      "sha256": "80be8d165950848a7c4bcf1b00eb0e6bf71983d65b8860901149eb3a25a81844"
+    },
+    {
+      "module": "merlin.llvmlower.bounded_rne_maps",
+      "path": "merlin/llvmlower/bounded_rne_maps.py",
+      "sha256": "e22de872b9cb1c9b546609c4d376f11f14eb60d8fe1d286580c27f3e0ac13d77"
+    },
+    {
+      "module": "merlin.llvmlower.closed_tensor_insert",
+      "path": "merlin/llvmlower/closed_tensor_insert.py",
+      "sha256": "26b1bc5f9f0d1c30e401721f280d9938875609c7eeaca0cf7fa2dc6edc60f5f8"
+    },
+    {
+      "module": "merlin.compile.scheduling.projection_dense",
+      "path": "merlin/compile/scheduling/projection_dense.py",
+      "sha256": "a3a688f9279a64142dc24006b196790a94ec5f31e93002b06aea9993701af377"
+    },
+    {
+      "module": "merlin.compile.scheduling.projection_provenance",
+      "path": "merlin/compile/scheduling/projection_provenance.py",
+      "sha256": "b3691af9177958422726ad1af9ee02460718cd080f434d64c0e73fe96e2a8399"
+    },
+    {
+      "module": "merlin.compile.scheduling.rolling_lookahead",
+      "path": "merlin/compile/scheduling/rolling_lookahead.py",
+      "sha256": "0891832b8704cf8bc265f118c885783b8b0aa691e597fe86c93529f7086b8ec7"
+    },
+    {
+      "module": "merlin.compile.scheduling.operand_slots",
+      "path": "merlin/compile/scheduling/operand_slots.py",
+      "sha256": "bf3be3effa02431d6c16b2914b7347d7dcf78f2bfa9fc9849d11067f6807b942"
+    },
+    {
+      "module": "merlin.compile.scheduling.compact_dense_group",
+      "path": "merlin/compile/scheduling/compact_dense_group.py",
+      "sha256": "ce4fe61154d6ea90a5ffbc9f6996614b98e7efc904bf5069ba9e1a150c06b87a"
+    },
+    {
+      "module": "merlin.compile.scheduling.compact_dense_group_check",
+      "path": "merlin/compile/scheduling/compact_dense_group_check.py",
+      "sha256": "988c62f6dc90c5fcdad9dc3a67e88cdf56662ef8e05c0b6fd4b6bcec0a65e6d7"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_shared_rhs",
+      "path": "merlin/compile/scheduling/dense_shared_rhs.py",
+      "sha256": "ea72cfe6b6ddb5d999b98299474767cd7aeb363e914c9142fdb809bc18cc6bce"
+    },
+    {
+      "module": "merlin.compile.scheduling.dense_shared_rhs_check",
+      "path": "merlin/compile/scheduling/dense_shared_rhs_check.py",
+      "sha256": "77e7ae1be2ff861a02f2b61e5abfc536cac38997208aad40eedac4aa50a9066f"
+    },
+    {
+      "module": "merlin.compile.scheduling.shared_rhs_schedule_ir",
+      "path": "merlin/compile/scheduling/shared_rhs_schedule_ir.py",
+      "sha256": "3ba8f6758c5a4f92430e05c6af562b2fbee53c03fb56d8ae826aef352f98dc0c"
+    },
+    {
+      "module": "merlin.compile.scheduling.horizontal_convolution",
+      "path": "merlin/compile/scheduling/horizontal_convolution.py",
+      "sha256": "c17b3b3ad854a680a7d28ae3cbabd30a8cb4951e4e6072de8d24385cccdca6a9"
+    },
+    {
+      "module": "merlin.common.digest",
+      "path": "merlin/common/digest.py",
+      "sha256": "fe67884c895729e539d3ca638758af39b555ff40b91b4f6828dc31d404c165a9"
+    },
+    {
+      "module": "merlin.common.mlir_query",
+      "path": "merlin/common/mlir_query.py",
+      "sha256": "79249bc4d94ca0128b4e95b0ddf661eac5c18a89e0c8c221f92d631b53555b25"
+    },
+    {
+      "module": "merlin.common.yaml",
+      "path": "merlin/common/yaml.py",
+      "sha256": "491d6daecb868db88336fbf9ccae465e1a65e360f7c0ff0da2047b1ccb7b2659"
+    },
+    {
+      "module": "merlin.capture",
+      "path": "merlin/capture/__init__.py",
+      "sha256": "bc7caee182fb01010345abbd49899972d316f96e964811725b891286c1d9a971"
+    },
+    {
+      "module": "merlin.capture.safetensors",
+      "path": "merlin/capture/safetensors.py",
+      "sha256": "bb2aa1b7e7e6eca7f60f86084b72320d5bee8accda9860d9526ce3456e090fa1"
+    },
+    {
+      "module": "merlin.llvmlower.repeated_pointwise",
+      "path": "merlin/llvmlower/repeated_pointwise.py",
+      "sha256": "4d422ca25618210d6cb8f194c964e0289aeb27bbd9aeb88d0a4b93adef33db65"
+    },
+    {
+      "module": "merlin.llvmlower.contraction_row_slice",
+      "path": "merlin/llvmlower/contraction_row_slice.py",
+      "sha256": "0cd9674a2fc58e1b01cdf11739ee585c60cbc4807af589ee64bf111399fdd924"
+    },
+    {
+      "module": "merlin.llvmlower.quant_round_check",
+      "path": "merlin/llvmlower/quant_round_check.py",
+      "sha256": "a424957ff649b949cf957f45df5cc9e37b3a8e7d91bf99f5dedea9366910aef4"
+    },
+    {
+      "module": "merlin.llvmlower.segmented_matrix_view",
+      "path": "merlin/llvmlower/segmented_matrix_view.py",
+      "sha256": "9f9ed627eb32a85b5c2a5242e7c4a2dd8afa9215d4ecd494d4b2a2956703e7f2"
+    },
+    {
+      "module": "merlin.llvmlower.layout_conformance",
+      "path": "merlin/llvmlower/layout_conformance.py",
+      "sha256": "078ec50fb218997e118abd62c8ce9e09ee804ae072b315755b9d88da9a892476"
+    },
+    {
+      "module": "merlin.llvmlower.weight_prepack_runtime",
+      "path": "merlin/llvmlower/weight_prepack_runtime.py",
+      "sha256": "b697a0effc96cf62cd9d8ef5cfd91cf4ebbe437988e18ac0eae70be7cbc9e436"
+    },
+    {
+      "module": "merlin.llvmlower.weights_pack",
+      "path": "merlin/llvmlower/weights_pack.py",
+      "sha256": "6e05db215677e9a26a3fafd3a4479a6b2b3a875bab7e902f535ffd4639831aae"
+    },
+    {
+      "module": "merlin.llvmlower.prepared_operand_effects",
+      "path": "merlin/llvmlower/prepared_operand_effects.py",
+      "sha256": "c5be8629d914d2907570f03f0910d53e853f9db846a7cb770adf2360e93081c2"
+    },
+    {
+      "module": "merlin.llvmlower.tensor_preparation_identity",
+      "path": "merlin/llvmlower/tensor_preparation_identity.py",
+      "sha256": "14ec9a43b5a455a85518f42fe928e1109c7e98f0c3c656c2cb98c37ffca23122"
+    },
+    {
+      "module": "merlin.llvmlower.ordered_fma_groups",
+      "path": "merlin/llvmlower/ordered_fma_groups.py",
+      "sha256": "99de6a6e8c56da0daea69e8392d4d3180243c87ac9aade498ce788bd7b18deec"
+    },
+    {
+      "module": "merlin.transforms.head_batching",
+      "path": "merlin/transforms/head_batching.py",
+      "sha256": "6365d6a85def4e416c33a0853b3ac3666ad558a1216351f53f285631aff5fc67"
+    },
+    {
+      "module": "merlin.transforms.dense_row_batching",
+      "path": "merlin/transforms/dense_row_batching.py",
+      "sha256": "7dd7137634712620cb9e6cf411a33b26050ff925e7c4ae2a8f96f5038fbb875d"
+    },
+    {
+      "module": "merlin.transforms.dense_row_batching_check",
+      "path": "merlin/transforms/dense_row_batching_check.py",
+      "sha256": "51b9a0e1368d6ce53c79f593ca277d810a74256104db1124fe7cabe370b01133"
+    },
+    {
+      "module": "merlin.transforms.shared_rhs_views",
+      "path": "merlin/transforms/shared_rhs_views.py",
+      "sha256": "f55bfe21ed7a3d69e5b2b2ad7901cc8deba1ca79cca48998f317024adcf13998"
+    },
+    {
+      "module": "merlin.compile.scheduling.direct_source",
+      "path": "merlin/compile/scheduling/direct_source.py",
+      "sha256": "41278df9fba34cbb74bdeeed882a24d4c3b80cfde8b0611ef6742f107e0a50b6"
+    },
+    {
+      "module": "merlin.compile.scheduling.source_tokens",
+      "path": "merlin/compile/scheduling/source_tokens.py",
+      "sha256": "d7b9082a661f5c667d817c68c6a8f90eea9150ff08e1c433e4f9afc761aca9a9"
+    },
+    {
+      "module": null,
+      "path": "LICENSE",
+      "sha256": "439f44f4ac1bb8b72bf938d0a86cb132ade48cabfa2499ba4f74a46ead0dbf39"
+    },
+    {
+      "module": null,
+      "path": "NOTICE",
+      "sha256": "dabae33b05197c919abab648a8a354dd6bac426b8e391ccc85380b791684ca90"
+    }
+  ],
+  "replaced_namespace_source_sha256": {
+    "merlin.compile.scheduling": "0811ba56924f50f4ef550de4dce72c481bccd30a932f0963e82a1151b8783669",
+    "merlin.sched.isa": "b6cd8226548aaa1edfd17bc464b75578ebdbb55d4e12613ed661ecd897bb2310",
+    "merlin.transforms": "b13dba76f50bf5666daac971dcef7305172807f22ecc96046333efd219e77b39",
+    "merlin.xdsl_dialects": "9c1371add3faea356b6678e50e5564056e53583a1859add917f22ba877c5ee00",
+    "merlin.runtime": "b48ae95690e70e87df21a73fa5f2a57e8bc7ed0837718d6a8e66fc86fbed4c89",
+    "merlin.xdsl_dialects.lowering": "88dfda19b4ba13de35316025d084f9ececd006017bafcedf984eb76835b19094"
+  },
+  "external_package_versions": {
+    "xdsl": "0.73.0",
+    "numpy": "2.5.4",
+    "PyYAML": "6.0.3",
+    "z3-solver": "4.16.0.0"
+  },
+  "dependency_qualification": "versions_only; external implementations and optional native resources unqualified",
+  "admission": "requires_separate_host_review_and_explicit_compiler_library_contract",
+  "review_resources": [
+    "shared-library.json"
+  ],
+  "inventory_version": 24,
+  "source_binding_protocol": "merlin.shared_source_binding.v1",
+  "scheduling_capabilities": {
+    "schema": "merlin.scheduling_api_catalog.v1",
+    "inventory_version": 24,
+    "authority": "discovery only; explicit source/effects/target admission remains required",
+    "execution": "same Python/xDSL APIs in ordinary automatic and offline authoring",
+    "capabilities": [
+      {
+        "name": "segmented_k_retained_operand_pipeline",
+        "symbols": [
+          "merlin.compile.scheduling.dense_segmented_pipeline.DenseSegmentedAdmission",
+          "merlin.compile.scheduling.dense_segmented_pipeline.dense_segmented_blocks",
+          "merlin.compile.scheduling.dense_segmented_pipeline.schedule_dense_segmented_pipeline",
+          "merlin.compile.scheduling.dense_segmented_pipeline.build_dense_segmented_pipeline",
+          "merlin.compile.scheduling.dense_segmented_pipeline.verify_dense_segmented_pipeline",
+          "merlin.compile.scheduling.dense_segmented_pipeline.admit_segmented_tile_loads",
+          "merlin.compile.scheduling.dense_segmented_pipeline.batch_dense_segmented_readouts",
+          "merlin.compile.scheduling.schedule_ir.make_dense_schedule_plan"
+        ],
+        "usage": [
+          "Use dense_segmented_blocks for full-LHS/two-RHS capacity and alignment bounds.",
+          "Create a typed schedule plan with pipeline_kind='retained_lhs_segmented_k'.",
+          "Choose a supported pipeline_issue_order and capacity-legal block_tiles.",
+          "Call schedule_dense_segmented_pipeline with original source identity, storage, adapter and law.",
+          "Revalidate the result and emit its actual kernel through materialize_scf/emit_llvm."
+        ],
+        "requires": [
+          "explicit conjunction of ordered reduction commits and disjoint future-load execution laws",
+          "complete original source, tails, aliases, capacities, numerical boundaries and epoch proof"
+        ]
+      },
+      {
+        "name": "array_weight_retention",
+        "symbols": [
+          "merlin.compile.scheduling.dense_array_retention.DenseArrayRetentionAdmission",
+          "merlin.compile.scheduling.dense_array_retention.propose_dense_array_retention",
+          "merlin.compile.scheduling.dense_array_retention.verify_dense_array_retention",
+          "merlin.compile.scheduling.dense_array_retention.verify_dense_array_tile_loads"
+        ],
+        "usage": [
+          "proposal = propose_dense_array_retention(checked.kernel, adapter, array_law)",
+          "Verify with original problem/block/resources/storage/adapter/base_admission and static_budget.",
+          "For final wide loads use verify_dense_array_tile_loads with actual project/encode_band callbacks.",
+          "Emit only proposal.kernel; proposal.checking_kernel is a conservative proof projection."
+        ],
+        "requires": [
+          "pure K,N,M paired run; invariant RHS identity/depth/width and continued scratch residency",
+          "separate fresh-capture/STAY/output-descriptor target law plus original source/epoch admission",
+          "no cross-run or cross-epoch retention, hidden configuration effect or implicit drain removal"
+        ]
+      },
+      {
+        "name": "exact_final_wide_loads",
+        "symbols": [
+          "merlin.compile.scheduling.tile_load_coalescing.TileLoadAddressLaw",
+          "merlin.compile.scheduling.tile_load_coalescing.TileLoadMapping",
+          "merlin.compile.scheduling.tile_load_coalescing.propose_tile_load_coalescing",
+          "merlin.compile.scheduling.panel_tile_loads.expand_dense_panel_tile_loads",
+          "merlin.compile.scheduling.panel_tile_loads.admit_panel_tile_loads"
+        ],
+        "usage": [
+          "Decode the final emitted call, not an earlier primitive access list.",
+          "Project every physical band with its exact source pitch, local stride and completion epoch.",
+          "Use the typed panel, segmented or array consumer for complete final source/hazard checks."
+        ],
+        "requires": [
+          "independently selected address law; address projection grants no execution semantics"
+        ]
+      },
+      {
+        "name": "source_axis_loop_scheduling",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_pipeline.dense_retained_compute_nests",
+          "merlin.compile.scheduling.dense_panel_pipeline.dense_retained_compute_order",
+          "merlin.compile.scheduling.dense_panel_pipeline.dense_retained_compute_unroll",
+          "merlin.compile.scheduling.loop_schedule.LoopTransform",
+          "merlin.compile.scheduling.loop_schedule.propose_loop_transforms"
+        ],
+        "usage": [
+          "Discover axes from projected original operands, then request actual typed loop transforms.",
+          "Run the complete source/storage/effect verifier on the transformed command kernel."
+        ],
+        "requires": [
+          "axis discovery and transform construction are proposals, never legality certificates"
+        ]
+      },
+      {
+        "name": "source_exact_quantized_spatial_readout_cache",
+        "symbols": [
+          "merlin.compile.scheduling.spatial_readout_cache.SpatialReadoutCache",
+          "merlin.compile.scheduling.spatial_readout_cache.propose_spatial_readout_cache",
+          "merlin.compile.scheduling.spatial_readout_cache.emit_cached_spatial_max"
+        ],
+        "usage": [
+          "Propose retention from the original RollingPackedSpatialPlan and disjoint caller-owned windows.",
+          "Keep original Q1 stores, Q2 conversion, clipped halos and all source liveouts.",
+          "Emit counted initial/frontier reloads through the selected synchronous lower callback."
+        ],
+        "requires": [
+          "supported 3x3 stride-2 pad-1 signed-i8 source with original producer ReLU",
+          "exact unchanged i8-to-i32 reload and original pooled readout binding",
+          "producer restricted to its assigned disjoint accumulator window",
+          "actual reload and readout completion; storage capacity supplies no target capability"
+        ]
+      },
+      {
+        "name": "disjoint_accumulator_readout_compute",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_pipeline.DenseReadoutComputeAdmission",
+          "merlin.compile.scheduling.dense_readout_overlap.propose_dense_readout_overlap",
+          "merlin.compile.scheduling.dense_readout_overlap.schedule_dense_readout_overlap",
+          "merlin.compile.scheduling.dense_readout_overlap.admit_readout_overlap_tile_loads"
+        ],
+        "usage": [
+          "Start with an original checked DenseSegmentedPipelineResult and owned storage.",
+          "Supply the separate readout/compute capability and an actual counted output group_path.",
+          "Revalidate the checked result, then materialize_scf or emit_llvm its actual paired kernel.",
+          "Compose wide loads only through admit_readout_overlap_tile_loads on final physical bands."
+        ],
+        "requires": [
+          "separate selected store snapshot, backpressure, disjoint ACC and full-drain completion law",
+          "actual epoch hazards before exact counted original-source transport; odd tails retained",
+          "two aligned owned ACC windows; original quantization, input lifetimes and full output cover",
+          "no causal-ready same-window readout permission or capacity-derived execution grant"
+        ]
+      },
+      {
+        "name": "declared_persistent_scalar_state_in_scf",
+        "symbols": [
+          "merlin.compile.scheduling.scf_commands.materialize_scf_commands",
+          "merlin.compile.scheduling.scf_commands.verify_scf_commands",
+          "merlin.compile.scheduling.scf_commands.unroll_small_command_loops",
+          "merlin.compile.scheduling.scf_commands.group_scf_command_loops",
+          "merlin.compile.scheduling.scf_commands.emit_scf_commands",
+          "merlin.compile.scheduling.llvm_program.FnBuilderIndexAdapter",
+          "merlin.llvmlower.host_builder.FnBuilder"
+        ],
+        "usage": [
+          "Attach closed signed-i64 Const sets/assumes to actual command Calls.",
+          "Pass allow_persistent_state=True explicitly at every SCF bridge boundary.",
+          "Print/parse or transform actual command-bearing SCF, reverify, then emit through the callback."
+        ],
+        "requires": [
+          "unknown initial state; preceding setter, matching value and compatible loop reentry",
+          "selected target visibility/clobber law remains NOT_ESTABLISHED by this scalar-state checker",
+          "explicit async dependencies, source, alias, completion and numerical obligations remain"
+        ]
+      },
+      {
+        "name": "final_k_causal_accumulator_readout_frontier",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_pipeline.DenseReadyReadoutAdmission",
+          "merlin.compile.scheduling.dense_panel_pipeline.DenseReadoutConfigurationSnapshot",
+          "merlin.compile.scheduling.dense_ready_readout.propose_dense_ready_readout",
+          "merlin.compile.scheduling.dense_ready_readout.schedule_dense_ready_readout",
+          "merlin.compile.scheduling.dense_ready_readout.schedule_dense_pipeline",
+          "merlin.compile.scheduling.dense_ready_readout.admit_ready_readout_tile_loads"
+        ],
+        "usage": [
+          "Start with the exact original checked segmented schedule and a separate causal target capability.",
+          "Reorder final pure compute through typed M/N/K transforms and append each original output store.",
+          "Revalidate actual producer-before-readout hazards and original source, then emit actual SCF/LLVM.",
+          "Varying tiled coefficients require an independently selected per-store snapshot contract bound to the exact original readout identity; incompatible stores remain distinct.",
+          "Use the typed final-wide consumer to decode every physical band before source transport."
+        ],
+        "requires": [
+          "selected overlapping RAW producer retirement and accumulator pending-write read readiness law",
+          "original store snapshots and finite-queue backpressure, full drain before any ownership reuse",
+          "all overlapping producer instances precede each store; no later aliased writer in the epoch",
+          "unchanged full ACC geometry, input lifetimes and original scalar readout boundaries",
+          "no mixed DMA/init in the new causal epoch, no fixed-cycle or loop-carried event permission"
+        ]
+      },
+      {
+        "name": "loop_carried_completion_events",
+        "symbols": [
+          "merlin.sched.ir.kernel.Loop",
+          "merlin.compile.scheduling.scf_commands.materialize_scf_commands",
+          "merlin.compile.scheduling.scf_commands.verify_scf_commands",
+          "merlin.compile.scheduling.scf_commands.emit_scf_commands",
+          "merlin.compile.scheduling.llvm_program.FnBuilderIndexAdapter"
+        ],
+        "usage": [
+          "Declare Loop.iter_args, yields and results with explicit completion ownership.",
+          "Materialize actual runtime.event SCF iter_args/results and verify lexical and staging dependencies.",
+          "Supply actual target launch/wait callbacks; carried emission requires builder.loop_carried."
+        ],
+        "requires": [
+          "dominating original incoming events, exact yields and complete external completion",
+          "checked cross-iteration storage dependencies and bounded stage-state reentry",
+          "separate selected target completion, storage, source and numerical contracts"
+        ]
+      },
+      {
+        "name": "effect_checked_schedule_composition",
+        "symbols": [
+          "merlin.compile.scheduling.configuration_motion.promote_configuration_writes",
+          "merlin.compile.scheduling.configuration_motion.verify_configuration_motion",
+          "merlin.compile.scheduling.completion_streams.fuse_completion_streams",
+          "merlin.compile.scheduling.spatial_max_stripes.plan_striped_spatial_max"
+        ],
+        "usage": [
+          "Apply transformations to the current Kernel and emit the returned product.",
+          "Compare complete elapsed-cycle observations with matching source, ABI and model scope."
+        ],
+        "requires": [
+          "original effect projections, state dependencies and complete source/output coverage",
+          "fact-derived storage bounds and independent target completion implementation"
+        ]
+      },
+      {
+        "name": "capacity_phased_convolution_rhs_residency",
+        "symbols": [
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionRhsPhaseLaw",
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionRhsPhases",
+          "merlin.compile.scheduling.convolution_exploration.plan_convolution_rhs_phases",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule",
+          "merlin.compile.scheduling.convolution_exploration.convolution_pass_space",
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionStorageAlternative",
+          "merlin.compile.scheduling.convolution_exploration.plan_convolution_storage_alternative",
+          "merlin.compile.scheduling.convolution_exploration.convolution_storage_pass_space"
+        ],
+        "usage": [
+          "Keep full-fit RHS residency, else derive complete-K output-column phases from assigned capacity.",
+          "Pass the complete owner and exact resident input_rows to emit_convolution_schedule; never emit phases alone.",
+          "The registered rhs_modes=(False, True, 'phased') route retains original column tails and actual-byte dedup.",
+          "Check phase_emissions against the requested owner, retaining real preparation and phase-last-use drains.",
+          "Jointly explore caller-qualified resident input maps and output group bounds before freezing RHS phase capacity; rank actual emitted complete-call cycles.",
+          "Supply rhs_column_limits=(None, ...) to convolution_storage_pass_space for explicit narrower RHS phases; None retains the maximal-capacity default. plan_convolution_rhs_phases uses max_column_blocks and plan_convolution_storage_alternative uses rhs_column_blocks.",
+          "Derive a useful finite column bound from actual ACC rows divided by requested live spatial tiles times primitive rows; keep the real operand capacity and exact RHS/input placements.",
+          "Retain structured spatial coordinates outside K/N loops; resident input emit_row_coordinates maps them directly without repeated flattened-coordinate decoding."
+        ],
+        "requires": [
+          "original independent output columns, immutable inputs and no intermediate output observers",
+          "exclusive assigned RHS rows disjoint from the actual resident input footprint",
+          "separate RHS preservation and ConvolutionRhsPhaseLaw; capacity alone grants no reordering",
+          "real full completion before private RHS replacement; source/effect/numerical checks remain required"
+        ]
+      },
+      {
+        "name": "source_qualified_convolution_readout_epochs",
+        "symbols": [
+          "merlin.compile.scheduling.window_transfer.ConvolutionReadoutEpochLaw",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule"
+        ],
+        "usage": [
+          "Bind a separate selected source readout law; compute-epoch or dense readout laws do not imply it.",
+          "Pass readout_law explicitly to the convolution consumer with original source/target callbacks.",
+          "Verify the returned readout_epoch, source/schedule and final block drain match the requested law.",
+          "Keep intermediate compute, rolling input-ready/last-use and whole-call completion drains.",
+          "Inspect actual emitted effects, full outputs and same-domain complete-call cycles; UNKNOWN keeps the default."
+        ],
+        "requires": [
+          "counted convolution with issued compute epochs and disjoint original output/ACC intervals",
+          "selected ACC RAW/result visibility, ordered store-configuration snapshots and finite queue progress",
+          "separate finite pending store capacity and bounded compiler-issued readouts; no extra hardware slots",
+          "private ownership and a real final drain before input/ACC/RHS reuse",
+          "target effect/completion adapter; consumer receipts do not independently prove emitted instruction semantics"
+        ]
+      },
+      {
+        "name": "parallel_emitted_variant_shape_evaluation",
+        "symbols": [
+          "merlin.transforms.evaluated_exploration.EvaluationRequest",
+          "merlin.transforms.evaluated_exploration.EvaluationCompletion",
+          "merlin.transforms.evaluated_exploration.evaluate_emitted",
+          "merlin.transforms.evaluated_exploration.explore_evaluated"
+        ],
+        "usage": [
+          "Apply real registered passes and emit distinct alternatives with explore_candidates.",
+          "Interleave requests from representative shapes; each retains its original source and timing domain.",
+          "Use one caller-owned executor and ordinary resource-leased evaluator, with bounded max_in_flight.",
+          "Keep completion publication compact; verification runs in the evaluator and cleanup off the hot path.",
+          "Consume each completed result immediately; identical programs reuse only exact-domain evidence.",
+          "Rank complete same-ROI cycles within each shape; UNKNOWN never becomes an instruction-count score.",
+          "Promote measured shape/resource rules through shape_policy while retaining unaffected incumbents."
+        ],
+        "requires": [
+          "target-owned emitted-program execution adapter and original numerical/provider/ROI identities",
+          "existing shared resource admission; this library creates no CPU pool or simulator",
+          "input lifetime covering all evaluation workers and the completion callback"
+        ]
+      },
+      {
+        "name": "pointwise_convolution_dense_view",
+        "symbols": [
+          "merlin.compile.scheduling.pointwise_convolution.pointwise_dense_view"
+        ],
+        "usage": [
+          "Derive a zero-copy matrix view from actual unit-stride unpadded 1x1 NHWC source geometry.",
+          "Pass the returned dimensions to shared dense planning, retention and scheduling.",
+          "Use the existing target encoder and preserve bias, quantization and all output observers.",
+          "Retain spatial lowering when geometry or storage is incompatible; compare emitted alternatives by cycles."
+        ],
+        "requires": [
+          "original Window2D geometry and exact result shape",
+          "physical operand layout and ABI agreement; target effects and numerical checks remain required"
+        ]
+      },
+      {
+        "name": "registered_source_convolution_exploration",
+        "symbols": [
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionExplorationSource",
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionScheduleChoice",
+          "merlin.compile.scheduling.convolution_exploration.plan_convolution_schedule",
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionRhsResidencyLaw",
+          "merlin.compile.scheduling.convolution_exploration.ConvolutionRhsResidency",
+          "merlin.compile.scheduling.convolution_exploration.plan_convolution_rhs_residency",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule",
+          "merlin.compile.scheduling.convolution_exploration.convolution_pass_space",
+          "merlin.compile.scheduling.convolution_exploration.explore_convolution_schedules"
+        ],
+        "usage": [
+          "Bind original counted convolution, complete scalar-safe column intervals and selected private rows.",
+          "Register bounded choices with original-source verification and target realization callbacks.",
+          "Enable compute_pair_limits with a separate checked epoch law; stores still fully drain.",
+          "Select rhs_modes with an independent immutable-weight law and explicit private operand rows.",
+          "Emit invocation-local RHS preparation once, or retain original transfers when capacity declines.",
+          "Consume the checked schedule through actual target emission; deduplicate exact program bytes.",
+          "Compare complete same-source/model/window cycle feedback; no count-based default ranking."
+        ],
+        "requires": [
+          "separate original input-retention, delayed-load and compute-epoch laws for enabled transformations",
+          "actual completion callbacks, private ACC ownership and original source custody",
+          "ordinary source/dependency admission; registry/identities confer no hardware or numerical authority"
+        ]
+      },
+      {
+        "name": "selected_logical_kernel_argument_binding",
+        "symbols": [
+          "merlin.compile.logical_abi.logical_abi",
+          "merlin.compile.logical_abi.logical_abi_from_document",
+          "merlin.compile.logical_abi.logical_interface",
+          "merlin.compile.logical_abi.kernel_arg_order",
+          "merlin.llvmlower.host_builder.FnBuilder.for_logical_kernel"
+        ],
+        "usage": [
+          "Parse the selected public ABI declaration, then call FnBuilder.for_logical_kernel(cb, abi=abi).",
+          "Use the returned source-name to SSA-pointer map; semantic lhs/rhs order is not ABI order.",
+          "Implicit COMMIT and pooled result shapes share the runner's declaration-only derivation."
+        ],
+        "requires": [
+          "original command buffer and selected public ABI declaration; no inferred private pointer contract",
+          "independent runtime ownership and numerical implementation; no harness/reference code is exported"
+        ]
+      },
+      {
+        "name": "shape_resource_schedule_selection",
+        "symbols": [
+          "merlin.transforms.shape_policy.PerformanceDomain",
+          "merlin.transforms.shape_policy.ShapeScheduleClass",
+          "merlin.transforms.shape_policy.ShapeCaseFeedback",
+          "merlin.transforms.shape_policy.assess_shape_policy",
+          "merlin.transforms.shape_policy.AssessedShapePolicy.execute",
+          "merlin.transforms.shape_policy.ShapePolicyProposal",
+          "merlin.transforms.shape_policy.propose_shape_policies",
+          "merlin.transforms.pipeline_policy.DimensionRef",
+          "merlin.transforms.pipeline_policy.ResourceRef",
+          "merlin.transforms.pipeline_policy.RatioFeature",
+          "merlin.transforms.pipeline_policy.TileFeature",
+          "merlin.transforms.pipeline_policy.FeaturePredicate",
+          "merlin.transforms.evaluated_exploration.explore_evaluated",
+          "merlin.transforms.pass_exploration.ExplorationRefused",
+          "merlin.transforms.pass_exploration.MappingProposalKey",
+          "merlin.transforms.pass_exploration.MappingProposalCache"
+        ],
+        "usage": [
+          "Register bounded real pass paths and an original fallback, with separate legality predicates.",
+          "Freeze distinct training/heldout geometries and supply exact paired completed observations.",
+          "Declare shape/resource performance guards; include exact cutoffs and adjacent outside cases.",
+          "Propose bounded dimension cutoffs and two-axis regions from paired TRAINING cycles only.",
+          "Use proposal.requests for missing pairs/boundaries; freeze new boundary geometries before timing.",
+          "Express exact ratios, tile counts and tails from current shape/resource facts; unknown stays unknown.",
+          "Training selects; heldout and boundary cases veto. UNKNOWN/regression keeps each class incumbent.",
+          "Execute on current IR with its selected performance domain; no cached training kernel is reused.",
+          "Reuse only option-search proposals in an explicit bounded MappingProposalCache keyed by semantics/shapes/layouts/dtypes/epilogue and hardware/library/numerics; current factories, legality and emission still run.",
+          "Use existing evaluate_variants(prefix=...) for preparation shared by every alternative; it discards prefix analyses before current-source branch checks.",
+          "Exploration outcomes distinguish duplicates, construction refusals, pending/UNKNOWN timing and regressions."
+        ],
+        "requires": [
+          "complete numerical-pass same-source/input/reference/provider/ROI cycle observations",
+          "original registered pass contracts and independent source/resource/effect legality checks",
+          "new normal inventory22 selection; empirical panel support is not universal or physical qualification"
+        ]
+      },
+      {
+        "name": "checked_dense_pipeline_entry",
+        "symbols": [
+          "merlin.compile.scheduling.dense_ready_readout.schedule_dense_pipeline",
+          "merlin.compile.scheduling.schedule_ir.make_dense_schedule_plan"
+        ],
+        "usage": [
+          "Reuse one DenseProblem/resources/storage/actual-operation adapter across typed pipeline decisions.",
+          "Dispatch compact, retained, two-window or segmented plans through their original source checker.",
+          "Optionally batch stores or select ready/disjoint readout with its separate execution law.",
+          "Emit the returned checked result with lower_call(instruction, operands, metadata=None).",
+          "Retain incumbent and alternative artifacts when timing is UNKNOWN; inspect and verify legal changes."
+        ],
+        "requires": [
+          "original source-bound plan, actual allocated windows, exact numerical/alias/effect boundaries",
+          "independently selected finite issue/backpressure/snapshot/completion laws; capacity is insufficient",
+          "lower every actual completion; an explicit unsupported decision refuses rather than changing family"
+        ]
+      },
+      {
+        "name": "checked_dense_completion_epoch_emission",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_pipeline.DensePanelPipelineResult",
+          "merlin.compile.scheduling.dense_segmented_pipeline.DenseSegmentedPipelineResult",
+          "merlin.compile.scheduling.dense_ready_readout.DenseReadyReadoutResult",
+          "merlin.compile.scheduling.dense_readout_overlap.DenseReadoutOverlapResult",
+          "merlin.compile.scheduling.llvm_program.emit_index_effect_program"
+        ],
+        "usage": [
+          "Consume result.emit_index_program(control, lower_effect, complete_epoch=real_full_completion).",
+          "Map each actual checked data effect separately from the original full epoch drain.",
+          "Reuse one target encoder for panel, segmented, ready and disjoint schedules and real pass alternatives.",
+          "Keep counted control; explicit event/state annotations still require their supported SCF consumer.",
+          "The ordinary checked Kernel and every emitted epoch are revalidated before callbacks."
+        ],
+        "requires": [
+          "separate selected RAW/WAR/WAW, storage, operand/result retirement and finite-progress laws",
+          "a real full completion callback; no primitive-by-primitive synthetic fence substitution",
+          "original complete outputs and numerical policies; source emission grants no performance claim"
+        ]
+      },
+      {
+        "name": "fact_backed_dense_panel_epochs",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_epochs.DensePanelEpochLaw",
+          "merlin.compile.scheduling.dense_panel_epochs.propose_dense_panel_epochs",
+          "merlin.compile.scheduling.dense_panel_epochs.schedule_dense_panel_epochs",
+          "merlin.compile.scheduling.dense_panel_epochs.DensePanelEpochResult",
+          "merlin.compile.scheduling.dense_ready_readout.schedule_dense_pipeline"
+        ],
+        "usage": [
+          "Pass epoch_law=DensePanelEpochLaw(...) to schedule_dense_pipeline with a two-window decision.",
+          "Set each flag from the target's command-ordering facts; a False flag is UNKNOWN and keeps its drains.",
+          "Drains inside one output block's K stream go (and before its readout under result visibility).",
+          "Emit the returned result: emit_llvm/emit_index_program invoke completion only for remaining drains.",
+          "Time the epochs against the drained incumbent before keeping them."
+        ],
+        "requires": [
+          "selected RAW (compute waits for older load) and WAR (load waits for older reader) ordering",
+          "in-order accumulator updates; readout waiting for its producer to merge the readout epoch",
+          "every load of a K step read by the next step (proved); merged epochs within the issued budgets",
+          "a real full completion callback for every remaining drain"
+        ]
+      },
+      {
+        "name": "bounded_declared_settings_cycle_selection",
+        "symbols": [
+          "merlin.compile.tuning_knobs.KnobSettings",
+          "merlin.compile.tuning_knobs.bounded_settings",
+          "merlin.transforms.tuning_selection.KnobTrial",
+          "merlin.transforms.tuning_selection.unique_emissions",
+          "merlin.transforms.tuning_selection.select_settings"
+        ],
+        "usage": [
+          "Enumerate a declared knob subset: exact baseline, single changes and optional bounded pairs.",
+          "Emit and revalidate current choices; unique_emissions deduplicates exact same-domain bytes.",
+          "Use the caller-owned ordinary evaluator and identity-bound CompletedObservation cycle feedback.",
+          "select_settings returns an exact-shape proposal; use shape_policy for validated range rules."
+        ],
+        "requires": [
+          "original declaration, complete settings and semantic/shape/layout/dtype/numerical/hardware pins",
+          "same-source/input/reference/provider/ROI observations; complete passing cycles alone rank",
+          "UNKNOWN, failure, conflicts or no demonstrated improvement retain the unchanged baseline"
+        ]
+      },
+      {
+        "name": "checked_disjoint_loaded_sum_epochs",
+        "symbols": [
+          "merlin.compile.scheduling.loaded_sum_epochs.LoadedSumEpochLaw",
+          "merlin.compile.scheduling.loaded_sum_epochs.LoadedSumEpochPlan",
+          "merlin.compile.scheduling.loaded_sum_epochs.plan_loaded_sum_epochs",
+          "merlin.compile.scheduling.loaded_sum_epochs.emit_loaded_sum_epochs"
+        ],
+        "usage": [
+          "Consume the original complete compact_loaded_sum source/scalar proof and ACC byte layout.",
+          "Plan bounded disjoint tiles; emit initialize, accumulate and store phases with real drains.",
+          "The caller-owned target encoder lowers every effect and complete_phase before private reuse."
+        ],
+        "requires": [
+          "independent target pending-operation/configuration capture/progress/drain/ownership premises",
+          "original exact parameters, complete outputs, tails and disjoint live private byte windows",
+          "source/storage construction grants no target execution or performance qualification"
+        ]
+      },
+      {
+        "name": "checked_initialization_and_uniform_readout_batches",
+        "symbols": [
+          "merlin.compile.scheduling.dense_panel_pipeline.DenseRetainedReductionAdmission",
+          "merlin.compile.scheduling.dense_contracts.DenseTiledIntegerReadout",
+          "merlin.compile.scheduling.dense_panel_readout.batch_dense_panel_initializers",
+          "merlin.compile.scheduling.dense_panel_readout.batch_dense_panel_readouts",
+          "merlin.compile.scheduling.dense_panel_pipeline.verify_dense_retained_reduction"
+        ],
+        "usage": [
+          "Start with an original checked retained result and its actual source/effect adapter.",
+          "Select bounded initializer issue only with ordered configuration capture and disjoint ACC writes.",
+          "Batch initializers through the final checker; keep the real completion before computation.",
+          "Normalize an original scalar/vector with DenseTiledIntegerReadout.from_source_scales; never average gains.",
+          "Uniform original tiled integer scales may batch stores under the selected snapshot/store law.",
+          "Emit the returned kernel and compare complete cycles; fewer drains alone prove no speedup."
+        ],
+        "requires": [
+          "original symbolic data-call equality, source numerics, aliases, capacities and completion proofs",
+          "varying-scale readouts retain their original boundaries or require a separate supported law"
+        ]
+      },
+      {
+        "name": "source_exact_spatial_matrix_gathers",
+        "symbols": [
+          "merlin.compile.scheduling.affine_gather_runs.ConvolutionGatherRuns",
+          "merlin.compile.scheduling.affine_gather_runs.emit_convolution_gather_runs",
+          "merlin.compile.scheduling.affine_gather_runs.emit_convolution_matrix_gather"
+        ],
+        "usage": [
+          "Map logical contraction rows and reduction tiles to original valid-window NHWC addresses.",
+          "Use reduction tiles dividing the source channel dimension; preserve source tap/channel order.",
+          "Pass exact fragments to the ordinary target consumer without allocating host im2col payloads."
+        ],
+        "requires": [
+          "original checked window geometry and independent dtype, storage, alias and completion admission",
+          "fragment construction supplies no permission to overlap transfers or change arithmetic"
+        ]
+      },
+      {
+        "name": "source_bound_rolling_convolution_rows",
+        "symbols": [
+          "merlin.compile.scheduling.window_transfer.ConvolutionResidentInputRows",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule",
+          "merlin.compile.scheduling.rolling_window.materialize_rolling_window",
+          "merlin.compile.scheduling.rolling_window.emit_rolling_window",
+          "merlin.compile.scheduling.rolling_window.materialize_grouped_rolling_window",
+          "merlin.compile.scheduling.rolling_window.verify_grouped_rolling_window",
+          "merlin.compile.scheduling.rolling_window.emit_grouped_rolling_window"
+        ],
+        "usage": [
+          "Bind original NHWC source cells to caller-owned tiled operand rows and a checked ring lifetime.",
+          "Pass input_rows to the ordinary convolution schedule emitter; consume all staging effects.",
+          "Derive transfer widths, row pitch and private storage from selected hardware/source contracts.",
+          "Padded integer convolution requires explicit original zero halos, not a host padded tensor.",
+          "Keep real input-ready and last-use completion; compare whole-call cycles and resource traffic."
+        ],
+        "requires": [
+          "exact original source identity, source stride and disjoint live operand storage",
+          "nonunit compute row steps require an explicitly selected source/target row-step contract",
+          "target implementations of actual stage/fill effects and completion; mapping grants no overlap",
+          "nonzero affine padding values require a separately supported source and lowering contract"
+        ]
+      },
+      {
+        "name": "checked_cross_spatial_array_reuse",
+        "symbols": [
+          "merlin.compile.scheduling.convolution_output_groups.plan_rolling_convolution_output_group",
+          "merlin.compile.scheduling.convolution_output_groups.emit_rolling_convolution_output_group",
+          "merlin.compile.scheduling.dense_array_retention.DenseArrayRetentionAdmission",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule"
+        ],
+        "usage": [
+          "Derive source-row/M bounds from the original schedule, resident RHS or complete phase owner, and live ring.",
+          "Pass the group or phase-aligned tuple and separate array_law to emit_convolution_schedule; None retains an ordinary phase.",
+          "Consume actual fresh_weights through the same target encoder; preserve each original N readout.",
+          "Verify spatial_output_group and its source/law hashes; keep the incumbent when planning declines.",
+          "With a checked multirow ring union, grouped_transport=True completes staging once before the actual consumer group and drains before reuse."
+        ],
+        "requires": [
+          "resident full-K RHS per active original phase, checked source-row union in actual ring slots and disjoint M/N ACC cells",
+          "separate independent-output-row/no-intermediate-observer source permissions",
+          "selected fresh/stay/output-descriptor behavior and actual bounded compute/readout completion",
+          "default one-row path retained; real group/ring drains and full phase-last-use before RHS replacement",
+          "grouped transport separately checks actual row/halo/channel command count against the selected issue bound"
+        ]
+      },
+      {
+        "name": "source_exact_convolution_readout_transfers",
+        "symbols": [
+          "merlin.compile.scheduling.window_transfer.ConvolutionReadoutTransferLaw",
+          "merlin.compile.scheduling.window_transfer.plan_convolution_readout_transfers",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule"
+        ],
+        "usage": [
+          "Bind a separate selected narrow block-column/row-stride map and original numerical states.",
+          "Pass readout_transfer_law with the independent producer/readout law to the original consumer.",
+          "Only compatible original adjacent stores merge; inspect actual emitted stores and complete outputs.",
+          "Compose with checked spatial groups using each spatial slot's actual ACC block map, including short source rows and RHS phases."
+        ],
+        "requires": [
+          "scaled INT8 source exits; exact controller map, output columns and private physical ACC spacing",
+          "identical original numerical state within each combined run; full ACC and pooling excluded",
+          "separate producer visibility/store snapshot law and real final private-block drain",
+          "missing target/model support remains UNKNOWN, not an inferred speedup or qualification"
+        ]
+      },
+      {
+        "name": "checked_shared_input_group_blocks",
+        "symbols": [
+          "merlin.compile.scheduling.compact_dense_group.CompactDenseGroupResult",
+          "merlin.compile.scheduling.compact_dense_group.schedule_compact_dense_group"
+        ],
+        "usage": [
+          "Select explicit per-member block_tiles while retaining the original shared input producer.",
+          "Keep independent output scales and complete storage/numerical/source checks for every member.",
+          "Unsupported requested geometry declines; compare whole-group cycles with independent execution."
+        ],
+        "requires": [
+          "true original operand identity; similar values or fewer transfers establish no reuse law"
+        ]
+      },
+      {
+        "name": "source_checked_integer_observers",
+        "symbols": [
+          "merlin.llvmlower.late_quant_rne.rewrite",
+          "merlin.llvmlower.source_expression_interval.close_scalar_i8_observer",
+          "merlin.llvmlower.source_expression_interval.build_source_interval_table",
+          "merlin.llvmlower.source_expression_interval.emit_source_interval_i8_lookup",
+          "merlin.llvmlower.source_expression_interval_llvm.rewrite_source_interval_i8_lookup",
+          "merlin.llvmlower.bounded_rne_word_cells.prepare_bounded_rne_word_cells",
+          "merlin.llvmlower.scaled_integer_finite.prove_broadcast_scaled_integer_finite",
+          "merlin.llvmlower.scaled_integer_finite_llvm.bind_finite_scale_helpers"
+        ],
+        "usage": [
+          "Bind exact typed scalar arithmetic and complete saturated signed-byte observations.",
+          "Retain ordinary bounded roundeven representation and the existing late host legalizer.",
+          "Derive finite broadcast-scale scans and immutable tables from the current source only.",
+          "Consume returned LLVM/C in the ordinary compiler before object identity; validate the complete output."
+        ],
+        "requires": [
+          "explicit RNE, gradual underflow, nontrapping and unobserved floating effects",
+          "original source fallback, actual incoming-mode guard and exact original coefficients/order",
+          "immutable input scales and fresh disjoint outputs for finite preparation",
+          "unknown source operations such as exp require their own numerical contract; no approximation granted",
+          "no target/provider, reference output, protected evaluator or timing authority is exported"
+        ]
+      },
+      {
+        "name": "counted_projection_pointer_binding",
+        "symbols": [
+          "merlin.compile.scheduling.projection_dense.ProjectionDenseBinding",
+          "merlin.compile.scheduling.projection_dense.bind_dense_projection"
+        ],
+        "usage": [
+          "Keep original sibling projection_views, independent pointers and exact scalar readouts.",
+          "Retain the common input with the existing dense scheduler; choose panels dividing every member.",
+          "Partition complete virtual-N panel loops with ordinary ordered loop transforms.",
+          "Bind actual member/local-column/row-width operands to original target ABI pointers and pitches."
+        ],
+        "requires": [
+          "current typed source group and an independently checked original dense schedule",
+          "complete original per-column readout words; physical rectangles cannot cross members",
+          "original source aliases, private storage, actual target effects and real completion",
+          "no tensor concatenation, dynamic command expansion or execution grant follows from the mapping"
+        ]
+      },
+      {
+        "name": "completion_bound_operand_slots",
+        "symbols": [
+          "merlin.compile.scheduling.operand_slots.PipelineOperand",
+          "merlin.compile.scheduling.operand_slots.PipelineSlotResult",
+          "merlin.compile.scheduling.operand_slots.allocate_pipeline_operand_slots",
+          "merlin.compile.scheduling.operand_slots.verify_pipeline_operand_slots"
+        ],
+        "usage": [
+          "Group original immutable TemporaryObject generations by operand, retaining actual views.",
+          "Supply StorageAdapter projections for initialization, reads, launches and real waits.",
+          "Use the returned Kernel: existing allocation chooses bases and checked phase loops rotate them.",
+          "Materialize/emit the actual returned SCF and compare whole-call timing independently."
+        ],
+        "requires": [
+          "one bounded source counted loop with integer-decoded completion operands and owned byte banks",
+          "complete original effects, aliases, reservations, alignments and external source/output windows",
+          "already legal issue order; no new overlap permission or hardware slots follow from allocation",
+          "nested or SSA-carried asynchronous boundaries and irregular rotations currently refuse"
+        ]
+      },
+      {
+        "name": "disjoint_future_row_transport",
+        "symbols": [
+          "merlin.compile.scheduling.rolling_lookahead.RollingLookaheadAdmission",
+          "merlin.compile.scheduling.rolling_lookahead.materialize_lookahead_rolling_window",
+          "merlin.compile.scheduling.rolling_lookahead.verify_lookahead_rolling_window",
+          "merlin.compile.scheduling.rolling_lookahead.emit_lookahead_rolling_window",
+          "merlin.compile.scheduling.convolution_output_groups.ConvolutionGroupContinuation"
+        ],
+        "usage": [
+          "Keep the original rolling source, row ownership, and current consumer unchanged.",
+          "Use actual ring capacity for the union of current and future live rows.",
+          "Emit counted SCF with carried resident handles and real transport/consumer completion.",
+          "Optionally derive consumer_runs = kernel_y * kernel_x * ceil(input_channels/channel_tile) from the original consumer; pass it unchanged to materialize, verify and emit.",
+          "Bind start_consumer to initialization and a retained continuation; advance_consumer emits first_run/run_count complete reductions; finish_consumer performs final readout.",
+          "For rolling convolution use emit_rolling_convolution_output_group(..., defer_consumer=True); its returned continuation checks advance(first, count) coverage before finish().",
+          "Compare complete-call cycles; earlier issue alone does not establish hidden latency."
+        ],
+        "requires": [
+          "disjoint current/future writes and an immutable original input",
+          "independently bound ordered configuration, finite queue progress, and completion callbacks",
+          "split consumers additionally require retained_consumer_continuations=True, live ACC/input storage, complete fresh/stay runs and exactly one original initialization/readout",
+          "no arbitrary nested asynchronous schedule or fixed-cycle completion is implied"
+        ]
+      },
+      {
+        "name": "direct_ring_convolution_row_fragments",
+        "symbols": [
+          "merlin.compile.scheduling.convolution_output_groups.ConvolutionRowFragmentGroup",
+          "merlin.compile.scheduling.convolution_output_groups.plan_rolling_convolution_row_fragments",
+          "merlin.compile.scheduling.convolution_output_groups.emit_rolling_convolution_output_group"
+        ],
+        "usage": [
+          "Request a capacity-safe source-row band with plan_rolling_convolution_row_fragments.",
+          "Pass its checked group to emit_convolution_schedule with the original rolling input, array/readout laws and real completions; the default whole-row planner is unchanged.",
+          "Existing ConvolutionGatherRuns splits direct ring reads at original row boundaries. Fragments compute into disjoint subrows of packed ACC tiles; readout covers each complete original contiguous interval.",
+          "Compare actual fragment/preload count, padded work, bytes and complete-call cycles; fewer ACC/readout tiles can require more compute fragments."
+        ],
+        "requires": [
+          "primitive-sized original row tiles, complete source-row bands and the actual staged ring horizon",
+          "original immutable input/RHS, independent output rows and separately selected array/readout laws",
+          "all original products, per-output reduction order, scalar exits, real pair boundaries and final drains",
+          "no extra DMA bytes, local copy instruction or packed LHS allocation is inferred"
+        ]
+      },
+      {
+        "name": "last_use_rhs_phase_transport",
+        "symbols": [
+          "merlin.compile.scheduling.rolling_lookahead.RollingRhsFrontierAdmission",
+          "merlin.compile.scheduling.rolling_lookahead.RollingRhsFrontier",
+          "merlin.compile.scheduling.convolution_exploration.emit_convolution_schedule"
+        ],
+        "usage": [
+          "Plan complete original RHS phases and their checked rolling output groups using actual SP/ACC capacity.",
+          "Supply rhs_phase_prefetch_law=RollingRhsFrontierAdmission(...) to emit_convolution_schedule with grouped_transport=True and the original phase-aligned output_group tuple.",
+          "The emitter derives the original reduction run count and stages each next-phase tile after the complete current K/N/M run in only the final source batch and spatial group.",
+          "The next phase uses the same assigned RHS prefix; its column-block count must not grow. All original preparation, group, phase and final drains remain.",
+          "Compare exact outputs and complete-call cycles with the same placement and numerical source."
+        ],
+        "requires": [
+          "separate selected target law covering exact-range scratchpad WAR/RAW until real source completion",
+          "original immutable weights, ordered configuration, finite queue progress and full consumer/transport drain",
+          "complete original batch/spatial domain and original channel tails; no second ACC or RHS window"
+        ]
+      },
+      {
+        "name": "sole_observer_contraction_rows",
+        "symbols": [
+          "merlin.llvmlower.contraction_row_slice.pushback_contraction_row_slices",
+          "merlin.llvmlower.contraction_row_slice.prepare_contraction_row_slices"
+        ],
+        "usage": [
+          "Before source/device binding, push back a sole static contiguous row observer.",
+          "Supply original immutable argument bytes for stored epilogue coefficients when needed.",
+          "Retain the original ordered integer dot and each selected scalar epilogue instruction."
+        ],
+        "requires": [
+          "closed zero-seeded signed integer product; complete reduction and output columns",
+          "static row-major views, fixed coefficients, pure parallel single-observer epilogue",
+          "new ordinary source/interface/target qualification; no old device-ABI transfer"
+        ]
+      },
+      {
+        "name": "bounded_horizontal_convolution_panels",
+        "symbols": [
+          "merlin.compile.scheduling.horizontal_convolution.HorizontalConvolutionPanels",
+          "merlin.compile.scheduling.horizontal_convolution.plan_horizontal_convolution_panels",
+          "merlin.compile.scheduling.horizontal_convolution.emit_horizontal_convolution_panels"
+        ],
+        "usage": [
+          "Bind the original CountedConvolutionPlan and explicit private operand/accumulator capacities.",
+          "Plan bounded contiguous horizontal reductions and complete output-column intervals.",
+          "Materialize the original zero halo; emit counted effects with actual completion before reuse."
+        ],
+        "requires": [
+          "unchanged source reduction order, output precision, bias and every tail output",
+          "separate multiblock transport and fresh/stay array laws; private ownership is not a target grant",
+          "complete-call cycles including halo/preparation cost; no speedup follows from transfer counts"
+        ]
+      },
+      {
+        "name": "source_proven_shared_rhs_row_views",
+        "symbols": [
+          "merlin.llvmlower.weight_prepack_runtime.fixed_arguments",
+          "merlin.llvmlower.repeated_pointwise.hoist_repeated_pointwise",
+          "merlin.llvmlower.repeated_pointwise.prepare_repeated_pointwise",
+          "merlin.transforms.shared_rhs_views.plan_shared_rhs_row_views",
+          "merlin.transforms.dense_row_batching.DenseRowBatchingBudgets",
+          "merlin.transforms.dense_row_batching.plan_source_dense_row_batching"
+        ],
+        "usage": [
+          "Before device grouping, use exact broadcast/view/scalar source to prepare repeated pointwise work.",
+          "Stored coefficients require fixed_arguments from the original generated caller plus exact bound bytes.",
+          "Expose complete matrix groups with plan_shared_rhs_row_views, then use checked dense row batching.",
+          "Retain every original result and dense observer; revalidate actual source/SSA before consuming output."
+        ],
+        "requires": [
+          "source-proven coordinates and unchanged scalar programs; equal runtime values grant no sharing",
+          "fresh source/session/manifest ownership for immutable specialization; literals need no loader",
+          "new ordinary source/interface/target/effects and execution qualification after regrouping",
+          "late host preparation after device grouping cannot revise an already selected device ABI"
+        ]
+      },
+      {
+        "name": "shared_rhs_epochs",
+        "symbols": [
+          "merlin.compile.scheduling.dense_shared_rhs.schedule_dense_shared_rhs",
+          "merlin.compile.scheduling.dense_shared_rhs.DenseRHSReuseLaw",
+          "merlin.compile.scheduling.dense_shared_rhs.make_shared_rhs_schedule_plan",
+          "merlin.compile.scheduling.dense_shared_rhs.read_shared_rhs_schedule_plan"
+        ],
+        "usage": [
+          "Bind original sibling products sharing one immutable RHS, every member pointer and every live output.",
+          "Consume a schedule dialect plan; use capacity-derived blocks and full-K LHS residency.",
+          "Preserve original readout contracts, including scaled narrow outputs and qualification identities.",
+          "Select dependency epochs from explicit target laws; UNKNOWN premises retain their drains.",
+          "Register an A/B alternative through shared_rhs_epoch_recipe.py:prepare and emit the checked result.",
+          "Reanalyze operands, transfers, configuration and completions; retain measured correct improvements."
+        ],
+        "requires": [
+          "original source-product equality, complete output roster and independent storage/alias admission",
+          "selected immutable-RHS reuse, ordering and readout laws; no name-based applicability",
+          "actual emitted-effect/source checks and a real final completion; command counts establish no speedup"
+        ]
+      }
+    ],
+    "composition": {
+      "schema": "merlin.composition_api_catalog.v1",
+      "authority": "discovery only; no source, numerical, effects, target or execution grant",
+      "selected_source_contract_required": true,
+      "capabilities": [
+        {
+          "name": "original_head_batch_request",
+          "symbols": [
+            "merlin.llvmlower.head_source_route.HeadBatchSourceRoute",
+            "merlin.compile.owned_host_model.OwnedHostModelCompiler"
+          ],
+          "consumer": "optional independent_heads, whole_head_batches and shared_rhs_row_views Booleans in ordinary source_composition.json",
+          "stage": "original_source_admission_and_normal_device_link",
+          "access": "original_host_owner",
+          "requires": [
+            "complete original eligible-operation evidence for every composed head",
+            "stock batch bridge, original per-product work, actual object/link and all-output checks"
+          ],
+          "limitations": [
+            "unmatched groups retain ordinary accelerator routing; original readouts remain",
+            "joint opt-in checks disjoint sibling components after heads; typed sibling interfaces remain original",
+            "whole_head_batches requires an actual target consumer of the complete ranked batch; it grants no inter-head overlap, storage or completion law",
+            "shared_rhs_row_views freshly checks scalar invariance, generated immutable bindings when needed, inverse row batching and every original member's exact row range",
+            "batch ABI calls are not matrix invocation counts or a performance estimate"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.owned_host_model",
+              "merlin.llvmlower.head_source_route"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "independent_head_and_plane_products",
+          "symbols": [
+            "merlin.transforms.head_batching.plan_independent_head_batching",
+            "merlin.compile.scheduling.batched_dense.BatchMatrixView",
+            "merlin.compile.scheduling.batched_dense.BatchedDenseProblem",
+            "merlin.compile.scheduling.batched_dense.counted_batched_dense_products",
+            "merlin.llvmlower.logical_borrowed_batch_abi.emit_borrowed_batch_translation_unit",
+            "merlin.llvmlower.integer_batched_matmul_calls.lower_integer_batched_matmul_program"
+          ],
+          "consumer": "ordinary source host with an explicitly supplied per-product primitive or ranked-batch consumer",
+          "stage": "checked_source_refolding_and_ranked_borrowed_call",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "complete independent original head slices and exact signed integer scalar body",
+            "original readouts/plane sums, explicit primitive effects/format, immutable implementation pins",
+            "whole-batch nonalias, output injectivity and bounded per-matrix scratch"
+          ],
+          "limitations": [
+            "all matrix products remain; one batch ABI call is not one accelerator command",
+            "default per-product bridge is synchronous; a ranked-batch consumer owns its storage/effects/completion; no implied overlap or performance improvement",
+            "incomplete/unknown source retains its original form; selected module membership is required"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.integer_batched_matmul_calls",
+              "merlin.llvmlower.logical_borrowed_batch_abi"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "operation_profile_diagnostics",
+          "symbols": [
+            "merlin.runtime.operation_profile.summarize"
+          ],
+          "consumer": "original-owner op_profile request and independently pinned typed operation table",
+          "stage": "optional_instrumented_observation",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "complete original table and marker trace; uninstrumented control"
+          ],
+          "limitations": [
+            "raw counter ticks do not establish elapsed cycles or performance ranking",
+            "semantic categories do not establish CPU/device placement or physical occupancy"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.runtime.operation_profile"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "whole_model_source_coverage_and_work",
+          "symbols": [
+            "merlin.compile.model_coverage.plan_model_coverage",
+            "merlin.perf.model_group_work.summarize_group_work"
+          ],
+          "consumer": "current source groups, descriptive shape profiles and original SSA boundaries",
+          "stage": "whole_source_planning_and_observation",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "actual original source module and its current ordered nonoverlapping groups"
+          ],
+          "limitations": [
+            "representatives describe coverage; they do not establish numerical or effect equivalence",
+            "source MACs and scalar work are not runtime traffic, timing or physical utilization",
+            "unassigned or unsupported work remains explicit; no missing region becomes zero cost"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.model_coverage",
+              "merlin.perf.model_group_work"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "source_fusion_exploration",
+          "symbols": [
+            "merlin.compile.fusion_workflow.discover",
+            "merlin.compile.fusion_workflow.plan_materialization_frontier",
+            "merlin.compile.fusion_workflow.realize_candidate",
+            "merlin.compile.fusion_workflow.evaluate_fusions",
+            "merlin.compile.fusion_workflow.compare_region_costs"
+          ],
+          "consumer": "registered passes and ordinary emission of the actual returned product",
+          "stage": "bounded_source_discovery_and_existing_realizers",
+          "access": "author_library",
+          "requires": [
+            "exact source/capability/numerical identities and original unfused alternative"
+          ],
+          "limitations": [
+            "discovery is not legality or profitability; unsupported routes retain source",
+            "logical materialization bytes prioritize bounded nonoverlapping proposals; actual region cycles select performance",
+            "allow_provisional=True compares complete same-model region observations for exploration only; UNKNOWN remains unranked, and all-output/source/scope checks remain required"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.fusion_workflow"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "checked_pointwise_fusion",
+          "symbols": [
+            "merlin.compile.scheduling.fusion.plan_fusion",
+            "merlin.compile.scheduling.multioutput_fusion.compile_source_multioutput"
+          ],
+          "consumer": "actual checked Kernel or guarded compilation images enter ordinary target emission",
+          "stage": "checked_schedule_or_guarded_images",
+          "access": "author_library",
+          "requires": [
+            "source scalar semantics, effects, aliases, storage and original target adapter"
+          ],
+          "limitations": [
+            "finite adjacent calls or supported pointwise fanout; not arbitrary graph fusion"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.scheduling.multioutput_fusion"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "connected_source_execution",
+          "symbols": [
+            "merlin.compile.connected_regions.plan_connected_region",
+            "merlin.compile.connected_regions.compile_connected_region",
+            "merlin.compile.connected_runtime.ConnectedProgram",
+            "merlin.compile.connected_host.emit_connected_host_c",
+            "merlin.xdsl_dialects.lowering.global_plan.GlobalPlan",
+            "merlin.xdsl_dialects.lowering.global_plan.verify_global_plan",
+            "merlin.xdsl_dialects.lowering.global_plan_emission.emit_global_plan"
+          ],
+          "consumer": "source-bound stages, ordered runtime/host calls and checked global-plan emission",
+          "stage": "checked_sequential_or_explicit_global_plan_composition",
+          "access": "author_library",
+          "requires": [
+            "explicit stage implementations, backing windows, lifetimes and completion"
+          ],
+          "limitations": [
+            "sequential composition alone establishes neither cross-stage fusion nor overlap"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.connected_host",
+              "merlin.compile.connected_regions",
+              "merlin.compile.connected_runtime",
+              "merlin.xdsl_dialects.lowering.global_plan",
+              "merlin.xdsl_dialects.lowering.global_plan_emission"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "original_ssa_region_and_views",
+          "symbols": [
+            "merlin.llvmlower.source_region.extract_source_region",
+            "merlin.transforms.tensor_views.canonicalize_tensor_views"
+          ],
+          "consumer": "exact extracted source with original free inputs and all externally observed outputs",
+          "stage": "source_transform",
+          "access": "author_library",
+          "requires": [
+            "contiguous original span; explicit literal/view closure; unchanged source ownership"
+          ],
+          "limitations": [
+            "no inferred runtime input values, purity of external calls or source closure"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "original_ssa_diagnostic_outputs",
+          "symbols": [
+            "merlin.llvmlower.source_region.append_source_observations"
+          ],
+          "consumer": "optional diagnostic clone with bounded original SSA values appended to its outputs",
+          "stage": "source_diagnostics",
+          "access": "author_library",
+          "requires": [
+            "explicit original tensor values and total observation element bound"
+          ],
+          "limitations": [
+            "observations extend lifetimes and change the ABI; no timing or effect equivalence",
+            "original outputs and acceptance criteria remain separately checked"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "independent_shared_input_components",
+          "symbols": [
+            "merlin.llvmlower.sibling_components.prepare_sibling_components"
+          ],
+          "consumer": "original-owner partial sibling route and actual ordinary unmatched groups",
+          "stage": "source_host_device_component_emission",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "original SSA and exact synchronous borrowed-effect selection"
+          ],
+          "limitations": [
+            "bounded independent components; original epilogues and all observers remain",
+            "unproven input layouts retain identity copies and original guards",
+            "source composition alone grants neither target legality nor numerical qualification"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.sibling_components"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "source_program_component_emission",
+          "symbols": [
+            "merlin.llvmlower.source_program.prepare_source_program",
+            "merlin.llvmlower.source_program.emit_source_program"
+          ],
+          "consumer": "actual host/device emitter products and original logical pointer transports",
+          "stage": "source_host_device_component_emission",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "exact supported sibling source, selected borrowed effects and stock host tools"
+          ],
+          "limitations": [
+            "initial sibling integer family only; not arbitrary graph lowering",
+            "component ABI checks do not establish physical work, numerics or final owner admission"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.source_program"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "stable_loop_occurrences",
+          "symbols": [
+            "merlin.sched.primitives.loop_handles.locate_loop",
+            "merlin.sched.primitives.loop_handles.transform_loop"
+          ],
+          "consumer": "digest-bound structural occurrence and explicit transformed descendant handles",
+          "stage": "loop_transformation",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "current kernel digest and explicit structural occurrence path"
+          ],
+          "limitations": [
+            "stale handles refuse; split/fission descendants require explicit selection",
+            "binder hygiene preserves lexical events, not new target dependency laws"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "source_sibling_host_preparation",
+          "symbols": [
+            "merlin.llvmlower.source_region.outline_sibling_contractions",
+            "merlin.llvmlower.source_region_host.outline_source_siblings",
+            "merlin.llvmlower.source_region_host.prepare_sibling_source_host",
+            "merlin.llvmlower.source_region_host.emit_ranked_source_entry"
+          ],
+          "consumer": "explicit source-owner preparation and ordinary closed-core build",
+          "stage": "source_host_preparation",
+          "access": "author_library",
+          "requires": [
+            "same original LHS identity; exact zero-seeded integer roots; original borrowed effects"
+          ],
+          "limitations": [
+            "all original host epilogues/observers remain; owner route is separately selected"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "sibling_original_host_route",
+          "symbols": [
+            "merlin.llvmlower.sibling_source_route.SiblingSourceRoute",
+            "merlin.compile.owned_host_model.OwnedHostModelCompiler"
+          ],
+          "consumer": "OwnedHostModelCompiler.compile(sibling_source=original_typed_route)",
+          "stage": "ordinary_source_host_shared_device_object_link",
+          "access": "original_host_owner",
+          "requires": [
+            "exact original source, separately qualified synchronous borrowed effects and logical ABI",
+            "complete source membership, original host quantizers/observers and linked-image checks"
+          ],
+          "limitations": [
+            "explicit caller selection; automatic model checks need their composition audit adapter",
+            "source join and numerical match do not replace actual per-member device-work proof"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.owned_host_model",
+              "merlin.llvmlower.sibling_source_route"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "member_projection_views",
+          "symbols": [
+            "merlin.compile.scheduling.projection_views.plan_shared_projection_views",
+            "merlin.compile.scheduling.shared_input_groups.find_shared_input_groups",
+            "merlin.compile.scheduling.shared_input_schedule.schedule_shared_input"
+          ],
+          "consumer": "original tensor pointers/pitches and actual complete target rectangles",
+          "stage": "source_checked_virtual_index_mapping",
+          "access": "author_library",
+          "requires": [
+            "every actual wide load/store stays within one original member; final band/effect checks"
+          ],
+          "limitations": [
+            "virtual matrices are never packed allocations; per-output quantizers remain separate"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "original_projection_work_identity",
+          "symbols": [
+            "merlin.compile.scheduling.projection_provenance.shared_projection_provenance",
+            "merlin.compile.scheduling.projection_provenance.projection_compute_member",
+            "merlin.compile.scheduling.projection_provenance.projection_ir_attributes"
+          ],
+          "consumer": "actual member-bound PRELOAD/COMPUTE sites retain original typed root identities",
+          "stage": "source_to_interface_to_actual_device_work",
+          "access": "author_library",
+          "requires": [
+            "complete unique original region/node identities and proved real compute column bounds",
+            "matching canonical interface transport and explicitly selected helper source"
+          ],
+          "limitations": [
+            "cross-member or unknown intervals refuse attribution; identities grant no work credit",
+            "independent actual command, CFG, object and native checks remain mandatory"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "connected_spatial_original_host_route",
+          "symbols": [
+            "merlin.llvmlower.connected_spatial.group_connected_spatial",
+            "merlin.llvmlower.connected_spatial_route.ConnectedSpatialRoute",
+            "merlin.compile.owned_host_model.OwnedHostModelCompiler"
+          ],
+          "consumer": "OwnedHostModelCompiler.compile(connected_spatial=original_typed_route)",
+          "stage": "ordinary_source_host_device_object_link",
+          "access": "original_host_owner",
+          "requires": [
+            "original SSA pair, ordered Q1/Q2, complete observers, checked plan/private workspace",
+            "independently selected fixed host, device package and final linked-image admission"
+          ],
+          "limitations": [
+            "explicit caller selection; not automatically enabled by model-check or a candidate flag",
+            "author source availability cannot issue original host or target authority"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.owned_host_model",
+              "merlin.llvmlower.connected_spatial",
+              "merlin.llvmlower.connected_spatial_route"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "bounded_spatial_packing_and_rolling",
+          "symbols": [
+            "merlin.compile.scheduling.spatial_producer.PackedSpatialProducerPlan",
+            "merlin.compile.scheduling.rolling_spatial.propose_rolling_spatial_choices",
+            "merlin.compile.scheduling.rolling_spatial.emit_rolling_spatial_producer",
+            "merlin.compile.scheduling.rolling_window.materialize_rolling_window",
+            "merlin.llvmlower.convolution_packing.emit_nhwc_halo_panel"
+          ],
+          "consumer": "actual counted row/cache/panel transfers and existing dense producer emission",
+          "stage": "checked_geometry_storage_and_emission",
+          "access": "author_library",
+          "requires": [
+            "source halo/layout/padding, explicit capacities, row identities and completion"
+          ],
+          "limitations": [
+            "movement reuse supplies no accumulator-retention or asynchronous execution law"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.convolution_packing"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "bounded_spatial_max_strips",
+          "symbols": [
+            "merlin.compile.scheduling.spatial_max_stripes.plan_striped_spatial_max"
+          ],
+          "consumer": "counted staging and pooled output commands through the selected target adapter",
+          "stage": "source_window_and_private_capacity_planning",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "original spatial max/padding semantics, physical row mapping and selected capacities"
+          ],
+          "limitations": [
+            "strip planning grants no pooled target instruction, numerical or asynchronous law",
+            "actual encoded transfer, window and completion checks remain required"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "private_intermediate_storage",
+          "symbols": [
+            "merlin.compile.scheduling.temporary_storage.allocate_temporary_storage",
+            "merlin.llvmlower.fresh_tensor_writer.rewrite_fresh_tensor_writers",
+            "merlin.llvmlower.private_workspace_pool.pool_private_writer_workspaces",
+            "merlin.llvmlower.weight_prepack.prepacked_bundle",
+            "merlin.compile.compiler_observations.install_prepared_observed"
+          ],
+          "consumer": "actual source owners, checked temporary placements and exact immutable preparation bytes",
+          "stage": "storage_and_preparation_transform",
+          "access": "author_library",
+          "requires": [
+            "full writes, borrowing/noescape, lifetime/alias proof and bounded owned storage"
+          ],
+          "limitations": [
+            "capacity is not completion; immutable prepacking requires original parameter identity"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.compile.compiler_observations",
+              "merlin.llvmlower.weight_prepack"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "connected_host_layout_selection",
+          "symbols": [
+            "merlin.llvmlower.host_layout_planning.plan_islands",
+            "merlin.llvmlower.host_layout_realization.rewrite_module",
+            "merlin.llvmlower.graph_optimizations.optimize_host_graph"
+          ],
+          "consumer": "actual rewritten source enters ordinary host/device grouping and lowering",
+          "stage": "source_layout_before_device_grouping",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "current source-coordinate and scalar-body conformance, fixed public layouts and observers",
+            "selected supported regions, explicit structural budget and original software permissions"
+          ],
+          "limitations": [
+            "unknown operations retain boundary conversions; source layout is not device residency",
+            "composed source ownership needs a fresh checked bridge; no blanket ABI transfer",
+            "conversion bytes screen alternatives; complete-region cycles establish performance"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.graph_optimizations",
+              "merlin.llvmlower.host_layout_planning",
+              "merlin.llvmlower.host_layout_realization"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "completed_host_allocation_reuse",
+          "symbols": [
+            "merlin.llvmlower.host_storage_policy.prepare",
+            "merlin.llvmlower.host_storage_policy.recheck",
+            "merlin.llvmlower.arena_bind.bind_arena"
+          ],
+          "consumer": "reuse_intermediate_storage request through the original host compiler and its exact LLVM",
+          "stage": "completed_call_lifetime_and_final_arena_binding",
+          "access": "original_host_owner",
+          "requires": [
+            "actual allocation aliases, real release/completion and checked nonescaping call effects",
+            "original sequential/non-reentrant allocation policy and current compiled product"
+          ],
+          "limitations": [
+            "graph last use alone cannot release asynchronous accesses or persistent state",
+            "unknown effects, loop generations and unproved ownership retain original allocations",
+            "arena bytes describe selected storage, not measured peak occupancy or elapsed cycles"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.arena_bind",
+              "merlin.llvmlower.host_storage_policy"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "ordered_quantization_boundaries",
+          "symbols": [
+            "merlin.compile.scheduling.spatial_readout.prove_spatial_readout",
+            "merlin.compile.scheduling.spatial_readout_cache.propose_spatial_readout_cache",
+            "merlin.llvmlower.quantized_affine_pair.propose_exact_affine_pair",
+            "merlin.llvmlower.quantized_affine_pair.prove_ordered_loaded_sum"
+          ],
+          "consumer": "existing typed readout/finite-domain proofs plus actual target adapter emission",
+          "stage": "source_exact_readout_proposals",
+          "access": "author_library",
+          "requires": [
+            "literal ordered source scales, rounding, saturation, activation and output types"
+          ],
+          "limitations": [
+            "unsupported composition retains stages; per-column coefficients are not scalar"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.quantized_affine_pair"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "real_transform_ordering",
+          "symbols": [
+            "merlin.transforms.pass_exploration.explore_candidates",
+            "merlin.transforms.pass_exploration.rank_performance_variants",
+            "merlin.compile.scheduling.loop_schedule.tile_loop_nest_transforms",
+            "merlin.compile.scheduling.loop_schedule.partition_counted_loop",
+            "merlin.compile.scheduling.scf_commands.materialize_scf_commands",
+            "merlin.compile.scheduling.scf_commands.emit_scf_commands",
+            "merlin.sched.ir.Loop"
+          ],
+          "consumer": "registered real transforms, actual checked Kernel/SCF and target callbacks",
+          "stage": "transforms_consumed_by_emission",
+          "access": "author_library",
+          "requires": [
+            "caller factors/cuts/order; source, bounds, tails, dependencies and final verification"
+          ],
+          "limitations": [
+            "persistent state and lexical completion inputs/yields/results require explicit opt-in; carried split/unroll/ordered partitions preserve issue order, while dependency-changing transforms refuse; actual launch/wait callbacks and target completion law remain required"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "qualified_configuration_motion",
+          "symbols": [
+            "merlin.compile.scheduling.configuration_motion.promote_configuration_writes",
+            "merlin.compile.scheduling.configuration_motion.verify_configuration_motion"
+          ],
+          "consumer": "actual retained Kernel feeds ordinary configuration cleanup and emission",
+          "stage": "effect_checked_configuration_motion",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "complete source state effects; pure writes and independent crossed calls"
+          ],
+          "limitations": [
+            "does not cross loops, unknown effects or completion metadata",
+            "no deletion or target timing law; native profitability requires cycle feedback"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "counted_emitted_work",
+          "symbols": [
+            "merlin.perf.emitted_work.summarize_emitted_work"
+          ],
+          "consumer": "own-artifact diagnostics or explicit original emitted LLVM analysis",
+          "stage": "emitted_program_observation",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "actual final LLVM function and supported exact control domains"
+          ],
+          "limitations": [
+            "counts IR sites, not callee bodies, bytes, cycles or physical utilization",
+            "unclassified commands remain visible; data-dependent control stays UNKNOWN"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.perf.emitted_work"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "independent_completion_stream_fusion",
+          "symbols": [
+            "merlin.compile.scheduling.completion_streams.fuse_completion_streams",
+            "merlin.compile.scheduling.completion_streams.CompletionEffectsAdapter",
+            "merlin.compile.scheduling.completion_streams.CompletionEffectEnvelope"
+          ],
+          "consumer": "actual checked Kernel and SCF with original ordered event recurrences and drains",
+          "stage": "completion_aware_loop_transform",
+          "access": "additional_compiler_sources",
+          "requires": [
+            "adjacent equal-trip recurrences with independent active/passive event channels",
+            "independently selected complete memory, state and observer effect projection"
+          ],
+          "limitations": [
+            "unknown effects or cross-stream hazards refuse; stage rows alone do not grant motion",
+            "target completion law, numerical policy and final source/epoch checks remain required"
+          ],
+          "source_availability": {
+            "status": "modules_selected",
+            "missing_modules": [],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        },
+        {
+          "name": "explicit_host_graph_optimization",
+          "symbols": [
+            "merlin.llvmlower.graph_optimizations.GraphOptimizationContract",
+            "merlin.llvmlower.graph_optimizations.optimize_host_graph"
+          ],
+          "consumer": "ordinary host compilation with source-bound graph selection",
+          "stage": "source_checked_host_graph_transform",
+          "access": "original_host_owner",
+          "requires": [
+            "exact source, explicit logical/physical layout permissions and bounded growth"
+          ],
+          "limitations": [
+            "structural savings are not measured traffic/time or target effect qualification"
+          ],
+          "source_availability": {
+            "status": "missing_selected_modules",
+            "missing_modules": [
+              "merlin.llvmlower.graph_optimizations"
+            ],
+            "scope": "exact module membership only; symbol compatibility and original authority remain separate"
+          }
+        }
+      ]
+    }
+  },
+  "library_sha256": "35ffef24554bf9c94f10c3eb771865e6c7cd10169b8f00406c24298d54980cd9"
+}
