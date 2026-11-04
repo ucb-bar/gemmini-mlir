@@ -1,0 +1,731 @@
+capabilities: {}
+compiler_obligations: []
+compute_units:
+- dtypes:
+  - int8
+  kind: systolic
+  name: systolic_mesh
+  ops:
+  - matmul
+  scaling: per_tensor
+  semantic_capabilities:
+  - dtypes:
+    - int8
+    family: contraction
+    ranks:
+    - 2
+    - 3
+    - 4
+  - dtypes:
+    - int8
+    family: elementwise_map
+    standalone_evidence:
+    - fact: accumulate_on_load
+      roles:
+      - operand_load
+      - config
+      - readout
+      - commit
+  - dtypes:
+    - int8
+    family: movement
+    forms:
+    - copy
+  - composed_with:
+    - contraction
+    - movement
+    dtypes:
+    - int8
+    family: reduction
+corpus_instruction_roles:
+  by_role:
+    acc_readout:
+    - STORE_CMD
+    matmul:
+    - COMPUTE_AND_FLIP_CMD
+    memory:
+    - LOAD_CMD
+    weight_load:
+    - PRELOAD_CMD
+  epilogue_roles:
+    bias:
+      tensor_compute_binary:
+      - PRELOAD_CMD
+    bias_add:
+      tensor_compute_binary:
+      - PRELOAD_CMD
+    relu:
+      tensor_compute_unary:
+      - STORE_CMD
+  instruction_roster_sha256: 9a7031d3b07b316dc26e5b6dac6a66242af4d33df05b73f5e69ad06cd28ba302
+  operation_roles:
+    residual_add:
+      tensor_compute_binary:
+      - LOAD_CMD
+      - STORE_CMD
+  version: 2
+counter_semantics:
+  rocket_mcycle_64:
+    clock: Rocket core cycle CSR on one guest hart in GemminiGsimFireSimAlignedConfig;
+      no wall-clock or FPGA-frequency conversion
+    source_pins:
+    - path: /work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/generators/rocket-chip/src/main/scala/rocket/CSR.scala
+      sha256: 10fbf32035cf5eece8c802f16b189afbec824287cddc8b8f1218c1d8209ed61f
+    unit: cycles
+    width_bits: 64
+    wrap: modulo
+encoding:
+  addr_len: 32
+  rocc_custom_slot: 3
+endpoint_kind: inline_asm_insn
+hardware_promises: []
+harness_abi:
+  byte_order: little
+  entry_symbol: kernel_entry
+  fence_symbol: kernel_complete
+  kind: logical_pointer
+  main_convention: void
+  readback_transport: out_b64_v1
+  tensor_alignment: 64
+  version: 2
+legality: {}
+logical_harness:
+  cycle_counter_asm: csrr %0, mcycle
+  kernel_call_timing:
+    counter_semantics: rocket_mcycle_64
+    max_delta_cycles: 1000000000000
+    schema: merlin.kernel_call_timing.v1
+  storage_budget_bytes: 134217728
+memory_model: {}
+name: gemmini
+notes: Operator-selected ABI and execution tools. Observed instruction roster is partial.
+  Operand bundle widths that remain parameterized are deliberately unbound; no complete
+  ISA, universal numerical, synchronization or timing claim follows from preparation.
+output_epilogue:
+  accumulate:
+    evidence:
+    - observed: 'accumulate_on_load is derived: a load adds into the accumulator,
+        selected per command'
+      rung: firrtl_structural
+    fact: accumulate_on_load
+    status: derived
+    value:
+      accumulates_on_load: true
+      instructions:
+        operand_load:
+        - LOAD2_CMD
+        - LOAD3_CMD
+        - LOAD_CMD
+      load_path:
+        between: the request field enters the load path and the path's output drives
+          the bank; the queues in between are crossed by their declared field names,
+          not traced per submodule
+        carried_by:
+        - mvin_scale_pixel_repeater.io.resp.bits.tag.accumulate
+        - vsm_1.io.resp.bits.tag.accumulate
+        cite:
+          firrtl_line: 188800
+          module: Scratchpad
+          scala_file: generators/gemmini/src/main/scala/gemmini/Scratchpad.scala
+          scala_line: 828
+        reading: the bank's accumulate bit is the load's address-metadata accumulate
+          field
+        request: io.dma.read.req.bits.laddr.accumulate
+        request_cite:
+          firrtl_line: 186138
+          module: Scratchpad
+          scala_file: generators/gemmini/src/main/scala/gemmini/Scratchpad.scala
+          scala_line: 368
+        write_select: bank_ios_1[*].write.bits.acc
+      roles:
+      - operand_load
+      selected_per_command: true
+      store:
+        cite:
+          firrtl_line: 184725
+          module: AccumulatorMem
+          scala_file: generators/gemmini/src/main/scala/gemmini/AccumulatorMem.scala
+          scala_line: 183
+        reading: the store writes the adder's sum when the write's accumulate bit
+          is set
+        select: pipelined_writes[*].bits.acc
+        sum: io.adder.sum
+        write_data: mem.io.wdata
+      summary: 'a load (operand_load) can add into the accumulator: the store writes
+        the adder''s sum when the write''s accumulate bit is set, and that bit is
+        the load address''s own accumulate field'
+  accumulator_dtype: i32
+  activation:
+    before_scale: true
+    carriers:
+    - bits: 2
+      bundle: ConfigExRs1
+      field: activation
+    - bits: 2
+      bundle: ConfigMvoutRs1
+      field: activation
+    - bits: 1
+      bundle: ConfigNormRs1
+      field: act_msb
+    evidence:
+    - observed: 'command-register field(s) carry the ''activation'' role: ConfigExRs1.activation
+        (2 bits), ConfigMvoutRs1.activation (2 bits), ConfigNormRs1.act_msb (1 bits)'
+      rung: register_layout
+    - observed: max(io.in.bits.acc_read_resp.data, 0) is selected when io.in.bits.acc_read_resp.act
+        equals [1]; it is applied to the accumulator before the scale
+      rung: firrtl_structural
+    functions:
+      relu:
+        applied_to: io.in.bits.acc_read_resp.data
+        cite:
+          firrtl_line: 180710
+          module: AccumulatorScale
+          node: activated_data_e_act
+          scala_file: src/main/scala/chisel3/util/Mux.scala
+          scala_line: 126
+        codes:
+        - 1
+    status: derived
+    unrecognized_codes: []
+  bias_preload:
+    bits: 32
+    dtype: i32
+    evidence:
+    - observed: 'a load writes the accumulator when its accumulate bit is clear, and
+        vsm_1 (VectorScalarMultiplier_1) copies 16 32-bit lanes of in.bits.in with
+        no arithmetic: a full-width value is preloaded exactly'
+      rung: firrtl_structural
+    lanes:
+      bits: 32
+      firrtl_line: 159007
+      lanes: 16
+      module: VectorScalarMultiplier_1
+      store_writes: pipelined_writes[1].bits.data
+      through: vsm_1
+      vector: in.bits.in
+    range:
+    - -2147483648
+    - 2147483647
+    rounding: none
+    status: derived
+  firrtl:
+    fir_path: /work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir
+    fir_sha256: b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0
+  full_width_readout:
+    copied_into: in.bits.full_data
+    dtype: i32
+    evidence:
+    - observed: io.in.bits.acc_read_resp.data is copied unmodified into in.bits.full_data
+        and io.out.bits.full_data leaves the readout with no arithmetic in its fan-in
+      rung: firrtl_structural
+    lanes: 16
+    leaves_as: io.out.bits.full_data
+    status: derived
+  output_path:
+    accumulator:
+      dtype: i32
+    accumulator_stages:
+    - dtype: i32
+      kind: preload
+      range:
+      - -2147483648
+      - 2147483647
+      rounding: none
+    - dtype: i32
+      kind: accumulate
+      operand_scale: none
+    exits:
+      accumulator: true
+      requant: true
+    readout:
+    - domain: accumulator
+      function: relu
+      kind: activation
+    - kind: convert
+      rounding: half_even
+      to: f32
+    - columns_per_scale: 16
+      dtype: f32
+      granularity: per_command
+      kind: scale
+      rounding: half_even
+    - clamp:
+      - -128
+      - 127
+      kind: requant
+      rounding: half_even
+      to: i8
+    - kind: pool
+      padding: unknown
+      reductions:
+      - max
+    schema: output_path_v1
+  pool:
+    carriers:
+    - bits: 8
+      bundle: ConfigMvoutRs1
+      field: pool_out_dim
+    - bits: 2
+      bundle: ConfigMvoutRs1
+      field: pool_size
+    - bits: 2
+      bundle: ConfigMvoutRs1
+      field: pool_stride
+    evidence:
+    - observed: 'command-register field(s) carry the ''pool'' role: ConfigMvoutRs1.pool_out_dim
+        (8 bits), ConfigMvoutRs1.pool_size (2 bits), ConfigMvoutRs1.pool_stride (2
+        bits)'
+      rung: register_layout
+    - observed: 'the elaborated pooling gate is on (/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir:229621:
+        and(UInt<1>(0h1), _pooling_is_enabled_T))'
+      rung: firrtl_build_gate
+    reductions:
+    - max
+    status: derived
+  scale:
+    accumulator_dtype: i32
+    carriers:
+    - bits: 32
+      bundle: ConfigExRs1
+      field: acc_scale
+    - bits: 32
+      bundle: ConfigMvinRs1
+      field: scale
+    - bits: 32
+      bundle: ConfigMvoutRs2
+      field: acc_scale
+    columns_per_scale: 16
+    combined_by:
+      instance: activated_data_e_scaled_muladder
+      of: MulAddRecFN_e8_s24_4
+      value_through:
+      - activated_data_e_scaled_in_to_rec_fn
+    dtype: f32
+    element_bits: 32
+    evidence:
+    - observed: 'command-register field(s) carry the ''scale'' role: ConfigExRs1.acc_scale
+        (32 bits), ConfigMvinRs1.scale (32 bits), ConfigMvoutRs2.acc_scale (32 bits)'
+      rung: register_layout
+    - observed: 'io.in.bits.acc_read_resp.scale.bits is decoded as fp32 (sign|exponent|fraction
+        at {''sign'': [31, 31], ''exponent'': [30, 23], ''fraction'': [22, 0]})'
+      rung: firrtl_structural
+    - observed: instance activated_data_e_scaled_muladder (MulAddRecFN_e8_s24_4) takes
+        the decoded scale and the accumulator value
+      rung: firrtl_structural
+    - observed: the scalar readout contract states round-half-to-even and its clamp
+      rung: scalar_abi
+    format:
+      dtype: f32
+      fields:
+        exponent:
+        - 30
+        - 23
+        fraction:
+        - 22
+        - 0
+        sign:
+        - 31
+        - 31
+      format: fp32
+      split_of: _activated_data_e_scaled_WIRE.bits
+    output_dtypes:
+    - i8
+    rounding: half_even
+    saturation:
+    - -128
+    - 127
+    status: derived
+  schema: output_epilogue_v1
+  stages:
+    acc_scale: true
+    maxpool: true
+    relu: true
+  unknown: {}
+rocc_operand_roles:
+  instructions:
+  - class: CONFIG_CMD
+    funct: 0
+    operands: {}
+  - class: LOAD2_CMD
+    funct: 1
+    operands: {}
+  - class: LOAD_CMD
+    funct: 2
+    operands: {}
+  - class: STORE_CMD
+    funct: 3
+    operands: {}
+  - class: COMPUTE_AND_FLIP_CMD
+    funct: 4
+    operands: {}
+  - class: COMPUTE_AND_STAY_CMD
+    funct: 5
+    operands: {}
+  - class: PRELOAD_CMD
+    funct: 6
+    operands: {}
+  - class: FLUSH_CMD
+    funct: 7
+    operands: {}
+  - class: LOOP_WS
+    funct: 8
+    operands: {}
+  - class: LOOP_WS_CONFIG_BOUNDS
+    funct: 9
+    operands: {}
+  - class: LOOP_WS_CONFIG_ADDRS_AB
+    funct: 10
+    operands: {}
+  - class: LOOP_WS_CONFIG_ADDRS_DC
+    funct: 11
+    operands: {}
+  - class: LOOP_WS_CONFIG_STRIDES_AB
+    funct: 12
+    operands: {}
+  - class: LOOP_WS_CONFIG_STRIDES_DC
+    funct: 13
+    operands: {}
+  - class: LOAD3_CMD
+    funct: 14
+    operands: {}
+  - class: LOOP_CONV_WS
+    funct: 15
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_1
+    funct: 16
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_2
+    funct: 17
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_3
+    funct: 18
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_4
+    funct: 19
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_5
+    funct: 20
+    operands: {}
+  - class: LOOP_CONV_WS_CONFIG_6
+    funct: 21
+    operands: {}
+  - class: CLKGATE_EN
+    funct: 22
+    operands: {}
+  - class: STORE_SPAD_CMD
+    funct: 23
+    operands: {}
+  - class: LOOP_WS_CONFIG_SPAD_AB
+    funct: 24
+    operands: {}
+  - class: COUNTER_OP
+    funct: 126
+    operands: {}
+  version: 1
+  word_bits: 64
+rtl_checks:
+- decode_clean
+rtl_extraction:
+  accumulator_memory:
+    address_port: io_write_bits_addr
+    data_prefix: io_write_bits_data_
+    data_suffix: _0
+    firrtl_data_field: io.write.bits.data
+    mask_prefix: io_write_bits_mask_
+    memory_name: accumulator
+    module: AccumulatorMem
+  boolean_feature_gate:
+    config_field: has_max_pool
+    dynamic_operand_contains: pool
+    feature: max_pool
+    module: StoreController
+    node: pooling_is_enabled
+  firrtl_role_probe:
+    array:
+      child_module_prefix: Tile
+      name: mesh
+      parent_module_contains: Mesh
+    interfaces:
+    - evidence: module ReservationStation (RoCC decode/dispatch)
+      module: ReservationStation
+      name: rocc_cmd
+    - evidence: module FrontendTLB
+      module: FrontendTLB
+      name: dma_tlb
+    memory:
+      datapath_name: input
+      declaration_contains: 'smem mem : UInt<'
+      name: scratchpad
+      source_contains: Scratchpad.scala
+  output_epilogue:
+    activation: io.in.bits.acc_read_resp.act
+    module: AccumulatorScale
+    scale: io.in.bits.acc_read_resp.scale.bits
+    value: io.in.bits.acc_read_resp.data
+  scala_funct_block:
+    start_comment: // funct values
+    stop_declaration: CONFIG_EX
+  timing_structure:
+    array_paths:
+      mesh_activation_to_partial_sum_ws:
+        from_prefix: io_in_a_
+        mode: weight_stationary
+        module: Mesh
+        to_prefix: io_out_b_
+    dataflow:
+      cell_module: PE_256
+      select_port: io_in_control_dataflow
+    dispatch:
+      classes:
+        execute: io_issue_ex_
+        load: io_issue_ld_
+        store: io_issue_st_
+      module: ReservationStation
+    latencies:
+      accumulator_adder:
+        from: io_op1
+        module: AccPipe
+        to: io_sum
+      accumulator_bank_read:
+        from: io_read_req_bits_addr
+        module: AccumulatorMem
+        to: io_read_resp_bits_data_0_0
+      accumulator_read:
+        from: io_acc_read_req_0_bits_addr
+        module: Scratchpad
+        to: io_acc_read_resp_0_bits_data_0_0
+      mesh_with_delays_ws:
+        from: io_a_bits_0_0
+        mode: weight_stationary
+        module: MeshWithDelays
+        to: io_resp_bits_data_0_0
+      scratchpad_bank_read:
+        from: io_read_req_bits_addr
+        module: ScratchpadBank
+        to: io_read_resp_bits_data
+      scratchpad_read:
+        from: io_srams_read_0_req_bits_addr
+        module: Scratchpad
+        to: io_srams_read_0_resp_bits_data
+    memory_clients:
+      dma_read:
+        module: StreamReader
+        port_prefix: auto_core_out_
+      dma_write:
+        module: StreamWriter
+        port_prefix: auto_out_
+    memory_protocol:
+      data: data
+      id: source
+      request: a_bits_
+      response: d_bits_
+      size: size
+      size_encoding: log2_bytes
+    profile_resources:
+      accelerator.config:
+        basis: configuration commands occupy the dispatch class of the unit they configure
+        capacity: null
+        queue_capacity: null
+      accelerator.dma_read:
+        basis: one request channel issues one beat per cycle; in-flight transactions
+          bound latency hiding and are fitted together with read_bytes_per_cycle,
+          not a lane count
+        capacity: memory_clients.clients.dma_read.request_channels
+        queue_capacity: null
+      accelerator.dma_write:
+        basis: one request channel; in-flight transactions are fitted with write_bytes_per_cycle
+        capacity: memory_clients.clients.dma_write.request_channels
+        queue_capacity: null
+      accelerator.execute:
+        basis: the execute path overlaps preload/compute pairs through the mesh pipeline;
+          no structural in-flight bound maps onto engine lanes (dispatch entries and
+          command buffers are recorded)
+        capacity: null
+        queue_capacity: null
+      accelerator.load:
+        basis: 'capacity: load commands started and not completed (DMA command-tracker
+          slots); queue_capacity: load dispatch entries not in service (entries are
+          held until completion)'
+        capacity:
+          buffer_instance: Gemmini/load_controller/cmd_tracker
+        queue_capacity:
+          from: command_classes.classes.load.entries.value
+          minus:
+            buffer_instance: Gemmini/load_controller/cmd_tracker
+      accelerator.store:
+        basis: 'capacity: store commands started and not completed (DMA command-tracker
+          slots); queue_capacity: store dispatch entries not in service'
+        capacity:
+          buffer_instance: Gemmini/store_controller/cmd_tracker
+        queue_capacity:
+          from: command_classes.classes.store.entries.value
+          minus:
+            buffer_instance: Gemmini/store_controller/cmd_tracker
+rtl_source:
+  artifact_sha256:
+    fir: b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0
+    hierarchy: 96b149f7e60bf9f6171eddfbafa58d59dc7302560c77ae044e9084f250d572cb
+  config: FireSimGemminiRocketConfig
+  ext_root: chipyard
+  generator: gemmini
+  gitlinks:
+    generators/gemmini: 63f0b68a68f185a016a2993f2fb32e1661ea9e6c
+    generators/saturn: e16a301d261fa4b5a374eb7069b78107a8c9aefb
+    sims/firesim: b084672c2f8cf32e55d78f73a001074c23f8a2b8
+  source_revision: 3e9bfb4bf58a7dfe6e1082496a9578a5dcd83831
+runner:
+  backend: chipyard_rocc
+  chipyard_rocc:
+    config: GemminiGsimFireSimAlignedConfig
+    engines:
+      gsim:
+        argv:
+        - '{elf}'
+        - +max-cycles=20000000
+        binary:
+          path: /work/merlin/tasks/phase1-harness-v2/.tmp/gsim-fire-aligned-provisional-v3/native/emulator
+          sha256: 76ddbfdc5b3beadef6b6b37768a08522122327057b92d71d3539a9529e4ea651
+        cwd: /work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/launch-inputs
+        environment:
+          LD_LIBRARY_PATH: /work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/.conda-env/riscv-tools/lib
+        failure_markers:
+        - '*** FAILED ***'
+        - 'TRAP '
+        max_console_bytes: 67108864
+        max_timeout_s: 7200
+        readback_transport: coherent_dump_v1
+        receipt:
+          path: /work/merlin/tasks/phase1-harness-v2/.tmp/gsim-fire-aligned-provisional-v3/native/build_receipt.json
+          sha256: 7df91fd3d7e6b1fa927b264f0b612f898a2056aa5a83a10660f18bc75c84d0d8
+      spike:
+        argv:
+        - --isa=rv64imafdcb_zicsr_zifencei_zihpm_zfh_zba_zbb_zbs
+        - --priv=m
+        - -p1
+        - -m0x80000000:0x400000000
+        - '{elf}'
+        binary:
+          path: /work/merlin/tasks/phase1-harness-v2/out/fire-aligned-spike-30mhz/runtime/bin/spike
+          sha256: 5df9c82ca3e921823da8606284a258b491541defbafee4586fb938639e03c6b9
+        cwd: /work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/launch-inputs
+        environment:
+          LD_LIBRARY_PATH: /work/merlin/tasks/phase1-harness-v2/out/fire-aligned-spike-30mhz/runtime/lib
+        failure_markers:
+        - '*** FAILED ***'
+        - 'TRAP '
+        max_console_bytes: 67108864
+        max_timeout_s: 3600
+    execution_resources:
+      max_model_spike_timeout_s: 3600
+      max_native_timeout_s: 7200
+    readout:
+      epilogue_capability:
+      - applies:
+        - acc_scale
+        - relu
+        - maxpool
+        evidence: 'Reviewed public GemminiRocketConfig readout declaration: AccumulatorScale
+          scale/activation and StoreController pooling; concrete numerical and emitted-kernel
+          qualification remain separate.'
+        selector: i8
+      - applies: []
+        evidence: the full-width readout writes the raw accumulator without applying
+          an epilogue stage (RoCC accumulator mvout path); any contraction bias already
+          in the accumulator was loaded before computation, via the separate accumulator_seed
+          route
+        selector: i32
+      operand_sum:
+        operand_dtype: i8
+        operand_rounding: half_even
+        operand_saturates: true
+        operands: 2
+        scale_dtype: f32
+        schema: operand_sum_contract_v1
+      scalar_abi:
+        accumulator_dtype: i32
+        clamp_max: 127
+        clamp_min: -128
+        output_dtype: i8
+        scale_dtype: f32
+        schema: scalar_narrow_readout_contract_v1
+      stage_routes:
+      - composed_with: contraction
+        consumer_opcodes:
+        - COMMIT
+        - CONV2D
+        evidence: Selected GemminiRocketConfig FIRRTL LoopMatmulLdD and LoopConvLdBias
+          write bias into AccumulatorMem with accumulate=0; AccumulatorScale has no
+          bias operand.
+        operand_attribute: bias
+        operand_role: bias
+        producer_opcodes:
+        - MATMUL_RESIDENT
+        - CONV2D
+        readouts:
+        - i8
+        - i32
+        site: accumulator_seed
+        stages:
+        - bias_add
+        - bias
+    toolchain:
+      cflags:
+      - -march=rv64gc
+      - -mabi=lp64d
+      - -mcmodel=medany
+      - -O2
+      - -std=gnu11
+      - -ffreestanding
+      - -nostdlib
+      - -nostartfiles
+      - -fno-builtin
+      - -fno-tree-loop-distribute-patterns
+      - -ffunction-sections
+      - -fdata-sections
+      compiler:
+        path: /work/merlin/tasks/phase1-harness-v2/.tmp/chipyard-fire-aligned/.conda-env/riscv-tools/bin/riscv64-unknown-elf-gcc
+        sha256: 4edd51fc7e8aecc1967d95cff423685dfe6565739fa208f876413fa8277ab8a4
+      headers:
+      - id: htif
+        sha256: b65661ffa2c7f5857b5d3513d05bf4078c809d3141e6c1bdb51d2680908d6f82
+      - id: out_b64
+        sha256: 0e71f17ae35c9c2edd15dae899788f7ac33ef86304afe83aa1020d0586cfd126
+      kernel_stack_frame:
+        entry_symbol: kernel_entry
+        max_static_bytes: 8192
+      ldflags:
+      - -Wl,--gc-sections
+      - -Wl,--no-relax
+      link_script:
+        path: /work/merlin/tasks/phase1-harness-v2/merlin/merlin/runtime/baremetal/spike/link.ld
+        sha256: cd14824290a6fa73f51160edc19353e3feb08d619cffa78fc41e8ef7685dd1ca
+      load_address: 2147483648
+      runtime_units:
+      - id: startup
+        sha256: a437e507cdb0e02f11f2e4ae4e08cfbc83a41c4ccbec12c26574ff687da2ba46
+      - id: htif_console
+        sha256: 2f08e9fdd08f346026cbefb897b7496d862ad02ec26d753b065e71f9ff5337a4
+      - id: libc
+        sha256: 6326f21c6914f3cd0ac4351d5ca2ac2158cd38305168638e4c512bff84e1be7a
+    version: 1
+  dtype: i8xi8_i32
+  sim_via: chipyard
+  spike_extension:
+    extension_name: gemmini
+    extlib: /work/merlin/tasks/phase1-harness-v2/out/fire-aligned-spike-30mhz/runtime/lib/libgemmini.so
+    sha256: 2dbd8445376cdda0df63abcf217c7a19f974d34a16ada21b549ed82fffd718eb
+  suite: gemmini-capsule-bench
+  tier_sim:
+    L2: spike
+    L3: elaborated_rtl
+runtime:
+  rtl_sim_config: GemminiGsimFireSimAlignedConfig
+runtime_promises: []
+version: operator-neutral-v1
+rocc_operand_selection:
+  original_facts:
+    path: /work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/run-frameworks/14338d1b578b/out/artifacts/next-batch/next-batch-20261029-full-ref-cca/inputs/source-release/payload/experiment/contracts/operand-facts.json
+    sha256: b8ff28edc096392cec356f9fececdf17ba70cd3e4b02e6c5931aedc43bb117af
+  sidecar:
+    path: /work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/run-frameworks/14338d1b578b/out/artifacts/next-batch/next-batch-20261029-full-ref-cca/inputs/source-release/payload/experiment/contracts/operand-protocol.json
+    sha256: 9979eff7b63112d7cc55d1ced7a4dd7201e8ce46effd034c54e175ecdfe2fdd8
