@@ -1,0 +1,53 @@
+{
+  "schema": "authored.selected_raw32_storage_law.v1",
+  "target_contract_sha256": "8db8a762ae17a6b016b6eb8bfd71b92bcaa282ff42d51fa2997aed6eb20b8438",
+  "firrtl": {
+    "fir_path": "/work/merlin/tasks/phase1-harness-v2/merlin/out/artifacts/probes/gemmini/fire-aligned-30mhz/firesim-target/elaboration/firechip.chip.FireSim.FireSimGemminiRocketConfig.fir",
+    "fir_sha256": "b7d9826b1c9f16fd00bc757b4334a7f330a842c6a494e0c28608dc351b305bf0"
+  },
+  "bias_preload": {
+    "bits": 32,
+    "dtype": "i32",
+    "evidence": [
+      {
+        "observed": "a load writes the accumulator when its accumulate bit is clear, and vsm_1 (VectorScalarMultiplier_1) copies 16 32-bit lanes of in.bits.in with no arithmetic: a full-width value is preloaded exactly",
+        "rung": "firrtl_structural"
+      }
+    ],
+    "lanes": {
+      "bits": 32,
+      "firrtl_line": 159007,
+      "lanes": 16,
+      "module": "VectorScalarMultiplier_1",
+      "store_writes": "pipelined_writes[1].bits.data",
+      "through": "vsm_1",
+      "vector": "in.bits.in"
+    },
+    "range": [
+      -2147483648,
+      2147483647
+    ],
+    "rounding": "none",
+    "status": "derived"
+  },
+  "full_width_readout": {
+    "copied_into": "in.bits.full_data",
+    "dtype": "i32",
+    "evidence": [
+      {
+        "observed": "io.in.bits.acc_read_resp.data is copied unmodified into in.bits.full_data and io.out.bits.full_data leaves the readout with no arithmetic in its fan-in",
+        "rung": "firrtl_structural"
+      }
+    ],
+    "lanes": 16,
+    "leaves_as": "io.out.bits.full_data",
+    "status": "derived"
+  },
+  "encoding_facts_sha256": "5524449ae3f455b00336c773861c231b944b3eb0f9a5a0e677414354db1ec619",
+  "storage_dtype": "i32",
+  "source_dtype": "f32",
+  "accumulator_load_address": 2147483648,
+  "raw_store_address": 2684354560,
+  "load_accumulate": false,
+  "payload_arithmetic": false
+}

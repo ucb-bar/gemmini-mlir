@@ -1,0 +1,82 @@
+{
+  "output_path": {
+    "accumulator": {
+      "dtype": "i32"
+    },
+    "accumulator_stages": [
+      {
+        "dtype": "i32",
+        "kind": "preload",
+        "range": [
+          -2147483648,
+          2147483647
+        ],
+        "rounding": "none"
+      },
+      {
+        "dtype": "i32",
+        "kind": "accumulate",
+        "operand_scale": "none"
+      }
+    ],
+    "exits": {
+      "accumulator": true,
+      "requant": true
+    },
+    "readout": [
+      {
+        "domain": "accumulator",
+        "function": "relu",
+        "kind": "activation"
+      },
+      {
+        "kind": "convert",
+        "rounding": "half_even",
+        "to": "f32"
+      },
+      {
+        "columns_per_scale": 16,
+        "dtype": "f32",
+        "granularity": "per_command",
+        "kind": "scale",
+        "rounding": "half_even"
+      },
+      {
+        "clamp": [
+          -128,
+          127
+        ],
+        "kind": "requant",
+        "rounding": "half_even",
+        "to": "i8"
+      },
+      {
+        "kind": "pool",
+        "padding": "unknown",
+        "reductions": [
+          "max"
+        ]
+      }
+    ],
+    "schema": "output_path_v1"
+  },
+  "readouts": [
+    {
+      "applies": [
+        "acc_scale",
+        "relu",
+        "maxpool"
+      ],
+      "evidence": "Reviewed public GemminiRocketConfig readout declaration: AccumulatorScale scale/activation and StoreController pooling; concrete numerical and emitted-kernel qualification remain separate.",
+      "selector": "i8"
+    },
+    {
+      "applies": [],
+      "evidence": "the full-width readout writes the raw accumulator without applying an epilogue stage (RoCC accumulator mvout path); any contraction bias already in the accumulator was loaded before computation, via the separate accumulator_seed route",
+      "selector": "i32"
+    }
+  ],
+  "authoritative_source": "/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/build/run-frameworks/f9d7fb5c3d6f/out/artifacts/fresh-inputs-xs_capsules-cca/source-release/payload/experiment/contracts/target_contract.yaml",
+  "authoritative_source_sha256": "8db8a762ae17a6b016b6eb8bfd71b92bcaa282ff42d51fa2997aed6eb20b8438",
+  "fields_sha256": "46bfbafa468bf39e70d9f3addbdf374da806380f4666e8be07aa073de56e632a"
+}

@@ -1,0 +1,44 @@
+{
+  "schedule": "regional_ready_transfers",
+  "conv_schedule": "regional",
+  "conv_schedule_regions": [
+    {
+      "mode": "readout",
+      "resources": [
+        {
+          "resource": "kernel_points",
+          "at_least": 2
+        }
+      ]
+    },
+    {
+      "mode": "readout",
+      "shapes": [
+        {
+          "operand": 1,
+          "axis": 0,
+          "at_least": 1,
+          "at_most": 1
+        },
+        {
+          "operand": 1,
+          "axis": 1,
+          "at_least": 1,
+          "at_most": 1
+        }
+      ]
+    }
+  ],
+  "conv_pointwise": "raw_i32_retained",
+  "conv_readout": "regional_epochs",
+  "conv_input_transfer": "regional_rolling",
+  "conv_pool_stripe": "derived",
+  "conv_pool_schedule": "regional_device_runs",
+  "conv_output_group": "regional_strided",
+  "conv_rhs_transport": "last_use",
+  "elementwise_schedule": "sync",
+  "dense_panel_shape": "frontier_multirow",
+  "dense_resident_readout": "regional_input_pipeline",
+  "conv_array_retention": "regional",
+  "conv_array_output_rows": 4
+}

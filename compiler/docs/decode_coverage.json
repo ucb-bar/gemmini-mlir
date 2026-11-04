@@ -1,0 +1,484 @@
+{
+  "name": "SY_source_causal_decoder_decode_step",
+  "kind": "model",
+  "label": "public",
+  "staged_files": [
+    "README.md",
+    "capsule.interface.mlir",
+    "capsule.pytorch.py",
+    "capsule.yaml",
+    "frontend-evidence.json",
+    "frontend-source.mlir",
+    "frontend-trace.json",
+    "profile.json",
+    "pytorch-opset.json",
+    "source-capture-receipt.json"
+  ],
+  "withheld": [
+    "capsule.weights.safetensors",
+    "capsule.weights.safetensors.manifest.json"
+  ],
+  "inputs": [
+    {
+      "name": "I0",
+      "role": "input",
+      "shape": [
+        1,
+        1
+      ],
+      "dtype": "i64"
+    },
+    {
+      "name": "I1",
+      "role": "input",
+      "shape": [
+        1,
+        2,
+        9,
+        8
+      ],
+      "dtype": "f32"
+    },
+    {
+      "name": "I2",
+      "role": "input",
+      "shape": [
+        1,
+        2,
+        9,
+        8
+      ],
+      "dtype": "f32"
+    }
+  ],
+  "attributes": {
+    "model": "causal_decoder_decode_step",
+    "dtype": "i8",
+    "out": "Y0",
+    "bundle_abi_version": 2,
+    "quant_scheme": "int8_static_act_int8_weight",
+    "quant_recipe_sha256": "53684d23648f776345ba5b30bcc001cb1e0c8fbed1299af4cec09e5f36e542a6",
+    "torch_seed": 0,
+    "loader_profile": "profile.json",
+    "loader_profile_sha256": "c587638b1ecec9ceffe222abd7e131a7362ee794e0689f209558cd6bed25f850",
+    "compile_dtype": "int8",
+    "arg_order": [
+      "I0",
+      "I1",
+      "I2",
+      "Y0"
+    ],
+    "weights": "capsule.weights.safetensors",
+    "weights_manifest": "capsule.weights.safetensors.manifest.json"
+  },
+  "numeric_policy": {
+    "compare": "tolerance_float",
+    "dtype": "f32",
+    "atol": 0.03125,
+    "rtol": 0.02
+  },
+  "required_oracle_tiers": [
+    "L0",
+    "L1",
+    "L2",
+    "L3"
+  ],
+  "gate": {
+    "after_op_pass_fraction": 0.8
+  },
+  "quantization": {
+    "scheme": "int8_static_act_int8_weight",
+    "receipt_schema": "m2m.pt2e-integerize.v1",
+    "qparams": 6,
+    "activation_granularity": {
+      "tensor": 6
+    },
+    "weight_granularity": {
+      "tensor": 6
+    },
+    "accumulator_dtypes": {
+      "torch.int32": 6
+    },
+    "precision_decisions": 6,
+    "remaining_dequant_count": 2
+  },
+  "placement": {
+    "status": "admitted",
+    "totals": {
+      "accelerator": 4,
+      "host": 35
+    },
+    "by_operation": [
+      {
+        "placement": "host",
+        "operation": "aten.mul.Tensor",
+        "classification": "host_required",
+        "count": 28
+      },
+      {
+        "placement": "host",
+        "operation": "quantized_decomposed.quantize_per_tensor.default",
+        "classification": "host_required",
+        "count": 7
+      },
+      {
+        "placement": "accelerator",
+        "operation": "aten._int_mm.default",
+        "classification": "accelerator_candidate",
+        "count": 6
+      },
+      {
+        "placement": "host",
+        "operation": "aten._to_copy.default",
+        "classification": "host_required",
+        "count": 6
+      },
+      {
+        "placement": "host",
+        "operation": "aten._softmax.default",
+        "classification": "host_required",
+        "count": 5
+      },
+      {
+        "placement": "host",
+        "operation": "aten.mean.dim",
+        "classification": "host_required",
+        "count": 4
+      },
+      {
+        "placement": "host",
+        "operation": "aten.add.Tensor",
+        "classification": "host_required",
+        "count": 4
+      },
+      {
+        "placement": "host",
+        "operation": "aten.pow.Tensor_Scalar",
+        "classification": "host_required",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "aten.add.Scalar",
+        "classification": "host_required",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "aten.rsqrt.default",
+        "classification": "host_required",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "aten.neg.default",
+        "classification": "host_required",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "aten.bmm.default",
+        "classification": "host_required",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "quantized_decomposed.dequantize_per_tensor.default",
+        "classification": "unresolved",
+        "count": 2
+      },
+      {
+        "placement": "host",
+        "operation": "aten.embedding.default",
+        "classification": "host_required",
+        "count": 1
+      },
+      {
+        "placement": "host",
+        "operation": "aten.div.Tensor",
+        "classification": "host_required",
+        "count": 1
+      },
+      {
+        "placement": "host",
+        "operation": "aten.sigmoid.default",
+        "classification": "host_required",
+        "count": 1
+      }
+    ]
+  },
+  "frontend_ops": {
+    "original": {
+      "aten.linear.default": 6,
+      "aten.reshape.default": 6,
+      "aten.mul.Tensor": 5,
+      "aten.transpose.int": 5,
+      "aten.add.Tensor": 4,
+      "aten.cat.default": 4,
+      "aten.slice.Tensor": 4,
+      "<built-in function getitem>": 3,
+      "aten.expand.default": 2,
+      "aten.matmul.default": 2,
+      "aten.neg.default": 2,
+      "aten.rms_norm.default": 2,
+      "aten.unsqueeze.default": 2,
+      "aten.div.Tensor": 1,
+      "aten.embedding.default": 1
+    },
+    "prepared": {
+      "aten.mul.Tensor": 28,
+      "aten.view.default": 24,
+      "aten.permute.default": 11,
+      "quantized_decomposed.quantize_per_tensor.default": 7,
+      "aten._int_mm.default": 6,
+      "aten._to_copy.default": 6,
+      "aten.expand.default": 6,
+      "aten.add.Tensor": 4,
+      "aten.cat.default": 4,
+      "aten.slice.Tensor": 4,
+      "<built-in function getitem>": 3,
+      "aten.add.Scalar": 2,
+      "aten.bmm.default": 2,
+      "aten.clone.default": 2,
+      "aten.mean.dim": 2
+    },
+    "quantized": {
+      "aten.mul.Tensor": 23,
+      "aten.reshape.default": 18,
+      "aten.transpose.int": 11,
+      "quantized_decomposed.quantize_per_tensor.default": 7,
+      "aten._int_mm.default": 6,
+      "aten._to_copy.default": 6,
+      "aten.add.Tensor": 4,
+      "aten.cat.default": 4,
+      "aten.slice.Tensor": 4,
+      "<built-in function getitem>": 3,
+      "aten.expand.default": 2,
+      "aten.matmul.default": 2,
+      "aten.neg.default": 2,
+      "aten.rms_norm.default": 2,
+      "aten.unsqueeze.default": 2
+    }
+  },
+  "operator_cases": [
+    {
+      "groups": [
+        4,
+        25,
+        29
+      ],
+      "count": 3,
+      "capsule": "layers/G_matmul_m1k48n80_raw",
+      "partial_sum_bound": 432,
+      "mac_result_bits": 20,
+      "op": "matmul",
+      "inputs": {
+        "W": [
+          [
+            48,
+            80
+          ],
+          "i8",
+          "weight"
+        ],
+        "A0": [
+          [
+            1,
+            48
+          ],
+          "i8",
+          "input"
+        ]
+      },
+      "output": [
+        "Y0",
+        [
+          1,
+          80
+        ],
+        "i32"
+      ],
+      "epilogue": [],
+      "reduction_extent": 48,
+      "output_elements": 80,
+      "macs": 3840,
+      "semantic": "contraction",
+      "total_macs": 11520,
+      "share": 0.5556
+    },
+    {
+      "groups": [
+        33
+      ],
+      "count": 1,
+      "capsule": "layers/G_matmul_m1k80n48_raw",
+      "partial_sum_bound": 720,
+      "mac_result_bits": 20,
+      "op": "matmul",
+      "inputs": {
+        "W": [
+          [
+            80,
+            48
+          ],
+          "i8",
+          "weight"
+        ],
+        "A0": [
+          [
+            1,
+            80
+          ],
+          "i8",
+          "input"
+        ]
+      },
+      "output": [
+        "Y0",
+        [
+          1,
+          48
+        ],
+        "i32"
+      ],
+      "epilogue": [],
+      "reduction_extent": 80,
+      "output_elements": 48,
+      "macs": 3840,
+      "semantic": "contraction",
+      "total_macs": 3840,
+      "share": 0.1852
+    },
+    {
+      "groups": [
+        38
+      ],
+      "count": 1,
+      "capsule": "layers/G_matmul_m1k48n64_raw",
+      "partial_sum_bound": 432,
+      "mac_result_bits": 20,
+      "op": "matmul",
+      "inputs": {
+        "W": [
+          [
+            48,
+            64
+          ],
+          "i8",
+          "weight"
+        ],
+        "A0": [
+          [
+            1,
+            48
+          ],
+          "i8",
+          "input"
+        ]
+      },
+      "output": [
+        "Y0",
+        [
+          1,
+          64
+        ],
+        "i32"
+      ],
+      "epilogue": [],
+      "reduction_extent": 48,
+      "output_elements": 64,
+      "macs": 3072,
+      "semantic": "contraction",
+      "total_macs": 3072,
+      "share": 0.1481
+    },
+    {
+      "groups": [
+        19
+      ],
+      "count": 1,
+      "capsule": "layers/G_matmul_m1k48n48_raw",
+      "partial_sum_bound": 432,
+      "mac_result_bits": 20,
+      "op": "matmul",
+      "inputs": {
+        "W": [
+          [
+            48,
+            48
+          ],
+          "i8",
+          "weight"
+        ],
+        "A0": [
+          [
+            1,
+            48
+          ],
+          "i8",
+          "input"
+        ]
+      },
+      "output": [
+        "Y0",
+        [
+          1,
+          48
+        ],
+        "i32"
+      ],
+      "epilogue": [],
+      "reduction_extent": 48,
+      "output_elements": 48,
+      "macs": 2304,
+      "semantic": "contraction",
+      "total_macs": 2304,
+      "share": 0.1111
+    },
+    {
+      "groups": [
+        35
+      ],
+      "count": 1,
+      "capsule": "layers/G_residual_add_m1n48_b1_raw",
+      "op": "residual_add",
+      "inputs": {
+        "X0": [
+          [
+            1,
+            48
+          ],
+          "i8",
+          "input"
+        ],
+        "X1": [
+          [
+            1,
+            48
+          ],
+          "i8",
+          "input"
+        ]
+      },
+      "output": [
+        "Y0",
+        [
+          1,
+          48
+        ],
+        "i8"
+      ],
+      "epilogue": [],
+      "reduction_extent": null,
+      "output_elements": 48,
+      "macs": null,
+      "semantic": "elementwise_map"
+    }
+  ],
+  "coverage": {
+    "status": "qualified",
+    "device_groups": 7,
+    "covered_groups": 7,
+    "scope": "every device group verified in isolation under the corpus binding; full-model execution unverified"
+  }
+}
