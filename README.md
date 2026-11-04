@@ -1,100 +1,63 @@
-# gemmini-mlir
+# Merlin paper experiment compilers
 
-## Handwritten implementation
+This directory identifies the frozen compiler submissions used in paper revision `24181ce016544dac2742825dbc401230ebb85100`. Each experiment branch contains its original compiler, setup manifest and saved result records. Source identities have been checked against the original experiment records. No agent, compiler, simulator or FPGA experiment was rerun for this archive.
 
-The `main` branch contains the handwritten xDSL Gemmini backend, source-bound
-upstream lowering, primitive device schedules, and recorded optimization
-experiments. The `handwritten-implementation` branch retains the original
-development history. The golden device path emits configuration,
-DMA, preload, compute and fence instructions. Ordinary RISC-V loops repeat the
-schedule; Gemmini FSM loop instructions have no lowering in this path. Every
-device object and final linked ELF must pass the executable-section
-[zero-FSM audit](mlir_oot/no_fsm_audit.py).
+| Compiler / run | Experiment branch | Commit |
+|---|---|---|
+| fresh10cca-live | [paper/historical/fresh10cca/checkpoint-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/historical/fresh10cca/checkpoint-4h) | [`4022f07c4fa8`](https://github.com/ucb-bar/gemmini-mlir/tree/4022f07c4fa8950e03b920cd015e438ff9959243) |
+| fresh10seed-live | [paper/historical/fresh10seed/checkpoint-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/historical/fresh10seed/checkpoint-4h) | [`ee46ba4f90f4`](https://github.com/ucb-bar/gemmini-mlir/tree/ee46ba4f90f4de8ce7a5cc10c2badbf2cc63fc99) |
+| fresh10cca-final12h | [paper/historical/fresh10cca/final-12h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/historical/fresh10cca/final-12h) | [`f7ae619495aa`](https://github.com/ucb-bar/gemmini-mlir/tree/f7ae619495aaa683648a6349aa20bc8ec371a5b8) |
+| fresh10seed-final12h | [paper/historical/fresh10seed/final-12h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/historical/fresh10seed/final-12h) | [`5f8b1a283714`](https://github.com/ucb-bar/gemmini-mlir/tree/5f8b1a2837144d94018bf6354057336c983bcb0f) |
+| F10-INFRA-REF-NOCCA | [paper/tooling/infra-ref/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/tooling/infra-ref/final-4h) | [`bb20d8e2d7f8`](https://github.com/ucb-bar/gemmini-mlir/tree/bb20d8e2d7f82243729117f9bd7c8c859a8d8061) |
+| F10-SCHED-REF-NOCCA | [paper/tooling/scheduling-ref/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/tooling/scheduling-ref/final-4h) | [`4202a912b894`](https://github.com/ucb-bar/gemmini-mlir/tree/4202a912b89421e9a18bac8af63cab9fa6f3df66) |
+| F10-FULL-NOREF-NOCCA | [paper/construction/full-noref/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/construction/full-noref/final-4h) | [`8aebaf251eb2`](https://github.com/ucb-bar/gemmini-mlir/tree/8aebaf251eb239c52a33bf85559dbc1a48bdcf0e) |
+| EL1-r5 | [paper/scaffolding/el1-r5/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scaffolding/el1-r5/final-4h) | [`32e1d3784d01`](https://github.com/ucb-bar/gemmini-mlir/tree/32e1d3784d018cd121f784a0b872cb2125b4e8c6) |
+| EL2-r5 | [paper/scaffolding/el2-r5/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scaffolding/el2-r5/final-4h) | [`e300b7f47fef`](https://github.com/ucb-bar/gemmini-mlir/tree/e300b7f47fef08bfb8a4e629515cd4d862cbed83) |
+| EL3-r5 | [paper/scaffolding/el3-r5/final-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scaffolding/el3-r5/final-4h) | [`b0b21a359e19`](https://github.com/ucb-bar/gemmini-mlir/tree/b0b21a359e19b46582db47761db2277968c0b917) |
+| CCA-RAW | [paper/cca/raw/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/raw/final-8h-total) | [`05b2b2897cb0`](https://github.com/ucb-bar/gemmini-mlir/tree/05b2b2897cb04d770320e5fe10c54eed2c60c306) |
+| CCA-EXO | [paper/cca/exo/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/exo/final-8h-total) | [`13b1aa8d163f`](https://github.com/ucb-bar/gemmini-mlir/tree/13b1aa8d163f3d333adb5c900eb984bcfc381693) |
+| CCA-TINYLLAMA | [paper/cca/tinyllama/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/tinyllama/final-8h-total) | [`b06f8a528865`](https://github.com/ucb-bar/gemmini-mlir/tree/b06f8a52886529505cba3290ace378a288db3659) |
+| CCA-RESNET50 | [paper/cca/resnet50/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/resnet50/final-8h-total) | [`551d36bd7f0f`](https://github.com/ucb-bar/gemmini-mlir/tree/551d36bd7f0f7931d23277c3630392b4e3f7d90c) |
+| CCA-ALL | [paper/cca/all/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/all/final-8h-total) | [`baaafedf75f2`](https://github.com/ucb-bar/gemmini-mlir/tree/baaafedf75f28237d707bbf6fc5654948f65cf37) |
+| FULL-REF-4H | [paper/construction/full-ref/checkpoint-4h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/construction/full-ref/checkpoint-4h) | [`cdbfa200cb77`](https://github.com/ucb-bar/gemmini-mlir/tree/cdbfa200cb770688b9f1d54e2dce48d40afb783c) |
+| FULL-REF | [paper/construction/full-ref/final-12h](https://github.com/ucb-bar/gemmini-mlir/tree/paper/construction/full-ref/final-12h) | [`8b6cbe401575`](https://github.com/ucb-bar/gemmini-mlir/tree/8b6cbe401575d53d46f14e0f4bbea7f274db9dd1) |
+| CCA-ALL-R2 | [paper/cca/all-r2/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/all-r2/final-8h-total) | [`cd49f04a8f22`](https://github.com/ucb-bar/gemmini-mlir/tree/cd49f04a8f22a8546f51505d182017b06981d968) |
+| CCA-TINYLLAMA-R2 | [paper/cca/tinyllama-r2/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/tinyllama-r2/final-8h-total) | [`812d0fa016ed`](https://github.com/ucb-bar/gemmini-mlir/tree/812d0fa016edca86017fe3b594bce1a48688e3df) |
+| CCA-EXO-R3 | [paper/refinement/cca-exo-r3/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/refinement/cca-exo-r3/final-8h-total) | [`b581fd1c8583`](https://github.com/ucb-bar/gemmini-mlir/tree/b581fd1c8583ea35513cb9342de6808ee25d0198) |
+| CCA-RESNET50-R2 | [paper/cca/resnet50-r2/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/resnet50-r2/final-8h-total) | [`0cf80344f981`](https://github.com/ucb-bar/gemmini-mlir/tree/0cf80344f9810414aea5d5c134c06e5792e83960) |
+| CCA-EXO-R2 | [paper/cca/exo-r2/final-8h-total](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca/exo-r2/final-8h-total) | [`bfd1da28a192`](https://github.com/ucb-bar/gemmini-mlir/tree/bfd1da28a192e57f91b36324b38b1b63fd1f8061) |
+| followup-scheduling-h3a-30min-v1-control | [paper/scheduling/followup-scheduling-h3a-30min-v1/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-h3a-30min-v1/control-final) | [`0c1aad41ec0e`](https://github.com/ucb-bar/gemmini-mlir/tree/0c1aad41ec0e722c00d5eca190ea552d9ccea39e) |
+| followup-scheduling-h3a-30min-v1-treatment | [paper/scheduling/followup-scheduling-h3a-30min-v1/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-h3a-30min-v1/treatment-final) | [`87f0f47ca08a`](https://github.com/ucb-bar/gemmini-mlir/tree/87f0f47ca08a77967a7927fead97a1cf46bb0dd6) |
+| scheduling-completion-authors-control | [paper/scheduling/scheduling-completion-authors/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/scheduling-completion-authors/control-final) | [`1c8236332cab`](https://github.com/ucb-bar/gemmini-mlir/tree/1c8236332cab090947dcc9daf167e62b028f6868) |
+| scheduling-completion-authors-treatment | [paper/scheduling/scheduling-completion-authors/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/scheduling-completion-authors/treatment-final) | [`2931d3f242d3`](https://github.com/ucb-bar/gemmini-mlir/tree/2931d3f242d3df35350456fcd70ecd2bfe7889f8) |
+| scheduling-completion-matched-60-r1-control | [paper/scheduling/scheduling-completion-matched-60-r1/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/scheduling-completion-matched-60-r1/control-final) | [`1af651fe24fd`](https://github.com/ucb-bar/gemmini-mlir/tree/1af651fe24fda3a736becdeb0ec852457f9b5702) |
+| scheduling-completion-matched-60-r1-treatment | [paper/scheduling/scheduling-completion-matched-60-r1/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/scheduling-completion-matched-60-r1/treatment-final) | [`8e9daa7e3638`](https://github.com/ucb-bar/gemmini-mlir/tree/8e9daa7e3638d9e0cb6eb789fc6a06045f75df48) |
+| followup-scheduling-reference-free-recovery-r1-control | [paper/scheduling/followup-scheduling-reference-free-recovery-r1/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-reference-free-recovery-r1/control-final) | [`b7294534993a`](https://github.com/ucb-bar/gemmini-mlir/tree/b7294534993aa5fb30a006df67c7f61aa2bfdd3d) |
+| followup-scheduling-reference-free-recovery-r1-treatment | [paper/scheduling/followup-scheduling-reference-free-recovery-r1/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-reference-free-recovery-r1/treatment-final) | [`012ca7567fd1`](https://github.com/ucb-bar/gemmini-mlir/tree/012ca7567fd1649c13daddad029c98dd299c3007) |
+| followup-scheduling-extension-v1-control | [paper/scheduling/followup-scheduling-extension-v1/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-extension-v1/control-final) | [`00eb9cc42731`](https://github.com/ucb-bar/gemmini-mlir/tree/00eb9cc42731605bda1e480252d14fd6fa81f10f) |
+| followup-scheduling-extension-v1-treatment | [paper/scheduling/followup-scheduling-extension-v1/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/scheduling/followup-scheduling-extension-v1/treatment-final) | [`80fd2f201fcf`](https://github.com/ucb-bar/gemmini-mlir/tree/80fd2f201fcf5206b17290c17eb6111da3fab2cc) |
+| followup-library-oracle-h2conv-30min-v3-control | [paper/transformations/followup-library-oracle-h2conv-30min-v3/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/transformations/followup-library-oracle-h2conv-30min-v3/control-final) | [`58f007262071`](https://github.com/ucb-bar/gemmini-mlir/tree/58f0072620713ae6543a8caefa83439e9cc30388) |
+| followup-library-oracle-h2conv-30min-v3-treatment | [paper/transformations/followup-library-oracle-h2conv-30min-v3/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/transformations/followup-library-oracle-h2conv-30min-v3/treatment-final) | [`766ca91656e9`](https://github.com/ucb-bar/gemmini-mlir/tree/766ca91656e917a3ede13dc8ef0d90a2efc99e03) |
+| followup-cca-h1d-p1r-control | [paper/cca-controlled/followup-cca-h1d-p1r/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca-controlled/followup-cca-h1d-p1r/control-final) | [`2c2fdb2c3cf3`](https://github.com/ucb-bar/gemmini-mlir/tree/2c2fdb2c3cf38294566ce21fae05886d647ddb18) |
+| followup-cca-h1d-p1r-treatment | [paper/cca-controlled/followup-cca-h1d-p1r/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca-controlled/followup-cca-h1d-p1r/treatment-final) | [`a5c73bfcbb6a`](https://github.com/ucb-bar/gemmini-mlir/tree/a5c73bfcbb6ae644ad7907b4b50ffd44e3b506d5) |
+| followup-cca-h1d-p2r-control | [paper/cca-controlled/followup-cca-h1d-p2r/control-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca-controlled/followup-cca-h1d-p2r/control-final) | [`9130e99b7c01`](https://github.com/ucb-bar/gemmini-mlir/tree/9130e99b7c014eb2ee6098e13bf930e47dcd3ab6) |
+| followup-cca-h1d-p2r-treatment | [paper/cca-controlled/followup-cca-h1d-p2r/treatment-final](https://github.com/ucb-bar/gemmini-mlir/tree/paper/cca-controlled/followup-cca-h1d-p2r/treatment-final) | [`ed9b3f45dcd9`](https://github.com/ucb-bar/gemmini-mlir/tree/ed9b3f45dcd92f00372cc3c04f7e5f4ec8675eef) |
 
-Start with [the compiler export API](mlir_oot/golden_compiler_export.py),
-[device lowering](mlir_oot/golden_device_lower.py), and
-[device compilation](mlir_oot/golden_device_compile.py). Target implementations
-live here; reusable proofs, host compilation, packing, runtime and dispatch live
-in [Merlin](https://github.com/ucb-bar/merlin). Frontend capture fixes live in
-[model2MLIR](https://github.com/ucb-bar/model2MLIR). Production decisions use input
-semantics, shapes, numeric contracts and hardware capabilities. Model selections
-and measured recipes remain explicit experiments.
+Each branch has:
 
-Use Python with Merlin installed and the compatible xDSL dependencies, plus an
-LLVM installation containing `mlir-translate` and a RISC-V-capable `clang`:
+- `compiler/`: exact frozen submission, with executable file modes preserved.
+- `experiment/manifest.json`: experiment identity, source digest and evidence status.
+- `experiment/setup.json`: starting point, model, budget, tools and dependency records.
+- `experiment/metrics.json`: recorded result metrics, grouped by their evaluation scope.
+- `experiment/source-files.json` and `verify_snapshot.py`: per-file hashes and a source verification command.
+- Measurement CSVs where available. Historical failures and excluded observations retain their status.
 
-```sh
-python -m mlir_oot.golden_device_compile \
-  --kernel gemm --m 17 --n 73 --k 65 --output-dtype i32 \
-  --llvm-bin "$LLVM_BIN" --workdir out/handwritten-gemm
-```
+Use the commit SHA or source digest when citing a version. The archival commits descend from the repository landing version for navigation. This parentage does not reconstruct the agents' development histories.
 
-This produces typed Gemmini/LLVM IR, a RISC-V object, compiler hashes and its
-instruction audit. Upstream contraction and capture export commands are declared
-in [manifest.yaml](manifest.yaml). The compatible dependency revisions and
-publication checks are recorded in [the publication notes](docs/handwritten_implementation.md).
+The 89-case kernel panel, construction-suite checks, modeled development curves and smaller paired studies have different denominators. A native campaign completion flag is not the frozen kernel panel's numerical verdict. Comparisons in different images are kept separate. The common FSM reference in the paper figures and same-image FSM controls are explicitly distinguished.
 
-The best verified whole-model observations are ResNet50 **28,649,233**,
-TinyLlama **378,946,263**, and SmolVLA **258,621,872,969** stock FireSim cycles.
-The 22M/300M/5B whole-model goals remain unmet. Start with the
-[optimization results](docs/optimization_results.md) for gains, regressions,
-accuracy gates, experiment scope and promotion decisions. Detailed records include the
-[performance evidence](docs/golden_progress.md),
-[optimization journey](docs/golden_optimization_journey.md), and
-[fused encoder reproduction recipe](experiments/fused_encoder_radix/README.md), and
-[Tiny observer reproduction recipe](experiments/tiny_closed_observer/README.md).
+The framework export, runtime, test inputs, toolchains, simulator and hardware-image dependencies remain part of the wider artifact package. These branches preserve the compiler versions and their existing evidence. Full execution reproducibility remains to be checked later.
 
-## Published parent provenance
+Historical curated-reference runs are retained for provenance and are not the primary Merlin + Exo result. The primary Exo-refined compiler is `CCA-EXO-R3`. The existing `mlsys27/test-generation-coverage` branch records the separate coverage implementation.
 
-Earlier published backend branches are indexed in
-[the retained branch directory](docs/published_package_branches.md).
-
-Standalone, buildable out-of-tree Merlin codegen backend for **gemmini** (family `tensor_resident`).
-
-> ## ⚠ NOT CERTIFIED — published with `--no-gate`
->
-> This package did **not** pass Merlin's publication certification gate, and was exported anyway with `--no-gate`. It is **not a champion** and it is **not the baseline**.
->
-> Gate refusal, verbatim: `mlir_oot gate: status='capsule_graded_l3_partial' certification='not_certified' (need rtl_certified or oot_runner.certify pass)`
->
-> Recorded status: `capsule_graded_l3_partial`. Whatever this package earned is recorded under `.merlin/certification.yaml` and in the `grading:` block of `manifest.yaml` — read those before citing any number from it. A certification gate is not a formality here: a functional pass, a graded pass and a cycle-accurate RTL certification are three different claims.
-
-This repository is **generated** by Merlin's `merlin-target-publish` bridge. The buildable tree at the repo root *is* the content; the package manifest + provenance ride along under `.merlin/`.
-
-## What
-
-- Package: `gemmini_xdsl_oot_v0`
-- Family: `tensor_resident`
-- Recorded status: `capsule_graded_l3_partial`
-- Merlin git sha (this export): `6ca662e`
-
-## How to run it
-
-No build step: `gemmini-opt` is a script and the tree it imports ships beside it.
-
-```sh
-git clone <this-repo> gemmini-mlir
-cd gemmini-mlir
-./gemmini-opt --help
-```
-
-`manifest.yaml` declares the entrypoint and the argv of every command the experiment ABI expects; run those, not a build.
-
-## Provenance
-
-- Certification: `not_certified`
-- Graded by run: `NOT_CERTIFIED_graded_by_merlincirct_g4p1_20260905`
-- Oracle behind that tier: cycle-accurate RTL (`rtl_gsim`)
-- Fingerprint: `n/a`
-
-See `.merlin/provenance.yaml` and `.merlin/certification.yaml` for the full lineage. Each commit on this repo is one promotion; the history is the provenance trail.
-
-## Experimental no-FSM golden branch
-
-Implementation ownership is mandatory: target-specific dialects, instructions, kernels,
-schedules and ABI glue live here; reusable host code generation, packing, requantization,
-global optimization, dispatch and runtime infrastructure live in Merlin. See [AGENTS.md](AGENTS.md).
-The backend must generalize: production passes select from input semantics, shapes, layouts,
-numeric contracts and hardware capabilities; workload-specific selections stay in experiments.
-
-The `golden/nofsm-wholemodels` working branch adds an **uncertified candidate** beside the published capsule backend. See [docs/golden_progress.md](docs/golden_progress.md) for the exact Jack ZIP reference, reproducible commands, measured probes, upstream lowering results, and remaining model work. The [optimization log](docs/golden_optimization_log.md) records each measured schedule change and the compiler or infrastructure abstraction needed to automate it. The historical `manifest.yaml` grading above applies to the published parent, not this branch.
+See [branches.json](branches.json) for machine-readable identities and [the preservation utility](tools/prepare_compiler_branches.py) for the source-to-branch mapping.
