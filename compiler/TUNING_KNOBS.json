@@ -1,0 +1,164 @@
+{
+  "schema": "merlin.tuning_knobs.v1",
+  "settings_file": "DENSE_SCHEDULE.json",
+  "knobs": {
+    "schedule": {
+      "values": [
+        "compact_mn",
+        "retained",
+        "segmented_ready_dma",
+        "regional_resident_rhs",
+        "epochs_wide_dma",
+        "segmented_frontier_dma",
+        "epochs_ready_dma",
+        "regional_ready_transfers"
+      ],
+      "mechanism": "dense_panel_epochs",
+      "note": "regional_resident_rhs retains full RHS across repeated M panels when K has at least two tiles and ceil(M/(array_m*isqrt(accumulator_rows/array_m)))>=2, with zero seed and independently checked full-RHS/full-K staging capacity. Otherwise regional_epochs selects epochs for at least two reduction tiles and compact_mn for one tile. Explicit alternatives share the target encoder. regional_transfers preserves the resident-RHS region and compact fallback, then uses checked 64-byte DMA-bounded panel transfers in the existing epochs region. Transfer promotion is supported by a frozen six-geometry paired complete-model panel; model confidence remains provisional."
+    },
+    "conv_schedule": {
+      "values": [
+        "sync",
+        "issue",
+        "epoch",
+        "readout",
+        "regional"
+      ],
+      "mechanism": "convolution_compute_epochs",
+      "note": "Checked convolution completion alternatives through one terminal encoder; regional applies explicitly configured library shape/resource guards and otherwise preserves sync."
+    },
+    "conv_pointwise": {
+      "values": [
+        "window",
+        "retained",
+        "epochs",
+        "raw_i32_retained"
+      ],
+      "mechanism": "dense_array_retention",
+      "note": "Default raw_i32_retained selects checked no-copy NHWC 1x1 unit-stride/no-pad matrix view only for raw i32 without bias/scale/activation, same hardware facts and prevalidated shared retained capacity/order. Other contracts preserve window. Three public native matched complete-model gains and current byte joins support provisional selection; authored large native numerics pass but timing remains UNKNOWN. No i8 extrapolation."
+    },
+    "conv_readout": {
+      "values": [
+        "direct",
+        "staged_columns",
+        "regional_staged",
+        "staged_epochs"
+      ],
+      "mechanism": "epilogue_store_path",
+      "note": "Default regional_staged uses full-width compute and bounded exact i32 staging for heterogeneous i8 column scales when ceil(reduction/array_edge)>=array_edge and output_channels>=array_edge. Numeric/storage legality is separate; unsupported geometry or absent private scratch preserves direct. Provisional complete model evidence and authored native boundary checks: ab/conv-staged/native-boundary; physical timing unqualified."
+    },
+    "qk_schedule": {
+      "values": [
+        "cell",
+        "packed",
+        "tiled"
+      ],
+      "mechanism": "dense_panel_epochs",
+      "note": "Explicit QK source-view alternatives. tiled uses shared bounded i8 transpose preparation and checked dense M tiling with original output row pitch. cell remains incumbent pending native complete-region paired cycles; no source/model identity selects a route."
+    },
+    "conv_pool_stripe": {
+      "values": [
+        1,
+        4,
+        7,
+        8,
+        15,
+        16,
+        "derived"
+      ],
+      "mechanism": "spatial_producer",
+      "note": "Explicit bounded halo widths plus derived one-primitive interior rows for 3x3/stride-2 pools. Other pool geometries preserve stripe1. Capacity/native limits clip widths."
+    },
+    "conv_pool_schedule": {
+      "values": [
+        "sync",
+        "issue",
+        "issue_peel",
+        "retain_raw",
+        "retain_epochs",
+        "packed_raw",
+        "packed_shared"
+      ],
+      "mechanism": "convolution_load_issue",
+      "note": "sync completes every physical effect; issue and issue_peel use the original load-issue law, with paired-product/pool-store drains and peeled 3x3/stride2 borders. retain_raw uses a checked raw-ACC vertical overlap epoch for single-readout 3x3/stride2 pools with capacity for two outputs. Default retain_epochs additionally groups source taps through the separate selected compute-epoch law; full raw-tile and original pool-store completion remain. Missing ordering preserves sync; unsupported raw geometry preserves issue_peel; single-pair or unbounded reductions preserve retain_raw. No new narrowing or scratch. Three matched native/complete-model pairs improve37.58%,56.95%,42.95%; provisional evidence ab/pool-epochs, physical timing unqualified. Earlier alternatives retained."
+    },
+    "conv_input_transfer": {
+      "values": [
+        "stream",
+        "rolling_narrow",
+        "rolling_wide",
+        "regional_rolling"
+      ],
+      "mechanism": "convolution_input_retention",
+      "note": "Optional checked ring input with disjoint channel panels and rewritten shared consumers; narrow/wide differ only stage channel width. Wide width and block stride are derived from selected MVIN extents and DMA request bound. Original ring drains retained; unsupported horizontal stride/capacity preserves stream. regional_rolling uses shared resource predicates for spatial kernels and at least array-edge input/output channels, followed by separate exact address/storage admission."
+    },
+    "share_exact_tensor_preparations": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "tensor_provenance_cse",
+      "note": "Optional exact source preparation sharing selected by the shared library on a provenance-tagged clone before ABI allocation. Original source positions and returned boundaries are retained; false remains incumbent pending matched complete-region cycles."
+    },
+    "conv_output_group": {
+      "values": [
+        "rows",
+        "compact_runs"
+      ],
+      "mechanism": "convolution_tiles",
+      "note": "Optional shared linear gather into full-array M tiles through an exact virtual-zero-halo run adapter; original/zero DMA segments are disjoint, without host packing. Unit horizontal stride only; default rows retains rolling regional input."
+    },
+    "host_reduction_carried": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "ordered_host_reduction",
+      "note": "Optional counted trailing reductions carry exact source-ordered scalar states through loop arguments. Interleaved domains preserve the incumbent path. False remains default pending matched native complete-region timing."
+    },
+    "conv_rhs_transport": {
+      "values": [
+        "serial",
+        "last_use"
+      ],
+      "mechanism": "last_use_rhs_phase_transport",
+      "note": "Selected default last_use attempts exact checked singleton rolling phase frontier; unsupported, single-phase, non-singleton or missing selected dependency laws preserve serial. Paired native outputs and provisional complete modeled cycle evidence in ab/conv-lookahead."
+    },
+    "source_integer_epilogue_fusion": {
+      "values": [
+        false,
+        true
+      ],
+      "mechanism": "integer_epilogue",
+      "note": "Optional exact private zero-seed signed contraction chains: i32 column bias and scalar-IR-proven saturated unit-scale i8 readout through the shared dense emitter. Floating chains, observers and unsupported setup retain the incumbent. False remains default pending matched complete-call timing."
+    },
+    "dense_panel_shape": {
+      "values": [
+        "balanced",
+        "rectangular"
+      ],
+      "mechanism": "dense_panel_epochs",
+      "note": "Opt-in full accumulator-product M/N candidate domain for streaming epochs; shared planner checks actual accumulator footprint, separate operand capacity and double-buffer live storage. Full-RHS resident resources and region predicate unchanged. Balanced remains incumbent pending matched cycles."
+    },
+    "elementwise_schedule": {
+      "values": [
+        "sync",
+        "epochs4",
+        "epochs16",
+        "epochs64"
+      ],
+      "mechanism": "loaded_sum_epochs",
+      "note": "Optional checked residual phase grouping with overflow-safe runtime disjoint-buffer guard and synchronous fallback. Default sync pending matched complete-call performance."
+    },
+    "dense_resident_readout": {
+      "values": [
+        "serial",
+        "ready",
+        "input_pipeline",
+        "regional_input_pipeline"
+      ],
+      "mechanism": "dense_ready_readout",
+      "note": "Serial, checked retained full-K ready readout, and advancing-LHS two-slot alternatives. Regional input pipeline preserves the original full-RHS predicate, requires complete N within two balanced hardware-derived panels and exact selected-block two-LHS-slot fit plus at least two iterations of the advancing full-tile-panel driver (a separate tail is not another driver iteration); otherwise serial. Provisional paired complete-model gains on two tall training geometries and a heldout K/M interaction; authored ragged native exactness only. Evidence ab/dense-resident-readout."
+    }
+  }
+}
