@@ -1,0 +1,61 @@
+{
+  "accumulator": {
+    "dtype": "i32"
+  },
+  "accumulator_stages": [
+    {
+      "dtype": "i32",
+      "kind": "preload",
+      "range": [
+        -2147483648,
+        2147483647
+      ],
+      "rounding": "none"
+    },
+    {
+      "dtype": "i32",
+      "kind": "accumulate",
+      "operand_scale": "none"
+    }
+  ],
+  "exits": {
+    "accumulator": true,
+    "requant": true
+  },
+  "readout": [
+    {
+      "domain": "accumulator",
+      "function": "relu",
+      "kind": "activation"
+    },
+    {
+      "kind": "convert",
+      "rounding": "half_even",
+      "to": "f32"
+    },
+    {
+      "columns_per_scale": 16,
+      "dtype": "f32",
+      "granularity": "per_command",
+      "kind": "scale",
+      "rounding": "half_even"
+    },
+    {
+      "clamp": [
+        -128,
+        127
+      ],
+      "kind": "requant",
+      "rounding": "half_even",
+      "to": "i8"
+    },
+    {
+      "kind": "pool",
+      "padding": "unknown",
+      "reductions": [
+        "max"
+      ]
+    }
+  ],
+  "schema": "output_path_v1"
+}
