@@ -834,6 +834,8 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=['prepare', 'extend-studies', 'refresh-metrics', 'attach-current-validation', 'update-metadata', 'create', 'verify-created'])
     parser.add_argument('--push', action='store_true')
     args = parser.parse_args()
+    if (OUT / 'organization.json').exists():
+        parser.error('Publication refs have been reorganized. This original importer is retained for provenance only. Use compiler-branches/branches.json and paper/index/runs.json for current identities. Do not recreate retired branch names.')
     if args.action == 'prepare':
         if args.push:
             parser.error('--push requires create')
