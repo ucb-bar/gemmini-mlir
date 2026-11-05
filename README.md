@@ -1,10 +1,11 @@
-# cca-tinyllama-r2 (seeded FULL-NOREF + own source originals + CCA bank, 4 h)
+# CCA study with TinyLlama kernels, revision 2
+
 
 This branch preserves the exact compiler submission used by experiment `CCA-TINYLLAMA-R2`. It is an archival experiment version, with its original source under `compiler/` and its setup and results under `experiment/`.
 
 | Item | Record |
 |---|---|
-| Experiment branch | `paper/cca/tinyllama-r2/final-8h-total` |
+| Experiment branch | `paper/cca/tinyllama-kernels-4plus4h` |
 | Original run | `/work/merlin/tasks/el4-grader-throughput-20261024/merlin/out/runs/gemmini/phase1/cca-coverage-20261029-cca-tinyllama-r2` |
 | Source digest | `90342d2ee8d495d00aa652d68bd2218792e2683c11b1065676dc45f477296a32` |
 | Source files | 1244 |
@@ -21,3 +22,11 @@ python3 experiment/verify_snapshot.py
 The original `compiler/manifest.yaml` declares the compiler entrypoints. Shared imported code shipped within the frozen compiler is retained because it is part of the measured source identity. Additional captured generic-library dependencies, when available, are under `dependencies/`. The manifest pins the remaining evaluator and toolchain records. Reconstruction of a full execution environment remains part of the artifact package.
 
 The archived measurements are historical observations. No compiler, agent, simulator or FPGA experiment was rerun to prepare this branch. Construction-suite completion and the frozen 89-case kernel panel have different scopes. Read the setup and per-record statuses before interpreting an aggregate.
+
+## Run identity
+
+Original result ID: `CCA-TINYLLAMA-R2`. Permanent measured-snapshot tag: `mlsys-paper-v1/cca/tinyllama-kernels-4plus4h`. This branch adds navigation metadata to that snapshot. Compiler and dependency trees and all saved measurements are unchanged. The tag retains the original complete commit.
+
+Names containing `4plus4h` mean four hours of seed construction followed by four additional hours of refinement. A `30min` suffix is the local study budget after its existing seed, not the cost of constructing the seed.
+
+See [the experiment index](https://github.com/ucb-bar/gemmini-mlir/tree/paper/index) for all original run IDs, paths, commits and source digests.
