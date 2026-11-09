@@ -4,10 +4,10 @@ Only adjacent source N tiles inside a real segment/slot are joined. The raw
 software move-in-B law is shared with retained transfers; the execution owner
 and its source/epoch verifier remain segmented, including slot reuse drains.
 """
-from merlin.compile.scheduling.dense_segmented_pipeline import (
+from merlin.compiler.schedule.dense_segmented_pipeline import (
     DenseSegmentedPipelineResult, verify_dense_segmented_pipeline,
 )
-from merlin.compile.scheduling.panel_tile_loads import _admit_dense_tile_loads
+from merlin.compiler.schedule.panel_tile_loads import _admit_dense_tile_loads
 from .dense_rhs_transfers import select_rhs_block_transfers
 
 

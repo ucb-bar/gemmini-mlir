@@ -10,11 +10,11 @@ from dataclasses import dataclass, replace
 from functools import lru_cache
 from hashlib import sha256
 
-from merlin.compile.scheduling.tile_load_coalescing import (
+from merlin.compiler.schedule.tile_load_coalescing import (
     TileLoadAddressLaw, TileLoadMapping, propose_tile_load_coalescing,
 )
-from merlin.compile.scheduling.panel_tile_loads import expand_panel_tile_loads
-from merlin.compile.scheduling.llvm_program import emit_index_program
+from merlin.compiler.schedule.panel_tile_loads import expand_panel_tile_loads
+from merlin.compiler.schedule.llvm_program import emit_index_program
 from merlin.sched.ir import Const, Kernel, Loop, Var, call, concretize, instances
 from .dense_rhs_transfers import REFERENCE_FILES
 from . import isa

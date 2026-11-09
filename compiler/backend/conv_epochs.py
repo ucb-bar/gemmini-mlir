@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 def epoch_admissions(source, hardware, numeric, qualification, *, complete_reduction=False):
-    from merlin.compile.scheduling.window_transfer import (
+    from merlin.compiler.schedule.window_transfer import (
         ConvolutionLoadIssueLaw, ConvolutionComputeEpochLaw,
     )
     record = json.loads(Path(__file__).with_name('conv_ordering.json').read_text())

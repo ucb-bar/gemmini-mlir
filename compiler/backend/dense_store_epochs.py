@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from merlin.sched.ir import Call, Const, Loop, Scaled, Select, Sum, Var, check_structure
 from . import isa
 from .column_batches import _admission
@@ -142,7 +142,7 @@ class DenseStoreEpochResult:
             raise ValueError('dense store epoch source or completion regions changed')
 
     def emit_llvm(self, builder, lower_call):
-        from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+        from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
         self.revalidate()
         bridge = FnBuilderIndexAdapter(builder)
         result = emit_index_program(self.kernel, bridge, lambda instruction, arguments:

@@ -12,9 +12,9 @@ import hashlib
 import json
 from math import prod
 
-from merlin.compile.scheduling.block_schedule import SpatialMaxReadout
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
-from merlin.compile.scheduling.spatial_max_stripes import plan_striped_spatial_max
+from merlin.compiler.schedule.blocks import SpatialMaxReadout
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.schedule.spatial_max_stripes import plan_striped_spatial_max
 
 from . import isa
 

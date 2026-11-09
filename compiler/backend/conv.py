@@ -8,11 +8,11 @@ from __future__ import annotations
 
 from math import prod
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
-from merlin.compile.scheduling.window_transfer import (
+from merlin.compiler.selection.knobs import knob
+from merlin.compiler.schedule.window_transfer import (
     CountedConvolutionPlan, Window2D, emit_counted_convolution,
 )
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
 from . import isa
 from .dense_readout import store_tile
 
@@ -155,8 +155,8 @@ def _emit_plan(ctx, plan, control, emit, selection, ifm, rhs, dst):
     """
     if selection == 'off':
         return emit_counted_convolution(plan, control, emit, synchronous_completion=True)
-    from merlin.compile.scheduling.window_transfer import ConvolutionInputRetentionLaw
-    from merlin.compile.scheduling.convolution_exploration import (
+    from merlin.compiler.schedule.window_transfer import ConvolutionInputRetentionLaw
+    from merlin.compiler.schedule.convolution_exploration import (
         ConvolutionExplorationSource, ConvolutionScheduleChoice,
         ConvolutionRhsResidencyLaw, plan_convolution_schedule,
         plan_convolution_rhs_residency, emit_convolution_schedule,

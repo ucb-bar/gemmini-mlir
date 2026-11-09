@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=70.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemmini-mlir"
+version = "0.1.0"
+description = "Gemmini compiler using the installed Merlin shared compiler library"
+requires-python = ">=3.12"
+dependencies = ["merlin>=0.0.1", "xdsl>=0.68,<0.76", "z3-solver", "jsonschema", "pyyaml", "numpy"]
+
+[project.scripts]
+gemmini-opt = "gemmini.cli:main"
+
+[project.entry-points."merlin.backends"]
+gemmini = "gemmini.provider"
+
+[tool.setuptools]
+packages = ["gemmini", "gemmini.backend"]
+package-dir = { gemmini = "compiler", "gemmini.backend" = "compiler/backend" }
+include-package-data = false
+
+[tool.setuptools.package-data]
+gemmini = ["TUNING_KNOBS.json", "tuning.json"]
+"gemmini.backend" = ["*.json", "data/*.yaml", "data/*.json"]

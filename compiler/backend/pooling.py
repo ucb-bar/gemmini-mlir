@@ -18,8 +18,8 @@ from __future__ import annotations
 
 from math import isfinite, prod
 
-from merlin.compile.logical_abi import pool_out_dims
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.ir.logical_abi import pool_out_dims
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
 
 from . import isa
 
@@ -37,7 +37,7 @@ def lower_pool(ctx, src, dst, attributes):
     # The producer has already applied its numerical epilogue to this i8 seam.
     # Pass only the standalone spatial contract to the alternate store path.
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     stripes = knob('POOL_STRIPES', default='off', values=('off', 'on'),
                    root=Path(__file__).resolve().parent.parent)
     if stripes == 'on':

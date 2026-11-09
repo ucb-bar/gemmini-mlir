@@ -10,10 +10,10 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from math import prod
 
-from merlin.compile.scheduling.batched_dense import (
+from merlin.compiler.schedule.batched_dense import (
     BatchMatrixView, BatchedDenseProblem, counted_batched_dense_products,
 )
-from merlin.compile.scheduling.llvm_program import (
+from merlin.compiler.schedule.llvm_program import (
     FnBuilderIndexAdapter, emit_index_effect_program,
 )
 from merlin.sched.ir import Call, Loop
@@ -87,7 +87,7 @@ def lower_head_batches(ctx, operands, attributes):
     """
     from .dense import lower_dense
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     from .shared_completion import leaf_start, completed_leaf
     completion_mode=knob('BATCH_COMPLETION',default='explicit',
         values=('explicit','completed_leaf'),root=Path(__file__).resolve().parent.parent)

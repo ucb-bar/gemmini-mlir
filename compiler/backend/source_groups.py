@@ -85,18 +85,35 @@ def _root_inputs(root):
     raise SourceGroupError('integer source contraction has no supported dense scalar-body proof')
 
 
-def _contraction_plans(module):
-    from merlin.compile.analysis.contraction_shapes import observe_contractions, zero_initialised
+def _contraction_plans(module, *, roots=None):
+    from merlin.compiler.ir.contraction_shapes import observe_contractions, zero_initialised
     from merlin.xdsl_dialects.lowering import output_fusion as OF
     from merlin.llvmlower.requantization_match import match
     from .frontend import _batched_matmul, _zero
     plans=[]
-    observed = observe_contractions(module)
+    if roots is None:
+        observed = observe_contractions(module)
+    else:
+        # Bounded proposal discovery supplies exact live roots. Ordinary source
+        # compilation retains the original whole-module observation below.
+        from merlin.compiler.ir.contraction_shapes import _generic_contraction, _named_contraction
+
+        members = set(module.walk())
+        if (type(roots) is not tuple or len(roots) > 512 or len(set(roots)) != len(roots)
+                or any(root not in members for root in roots)):
+            raise SourceGroupError('source contraction roots must be distinct live module operations')
+        observed = []
+        for root in roots:
+            shape = (_generic_contraction(root) if root.name == 'linalg.generic'
+                     else _named_contraction(root, root.name)
+                     if root.name in ('linalg.matmul', 'linalg.batch_matmul') else None)
+            if shape is not None:
+                observed.append((root, shape))
     seen = {root for root, _ in observed}
     # The shared shape observer intentionally names only matmul and
     # batch_matmul. Our counted product consumer also accepts several leading
     # axes, proved directly against their original maps and scalar recurrence.
-    observed += [(op, None) for op in module.walk()
+    observed += [(op, None) for op in (module.walk() if roots is None else roots)
                  if op not in seen and _batched_matmul(op) is not None]
     for root, shape in observed:
         if shape is not None and shape.dtypes and all(t.startswith(('f','bf')) for t in shape.dtypes):
@@ -560,7 +577,7 @@ def _standalone_capability(candidate):
 def _standalone_plans(module,taken,*,transpose_transfers=False):
     from .frontend import _bias_add
     from merlin.common.mlir_query import op_name
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     from pathlib import Path
     plans=[]
     if knob('SOURCE_MOVEMENT_COMPOSITION',default='off',values=('off','on'),

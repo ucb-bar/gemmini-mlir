@@ -3,9 +3,9 @@ from __future__ import annotations
 from functools import lru_cache
 import os
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
-from merlin.compile.scheduling.block_schedule import Load,Preload,Compute,Store,InitializeAccumulator
-from merlin.compile.scheduling.compact_dense import DenseLoopAdapter,DenseLoopStorage,DenseMemoryView,DenseBiasSource,schedule_compact_dense
+from merlin.compiler.selection.knobs import knob
+from merlin.compiler.schedule.blocks import Load,Preload,Compute,Store,InitializeAccumulator
+from merlin.compiler.schedule.compact_dense import DenseLoopAdapter,DenseLoopStorage,DenseMemoryView,DenseBiasSource,schedule_compact_dense
 from merlin.transforms.dense_planning import DenseProblem,DenseResources
 from merlin.sched.ir import Call,as_expr
 from . import isa
@@ -135,7 +135,7 @@ def lower_dense(ctx,lhs,rhs,dst,*,m,k,n,attributes=None):
             # its assigned storage. Preserve all legal retained realizations;
             # only this capacity refusal permits the bounded streaming family.
             from .dense_streaming import streaming_schedule
-            from merlin.compile.scheduling.compact_verification import DenseVerificationUnavailable
+            from merlin.compiler.schedule.compact_verification import DenseVerificationUnavailable
             try:
                 schedule,streaming_refusal=streaming_schedule(int(m),int(k),int(n),seeded,column_geometry)
             except DenseVerificationUnavailable as exc:

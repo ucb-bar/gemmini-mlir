@@ -571,7 +571,7 @@ def declare_logical_pointer_abi(cb: dict[str, Any]) -> dict[str, Any]:
     """
     from copy import deepcopy
     from pathlib import Path
-    from merlin.compile.logical_abi import logical_abi, logical_interface
+    from merlin.compiler.ir.logical_abi import logical_abi, logical_interface
     result = deepcopy(cb)
     if result.get('kernel_abi', {}).get('kind') == 'whole_program':
         return result

@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 
-from merlin.compile.scheduling.block_schedule import Compute, Preload
-from merlin.compile.scheduling.dense_array_retention import (
+from merlin.compiler.schedule.blocks import Compute, Preload
+from merlin.compiler.schedule.dense_array_retention import (
     DenseArrayRetentionAdmission, propose_dense_array_retention,
     verify_dense_array_retention,
 )
@@ -84,14 +84,14 @@ class DenseWeightRetentionResult:
         self.proposal.revalidate(self.adapter, self.proposal.admission)
 
     def materialize_scf(self):
-        from merlin.compile.scheduling.scf_commands import materialize_scf_commands
+        from merlin.compiler.schedule.scf_commands import materialize_scf_commands
         self.revalidate()
         module = materialize_scf_commands(self.kernel)
         self.revalidate()
         return module
 
     def emit_llvm(self, builder, lower_call):
-        from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+        from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
         self.revalidate()
         bridge = FnBuilderIndexAdapter(builder)
         result = emit_index_program(self.kernel, bridge, lambda instruction, arguments:

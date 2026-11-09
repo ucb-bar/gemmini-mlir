@@ -8,7 +8,7 @@ from dataclasses import asdict, replace
 from hashlib import sha256
 import json
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 
 
 def _mixed_target_binding(adapter, admission):
@@ -68,7 +68,7 @@ def maybe_pipeline_input(ready,problem,block,resources,storage,adapter,*,plan,pi
         selection=knob('DENSE_INPUT_PIPELINE',default='off',values=('off','two_slot'),
                        root=Path(__file__).resolve().parents[1])
     if selection=='off':return ready
-    from merlin.compile.scheduling.dense_ready_readout import dense_ready_input_choices,schedule_dense_pipeline
+    from merlin.compiler.schedule.dense_ready_readout import dense_ready_input_choices,schedule_dense_pipeline
     choices=dense_ready_input_choices(problem,resources,storage)
     placement=next((c for c in choices if c.block==block),None)
     if problem.bias or placement is None:
@@ -78,10 +78,10 @@ def maybe_pipeline_input(ready,problem,block,resources,storage,adapter,*,plan,pi
     admission,binding=_mixed_target_binding(adapter,ready.admission)
     # This is an independent invariant-RHS alternative, even when the incumbent
     # amortized residency selector preferred LHS. Keep its exact selected block.
-    from merlin.compile.scheduling.compact_dense import emit_compact_dense
-    from merlin.compile.scheduling.dense_panel_pipeline import dense_retained_operand_hoists,dense_retained_compute_order
-    from merlin.compile.scheduling.loop_schedule import propose_loop_transforms
-    from merlin.compile.scheduling.schedule_ir import make_dense_schedule_plan
+    from merlin.compiler.schedule.compact_dense import emit_compact_dense
+    from merlin.compiler.schedule.dense_panel_pipeline import dense_retained_operand_hoists,dense_retained_compute_order
+    from merlin.compiler.schedule.loop_schedule import propose_loop_transforms
+    from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
     raw=emit_compact_dense(problem,block,storage,adapter,name='dense_retained',dtypes=('i8','i8','i32'),outer_order=('n','m'))
     transforms=dense_retained_operand_hoists(raw,adapter,role='weight')
     transforms+=dense_retained_compute_order(propose_loop_transforms(raw,transforms),adapter,order=('k','n','m'))

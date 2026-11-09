@@ -10,17 +10,17 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 from pathlib import Path
 
-from merlin.compile.tuning_knobs import knob
-from merlin.compile.scheduling.compact_dense import _digest
-from merlin.compile.scheduling.dense_panel_pipeline import _verify_dense_epochs
-from merlin.compile.scheduling.dense_ready_readout import (
+from merlin.compiler.selection.knobs import knob
+from merlin.compiler.schedule.compact_dense import _digest
+from merlin.compiler.schedule.dense_panel_pipeline import _verify_dense_epochs
+from merlin.compiler.schedule.dense_ready_readout import (
     DenseReadyReadoutCheckingProjection, _ready_execution_bound,
     propose_dense_ready_readout,
 )
-from merlin.compile.scheduling.dense_segmented_pipeline import (
+from merlin.compiler.schedule.dense_segmented_pipeline import (
     DenseSegmentedPipelineResult, verify_dense_segmented_pipeline,
 )
-from merlin.compile.scheduling.panel_tile_loads import (
+from merlin.compiler.schedule.panel_tile_loads import (
     PanelTileLoadResult, expand_panel_tile_loads,
 )
 
@@ -97,14 +97,14 @@ class DenseSegmentedReadyResult:
             raise ValueError('segmented ready source, actual effects, proof or adapter changed')
 
     def materialize_scf(self):
-        from merlin.compile.scheduling.scf_commands import materialize_scf_commands
+        from merlin.compiler.schedule.scf_commands import materialize_scf_commands
         self.revalidate()
         result = materialize_scf_commands(self.kernel)
         self.revalidate()
         return result
 
     def emit_llvm(self, builder, lower_call):
-        from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+        from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
         self.revalidate()
         bridge = FnBuilderIndexAdapter(builder)
         result = emit_index_program(self.kernel, bridge,

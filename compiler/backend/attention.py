@@ -8,7 +8,7 @@ from __future__ import annotations
 from math import prod
 import os
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 
 
 class AttentionError(ValueError):
@@ -54,7 +54,7 @@ def _alias(ctx,name,offset,shape):
 
 class _TransposeBuilder:
     def __init__(self,fb):
-        from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter
+        from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter
         self.indices=FnBuilderIndexAdapter(fb)
         self.fb=fb
     def op(self,opcode,a,b):return self.indices.op(opcode,a,b)
@@ -84,7 +84,7 @@ def _shared_rhs(ctx,left,right,dst,stationary,geometry,attrs):
     from . import isa
     from .dense import lower_dense
     from .resident_rhs import lower_resident_products
-    from merlin.compile.scheduling.dense_rhs_residency import plan_dense_rhs_residency
+    from merlin.compiler.schedule.dense_rhs_residency import plan_dense_rhs_residency
     batches,hq,hkv,m,k,n=geometry
     group=hq//hkv
     report={'mechanism':'attention_grouped_rhs','query_heads':hq,'kv_heads':hkv,

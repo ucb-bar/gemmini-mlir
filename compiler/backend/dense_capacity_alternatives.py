@@ -34,7 +34,7 @@ def execute_segmented_alternative(m, k, n, bias, column_scales, retained, refusa
         return retained, refusal, {'selected': 'retained', 'reason': 'incumbent is not full K'}
     # This is the exact same original segmented planner, with current selected
     # issue, placement, transfer and readout consumers; no hand-authored stream.
-    from merlin.compile.scheduling.compact_verification import DenseVerificationUnavailable
+    from merlin.compiler.schedule.compact_verification import DenseVerificationUnavailable
     try:
         segmented, segmented_refusal = retained_schedule(
             m, k, n, bias, column_scales, True,

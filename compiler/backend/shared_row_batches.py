@@ -9,16 +9,16 @@ from dataclasses import replace
 from hashlib import sha256
 import json
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 
 from merlin.sched.ir import Call, Loop, as_expr
 from merlin.sched.ir.kernel import instances
 from merlin.sched.ir.expr import evaluate
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from . import isa
 from .dense import _adapter
 from .dense_pipeline import _retained_schedule
-from merlin.compile.scheduling.dense_panel_pipeline import DRAIN
+from merlin.compiler.schedule.dense_panel_pipeline import DRAIN
 from .dense_readout import _pack
 from .dense_ready import uniform_store_command
 

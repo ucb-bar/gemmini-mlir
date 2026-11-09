@@ -226,7 +226,7 @@ def execute_capacity_pipeline(m, k, n, bias=False, column_scales=False, *, ready
     """
     from pathlib import Path
     import os
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     from merlin.transforms.pipeline_state import PipelineContext
     from merlin.transforms.pipeline_policy import PipelinePolicy, execute_policy
     from .dense_pipeline import retained_schedule, _retained_schedule, PANEL_GEOMETRIES

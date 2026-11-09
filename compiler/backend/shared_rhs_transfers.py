@@ -11,10 +11,10 @@ from hashlib import sha256
 from pathlib import Path
 
 from merlin.sched.ir import Call, Const, Loop, Ptr, Scaled, Select, Sum, Var
-from merlin.compile.scheduling.tile_load_coalescing import (
+from merlin.compiler.schedule.tile_load_coalescing import (
     TileLoadAddressLaw, TileLoadMapping, propose_tile_load_coalescing,
 )
-from merlin.compile.scheduling.panel_tile_loads import (
+from merlin.compiler.schedule.panel_tile_loads import (
     expand_panel_tile_loads, _same_band_call,
 )
 from .dense_rhs_transfers import REFERENCE_FILES, _quotient

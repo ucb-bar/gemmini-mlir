@@ -9,7 +9,7 @@ existing selected identical-config ordered-store law.
 from dataclasses import asdict
 from hashlib import sha256
 
-from merlin.compile.scheduling.convolution_output_groups import ConvolutionOutputGroup
+from merlin.compiler.schedule.convolution_output_groups import ConvolutionOutputGroup
 from . import isa
 from .column_batches import _admission
 from .dense_ready import uniform_store_command

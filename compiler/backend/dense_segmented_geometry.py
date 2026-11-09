@@ -11,7 +11,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from merlin.transforms.pipeline_policy import (
     PipelinePolicy, PipelineVariant, PolicyFacts, RegisteredPass,
     ResourcePredicate, execute_policy,
@@ -46,7 +46,7 @@ def _segmented_owner(result):
     from .dense_segmented_readout import DenseSegmentedReadyResult, _owners
     from .dense_rhs_transfers import DenseRhsTransferResult
     from .dense_segmented_frontier import DenseGroupedFrontierResult
-    from merlin.compile.scheduling.dense_segmented_pipeline import DenseSegmentedPipelineResult
+    from merlin.compiler.schedule.dense_segmented_pipeline import DenseSegmentedPipelineResult
     if type(result) is DenseSegmentedReadyResult:
         result.revalidate()
         result = result.original
@@ -113,7 +113,7 @@ def execute_segmented_geometry(m, k, n, bias, column_scales, incumbent, refusal,
     source = SegmentedGeometrySource(m, k, n, bias, column_scales, split)
     source.revalidate()
     from .dense_pipeline import retained_schedule
-    from merlin.compile.scheduling.compact_verification import DenseVerificationUnavailable
+    from merlin.compiler.schedule.compact_verification import DenseVerificationUnavailable
     try:
         alternate, alternate_refusal = retained_schedule(m, k, n, bias,
             column_scales, True, geometry='wide_16', ready_readout=ready_readout)

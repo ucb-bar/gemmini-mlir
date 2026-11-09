@@ -12,7 +12,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from . import isa
 from .dense_readout import store_tile
 

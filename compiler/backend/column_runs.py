@@ -6,7 +6,7 @@ private ACC interval. No configuration snapshot or asynchronous reuse is used.
 """
 from __future__ import annotations
 from . import isa
-from merlin.compile.scheduling.dense_contracts import DenseTiledIntegerReadout
+from merlin.compiler.schedule.dense_contracts import DenseTiledIntegerReadout
 
 
 def plan_column_runs(groups, n, rows, attributes):

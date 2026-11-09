@@ -25,11 +25,22 @@ def main():
             binding_stage='caller_before_stock_lowering', hardware_cycles='not_measured')
         request['options']['features'] -= {FEATURE}
         source_text = selected
-    from merlin.llvmlower.scalar_window_reduction import FEATURE as WINDOW_FEATURE, prepare_scalar_window_reductions
+    window_feature = 'scalar_window_reductions'
     window = None
-    if WINDOW_FEATURE in request['options']['features']:
+    if window_feature in request['options']['features']:
+        try:
+            from merlin.llvmlower.scalar_window_reduction import FEATURE, prepare_scalar_window_reductions
+        except ModuleNotFoundError as error:
+            if error.name != 'merlin.llvmlower.scalar_window_reduction':
+                raise
+            raise ValueError(
+                'selected scalar_window_reductions pass is unavailable in the selected compiler environment; '
+                'provide its explicitly reviewed source overlay'
+            ) from error
+        if FEATURE != window_feature:
+            raise ValueError('selected scalar window reduction module has a different feature identity')
         source_text, window = prepare_scalar_window_reductions(source_text, enabled=True)
-        request['options']['features'] -= {WINDOW_FEATURE}
+        request['options']['features'] -= {window_feature}
     result = lower_model(source_text, work, targets=(), retain_llvm_dialect=False, **request['options'])
     if prepared is not None:
         (work / 'tensor-preparation-cse.json').write_text(json.dumps(prepared, indent=2))

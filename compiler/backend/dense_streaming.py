@@ -11,11 +11,11 @@ from functools import lru_cache
 import hashlib,json
 from pathlib import Path
 
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource
-from merlin.compile.scheduling.dense_panel_pipeline import DensePanelOverlapAdmission,DenseRetainedReductionAdmission
-from merlin.compile.scheduling.dense_segmented_pipeline import DenseSegmentedAdmission
-from merlin.compile.scheduling.dense_ready_readout import schedule_dense_pipeline
-from merlin.compile.scheduling.schedule_ir import make_dense_schedule_plan
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource
+from merlin.compiler.schedule.dense_panel_pipeline import DensePanelOverlapAdmission,DenseRetainedReductionAdmission
+from merlin.compiler.schedule.dense_segmented_pipeline import DenseSegmentedAdmission
+from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
+from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
 from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
 from . import isa
 

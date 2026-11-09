@@ -9,11 +9,11 @@ from __future__ import annotations
 
 from math import isfinite, prod
 
-from merlin.compile.scheduling.block_schedule import SpatialMaxReadout
-from merlin.compile.scheduling.spatial_producer import SpatialProducerPlan, emit_spatial_producer
-from merlin.compile.scheduling.spatial_readout import RoundedReadout, SpatialReadoutChain
-from merlin.compile.scheduling.window_transfer import CountedConvolutionPlan, Window2D
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.schedule.blocks import SpatialMaxReadout
+from merlin.compiler.schedule.spatial_producer import SpatialProducerPlan, emit_spatial_producer
+from merlin.compiler.schedule.spatial_readout import RoundedReadout, SpatialReadoutChain
+from merlin.compiler.schedule.window_transfer import CountedConvolutionPlan, Window2D
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
 
 from . import isa
 
@@ -111,7 +111,7 @@ def lower_conv_pool(ctx, ifm, rhs, dst, attributes):
 
     # Reuse the canonical producer unchanged. Only transfer-only weights gain
     # invocation-local residency; each input tile still uses its original rows.
-    from merlin.compile.scheduling.convolution_exploration import (
+    from merlin.compiler.schedule.convolution_exploration import (
         ConvolutionExplorationSource, ConvolutionRhsResidencyLaw,
         plan_convolution_schedule, plan_convolution_rhs_residency,
         emit_convolution_rhs_preparation,

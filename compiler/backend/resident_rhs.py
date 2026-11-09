@@ -10,8 +10,8 @@ from __future__ import annotations
 from dataclasses import replace, asdict
 from math import isfinite
 
-from merlin.compile.scheduling.dense_rhs_residency import plan_dense_rhs_residency
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.dense_rhs_residency import plan_dense_rhs_residency
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from merlin.sched.ir import Call, Loop, as_expr
 from . import isa
 from .dense import _schedule
@@ -473,7 +473,7 @@ def lower_resident_products(ctx,members,*,ordinary=False):
     members=tuple(members)
     if len(members)<2:return None
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     root=Path(__file__).resolve().parent.parent
     # Ordinary independent products may share private array rows even when
     # their external tensors have separate storage. Explicit resident epochs
@@ -542,7 +542,7 @@ def lower_resident_products(ctx,members,*,ordinary=False):
     except (ValueError,KeyError,TypeError,OverflowError):
         return None
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     epoch_receipt = None
     if knob('RESIDENT_COMPUTE_EPOCHS',default='off',values=('off','on'),root=Path(__file__).resolve().parent.parent) == 'on':
         admitted = _compute_epoch_plan(prepared)

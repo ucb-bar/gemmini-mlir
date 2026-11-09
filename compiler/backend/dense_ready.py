@@ -7,7 +7,7 @@ the call, so no per-store numerical-state snapshot across changing words is used
 """
 from pathlib import Path
 import hashlib,json
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from . import isa
 
 
@@ -34,7 +34,7 @@ def uniform_store_command(attributes,n,dtype):
 
 def causal_readout_admission(block,adapter):
     """Bind the selected causal law independently of the schedule family."""
-    from merlin.compile.scheduling.dense_panel_pipeline import DenseReadyReadoutAdmission
+    from merlin.compiler.schedule.dense_panel_pipeline import DenseReadyReadoutAdmission
     record=json.loads(Path(__file__).with_name('conv_ordering.json').read_text())
     ordering=record['ordering']
     digest=hashlib.sha256(json.dumps(ordering,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -72,7 +72,7 @@ def causal_readout_admission(block,adapter):
 
 
 def admit_causal_readout(original,problem,block,resources,storage,adapter):
-    from merlin.compile.scheduling.dense_ready_readout import schedule_dense_ready_readout
+    from merlin.compiler.schedule.dense_ready_readout import schedule_dense_ready_readout
     admission,binding=causal_readout_admission(block,adapter)
     result=schedule_dense_ready_readout(original,problem,block,resources,storage,adapter,
         admission,static_budget=128,timeout_ms=30000)

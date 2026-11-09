@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage
 from merlin.transforms.dense_planning import DenseBlock, DenseProblem, DenseResources, dense_blocks
 
 from . import isa

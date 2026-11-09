@@ -34,20 +34,33 @@ def compile_program(source):
         return cb, artifact
 
 
-def _compile(source, work):
+def _compile(source, work, *, selected_buffer=None):
     from .frontend import FrontendError, parse_source, build_direct_program_plan
     from .compiler import compile_buffer
-    try:
-        cb = parse_source(source)
-    except FrontendError:
-        if 'merlin_iface.' in source:
-            raise
-        return _mixed(source, work)
+    if selected_buffer is not None:
+        cb = _single_device_region(source)
+        if cb is None or cb != selected_buffer:
+            raise ValueError('selected direct recipe/source changed; explicit replanning required')
+    else:
+        try:
+            cb = parse_source(source)
+        except FrontendError:
+            if 'merlin_iface.' in source:
+                raise
+            cb = _single_device_region(source)
+            if cb is None:
+                return _mixed(source, work)
     # Every standalone invocation receives a fresh logical address mapping,
     # including interface projections used to compile owned device kernels.
     # Source syntax does not establish translation-cache residency.
     cb.setdefault('params', {})['address_space_boundary'] = True
     cb, artifact = compile_buffer(cb)
+    if selected_buffer is not None and not cb.get('declined'):
+        for key in ('commands', 'source_group_proof', 'constants'):
+            if cb.get(key) != selected_buffer.get(key):
+                raise ValueError('selected direct recipe changed during device lowering')
+        if any(cb['tensors'].get(key) != value for key, value in selected_buffer['tensors'].items()):
+            raise ValueError('selected direct recipe tensor representation changed during lowering')
     if 'merlin_iface.' not in source and not cb.get('declined'):
         from merlin.targetgen.oot_starterkit.llvm_context import make_llvm_context
         from xdsl.parser import Parser
@@ -58,11 +71,59 @@ def _compile(source, work):
     return cb, artifact
 
 
+def _single_device_region(source):
+    """Reuse the existing device callback for one completely covered function.
+
+    This is a region-only route. Any extra operation, unused boundary argument,
+    result or mixed host seam retains the existing whole-program lowering path.
+    Matcher, arithmetic and emitter errors are not swallowed as fallback.
+    """
+    from merlin.compiler.selection.knobs import knob
+    from merlin.frontends.linalg_mlir import parse_mlir_text
+
+    from .source_groups import discover_regions, source_to_buffer
+
+    module = parse_mlir_text(source)
+    module.verify()
+    functions = tuple(module.body.block.ops)
+    if len(functions) != 1 or functions[0].name != 'func.func' or len(functions[0].body.blocks) != 1:
+        return None
+    block = functions[0].body.block
+    if block.last_op is None or block.last_op.name != 'func.return':
+        return None
+    transpose = knob('TRANSPOSE_TRANSFERS', default='off', values=('off', 'on', 'device_keys'),
+                     root=Path(__file__).resolve().parent.parent) != 'off'
+    regions = discover_regions(module, transpose_transfers=transpose)
+    if len(regions) != 1:
+        return None
+    region = regions[0]
+    operations = tuple(block.ops)[:-1]
+    if (tuple(region.operations) != operations or tuple(region.inputs) != tuple(block.args)
+            or tuple(region.outputs) != tuple(block.last_op.operands) or len(region.outputs) != 1):
+        return None
+    cb = source_to_buffer(source, transpose_transfers=transpose)
+    # Internal-only callback opcodes retain their original mixed-program owner.
+    if any(command['opcode'] not in {'RES_PACK', 'MATMUL_RESIDENT', 'COMMIT', 'EVICT'}
+           for command in cb['commands']):
+        return None
+    output = region.outputs[0]
+    owner_index = next(index for index, operation in enumerate(operations) if output in operation.results)
+    cb.setdefault('params', {}).update({
+        'frontend_entry_bindings': [f'arg{index}' for index in range(len(block.args))],
+        'frontend_output_bindings': ['Y0'],
+        'frontend_source_values': [{
+            'op_index': owner_index,
+            'result_index': tuple(operations[owner_index].results).index(output), 'tensor': 'Y0',
+        }],
+    })
+    return cb
+
+
 def _mixed(source, work):
     from .host_runtime import DeviceArtifact, lower_whole_program, materialize_combined_llvm_dialect, whole_program_command_buffer
     from .source_groups import source_to_buffer, discover_regions
     from .compiler import compile_buffer
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     transpose_transfers = knob('TRANSPOSE_TRANSFERS', default='off', values=('off', 'on', 'device_keys'),
         root=Path(__file__).resolve().parent.parent) != 'off'
     reuse_device_kernels = knob('HOST_DEVICE_CODE_REUSE', default='off', values=('off', 'on'),

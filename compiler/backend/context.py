@@ -15,7 +15,7 @@ from xdsl.ir import Block, Region, SSAValue
 from xdsl.printer import Printer
 from io import StringIO
 
-from merlin.compile.logical_abi import kernel_arg_order, logical_abi
+from merlin.compiler.ir.logical_abi import kernel_arg_order, logical_abi
 from merlin.llvmlower.host_builder import FnBuilder, PTR
 
 

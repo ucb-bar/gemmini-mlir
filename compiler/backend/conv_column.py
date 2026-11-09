@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from math import prod
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
-from merlin.compile.scheduling.window_transfer import Window2D
+from merlin.compiler.selection.knobs import knob
+from merlin.compiler.schedule.window_transfer import Window2D
 from . import isa
 from .dense_readout import store_tile
 from .column_batches import emit_batched_column_readout

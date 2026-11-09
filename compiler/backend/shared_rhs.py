@@ -10,12 +10,12 @@ from hashlib import sha256
 from pathlib import Path
 import json
 
-from merlin.compile.scheduling.block_schedule import Load, Store
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage, DenseMemoryView
-from merlin.compile.scheduling.dense_shared_rhs import schedule_dense_shared_rhs
-from merlin.compile.scheduling.dense_shared_rhs_check import DenseRHSReuseLaw
-from merlin.compile.scheduling.dense_panel_pipeline import DRAIN
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.blocks import Load, Store
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
+from merlin.compiler.schedule.dense_shared_rhs import schedule_dense_shared_rhs
+from merlin.compiler.schedule.dense_shared_rhs_check import DenseRHSReuseLaw
+from merlin.compiler.schedule.dense_panel_pipeline import DRAIN
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from merlin.transforms.dense_planning import DenseProblem, DenseResources
 from merlin.sched.ir import Call, Loop, Ptr, as_expr
 from . import isa
@@ -26,7 +26,7 @@ from .shared_products import _epoch_index_kernel, _literal_epoch
 
 def _ready_admissions(problems,blocks,adapter):
     """Bind causal readout to the same selected ACC waits as dense ready."""
-    from merlin.compile.scheduling.dense_panel_pipeline import (
+    from merlin.compiler.schedule.dense_panel_pipeline import (
         DenseReadyReadoutAdmission,DenseRetainedReductionAdmission)
     record=json.loads(Path(__file__).with_name('conv_ordering.json').read_text())
     ordering=record['ordering']
@@ -119,7 +119,7 @@ def checked_schedule(specs, source_identity, *, ready=False):
         external_buffers_disjoint=True,retention_law=law,
         verification_timeout_ms=5000,max_members=32)
     if ready and result is not None:
-        from merlin.compile.scheduling.dense_shared_rhs_ready import schedule_dense_shared_rhs_ready
+        from merlin.compiler.schedule.dense_shared_rhs_ready import schedule_dense_shared_rhs_ready
         epochs,readouts=_ready_admissions(problems,result.blocks,adapter)
         result=schedule_dense_shared_rhs_ready(result,problems,resources,storages,adapter,
             encode_member=encode,project_member=project,retention_law=law,
@@ -161,7 +161,7 @@ def lower(ctx,members):
         specs.append((m,k,n))
     source_identity = sha256(json.dumps({'members':members,'specs':specs},sort_keys=True).encode()).hexdigest()
     try:
-        from merlin.compile.tuning_knobs import knob
+        from merlin.compiler.selection.knobs import knob
         ready_selection=knob('SHARED_READY_READOUT',default='off',values=('off','ready'),
             root=Path(__file__).resolve().parents[1])
         ready_receipt={'selection':ready_selection,'applied':False}

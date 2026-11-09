@@ -10,13 +10,13 @@ from dataclasses import replace
 from functools import lru_cache
 import hashlib,json,os
 from pathlib import Path
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource,emit_compact_dense
-from merlin.compile.scheduling.dense_panel_pipeline import DenseRetainedReductionAdmission,dense_retained_operand_hoists,dense_retained_compute_order
-from merlin.compile.scheduling.dense_ready_readout import schedule_dense_pipeline
-from merlin.compile.scheduling.schedule_ir import make_dense_schedule_plan
-from merlin.compile.scheduling.loop_schedule import propose_loop_transforms
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource,emit_compact_dense
+from merlin.compiler.schedule.dense_panel_pipeline import DenseRetainedReductionAdmission,dense_retained_operand_hoists,dense_retained_compute_order
+from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
+from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
+from merlin.compiler.schedule.loop_schedule import propose_loop_transforms
 from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from . import isa
 
 RETAINED_CAPACITY_REFUSAL='full-K retained panel exceeds assigned operand storage'
@@ -116,8 +116,8 @@ def _retained_schedule(m,k,n,bias,column_scales,segmented,geometry,storage_split
     elif segmented:
         # Retain complete LHS while double buffering bounded RHS segments.
         # This is a separate experimental family, never an incumbent default.
-        from merlin.compile.scheduling.dense_segmented_pipeline import DenseSegmentedAdmission,dense_segmented_blocks
-        from merlin.compile.scheduling.dense_panel_pipeline import DensePanelOverlapAdmission
+        from merlin.compiler.schedule.dense_segmented_pipeline import DenseSegmentedAdmission,dense_segmented_blocks
+        from merlin.compiler.schedule.dense_panel_pipeline import DensePanelOverlapAdmission
         if segmented_k_cap is None:
             # Capacity policy also invokes this non-dispatching planner directly.
             # Bind its actual root-selected resource bound, not only the public dispatcher.

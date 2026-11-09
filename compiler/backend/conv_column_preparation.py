@@ -7,7 +7,7 @@ varying-configuration snapshot nor a new completion-order law.
 """
 from dataclasses import dataclass
 from pathlib import Path
-from merlin.compile.tuning_knobs import knob
+from merlin.compiler.selection.knobs import knob
 from . import isa
 from .column_batches import _palette, _column_at, _admission
 

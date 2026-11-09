@@ -52,7 +52,7 @@ def _enclosing(operation, block):
 
 def _combine(plans):
     """Return a closed region only if its final original operation is an anchor."""
-    from .host_runtime import DeviceRegion
+    from .hostcontract import DeviceRegion
     from .source_groups import _spec
     roots = tuple(plan.root for plan in plans)
     block = roots[0].parent
@@ -137,8 +137,8 @@ def coalesce_raw_regions(module, plans):
     tensors; complete emitted CFG certification is a separate callback obligation.
     No source operations are rewritten here.
     """
-    from .host_runtime import DeviceRegion
-    from merlin.compile.scheduling.shared_input_groups import find_shared_input_groups
+    from .hostcontract import DeviceRegion
+    from merlin.compiler.schedule.shared_input_groups import find_shared_input_groups
     # This recognizer is a proposal, not target authority; it intentionally
     # returns no proposal for mixed shells, fill seeds and runtime initializers.
     try:

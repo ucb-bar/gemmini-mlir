@@ -12,15 +12,15 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, replace
 from math import isfinite, prod
 
-from merlin.compile.scheduling.affine_gather_runs import (
+from merlin.compiler.schedule.affine_gather_runs import (
     ConvolutionGatherRuns, emit_convolution_gather_runs,
     plan_convolution_resident_panel,
 )
-from merlin.compile.scheduling.block_schedule import Geometry
-from merlin.compile.scheduling.convolution_output_groups import plan_convolution_output_group
-from merlin.compile.scheduling.convolution_exploration import ConvolutionExplorationSource
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
-from merlin.compile.scheduling.window_transfer import CountedConvolutionPlan, Window2D
+from merlin.compiler.schedule.blocks import Geometry
+from merlin.compiler.schedule.convolution_output_groups import plan_convolution_output_group
+from merlin.compiler.schedule.convolution_exploration import ConvolutionExplorationSource
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.schedule.window_transfer import CountedConvolutionPlan, Window2D
 
 from . import isa
 from .dense_readout import store_tile
@@ -348,7 +348,7 @@ def lower(ctx, ifm, rhs, dst, attributes, *, physical_views=None, allow_wide=Fal
     if prepared is None:return False
     p=prepared.source.plan;attrs=prepared.attributes;fb=ctx.fb;builder=FnBuilderControlAdapter(fb)
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     spatial_epoch_choice=knob('CONV_SPATIAL_EPOCHS',default='primitive',
         values=('primitive','pair_m'),root=Path(__file__).resolve().parent.parent)
     spatial_epoch=None

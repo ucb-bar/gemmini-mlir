@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from functools import lru_cache
 from merlin.sched.ir import Call, Kernel, Loop, TensorArg
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from .source_integer_slice import plan_slice, check_slice_projection, IntegerSliceError
 from . import isa
 

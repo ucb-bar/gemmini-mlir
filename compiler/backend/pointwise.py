@@ -6,8 +6,8 @@ schedule owns storage, completion and device epilogues.
 """
 from __future__ import annotations
 from math import prod
-from merlin.compile.scheduling.pointwise_convolution import pointwise_dense_view
-from merlin.compile.scheduling.window_transfer import Window2D
+from merlin.compiler.schedule.pointwise_convolution import pointwise_dense_view
+from merlin.compiler.schedule.window_transfer import Window2D
 from . import isa
 
 
@@ -162,11 +162,11 @@ def _strided_schedule(window,n,tile_m,seeded,mixed_scales):
     import hashlib,json
     from pathlib import Path
     from .dense import _adapter
-    from merlin.compile.scheduling.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource,emit_compact_dense,schedule_compact_dense
-    from merlin.compile.scheduling.dense_panel_pipeline import DenseRetainedReductionAdmission,dense_retained_operand_hoists,dense_retained_compute_order
-    from merlin.compile.scheduling.dense_ready_readout import schedule_dense_pipeline
-    from merlin.compile.scheduling.schedule_ir import make_dense_schedule_plan
-    from merlin.compile.scheduling.loop_schedule import propose_loop_transforms
+    from merlin.compiler.schedule.compact_dense import DenseLoopStorage,DenseMemoryView,DenseBiasSource,emit_compact_dense,schedule_compact_dense
+    from merlin.compiler.schedule.dense_panel_pipeline import DenseRetainedReductionAdmission,dense_retained_operand_hoists,dense_retained_compute_order
+    from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
+    from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
+    from merlin.compiler.schedule.loop_schedule import propose_loop_transforms
     from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
     oh,ow=window.output_spatial
     m=window.input_shape[0]*oh*ow
@@ -207,14 +207,14 @@ def lower_strided_pointwise(ctx,ifm,rhs,dst,attributes=None):
     from dataclasses import asdict
     import hashlib,json
     from .dense_readout import store_tile,_pack
-    from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
+    from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
     attrs=dict(attributes or {})
     window,n,tile_m,zero_seed=_strided_geometry(ctx,ifm,rhs,dst,attrs)
     bias=attrs.get('bias')
     init=attrs.get('accumulator_init')
     mixed=attrs.get('acc_scale_by_column') is not None and len(set(map(float,attrs['acc_scale_by_column'])))>1
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     configured=knob('CONV_COLUMN_READOUT',default='recompute',values=('recompute','raw_reload'),
                     root=Path(__file__).resolve().parents[1])
     column_route=attrs.get('conv_column_readout',configured)

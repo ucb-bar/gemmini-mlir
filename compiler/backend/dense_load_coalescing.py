@@ -11,8 +11,8 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
 
-from merlin.compile.scheduling.block_schedule import Load
-from merlin.compile.scheduling.compact_dense import DenseLoopAdapter
+from merlin.compiler.schedule.blocks import Load
+from merlin.compiler.schedule.compact_dense import DenseLoopAdapter
 from merlin.sched.ir import Kernel, Loop, check_structure
 from merlin.sched.ir.integer_domain import check_integer_domain
 

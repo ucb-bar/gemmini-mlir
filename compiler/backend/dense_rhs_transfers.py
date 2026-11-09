@@ -8,9 +8,9 @@ No packet mask supplies a hardware capability or completion guarantee.
 """
 from dataclasses import dataclass,replace
 from hashlib import sha256
-from merlin.compile.scheduling.block_schedule import Load
-from merlin.compile.scheduling.tile_load_coalescing import TileLoadAddressLaw,TileLoadMapping,propose_tile_load_coalescing
-from merlin.compile.scheduling.panel_tile_loads import admit_panel_tile_loads
+from merlin.compiler.schedule.blocks import Load
+from merlin.compiler.schedule.tile_load_coalescing import TileLoadAddressLaw,TileLoadMapping,propose_tile_load_coalescing
+from merlin.compiler.schedule.panel_tile_loads import admit_panel_tile_loads
 from merlin.sched.ir import Const,Scaled,Sum,Var
 from . import isa
 
@@ -47,7 +47,7 @@ class DenseRhsTransferResult:
  def revalidate(self):self.checked.revalidate()
  def materialize_scf(self):return self.checked.materialize_scf()
  def emit_llvm(self,builder,lower_call):
-  from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter,emit_index_program
+  from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter,emit_index_program
   self.revalidate();bridge=FnBuilderIndexAdapter(builder)
   result=emit_index_program(self.kernel,bridge,lambda name,args:lower_call(name,{k:bridge.value(v) for k,v in args.items()}))
   self.revalidate();return result
@@ -85,7 +85,7 @@ def select_rhs_block_transfers(original,problem,block,resources,storage,adapter,
   project=lambda call:project(call) if call.instr=='gemmini_mvin_weight' else None,
   encode=encode,max_tiles=4,coalesce_tail=True)
  if not proposal_report['changes']:return original,dict(applied=False,proposal=proposal_report)
- from merlin.compile.scheduling.dense_ready_readout import DenseReadyReadoutResult,admit_ready_readout_tile_loads
+ from merlin.compiler.schedule.dense_ready_readout import DenseReadyReadoutResult,admit_ready_readout_tile_loads
  if consumer is None:
   consumer=admit_ready_readout_tile_loads if type(original) is DenseReadyReadoutResult else admit_panel_tile_loads
  checked=consumer(original,proposal,problem,block,resources,storage,adapter,

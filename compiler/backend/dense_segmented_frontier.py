@@ -9,13 +9,13 @@ from dataclasses import dataclass, replace
 from hashlib import sha256
 from pathlib import Path
 
-from merlin.compile.scheduling.block_schedule import Compute, Load, Preload
-from merlin.compile.scheduling.compact_dense import _digest
-from merlin.compile.scheduling.dense_panel_pipeline import _calls
-from merlin.compile.scheduling.dense_segmented_pipeline import (
+from merlin.compiler.schedule.blocks import Compute, Load, Preload
+from merlin.compiler.schedule.compact_dense import _digest
+from merlin.compiler.schedule.dense_panel_pipeline import _calls
+from merlin.compiler.schedule.dense_segmented_pipeline import (
     DenseSegmentedPipelineResult, verify_dense_segmented_pipeline,
 )
-from merlin.compile.scheduling.tile_load_coalescing import _plain, _replace_call
+from merlin.compiler.schedule.tile_load_coalescing import _plain, _replace_call
 from merlin.sched.ir import Call, Const, Loop, Var, check_structure
 
 
@@ -45,12 +45,12 @@ class DenseGroupedFrontierResult:
             raise ValueError('checked grouped frontier or its actual proof changed')
 
     def materialize_scf(self):
-        from merlin.compile.scheduling.scf_commands import materialize_scf_commands
+        from merlin.compiler.schedule.scf_commands import materialize_scf_commands
         self.revalidate(); result=materialize_scf_commands(self.kernel); self.revalidate()
         return result
 
     def emit_llvm(self,builder,lower_call):
-        from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter,emit_index_program
+        from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter,emit_index_program
         self.revalidate(); bridge=FnBuilderIndexAdapter(builder)
         result=emit_index_program(self.kernel,bridge,
             lambda name,args:lower_call(name,{k:bridge.value(v) for k,v in args.items()}))
@@ -59,7 +59,7 @@ class DenseGroupedFrontierResult:
 
 def group_future_frontier(original,problem,block,resources,storage,adapter,*,group_extent=None):
     if group_extent is None:
-        from merlin.compile.tuning_knobs import knob
+        from merlin.compiler.selection.knobs import knob
         group_extent=knob('DENSE_SEGMENTED_FRONTIER_GROUP',default=4,
             values=(2,4,8),root=Path(__file__).resolve().parents[1])
     if type(group_extent) is not int or group_extent not in (2,4,8):

@@ -9,8 +9,8 @@ pretending the combined consumer's issued-store bound counts physical stores.
 from dataclasses import asdict
 from merlin.sched.ir.kernel import instances
 from merlin.sched.ir.expr import evaluate
-from merlin.compile.scheduling.dense_panel_pipeline import DRAIN
-from merlin.compile.scheduling.dense_ready_readout import DenseReadyReadoutResult
+from merlin.compiler.schedule.dense_panel_pipeline import DRAIN
+from merlin.compiler.schedule.dense_ready_readout import DenseReadyReadoutResult
 
 
 def check_ready_partition(schedule, kernel, specs, starts, actual):
@@ -18,7 +18,7 @@ def check_ready_partition(schedule, kernel, specs, starts, actual):
     owner=schedule
     # Only the existing final-band wrapper may surround the typed ready owner.
     from .dense_rhs_transfers import DenseRhsTransferResult
-    from merlin.compile.scheduling.panel_tile_loads import PanelTileLoadResult
+    from merlin.compiler.schedule.panel_tile_loads import PanelTileLoadResult
     if type(owner) is DenseRhsTransferResult:
         owner=owner.checked
     if type(owner) is PanelTileLoadResult:

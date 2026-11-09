@@ -8,10 +8,10 @@ from dataclasses import asdict, dataclass, replace
 import hashlib
 import json
 
-from merlin.compile.scheduling.spatial_producer import SpatialProducerPlan
-from merlin.compile.scheduling.spatial_readout import prove_spatial_readout
-from merlin.compile.scheduling.window_transfer import emit_convolution_tile
-from merlin.compile.scheduling.window_transfer import (
+from merlin.compiler.schedule.spatial_producer import SpatialProducerPlan
+from merlin.compiler.schedule.spatial_readout import prove_spatial_readout
+from merlin.compiler.schedule.window_transfer import emit_convolution_tile
+from merlin.compiler.schedule.window_transfer import (
     ConvolutionLoadIssueLaw, ConvolutionComputeEpochLaw,
 )
 
@@ -37,7 +37,7 @@ class SpatialComputeEpochs:
 
 def plan_spatial_epochs(plan):
     """Reuse the selected completion facts, bound to this exact spatial source."""
-    from merlin.compile.scheduling.convolution_exploration import ConvolutionExplorationSource
+    from merlin.compiler.schedule.convolution_exploration import ConvolutionExplorationSource
     from .conv_epochs import epoch_admissions
     plan.__post_init__()
     p = plan.source.producer
@@ -75,7 +75,7 @@ def _emit_epoch_tile(plan, epochs, builder, issue, complete, **coordinates):
     This separate consumer uses its canonical effect generator, supplies the
     selected issue/retirement laws and owns every required completion boundary.
     """
-    from merlin.compile.scheduling.window_transfer import (
+    from merlin.compiler.schedule.window_transfer import (
         _emit_convolution_tile_effects, _validate_convolution_load_issue,
     )
     epochs.require(plan)

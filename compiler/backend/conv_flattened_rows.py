@@ -15,16 +15,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import isfinite, prod
 
-from merlin.compile.scheduling.horizontal_convolution import (
+from merlin.compiler.schedule.horizontal_convolution import (
     emit_horizontal_convolution_panels, plan_horizontal_convolution_panels,
 )
-from merlin.compile.scheduling.window_transfer import CountedConvolutionPlan, Window2D
-from merlin.compile.scheduling.affine_gather_runs import (
+from merlin.compiler.schedule.window_transfer import CountedConvolutionPlan, Window2D
+from merlin.compiler.schedule.affine_gather_runs import (
     ConvolutionGatherRuns, emit_convolution_matrix_gather,
     plan_convolution_resident_panel,
 )
-from merlin.compile.scheduling.block_schedule import Geometry
-from merlin.compile.scheduling.llvm_program import FnBuilderControlAdapter
+from merlin.compiler.schedule.blocks import Geometry
+from merlin.compiler.schedule.llvm_program import FnBuilderControlAdapter
 from . import isa
 from .dense_readout import store_tile
 
@@ -264,7 +264,7 @@ def _emit_boundary(prepared,builder,lower,complete):
 
 def _emit_complete(prepared, builder, lower, complete):
     """Consume the flattened interior and the original boundary partitions."""
-    from merlin.compile.scheduling.affine_gather_runs import (
+    from merlin.compiler.schedule.affine_gather_runs import (
         ConvolutionGatherRuns,emit_convolution_gather_runs,
     )
     panels=prepared.panels;p=prepared.original;w=p.window;co=p.output_channels
@@ -367,7 +367,7 @@ def lower(ctx, ifm, rhs, dst, attributes):
     # source. It grants no array retention or DMA issue/completion shortcuts:
     # every shared panel-ready/last-use callback is a real full drain.
     from .conv_epochs import epoch_admissions
-    from merlin.compile.scheduling.convolution_exploration import ConvolutionExplorationSource
+    from merlin.compiler.schedule.convolution_exploration import ConvolutionExplorationSource
     source=ConvolutionExplorationSource(p,panels.column_intervals,p.identity)
     _,epoch,_,ordering=epoch_admissions(source,'gemmini-fire-aligned-b8ff28edc096392c',
         'signed-i8-products-i32-source-ordered-readout','horizontal-prepared-private-panels-v1',

@@ -10,7 +10,7 @@ from dataclasses import dataclass, replace
 from math import prod
 
 from merlin.sched.ir import Call, Const, Kernel, Loop, Scaled, Sum, TensorArg, Var, as_expr
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from . import isa
 
 
@@ -358,7 +358,7 @@ def lower_transpose(ctx, operands, attributes):
     schedule=attributes.get('transpose_schedule')
     if schedule is None:
         from pathlib import Path
-        from merlin.compile.tuning_knobs import knob
+        from merlin.compiler.selection.knobs import knob
         schedule=knob('TRANSPOSE_SCHEDULE',default='baseline',values=('baseline','batched'),root=Path(__file__).resolve().parent.parent)
     plan=plan_transpose(a['shape'],attributes['permutation'],a['dtype'],schedule=schedule)
     if b['shape']!=[a['shape'][i] for i in plan.permutation]:raise TransposeError('transpose result axes differ')

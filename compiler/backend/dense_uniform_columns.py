@@ -8,7 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from hashlib import sha256
 import json
-from merlin.compile.scheduling.dense_contracts import DenseTiledIntegerReadout
+from merlin.compiler.schedule.dense_contracts import DenseTiledIntegerReadout
 from . import isa
 
 

@@ -11,10 +11,10 @@ from dataclasses import asdict, dataclass
 import hashlib
 import json
 
-from merlin.compile.scheduling.affine_gather_runs import (
+from merlin.compiler.schedule.affine_gather_runs import (
     ConvolutionGatherRuns, emit_convolution_gather_runs,
 )
-from merlin.compile.scheduling.window_transfer import Window2D
+from merlin.compiler.schedule.window_transfer import Window2D
 
 
 @dataclass(frozen=True)

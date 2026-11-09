@@ -10,7 +10,7 @@ from math import prod
 from functools import lru_cache
 
 from merlin.sched.ir import Call, Const, Kernel, Loop, Scaled, Sum, TensorArg, Var, as_expr
-from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from . import isa
 
 

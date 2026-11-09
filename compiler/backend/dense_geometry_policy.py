@@ -11,7 +11,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage, DenseMemoryView
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
 from merlin.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
 from merlin.transforms.pipeline_policy import (
     PipelinePolicy, PipelineVariant, PolicyFacts, RegisteredPass, ResourcePredicate, execute_policy,

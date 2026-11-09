@@ -28,7 +28,7 @@ def compile_buffer(buffer, *, symbol="kernel_entry"):
         ctx.emit(*flush())
     residents, products = {}, {}
     from pathlib import Path
-    from merlin.compile.tuning_knobs import knob
+    from merlin.compiler.selection.knobs import knob
     shared = knob('SHARED_PRODUCTS', default='off', values=('off', 'on', 'single_panel', 'equal_partitions'), root=Path(__file__).resolve().parent.parent)
     groups, consumed = {}, set()
     from .resident_rhs import resident_groups

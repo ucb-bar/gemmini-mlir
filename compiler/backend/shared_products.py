@@ -11,10 +11,10 @@ from pathlib import Path
 import json
 
 from merlin.sched.ir import Call, Ptr, as_expr
-from merlin.compile.scheduling.block_schedule import Load, Store
-from merlin.compile.scheduling.compact_dense import DenseLoopStorage, DenseMemoryView
-from merlin.compile.scheduling.compact_dense_group import schedule_compact_dense_group
-from merlin.compile.scheduling.compact_dense_group_check import DenseLHSReuseLaw
+from merlin.compiler.schedule.blocks import Load, Store
+from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
+from merlin.compiler.schedule.compact_dense_group import schedule_compact_dense_group
+from merlin.compiler.schedule.compact_dense_group_check import DenseLHSReuseLaw
 from merlin.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
 from . import isa
 from .dense import _adapter
@@ -398,14 +398,14 @@ def lower_shared_products(ctx, members, *, retention_law=None, single_panel_only
         return False
     try:
         index_kernel, epoch_evidence = _epoch_index_kernel(schedule.kernel)
-        from merlin.compile.tuning_knobs import knob
+        from merlin.compiler.selection.knobs import knob
         if knob('SHARED_LITERAL_EPOCHS', default='off', values=('off','on'),
                 root=Path(__file__).resolve().parent.parent) == 'on':
             index_kernel, literal_evidence = _literal_epoch(index_kernel)
             epoch_evidence['literal_epoch'] = literal_evidence
     except ValueError:
         return False
-    from merlin.compile.scheduling.llvm_program import FnBuilderIndexAdapter, emit_index_program
+    from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
     fb = ctx.fb
     ctx.fence()
     ctx.emit(*isa.config_ex(dataflow=1))
