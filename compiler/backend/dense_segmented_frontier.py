@@ -16,7 +16,7 @@ from merlin.compiler.schedule.dense_segmented_pipeline import (
     DenseSegmentedPipelineResult, verify_dense_segmented_pipeline,
 )
 from merlin.compiler.schedule.tile_load_coalescing import _plain, _replace_call
-from merlin.sched.ir import Call, Const, Loop, Var, check_structure
+from merlin.compiler.kernel_ir.ir import Call, Const, Loop, Var, check_structure
 
 
 @dataclass(frozen=True)

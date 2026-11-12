@@ -11,7 +11,7 @@ from hashlib import sha256
 from merlin.compiler.schedule.blocks import Load
 from merlin.compiler.schedule.tile_load_coalescing import TileLoadAddressLaw,TileLoadMapping,propose_tile_load_coalescing
 from merlin.compiler.schedule.panel_tile_loads import admit_panel_tile_loads
-from merlin.sched.ir import Const,Scaled,Sum,Var
+from merlin.compiler.kernel_ir.ir import Const,Scaled,Sum,Var
 from . import isa
 
 # Content pins for the selected raw, independently authored target software.

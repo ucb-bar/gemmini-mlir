@@ -10,7 +10,7 @@ from dataclasses import dataclass, replace
 from hashlib import sha256
 from pathlib import Path
 
-from merlin.sched.ir import Call, Const, Loop, Ptr, Scaled, Select, Sum, Var
+from merlin.compiler.kernel_ir.ir import Call, Const, Loop, Ptr, Scaled, Select, Sum, Var
 from merlin.compiler.schedule.tile_load_coalescing import (
     TileLoadAddressLaw, TileLoadMapping, propose_tile_load_coalescing,
 )

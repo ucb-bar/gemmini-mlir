@@ -10,7 +10,7 @@ from hashlib import sha256
 from pathlib import Path
 import json
 
-from merlin.sched.ir import Call, Ptr, as_expr
+from merlin.compiler.kernel_ir.ir import Call, Ptr, as_expr
 from merlin.compiler.schedule.blocks import Load, Store
 from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
 from merlin.compiler.schedule.compact_dense_group import schedule_compact_dense_group
@@ -168,7 +168,7 @@ def _epoch_index_kernel(kernel, *, readout_epochs=False):
     RAW/WAR scoreboard or load completion order is assumed.
     """
     import z3
-    from merlin.sched.ir import Loop, Const, Var, Sum, Scaled, Select
+    from merlin.compiler.kernel_ir.ir import Loop, Const, Var, Sum, Scaled, Select
     queries = 0
     def owner(call):
         if call.instr.startswith('shared_common_'):
@@ -316,10 +316,10 @@ def _literal_epoch(kernel, *, max_calls=256):
     products. Larger products retain counted loops; no tensor payload or
     output-cardinality dependent source expansion exceeds this fixed budget.
     """
-    from merlin.sched.ir import Loop
-    from merlin.sched.ir.kernel import instances
-    from merlin.sched.ir.expr import evaluate
-    from merlin.sched.primitives import unroll, Cursor
+    from merlin.compiler.kernel_ir.ir import Loop
+    from merlin.compiler.kernel_ir.ir import instances
+    from merlin.compiler.kernel_ir.ir import evaluate
+    from merlin.compiler.kernel_ir.primitives import unroll, Cursor
     def size(body):
         return sum(item.extent*size(item.body) if isinstance(item,Loop) else 1
                    for item in body)
@@ -342,7 +342,7 @@ def _literal_epoch(kernel, *, max_calls=256):
         raise ValueError('shared specialization changed ordered instruction instances')
     return specialized, {'applied':True,'max_calls':max_calls,
         'ordered_instruction_instances_checked':len(original),
-        'pass':'merlin.sched.primitives.unroll',
+        'pass':'merlin.compiler.kernel_ir.primitives.unroll',
         'source_sha256':kernel.digest(),'specialized_sha256':specialized.digest()}
 
 

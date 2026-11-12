@@ -67,7 +67,7 @@ def verify_uniform_column_schedule(schedule, proof, m, n, attributes):
     over all its loop instances, rather than assuming the planner's tile size.
     """
     import z3
-    from merlin.sched.ir import Call, Const, Loop, Scaled, Select, Sum, Var
+    from merlin.compiler.kernel_ir.ir import Call, Const, Loop, Scaled, Select, Sum, Var
     if type(proof) is not DenseUniformColumnPanels:
         raise ValueError('direct dense panels require the immutable source proof')
     proof.validate_source(n, attributes)

@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from pathlib import Path
 from merlin.compiler.selection.knobs import knob
-from merlin.sched.ir import Call, Const, Loop, Scaled, Select, Sum, Var, check_structure
+from merlin.compiler.kernel_ir.ir import Call, Const, Loop, Scaled, Select, Sum, Var, check_structure
 from . import isa
 from .column_batches import _admission
 

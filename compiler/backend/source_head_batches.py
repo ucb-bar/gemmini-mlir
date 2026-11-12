@@ -16,7 +16,7 @@ from merlin.compiler.schedule.batched_dense import (
 from merlin.compiler.schedule.llvm_program import (
     FnBuilderIndexAdapter, emit_index_effect_program,
 )
-from merlin.sched.ir import Call, Loop
+from merlin.compiler.kernel_ir.ir import Call, Loop
 
 _PRODUCT = 'gemmini_independent_head_product'
 _COMPLETE = 'gemmini_independent_head_complete'

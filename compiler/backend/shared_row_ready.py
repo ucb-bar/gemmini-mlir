@@ -7,8 +7,8 @@ Finite store backpressure admits the expanded command count, rather than
 pretending the combined consumer's issued-store bound counts physical stores.
 """
 from dataclasses import asdict
-from merlin.sched.ir.kernel import instances
-from merlin.sched.ir.expr import evaluate
+from merlin.compiler.kernel_ir.ir import instances
+from merlin.compiler.kernel_ir.ir import evaluate
 from merlin.compiler.schedule.dense_panel_pipeline import DRAIN
 from merlin.compiler.schedule.dense_ready_readout import DenseReadyReadoutResult
 

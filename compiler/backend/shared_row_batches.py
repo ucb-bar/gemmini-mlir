@@ -11,9 +11,9 @@ import json
 from pathlib import Path
 from merlin.compiler.selection.knobs import knob
 
-from merlin.sched.ir import Call, Loop, as_expr
-from merlin.sched.ir.kernel import instances
-from merlin.sched.ir.expr import evaluate
+from merlin.compiler.kernel_ir.ir import Call, Loop, as_expr
+from merlin.compiler.kernel_ir.ir import instances
+from merlin.compiler.kernel_ir.ir import evaluate
 from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from . import isa
 from .dense import _adapter

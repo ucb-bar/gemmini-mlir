@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from math import prod
 
-from merlin.sched.ir import Call, Const, Kernel, Loop, Scaled, Sum, TensorArg, Var, as_expr
+from merlin.compiler.kernel_ir.ir import Call, Const, Kernel, Loop, Scaled, Sum, TensorArg, Var, as_expr
 from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from . import isa
 

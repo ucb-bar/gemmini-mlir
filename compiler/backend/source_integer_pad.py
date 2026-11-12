@@ -6,7 +6,7 @@ base remains an actual ABI input: no fill value or allocation adjacency is infer
 from __future__ import annotations
 from dataclasses import dataclass, replace
 from functools import lru_cache
-from merlin.sched.ir import Call, Kernel, Loop, TensorArg
+from merlin.compiler.kernel_ir.ir import Call, Kernel, Loop, TensorArg
 from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
 from .source_integer_slice import plan_slice, check_slice_projection, IntegerSliceError
 from . import isa
@@ -36,7 +36,7 @@ def _reverse(body, dtype):
                 raise IntegerPadError('insert ownership/completion sequence changed')
             load,d1,store,d2=group
             # Args are Expr values; replace local address with an Expr as well.
-            from merlin.sched.ir import Const
+            from merlin.compiler.kernel_ir.ir import Const
             def swapped(args,full):return tuple((k,Const(isa.acc_addr(0,full=full)) if k=='addr' else v) for k,v in args)
             if load.arg('addr').value!=isa.acc_addr(0) or store.arg('addr').value!=isa.acc_addr(0,full=dtype=='i32'):
                 raise IntegerPadError('insert local accumulator address changed')

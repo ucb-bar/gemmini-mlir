@@ -13,8 +13,8 @@ import json
 
 from merlin.compiler.schedule.blocks import Load
 from merlin.compiler.schedule.compact_dense import DenseLoopAdapter
-from merlin.sched.ir import Kernel, Loop, check_structure
-from merlin.sched.ir.integer_domain import check_integer_domain
+from merlin.compiler.kernel_ir.ir import Kernel, Loop, check_structure
+from merlin.compiler.kernel_ir.ir import check_integer_domain
 
 
 MISSING_PREMISES = (

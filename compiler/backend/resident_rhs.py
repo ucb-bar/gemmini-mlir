@@ -12,7 +12,7 @@ from math import isfinite
 
 from merlin.compiler.schedule.dense_rhs_residency import plan_dense_rhs_residency
 from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
-from merlin.sched.ir import Call, Loop, as_expr
+from merlin.compiler.kernel_ir.ir import Call, Loop, as_expr
 from . import isa
 from .dense import _schedule
 from .dense_readout import store_tile, _pack
@@ -192,7 +192,7 @@ def _rewrite(schedule, plan):
     exactly full-RHS-cache tiles, and all continuing writes avoid that cache.
     """
     import z3
-    from merlin.sched.ir import Const, Var, Sum, Scaled, Select
+    from merlin.compiler.kernel_ir.ir import Const, Var, Sum, Scaled, Select
     queries=0
     removed=0
     def expr(e,env):
@@ -267,7 +267,7 @@ def _rewrite(schedule, plan):
 def _retain_lhs(kernel, shape, base):
     """Move checked source LHS tiles to a complete immutable member window."""
     import z3
-    from merlin.sched.ir import Const, Var, Sum, Scaled, Select
+    from merlin.compiler.kernel_ir.ir import Const, Var, Sum, Scaled, Select
     m, k, _ = shape
     d = isa.DIM
     mt, kt = (m+d-1)//d, (k+d-1)//d
@@ -404,9 +404,9 @@ def _literal_epoch(prepared, *, max_calls=256, max_rhs_tiles=64):
     issues the same dynamic operations, in the same order, with identical
     operands. Larger epochs retain their counted form and bounded code size.
     """
-    from merlin.sched.primitives import unroll, Cursor
-    from merlin.sched.ir.kernel import instances
-    from merlin.sched.ir.expr import evaluate
+    from merlin.compiler.kernel_ir.primitives import unroll, Cursor
+    from merlin.compiler.kernel_ir.ir import instances
+    from merlin.compiler.kernel_ir.ir import evaluate
     def size(items):
         return sum(item.extent*size(item.body) if isinstance(item,Loop) else 1 for item in items)
     if prepared[0][3].k_tiles*prepared[0][3].n_tiles>max_rhs_tiles or sum(size(item[5].body) for item in prepared)>max_calls:
@@ -428,7 +428,7 @@ def _literal_epoch(prepared, *, max_calls=256, max_rhs_tiles=64):
             specialized=unroll(specialized,Cursor(path))
         if concrete(specialized)!=original:
             raise ValueError('bounded resident unroll changed ordered instruction instances')
-        proof={**proof,'literal_epoch':{'pass':'merlin.sched.primitives.unroll',
+        proof={**proof,'literal_epoch':{'pass':'merlin.compiler.kernel_ir.primitives.unroll',
             'ordered_instruction_instances_checked':len(original),
             'source_sha256':kernel.digest(),'specialized_sha256':specialized.digest(),
             'max_epoch_calls':max_calls,'max_rhs_tiles':max_rhs_tiles}}

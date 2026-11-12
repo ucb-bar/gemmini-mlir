@@ -14,7 +14,7 @@ from merlin.compiler.schedule.dense_array_retention import (
     DenseArrayRetentionAdmission, propose_dense_array_retention,
     verify_dense_array_retention,
 )
-from merlin.sched.ir import Call, as_expr
+from merlin.compiler.kernel_ir.ir import Call, as_expr
 
 from . import isa
 

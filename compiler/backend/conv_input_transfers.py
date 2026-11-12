@@ -13,7 +13,7 @@ from merlin.compiler.schedule.tile_load_coalescing import (
 )
 from merlin.compiler.schedule.panel_tile_loads import expand_panel_tile_loads
 from merlin.compiler.schedule.llvm_program import emit_index_program
-from merlin.sched.ir import Const, Kernel, Loop, Var, call, concretize, instances
+from merlin.compiler.kernel_ir.ir import Const, Kernel, Loop, Var, call, concretize, instances
 from .dense_rhs_transfers import REFERENCE_FILES
 from . import isa
 

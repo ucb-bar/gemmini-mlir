@@ -17,7 +17,7 @@ from hashlib import sha256
 from pathlib import Path
 import json
 
-from merlin.sched.ir import Call, Const, Loop
+from merlin.compiler.kernel_ir.ir import Call, Const, Loop
 from merlin.compiler.schedule.configuration import ConfigurationAdapter, ConfigurationEffects
 from merlin.compiler.schedule.configuration_loops import hoist_loop_configuration, verify_loop_configuration_rewrite
 from merlin.compiler.schedule.configuration_loop_cleanup import eliminate_counted_configuration, verify_counted_configuration_rewrite

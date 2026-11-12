@@ -7,7 +7,7 @@ from merlin.compiler.selection.knobs import knob
 from merlin.compiler.schedule.blocks import Load,Preload,Compute,Store,InitializeAccumulator
 from merlin.compiler.schedule.compact_dense import DenseLoopAdapter,DenseLoopStorage,DenseMemoryView,DenseBiasSource,schedule_compact_dense
 from merlin.transforms.dense_planning import DenseProblem,DenseResources
-from merlin.sched.ir import Call,as_expr
+from merlin.compiler.kernel_ir.ir import Call,as_expr
 from . import isa
 from .dense_readout import store_tile,_pack
 
