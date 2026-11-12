@@ -17,7 +17,7 @@ def main():
     args = parser.parse_args()
     from .source_groups import source_to_buffer
     from .compiler import compile_buffer
-    from merlin.targetgen.oot_starterkit.plan import validate_mixed_program_plan
+    from merlin.development.targetgen.oot_starterkit.plan import validate_mixed_program_plan
     def compile_device(request):
         command_buffer, text = compile_buffer(source_to_buffer(request.source_text), symbol=request.symbol)
         output = request.workdir / 'device.mlir'

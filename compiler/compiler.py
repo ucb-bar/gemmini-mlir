@@ -19,7 +19,7 @@ def main(argv):
             from backend.frontend import parse_source, infer_tensors
             infer_tensors(parse_source(text))
         else:
-            from merlin.frontends.linalg_mlir import parse_mlir_text
+            from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
             parse_mlir_text(text).verify()
         return
     out = next((x.split("=",1)[1] for x in argv if x.startswith("--emit-command-buffer=")), None)
@@ -28,7 +28,7 @@ def main(argv):
     from backend.program import compile_program
     cb, artifact = compile_program(text)
     if out:
-        from merlin.targetgen.oot_starterkit.cmdbuf import CommandBufferBuilder
+        from merlin.development.targetgen.oot_starterkit.cmdbuf import CommandBufferBuilder
         builder = CommandBufferBuilder("gemmini", schema_path=ROOT / "backend/data/command_buffer.schema.json")
         builder._cb = cb
         builder.write(out)

@@ -12,11 +12,11 @@ import json
 from pathlib import Path
 
 from merlin.compiler.selection.knobs import knob
-from merlin.transforms.pipeline_policy import (
+from merlin.compiler.transforms.pipeline_policy import (
     PipelinePolicy, PipelineVariant, PolicyFacts, RegisteredPass,
     ResourcePredicate, execute_policy,
 )
-from merlin.transforms.pipeline_state import PassSpec, PipelineContext, PipelineSession
+from merlin.compiler.transforms.pipeline_state import PassSpec, PipelineContext, PipelineSession
 
 LEVEL = 'authored_segmented_geometry_source'
 OUTPUT = 'checked_segmented_geometry_schedule'

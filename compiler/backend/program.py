@@ -62,7 +62,7 @@ def _compile(source, work, *, selected_buffer=None):
         if any(cb['tensors'].get(key) != value for key, value in selected_buffer['tensors'].items()):
             raise ValueError('selected direct recipe tensor representation changed during lowering')
     if 'merlin_iface.' not in source and not cb.get('declined'):
-        from merlin.targetgen.oot_starterkit.llvm_context import make_llvm_context
+        from merlin.development.targetgen.oot_starterkit.llvm_context import make_llvm_context
         from xdsl.parser import Parser
         module = Parser(make_llvm_context(), artifact).parse_module()
         entry = next(op for op in module.body.block.ops if op.name == 'llvm.func' and op.sym_name.data == 'kernel_entry')
@@ -79,7 +79,7 @@ def _single_device_region(source):
     Matcher, arithmetic and emitter errors are not swallowed as fallback.
     """
     from merlin.compiler.selection.knobs import knob
-    from merlin.frontends.linalg_mlir import parse_mlir_text
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
 
     from .source_groups import discover_regions, source_to_buffer
 
@@ -170,7 +170,7 @@ def _mixed(source, work):
     path = materialize_combined_llvm_dialect(result)
     cb = whole_program_command_buffer(result)
     cb.setdefault('params', {})['source_placement'] = source_placement
-    from merlin.targetgen.oot_starterkit.plan import validate_mixed_program_plan
+    from merlin.development.targetgen.oot_starterkit.plan import validate_mixed_program_plan
     check = validate_mixed_program_plan(source, cb, path.read_text(),
         schema_path=Path(__file__).parent / 'data/mixed_program_plan.schema.json',
         lowered_abi={'entry_symbol':'kernel_entry','completion_symbol':'kernel_complete','completion_asm':'fence'})

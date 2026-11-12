@@ -10,12 +10,12 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from merlin.transforms.pipeline_policy import (
+from merlin.compiler.transforms.pipeline_policy import (
     PipelinePolicy, PipelineVariant, PolicyFacts, RegisteredPass,
     ResourcePredicate, execute_policy,
 )
-from merlin.transforms.pipeline_state import PassSpec, PipelineContext, PipelineSession
-from merlin.transforms.shape_policy import ShapeScheduleClass, assess_shape_policy
+from merlin.compiler.transforms.pipeline_state import PassSpec, PipelineContext, PipelineSession
+from merlin.compiler.transforms.shape_policy import ShapeScheduleClass, assess_shape_policy
 from . import isa
 
 LEVEL = 'authored_dense_storage_source'

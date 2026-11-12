@@ -216,7 +216,7 @@ def placement_report(module, device_regions, *, transpose_transfers=False):
               'total_top_level_operations': len(rows), 'device_groups': len(regions)}
     boundaries = [value for region in group_rows for value in (*region['inputs'], *region['outputs'])]
     known = [value['static_bytes'] for value in boundaries if value['static_bytes'] is not None]
-    from merlin.xdsl_dialects._common import text
+    from merlin.compiler.dialects._common import text
     from .source_groups import _path
     source_digest = hashlib.sha256(text(module, generic=True).encode()).hexdigest()
     path_digest = hashlib.sha256(json.dumps(_path(), sort_keys=True, separators=(',', ':')).encode()).hexdigest()

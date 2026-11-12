@@ -7,8 +7,8 @@ from hashlib import sha256
 from pathlib import Path
 import json
 
-from merlin.transforms.pipeline_policy import PolicyFacts, ResourcePredicate
-from merlin.transforms.pipeline_state import AnalysisStamp, PipelineContext
+from merlin.compiler.transforms.pipeline_policy import PolicyFacts, ResourcePredicate
+from merlin.compiler.transforms.pipeline_state import AnalysisStamp, PipelineContext
 from . import isa
 
 

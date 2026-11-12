@@ -81,7 +81,7 @@ def _boundary(source, commands, module, symbol):
 
     from merlin.compiler.ir.logical_abi import kernel_arg_order, logical_abi
     from merlin.compiler.backend.cabi import CRegionABI, TensorPort
-    from merlin.frontends.linalg_mlir import parse_mlir_text
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
 
     source_module = parse_mlir_text(source)
     source_module.verify()
@@ -140,7 +140,7 @@ def prepare_call(source, commands, artifact):
     from xdsl.parser import Parser
     from xdsl.printer import Printer
 
-    from merlin.targetgen.oot_starterkit.llvm_context import make_llvm_context
+    from merlin.development.targetgen.oot_starterkit.llvm_context import make_llvm_context
 
     module = Parser(make_llvm_context(), artifact).parse_module()
     module.verify()

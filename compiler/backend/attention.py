@@ -141,7 +141,7 @@ def _shared_rhs(ctx,left,right,dst,stationary,geometry,attrs):
 
 def _contract(ctx,operands,attributes,qk):
     from .dense import lower_dense
-    from merlin.llvmlower.dense_layout_loop import emit_dense_transpose
+    from merlin.compiler.lower.model.dense_layout_loop import emit_dense_transpose
     left,right,dst=(operands[key] for key in (('q','k','dst') if qk else ('p','v','dst')))
     batches,hq,hkv,m,k,n=_geometry(ctx,left,right,dst,qk)
     attrs=dict(attributes)

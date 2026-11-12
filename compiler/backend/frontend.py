@@ -19,7 +19,7 @@ def parse_source(text: str, *, linalg_lowerer: Callable[[str, dict[str, Any]], d
     it receives original source bytes and the shared structural inventory.
     Unsupported source never becomes an empty command stream or CPU fallback.
     """
-    from merlin.targetgen.oot_starterkit.iface import parse_interface, parse_linalg
+    from merlin.development.targetgen.oot_starterkit.iface import parse_interface, parse_linalg
 
     if 'merlin_iface.' in text:
         return parse_interface(text)
@@ -129,7 +129,7 @@ def _batched_matmul(op):
     from xdsl.ir.affine import AffineDimExpr, AffineMap
     from xdsl.dialects.builtin import AffineMapAttr, ArrayAttr
     from xdsl.dialects.linalg.attrs import IteratorTypeAttr, IteratorType
-    from merlin.frontends.linalg_patterns import recognize_signed_i8_i32_matmul
+    from merlin.compiler.frontend.linalg_patterns import recognize_signed_i8_i32_matmul
     batch_rank = len(ash) - 2
     dims = tuple(AffineDimExpr(i) for i in range(batch_rank + 3))
     batch, m, n, k = dims[:batch_rank], dims[-3], dims[-2], dims[-1]
@@ -157,8 +157,8 @@ def lower_linalg(text: str) -> dict[str, Any]:
     Scalar arithmetic and indexing are checked by shared dense recognition.
     Full mixed programs can use parse_source's linalg_lowerer callback.
     """
-    from merlin.frontends.linalg_mlir import parse_mlir_text
-    from merlin.frontends.linalg_patterns import recognize_signed_i8_i32_matmul
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
+    from merlin.compiler.frontend.linalg_patterns import recognize_signed_i8_i32_matmul
     from xdsl.dialects.builtin import ArrayAttr, StringAttr
 
     module = parse_mlir_text(text)
@@ -537,7 +537,7 @@ def build_direct_program_plan(source: str, cb: dict[str, Any], *, schedule_instr
     """
     from copy import deepcopy
     from pathlib import Path
-    from merlin.targetgen.oot_starterkit.plan import source_operation_inventory, validate_mixed_program_plan
+    from merlin.development.targetgen.oot_starterkit.plan import source_operation_inventory, validate_mixed_program_plan
     result = deepcopy(cb)
     inventory = source_operation_inventory(source)
     params = result.setdefault('params', {})

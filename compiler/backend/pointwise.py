@@ -167,7 +167,7 @@ def _strided_schedule(window,n,tile_m,seeded,mixed_scales):
     from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
     from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
     from merlin.compiler.schedule.loop_schedule import propose_loop_transforms
-    from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
+    from merlin.compiler.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
     oh,ow=window.output_spatial
     m=window.input_shape[0]*oh*ow
     k=window.input_shape[-1]

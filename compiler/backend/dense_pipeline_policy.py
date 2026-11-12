@@ -11,9 +11,9 @@ from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
 
-from merlin.transforms.pipeline_policy import PipelineVariant, PolicyFacts, RegisteredPass, ResourcePredicate
-from merlin.transforms.pipeline_state import PassSpec, PipelineSession
-from merlin.transforms.shape_policy import AssessedShapePolicy, ShapeScheduleClass, assess_shape_policy
+from merlin.compiler.transforms.pipeline_policy import PipelineVariant, PolicyFacts, RegisteredPass, ResourcePredicate
+from merlin.compiler.transforms.pipeline_state import PassSpec, PipelineSession
+from merlin.compiler.transforms.shape_policy import AssessedShapePolicy, ShapeScheduleClass, assess_shape_policy
 
 from . import isa
 
@@ -227,8 +227,8 @@ def execute_capacity_pipeline(m, k, n, bias=False, column_scales=False, *, ready
     from pathlib import Path
     import os
     from merlin.compiler.selection.knobs import knob
-    from merlin.transforms.pipeline_state import PipelineContext
-    from merlin.transforms.pipeline_policy import PipelinePolicy, execute_policy
+    from merlin.compiler.transforms.pipeline_state import PipelineContext
+    from merlin.compiler.transforms.pipeline_policy import PipelinePolicy, execute_policy
     from .dense_pipeline import retained_schedule, _retained_schedule, PANEL_GEOMETRIES
     root = Path(__file__).resolve().parents[1]
     configured = knob('DENSE_PANEL_GEOMETRY', default='balanced',

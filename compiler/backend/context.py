@@ -16,7 +16,7 @@ from xdsl.printer import Printer
 from io import StringIO
 
 from merlin.compiler.ir.logical_abi import kernel_arg_order, logical_abi
-from merlin.llvmlower.host_builder import FnBuilder, PTR
+from merlin.compiler.lower.model.host_builder import FnBuilder, PTR
 
 
 class EmissionContext:

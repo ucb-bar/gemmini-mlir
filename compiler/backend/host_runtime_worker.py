@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
-from merlin.llvmlower.lower import lower_model
+from merlin.compiler.lower.model.lower import lower_model
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
     # Stock native transport rejects all Python-runner feature names, including
     # source passes already consumed by lower_model. Run the same public exact
     # preparation pass before that seam and retain its realized rewrite record.
-    from merlin.llvmlower.tensor_provenance_cse import FEATURE, rewrite_text
+    from merlin.compiler.lower.model.tensor_provenance_cse import FEATURE, rewrite_text
     prepared = None
     if FEATURE in request['options']['features']:
         import hashlib
@@ -29,9 +29,9 @@ def main():
     window = None
     if window_feature in request['options']['features']:
         try:
-            from merlin.llvmlower.scalar_window_reduction import FEATURE, prepare_scalar_window_reductions
+            from merlin.compiler.lower.model.scalar_window_reduction import FEATURE, prepare_scalar_window_reductions
         except ModuleNotFoundError as error:
-            if error.name != 'merlin.llvmlower.scalar_window_reduction':
+            if error.name != 'merlin.compiler.lower.model.scalar_window_reduction':
                 raise
             raise ValueError(
                 'selected scalar_window_reductions pass is unavailable in the selected compiler environment; '

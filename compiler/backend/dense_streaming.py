@@ -16,7 +16,7 @@ from merlin.compiler.schedule.dense_panel_pipeline import DensePanelOverlapAdmis
 from merlin.compiler.schedule.dense_segmented_pipeline import DenseSegmentedAdmission
 from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
 from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
-from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
+from merlin.compiler.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
 from . import isa
 
 

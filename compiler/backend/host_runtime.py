@@ -40,7 +40,7 @@ def dense_regions(module) -> tuple[DeviceRegion, ...]:
     integer contraction is sent to the CPU because its adapter is incomplete.
     """
     from merlin.compiler.ir.contraction_shapes import observe_contractions, zero_initialised
-    from merlin.frontends.linalg_patterns import recognize_signed_i8_i32_matmul
+    from merlin.compiler.frontend.linalg_patterns import recognize_signed_i8_i32_matmul
     from xdsl.ir import Operation
     regions = []
     for op, shape in observe_contractions(module):
@@ -95,7 +95,7 @@ def _source_function(region: DeviceRegion, symbol: str) -> str:
     from xdsl.dialects import func
     from xdsl.dialects.builtin import ModuleOp
     from xdsl.ir import Block, Region
-    from merlin.xdsl_dialects._common import text
+    from merlin.compiler.dialects._common import text
     block = Block(arg_types=[v.type for v in region.inputs])
     mapping = dict(zip(region.inputs, block.args, strict=True))
     for operation in region.operations:
@@ -133,11 +133,11 @@ def lower_whole_program(
     Returned C glue is shared Merlin descriptor adaptation and must be compiled
     and linked together with both the host LLVM and every device artifact.
     """
-    from merlin.frontends.linalg_mlir import parse_mlir_text
-    from merlin.xdsl_dialects._common import text
-    from merlin.llvmlower.declaration_access import patch_declaration_arg_attrs, unpatched_declarations
-    from merlin.llvmlower.device_shim import LogicalBuffer, emit_logical_translation_unit
-    from merlin.llvmlower.lower import lower_model
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
+    from merlin.compiler.dialects._common import text
+    from merlin.compiler.lower.model.declaration_access import patch_declaration_arg_attrs, unpatched_declarations
+    from merlin.compiler.lower.model.device_shim import LogicalBuffer, emit_logical_translation_unit
+    from merlin.compiler.lower.model.lower import lower_model
     from xdsl.dialects import func, tensor
     from xdsl.dialects.builtin import ArrayAttr, DictionaryAttr, StringAttr, TensorType
     from xdsl.ir import Region
@@ -288,7 +288,7 @@ def lower_whole_program(
         # quantization; its independent expression checker admits only closed
         # round/clamp/cast chains. Device calls remain opaque boundaries.
         from merlin.compiler.quantization.linalg import lower_quant_ext
-        from merlin.llvmlower.automatic_host import optimize_host_quantization
+        from merlin.compiler.lower.model.automatic_host import optimize_host_quantization
         prepared = parse_mlir_text(routed)
         extension_count = lower_quant_ext(prepared)
         prepared, numerical_preparation = optimize_host_quantization(prepared,
@@ -309,7 +309,7 @@ def lower_whole_program(
     options = dict(lower_options or {})
     # These shared passes preserve exact source arithmetic and independently
     # check every reuse. No input argument is presumed immutable.
-    from merlin.llvmlower.tensor_provenance_cse import FEATURE as preparation_cse
+    from merlin.compiler.lower.model.tensor_provenance_cse import FEATURE as preparation_cse
     options['features'] = sorted(set(options.get('features') or ()) | {preparation_cse})
     options.setdefault('static_arena', True)
     if 'targets' in options or 'retain_llvm_dialect' in options:

@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
-from merlin.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
+from merlin.compiler.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
 
 from . import isa
 

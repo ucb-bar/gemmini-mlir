@@ -16,7 +16,7 @@ from merlin.compiler.schedule.dense_shared_rhs import schedule_dense_shared_rhs
 from merlin.compiler.schedule.dense_shared_rhs_check import DenseRHSReuseLaw
 from merlin.compiler.schedule.dense_panel_pipeline import DRAIN
 from merlin.compiler.schedule.llvm_program import FnBuilderIndexAdapter, emit_index_program
-from merlin.transforms.dense_planning import DenseProblem, DenseResources
+from merlin.compiler.transforms.dense_planning import DenseProblem, DenseResources
 from merlin.compiler.kernel_ir.ir import Call, Loop, Ptr, as_expr
 from . import isa
 from .dense import _adapter

@@ -25,7 +25,7 @@ class _Plan:
 
 
 def _path():
-    from merlin.targetgen.output_path import validate
+    from merlin.development.targetgen.output_path import validate
     return validate(json.loads(Path(__file__).with_name('source_groups_output_path.json').read_text()))
 
 
@@ -74,7 +74,7 @@ def _dependencies(root, members):
 
 
 def _root_inputs(root):
-    from merlin.frontends.linalg_patterns import recognize_signed_i8_i32_matmul
+    from merlin.compiler.frontend.linalg_patterns import recognize_signed_i8_i32_matmul
     if root.name == 'linalg.generic':
         return recognize_signed_i8_i32_matmul(root)
     if root.name == 'linalg.matmul' and len(root.operands) == 3:
@@ -87,8 +87,8 @@ def _root_inputs(root):
 
 def _contraction_plans(module, *, roots=None):
     from merlin.compiler.ir.contraction_shapes import observe_contractions, zero_initialised
-    from merlin.xdsl_dialects.lowering import output_fusion as OF
-    from merlin.llvmlower.requantization_match import match
+    from merlin.compiler.dialects.lowering import output_fusion as OF
+    from merlin.compiler.lower.model.requantization_match import match
     from .frontend import _batched_matmul, _zero
     plans=[]
     if roots is None:
@@ -431,8 +431,8 @@ def _integer_saturating_add(op):
 
 def _quantized_residual(op):
     from merlin.common import mlir_query as mq
-    from merlin.xdsl_dialects.lowering import compute_groups as CG
-    from merlin.xdsl_dialects.lowering import group_numerics as GN
+    from merlin.compiler.dialects.lowering import compute_groups as CG
+    from merlin.compiler.dialects.lowering import group_numerics as GN
     from .elementwise import residual_numeric_screen
     if mq.op_name(op)!='quant_ext.quantize_per_tensor' or not op.results or _spec(op.results[0])['dtype']!='i8':
         return None
@@ -747,7 +747,7 @@ def source_to_buffer(source_text,*,transpose_transfers=False):
     ``constants`` holds proved immutable tensor contents for compiler-owned
     storage initialization. Runtime initializer matrices use ``accumulator_init``.
     """
-    from merlin.frontends.linalg_mlir import parse_mlir_text
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
     module=parse_mlir_text(source_text)
     functions=[op for op in module.walk() if op.name=='func.func' and op.body.blocks]
     if len(functions)!=1 or len(functions[0].body.blocks)!=1:

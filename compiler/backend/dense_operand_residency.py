@@ -11,9 +11,9 @@ import json
 
 
 def _policy(source, resources, rhs, lhs):
-    from merlin.transforms.pipeline_policy import (PipelinePolicy, PipelineVariant,
+    from merlin.compiler.transforms.pipeline_policy import (PipelinePolicy, PipelineVariant,
         PolicyFacts, RegisteredPass, ResourcePredicate, execute_policy)
-    from merlin.transforms.pipeline_state import PipelineSession, PipelineContext, PassSpec
+    from merlin.compiler.transforms.pipeline_state import PipelineSession, PipelineContext, PassSpec
     level='dense_operand_residency'
     fingerprint=lambda value:sha256(json.dumps(value).encode()).hexdigest()
     def verify(value):

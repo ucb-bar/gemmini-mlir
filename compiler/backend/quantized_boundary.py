@@ -15,8 +15,8 @@ from xdsl.dialects.builtin import TensorType
 from xdsl.ir import Operation
 from xdsl.ir.affine import AffineMap
 from merlin.common.mlir_query import op_name
-from merlin.llvmlower.requantization import f32, prove_scale
-from merlin.xdsl_dialects.lowering.group_numerics import _constant_of, _int_attr
+from merlin.compiler.lower.model.requantization import f32, prove_scale
+from merlin.compiler.dialects.lowering.group_numerics import _constant_of, _int_attr
 
 
 class QuantizedBoundaryError(ValueError):

@@ -17,7 +17,7 @@ from xdsl.printer import Printer
 
 from merlin import api
 from merlin.compiler.ir.logical_abi import kernel_arg_order, logical_abi
-from merlin.targetgen.oot_starterkit.llvm_context import make_llvm_context
+from merlin.development.targetgen.oot_starterkit.llvm_context import make_llvm_context
 
 
 def test_actual_device_module_and_wrapper_preserve_order_and_completion(tmp_path):

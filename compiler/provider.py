@@ -61,7 +61,7 @@ def _proposals(source, plans, *, resource: str, memory_domain: str):
     import json
 
     from merlin.compiler.backend.sourceproposal import SourceProposal, proposal_boundary, source_numerical_identity
-    from merlin.xdsl_dialects.lowering.global_plan import CycleInterval, RegionAlternative
+    from merlin.compiler.dialects.lowering.global_plan import CycleInterval, RegionAlternative
 
     from .backend.source_groups import _dependencies
 
@@ -242,7 +242,7 @@ def compile(request):
 
 def validate_selected(request, selected):
     """Accept the exact chosen implementation or refuse before creating output."""
-    from merlin.frontends.linalg_mlir import parse_mlir_text
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
 
     from .backend.program import _single_device_region
     from .backend.source_groups import _contraction_plans

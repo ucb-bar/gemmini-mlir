@@ -74,7 +74,7 @@ def whole_program_command_buffer(result: WholeProgramResult) -> dict[str, Any]:
     the submitted compiled module. Device buffers remain attached as evidence
     under device_regions rather than inventing commands for host operations.
     """
-    from merlin.targetgen.oot_starterkit.plan import source_operation_inventory
+    from merlin.development.targetgen.oot_starterkit.plan import source_operation_inventory
     inventory = source_operation_inventory(Path(result.stats['adapter_original_source']).read_bytes())
     ninputs = len(inventory['arguments'])
     entry_bindings = [f'arg{i}' for i in range(ninputs)]

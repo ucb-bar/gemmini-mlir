@@ -10,8 +10,8 @@ import hashlib
 
 
 def typed_device_function_identity(source: str) -> str:
-    from merlin.frontends.linalg_mlir import parse_mlir_text
-    from merlin.xdsl_dialects._common import text
+    from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
+    from merlin.compiler.dialects._common import text
     from xdsl.dialects.builtin import StringAttr
 
     module = parse_mlir_text(source)

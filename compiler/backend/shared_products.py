@@ -15,7 +15,7 @@ from merlin.compiler.schedule.blocks import Load, Store
 from merlin.compiler.schedule.compact_dense import DenseLoopStorage, DenseMemoryView
 from merlin.compiler.schedule.compact_dense_group import schedule_compact_dense_group
 from merlin.compiler.schedule.compact_dense_group_check import DenseLHSReuseLaw
-from merlin.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
+from merlin.compiler.transforms.dense_planning import DenseProblem, DenseResources, dense_blocks
 from . import isa
 from .dense import _adapter
 from .dense_readout import store_tile, _pack

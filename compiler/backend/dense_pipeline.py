@@ -15,7 +15,7 @@ from merlin.compiler.schedule.dense_panel_pipeline import DenseRetainedReduction
 from merlin.compiler.schedule.dense_ready_readout import schedule_dense_pipeline
 from merlin.compiler.schedule.schedule_ir import make_dense_schedule_plan
 from merlin.compiler.schedule.loop_schedule import propose_loop_transforms
-from merlin.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
+from merlin.compiler.transforms.dense_planning import DenseProblem,DenseResources,dense_blocks
 from merlin.compiler.selection.knobs import knob
 from . import isa
 

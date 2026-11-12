@@ -33,7 +33,7 @@ def materialize_combined_llvm_dialect(
     import subprocess
     import os
     from math import prod
-    from merlin.llvmlower.toolchain import clang, llvm_install, mlir_translate  # noqa: F401
+    from merlin.compiler.lower.model.toolchain import clang, llvm_install, mlir_translate  # noqa: F401
     selected_install = Path(os.environ.get('MERLIN_MLIR_INSTALL', str(Path(__file__).resolve().parents[2] / 'install')))
     translate = selected_install / 'bin' / 'mlir-translate'
     if not symbol.isidentifier() or not symbol.isascii():
@@ -138,7 +138,7 @@ def materialize_combined_llvm_dialect(
     run(optimization_command)
     numerical_legalization = None
     if host_optimization in ('bounded_rne', 'bounded_rne_fused'):
-        from merlin.llvmlower import late_quant_rne
+        from merlin.compiler.lower.model import late_quant_rne
         original_native = work / 'before-bounded-rne.ll'
         original_native.write_bytes(inlined.read_bytes())
         rewritten, numerical_legalization = late_quant_rne.rewrite(
@@ -163,10 +163,10 @@ def materialize_combined_llvm_dialect(
         '--passes=function(lower-switch),verify', cfg_input, '-o', inlined]
     run(cfg_command)
     run([translate, '--import-llvm', inlined, '-o', target])
-    from merlin.targetgen.oot_starterkit.llvm_context import make_llvm_context
+    from merlin.development.targetgen.oot_starterkit.llvm_context import make_llvm_context
     from xdsl.parser import Parser
     from xdsl.dialects.builtin import IntegerAttr
-    from merlin.xdsl_dialects._common import text as llvm_text
+    from merlin.compiler.dialects._common import text as llvm_text
     generic_import = work / 'generic-import.mlir'
     run([selected_install / 'bin' / 'mlir-opt', target, '--mlir-print-op-generic', '-o', generic_import])
     module = Parser(make_llvm_context(), generic_import.read_text()).parse_module()
@@ -223,7 +223,7 @@ def materialize_combined_llvm_dialect(
         source_arithmetic='unchanged LLVM semantics; ordinary alias and speculative-execution checks',
         cost_evidence='not_measured')
     if 'scalar_window_reductions' in result.stats:
-        from merlin.llvmlower import scalar_window_reduction
+        from merlin.compiler.lower.model import scalar_window_reduction
         host_recipe['scalar_window_reductions'] = dict(result.stats['scalar_window_reductions'],
             binding_stage='caller_before_stock_bufferization',
             typed_source=identity(result.host_llvm_ir.parent / 'model.scalar-windows.mlir'),

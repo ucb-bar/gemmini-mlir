@@ -12,10 +12,10 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from merlin.transforms.evaluated_exploration import CompletedObservation, EvaluationRequest
-from merlin.transforms.pass_exploration import ExplorationGeometry
-from merlin.transforms.pipeline_policy import PolicyFacts
-from merlin.transforms.shape_policy import ShapeCaseFeedback
+from merlin.compiler.transforms.evaluated_exploration import CompletedObservation, EvaluationRequest
+from merlin.compiler.transforms.pass_exploration import ExplorationGeometry
+from merlin.compiler.transforms.pipeline_policy import PolicyFacts
+from merlin.compiler.transforms.shape_policy import ShapeCaseFeedback
 
 
 def _pin(value):

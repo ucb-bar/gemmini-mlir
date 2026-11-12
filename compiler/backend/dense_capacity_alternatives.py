@@ -10,10 +10,10 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from merlin.transforms.pipeline_policy import (
+from merlin.compiler.transforms.pipeline_policy import (
     PipelinePolicy, PipelineVariant, PolicyFacts, ResourcePredicate, execute_policy,
 )
-from merlin.transforms.pipeline_state import PipelineContext
+from merlin.compiler.transforms.pipeline_state import PipelineContext
 
 
 def execute_segmented_alternative(m, k, n, bias, column_scales, retained, refusal,

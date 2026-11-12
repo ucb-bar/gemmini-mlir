@@ -12,8 +12,8 @@ import pytest
 from gemmini.backend import host_runtime as public
 from gemmini.backend import hostcontract, hostlink
 
-from merlin.frontends.linalg_mlir import parse_mlir_text
-from merlin.llvmlower import lower
+from merlin.compiler.frontend.linalg_mlir import parse_mlir_text
+from merlin.compiler.lower.model import lower
 
 SOURCE = '''module {func.func @forward(%x:tensor<2x3xf32>,%y:tensor<2x3xf32>)
  -> (tensor<6xf32>,tensor<6xf32>) {
@@ -138,7 +138,7 @@ def test_worker_optional_pass_uses_only_selected_import_and_preserves_refusals(t
     request.write_text(json.dumps({"source": str(source), "work": str(work), "result": str(response),
         "options": {"features": [feature] if mode != "off" else []}}))
     monkeypatch.setattr(sys, "argv", ["worker", str(request)])
-    name = "merlin.llvmlower.scalar_window_reduction"
+    name = "merlin.compiler.lower.model.scalar_window_reduction"
     module = ModuleType(name)
     module.FEATURE = "wrong-feature" if mode == "identity" else feature
     prepared, imports, lowered = [], [], []
